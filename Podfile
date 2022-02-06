@@ -1,10 +1,13 @@
-platform :ios, '13.0'
+platform :ios, '14.0'
 
 inhibit_all_warnings!
 
 target 'vexl' do
 
     use_frameworks!
+
+    # Cleevio Framework // Not a vendor lock. If you need access to this framework, contact Cleevio and you will get accesss
+    pod 'Cleevio', :path => '../CleevioFramework-ios' #:git => 'https://gitlab.cleevio.cz/cleevio-dev-ios/CleevioFramework-ios.git'
 
     # Strong typing
     pod 'R.swift'
@@ -18,14 +21,8 @@ target 'vexl' do
     # Keychain
     pod 'KeychainAccess'
 
-    # Reactive programming
-    pod 'RxSwift'
-    pod 'RxCocoa'
-    pod 'RxKeyboard'
-
     # Networking
     pod 'Alamofire'
-    pod 'RxAlamofire'
     pod 'AlamofireNetworkActivityIndicator'
     pod 'AlamofireNetworkActivityLogger', configuration: ['Debug']
     pod 'Kingfisher'

@@ -2,7 +2,7 @@
 //  ServiceAssembly.swift
 //  vexl
 //
-//  Created by Adam Salih on 06.02.2022.
+//  Created by Adam Salih on 05.02.2022.
 //  
 //
 
@@ -14,8 +14,14 @@ class ServiceAssembly: Assembly {
             ApiInterceptor()
         }
 
-        container.register(ApiServiceType.self) { _ in
-            ApiService()
+        container.register(TokenHandlerType.self) { _ in
+            AuthenticationManager()
+        }
+
+        container.register(ApiServiceType.self) { container in
+            ApiService(
+                authenticationManager: container.resolve(TokenHandlerType.self)!
+            )
         }
 
         container.register(UserServiceType.self) { _ in

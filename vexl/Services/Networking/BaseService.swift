@@ -2,39 +2,34 @@
 //  BaseService.swift
 //  vexl
 //
-//  Created by Adam Salih on 06.02.2022.
+//  Created by Adam Salih on 05.02.2022.
 //  
 //
 
 import Foundation
 import Alamofire
-import RxSwift
+import Combine
+import Cleevio
 
 class BaseService {
     @Inject var apiService: ApiServiceType
-    let disposeBag = DisposeBag()
+    let cancelBag = CancelBag()
 
     // MARK: - Requests
 
-    func request<T: Decodable>(type: T.Type,
-                               endpoint: ApiRouter,
-                               scheduler: ConcurrentDispatchQueueScheduler? = nil) -> Single<T> {
-        var request = apiService.request(endpoint: endpoint)
-
-        if let scheduler = scheduler {
-            request = request.observe(on: scheduler)
-        }
-
-        return request
-            .withUnretained(self)
-            .map { owner, data -> T in try owner.serialize(data: data, toObject: T.self, rootKey: endpoint.rootKey) }
-            .asSingle()
+    func request<T: Decodable>(type: T.Type, endpoint: ApiRouter) -> AnyPublisher<T, Error> {
+        self.request(type: type, endpoint: endpoint, scheduler: RunLoop.current)
     }
 
-    func request(endpoint: ApiRouter) -> Single<Void> {
-        apiService
-            .voidRequest(endpoint: endpoint)
-            .asSingle()
+    func request<T: Decodable, S: Scheduler>(type: T.Type, endpoint: ApiRouter, scheduler: S) -> AnyPublisher<T, Error> {
+        apiService.request(endpoint: endpoint)
+            .receive(on: scheduler, options: nil)
+            .tryMap { [unowned self] data -> T in try self.serialize(data: data, toObject: T.self, rootKey: endpoint.rootKey) }
+            .eraseToAnyPublisher()
+    }
+
+    func request(endpoint: ApiRouter) -> AnyPublisher<Void, Error> {
+        apiService.voidRequest(endpoint: endpoint)
     }
 
     // MARK: - Serializer
@@ -51,7 +46,7 @@ class BaseService {
         } else if json as? T != nil {
             return try T(data: data)
         } else {
-            throw APIError.serverError(.invalidResponse(message: R.string.generic.errorParseJson()))
+            throw APIError.serverError(.invalidResponse(message: "Failed to parse JSON"))
         }
     }
 }

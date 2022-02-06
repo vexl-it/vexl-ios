@@ -2,13 +2,13 @@
 //  vexlTests.swift
 //  vexlTests
 //
-//  Created by Adam Salih on 06.02.2022.
+//  Created by Adam Salih on 05.02.2022.
 //
 
 import XCTest
 @testable import vexl
 
-class vexlTests: XCTestCase {
+class VexlTests: XCTestCase {
     override func setUp() {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.

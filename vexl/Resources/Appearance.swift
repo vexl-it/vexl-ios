@@ -2,7 +2,7 @@
 //  Appearance.swift
 //  vexl
 //
-//  Created by Adam Salih on 06.02.2022.
+//  Created by Adam Salih on 05.02.2022.
 //  
 //
 
@@ -12,16 +12,6 @@ struct Appearance {
     // MARK: - Colors
 
     struct Colors {
-    }
-
-    // MARK: - Styles
-
-    struct Styles {
-        static let oneLineAdjustableLabel = UIViewStyle<UILabel> {
-            $0.numberOfLines = 1
-            $0.adjustsFontSizeToFitWidth = true
-            $0.minimumScaleFactor = 0.7
-        }
     }
 
     // MARK: - Global

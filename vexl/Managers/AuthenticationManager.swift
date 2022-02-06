@@ -2,14 +2,14 @@
 //  AuthenticationManager.swift
 //  vexl
 //
-//  Created by Adam Salih on 06.02.2022.
+//  Created by Adam Salih on 05.02.2022.
 //  
 //
 
 import Foundation
-import RxSwift
-import RxCocoa
+import Combine
 import KeychainAccess
+import Cleevio
 
 typealias BearerToken = String
 
@@ -24,44 +24,41 @@ final class AuthenticationManager: TokenHandlerType {
         case signedOut
     }
 
-    var accessToken: BearerToken? { currentAccessToken.value }
-    var refreshToken: BearerToken? { currentRefreshToken.value }
-
     // MARK: - Properties
 
-    let authenticationState = BehaviorRelay<AuthenticationState>(value: .signedOut)
+    @Published private(set) var authenticationState: AuthenticationState = .signedOut
 
-    private let currentAccessToken = BehaviorRelay<String?>(value: nil)
-    private let currentRefreshToken = BehaviorRelay<String?>(value: nil)
-    private let disposeBag = DisposeBag()
+
+    @Published private(set) var accessToken: String?
+    @Published private(set) var refreshToken: String?
+
+    private let cancelBag: CancelBag = .init()
 
     // MARK: - Initialization
 
     init() {
-        currentAccessToken.accept(Keychain.standard[.accessToken])
-        currentRefreshToken.accept(Keychain.standard[.refreshToken])
-
+        accessToken = Keychain.standard[.accessToken]
+        refreshToken = Keychain.standard[.refreshToken]
         setupSubscription()
     }
 
     private func setupSubscription() {
-        currentAccessToken
-            .subscribe(onNext: { accessToken in
+        $accessToken
+            .sink { accessToken in
                 Keychain.standard[.accessToken] = accessToken
-            })
-            .disposed(by: disposeBag)
+            }
+            .store(in: cancelBag)
 
-        currentRefreshToken
-            .subscribe(onNext: { refreshToken in
+        $refreshToken
+            .sink { refreshToken in
                 Keychain.standard[.refreshToken] = refreshToken
-            })
-            .disposed(by: disposeBag)
+            }
+            .store(in: cancelBag)
 
-        currentAccessToken
+        $accessToken
             .map { $0 ?? "" }
             .map { $0.isEmpty ? .signedOut : .signedIn }
-            .bind(to: authenticationState)
-            .disposed(by: disposeBag)
+            .assign(to: &$authenticationState)
     }
 }
 
@@ -69,16 +66,24 @@ final class AuthenticationManager: TokenHandlerType {
 
 extension AuthenticationManager {
     func setAccessToken(token: String) {
-        currentAccessToken.accept(token)
+        accessToken = token
     }
 
     func setRefreshToken(token: String) {
-        currentRefreshToken.accept(token)
+        refreshToken = token
     }
 
-    func clearUser() {
-        currentAccessToken.accept(nil)
-        currentRefreshToken.accept(nil)
-        UserDefaultsConfig.removeAll()
+    private func clearUser() {
+        accessToken = nil
+        refreshToken = nil
+        let userDefaults = UserDefaults.standard
+
+        userDefaults.dictionaryRepresentation().keys.forEach(userDefaults.removeObject)
+        userDefaults.synchronize()
+    }
+
+    func logoutUser() {
+        clearUser()
+        authenticationState = .signedOut
     }
 }

@@ -1,9 +1,9 @@
 //
 //  UIViewStyle.swift
-//  vexl
+//  pilulka
 //
-//  Created by Adam Salih on 06.02.2022.
-//  
+//  Created by Martin Vidovic on 07.07.2021.
+//
 //
 
 import UIKit

@@ -2,7 +2,7 @@
 //  DIContainer.swift
 //  vexl
 //
-//  Created by Adam Salih on 06.02.2022.
+//  Created by Adam Salih on 05.02.2022.
 //  
 //
 
@@ -15,6 +15,8 @@ class DIContainer {
         ManagerAssembly(),
         ServiceAssembly()
     ])
+
+    private init() { }
 
     func getDependency<Dependency>(type: Dependency.Type) -> Dependency {
         guard let dependency = DIContainer.shared.assembler.resolver.resolve(Dependency.self) else {

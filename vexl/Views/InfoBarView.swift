@@ -2,7 +2,7 @@
 //  InfoBarView.swift
 //  vexl
 //
-//  Created by Adam Salih on 06.02.2022.
+//  Created by Adam Salih on 05.02.2022.
 //  
 //
 
@@ -48,13 +48,12 @@ final class InfoBarView: UIView {
         Styles.messageLabel.apply(to: messageLabel)
 
         addSubview(messageLabel)
-
-        messageLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(16)
-            make.trailing.equalToSuperview().offset(-16)
-            make.top.equalToSuperview().offset(topPadding ?? 40)
-            make.bottom.equalToSuperview().offset(-16)
-        }
+        NSLayoutConstraint.activate([
+            messageLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
+            messageLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
+            messageLabel.topAnchor.constraint(equalTo: topAnchor, constant: topPadding ?? 40),
+            messageLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -16)
+        ])
     }
 
     // MARK: - Actions

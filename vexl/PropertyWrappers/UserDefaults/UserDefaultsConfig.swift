@@ -2,7 +2,7 @@
 //  UserDefaultsConfig.swift
 //  vexl
 //
-//  Created by Adam Salih on 06.02.2022.
+//  Created by Adam Salih on 05.02.2022.
 //  
 //
 
@@ -17,8 +17,7 @@ struct UserDefaultsConfig {
     static var hasSeenOnboarding: Bool
 
     static func removeAll() {
-        UserDefaults.standard.dictionaryRepresentation().keys.forEach { UserDefaults.standard.removeObject(forKey: $0)
-        }
+        UserDefaults.standard.dictionaryRepresentation().keys.forEach { UserDefaults.standard.removeObject(forKey: $0) }
         UserDefaults.standard.synchronize()
     }
 

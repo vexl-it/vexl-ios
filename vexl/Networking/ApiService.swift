@@ -1,15 +1,15 @@
 //
 //  ApiService.swift
-//  vexl
+//  Test
 //
-//  Created by Adam Salih on 06.02.2022.
-//  
+//  Created by Daniel Fernandez Yopla on 07.01.2022.
+//
 //
 
 import Foundation
 import Alamofire
-import RxSwift
-import RxAlamofire
+import Combine
+import Cleevio
 
 // MARK: - ErrorPayload
 
@@ -21,9 +21,8 @@ struct ErrorPayload: Decodable {
 // MARK: - ApiServiceType
 
 protocol ApiServiceType: AnyObject {
-    func request(endpoint: ApiRouter) -> Observable<Data>
-    func requestWithStatusCode(endpoint: ApiRouter) -> Observable<(Data, Int)>
-    func voidRequest(endpoint: ApiRouter) -> Observable<Void>
+    func request(endpoint: ApiRouter) -> AnyPublisher<Data, Error>
+    func voidRequest(endpoint: ApiRouter) -> AnyPublisher<Void, Error>
 }
 
 // MARK: - ApiService
@@ -34,7 +33,6 @@ final class ApiService: ApiServiceType {
         static let created = 201
         static let accepted = 202
         static let unauthorized = 401
-        static let accessDenied = 403
         static let notFound = 404
 
         static let success = 200...299
@@ -45,110 +43,73 @@ final class ApiService: ApiServiceType {
     }
 
     static let jsonContentType = "application/json"
-    private let decoder: JSONDecoder
 
-    @Inject private var authenticationManager: AuthenticationManager
-    @Inject private var apiInterceptor: ApiInterceptor
-    private lazy var sessionManager: Session = {
+    let sessionManager: Session
+    let authenticationManager: TokenHandlerType
+
+    private var cancellables: Cancellables = .init()
+
+    init(authenticationManager: TokenHandlerType) {
+        self.authenticationManager = authenticationManager
+
         let configuration = URLSessionConfiguration.default
-        configuration.timeoutIntervalForRequest = 60
-        configuration.timeoutIntervalForResource = 60
+        configuration.timeoutIntervalForRequest = 10
+        configuration.timeoutIntervalForResource = 10
 
-        return Session(
+        let apiInterceptor = ApiInterceptor()
+
+        self.sessionManager = Session(
             configuration: configuration,
-            interceptor: apiInterceptor
-        )
-    }()
-
-    init() {
-        self.decoder = Constants.jsonDecoder
+            interceptor: apiInterceptor)
     }
 
     // MARK: - Requests
 
-    func request(endpoint: ApiRouter) -> Observable<Data> {
-        Observable.create { [weak self] observer in
-            guard let self = self else { return Disposables.create() }
-            let request = self.sessionManager.request(endpoint)
-                .validate()
-                .validate(contentType: [ApiService.jsonContentType])
-                .responseData { response in
-                    do {
-                        try self.validateResponse(response: response)
-                        guard let data = response.data else {
-                            throw APIError.serverError(.invalidResponse(message: nil))
-                        }
-
-                        observer.onNext(data)
-                        observer.onCompleted()
-                    } catch {
-                        observer.onError(error)
-                    }
+    func request(endpoint: ApiRouter) -> AnyPublisher<Data, Error> {
+        sessionManager.request(endpoint)
+            .validate()
+            .validate(contentType: [ApiService.jsonContentType])
+            .publishData()
+            .tryMap(handleResponse)
+            .tryMap { responseData in
+                guard let data = responseData else {
+                    throw APIError.serverError(.internalError)
                 }
-
-            return Disposables.create {
-                request.cancel()
+                return data
             }
-        }
+            .receive(on: DispatchQueue.main)
+            .eraseToAnyPublisher()
     }
 
-    func requestWithStatusCode(endpoint: ApiRouter) -> Observable<(Data, Int)> {
-        Observable.create { [weak self] observer in
-            guard let self = self else { return Disposables.create() }
-            let request = self.sessionManager.request(endpoint)
-                .validate()
-                .validate(contentType: [ApiService.jsonContentType])
-                .responseData { response in
-                    do {
-                        try self.validateResponse(response: response)
-                        guard let data = response.data, let statusCode = response.response?.statusCode else {
-                            throw APIError.serverError(.invalidResponse(message: nil))
-                        }
+    func voidRequest(endpoint: ApiRouter) -> AnyPublisher<Void, Error> {
+        sessionManager.request(endpoint)
+            .validate()
+            .validate(contentType: [ApiService.jsonContentType])
+            .publishData()
+            .tryMap(handleResponse)
+            .asVoid()
+            .receive(on: DispatchQueue.main)
+            .eraseToAnyPublisher()
+            .sink(receiveCompletion: { _ in }, receiveValue: { })
+            .store(in: &cancellables)
 
-                        observer.onNext((data, statusCode))
-                        observer.onCompleted()
-                    } catch {
-                        observer.onError(error)
-                    }
-                }
-
-            return Disposables.create {
-                request.cancel()
-            }
-        }
+        return sessionManager.request(endpoint)
+            .validate()
+            .validate(contentType: [ApiService.jsonContentType])
+            .publishData()
+            .tryMap(handleResponse)
+            .asVoid()
+            .receive(on: DispatchQueue.main)
+            .eraseToAnyPublisher()
     }
 
-    func voidRequest(endpoint: ApiRouter) -> Observable<Void> {
-        Observable.create { [weak self] observer in
-            guard let self = self else { return Disposables.create() }
-            let request = self.sessionManager.request(endpoint)
-                .validate()
-                .validate(contentType: [ApiService.jsonContentType])
-                .responseData { response in
-                    do {
-                        try self.validateResponse(response: response)
-                        observer.onNext(())
-                        observer.onCompleted()
-                    } catch {
-                        observer.onError(error)
-                    }
-                }
-
-            return Disposables.create {
-                request.cancel()
-            }
-        }
-    }
-
-    // MARK: - Helpers
-
-    private func validateResponse(response: AFDataResponse<Data>) throws {
+    private func handleResponse(_ response: DataResponse<Data, AFError>) throws -> Data? {
         guard let httpResponse = response.response else {
-            if let error = response.error?.underlyingError as? URLError, error.code == .timedOut {
+            if let error = response.error?.asAFError?.underlyingError as? URLError, error.code == .timedOut {
                 throw APIError.serverError(.timeout)
             }
 
-            throw response.error?.underlyingError ?? ServerError.invalidResponse(message: nil)
+            throw APIError.serverError(.internalError)
         }
 
         if !(ApiService.StatusCode.success ~= httpResponse.statusCode),
@@ -174,5 +135,7 @@ final class ApiService: ApiServiceType {
                 throw APIError.serverError(.internalError)
             }
         }
+
+        return response.data
     }
 }

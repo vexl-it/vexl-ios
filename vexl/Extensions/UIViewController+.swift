@@ -2,7 +2,7 @@
 //  UIViewController+.swift
 //  vexl
 //
-//  Created by Adam Salih on 06.02.2022.
+//  Created by Adam Salih on 05.02.2022.
 //  
 //
 
@@ -50,10 +50,11 @@ extension UIViewController {
         alertWindow.passTroughTag = 0
         alertWindow.addSubview(barView)
 
-        barView.snp.makeConstraints { make in
-            make.top.equalToSuperview()
-            make.leading.trailing.equalToSuperview()
-        }
+        NSLayoutConstraint.activate([
+            barView.leadingAnchor.constraint(equalTo: alertWindow.leadingAnchor),
+            barView.trailingAnchor.constraint(equalTo: alertWindow.trailingAnchor),
+            barView.topAnchor.constraint(equalTo: alertWindow.topAnchor)
+        ])
 
         barView.doAfter = {
             alertWindow.isHidden = true
@@ -101,9 +102,12 @@ extension UIViewController {
             loadingView.tag = self.activityBackgroundViewTag
             view.addSubview(loadingView)
 
-            loadingView.snp.makeConstraints { make in
-                make.directionalEdges.equalToSuperview()
-            }
+            NSLayoutConstraint.activate([
+                loadingView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+                loadingView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+                loadingView.topAnchor.constraint(equalTo: view.topAnchor),
+                loadingView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            ])
 
             loadingView.layoutIfNeeded()
             loadingView.startAnimating()
