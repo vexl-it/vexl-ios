@@ -18,5 +18,9 @@ class ManagerAssembly: Assembly {
         container.register(TokenHandlerType.self) { resolver in
             resolver.resolve(AuthenticationManager.self)!
         }
+
+        container.register(InitialScreenManager.self) { _ in
+            InitialScreenManager()
+        }
     }
 }
