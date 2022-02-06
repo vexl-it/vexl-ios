@@ -24,7 +24,7 @@ class BaseService {
     func request<T: Decodable, S: Scheduler>(type: T.Type, endpoint: ApiRouter, scheduler: S) -> AnyPublisher<T, Error> {
         apiService.request(endpoint: endpoint)
             .receive(on: scheduler, options: nil)
-            .tryMap { [unowned self] data -> T in try self.serialize(data: data, toObject: T.self, rootKey: endpoint.rootKey) }
+            .tryCompactMap { [weak self] data -> T? in try self?.serialize(data: data, toObject: T.self, rootKey: endpoint.rootKey) }
             .eraseToAnyPublisher()
     }
 

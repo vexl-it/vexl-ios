@@ -10,9 +10,6 @@ import SwiftUI
 import Cleevio
 
 final class SplashScreenCoordinator: BaseCoordinator<Void> {
-
-
-
     private let window: UIWindow
 
     init(window: UIWindow) {

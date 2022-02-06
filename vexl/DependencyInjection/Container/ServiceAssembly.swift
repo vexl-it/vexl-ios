@@ -14,10 +14,6 @@ class ServiceAssembly: Assembly {
             ApiInterceptor()
         }
 
-        container.register(TokenHandlerType.self) { _ in
-            AuthenticationManager()
-        }
-
         container.register(ApiServiceType.self) { container in
             ApiService(
                 authenticationManager: container.resolve(TokenHandlerType.self)!

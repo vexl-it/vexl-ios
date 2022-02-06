@@ -13,8 +13,7 @@ enum UserDefaultKey: String {
 }
 
 struct UserDefaultsConfig {
-    @UserDefault(UserDefaultKey.hasSeenOnboarding.rawValue, defaultValue: false)
-    static var hasSeenOnboarding: Bool
+    @UserDefault(UserDefaultKey.hasSeenOnboarding.rawValue, defaultValue: false) static var hasSeenOnboarding: Bool
 
     static func removeAll() {
         UserDefaults.standard.dictionaryRepresentation().keys.forEach { UserDefaults.standard.removeObject(forKey: $0) }

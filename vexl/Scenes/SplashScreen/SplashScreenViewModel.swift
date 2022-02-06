@@ -11,7 +11,7 @@ import Cleevio
 
 final class SplashScreenViewModel: ViewModelType {
 
-    //MARK: - Dependnecies
+    // MARK: - Dependnecies
 
     @Inject var initialScreenManager: InitialScreenManager
     @Inject var authenticationManager: AuthenticationManager

@@ -28,7 +28,6 @@ final class AuthenticationManager: TokenHandlerType {
 
     @Published private(set) var authenticationState: AuthenticationState = .signedOut
 
-
     @Published private(set) var accessToken: String?
     @Published private(set) var refreshToken: String?
 
