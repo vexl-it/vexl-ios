@@ -1,0 +1,11 @@
+//
+//  Generic.strings
+//  vexl
+//
+//  Created by Adam Salih on 06.02.2022.
+//  
+//
+
+"error.parse.string" = "Cannot create data from string";
+"error.parse.json" = "Failed to parse JSON";
+"error.decode.object" = "Cannot decode data to object";
