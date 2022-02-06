@@ -76,6 +76,7 @@ final class SplashScreenViewModel: ViewModelType {
             .withUnretained(self)
             .sink(receiveValue: { owner, initialScreen -> Void in
                 owner.initialScreenManager.update(state: initialScreen)
+                owner.route.send(.loadingFinished)
             })
             .store(in: cancelBag)
     }

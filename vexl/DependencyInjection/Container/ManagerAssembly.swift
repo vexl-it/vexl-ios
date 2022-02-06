@@ -22,5 +22,6 @@ class ManagerAssembly: Assembly {
         container.register(InitialScreenManager.self) { _ in
             InitialScreenManager()
         }
+        .inObjectScope(.container)
     }
 }
