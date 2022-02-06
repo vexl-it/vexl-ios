@@ -51,17 +51,6 @@ file_types_order:
   order:
     - [supporting_type, main_type]
     - [extension, preview_provider]
-type_contents_order:
-  order:
-    - type_alias
-    - associated_type
-    - case
-    - subtype
-    - [instance_property, type_property, initializer, deinitializer]
-    - type_method
-    - view_life_cycle_method
-    - other_method
-    - subscript
 
 custom_rules:
   mark_spacing_after:
@@ -158,11 +147,9 @@ opt_in_rules:
   - static_operator
   - switch_case_on_newline
   - toggle_bool
-  - type_contents_order
   - unneeded_parentheses_in_closure_argument
   - unowned_variable_capture
   - unused_import
   - vertical_parameter_alignment_on_call
   - vertical_whitespace_closing_braces
-  - vertical_whitespace_opening_braces
   - yoda_condition
