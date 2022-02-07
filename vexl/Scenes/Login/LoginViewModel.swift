@@ -1,20 +1,20 @@
 //
-//  OnboardingViewModel.swift
+//  LoginViewModel.swift
 //  vexl
 //
-//  Created by Adam Salih on 05.02.2022.
+//  Created by Adam Salih on 07.02.2022.
 //
 
 import UIKit
 import Combine
 import Cleevio
 
-final class OnboardingViewModel: ViewModelType {
+final class LoginViewModel: ViewModelType {
 
     // MARK: - Actions Bindings
 
     enum UserAction: Equatable {
-        case tap
+        case dismissTap
     }
 
     let action: Action<UserAction> = .init()
@@ -28,7 +28,7 @@ final class OnboardingViewModel: ViewModelType {
     // MARK: - Coordinator Bindings
 
     enum Route: Equatable {
-        case tapped
+        case dismissTapped
     }
 
     var route: Coordinating<Route> = .init()
@@ -47,7 +47,7 @@ final class OnboardingViewModel: ViewModelType {
     private func setupActions() {
         action
             .sink(receiveValue: { [weak self] _ in
-                self?.route.send(.tapped)
+                self?.route.send(.dismissTapped)
             })
             .store(in: cancelBag)
     }

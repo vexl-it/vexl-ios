@@ -20,7 +20,7 @@ final class WindowNavigationCoordinator<ResultType, InitialCoordinator: BaseCoor
     init(window: UIWindow, initialCoordinatorHandler: @escaping  (Router, Bool) -> InitialCoordinator) {
         self.window = window
         self.navigationController = UINavigationController()
-        self.router = NavigationRouter(navigationController: navigationController, animation: .easeInEaseOut)
+        self.router = NavigationRouter(navigationController: navigationController)
         self.initialCoordinatorHandler = initialCoordinatorHandler
     }
 

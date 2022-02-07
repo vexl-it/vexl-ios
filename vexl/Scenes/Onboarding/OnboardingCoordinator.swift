@@ -23,22 +23,28 @@ final class OnboardingCoordinator: BaseCoordinator<RouterResult<Void>> {
         let viewModel = OnboardingViewModel()
         let viewController = BaseViewController(rootView: OnboardingView(viewModel: viewModel))
 
-        router.present(viewController, animated: true)
+        router.present(viewController, animated: animated)
 
         // Routing actions
 
         viewModel
             .route
-            .withUnretained(self)
-            .flatMap { owner, route -> CoordinatingResult<RouterResult<Void>> in
+            .receive(on: RunLoop.main)
+            .flatMap { [weak self] route -> CoordinatingResult<RouterResult<Void>> in
+                guard let owner = self else {
+                    return Just(.dismiss).eraseToAnyPublisher()
+                }
                 switch route {
                 case .tapped:
-                    return owner.showOnboarding(router: owner.router)
+                    return owner.showLogin(router: owner.router)
                 }
             }
-            .withUnretained(self)
-            .flatMap { owner, result in
-                owner.router.dismiss(animated: true, returning: result)
+            .receive(on: RunLoop.main)
+            .flatMap { [weak self] result -> CoordinatingResult<RouterResult<Void>> in
+                guard let owner = self, result != .dismissedByRouter else {
+                    return Just(result).eraseToAnyPublisher()
+                }
+                return owner.router.dismiss(animated: true, returning: result)
             }
             .sink(receiveValue: { _ in })
             .store(in: cancelBag)
@@ -46,6 +52,7 @@ final class OnboardingCoordinator: BaseCoordinator<RouterResult<Void>> {
         // Result
 
         let dismiss = viewController.dismissPublisher
+            .receive(on: RunLoop.main)
             .map { _ in RouterResult<Void>.dismissedByRouter }
 
         return dismiss
@@ -54,7 +61,7 @@ final class OnboardingCoordinator: BaseCoordinator<RouterResult<Void>> {
 }
 
 private extension OnboardingCoordinator {
-    func showOnboarding(router: Router) -> CoordinatingResult<RouterResult<Void>> {
-        coordinate(to: OnboardingCoordinator(router: router, animated: true))
+    func showLogin(router: Router) -> CoordinatingResult<RouterResult<Void>> {
+        coordinate(to: LoginCoordinator(router: router, animated: true))
     }
 }

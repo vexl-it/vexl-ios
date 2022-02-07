@@ -117,7 +117,7 @@ DEPENDENCIES:
   - Alamofire
   - AlamofireNetworkActivityIndicator
   - AlamofireNetworkActivityLogger
-  - Cleevio (from `../CleevioFramework-ios`)
+  - Cleevio (from `https://gitlab.cleevio.cz/cleevio-dev-ios/CleevioFramework-ios.git`, branch `app/vexl`)
   - Firebase/Core
   - Firebase/Crashlytics
   - KeychainAccess
@@ -155,7 +155,13 @@ SPEC REPOS:
 
 EXTERNAL SOURCES:
   Cleevio:
-    :path: "../CleevioFramework-ios"
+    :branch: app/vexl
+    :git: https://gitlab.cleevio.cz/cleevio-dev-ios/CleevioFramework-ios.git
+
+CHECKOUT OPTIONS:
+  Cleevio:
+    :commit: 9414432ee6ab7da936a0f2560dd30a563f0c341c
+    :git: https://gitlab.cleevio.cz/cleevio-dev-ios/CleevioFramework-ios.git
 
 SPEC CHECKSUMS:
   Alamofire: f3b09a368f1582ab751b3fff5460276e0d2cf5c9
@@ -182,6 +188,6 @@ SPEC CHECKSUMS:
   SwiftyBeaver: 84069991dd5dca07d7069100985badaca7f0ce82
   Swinject: 97112918bd7e0785dc2df7036213f3c8cbba6586
 
-PODFILE CHECKSUM: a71cb522b6f57d6b6cc6efaa4d4c5be4cf9e0a96
+PODFILE CHECKSUM: bcefedd9bacb84eeb91ea1094c481ba7b5ed9fb5
 
 COCOAPODS: 1.10.2

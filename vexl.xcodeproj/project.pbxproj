@@ -57,6 +57,9 @@
 		B08F399A27AE7D87008B344F /* OnboardingCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B08F399927AE7D87008B344F /* OnboardingCoordinator.swift */; };
 		B08F399C27AE7D8D008B344F /* OnboardingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B08F399B27AE7D8D008B344F /* OnboardingViewModel.swift */; };
 		B08F399E27AE7D92008B344F /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B08F399D27AE7D92008B344F /* OnboardingView.swift */; };
+		B0EEE11627B14D320097031E /* LoginCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0EEE11527B14D320097031E /* LoginCoordinator.swift */; };
+		B0EEE11827B14D360097031E /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0EEE11727B14D360097031E /* LoginViewModel.swift */; };
+		B0EEE11A27B14D3D0097031E /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0EEE11927B14D3D0097031E /* LoginView.swift */; };
 		B0F206EF27AE8F6900A44E72 /* Publisher+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0F206EE27AE8F6900A44E72 /* Publisher+.swift */; };
 		B0F206F127AE94C400A44E72 /* InitialScreenManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0F206F027AE94C400A44E72 /* InitialScreenManager.swift */; };
 		B0F206F327AEA4C800A44E72 /* WindowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0F206F227AEA4C800A44E72 /* WindowCoordinator.swift */; };
@@ -135,6 +138,9 @@
 		B08F399927AE7D87008B344F /* OnboardingCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingCoordinator.swift; sourceTree = "<group>"; };
 		B08F399B27AE7D8D008B344F /* OnboardingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewModel.swift; sourceTree = "<group>"; };
 		B08F399D27AE7D92008B344F /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		B0EEE11527B14D320097031E /* LoginCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginCoordinator.swift; sourceTree = "<group>"; };
+		B0EEE11727B14D360097031E /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
+		B0EEE11927B14D3D0097031E /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		B0F206EE27AE8F6900A44E72 /* Publisher+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Publisher+.swift"; sourceTree = "<group>"; };
 		B0F206F027AE94C400A44E72 /* InitialScreenManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitialScreenManager.swift; sourceTree = "<group>"; };
 		B0F206F227AEA4C800A44E72 /* WindowCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowCoordinator.swift; sourceTree = "<group>"; };
@@ -342,6 +348,7 @@
 				B0F206F227AEA4C800A44E72 /* WindowCoordinator.swift */,
 				B08F399127AE7CEC008B344F /* SplashScreen */,
 				B08F399827AE7D4B008B344F /* Onboarding */,
+				B0EEE11427B14D0B0097031E /* Login */,
 			);
 			path = Scenes;
 			sourceTree = "<group>";
@@ -468,6 +475,16 @@
 				B08F399D27AE7D92008B344F /* OnboardingView.swift */,
 			);
 			path = Onboarding;
+			sourceTree = "<group>";
+		};
+		B0EEE11427B14D0B0097031E /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				B0EEE11527B14D320097031E /* LoginCoordinator.swift */,
+				B0EEE11727B14D360097031E /* LoginViewModel.swift */,
+				B0EEE11927B14D3D0097031E /* LoginView.swift */,
+			);
+			path = Login;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -746,6 +763,7 @@
 				B08F390727AE7110008B344F /* UserDefault.swift in Sources */,
 				B08F391727AE7112008B344F /* AuthenticationManager.swift in Sources */,
 				B08F394B27AE7112008B344F /* ServerError.swift in Sources */,
+				B0EEE11A27B14D3D0097031E /* LoginView.swift in Sources */,
 				B0F206F727AEB2C000A44E72 /* UIViewStyle.swift in Sources */,
 				B08F392E27AE7112008B344F /* UserService.swift in Sources */,
 				B08F392A27AE7112008B344F /* ServiceAssembly.swift in Sources */,
@@ -778,7 +796,9 @@
 				B08F394527AE7112008B344F /* ReusableView.swift in Sources */,
 				B08F395B27AE7112008B344F /* Appearance.swift in Sources */,
 				B0F206F327AEA4C800A44E72 /* WindowCoordinator.swift in Sources */,
+				B0EEE11627B14D320097031E /* LoginCoordinator.swift in Sources */,
 				B08F393227AE7112008B344F /* SceneDelegate.swift in Sources */,
+				B0EEE11827B14D360097031E /* LoginViewModel.swift in Sources */,
 				B08F394127AE7112008B344F /* Shortcuts.swift in Sources */,
 				B08F395F27AE7112008B344F /* String+.swift in Sources */,
 				B08F399327AE7D1F008B344F /* SplashScreenCoordinator.swift in Sources */,
