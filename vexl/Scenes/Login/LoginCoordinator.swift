@@ -24,7 +24,6 @@ final class LoginCoordinator: BaseCoordinator<RouterResult<Void>> {
         // TODO: discuss with team
         // We need to set the presentation controller delegate ONLY when showing the modal. So we can use the router to know if it's modal or not
         let viewController = BaseViewController(rootView: LoginView(viewModel: viewModel), willPresentModally: router.willPresentModally)
-
         router.present(viewController, animated: animated)
 
         viewModel

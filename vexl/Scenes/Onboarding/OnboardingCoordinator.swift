@@ -46,7 +46,7 @@ final class OnboardingCoordinator: BaseCoordinator<RouterResult<Void>> {
                 }
                 switch route {
                 case .tapped:
-                    return owner.showLoginFlow(router: modalRouter)
+                    return owner.showLoginFlow(router: owner.router)
                 }
             }
             .sink(receiveValue: { _ in })
