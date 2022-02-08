@@ -25,7 +25,7 @@ final class RegistrationCoordinator: BaseCoordinator<RouterResult<Void>> {
 
     override func start() -> CoordinatingResult<CoordinationResult> {
         let viewModel = RegistrationViewModel()
-        let viewController = BaseViewController(rootView: RegistrationView(viewModel: viewModel))
+        let viewController = BaseViewController(rootView: RegistrationView(viewModel: viewModel), willPresentModally: router.willPresentModally)
 
         router.present(viewController, animated: animated)
 

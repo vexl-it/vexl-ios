@@ -19,42 +19,30 @@ final class LoginCoordinator: BaseCoordinator<RouterResult<Void>> {
         self.animated = animated
     }
 
-    deinit {
-        print("LOGIN COORDINATOR DEINIT")
-    }
-
-    lazy var registrationCoordinator = RegistrationCoordinator(router: router, animated: true)
-
     override func start() -> CoordinatingResult<CoordinationResult> {
         let viewModel = LoginViewModel()
-        let viewController = BaseViewController(rootView: LoginView(viewModel: viewModel))
+        // TODO: discuss with team
+        // We need to set the presentation controller delegate ONLY when showing the modal. So we can use the router to know if it's modal or not
+        let viewController = BaseViewController(rootView: LoginView(viewModel: viewModel), willPresentModally: router.willPresentModally)
 
         router.present(viewController, animated: animated)
-
-        // Routing actions
-
-        // Result
 
         viewModel
             .route
             .receive(on: RunLoop.main)
-            .filter { $0 == .showRegistration }
+            .filter { $0 != .dismissTapped }
             .flatMap { [weak self] route -> CoordinatingResult<RouterResult<Void>> in
                 guard let owner = self else {
-                    return Empty<CoordinationResult, Never>(completeImmediately: true).eraseToAnyPublisher()
+                    return Just(.dismiss).eraseToAnyPublisher()
                 }
-                return owner.showRegistration()
-            }
-            .receive(on: RunLoop.main)
-            .flatMap { [weak self] result -> CoordinatingResult<RouterResult<Void>> in
-                guard let owner = self, result != .dismissedByRouter else {
-                    return Just(result).eraseToAnyPublisher()
+                switch route {
+                case .showRegistration:
+                    return owner.showRegistration(router: owner.router)
+                case .dismissTapped:
+                    return Empty(completeImmediately: true).eraseToAnyPublisher()
                 }
-                return owner.router.dismiss(animated: true, returning: result)
             }
-            .sink(receiveValue: { result in
-                print(result)
-            })
+            .sink(receiveValue: { _ in })
             .store(in: cancelBag)
 
         let dismissByRouter = viewController.dismissPublisher
@@ -64,8 +52,8 @@ final class LoginCoordinator: BaseCoordinator<RouterResult<Void>> {
         let dismiss = viewModel.route
             .receive(on: RunLoop.main)
             .filter { $0 == .dismissTapped }
-            .flatMap { route -> CoordinatingResult<RouterResult<Void>> in
-                return Just(.dismiss).eraseToAnyPublisher()
+            .flatMap { _ -> CoordinatingResult<RouterResult<Void>> in
+                Just(.dismiss).eraseToAnyPublisher()
             }
 
         return Publishers.Merge(dismiss, dismissByRouter)
@@ -74,7 +62,14 @@ final class LoginCoordinator: BaseCoordinator<RouterResult<Void>> {
 }
 
 private extension LoginCoordinator {
-    func showRegistration() -> CoordinatingResult<RouterResult<Void>> {
-        coordinate(to: registrationCoordinator)
+    func showRegistration(router: Router) -> CoordinatingResult<RouterResult<Void>> {
+        coordinate(to: RegistrationCoordinator(router: router, animated: true))
+            .flatMap { result -> CoordinatingResult<RouterResult<Void>> in
+                guard result != .dismissedByRouter else {
+                    return Just(result).eraseToAnyPublisher()
+                }
+                return router.dismiss(animated: true, returning: result)
+            }
+            .eraseToAnyPublisher()
     }
 }

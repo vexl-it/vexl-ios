@@ -25,7 +25,7 @@ final class OnboardingCoordinator: BaseCoordinator<RouterResult<Void>> {
 
     override func start() -> CoordinatingResult<CoordinationResult> {
         let viewModel = OnboardingViewModel()
-        let viewController = BaseViewController(rootView: OnboardingView(viewModel: viewModel))
+        let viewController = BaseViewController(rootView: OnboardingView(viewModel: viewModel), willPresentModally: router.willPresentModally)
 
         // MARK: Routers
 
@@ -46,15 +46,8 @@ final class OnboardingCoordinator: BaseCoordinator<RouterResult<Void>> {
                 }
                 switch route {
                 case .tapped:
-                    return owner.showLogin(router: owner.router)
+                    return owner.showLoginFlow(router: modalRouter)
                 }
-            }
-            .receive(on: RunLoop.main)
-            .flatMap { [weak self] result -> CoordinatingResult<RouterResult<Void>> in
-                guard let owner = self, result != .dismissedByRouter else {
-                    return Just(result).eraseToAnyPublisher()
-                }
-                return owner.router.dismiss(animated: true, returning: result)
             }
             .sink(receiveValue: { _ in })
             .store(in: cancelBag)
@@ -71,7 +64,18 @@ final class OnboardingCoordinator: BaseCoordinator<RouterResult<Void>> {
 }
 
 private extension OnboardingCoordinator {
-    func showLogin(router: Router) -> CoordinatingResult<RouterResult<Void>> {
+    func showLoginFlow(router: Router) -> CoordinatingResult<RouterResult<Void>> {
         coordinate(to: LoginCoordinator(router: router, animated: true))
+            .flatMap { result -> CoordinatingResult<RouterResult<Void>> in
+                guard result != .dismissedByRouter else {
+                    return Just(result).eraseToAnyPublisher()
+                }
+                return router.dismiss(animated: true, returning: result)
+            }
+            .eraseToAnyPublisher()
+
+        // TODO: discuss this with team.
+        // Main problem, currently when updating router from Modal to Navigation or viceversa, we need to update in 2 places. With this approach
+        // we just have one router to both send to the next coordinator and to dismiss
     }
 }
