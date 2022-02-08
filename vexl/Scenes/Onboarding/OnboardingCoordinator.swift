@@ -19,9 +19,19 @@ final class OnboardingCoordinator: BaseCoordinator<RouterResult<Void>> {
         self.animated = animated
     }
 
+    deinit {
+        print("ONBOARDING COORDINATOR DEINIT")
+    }
+
     override func start() -> CoordinatingResult<CoordinationResult> {
         let viewModel = OnboardingViewModel()
         let viewController = BaseViewController(rootView: OnboardingView(viewModel: viewModel))
+
+        // MARK: Routers
+
+        let modalRouter = ModalRouter(parentViewController: viewController)
+
+        // MARK: Child coordinators
 
         router.present(viewController, animated: animated)
 

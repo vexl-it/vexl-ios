@@ -1,21 +1,20 @@
 //
-//  LoginViewModel.swift
+//  RegistrationViewModel.swift
 //  vexl
 //
-//  Created by Adam Salih on 07.02.2022.
+//  Created by Daniel Fernandez Yopla on 08.02.2022.
 //
 
 import UIKit
 import Combine
 import Cleevio
 
-final class LoginViewModel: ViewModelType {
+final class RegistrationViewModel: ViewModelType {
 
     // MARK: - Actions Bindings
 
     enum UserAction: Equatable {
         case dismissTap
-        case showRegistration
     }
 
     let action: Action<UserAction> = .init()
@@ -30,7 +29,6 @@ final class LoginViewModel: ViewModelType {
 
     enum Route: Equatable {
         case dismissTapped
-        case showRegistration
     }
 
     var route: Coordinating<Route> = .init()
@@ -47,18 +45,13 @@ final class LoginViewModel: ViewModelType {
     }
 
     deinit {
-        print("LOGIN VIEWMODEL DEINIT")
+        print("REGISTRATION VIEWMODEL DEINIT")
     }
 
     private func setupActions() {
         action
-            .sink(receiveValue: { [weak self] action in
-                switch action {
-                case .dismissTap:
-                    self?.route.send(.dismissTapped)
-                case .showRegistration:
-                    self?.route.send(.showRegistration)
-                }
+            .sink(receiveValue: { [weak self] _ in
+                self?.route.send(.dismissTapped)
             })
             .store(in: cancelBag)
     }

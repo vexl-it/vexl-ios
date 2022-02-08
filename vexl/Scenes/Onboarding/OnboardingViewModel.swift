@@ -44,6 +44,10 @@ final class OnboardingViewModel: ViewModelType {
         setupActions()
     }
 
+    deinit {
+        print("ONBOARDING VIEWMODEL DEINIT")
+    }
+
     private func setupActions() {
         action
             .sink(receiveValue: { [weak self] _ in

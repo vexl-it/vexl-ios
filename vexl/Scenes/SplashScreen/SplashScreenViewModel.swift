@@ -48,6 +48,10 @@ final class SplashScreenViewModel: ViewModelType {
         setupDataUpdates()
     }
 
+    deinit {
+        print("SPLASH VIEWMODEL DEINIT")
+    }
+
     private func setupDataUpdates() {
         initialScreenManager.finishInitialLoading()
 
@@ -72,7 +76,7 @@ final class SplashScreenViewModel: ViewModelType {
             }
 
         Publishers.Merge(userSignedOut, refresh)
-            .delay(for: 4, scheduler: RunLoop.main) // wait for lottie animation to complete
+            .delay(for: 1, scheduler: RunLoop.main) // wait for lottie animation to complete
             .withUnretained(self)
             .sink(receiveValue: { owner, initialScreen -> Void in
                 owner.initialScreenManager.update(state: initialScreen)

@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		0AA456AF4C162D9C8AF6AB30 /* Pods_vexl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57B3CAA27CF4369A28B748A7 /* Pods_vexl.framework */; };
+		4F3A960627B28B14003E63C7 /* RegistrationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F3A960527B28B14003E63C7 /* RegistrationCoordinator.swift */; };
+		4F3A960827B28B29003E63C7 /* RegistrationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F3A960727B28B29003E63C7 /* RegistrationViewModel.swift */; };
+		4F3A960A27B28B34003E63C7 /* RegistrationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F3A960927B28B34003E63C7 /* RegistrationView.swift */; };
 		B08F38DF27AE7110008B344F /* DIContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B08F38DE27AE7110008B344F /* DIContainer.swift */; };
 		B08F38E227AE7110008B344F /* Inject.swift in Sources */ = {isa = PBXBuildFile; fileRef = B08F38E127AE7110008B344F /* Inject.swift */; };
 		B08F390327AE7110008B344F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B08F390127AE7110008B344F /* LaunchScreen.storyboard */; };
@@ -80,6 +83,9 @@
 
 /* Begin PBXFileReference section */
 		1627349009CA3CC8460BA3C3 /* Pods-vexl-vexlTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-vexl-vexlTests.debug.xcconfig"; path = "Target Support Files/Pods-vexl-vexlTests/Pods-vexl-vexlTests.debug.xcconfig"; sourceTree = "<group>"; };
+		4F3A960527B28B14003E63C7 /* RegistrationCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationCoordinator.swift; sourceTree = "<group>"; };
+		4F3A960727B28B29003E63C7 /* RegistrationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationViewModel.swift; sourceTree = "<group>"; };
+		4F3A960927B28B34003E63C7 /* RegistrationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationView.swift; sourceTree = "<group>"; };
 		57B3CAA27CF4369A28B748A7 /* Pods_vexl.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_vexl.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		625779B2774E3C48F23BBA21 /* Pods-vexl.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-vexl.release.xcconfig"; path = "Target Support Files/Pods-vexl/Pods-vexl.release.xcconfig"; sourceTree = "<group>"; };
 		B08F38BD27AE7110008B344F /* vexl.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = vexl.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -180,6 +186,16 @@
 				D2644FB5ADC4F80BBF36B73B /* Pods-vexl-vexlTests.release.xcconfig */,
 			);
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		4F3A960427B28AFF003E63C7 /* Registration */ = {
+			isa = PBXGroup;
+			children = (
+				4F3A960527B28B14003E63C7 /* RegistrationCoordinator.swift */,
+				4F3A960727B28B29003E63C7 /* RegistrationViewModel.swift */,
+				4F3A960927B28B34003E63C7 /* RegistrationView.swift */,
+			);
+			path = Registration;
 			sourceTree = "<group>";
 		};
 		A5FD76CB56075DD22E000495 /* Frameworks */ = {
@@ -349,6 +365,7 @@
 				B08F399127AE7CEC008B344F /* SplashScreen */,
 				B08F399827AE7D4B008B344F /* Onboarding */,
 				B0EEE11427B14D0B0097031E /* Login */,
+				4F3A960427B28AFF003E63C7 /* Registration */,
 			);
 			path = Scenes;
 			sourceTree = "<group>";
@@ -774,6 +791,7 @@
 				B0F206F127AE94C400A44E72 /* InitialScreenManager.swift in Sources */,
 				B08F397A27AE7112008B344F /* Codable+.swift in Sources */,
 				B08F395927AE7112008B344F /* ClientAPIError.swift in Sources */,
+				4F3A960627B28B14003E63C7 /* RegistrationCoordinator.swift in Sources */,
 				B08F391C27AE7112008B344F /* BaseService.swift in Sources */,
 				B08F393627AE7112008B344F /* UIDevice+.swift in Sources */,
 				B08F392627AE7112008B344F /* R.generated.swift in Sources */,
@@ -789,12 +807,14 @@
 				B08F38E227AE7110008B344F /* Inject.swift in Sources */,
 				B08F395727AE7112008B344F /* ApiRouter.swift in Sources */,
 				B08F394D27AE7112008B344F /* AppCoordinator.swift in Sources */,
+				4F3A960827B28B29003E63C7 /* RegistrationViewModel.swift in Sources */,
 				B0F206FE27AEBDD500A44E72 /* AuthRouter.swift in Sources */,
 				B08F399E27AE7D92008B344F /* OnboardingView.swift in Sources */,
 				B08F393F27AE7112008B344F /* APIError.swift in Sources */,
 				B08F391327AE7112008B344F /* ManagerAssembly.swift in Sources */,
 				B08F394527AE7112008B344F /* ReusableView.swift in Sources */,
 				B08F395B27AE7112008B344F /* Appearance.swift in Sources */,
+				4F3A960A27B28B34003E63C7 /* RegistrationView.swift in Sources */,
 				B0F206F327AEA4C800A44E72 /* WindowCoordinator.swift in Sources */,
 				B0EEE11627B14D320097031E /* LoginCoordinator.swift in Sources */,
 				B08F393227AE7112008B344F /* SceneDelegate.swift in Sources */,

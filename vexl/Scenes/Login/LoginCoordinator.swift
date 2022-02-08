@@ -19,6 +19,12 @@ final class LoginCoordinator: BaseCoordinator<RouterResult<Void>> {
         self.animated = animated
     }
 
+    deinit {
+        print("LOGIN COORDINATOR DEINIT")
+    }
+
+    lazy var registrationCoordinator = RegistrationCoordinator(router: router, animated: true)
+
     override func start() -> CoordinatingResult<CoordinationResult> {
         let viewModel = LoginViewModel()
         let viewController = BaseViewController(rootView: LoginView(viewModel: viewModel))
@@ -29,17 +35,37 @@ final class LoginCoordinator: BaseCoordinator<RouterResult<Void>> {
 
         // Result
 
+        viewModel
+            .route
+            .receive(on: RunLoop.main)
+            .filter { $0 == .showRegistration }
+            .flatMap { [weak self] route -> CoordinatingResult<RouterResult<Void>> in
+                guard let owner = self else {
+                    return Empty<CoordinationResult, Never>(completeImmediately: true).eraseToAnyPublisher()
+                }
+                return owner.showRegistration()
+            }
+            .receive(on: RunLoop.main)
+            .flatMap { [weak self] result -> CoordinatingResult<RouterResult<Void>> in
+                guard let owner = self, result != .dismissedByRouter else {
+                    return Just(result).eraseToAnyPublisher()
+                }
+                return owner.router.dismiss(animated: true, returning: result)
+            }
+            .sink(receiveValue: { result in
+                print(result)
+            })
+            .store(in: cancelBag)
+
         let dismissByRouter = viewController.dismissPublisher
             .receive(on: RunLoop.main)
             .map { _ in RouterResult<Void>.dismissedByRouter }
 
         let dismiss = viewModel.route
             .receive(on: RunLoop.main)
+            .filter { $0 == .dismissTapped }
             .flatMap { route -> CoordinatingResult<RouterResult<Void>> in
-                switch route {
-                case .dismissTapped:
-                    return Just(.dismiss).eraseToAnyPublisher()
-                }
+                return Just(.dismiss).eraseToAnyPublisher()
             }
 
         return Publishers.Merge(dismiss, dismissByRouter)
@@ -47,5 +73,8 @@ final class LoginCoordinator: BaseCoordinator<RouterResult<Void>> {
     }
 }
 
-private extension OnboardingCoordinator {
+private extension LoginCoordinator {
+    func showRegistration() -> CoordinatingResult<RouterResult<Void>> {
+        coordinate(to: registrationCoordinator)
+    }
 }

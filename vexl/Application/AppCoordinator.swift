@@ -14,6 +14,7 @@ final class AppCoordinator: BaseCoordinator<Void> {
 
     private let window: UIWindow
     @Inject var initialScreenManager: InitialScreenManager
+    var cancellable: AnyCancellable?
 
     init(window: UIWindow) {
         self.window = window
@@ -40,15 +41,15 @@ final class AppCoordinator: BaseCoordinator<Void> {
             }
         }()
 
-        coordinationResult
+        cancellable = coordinationResult
             .withUnretained(self)
             .sink(receiveValue: { owner, _ in
                 owner.resetFlow()
             })
-            .store(in: cancelBag)
     }
 
     private func resetFlow() {
+        cancellable?.cancel()
         window.rootViewController = nil
         coordinateToRoot()
     }

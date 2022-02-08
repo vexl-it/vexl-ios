@@ -12,6 +12,10 @@ import Cleevio
 final class SplashScreenCoordinator: BaseCoordinator<Void> {
     private let window: UIWindow
 
+    deinit {
+        print("SPLASH COORDINATOR DEINIT")
+    }
+
     init(window: UIWindow) {
         self.window = window
     }
