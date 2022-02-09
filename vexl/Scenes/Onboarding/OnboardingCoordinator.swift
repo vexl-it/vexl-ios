@@ -25,11 +25,12 @@ final class OnboardingCoordinator: BaseCoordinator<RouterResult<Void>> {
 
     override func start() -> CoordinatingResult<CoordinationResult> {
         let viewModel = OnboardingViewModel()
-        let viewController = BaseViewController(rootView: OnboardingView(viewModel: viewModel), willPresentModally: router.willPresentModally)
+        let viewController = BaseViewController(rootView: OnboardingView(viewModel: viewModel))
 
         // MARK: Routers
 
         let modalRouter = ModalRouter(parentViewController: viewController)
+//        let modalRouter = ModalNavigationRouter(parentViewController: viewController)
 
         // MARK: Child coordinators
 
@@ -37,20 +38,7 @@ final class OnboardingCoordinator: BaseCoordinator<RouterResult<Void>> {
 
         // Routing actions
 
-        viewModel
-            .route
-            .receive(on: RunLoop.main)
-            .flatMap { [weak self] route -> CoordinatingResult<RouterResult<Void>> in
-                guard let owner = self else {
-                    return Just(.dismiss).eraseToAnyPublisher()
-                }
-                switch route {
-                case .tapped:
-                    return owner.showLoginFlow(router: owner.router)
-                }
-            }
-            .sink(receiveValue: { _ in })
-            .store(in: cancelBag)
+        setupActions(viewModel: viewModel, router: modalRouter)
 
         // Result
 
@@ -60,6 +48,25 @@ final class OnboardingCoordinator: BaseCoordinator<RouterResult<Void>> {
 
         return dismiss
             .eraseToAnyPublisher()
+    }
+
+    private func setupActions(viewModel: OnboardingViewModel, router: Router) {
+        viewModel
+            .route
+            .receive(on: RunLoop.main)
+            .flatMap { [weak self] route -> CoordinatingResult<RouterResult<Void>> in
+                guard let owner = self else {
+                    return Just(.dismiss).eraseToAnyPublisher()
+                }
+                switch route {
+                case .tapped:
+                    return owner.showLoginFlow(router: router)
+                }
+            }
+            .sink(receiveValue: { result in
+                print(result)
+            })
+            .store(in: cancelBag)
     }
 }
 
@@ -72,10 +79,13 @@ private extension OnboardingCoordinator {
                 }
                 return router.dismiss(animated: true, returning: result)
             }
+            .prefix(1)
             .eraseToAnyPublisher()
-
-        // TODO: discuss this with team.
-        // Main problem, currently when updating router from Modal to Navigation or viceversa, we need to update in 2 places. With this approach
-        // we just have one router to both send to the next coordinator and to dismiss
     }
 }
+
+/**
+  - prefix(1)
+ 
+ streaming values between child coordinator and parent
+ **/

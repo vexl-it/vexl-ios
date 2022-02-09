@@ -25,7 +25,7 @@ final class RegistrationCoordinator: BaseCoordinator<RouterResult<Void>> {
 
     override func start() -> CoordinatingResult<CoordinationResult> {
         let viewModel = RegistrationViewModel()
-        let viewController = BaseViewController(rootView: RegistrationView(viewModel: viewModel), willPresentModally: router.willPresentModally)
+        let viewController = BaseViewController(rootView: RegistrationView(viewModel: viewModel))
 
         router.present(viewController, animated: animated)
 
@@ -35,12 +35,8 @@ final class RegistrationCoordinator: BaseCoordinator<RouterResult<Void>> {
 
         let dismiss = viewModel.route
             .receive(on: RunLoop.main)
-            .flatMap { route -> CoordinatingResult<RouterResult<Void>> in
-                guard route == .dismissTapped else {
-                    return Empty<CoordinationResult, Never>(completeImmediately: true).eraseToAnyPublisher()
-                }
-                return Just(.dismiss).eraseToAnyPublisher()
-            }
+            .filter { $0 == .dismissTapped }
+            .map { _ -> RouterResult<Void> in .dismiss }
 
         let dismissByRouter = viewController.dismissPublisher
             .receive(on: RunLoop.main)
