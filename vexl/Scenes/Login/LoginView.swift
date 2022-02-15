@@ -15,7 +15,6 @@ struct LoginView: View {
         VStack {
             Text("Login")
             Button("Dismiss") { viewModel.send(action: .dismissTap) }
-            Button("Push to registration") { viewModel.send(action: .showRegistration) }
         }
     }
 }

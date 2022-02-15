@@ -15,7 +15,6 @@ final class LoginViewModel: ViewModelType {
 
     enum UserAction: Equatable {
         case dismissTap
-        case showRegistration
     }
 
     let action: Action<UserAction> = .init()
@@ -30,7 +29,6 @@ final class LoginViewModel: ViewModelType {
 
     enum Route: Equatable {
         case dismissTapped
-        case showRegistration
     }
 
     var route: Coordinating<Route> = .init()
@@ -56,8 +54,6 @@ final class LoginViewModel: ViewModelType {
                 switch action {
                 case .dismissTap:
                     self?.route.send(.dismissTapped)
-                case .showRegistration:
-                    self?.route.send(.showRegistration)
                 }
             })
             .store(in: cancelBag)

@@ -41,13 +41,8 @@ final class LoginCoordinator: BaseCoordinator<RouterResult<Void>> {
             .route
             .receive(on: RunLoop.main)
             .filter { $0 != .dismissTapped }
-            .flatMap { [weak self] route -> CoordinatingResult<RouterResult<Void>> in
-                guard let owner = self else {
-                    return Just(.dismiss).eraseToAnyPublisher()
-                }
+            .flatMap { route -> CoordinatingResult<RouterResult<Void>> in
                 switch route {
-                case .showRegistration:
-                    return owner.showRegistration(router: owner.router)
                 case .dismissTapped:
                     return Empty(completeImmediately: true).eraseToAnyPublisher()
                 }
@@ -69,15 +64,4 @@ final class LoginCoordinator: BaseCoordinator<RouterResult<Void>> {
     }
 }
 
-private extension LoginCoordinator {
-    func showRegistration(router: Router) -> CoordinatingResult<RouterResult<Void>> {
-        coordinate(to: RegistrationCoordinator(router: router, animated: true))
-            .flatMap { result -> CoordinatingResult<RouterResult<Void>> in
-                guard result != .dismissedByRouter else {
-                    return Just(result).eraseToAnyPublisher()
-                }
-                return router.dismiss(animated: true, returning: result)
-            }
-            .eraseToAnyPublisher()
-    }
-}
+private extension LoginCoordinator { }
