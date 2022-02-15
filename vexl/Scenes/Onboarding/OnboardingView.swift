@@ -18,3 +18,10 @@ struct OnboardingView: View {
         }
     }
 }
+
+struct OnboardingViewPreview: PreviewProvider {
+    static var previews: some View {
+        OnboardingView(viewModel: .init())
+            .previewDevice("iPhone 13 Pro")
+    }
+}

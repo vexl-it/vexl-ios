@@ -14,3 +14,10 @@ struct SplashScreenView: View {
         Text("SplashScreen")
     }
 }
+
+struct SplashScreenViewPreview: PreviewProvider {
+    static var previews: some View {
+        SplashScreenView(viewModel: .init())
+            .previewDevice("iPhone 13 Pro")
+    }
+}

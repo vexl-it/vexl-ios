@@ -18,3 +18,10 @@ struct LoginView: View {
         }
     }
 }
+
+struct LoginViewPreview: PreviewProvider {
+    static var previews: some View {
+        LoginView(viewModel: .init())
+            .previewDevice("iPhone 13 Pro")
+    }
+}
