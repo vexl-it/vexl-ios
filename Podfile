@@ -6,8 +6,12 @@ target 'vexl' do
 
     use_frameworks!
 
-    # Cleevio Framework // Not a vendor lock. If you need access to this framework, contact Cleevio and you will get accesss
-    pod 'Cleevio', :git => 'https://gitlab.cleevio.cz/cleevio-dev-ios/CleevioFramework-ios.git', :branch => 'app/vexl' # :path => '../CleevioFramework-ios'
+    # Cleevio Framework // This is not a vendor lock. If you need access to this framework, contact Cleevio and you will get accesss to this repo
+    if File.exist?("../CleevioFramework-ios")
+        pod 'Cleevio', :path => "../CleevioFramework-ios"
+    else
+        pod 'Cleevio', '~> 1.0'
+    end
 
     # Strong typing
     pod 'R.swift'
