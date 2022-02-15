@@ -17,11 +17,12 @@ final class LoginViewModel: ViewModelType {
         case dismissTap
     }
 
-    let action: Action<UserAction> = .init()
+    let action: ActionSubject<UserAction> = .init()
 
     // MARK: - View Bindings
 
     @Published var isLoadingCountries: Bool = false
+    @Published var primaryActivity: Activity = .init()
 
     var userFinished = false
 
@@ -31,21 +32,16 @@ final class LoginViewModel: ViewModelType {
         case dismissTapped
     }
 
-    var route: Coordinating<Route> = .init()
+    var route: CoordinatingSubject<Route> = .init()
 
     // MARK: - Variables
 
-    var primaryActivity: Activity = .init()
     private let cancelBag: CancelBag = .init()
 
     // MARK: - Initialization
 
     init() {
         setupActions()
-    }
-
-    deinit {
-        print("LOGIN VIEWMODEL DEINIT")
     }
 
     private func setupActions() {

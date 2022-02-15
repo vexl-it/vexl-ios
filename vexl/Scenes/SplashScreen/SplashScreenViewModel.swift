@@ -22,11 +22,12 @@ final class SplashScreenViewModel: ViewModelType {
         case tap
     }
 
-    let action: Action<UserAction> = .init()
+    let action: ActionSubject<UserAction> = .init()
 
     // MARK: - View Bindings
 
     @Published var isLoadingCountries: Bool = false
+    @Published var primaryActivity: Activity = .init()
 
     // MARK: - Coordinator Bindings
 
@@ -34,9 +35,7 @@ final class SplashScreenViewModel: ViewModelType {
         case loadingFinished
     }
 
-    var route: Coordinating<Route> = .init()
-
-    @Published var primaryActivity: Activity = .init()
+    var route: CoordinatingSubject<Route> = .init()
 
     // MARK: - Variables
 
@@ -46,10 +45,6 @@ final class SplashScreenViewModel: ViewModelType {
 
     init() {
         setupDataUpdates()
-    }
-
-    deinit {
-        print("SPLASH VIEWMODEL DEINIT")
     }
 
     private func setupDataUpdates() {
@@ -67,8 +62,6 @@ final class SplashScreenViewModel: ViewModelType {
             .flatMap { owner, _ -> AnyPublisher<InitialScreenManager.State, Never> in
                 Just(())
                     // TODO: Load initial data
-//                    .flatMap(dependency.cartManager.refresh)
-//                    .flatMap(dependency.userManager.update)
                     .map { _ -> InitialScreenManager.State in
                         .onboarding
                     }

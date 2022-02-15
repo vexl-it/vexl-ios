@@ -39,5 +39,7 @@ final class WindowNavigationCoordinator<ResultType, InitialCoordinator: BaseCoor
         )
 
         return coordinate(to: initialCoordinatorHandler(router, false))
+            .prefix(1)
+            .eraseToAnyPublisher()
     }
 }

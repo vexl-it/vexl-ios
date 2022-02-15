@@ -19,38 +19,16 @@ final class OnboardingCoordinator: BaseCoordinator<RouterResult<Void>> {
         self.animated = animated
     }
 
-    deinit {
-        print("ONBOARDING COORDINATOR DEINIT")
-    }
-
     override func start() -> CoordinatingResult<CoordinationResult> {
         let viewModel = OnboardingViewModel()
         let viewController = BaseViewController(rootView: OnboardingView(viewModel: viewModel))
 
-        // MARK: Routers
-
-        let modalRouter = ModalRouter(parentViewController: viewController)
-//        let modalRouter = ModalNavigationRouter(parentViewController: viewController)
-
-        // MARK: Child coordinators
-
         router.present(viewController, animated: animated)
 
-        // Routing actions
+        // MARK: Routers
 
-        setupActions(viewModel: viewModel, router: modalRouter)
+        // MARK: Routing actions
 
-        // Result
-
-        let dismiss = viewController.dismissPublisher
-            .receive(on: RunLoop.main)
-            .map { _ in RouterResult<Void>.dismissedByRouter }
-
-        return dismiss
-            .eraseToAnyPublisher()
-    }
-
-    private func setupActions(viewModel: OnboardingViewModel, router: Router) {
         viewModel
             .route
             .receive(on: RunLoop.main)
@@ -60,13 +38,21 @@ final class OnboardingCoordinator: BaseCoordinator<RouterResult<Void>> {
                 }
                 switch route {
                 case .tapped:
-                    return owner.showLoginFlow(router: router)
+                    return owner.showLoginFlow(router: owner.router)
                 }
             }
-            .sink(receiveValue: { result in
-                print(result)
-            })
+            .sink(receiveValue: { _ in })
             .store(in: cancelBag)
+
+        // MARK: Dismiss
+
+        let dismiss = viewController.dismissPublisher
+            .map { _ in RouterResult<Void>.dismissedByRouter }
+
+        return dismiss
+            .receive(on: RunLoop.main)
+            .prefix(1)
+            .eraseToAnyPublisher()
     }
 }
 
@@ -79,13 +65,6 @@ private extension OnboardingCoordinator {
                 }
                 return router.dismiss(animated: true, returning: result)
             }
-            .prefix(1)
             .eraseToAnyPublisher()
     }
 }
-
-/**
-  - prefix(1)
- 
- streaming values between child coordinator and parent
- **/

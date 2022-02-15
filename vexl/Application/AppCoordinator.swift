@@ -12,9 +12,9 @@ import Cleevio
 
 final class AppCoordinator: BaseCoordinator<Void> {
 
-    private let window: UIWindow
     @Inject var initialScreenManager: InitialScreenManager
-//    var cancellable: AnyCancellable?
+
+    private let window: UIWindow
 
     init(window: UIWindow) {
         self.window = window
