@@ -1,0 +1,155 @@
+excluded: # paths to ignore during linting. Takes precedence over `included`.
+  - .bundle/
+  - bundle/
+  - Pods/
+  - vexl/Helpers/
+  - vexl/Extensions/
+  - vexl/Resources/R.generated.swift
+  
+closure_body_length:
+  warning: 50
+  error: 70
+cyclomatic_complexity:
+  warning: 10
+  error: 15
+enum_case_associated_values_count:
+  warning: 5
+  error: 6
+file_length:
+  warning: 500
+  error: 600
+function_body_length: 50
+function_parameter_count: 5
+identifier_name:
+  min_length:
+    warning: 2
+    error: 1
+  excluded:
+    - id
+    - ok
+    - to
+    - x
+    - y
+    - z
+large_tuple:
+  warning: 3
+  error: 4
+line_length:
+  warning: 150
+  error: 200
+type_body_length: 300
+type_name:
+  min_length: 3 # only warning
+  max_length:
+    warning: 40
+    error: 50
+  allowed_symbols: ["_"]
+  excluded:
+    - L
+
+file_types_order:
+  order:
+    - [supporting_type, main_type]
+    - [extension, preview_provider]
+
+custom_rules:
+  mark_spacing_after:
+    included: ".*\\.swift"
+    name: "Consistent MARK spacing"
+    regex: "( +\/\/ MARK: [^\n]*\n^[^\n])"
+    message: "Leave an empty line after a MARK declaration."
+    severity: warning
+
+  type_property_specifier:
+    included: "Scenes/*\\.swift"
+    name: "Type properties specifiers"
+    regex: 'static (let|var) ([A-Za-z0-9]+) (=)'
+    message: "All Type properties should explicitly specify their datatype."
+    severity: warning
+
+  unnecessary_parenthesis:
+    included: ".*\\.swift"
+    name: "Unnecessary parenthesis"
+    regex: '^[^\n]*(\(\{)[^\n]*$' # should we specify common methods like map, flatMap, filter, etc?
+    message: "Remove the unnecessary parenthesis"
+    severity: warning
+  
+  # (Coordinator Bindings)(.|\n)+?(Tap:)(.|\n)+?(MARK)
+  action_happened:
+    included: ".*ViewModel\\.swift"
+    name: "Action happened"
+    regex: '^( |\t)+private\(set\) var (.*([^\ne].{2}|.[^\nd].|.{2}[^\n\:])|.{0,2}) (AnyPublisher)[^\n]*$'
+    message: "Properties for Coordinators should have 'Tapped' sufix"
+    severity: warning
+
+  # (struct Bindings)(.|\n)+?(Tapped:)(.|\n)+?(Coordinator)
+  binding_action_verb:
+    included: ".*ViewModel\\.swift"
+    name: "Binding actions shouldn't have the verb in the past"
+    regex: '^( |\t)+let \w*ed\b(\:) (AnyPublisher)[^\n]*$'
+    message: "Only the properties for coordinators should have the verb in the past representing that the action happened"
+    severity: warning
+
+  empty_functions:
+    included: ".*\\.swift"
+    name: "Empty functions should be deleted"
+    regex: '^( |\t)+func [^\n]* (\{\})$'
+    message: "All empty functions should be deleted"
+    severity: warning
+
+  no_model_in_coordinator:
+    included: ".*Coordinator\\.swift"
+    name: "No model in coordinator"
+    regex: '^( |\t)+(let|var) (model|model\:) [^\n]*$'
+    message: "Coordinators should mostly work with view models and not models"
+    severity: warning
+
+disabled_rules:
+
+opt_in_rules:
+  - anyobject_protocol
+  - array_init
+  - attributes
+  - closure_body_length
+  - closure_end_indentation
+  - closure_spacing
+  - collection_alignment
+  - contains_over_filter_is_empty
+  - contains_over_first_not_nil
+  - discouraged_object_literal
+  - discouraged_optional_boolean
+  - empty_collection_literal
+  - empty_count
+  - empty_string
+  - enum_case_associated_values_count
+  - fallthrough
+  - fatal_error_message
+  - file_types_order
+  - first_where
+  - function_default_parameter_at_end
+  - implicit_return
+  - joined_default_parameter
+  - last_where
+  - legacy_multiple
+  - legacy_random
+  - let_var_whitespace
+  - literal_expression_end_indentation
+  - multiline_function_chains
+  - multiline_parameters
+  - number_separator
+  - operator_usage_whitespace
+  - overridden_super_call
+  - override_in_extension
+  - pattern_matching_keywords
+  - prefer_zero_over_explicit_init
+  - redundant_nil_coalescing
+  - sorted_first_last
+  - static_operator
+  - switch_case_on_newline
+  - toggle_bool
+  - unneeded_parentheses_in_closure_argument
+  - unowned_variable_capture
+  - unused_import
+  - vertical_parameter_alignment_on_call
+  - vertical_whitespace_closing_braces
+  - yoda_condition
