@@ -1,0 +1,81 @@
+before_script:
+  - (gem list bundler | grep bundler) || gem install bundler
+  - bundle install
+  
+  - git remote set-url origin git@gitlab.cleevio.cz:$CI_PROJECT_PATH.git
+  - git config --global user.email 'dev@cleevio.cz'
+  - git config --global user.name 'iMac CI'
+
+variables:
+  LC_ALL: "en_US.UTF-8"
+  LANG: "en_US.UTF-8"
+
+stages:
+  - lint
+  # - test
+  - deploy
+
+lint:
+  stage: lint
+  script:
+    - bundle exec fastlane lint
+  only:
+    - branches
+  except:
+    - tags
+  tags: [iMac]
+  artifacts:
+    paths:
+      - fastlane/swiftlint.html
+    expire_in: 2 days
+  allow_failure: false
+
+# Enable if needed
+
+# test:
+#   stage: test
+#   script:
+#     - bundle exec fastlane test
+#   only:
+#     - master
+#     - devel
+#     - merge_requests
+#   except:
+#     - tags
+#   tags: [iMac]
+#   artifacts:
+#     paths:
+#       - fastlane/tests/
+#     expire_in: 2 days
+#   allow_failure: false
+
+deploy_beta:
+  stage: deploy
+  script:
+    - bundle exec fastlane deploy_beta
+  only:
+    - devel
+  except:
+    - tags
+  tags: [iMac]
+  allow_failure: false
+
+deploy_beta_manual:
+  stage: deploy
+  except:
+    - master
+    - devel
+  script:
+    - bundle exec fastlane deploy_beta
+  when: manual
+  tags: [iMac]
+
+deploy_AppStore:
+  stage: deploy
+  only:
+    - master
+  script:
+    - bundle exec fastlane deploy_AppStore
+  when: manual
+  tags: [iMac]
+

@@ -1,0 +1,7 @@
+- Requires uninstall: **YES** ⚠️
+
+### Improvements
+
+### Fixes
+
+### Known Issues
