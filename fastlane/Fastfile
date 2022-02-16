@@ -1,0 +1,238 @@
+default_platform(:ios)
+
+platform :ios do
+
+	# ***************************************************** #
+	# ******************** DEFINITIONS ******************** #
+	# ***************************************************** #
+
+	debug_identifier = "FIXME"
+	devel_identifier = "FIXME"
+    appstore_identifier = "FIXME"
+
+	main_scheme = "vexl"
+	gsp_path_beta = "vexl/Resources/GoogleServices/Devel/GoogleService-Info.plist"
+	gsp_path_store = "vexl/Resources/GoogleServices/AppStore/GoogleService-Info.plist"
+	firebase_app_id_debug = "FIXME"
+	firebase_app_id_devel = "FIXME"
+	firebase_app_id_appstore = "FIXME"
+	firebase_tester_group_id = "FIXME"
+	firebase_cli_path = "/usr/local/bin/firebase"
+	slackUrl = "FIXME"
+	appSpecificPassword = "FIXME"
+
+	# ***************************************************** #
+	# ******************** BEFORE ALL ********************* #
+	# ***************************************************** #
+
+	before_all do
+    	ENV["FASTLANE_DONT_STORE_PASSWORD"] = "1"
+    	ENV["FASTLANE_USER"] = "dev@cleevio.cz"
+    	ENV["FASTLANE_PASSWORD"] = "SmartDevsCleevio123"
+    	ENV["FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD"] = appSpecificPassword
+  	end
+
+	# ***************************************************** #
+	# ******************** FUNCTIONS ********************** #
+	# ***************************************************** #
+
+	def install_pods
+		cocoapods(
+			podfile: "Podfile",
+			try_repo_update_on_error: true
+		)
+	end
+
+	# ***************************************************** #
+	# ******************** LANE: Lint ********************* #
+	# ***************************************************** #
+
+	desc "Swiftlint script for syntax control"
+	lane :lint do
+		swiftlint(
+			reporter: "html",
+			output_file: "fastlane/swiftlint.html"
+		)
+	end
+
+	# ***************************************************** #
+	# ******************** LANE: Test ********************* #
+	# ***************************************************** #
+
+	desc "Build the app and run tests"
+	lane :test do
+		install_pods()
+		clear_derived_data
+		scan(
+			scheme: main_scheme,
+			output_directory: "fastlane/tests"
+		)
+	end
+
+	# ***************************************************** #
+	# ************** LANE: Certificates setup ************* #
+	# ***************************************************** #
+
+	desc "Create certificates and provisioning profiles for every app environment. This should be run once at the beginning of the project"
+	lane :create_signing_assets do
+		match(
+		  git_branch: main_scheme,
+		  type: "development",
+		  app_identifier: debug_identifier
+		)
+
+		match(
+		  git_branch: main_scheme,
+		  type: "adhoc",
+		  app_identifier: devel_identifier
+		)
+	
+		match(
+		  git_branch: main_scheme,
+		  type: "appstore",
+		  app_identifier: appstore_identifier
+		)
+	end
+
+	# ***************************************************** #
+	# *************** LANE: Deploy beta ******************* #
+	# ***************************************************** #
+
+	desc "Submit a new build to Firebase"
+	lane :deploy_beta do
+		install_pods()
+
+		version = get_version_number
+		build = increment_build_number(
+			build_number: ENV['CI_JOBENV_ID'],
+			xcodeproj: ENV['XCODE_PROJECT']
+		)
+
+		clean_build_artifacts
+
+		unless git_tag_exists(tag: "#{version}(#{build})")
+			commit_version_bump(
+				message: "[ci skip] Build version Bump: #{version}(#{build})",
+				xcodeproj: ENV['XCODE_PROJECT']
+			)
+			add_git_tag(tag: "#{version}(#{build})")
+	
+			branch = git_branch
+			push_to_git_remote(
+			  remote: "origin",
+			  local_branch: "HEAD",
+			  remote_branch: branch,
+			  force: false,
+			  tags: true
+			)
+		end
+
+	    sh("security unlock-keychain -p \"Cleevio1234\" ~/Library/Keychains/login.keychain-db")
+	    sh("security set-keychain-settings -t 7200 -l ~/Library/Keychains/login.keychain-db")
+
+		match(
+			type: "adhoc",
+			git_branch: main_scheme,
+			app_identifier: devel_identifier,
+			force_for_new_devices: true
+		)
+
+		clear_derived_data
+
+		ipa_path = gym(
+			scheme: "#{main_scheme} Devel",
+			silent: true,
+			clean: true,
+			export_method: "ad-hoc",
+			export_options: {
+				manageAppVersionAndBuildNumber: false,
+				compileBitcode: false
+			}
+		)
+
+		changelog = "\#\##{version}(#{build})"
+		changelog += "\n"
+		changelog += File.read("../vexl/Changelog.txt")
+
+		firebase_app_distribution(
+		   app: firebase_app_id_devel,
+		   groups: firebase_tester_group_id,
+		   release_notes: changelog,
+		   firebase_cli_path: firebase_cli_path,
+		   ipa_path: ipa_path
+		)
+
+		upload_symbols_to_crashlytics(
+			gsp_path: gsp_path_beta
+		)
+
+		slack(
+			username: "Siri",
+			payload: {
+			   "Build Date" => Time.new.to_s,
+			},
+			message: "New iOS Firebase devel version released! :tada:",
+			slack_url: slackUrl,
+			default_payloads: [:test_result],
+			attachment_properties: {
+				  fields: [{
+						title: "Changelog",
+						value: changelog,
+						short: true	
+			   }]
+			}
+		  )
+	end
+
+	# ***************************************************** #
+	# ***************** LANE: AppStore ******************** #
+	# ***************************************************** #
+
+	desc "Submit a new build to AppStore"
+	lane :deploy_AppStore do
+		install_pods()
+
+		version = get_version_number
+		build = get_build_number(
+			xcodeproj: ENV['XCODE_PROJECT']
+		)
+
+		puts "Version #{version} - build #{build} will be deploy to Testflight"
+
+		match(
+			git_branch: main_scheme,
+			type: "appstore",
+			app_identifier: appstore_identifier
+		)
+
+		clear_derived_data
+
+		ipa_path = gym(
+			scheme: "#{main_scheme} AppStore",
+			silent: true,
+			clean: true,
+			export_method: "app-store",
+			export_options: {
+				manageAppVersionAndBuildNumber: false
+			}
+		)
+
+		deliver(
+			username: CredentialsManager::AppfileConfig.try_fetch_value(:apple_id),
+			skip_metadata: true,
+			skip_screenshots: true,
+			force: true
+		)
+
+		upload_symbols_to_crashlytics(
+			gsp_path: gsp_path_store
+		)
+
+		slack(
+			message: "#{version}(#{build}): New iOS AppStore version released! :tada:",
+			slack_url: slackUrl
+		)
+
+		clean_build_artifacts
+	end
+end
