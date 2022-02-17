@@ -14,16 +14,14 @@ struct LoginView: View {
     @StateObject var viewModel: LoginViewModel
 
     var body: some View {
-        ZStack {
+        ZStack(alignment: .top) {
             Color.black
                 .edgesIgnoringSafeArea(.vertical)
 
+            LoginLogoView()
+                .padding(.top, GridGuide.largeMargin)
+
             VStack {
-                Color.red
-                    .frame(height: 350)
-
-                Spacer()
-
                 Text("That’s it, ready to get started?")
                     .font(TextStyle.h2.asFont)
                     .multilineTextAlignment(.center)
@@ -32,8 +30,8 @@ struct LoginView: View {
                     .padding(.horizontal, GridGuide.mediumMargin)
 
                 agreementSwitch
-                    .padding(.bottom, 50)
-                    .padding(.top, 82)
+                    .padding(.bottom, GridGuide.largeMargin)
+                    .padding(.top, GridGuide.largerMargin)
 
                 LargeButton(title: "Continue",
                             color: ColorGuide.lightPurple,
@@ -42,7 +40,7 @@ struct LoginView: View {
                     viewModel.send(action: .continueTap)
                 })
                 .padding(.horizontal, GridGuide.padding)
-            }
+            }.frame(maxHeight: .infinity, alignment: .bottom)
         }
     }
 

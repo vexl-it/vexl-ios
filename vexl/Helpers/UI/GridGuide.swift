@@ -12,6 +12,7 @@ struct GridGuide {
     static let padding: CGFloat = 16
     static let mediumMargin: CGFloat = 32
     static let largeMargin: CGFloat = 48
+    static let largerMargin: CGFloat = 80
     
     // MARK: - Button
     static let largeButtonHeight: CGFloat = 64

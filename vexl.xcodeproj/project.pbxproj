@@ -70,6 +70,7 @@
 		F1C6D09927BDDB36009BD506 /* GridGuide.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1C6D09827BDDB36009BD506 /* GridGuide.swift */; };
 		F1C6D09C27BDDC7C009BD506 /* ColorGuide.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1C6D09B27BDDC7C009BD506 /* ColorGuide.swift */; };
 		F1C6D09E27BDDD4C009BD506 /* TextStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1C6D09D27BDDD4C009BD506 /* TextStyle.swift */; };
+		F1C6D0A027BDECB0009BD506 /* LoginLogoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1C6D09F27BDECB0009BD506 /* LoginLogoView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -157,6 +158,7 @@
 		F1C6D09827BDDB36009BD506 /* GridGuide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridGuide.swift; sourceTree = "<group>"; };
 		F1C6D09B27BDDC7C009BD506 /* ColorGuide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorGuide.swift; sourceTree = "<group>"; };
 		F1C6D09D27BDDD4C009BD506 /* TextStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextStyle.swift; sourceTree = "<group>"; };
+		F1C6D09F27BDECB0009BD506 /* LoginLogoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginLogoView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -348,6 +350,7 @@
 			children = (
 				F1C6D09527BDAD71009BD506 /* Buttons */,
 				B08F390C27AE7110008B344F /* InfoBarView.swift */,
+				F1C6D09F27BDECB0009BD506 /* LoginLogoView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -833,6 +836,7 @@
 				B0EEE11827B14D360097031E /* LoginViewModel.swift in Sources */,
 				B08F394127AE7112008B344F /* Shortcuts.swift in Sources */,
 				B08F395F27AE7112008B344F /* String+.swift in Sources */,
+				F1C6D0A027BDECB0009BD506 /* LoginLogoView.swift in Sources */,
 				B08F399327AE7D1F008B344F /* SplashScreenCoordinator.swift in Sources */,
 				B08F397027AE7112008B344F /* UserRouter.swift in Sources */,
 				B08F394327AE7112008B344F /* Keychain+.swift in Sources */,
