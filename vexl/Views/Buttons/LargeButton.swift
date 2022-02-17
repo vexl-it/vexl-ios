@@ -10,7 +10,8 @@ import SwiftUI
 struct LargeButton: View {
 
     let title: String
-    let color: Color
+    let backgroundColor: Color
+    var foregroundColor: Color = Appearance.Colors.primaryText
     let isEnabled: Bool
     let action: () -> Void
 
@@ -19,13 +20,13 @@ struct LargeButton: View {
             action()
         } label: {
             Text(title)
-                .font(TextStyle.h3.asFont)
-                .foregroundColor(isEnabled ? ColorGuide.primaryText : ColorGuide.gray2)
+                .font(Appearance.TextStyle.h3.asFont)
+                .foregroundColor(isEnabled ? foregroundColor : Appearance.Colors.gray2)
         }
-        .frame(height: GridGuide.largeButtonHeight)
+        .frame(height: Appearance.GridGuide.largeButtonHeight)
         .frame(maxWidth: .infinity)
-        .background(isEnabled ? color : ColorGuide.gray1)
-        .cornerRadius(GridGuide.point)
+        .background(isEnabled ? backgroundColor : Appearance.Colors.gray1)
+        .cornerRadius(Appearance.GridGuide.point)
         .disabled(!isEnabled)
     }
 }

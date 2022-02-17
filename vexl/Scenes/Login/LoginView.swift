@@ -19,27 +19,27 @@ struct LoginView: View {
                 .edgesIgnoringSafeArea(.vertical)
 
             LoginLogoView()
-                .padding(.top, GridGuide.largeMargin)
+                .padding(.top, Appearance.GridGuide.largePadding)
 
             VStack {
                 Text("That’s it, ready to get started?")
-                    .font(TextStyle.h2.asFont)
+                    .font(Appearance.TextStyle.h2.asFont)
                     .multilineTextAlignment(.center)
                     .foregroundColor(.white)
                     .lineLimit(2)
-                    .padding(.horizontal, GridGuide.mediumMargin)
+                    .padding(.horizontal, Appearance.GridGuide.mediumPadding)
 
                 agreementSwitch
-                    .padding(.bottom, GridGuide.largeMargin)
-                    .padding(.top, GridGuide.largerMargin)
+                    .padding(.bottom, Appearance.GridGuide.largePadding)
+                    .padding(.top, Appearance.GridGuide.largePadding)
 
                 LargeButton(title: "Continue",
-                            color: ColorGuide.lightPurple,
+                            backgroundColor: Appearance.Colors.purple5,
                             isEnabled: viewModel.hasAgreedTermsAndConditions,
                             action: {
                     viewModel.send(action: .continueTap)
                 })
-                .padding(.horizontal, GridGuide.padding)
+                    .padding(.horizontal, Appearance.GridGuide.padding)
             }.frame(maxHeight: .infinity, alignment: .bottom)
         }
     }
@@ -51,8 +51,8 @@ struct LoginView: View {
 
             Text("I agree to Terms and Privacy")
                 .foregroundColor(.white)
-                .font(TextStyle.paragraph.asFont)
-                .padding(.leading, GridGuide.point)
+                .font(Appearance.TextStyle.paragraph.asFont)
+                .padding(.leading, Appearance.GridGuide.point)
         }
     }
 }

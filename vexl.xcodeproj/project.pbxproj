@@ -67,8 +67,6 @@
 		B0F206FE27AEBDD500A44E72 /* AuthRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0F206FD27AEBDD500A44E72 /* AuthRouter.swift */; };
 		C1A0B48D6D54EB5D7D8929FB /* Pods_vexl_vexlTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D776C4D0B95B9F6E229AF7E4 /* Pods_vexl_vexlTests.framework */; };
 		F1C6D09727BDAD7F009BD506 /* LargeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1C6D09627BDAD7F009BD506 /* LargeButton.swift */; };
-		F1C6D09927BDDB36009BD506 /* GridGuide.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1C6D09827BDDB36009BD506 /* GridGuide.swift */; };
-		F1C6D09C27BDDC7C009BD506 /* ColorGuide.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1C6D09B27BDDC7C009BD506 /* ColorGuide.swift */; };
 		F1C6D09E27BDDD4C009BD506 /* TextStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1C6D09D27BDDD4C009BD506 /* TextStyle.swift */; };
 		F1C6D0A027BDECB0009BD506 /* LoginLogoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1C6D09F27BDECB0009BD506 /* LoginLogoView.swift */; };
 /* End PBXBuildFile section */
@@ -155,8 +153,6 @@
 		D776C4D0B95B9F6E229AF7E4 /* Pods_vexl_vexlTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_vexl_vexlTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DF8AC1A170DAA6A83E1E979B /* Pods-vexl.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-vexl.debug.xcconfig"; path = "Target Support Files/Pods-vexl/Pods-vexl.debug.xcconfig"; sourceTree = "<group>"; };
 		F1C6D09627BDAD7F009BD506 /* LargeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LargeButton.swift; sourceTree = "<group>"; };
-		F1C6D09827BDDB36009BD506 /* GridGuide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridGuide.swift; sourceTree = "<group>"; };
-		F1C6D09B27BDDC7C009BD506 /* ColorGuide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorGuide.swift; sourceTree = "<group>"; };
 		F1C6D09D27BDDD4C009BD506 /* TextStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextStyle.swift; sourceTree = "<group>"; };
 		F1C6D09F27BDECB0009BD506 /* LoginLogoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginLogoView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -511,8 +507,6 @@
 		F1C6D09A27BDDBC7009BD506 /* UI */ = {
 			isa = PBXGroup;
 			children = (
-				F1C6D09B27BDDC7C009BD506 /* ColorGuide.swift */,
-				F1C6D09827BDDB36009BD506 /* GridGuide.swift */,
 				F1C6D09D27BDDD4C009BD506 /* TextStyle.swift */,
 			);
 			path = UI;
@@ -804,13 +798,11 @@
 				B08F394F27AE7112008B344F /* Localization.swift in Sources */,
 				B08F397227AE7112008B344F /* Formatters.swift in Sources */,
 				B0F206F127AE94C400A44E72 /* InitialScreenManager.swift in Sources */,
-				F1C6D09927BDDB36009BD506 /* GridGuide.swift in Sources */,
 				B08F397A27AE7112008B344F /* Codable+.swift in Sources */,
 				B08F395927AE7112008B344F /* ClientAPIError.swift in Sources */,
 				B08F391C27AE7112008B344F /* BaseService.swift in Sources */,
 				F1C6D09E27BDDD4C009BD506 /* TextStyle.swift in Sources */,
 				B08F393627AE7112008B344F /* UIDevice+.swift in Sources */,
-				F1C6D09C27BDDC7C009BD506 /* ColorGuide.swift in Sources */,
 				B08F392627AE7112008B344F /* R.generated.swift in Sources */,
 				B08F396627AE7112008B344F /* Constants.swift in Sources */,
 				B08F391527AE7112008B344F /* ApiService.swift in Sources */,
