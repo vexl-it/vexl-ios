@@ -9,20 +9,21 @@ import UIKit
 import Combine
 import Cleevio
 
-final class LoginViewModel: ViewModelType {
+final class WelcomeViewModel: ViewModelType {
 
     // MARK: - Actions Bindings
 
     enum UserAction: Equatable {
         case dismissTap
+        case continueTap
     }
 
     let action: ActionSubject<UserAction> = .init()
 
     // MARK: - View Bindings
 
-    @Published var isLoadingCountries: Bool = false
     @Published var primaryActivity: Activity = .init()
+    @Published var hasAgreedTermsAndConditions = false
 
     var userFinished = false
 
@@ -50,6 +51,8 @@ final class LoginViewModel: ViewModelType {
                 switch action {
                 case .dismissTap:
                     self?.route.send(.dismissTapped)
+                case .continueTap:
+                    break
                 }
             })
             .store(in: cancelBag)

@@ -58,7 +58,7 @@ final class OnboardingCoordinator: BaseCoordinator<RouterResult<Void>> {
 
 private extension OnboardingCoordinator {
     func showLoginFlow(router: Router) -> CoordinatingResult<RouterResult<Void>> {
-        coordinate(to: LoginCoordinator(router: router, animated: true))
+        coordinate(to: WelcomeCoordinator(router: router, animated: true))
             .flatMap { result -> CoordinatingResult<RouterResult<Void>> in
                 guard result != .dismissedByRouter else {
                     return Just(result).eraseToAnyPublisher()

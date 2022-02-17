@@ -20,7 +20,7 @@ struct LargeButton: View {
             action()
         } label: {
             Text(title)
-                .font(Appearance.TextStyle.h3.asFont)
+                .textStyle(.h3)
                 .foregroundColor(isEnabled ? foregroundColor : Appearance.Colors.gray2)
         }
         .frame(height: Appearance.GridGuide.largeButtonHeight)
