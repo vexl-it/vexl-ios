@@ -9,21 +9,23 @@ import SwiftUI
 import UIKit
 
 struct LinkTextView: View {
-    @Binding var text: String
-    @Binding var links: [String: String]
+    var text: String
+    var links: [String: String]
 
     @State private var height: CGFloat = .zero
 
-    private(set) var font: UIFont = Appearance.TextStyle.paragraph
+    private(set) var font: UIFont = Appearance.TextStyle.paragraph.font
+    private(set) var linkFont: UIFont = Appearance.TextStyle.paragraph.font
     private(set) var textColor: UIColor = .white
     private(set) var linkColor: UIColor = .systemBlue
     private(set) var textAlignment: NSTextAlignment = .left
 
     var body: some View {
-        InternalTextView(text: $text,
-                         links: $links,
+        InternalTextView(text: text,
+                         links: links,
                          height: $height,
                          font: font,
+                         linkFont: linkFont,
                          textColor: textColor,
                          linkColor: linkColor,
                          textAlignment: textAlignment)
@@ -31,11 +33,12 @@ struct LinkTextView: View {
     }
 
     struct InternalTextView: UIViewRepresentable {
-        @Binding var text: String
-        @Binding var links: [String: String]
+        var text: String
+        var links: [String: String]
         @Binding var height: CGFloat
 
         private(set) var font: UIFont
+        private(set) var linkFont: UIFont
         private(set) var textColor: UIColor
         private(set) var linkColor: UIColor
         private(set) var textAlignment: NSTextAlignment
@@ -74,7 +77,7 @@ struct LinkTextView: View {
                     attributedText.setAsLink(textToFind: textToFind,
                                              linkURL: linkURL,
                                              linkColor: linkColor,
-                                             bold: true)
+                                             linkFont: linkFont)
                 }
                 $0.attributedText = attributedText
             }

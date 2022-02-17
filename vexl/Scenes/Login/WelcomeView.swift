@@ -9,21 +9,23 @@ import SwiftUI
 import Combine
 import Cleevio
 
-struct LoginView: View {
+struct WelcomeView: View {
 
-    @StateObject var viewModel: LoginViewModel
+    @ObservedObject var viewModel: WelcomeViewModel
 
     var body: some View {
         ZStack(alignment: .top) {
             Color.black
                 .edgesIgnoringSafeArea(.vertical)
 
-            LoginLogoView()
+            LogoImageView()
                 .padding(.top, Appearance.GridGuide.largePadding)
 
             VStack {
                 title
                     .padding(.horizontal, Appearance.GridGuide.mediumPadding)
+
+                // TODO: - Localize text in the google sheet when created
 
                 AgreementSwitch(text: "I agree to Terms and Privacy",
                                 links: ["Terms and Privacy": "https://google.com"],
@@ -31,6 +33,8 @@ struct LoginView: View {
                     .padding(.horizontal, Appearance.GridGuide.largePadding)
                     .padding(.bottom, Appearance.GridGuide.largePadding)
                     .padding(.top, Appearance.GridGuide.largePadding)
+
+                // TODO: - Localize text in the google sheet when created
 
                 LargeButton(title: "Continue",
                             backgroundColor: Appearance.Colors.purple5,
@@ -44,17 +48,18 @@ struct LoginView: View {
     }
 
     private var title: some View {
+        // TODO: - Localize text in the google sheet when created
         Text("That’s it, ready to get started?")
-            .font(Appearance.TextStyle.h2.asFont)
+            .textStyle(.h2)
             .multilineTextAlignment(.center)
             .foregroundColor(.white)
             .lineLimit(2)
     }
 }
 
-struct LoginViewPreview: PreviewProvider {
+struct WelcomeViewPreview: PreviewProvider {
     static var previews: some View {
-        LoginView(viewModel: .init())
+        WelcomeView(viewModel: .init())
             .previewDevice("iPhone 11")
     }
 }

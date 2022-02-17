@@ -9,12 +9,12 @@ import Combine
 import SwiftUI
 import Cleevio
 
-enum LoginResult {
+enum WelcomeResult {
     case streamingValues
     case finished
 }
 
-final class LoginCoordinator: BaseCoordinator<RouterResult<Void>> {
+final class WelcomeCoordinator: BaseCoordinator<RouterResult<Void>> {
 
     let publisher = PassthroughSubject<String, Never>()
     private let router: Router
@@ -26,8 +26,8 @@ final class LoginCoordinator: BaseCoordinator<RouterResult<Void>> {
     }
 
     override func start() -> CoordinatingResult<CoordinationResult> {
-        let viewModel = LoginViewModel()
-        let viewController = BaseViewController(rootView: LoginView(viewModel: viewModel))
+        let viewModel = WelcomeViewModel()
+        let viewController = BaseViewController(rootView: WelcomeView(viewModel: viewModel))
         router.present(viewController, animated: animated)
 
         // MARK: Routers
@@ -63,4 +63,4 @@ final class LoginCoordinator: BaseCoordinator<RouterResult<Void>> {
     }
 }
 
-private extension LoginCoordinator { }
+private extension WelcomeCoordinator { }

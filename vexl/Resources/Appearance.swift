@@ -49,11 +49,24 @@ struct Appearance {
 
     // MARK: - Fonts
 
-    struct TextStyle {
-        static let h2 = UIFont.preferredFont(forTextStyle: .largeTitle, weight: .bold)
-        static let h3 = UIFont.preferredFont(forTextStyle: .headline, weight: .semibold)
-        static let paragraph = UIFont.preferredFont(forTextStyle: .body, weight: .regular)
-        static let paragraphBold = UIFont.preferredFont(forTextStyle: .body, weight: .bold)
+    enum TextStyle {
+        case h2
+        case h3
+        case paragraph
+        case paragraphBold
+        
+        var font: UIFont {
+            switch self {
+            case .h2:
+                return UIFont.preferredFont(forTextStyle: .largeTitle, weight: .bold)
+            case .h3:
+                return UIFont.preferredFont(forTextStyle: .headline, weight: .semibold)
+            case .paragraph:
+                return UIFont.preferredFont(forTextStyle: .body, weight: .regular)
+            case .paragraphBold:
+                return UIFont.preferredFont(forTextStyle: .body, weight: .bold)
+            }
+        }
     }
 
     static func font(ofSize size: CGFloat, weight: UIFont.Weight = .regular) -> UIFont {

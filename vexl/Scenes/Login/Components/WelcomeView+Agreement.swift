@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-extension LoginView {
+extension WelcomeView {
 
     struct AgreementSwitch: View {
         let text: String
@@ -20,8 +20,12 @@ extension LoginView {
                     .labelsHidden()
                     .toggleStyle(SwitchToggleStyle(tint: Appearance.Colors.purple5))
 
-                LinkTextView(text: .constant("I agree to Terms and Privacy"),
-                             links: .constant(["Terms and Privacy": "https://google.com"]),
+                // TODO: - Localize text in the google sheet when created
+
+                LinkTextView(text: "I agree to Terms and Privacy",
+                             links: ["Terms and Privacy": "https://google.com"],
+                             font: Appearance.TextStyle.paragraph.font,
+                             linkFont: Appearance.TextStyle.paragraphBold.font,
                              textColor: UIColor(Appearance.Colors.gray3),
                              linkColor: UIColor.white,
                              textAlignment: .center)

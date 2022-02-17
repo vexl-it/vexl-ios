@@ -9,7 +9,7 @@ import UIKit
 import Combine
 import Cleevio
 
-final class LoginViewModel: ViewModelType {
+final class WelcomeViewModel: ViewModelType {
 
     // MARK: - Actions Bindings
 

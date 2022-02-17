@@ -53,26 +53,21 @@ extension NSMutableAttributedString {
     func setAsLink(textToFind: String,
                    linkURL: String,
                    linkColor: UIColor,
-                   underline: Bool = false,
-                   bold: Bool = false) {
+                   linkFont: UIFont?,
+                   underline: Bool = false) {
         let foundRange = self.mutableString.range(of: textToFind)
 
         if foundRange.location != NSNotFound {
 
             self.addAttribute(.link, value: linkURL, range: foundRange)
+            self.addAttributes([.foregroundColor: linkColor], range: foundRange)
+
             if underline {
-                self.addAttributes(
-                    [
-                        .foregroundColor: linkColor
-                    ], range: foundRange)
+                self.addAttributes([.foregroundColor: linkColor], range: foundRange)
             }
 
-            if bold {
-                self.addAttributes(
-                    [
-                        .font: Appearance.TextStyle.paragraphBold,
-                        .foregroundColor: linkColor
-                    ], range: foundRange)
+            if let linkFont = linkFont {
+                self.addAttributes([.font: linkFont], range: foundRange)
             }
         }
     }
