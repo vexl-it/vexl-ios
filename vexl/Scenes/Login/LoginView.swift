@@ -22,14 +22,13 @@ struct LoginView: View {
                 .padding(.top, Appearance.GridGuide.largePadding)
 
             VStack {
-                Text("That’s it, ready to get started?")
-                    .font(Appearance.TextStyle.h2.asFont)
-                    .multilineTextAlignment(.center)
-                    .foregroundColor(.white)
-                    .lineLimit(2)
+                title
                     .padding(.horizontal, Appearance.GridGuide.mediumPadding)
 
-                agreementSwitch
+                AgreementSwitch(text: "I agree to Terms and Privacy",
+                                links: ["Terms and Privacy": "https://google.com"],
+                                isOn: $viewModel.hasAgreedTermsAndConditions)
+                    .padding(.horizontal, Appearance.GridGuide.largePadding)
                     .padding(.bottom, Appearance.GridGuide.largePadding)
                     .padding(.top, Appearance.GridGuide.largePadding)
 
@@ -44,16 +43,12 @@ struct LoginView: View {
         }
     }
 
-    private var agreementSwitch: some View {
-        HStack {
-            Toggle("", isOn: $viewModel.hasAgreedTermsAndConditions)
-                .labelsHidden()
-
-            Text("I agree to Terms and Privacy")
-                .foregroundColor(.white)
-                .font(Appearance.TextStyle.paragraph.asFont)
-                .padding(.leading, Appearance.GridGuide.point)
-        }
+    private var title: some View {
+        Text("That’s it, ready to get started?")
+            .font(Appearance.TextStyle.h2.asFont)
+            .multilineTextAlignment(.center)
+            .foregroundColor(.white)
+            .lineLimit(2)
     }
 }
 
