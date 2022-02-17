@@ -20,14 +20,12 @@ struct LargeButton: View {
         } label: {
             Text(title)
                 .font(TextStyle.h3.asFont)
-                .fontWeight(.bold)
-                .foregroundColor(.black)
+                .foregroundColor(isEnabled ? ColorGuide.primaryText : ColorGuide.gray2)
         }
         .frame(height: GridGuide.largeButtonHeight)
         .frame(maxWidth: .infinity)
-        .background(color)
+        .background(isEnabled ? color : ColorGuide.gray1)
         .cornerRadius(GridGuide.point)
         .disabled(!isEnabled)
-        .opacity(isEnabled ? 1 : 0.5)
     }
 }
