@@ -117,7 +117,7 @@ DEPENDENCIES:
   - Alamofire
   - AlamofireNetworkActivityIndicator
   - AlamofireNetworkActivityLogger
-  - Cleevio (from `../CleevioFramework-ios`)
+  - Cleevio (from `https://gitlab.cleevio.cz/cleevio-dev-ios/CleevioFramework-ios.git`)
   - Firebase/Core
   - Firebase/Crashlytics
   - KeychainAccess
@@ -155,7 +155,12 @@ SPEC REPOS:
 
 EXTERNAL SOURCES:
   Cleevio:
-    :path: "../CleevioFramework-ios"
+    :git: https://gitlab.cleevio.cz/cleevio-dev-ios/CleevioFramework-ios.git
+
+CHECKOUT OPTIONS:
+  Cleevio:
+    :commit: 9e3eb55996f285558ae9a53248b52c654d1913b0
+    :git: https://gitlab.cleevio.cz/cleevio-dev-ios/CleevioFramework-ios.git
 
 SPEC CHECKSUMS:
   Alamofire: f3b09a368f1582ab751b3fff5460276e0d2cf5c9
@@ -182,6 +187,6 @@ SPEC CHECKSUMS:
   SwiftyBeaver: 84069991dd5dca07d7069100985badaca7f0ce82
   Swinject: 97112918bd7e0785dc2df7036213f3c8cbba6586
 
-PODFILE CHECKSUM: 01c918a14c07adfa314643573499fb392bf05794
+PODFILE CHECKSUM: 24d033292fa35fdcdbbc849adc21f5bc9cdca717
 
 COCOAPODS: 1.10.2
