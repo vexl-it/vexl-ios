@@ -8,12 +8,6 @@
 import UIKit
 import SwiftUI
 
-struct TextStyle {
-    static let h2 = UIFont.preferredFont(forTextStyle: .title1, weight: .bold)
-    static let h3 = UIFont.preferredFont(forTextStyle: .headline, weight: .semibold)
-    static let paragraph = UIFont.preferredFont(forTextStyle: .body, weight: .regular)
-}
-
 extension Font {
     init(uiFont: UIFont) {
         self = Font(uiFont as CTFont)
