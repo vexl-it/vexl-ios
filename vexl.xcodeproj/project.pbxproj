@@ -67,6 +67,7 @@
 		B0F206FE27AEBDD500A44E72 /* AuthRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0F206FD27AEBDD500A44E72 /* AuthRouter.swift */; };
 		C1A0B48D6D54EB5D7D8929FB /* Pods_vexl_vexlTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D776C4D0B95B9F6E229AF7E4 /* Pods_vexl_vexlTests.framework */; };
 		F1042BA227BEADB70048C2F0 /* WelcomeView+Agreement.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1042BA127BEADB70048C2F0 /* WelcomeView+Agreement.swift */; };
+		F1042BA527BEF0360048C2F0 /* OnboardingView+PageControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1042BA427BEF0360048C2F0 /* OnboardingView+PageControl.swift */; };
 		F1C6D09727BDAD7F009BD506 /* LargeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1C6D09627BDAD7F009BD506 /* LargeButton.swift */; };
 		F1C6D09E27BDDD4C009BD506 /* TextStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1C6D09D27BDDD4C009BD506 /* TextStyle.swift */; };
 		F1C6D0A027BDECB0009BD506 /* WelcomeView+LogoImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1C6D09F27BDECB0009BD506 /* WelcomeView+LogoImageView.swift */; };
@@ -155,6 +156,7 @@
 		D776C4D0B95B9F6E229AF7E4 /* Pods_vexl_vexlTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_vexl_vexlTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DF8AC1A170DAA6A83E1E979B /* Pods-vexl.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-vexl.debug.xcconfig"; path = "Target Support Files/Pods-vexl/Pods-vexl.debug.xcconfig"; sourceTree = "<group>"; };
 		F1042BA127BEADB70048C2F0 /* WelcomeView+Agreement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WelcomeView+Agreement.swift"; sourceTree = "<group>"; };
+		F1042BA427BEF0360048C2F0 /* OnboardingView+PageControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OnboardingView+PageControl.swift"; sourceTree = "<group>"; };
 		F1C6D09627BDAD7F009BD506 /* LargeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LargeButton.swift; sourceTree = "<group>"; };
 		F1C6D09D27BDDD4C009BD506 /* TextStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextStyle.swift; sourceTree = "<group>"; };
 		F1C6D09F27BDECB0009BD506 /* WelcomeView+LogoImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WelcomeView+LogoImageView.swift"; sourceTree = "<group>"; };
@@ -483,6 +485,7 @@
 		B08F399827AE7D4B008B344F /* Onboarding */ = {
 			isa = PBXGroup;
 			children = (
+				F1042BA327BEF0220048C2F0 /* Components */,
 				B08F399927AE7D87008B344F /* OnboardingCoordinator.swift */,
 				B08F399B27AE7D8D008B344F /* OnboardingViewModel.swift */,
 				B08F399D27AE7D92008B344F /* OnboardingView.swift */,
@@ -506,6 +509,14 @@
 			children = (
 				F1C6D09F27BDECB0009BD506 /* WelcomeView+LogoImageView.swift */,
 				F1042BA127BEADB70048C2F0 /* WelcomeView+Agreement.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		F1042BA327BEF0220048C2F0 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				F1042BA427BEF0360048C2F0 /* OnboardingView+PageControl.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -818,6 +829,7 @@
 				F1C6D09E27BDDD4C009BD506 /* TextStyle.swift in Sources */,
 				B08F393627AE7112008B344F /* UIDevice+.swift in Sources */,
 				B08F392627AE7112008B344F /* R.generated.swift in Sources */,
+				F1042BA527BEF0360048C2F0 /* OnboardingView+PageControl.swift in Sources */,
 				B08F396627AE7112008B344F /* Constants.swift in Sources */,
 				F1C6D0A227BE9157009BD506 /* LinkTextView.swift in Sources */,
 				B08F391527AE7112008B344F /* ApiService.swift in Sources */,

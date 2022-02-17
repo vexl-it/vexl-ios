@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftUI
 import Combine
 import Cleevio
 
@@ -14,17 +15,16 @@ final class OnboardingViewModel: ViewModelType {
     // MARK: - Actions Bindings
 
     enum UserAction: Equatable {
-        case tap
+        case skip
+        case next
     }
 
     let action: ActionSubject<UserAction> = .init()
 
     // MARK: - View Bindings
 
-    @Published var isLoadingCountries: Bool = false
     @Published var primaryActivity: Activity = .init()
-
-    var userFinished = false
+    @Published var selectedIndex = 0
 
     // MARK: - Coordinator Bindings
 
@@ -46,8 +46,14 @@ final class OnboardingViewModel: ViewModelType {
 
     private func setupActions() {
         action
-            .sink(receiveValue: { [weak self] _ in
-                self?.route.send(.tapped)
+            .sink(receiveValue: { [weak self] action in
+                guard let self = self else { return }
+                switch action {
+                case .skip:
+                    self.route.send(.tapped)
+                case .next:
+                    self.selectedIndex += 1
+                }
             })
             .store(in: cancelBag)
     }
