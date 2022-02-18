@@ -7,11 +7,14 @@
 
 import SwiftUI
 import Combine
+import Cleevio
 
 struct OnboardingView: View {
     @ObservedObject var viewModel: OnboardingViewModel
 
     // MARK: Onboarding Pages
+
+    private let skipWidth: CGFloat = 87
 
     private var pages: [AnyView] {
         [AnyView(PageOne()),
@@ -43,19 +46,25 @@ struct OnboardingView: View {
                     viewModel.selectedIndex = newValue
                 }
 
-                HStack {
-                    LargeButton(title: "Skip",
-                                backgroundColor: Appearance.Colors.gray1,
-                                textColor: Appearance.Colors.gray3,
-                                isEnabled: true) {
+                HStack(alignment: .center) {
+                    SolidButton(Text("Skip"),
+                                font: Appearance.TextStyle.h3.font.asFont,
+                                colors: SolidButtonColor.skip,
+                                dimensions: SolidButtonDimension.largeButton,
+                                action: {
                         viewModel.send(action: .skip)
-                    }
-                    LargeButton(title: "Next",
-                                backgroundColor: Appearance.Colors.purple5,
-                                isEnabled: false) {
-                        guard viewModel.selectedIndex < numberOfPages else { return }
+                    })
+                    .frame(width: skipWidth)
+
+                    SolidButton(Text("Next"),
+                                isEnabled: .constant(false),
+                                font: Appearance.TextStyle.h3.font.asFont,
+                                colors: SolidButtonColor.welcome,
+                                dimensions: SolidButtonDimension.largeButton,
+                                action: {
+                        guard viewModel.selectedIndex < numberOfPages - 1 else { return }
                         viewModel.send(action: .next)
-                    }
+                    })
                 }
             }
         }
@@ -63,6 +72,7 @@ struct OnboardingView: View {
 }
 
 struct OnboardingViewPreview: PreviewProvider {
+
     static var previews: some View {
         OnboardingView(viewModel: .init())
             .previewDevice("iPhone 13 Pro")
@@ -72,17 +82,20 @@ struct OnboardingViewPreview: PreviewProvider {
 struct PageOne: View {
     var body: some View {
         Text("1")
+            .foregroundColor(.white)
     }
 }
 
 struct PageTwo: View {
     var body: some View {
         Text("2")
+            .foregroundColor(.white)
     }
 }
 
 struct PageThree: View {
     var body: some View {
         Text("3")
+            .foregroundColor(.white)
     }
 }

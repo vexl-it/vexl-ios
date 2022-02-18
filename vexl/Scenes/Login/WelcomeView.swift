@@ -36,13 +36,13 @@ struct WelcomeView: View {
 
                 // TODO: - Localize text in the google sheet when created
 
-                LargeButton(title: "Continue",
-                            backgroundColor: Appearance.Colors.purple5,
-                            isEnabled: viewModel.hasAgreedTermsAndConditions,
-                            action: {
+                SolidButton(Text("Continue"),
+                            isEnabled: $viewModel.hasAgreedTermsAndConditions,
+                            font: Appearance.TextStyle.h3.font.asFont,
+                            colors: SolidButtonColor.welcome,
+                            dimensions: SolidButtonDimension.largeButton) {
                     viewModel.send(action: .continueTap)
-                })
-                    .padding(.horizontal, Appearance.GridGuide.padding)
+                }.padding(.horizontal, Appearance.GridGuide.padding)
             }.frame(maxHeight: .infinity, alignment: .bottom)
         }
     }

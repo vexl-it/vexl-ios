@@ -30,6 +30,11 @@ struct Appearance {
     // MARK: - Grid Guide
 
     struct GridGuide {
+
+        // MARK: Corner Radius
+
+        static let buttonCorner: CGFloat = 12
+
         // MARK: Margins
 
         static let point: CGFloat = 8
@@ -54,7 +59,7 @@ struct Appearance {
         case h3
         case paragraph
         case paragraphBold
-        
+
         var font: UIFont {
             switch self {
             case .h2:
