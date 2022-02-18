@@ -16,7 +16,7 @@ final class OnboardingViewModel: ViewModelType {
 
     enum UserAction: Equatable {
         case skip
-        case next
+        case next(state: OnboardingView.PresentationState)
     }
 
     let action: ActionSubject<UserAction> = .init()
@@ -24,7 +24,8 @@ final class OnboardingViewModel: ViewModelType {
     // MARK: - View Bindings
 
     @Published var primaryActivity: Activity = .init()
-    @Published var selectedIndex = 0
+    @Published var selectedIndex = OnboardingView.PresentationState.friends.rawValue
+    @Published var presentationState = OnboardingView.PresentationState.friends
 
     // MARK: - Coordinator Bindings
 
@@ -51,8 +52,9 @@ final class OnboardingViewModel: ViewModelType {
                 switch action {
                 case .skip:
                     self.route.send(.tapped)
-                case .next:
-                    self.selectedIndex += 1
+                case .next(let state):
+                    self.selectedIndex = state.rawValue
+                    self.presentationState = state
                 }
             })
             .store(in: cancelBag)

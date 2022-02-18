@@ -16,14 +16,8 @@ struct OnboardingView: View {
 
     private let skipWidth: CGFloat = 87
 
-    private var pages: [AnyView] {
-        [AnyView(PageOne()),
-         AnyView(PageTwo()),
-         AnyView(PageThree())]
-    }
-
     private var numberOfPages: Int {
-        pages.count
+        PresentationState.allCases.count
     }
 
     var body: some View {
@@ -34,39 +28,35 @@ struct OnboardingView: View {
 
             VStack {
                 PageControl(numberOfPages: numberOfPages, currentIndex: $viewModel.selectedIndex)
-
-                TabView(selection: $viewModel.selectedIndex) {
-                    ForEach((0..<numberOfPages), id: \.self) { index in
-                        pages[index]
-                            .tag(index)
-                    }
-                }
-                .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never ))
-                .onChange(of: viewModel.selectedIndex) { newValue in
-                    viewModel.selectedIndex = newValue
-                }
-
-                HStack(alignment: .center) {
-                    SolidButton(Text("Skip"),
-                                font: Appearance.TextStyle.h3.font.asFont,
-                                colors: SolidButtonColor.skip,
-                                dimensions: SolidButtonDimension.largeButton,
-                                action: {
-                        viewModel.send(action: .skip)
-                    })
-                    .frame(width: skipWidth)
-
-                    SolidButton(Text("Next"),
-                                isEnabled: .constant(false),
-                                font: Appearance.TextStyle.h3.font.asFont,
-                                colors: SolidButtonColor.welcome,
-                                dimensions: SolidButtonDimension.largeButton,
-                                action: {
-                        guard viewModel.selectedIndex < numberOfPages - 1 else { return }
-                        viewModel.send(action: .next)
-                    })
-                }
+                Spacer()
+                OnboardingPresentation(presentationState: $viewModel.presentationState)
+                Spacer()
+                bottomButtons
             }
+        }
+    }
+
+    private var bottomButtons: some View {
+        HStack(alignment: .center) {
+            SolidButton(Text("Skip"),
+                        font: Appearance.TextStyle.h3.font.asFont,
+                        colors: SolidButtonColor.skip,
+                        dimensions: SolidButtonDimension.largeButton,
+                        action: {
+                viewModel.send(action: .skip)
+            })
+            .frame(width: skipWidth)
+
+            SolidButton(Text("Next"),
+                        isEnabled: .constant(true),
+                        font: Appearance.TextStyle.h3.font.asFont,
+                        colors: SolidButtonColor.welcome,
+                        dimensions: SolidButtonDimension.largeButton,
+                        action: {
+                guard viewModel.selectedIndex < numberOfPages - 1 else { return }
+                guard let nextState = PresentationState(rawValue: viewModel.selectedIndex + 1) else { return }
+                viewModel.send(action: .next(state: nextState))
+            })
         }
     }
 }
@@ -76,26 +66,5 @@ struct OnboardingViewPreview: PreviewProvider {
     static var previews: some View {
         OnboardingView(viewModel: .init())
             .previewDevice("iPhone 13 Pro")
-    }
-}
-
-struct PageOne: View {
-    var body: some View {
-        Text("1")
-            .foregroundColor(.white)
-    }
-}
-
-struct PageTwo: View {
-    var body: some View {
-        Text("2")
-            .foregroundColor(.white)
-    }
-}
-
-struct PageThree: View {
-    var body: some View {
-        Text("3")
-            .foregroundColor(.white)
     }
 }
