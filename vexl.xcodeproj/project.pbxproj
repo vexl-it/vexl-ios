@@ -365,7 +365,7 @@
 				B0F206F227AEA4C800A44E72 /* WindowCoordinator.swift */,
 				B08F399127AE7CEC008B344F /* SplashScreen */,
 				B08F399827AE7D4B008B344F /* Onboarding */,
-				B0EEE11427B14D0B0097031E /* Login */,
+				B0EEE11427B14D0B0097031E /* Welcome */,
 			);
 			path = Scenes;
 			sourceTree = "<group>";
@@ -495,7 +495,7 @@
 			path = Onboarding;
 			sourceTree = "<group>";
 		};
-		B0EEE11427B14D0B0097031E /* Login */ = {
+		B0EEE11427B14D0B0097031E /* Welcome */ = {
 			isa = PBXGroup;
 			children = (
 				F1042BA027BEAD7C0048C2F0 /* Components */,
@@ -503,7 +503,7 @@
 				B0EEE11727B14D360097031E /* WelcomeViewModel.swift */,
 				B0EEE11927B14D3D0097031E /* WelcomeView.swift */,
 			);
-			path = Login;
+			path = Welcome;
 			sourceTree = "<group>";
 		};
 		F1042BA027BEAD7C0048C2F0 /* Components */ = {
