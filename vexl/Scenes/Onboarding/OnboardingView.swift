@@ -31,13 +31,17 @@ struct OnboardingView: View {
 
             VStack {
                 PageControl(numberOfPages: numberOfPages, currentIndex: $viewModel.selectedIndex)
-                    .padding(.horizontal, Appearance.GridGuide.padding)
+
                 Spacer()
+                
                 OnboardingPresentation(presentationState: $viewModel.presentationState)
                     .padding(.vertical, Appearance.GridGuide.mediumPadding)
+                
                 Spacer()
+                
                 bottomButtons
             }
+            .padding(.horizontal, Appearance.GridGuide.padding)
         }
     }
 
