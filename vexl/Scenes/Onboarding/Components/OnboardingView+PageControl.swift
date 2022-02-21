@@ -21,6 +21,8 @@ extension OnboardingView {
                         .foregroundColor(currentIndex >= index ? Color.white : Color(R.color.gray1.name))
                         .frame(height: 4)
                         .cornerRadius(2)
+                        .transition(.opacity)
+                        .id(index)
                 }
             }
         }

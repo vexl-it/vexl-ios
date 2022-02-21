@@ -20,16 +20,21 @@ struct OnboardingView: View {
         PresentationState.allCases.count
     }
 
-    var body: some View {
+    private var titleButton: String {
+        viewModel.presentationState == .requestIdentity ? "Got it!" : "Next"
+    }
 
+    var body: some View {
         ZStack {
             Color.black
                 .edgesIgnoringSafeArea(.vertical)
 
             VStack {
                 PageControl(numberOfPages: numberOfPages, currentIndex: $viewModel.selectedIndex)
+                    .padding(.horizontal, Appearance.GridGuide.padding)
                 Spacer()
                 OnboardingPresentation(presentationState: $viewModel.presentationState)
+                    .padding(.vertical, Appearance.GridGuide.mediumPadding)
                 Spacer()
                 bottomButtons
             }
@@ -47,7 +52,7 @@ struct OnboardingView: View {
             })
             .frame(width: skipWidth)
 
-            SolidButton(Text("Next"),
+            SolidButton(Text(titleButton),
                         isEnabled: .constant(true),
                         font: Appearance.TextStyle.h3.font.asFont,
                         colors: SolidButtonColor.welcome,
@@ -55,7 +60,9 @@ struct OnboardingView: View {
                         action: {
                 guard viewModel.selectedIndex < numberOfPages - 1 else { return }
                 guard let nextState = PresentationState(rawValue: viewModel.selectedIndex + 1) else { return }
-                viewModel.send(action: .next(state: nextState))
+                withAnimation {
+                    viewModel.send(action: .next(state: nextState))
+                }
             })
         }
     }

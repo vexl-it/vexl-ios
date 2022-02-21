@@ -31,13 +31,18 @@ extension OnboardingView {
         @Binding var presentationState: OnboardingView.PresentationState
 
         var body: some View {
-            VStack {
+            VStack(alignment: .leading) {
+                
+                Color.red
+                    .frame(height: 250)
+                
+                Spacer()
+                
                 Text(presentationState.title.uppercased())
-                    .id(presentationState.rawValue)
                     .foregroundColor(.white)
                     .textStyle(.h2)
                     .transition(.opacity)
-                    
+                    .id(presentationState.rawValue)
             }
         }
     }
