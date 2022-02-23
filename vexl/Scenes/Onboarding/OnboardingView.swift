@@ -25,24 +25,20 @@ struct OnboardingView: View {
     }
 
     var body: some View {
-        ZStack {
-            Color.black
-                .edgesIgnoringSafeArea(.vertical)
+        VStack {
+            PageControl(numberOfPages: numberOfPages, currentIndex: $viewModel.selectedIndex)
 
-            VStack {
-                PageControl(numberOfPages: numberOfPages, currentIndex: $viewModel.selectedIndex)
+            Spacer()
 
-                Spacer()
+            OnboardingPresentation(presentationState: $viewModel.presentationState)
+                .padding(.vertical, Appearance.GridGuide.mediumPadding)
 
-                OnboardingPresentation(presentationState: $viewModel.presentationState)
-                    .padding(.vertical, Appearance.GridGuide.mediumPadding)
+            Spacer()
 
-                Spacer()
-
-                bottomButtons
-            }
-            .padding(.horizontal, Appearance.GridGuide.padding)
+            bottomButtons
         }
+        .padding(.horizontal, Appearance.GridGuide.padding)
+        .background(Color.black.edgesIgnoringSafeArea(.all))
     }
 
     private var bottomButtons: some View {

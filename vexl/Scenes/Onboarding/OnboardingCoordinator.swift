@@ -32,14 +32,11 @@ final class OnboardingCoordinator: BaseCoordinator<RouterResult<Void>> {
         viewModel
             .route
             .receive(on: RunLoop.main)
-            .flatMap { [weak self] route -> CoordinatingResult<RouterResult<Void>> in
-                guard let owner = self else {
-                    return Just(.dismiss).eraseToAnyPublisher()
-                }
+            .withUnretained(self)
+            .flatMap { owner, route -> CoordinatingResult<RouterResult<Void>> in
                 switch route {
                 case .tapped:
-                    let router = ModalRouter(parentViewController: viewController)
-                    return owner.showLoginFlow(router: router)
+                    return owner.showLoginFlow(router: owner.router)
                 }
             }
             .sink(receiveValue: { _ in })
