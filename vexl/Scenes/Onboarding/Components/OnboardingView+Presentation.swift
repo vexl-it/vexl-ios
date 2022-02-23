@@ -33,6 +33,8 @@ extension OnboardingView {
         var body: some View {
             VStack(alignment: .leading) {
 
+                // Remove this Color.black once we have the real Lottie animation
+                // This is just a placeholder to keep/perserve the layout until we get the animation.
                 Color.black
                     .frame(height: 1)
 
