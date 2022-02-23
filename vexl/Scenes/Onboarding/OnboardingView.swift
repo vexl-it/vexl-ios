@@ -33,12 +33,12 @@ struct OnboardingView: View {
                 PageControl(numberOfPages: numberOfPages, currentIndex: $viewModel.selectedIndex)
 
                 Spacer()
-                
+
                 OnboardingPresentation(presentationState: $viewModel.presentationState)
                     .padding(.vertical, Appearance.GridGuide.mediumPadding)
-                
+
                 Spacer()
-                
+
                 bottomButtons
             }
             .padding(.horizontal, Appearance.GridGuide.padding)
@@ -52,7 +52,7 @@ struct OnboardingView: View {
                         colors: SolidButtonColor.skip,
                         dimensions: SolidButtonDimension.largeButton,
                         action: {
-                viewModel.send(action: .skip)
+                viewModel.send(action: .showLogin)
             })
             .frame(width: skipWidth)
 
@@ -62,7 +62,10 @@ struct OnboardingView: View {
                         colors: SolidButtonColor.welcome,
                         dimensions: SolidButtonDimension.largeButton,
                         action: {
-                guard viewModel.selectedIndex < numberOfPages - 1 else { return }
+                guard viewModel.selectedIndex < numberOfPages - 1 else {
+                    viewModel.send(action: .showLogin)
+                    return
+                }
                 guard let nextState = PresentationState(rawValue: viewModel.selectedIndex + 1) else { return }
                 withAnimation {
                     viewModel.send(action: .next(state: nextState))

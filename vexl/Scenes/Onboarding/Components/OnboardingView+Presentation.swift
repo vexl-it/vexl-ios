@@ -32,12 +32,12 @@ extension OnboardingView {
 
         var body: some View {
             VStack(alignment: .leading) {
-                
-                Color.red
-                    .frame(height: 250)
-                
+
+                Color.black
+                    .frame(height: 1)
+
                 Spacer()
-                
+
                 Text(presentationState.title.uppercased())
                     .foregroundColor(.white)
                     .textStyle(.h2)

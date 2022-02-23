@@ -15,7 +15,7 @@ final class OnboardingViewModel: ViewModelType {
     // MARK: - Actions Bindings
 
     enum UserAction: Equatable {
-        case skip
+        case showLogin
         case next(state: OnboardingView.PresentationState)
     }
 
@@ -50,7 +50,7 @@ final class OnboardingViewModel: ViewModelType {
             .sink(receiveValue: { [weak self] action in
                 guard let self = self else { return }
                 switch action {
-                case .skip:
+                case .showLogin:
                     self.route.send(.tapped)
                 case .next(let state):
                     self.selectedIndex = state.rawValue
