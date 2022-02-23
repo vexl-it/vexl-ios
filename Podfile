@@ -15,6 +15,7 @@ target 'vexl' do
 
     # Cleevio Framework // Not a vendor lock. If you need access to this framework, contact Cleevio and you will get accesss
     pod 'Cleevio', :git => 'https://gitlab.cleevio.cz/cleevio-dev-ios/CleevioFramework-ios.git'
+    pod 'ACKLocalization'
 
     # Strong typing
     pod 'R.swift'

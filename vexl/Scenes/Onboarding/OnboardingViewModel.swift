@@ -53,20 +53,20 @@ final class OnboardingViewModel: ViewModelType {
     var title: String {
         switch presentationState {
         case .friends:
-            return "import your friends anonymously."
+            return L.onboardingIntroMessageFriend()
         case .buyAndSell:
-            return "see their buy & sell offers."
+            return L.onboardingIntroMessageBuySell()
         case .requestIdentity:
-            return "request identity for the ones you like and trade."
+            return L.onboardingIntroMessageRequest()
         }
     }
 
     var buttonTitle: String {
         switch presentationState {
         case .friends, .buyAndSell:
-            return "Next"
+            return L.next()
         case .requestIdentity:
-            return "Got it!"
+            return L.gotIt()
         }
     }
 

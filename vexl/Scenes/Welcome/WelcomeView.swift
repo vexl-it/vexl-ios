@@ -25,18 +25,14 @@ struct WelcomeView: View {
                 title
                     .padding(.horizontal, Appearance.GridGuide.mediumPadding)
 
-                // TODO: - Localize text in the google sheet when created
-
-                AgreementSwitch(text: "I agree to Terms and Privacy",
-                                links: ["Terms and Privacy": "https://google.com"],
+                AgreementSwitch(text: L.welcomeTermsAgreements(),
+                                links: [L.welcomeTermsAgreementsLink(): L.welcomeTermsAgreementsUrl()],
                                 isOn: $viewModel.hasAgreedTermsAndConditions)
                     .padding(.horizontal, Appearance.GridGuide.largePadding)
                     .padding(.bottom, Appearance.GridGuide.largePadding)
                     .padding(.top, Appearance.GridGuide.largePadding)
 
-                // TODO: - Localize text in the google sheet when created
-
-                SolidButton(Text("Continue"),
+                SolidButton(Text(L.continue()),
                             isEnabled: $viewModel.hasAgreedTermsAndConditions,
                             font: Appearance.TextStyle.h3.font.asFont,
                             colors: SolidButtonColor.welcome,
@@ -48,8 +44,7 @@ struct WelcomeView: View {
     }
 
     private var title: some View {
-        // TODO: - Localize text in the google sheet when created
-        Text("That’s it, ready to get started?")
+        Text(L.welcomeTitle())
             .textStyle(.h2)
             .multilineTextAlignment(.center)
             .foregroundColor(.white)
