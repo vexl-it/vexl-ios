@@ -12,62 +12,35 @@ import Cleevio
 struct OnboardingView: View {
     @ObservedObject var viewModel: OnboardingViewModel
 
-    // MARK: Onboarding Pages
-
-    private let skipWidth: CGFloat = 87
-
-    private var numberOfPages: Int {
-        PresentationState.allCases.count
-    }
-
-    private var titleButton: String {
-        viewModel.presentationState == .requestIdentity ? "Got it!" : "Next"
-    }
-
     var body: some View {
         VStack {
-            PageControl(numberOfPages: numberOfPages, currentIndex: $viewModel.selectedIndex)
+            PageControl(numberOfPages: viewModel.numberOfPages, currentIndex: $viewModel.selectedIndex)
 
             Spacer()
 
-            OnboardingPresentation(presentationState: $viewModel.presentationState)
+            OnboardingPresentation(selectedIndex: $viewModel.selectedIndex,
+                                   title: viewModel.title)
                 .padding(.vertical, Appearance.GridGuide.mediumPadding)
 
             Spacer()
 
-            bottomButtons
-        }
-        .padding(.horizontal, Appearance.GridGuide.padding)
-        .background(Color.black.edgesIgnoringSafeArea(.all))
-    }
-
-    private var bottomButtons: some View {
-        HStack(alignment: .center) {
-            SolidButton(Text("Skip"),
-                        font: Appearance.TextStyle.h3.font.asFont,
-                        colors: SolidButtonColor.skip,
-                        dimensions: SolidButtonDimension.largeButton,
-                        action: {
+            ButtonBarView(nextTitle: viewModel.buttonTitle,
+                          skipAction: {
                 viewModel.send(action: .showLogin)
-            })
-            .frame(width: skipWidth)
-
-            SolidButton(Text(titleButton),
-                        isEnabled: .constant(true),
-                        font: Appearance.TextStyle.h3.font.asFont,
-                        colors: SolidButtonColor.welcome,
-                        dimensions: SolidButtonDimension.largeButton,
-                        action: {
-                guard viewModel.selectedIndex < numberOfPages - 1 else {
+            },
+                          nextAction: {
+                guard viewModel.isLastOnboardingPage else {
                     viewModel.send(action: .showLogin)
                     return
                 }
-                guard let nextState = PresentationState(rawValue: viewModel.selectedIndex + 1) else { return }
+
                 withAnimation {
-                    viewModel.send(action: .next(state: nextState))
+                    viewModel.send(action: .next)
                 }
             })
         }
+        .padding(.horizontal, Appearance.GridGuide.padding)
+        .background(Color.black.edgesIgnoringSafeArea(.all))
     }
 }
 

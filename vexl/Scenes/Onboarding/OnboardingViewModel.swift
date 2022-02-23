@@ -16,7 +16,7 @@ final class OnboardingViewModel: ViewModelType {
 
     enum UserAction: Equatable {
         case showLogin
-        case next(state: OnboardingView.PresentationState)
+        case next
     }
 
     let action: ActionSubject<UserAction> = .init()
@@ -25,7 +25,6 @@ final class OnboardingViewModel: ViewModelType {
 
     @Published var primaryActivity: Activity = .init()
     @Published var selectedIndex = OnboardingView.PresentationState.friends.rawValue
-    @Published var presentationState = OnboardingView.PresentationState.friends
 
     // MARK: - Coordinator Bindings
 
@@ -38,6 +37,38 @@ final class OnboardingViewModel: ViewModelType {
     // MARK: - Variables
 
     private let cancelBag: CancelBag = .init()
+
+    var numberOfPages: Int {
+        OnboardingView.PresentationState.allCases.count
+    }
+
+    var presentationState: OnboardingView.PresentationState {
+        OnboardingView.PresentationState(rawValue: selectedIndex) ?? .friends
+    }
+
+    var isLastOnboardingPage: Bool {
+        selectedIndex < numberOfPages - 1
+    }
+
+    var title: String {
+        switch presentationState {
+        case .friends:
+            return "import your friends anonymously."
+        case .buyAndSell:
+            return "see their buy & sell offers."
+        case .requestIdentity:
+            return "request identity for the ones you like and trade."
+        }
+    }
+
+    var buttonTitle: String {
+        switch presentationState {
+        case .friends, .buyAndSell:
+            return "Next"
+        case .requestIdentity:
+            return "Got it!"
+        }
+    }
 
     // MARK: - Initialization
 
@@ -52,9 +83,8 @@ final class OnboardingViewModel: ViewModelType {
                 switch action {
                 case .showLogin:
                     self.route.send(.tapped)
-                case .next(let state):
-                    self.selectedIndex = state.rawValue
-                    self.presentationState = state
+                case .next:
+                    self.selectedIndex += 1
                 }
             })
             .store(in: cancelBag)

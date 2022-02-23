@@ -13,22 +13,21 @@ extension OnboardingView {
         case friends = 0
         case buyAndSell = 1
         case requestIdentity = 2
-
-        var title: String {
-            switch self {
-            case .friends:
-                return "import your friends anonymously."
-            case .buyAndSell:
-                return "see their buy & sell offers."
-            case .requestIdentity:
-                return "request identity for the ones you like and trade."
-            }
-        }
     }
 
     struct OnboardingPresentation: View {
 
-        @Binding var presentationState: OnboardingView.PresentationState
+        // MARK: - Bindings
+
+        @Binding var selectedIndex: Int
+
+        // MARK: - Properties
+
+        var title: String
+
+        var presentationState: OnboardingView.PresentationState {
+            OnboardingView.PresentationState(rawValue: selectedIndex) ?? .friends
+        }
 
         var body: some View {
             VStack(alignment: .leading) {
@@ -40,7 +39,7 @@ extension OnboardingView {
 
                 Spacer()
 
-                Text(presentationState.title.uppercased())
+                Text(title.uppercased())
                     .foregroundColor(.white)
                     .textStyle(.h2)
                     .transition(.opacity)
@@ -53,7 +52,7 @@ extension OnboardingView {
 struct OnboardingPresentationViewPreview: PreviewProvider {
 
     static var previews: some View {
-        OnboardingView.OnboardingPresentation(presentationState: .constant(.friends))
+        OnboardingView.OnboardingPresentation(selectedIndex: .constant(0), title: "This is a title")
             .background(Color.black)
             .previewDevice("iPhone 13 Pro")
     }
