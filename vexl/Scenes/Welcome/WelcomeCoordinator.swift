@@ -27,7 +27,7 @@ final class WelcomeCoordinator: BaseCoordinator<RouterResult<Void>> {
 
     override func start() -> CoordinatingResult<CoordinationResult> {
         let viewModel = WelcomeViewModel()
-        let viewController = BaseViewController(rootView: WelcomeView(viewModel: viewModel))
+        let viewController = WelcomeViewController(rootView: WelcomeView(viewModel: viewModel))
         router.present(viewController, animated: animated)
 
         // MARK: Routers
