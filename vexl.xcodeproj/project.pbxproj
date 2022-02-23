@@ -557,6 +557,7 @@
 			buildConfigurationList = B08F398B27AE7112008B344F /* Build configuration list for PBXNativeTarget "vexl" */;
 			buildPhases = (
 				1985BA3737E2CE9087D753FC /* [CP] Check Pods Manifest.lock */,
+				F1B5FCC627C6CF7F0018729B /* ACKLocalization */,
 				B08F38B527AE7110008B344F /* 💪 R.swift */,
 				B08F38B627AE7110008B344F /* Sources */,
 				B08F38B727AE7110008B344F /* Frameworks */,
@@ -790,6 +791,24 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/FirebaseCrashlytics/run\"";
+		};
+		F1B5FCC627C6CF7F0018729B /* ACKLocalization */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = ACKLocalization;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Download the latest localized strings\nif [ \"${CONFIGURATION}\" == \"Debug\" ]\nthen\n    ./Pods/ACKLocalization/ACKLocalization\nfi\n";
 		};
 		FD3B2D3595F56A021A53F398 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
