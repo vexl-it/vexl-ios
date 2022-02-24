@@ -31,6 +31,7 @@ final class WelcomeViewModel: ViewModelType {
 
     enum Route: Equatable {
         case dismissTapped
+        case continueTapped
     }
 
     var route: CoordinatingSubject<Route> = .init()
@@ -52,7 +53,7 @@ final class WelcomeViewModel: ViewModelType {
                 case .dismissTap:
                     self?.route.send(.dismissTapped)
                 case .continueTap:
-                    break
+                    self?.route.send(.continueTapped)
                 }
             })
             .store(in: cancelBag)

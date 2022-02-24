@@ -72,6 +72,12 @@
 		F1B5FCBE27C68EA70018729B /* OnboardingView+BottomButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B5FCBD27C68EA70018729B /* OnboardingView+BottomButtons.swift */; };
 		F1B5FCC327C6BC330018729B /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = F1B5FCC127C6BC330018729B /* Localizable.strings */; };
 		F1B5FCC527C6C0720018729B /* Generic.strings in Resources */ = {isa = PBXBuildFile; fileRef = F1B5FCC427C6C0720018729B /* Generic.strings */; };
+		F1B5FCCD27C6F7E10018729B /* RegisterPhoneCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B5FCCC27C6F7E10018729B /* RegisterPhoneCoordinator.swift */; };
+		F1B5FCCF27C6F7E80018729B /* RegisterPhoneViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B5FCCE27C6F7E80018729B /* RegisterPhoneViewModel.swift */; };
+		F1B5FCD127C6F7EF0018729B /* RegisterPhoneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B5FCD027C6F7EF0018729B /* RegisterPhoneView.swift */; };
+		F1B5FCD427C703230018729B /* CardModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B5FCD327C703230018729B /* CardModifier.swift */; };
+		F1B5FCD627C703BF0018729B /* View+.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B5FCD527C703BF0018729B /* View+.swift */; };
+		F1B5FCD827C7040C0018729B /* RoundedCorners.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B5FCD727C7040C0018729B /* RoundedCorners.swift */; };
 		F1C6D09727BDAD7F009BD506 /* LargeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1C6D09627BDAD7F009BD506 /* LargeButton.swift */; };
 		F1C6D09E27BDDD4C009BD506 /* TextStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1C6D09D27BDDD4C009BD506 /* TextStyle.swift */; };
 		F1C6D0A027BDECB0009BD506 /* WelcomeView+LogoImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1C6D09F27BDECB0009BD506 /* WelcomeView+LogoImageView.swift */; };
@@ -165,6 +171,12 @@
 		F1B5FCBD27C68EA70018729B /* OnboardingView+BottomButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OnboardingView+BottomButtons.swift"; sourceTree = "<group>"; };
 		F1B5FCC227C6BC330018729B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		F1B5FCC427C6C0720018729B /* Generic.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = Generic.strings; sourceTree = "<group>"; };
+		F1B5FCCC27C6F7E10018729B /* RegisterPhoneCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterPhoneCoordinator.swift; sourceTree = "<group>"; };
+		F1B5FCCE27C6F7E80018729B /* RegisterPhoneViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterPhoneViewModel.swift; sourceTree = "<group>"; };
+		F1B5FCD027C6F7EF0018729B /* RegisterPhoneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterPhoneView.swift; sourceTree = "<group>"; };
+		F1B5FCD327C703230018729B /* CardModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardModifier.swift; sourceTree = "<group>"; };
+		F1B5FCD527C703BF0018729B /* View+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+.swift"; sourceTree = "<group>"; };
+		F1B5FCD727C7040C0018729B /* RoundedCorners.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedCorners.swift; sourceTree = "<group>"; };
 		F1C6D09627BDAD7F009BD506 /* LargeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LargeButton.swift; sourceTree = "<group>"; };
 		F1C6D09D27BDDD4C009BD506 /* TextStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextStyle.swift; sourceTree = "<group>"; };
 		F1C6D09F27BDECB0009BD506 /* WelcomeView+LogoImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WelcomeView+LogoImageView.swift"; sourceTree = "<group>"; };
@@ -290,6 +302,7 @@
 				B08F394E27AE7112008B344F /* Localization.swift */,
 				B08F397B27AE7112008B344F /* SwipeNavigationController.swift */,
 				B0F206F627AEB2C000A44E72 /* UIViewStyle.swift */,
+				F1B5FCD727C7040C0018729B /* RoundedCorners.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -306,6 +319,7 @@
 				B08F397527AE7112008B344F /* Error+.swift */,
 				B08F397927AE7112008B344F /* Codable+.swift */,
 				B08F397D27AE7112008B344F /* UIViewController+.swift */,
+				F1B5FCD527C703BF0018729B /* View+.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -358,6 +372,7 @@
 		B08F38F827AE7110008B344F /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				F1B5FCD227C703160018729B /* Modifiers */,
 				F1C6D09527BDAD71009BD506 /* Buttons */,
 				B08F390C27AE7110008B344F /* InfoBarView.swift */,
 				F1C6D0A127BE9157009BD506 /* LinkTextView.swift */,
@@ -368,10 +383,11 @@
 		B08F38FB27AE7110008B344F /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
-				B0F206F227AEA4C800A44E72 /* WindowCoordinator.swift */,
 				B08F399127AE7CEC008B344F /* SplashScreen */,
 				B08F399827AE7D4B008B344F /* Onboarding */,
 				B0EEE11427B14D0B0097031E /* Welcome */,
+				F1B5FCCA27C6F7CC0018729B /* Registration */,
+				B0F206F227AEA4C800A44E72 /* WindowCoordinator.swift */,
 			);
 			path = Scenes;
 			sourceTree = "<group>";
@@ -530,6 +546,32 @@
 				F1B5FCBD27C68EA70018729B /* OnboardingView+BottomButtons.swift */,
 			);
 			path = Components;
+			sourceTree = "<group>";
+		};
+		F1B5FCCA27C6F7CC0018729B /* Registration */ = {
+			isa = PBXGroup;
+			children = (
+				F1B5FCCB27C6F7D40018729B /* Phone */,
+			);
+			path = Registration;
+			sourceTree = "<group>";
+		};
+		F1B5FCCB27C6F7D40018729B /* Phone */ = {
+			isa = PBXGroup;
+			children = (
+				F1B5FCCC27C6F7E10018729B /* RegisterPhoneCoordinator.swift */,
+				F1B5FCCE27C6F7E80018729B /* RegisterPhoneViewModel.swift */,
+				F1B5FCD027C6F7EF0018729B /* RegisterPhoneView.swift */,
+			);
+			path = Phone;
+			sourceTree = "<group>";
+		};
+		F1B5FCD227C703160018729B /* Modifiers */ = {
+			isa = PBXGroup;
+			children = (
+				F1B5FCD327C703230018729B /* CardModifier.swift */,
+			);
+			path = Modifiers;
 			sourceTree = "<group>";
 		};
 		F1C6D09527BDAD71009BD506 /* Buttons */ = {
@@ -836,6 +878,7 @@
 			files = (
 				F1B5FCBC27C67DB00018729B /* WelcomeViewController.swift in Sources */,
 				B08F392C27AE7112008B344F /* ApiInterceptor.swift in Sources */,
+				F1B5FCCF27C6F7E80018729B /* RegisterPhoneViewModel.swift in Sources */,
 				B08F390D27AE7110008B344F /* InfoBarView.swift in Sources */,
 				B08F399A27AE7D87008B344F /* OnboardingCoordinator.swift in Sources */,
 				B08F392227AE7112008B344F /* UIColor+.swift in Sources */,
@@ -850,6 +893,7 @@
 				B0EEE11A27B14D3D0097031E /* WelcomeView.swift in Sources */,
 				B0F206F727AEB2C000A44E72 /* UIViewStyle.swift in Sources */,
 				B08F392E27AE7112008B344F /* UserService.swift in Sources */,
+				F1B5FCCD27C6F7E10018729B /* RegisterPhoneCoordinator.swift in Sources */,
 				B08F392A27AE7112008B344F /* ServiceAssembly.swift in Sources */,
 				B08F38DF27AE7110008B344F /* DIContainer.swift in Sources */,
 				B08F391E27AE7112008B344F /* AppDelegate.swift in Sources */,
@@ -858,11 +902,13 @@
 				B0F206F127AE94C400A44E72 /* InitialScreenManager.swift in Sources */,
 				B08F397A27AE7112008B344F /* Codable+.swift in Sources */,
 				B08F395927AE7112008B344F /* ClientAPIError.swift in Sources */,
+				F1B5FCD427C703230018729B /* CardModifier.swift in Sources */,
 				B08F391C27AE7112008B344F /* BaseService.swift in Sources */,
 				F1C6D09E27BDDD4C009BD506 /* TextStyle.swift in Sources */,
 				B08F393627AE7112008B344F /* UIDevice+.swift in Sources */,
 				B08F392627AE7112008B344F /* R.generated.swift in Sources */,
 				F1042BA527BEF0360048C2F0 /* OnboardingView+PageControl.swift in Sources */,
+				F1B5FCD627C703BF0018729B /* View+.swift in Sources */,
 				B08F396627AE7112008B344F /* Constants.swift in Sources */,
 				F1C6D0A227BE9157009BD506 /* LinkTextView.swift in Sources */,
 				B08F391527AE7112008B344F /* ApiService.swift in Sources */,
@@ -890,9 +936,11 @@
 				B0EEE11827B14D360097031E /* WelcomeViewModel.swift in Sources */,
 				F1B5FCBE27C68EA70018729B /* OnboardingView+BottomButtons.swift in Sources */,
 				B08F394127AE7112008B344F /* Shortcuts.swift in Sources */,
+				F1B5FCD827C7040C0018729B /* RoundedCorners.swift in Sources */,
 				B08F395F27AE7112008B344F /* String+.swift in Sources */,
 				F1C6D0A027BDECB0009BD506 /* WelcomeView+LogoImageView.swift in Sources */,
 				B08F399327AE7D1F008B344F /* SplashScreenCoordinator.swift in Sources */,
+				F1B5FCD127C6F7EF0018729B /* RegisterPhoneView.swift in Sources */,
 				B08F397027AE7112008B344F /* UserRouter.swift in Sources */,
 				B08F394327AE7112008B344F /* Keychain+.swift in Sources */,
 				B08F399527AE7D29008B344F /* SplashScreenViewModel.swift in Sources */,

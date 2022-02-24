@@ -38,10 +38,13 @@ final class WelcomeCoordinator: BaseCoordinator<RouterResult<Void>> {
             .route
             .receive(on: RunLoop.main)
             .filter { $0 != .dismissTapped }
-            .flatMap { route -> CoordinatingResult<RouterResult<Void>> in
+            .withUnretained(self)
+            .flatMap { owner, route -> CoordinatingResult<RouterResult<Void>> in
                 switch route {
                 case .dismissTapped:
                     return Empty(completeImmediately: true).eraseToAnyPublisher()
+                case .continueTapped:
+                    return owner.showRegisterPhone(router: owner.router)
                 }
             }
             .sink(receiveValue: { _ in })
@@ -63,4 +66,15 @@ final class WelcomeCoordinator: BaseCoordinator<RouterResult<Void>> {
     }
 }
 
-private extension WelcomeCoordinator { }
+private extension WelcomeCoordinator {
+    func showRegisterPhone(router: Router) -> CoordinatingResult<RouterResult<Void>> {
+        coordinate(to: RegisterPhoneCoordinator(router: router, animated: true))
+            .flatMap { result -> CoordinatingResult<RouterResult<Void>> in
+                guard result != .dismissedByRouter else {
+                    return Just(result).eraseToAnyPublisher()
+                }
+                return router.dismiss(animated: true, returning: result)
+            }
+            .eraseToAnyPublisher()
+    }
+}
