@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import Cleevio
 
 struct RegisterPhoneView: View {
 
@@ -14,22 +15,34 @@ struct RegisterPhoneView: View {
 
     var body: some View {
         VStack {
-            VStack(alignment: .leading) {
-                Text("What’s your phone number?")
-                    .textStyle(.h2)
-                
-                Text("Your number will be anonymous")
+
+            if viewModel.currentState == .codeInput {
+                CodeInputView(code: $viewModel.validationCode)
+                    .padding(.all, Appearance.GridGuide.point)
+            } else if viewModel.currentState == .phoneInput {
+                PhoneInputView(phoneNumber: $viewModel.phoneNumber)
+                    .padding(.all, Appearance.GridGuide.point)
             }
-            .frame(maxWidth: .infinity)
-            .modifier(CardViewModifier())
-            .padding(.all, Appearance.GridGuide.padding)
 
             Spacer()
 
-            Text("Register Phone 2")
-                .foregroundColor(Color.white)
+            SolidButton(Text("Continue"),
+                        isEnabled: $viewModel.isContinueEnabled,
+                        fullWidth: true,
+                        font: Appearance.TextStyle.h3.font.asFont,
+                        colors: SolidButtonColor.welcome,
+                        dimensions: SolidButtonDimension.largeButton) {
+                viewModel.send(action: .nextTap)
+            }
+            .padding(.horizontal, Appearance.GridGuide.padding)
+            .padding(.bottom, Appearance.GridGuide.padding)
         }
-        .frame(maxWidth: .infinity)
         .background(Color.black.edgesIgnoringSafeArea(.all))
+    }
+}
+
+struct RegisterPhoneViewPreview: PreviewProvider {
+    static var previews: some View {
+        RegisterPhoneView(viewModel: .init())
     }
 }
