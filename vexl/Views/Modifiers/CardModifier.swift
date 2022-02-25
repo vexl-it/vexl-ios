@@ -15,20 +15,12 @@ struct CardViewModifier: ViewModifier {
     var cornerRadius: CGFloat = Appearance.GridGuide.padding
 
     func body(content: Content) -> some View {
-        if shadowEnabled {
-            modifiedContent(content)
-                .shadow(color: shadowColor.opacity(0.05),
-                        radius: Appearance.GridGuide.point,
-                        x: 0,
-                        y: 4)
-        } else {
-            modifiedContent(content)
-        }
-    }
-
-    private func modifiedContent(_ content: Content) -> some View {
         content
             .background(backgroundColor)
             .cornerRadius(cornerRadius, corners: corners)
+            .shadow(color: shadowColor.opacity(shadowEnabled ? 0.05 : 0),
+                    radius: Appearance.GridGuide.point,
+                    x: 0,
+                    y: 4)
     }
 }
