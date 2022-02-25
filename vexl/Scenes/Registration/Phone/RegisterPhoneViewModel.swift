@@ -13,7 +13,7 @@ import SwiftUI
 final class RegisterPhoneViewModel: ViewModelType {
 
     // TODO: Add countdown after to show retry timer
-    
+
     // MARK: - View State
 
     enum ViewState {
@@ -131,13 +131,17 @@ final class RegisterPhoneViewModel: ViewModelType {
             .sink { owner, action in
                 switch action {
                 case .nextTap:
-                    owner.currentState = owner.currentState.next
-
-                    if owner.currentState == .codeInputValidation {
-                        // Temporal simulation of the validation of the code
-                        after(3) {
-                            owner.currentState = owner.currentState.next
+                    switch owner.currentState {
+                    case .codeInput, .phoneInput, .codeInputValidation:
+                        owner.currentState = owner.currentState.next
+                        if owner.currentState == .codeInputValidation {
+                            // Temporal simulation of the validation of the code
+                            after(3) {
+                                owner.currentState = owner.currentState.next
+                            }
                         }
+                    case .codeInputSuccess:
+                        owner.route.send(.continueTapped)
                     }
                 }
             }

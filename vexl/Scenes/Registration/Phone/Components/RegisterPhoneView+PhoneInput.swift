@@ -15,21 +15,9 @@ extension RegisterPhoneView {
         @Binding var phoneNumber: String
 
         var body: some View {
-            VStack(alignment: .leading, spacing: 8) {
-                Text(L.registerPhoneNumberInputTitle())
-                    .textStyle(.h2)
-
-                Text(L.registerPhoneNumberInputSubtitle())
-                    .textStyle(.paragraph)
-                    .foregroundColor(Appearance.Colors.gray2)
-                    .padding(.top, 24)
-
-                phoneInputView
-                    .padding(.top, 40)
-            }
-            .padding(.all, Appearance.GridGuide.padding)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .modifier(CardViewModifier())
+            RegistrationCardView(title: L.registerPhoneNumberInputTitle(),
+                                 subtitle: L.registerPhoneNumberInputSubtitle(),
+                                 content: phoneInputView.padding(.top, 40))
         }
 
         private var phoneInputView: some View {
