@@ -65,7 +65,7 @@ struct Appearance {
             case .h2:
                 return UIFont.preferredFont(forTextStyle: .largeTitle, weight: .bold)
             case .h3:
-                return UIFont.preferredFont(forTextStyle: .headline, weight: .semibold)
+                return UIFont.preferredFont(forTextStyle: .title2, weight: .semibold)
             case .paragraph:
                 return UIFont.preferredFont(forTextStyle: .body, weight: .regular)
             case .paragraphBold:

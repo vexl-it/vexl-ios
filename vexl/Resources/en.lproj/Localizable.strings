@@ -9,3 +9,10 @@
 "welcome.terms.agreements" = "I agree to Terms and Privacy";
 "welcome.terms.agreements.link" = "Terms and Privacy";
 "welcome.terms.agreements.url" = "https://google.com";
+"register.phone.number.input.title" = "What’s your phone number?";
+"register.phone.number.input.subtitle" = "Your number will be anonymous";
+"register.phone.code.input.title" = "We sent you a code";
+"register.phone.code.input.subtitle" = "Enter it bellow to verify %@";
+"register.phone.code.input.retry" = "Didn’t receive code? Resend in %@";
+"register.phone.code.input.verifying" = "Verifying...";
+"register.phone.code.input.success" = "Success!";
