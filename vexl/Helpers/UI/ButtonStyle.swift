@@ -28,4 +28,18 @@ extension SolidButtonColor {
                                        backgroundColor: Appearance.Colors.gray1,
                                        iconTint: nil,
                                        disabledBackgroundOpacity: 1)
+    
+    static let verifying = SolidButtonColor(textColor: Appearance.Colors.primaryText,
+                                            disabledTextColor: Appearance.Colors.primaryText,
+                                            backgroundColor: Appearance.Colors.purple5,
+                                            disabledBackgroundColor: Appearance.Colors.purple5,
+                                            iconTint: nil,
+                                            disabledBackgroundOpacity: 1)
+    
+    static let success = SolidButtonColor(textColor: Appearance.Colors.primaryText,
+                                            disabledTextColor: Appearance.Colors.gray2,
+                                            backgroundColor: Appearance.Colors.green5,
+                                            disabledBackgroundColor: Appearance.Colors.gray1,
+                                            iconTint: nil,
+                                            disabledBackgroundOpacity: 1)
 }

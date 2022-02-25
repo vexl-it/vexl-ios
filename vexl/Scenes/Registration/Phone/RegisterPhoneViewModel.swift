@@ -14,16 +14,22 @@ final class RegisterPhoneViewModel: ViewModelType {
 
     // MARK: - View State
 
-    enum State {
+    enum ViewState {
         case phoneInput
         case codeInput
+        case codeInputValidation
+        case codeInputSuccess
 
-        var next: State {
+        var next: ViewState {
             switch self {
             case .phoneInput:
                 return .codeInput
             case .codeInput:
-                return .codeInput
+                return .codeInputValidation
+            case .codeInputValidation:
+                return .codeInputSuccess
+            case .codeInputSuccess:
+                return .codeInputSuccess
             }
         }
     }
@@ -40,8 +46,8 @@ final class RegisterPhoneViewModel: ViewModelType {
 
     @Published var phoneNumber = ""
     @Published var validationCode = ""
-    @Published var isContinueEnabled = false
-    @Published var currentState = State.phoneInput
+    @Published var isActionEnabled = false
+    @Published var currentState = ViewState.phoneInput
 
     var primaryActivity: Activity = .init()
 
@@ -55,6 +61,32 @@ final class RegisterPhoneViewModel: ViewModelType {
 
     // MARK: - Variables
 
+    var showCodeInput: Bool {
+        [RegisterPhoneViewModel.ViewState.codeInput, .codeInputValidation, .codeInputSuccess].contains(currentState)
+    }
+
+    var actionTitle: String {
+        switch currentState {
+        case .phoneInput, .codeInput:
+            return L.continue()
+        case .codeInputValidation:
+            return L.registerPhoneCodeInputVerifying()
+        case .codeInputSuccess:
+            return L.registerPhoneCodeInputSuccess()
+        }
+    }
+
+    var actionColor: SolidButtonColor {
+        switch currentState {
+        case .codeInput, .phoneInput:
+            return SolidButtonColor.welcome
+        case .codeInputValidation:
+            return SolidButtonColor.verifying
+        case .codeInputSuccess:
+            return SolidButtonColor.success
+        }
+    }
+
     private let cancelBag: CancelBag = .init()
 
     init() {
@@ -65,21 +97,25 @@ final class RegisterPhoneViewModel: ViewModelType {
         $phoneNumber
             .withUnretained(self)
             .map { !$1.isEmpty && $0.currentState == .phoneInput }
-            .assign(to: &$isContinueEnabled)
+            .assign(to: &$isActionEnabled)
 
         $validationCode
             .withUnretained(self)
             .map { !$1.isEmpty && $0.currentState == .codeInput }
-            .assign(to: &$isContinueEnabled)
+            .assign(to: &$isActionEnabled)
 
         $currentState
             .withUnretained(self)
             .sink { owner, state in
                 switch state {
                 case .phoneInput:
-                    owner.isContinueEnabled = !owner.phoneNumber.isEmpty
+                    owner.isActionEnabled = !owner.phoneNumber.isEmpty
                 case .codeInput:
-                    owner.isContinueEnabled = !owner.validationCode.isEmpty
+                    owner.isActionEnabled = !owner.validationCode.isEmpty
+                case .codeInputValidation:
+                    owner.isActionEnabled = false
+                case .codeInputSuccess:
+                    owner.isActionEnabled = true
                 }
             }
             .store(in: cancelBag)
@@ -90,6 +126,13 @@ final class RegisterPhoneViewModel: ViewModelType {
                 switch action {
                 case .nextTap:
                     owner.currentState = owner.currentState.next
+
+                    if owner.currentState == .codeInputValidation {
+                        // Temporal simulation of the validation of the code
+                        after(3) {
+                            owner.currentState = owner.currentState.next
+                        }
+                    }
                 }
             }
             .store(in: cancelBag)

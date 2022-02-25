@@ -12,14 +12,15 @@ extension RegisterPhoneView {
 
     struct CodeInputView: View {
 
+        let phoneNumber: String
         @Binding var code: String
 
         var body: some View {
             VStack(alignment: .leading, spacing: 8) {
-                Text("We sent you a code")
+                Text(L.registerPhoneCodeInputTitle())
                     .textStyle(.h2)
 
-                Text("Enter it bellow to verify +420 720 125 021 ")
+                Text(L.registerPhoneCodeInputSubtitle(phoneNumber))
                     .textStyle(.paragraph)
                     .foregroundColor(Appearance.Colors.gray2)
                     .padding(.top, 24)
@@ -27,7 +28,7 @@ extension RegisterPhoneView {
                 phoneInputView
                     .padding(.top, 40)
 
-                Text("Didn’t receive code? Resend in 28s")
+                Text("\(L.registerPhoneCodeInputRetry("28s"))")
                     .foregroundColor(Appearance.Colors.gray2)
                     .textStyle(.paragraph)
                     .frame(maxWidth: .infinity)
@@ -53,6 +54,7 @@ extension RegisterPhoneView {
 
 struct RegisterPhoneView_CodeInput_Preview: PreviewProvider {
     static var previews: some View {
-        RegisterPhoneView.CodeInputView(code: .constant("1234"))
+        RegisterPhoneView.CodeInputView(phoneNumber: "+420 720 183 578",
+                                        code: .constant("1234"))
     }
 }

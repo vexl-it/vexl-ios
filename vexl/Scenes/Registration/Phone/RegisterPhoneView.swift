@@ -16,21 +16,21 @@ struct RegisterPhoneView: View {
     var body: some View {
         VStack {
 
-            if viewModel.currentState == .codeInput {
-                CodeInputView(code: $viewModel.validationCode)
+            if viewModel.showCodeInput {
+                CodeInputView(phoneNumber: viewModel.phoneNumber,
+                              code: $viewModel.validationCode)
                     .padding(.all, Appearance.GridGuide.point)
-            } else if viewModel.currentState == .phoneInput {
+            } else {
                 PhoneInputView(phoneNumber: $viewModel.phoneNumber)
                     .padding(.all, Appearance.GridGuide.point)
             }
 
             Spacer()
 
-            SolidButton(Text("Continue"),
-                        isEnabled: $viewModel.isContinueEnabled,
-                        fullWidth: true,
+            SolidButton(Text(viewModel.actionTitle),
+                        isEnabled: $viewModel.isActionEnabled,
                         font: Appearance.TextStyle.h3.font.asFont,
-                        colors: SolidButtonColor.welcome,
+                        colors: viewModel.actionColor,
                         dimensions: SolidButtonDimension.largeButton) {
                 viewModel.send(action: .nextTap)
             }

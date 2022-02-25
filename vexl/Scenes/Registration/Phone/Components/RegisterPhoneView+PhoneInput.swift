@@ -16,10 +16,10 @@ extension RegisterPhoneView {
 
         var body: some View {
             VStack(alignment: .leading, spacing: 8) {
-                Text("What’s your phone number?")
+                Text(L.registerPhoneNumberInputTitle())
                     .textStyle(.h2)
 
-                Text("Your number will be anonymous")
+                Text(L.registerPhoneNumberInputSubtitle())
                     .textStyle(.paragraph)
                     .foregroundColor(Appearance.Colors.gray2)
                     .padding(.top, 24)
