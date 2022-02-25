@@ -22,5 +22,5 @@ struct CardViewModifier: ViewModifier {
                     radius: Appearance.GridGuide.point,
                     x: 0,
                     y: 4)
-    }cl
+    }git
 }
