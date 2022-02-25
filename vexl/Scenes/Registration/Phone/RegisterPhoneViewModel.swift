@@ -12,6 +12,8 @@ import SwiftUI
 
 final class RegisterPhoneViewModel: ViewModelType {
 
+    // TODO: Add countdown after to show retry timer
+    
     // MARK: - View State
 
     enum ViewState {
@@ -63,6 +65,10 @@ final class RegisterPhoneViewModel: ViewModelType {
 
     var showCodeInput: Bool {
         [RegisterPhoneViewModel.ViewState.codeInput, .codeInputValidation, .codeInputSuccess].contains(currentState)
+    }
+
+    var codeInputEnabled: Bool {
+        [RegisterPhoneViewModel.ViewState.codeInput].contains(currentState)
     }
 
     var actionTitle: String {

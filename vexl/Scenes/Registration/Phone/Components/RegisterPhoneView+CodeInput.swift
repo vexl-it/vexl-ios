@@ -13,6 +13,7 @@ extension RegisterPhoneView {
     struct CodeInputView: View {
 
         let phoneNumber: String
+        let isEnabled: Bool
         @Binding var code: String
 
         var body: some View {
@@ -27,6 +28,8 @@ extension RegisterPhoneView {
 
                 phoneInputView
                     .padding(.top, 40)
+
+                // TODO: Add countdown after to show retry timer
 
                 Text("\(L.registerPhoneCodeInputRetry("28s"))")
                     .foregroundColor(Appearance.Colors.gray2)
@@ -45,6 +48,7 @@ extension RegisterPhoneView {
                     .multilineTextAlignment(.center)
                     .textStyle(.h3)
                     .keyboardType(.numberPad)
+                    .disabled(!isEnabled)
             }
             .padding()
             .makeCorneredBorder(color: Appearance.Colors.gray3, borderWidth: 1)
@@ -55,6 +59,7 @@ extension RegisterPhoneView {
 struct RegisterPhoneView_CodeInput_Preview: PreviewProvider {
     static var previews: some View {
         RegisterPhoneView.CodeInputView(phoneNumber: "+420 720 183 578",
+                                        isEnabled: true,
                                         code: .constant("1234"))
     }
 }

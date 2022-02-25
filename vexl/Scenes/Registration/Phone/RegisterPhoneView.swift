@@ -18,6 +18,7 @@ struct RegisterPhoneView: View {
 
             if viewModel.showCodeInput {
                 CodeInputView(phoneNumber: viewModel.phoneNumber,
+                              isEnabled: viewModel.codeInputEnabled,
                               code: $viewModel.validationCode)
                     .padding(.all, Appearance.GridGuide.point)
             } else {
