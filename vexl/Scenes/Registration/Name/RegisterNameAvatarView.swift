@@ -19,6 +19,7 @@ struct RegisterNameAvatarView: View {
             RegistrationCardView(title: L.registerNameAvatarInputTitle(),
                                  subtitle: L.registerNameAvatarInputSubtitle(),
                                  content: nameInput.padding(.top, 40))
+                .padding(.all, Appearance.GridGuide.point)
 
             Spacer()
 
