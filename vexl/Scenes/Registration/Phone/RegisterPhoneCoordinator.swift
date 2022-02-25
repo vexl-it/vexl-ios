@@ -8,6 +8,22 @@
 import Foundation
 import Combine
 import Cleevio
+import UIKit
+
+class RegisterPhoneViewController: BaseViewController<RegisterPhoneView> {
+
+    private let pageView = RegistrationCounterView(numberOfItems: 3, currentIndex: 0)
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: pageView)
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: pageView)
+    }
+}
 
 class RegisterPhoneCoordinator: BaseCoordinator<RouterResult<Void>> {
 
@@ -21,7 +37,7 @@ class RegisterPhoneCoordinator: BaseCoordinator<RouterResult<Void>> {
 
     override func start() -> CoordinatingResult<CoordinationResult> {
         let viewModel = RegisterPhoneViewModel()
-        let viewController = BaseViewController(rootView: RegisterPhoneView(viewModel: viewModel))
+        let viewController = RegisterPhoneViewController(rootView: RegisterPhoneView(viewModel: viewModel))
         router.present(viewController, animated: animated)
 
         let next = viewModel.route

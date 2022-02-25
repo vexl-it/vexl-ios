@@ -13,5 +13,7 @@ class WelcomeViewController: BaseViewController<WelcomeView> {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationItem.hidesBackButton = true
+        navigationItem.backButtonTitle = " "
+        navigationController?.navigationBar.tintColor = .white
     }
 }
