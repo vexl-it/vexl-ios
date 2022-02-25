@@ -102,12 +102,12 @@ final class RegisterPhoneViewModel: ViewModelType {
     private func setupBindings() {
         $phoneNumber
             .withUnretained(self)
-            .map { !$1.isEmpty && $0.currentState == .phoneInput }
+            .map { $0.validatePhoneNumber($1) && $0.currentState == .phoneInput }
             .assign(to: &$isActionEnabled)
 
         $validationCode
             .withUnretained(self)
-            .map { !$1.isEmpty && $0.currentState == .codeInput }
+            .map { $0.validateCode($1) && $0.currentState == .codeInput }
             .assign(to: &$isActionEnabled)
 
         $currentState
@@ -115,9 +115,9 @@ final class RegisterPhoneViewModel: ViewModelType {
             .sink { owner, state in
                 switch state {
                 case .phoneInput:
-                    owner.isActionEnabled = !owner.phoneNumber.isEmpty
+                    owner.isActionEnabled = owner.validatePhoneNumber(owner.phoneNumber)
                 case .codeInput:
-                    owner.isActionEnabled = !owner.validationCode.isEmpty
+                    owner.isActionEnabled = owner.validateCode(owner.validationCode)
                 case .codeInputValidation:
                     owner.isActionEnabled = false
                 case .codeInputSuccess:
@@ -146,5 +146,13 @@ final class RegisterPhoneViewModel: ViewModelType {
                 }
             }
             .store(in: cancelBag)
+    }
+
+    private func validatePhoneNumber(_ phoneNumber: String) -> Bool {
+        !phoneNumber.isEmpty
+    }
+
+    private func validateCode(_ code: String) -> Bool {
+        !code.isEmpty
     }
 }

@@ -16,6 +16,7 @@ struct Appearance {
     struct Colors {
         // MARK: General Colors
 
+        static let purple4 = Color(R.color.purple4.name)
         static let purple5 = Color(R.color.purple5.name)
         static let gray1 = Color(R.color.gray1.name)
         static let gray2 = Color(R.color.gray2.name)
@@ -39,7 +40,8 @@ struct Appearance {
 
         static let point: CGFloat = 8
         static let padding: CGFloat = 16
-        static let mediumPadding: CGFloat = 32
+        static let mediumPadding1: CGFloat = 24
+        static let mediumPadding2: CGFloat = 32
         static let largePadding: CGFloat = 48
 
         // MARK: Button

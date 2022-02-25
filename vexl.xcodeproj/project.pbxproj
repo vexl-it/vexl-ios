@@ -78,6 +78,8 @@
 		F151A29F27C86A07000D7242 /* RegisterNameAvatarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F151A29E27C86A07000D7242 /* RegisterNameAvatarViewController.swift */; };
 		F151A2A227C86CA6000D7242 /* RegistrationCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F151A2A127C86CA6000D7242 /* RegistrationCardView.swift */; };
 		F151A2A427C87074000D7242 /* BorderedTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = F151A2A327C87074000D7242 /* BorderedTextField.swift */; };
+		F151A2A727C962CC000D7242 /* RegisterNameAvatarView+NameInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = F151A2A627C962CC000D7242 /* RegisterNameAvatarView+NameInput.swift */; };
+		F151A2A927C9646A000D7242 /* RegisterNameAvatarView+AvatarInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = F151A2A827C9646A000D7242 /* RegisterNameAvatarView+AvatarInput.swift */; };
 		F1B5FCBC27C67DB00018729B /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B5FCBB27C67DB00018729B /* WelcomeViewController.swift */; };
 		F1B5FCBE27C68EA70018729B /* OnboardingView+BottomButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B5FCBD27C68EA70018729B /* OnboardingView+BottomButtons.swift */; };
 		F1B5FCC327C6BC330018729B /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = F1B5FCC127C6BC330018729B /* Localizable.strings */; };
@@ -187,6 +189,8 @@
 		F151A29E27C86A07000D7242 /* RegisterNameAvatarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNameAvatarViewController.swift; sourceTree = "<group>"; };
 		F151A2A127C86CA6000D7242 /* RegistrationCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationCardView.swift; sourceTree = "<group>"; };
 		F151A2A327C87074000D7242 /* BorderedTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorderedTextField.swift; sourceTree = "<group>"; };
+		F151A2A627C962CC000D7242 /* RegisterNameAvatarView+NameInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RegisterNameAvatarView+NameInput.swift"; sourceTree = "<group>"; };
+		F151A2A827C9646A000D7242 /* RegisterNameAvatarView+AvatarInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RegisterNameAvatarView+AvatarInput.swift"; sourceTree = "<group>"; };
 		F1B5FCBB27C67DB00018729B /* WelcomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeViewController.swift; sourceTree = "<group>"; };
 		F1B5FCBD27C68EA70018729B /* OnboardingView+BottomButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OnboardingView+BottomButtons.swift"; sourceTree = "<group>"; };
 		F1B5FCC227C6BC330018729B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -582,6 +586,7 @@
 		F151A29527C86657000D7242 /* Name */ = {
 			isa = PBXGroup;
 			children = (
+				F151A2A527C962B9000D7242 /* Components */,
 				F151A29627C8667A000D7242 /* RegisterNameAvatarCoordinator.swift */,
 				F151A29827C86683000D7242 /* RegisterNameAvatarViewModel.swift */,
 				F151A29C27C866C7000D7242 /* RegisterNameAvatarView.swift */,
@@ -597,6 +602,15 @@
 				F151A2A127C86CA6000D7242 /* RegistrationCardView.swift */,
 			);
 			path = Registration;
+			sourceTree = "<group>";
+		};
+		F151A2A527C962B9000D7242 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				F151A2A627C962CC000D7242 /* RegisterNameAvatarView+NameInput.swift */,
+				F151A2A827C9646A000D7242 /* RegisterNameAvatarView+AvatarInput.swift */,
+			);
+			path = Components;
 			sourceTree = "<group>";
 		};
 		F1B5FCCA27C6F7CC0018729B /* Registration */ = {
@@ -959,6 +973,7 @@
 				B08F397227AE7112008B344F /* Formatters.swift in Sources */,
 				B0F206F127AE94C400A44E72 /* InitialScreenManager.swift in Sources */,
 				B08F397A27AE7112008B344F /* Codable+.swift in Sources */,
+				F151A2A927C9646A000D7242 /* RegisterNameAvatarView+AvatarInput.swift in Sources */,
 				B08F395927AE7112008B344F /* ClientAPIError.swift in Sources */,
 				F1B5FCD427C703230018729B /* CardModifier.swift in Sources */,
 				B08F391C27AE7112008B344F /* BaseService.swift in Sources */,
@@ -1006,6 +1021,7 @@
 				F1B5FCD127C6F7EF0018729B /* RegisterPhoneView.swift in Sources */,
 				B08F397027AE7112008B344F /* UserRouter.swift in Sources */,
 				B08F394327AE7112008B344F /* Keychain+.swift in Sources */,
+				F151A2A727C962CC000D7242 /* RegisterNameAvatarView+NameInput.swift in Sources */,
 				B08F399527AE7D29008B344F /* SplashScreenViewModel.swift in Sources */,
 				F151A29027C80708000D7242 /* RegisterPhoneView+PhoneInput.swift in Sources */,
 			);

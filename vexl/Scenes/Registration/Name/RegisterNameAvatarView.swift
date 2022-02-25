@@ -16,29 +16,26 @@ struct RegisterNameAvatarView: View {
 
     var body: some View {
         VStack {
-            RegistrationCardView(title: L.registerNameAvatarInputTitle(),
-                                 subtitle: L.registerNameAvatarInputSubtitle(),
-                                 content: nameInput.padding(.top, 40))
-                .padding(.all, Appearance.GridGuide.point)
+
+            if viewModel.currentState == .usernameInput {
+                NameInputView(username: $viewModel.username)
+            } else {
+                AvatarInputView(name: viewModel.username)
+            }
 
             Spacer()
 
             SolidButton(Text(L.continue()),
-                        isEnabled: .constant(true),
+                        isEnabled: $viewModel.isActionEnabled,
                         font: Appearance.TextStyle.h3.font.asFont,
                         colors: SolidButtonColor.welcome,
                         dimensions: SolidButtonDimension.largeButton) {
+                viewModel.send(action: .nextTap)
             }
             .padding(.horizontal, Appearance.GridGuide.padding)
         }
         .frame(maxWidth: .infinity)
         .background(Color.black.edgesIgnoringSafeArea(.all))
-    }
-
-    private var nameInput: some View {
-        BorderedTextField(placeholder: L.registerNameAvatarInputPlaceholder(),
-                          text: .constant(""))
-            .textStyle(.paragraph)
     }
 }
 

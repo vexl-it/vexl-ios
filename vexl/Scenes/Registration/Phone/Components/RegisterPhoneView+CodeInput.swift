@@ -19,7 +19,7 @@ extension RegisterPhoneView {
         var body: some View {
             RegistrationCardView(title: L.registerPhoneCodeInputTitle(),
                                  subtitle: L.registerPhoneCodeInputSubtitle(phoneNumber),
-                                 content: phoneInputView.padding(.top, 40))
+                                 content: phoneInputView.padding(.top, Appearance.GridGuide.largePadding))
         }
 
         private var phoneInputView: some View {

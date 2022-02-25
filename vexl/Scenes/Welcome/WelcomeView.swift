@@ -23,7 +23,7 @@ struct WelcomeView: View {
 
             VStack {
                 title
-                    .padding(.horizontal, Appearance.GridGuide.mediumPadding)
+                    .padding(.horizontal, Appearance.GridGuide.mediumPadding2)
 
                 AgreementSwitch(text: L.welcomeTermsAgreements(),
                                 links: [L.welcomeTermsAgreementsLink(): L.welcomeTermsAgreementsUrl()],
