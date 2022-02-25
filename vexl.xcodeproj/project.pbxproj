@@ -71,6 +71,10 @@
 		F151A29027C80708000D7242 /* RegisterPhoneView+PhoneInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = F151A28F27C80708000D7242 /* RegisterPhoneView+PhoneInput.swift */; };
 		F151A29227C807DD000D7242 /* RegisterPhoneView+CodeInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = F151A29127C807DD000D7242 /* RegisterPhoneView+CodeInput.swift */; };
 		F151A29427C826AD000D7242 /* RegistrationCounterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F151A29327C826AD000D7242 /* RegistrationCounterView.swift */; };
+		F151A29727C8667A000D7242 /* RegisterNameAvatarCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F151A29627C8667A000D7242 /* RegisterNameAvatarCoordinator.swift */; };
+		F151A29927C86683000D7242 /* RegisterNameAvatarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F151A29827C86683000D7242 /* RegisterNameAvatarViewModel.swift */; };
+		F151A29B27C86691000D7242 /* RegisterPhoneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F151A29A27C86691000D7242 /* RegisterPhoneViewController.swift */; };
+		F151A29D27C866C7000D7242 /* RegisterNameAvatarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F151A29C27C866C7000D7242 /* RegisterNameAvatarView.swift */; };
 		F1B5FCBC27C67DB00018729B /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B5FCBB27C67DB00018729B /* WelcomeViewController.swift */; };
 		F1B5FCBE27C68EA70018729B /* OnboardingView+BottomButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B5FCBD27C68EA70018729B /* OnboardingView+BottomButtons.swift */; };
 		F1B5FCC327C6BC330018729B /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = F1B5FCC127C6BC330018729B /* Localizable.strings */; };
@@ -173,6 +177,10 @@
 		F151A28F27C80708000D7242 /* RegisterPhoneView+PhoneInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RegisterPhoneView+PhoneInput.swift"; sourceTree = "<group>"; };
 		F151A29127C807DD000D7242 /* RegisterPhoneView+CodeInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RegisterPhoneView+CodeInput.swift"; sourceTree = "<group>"; };
 		F151A29327C826AD000D7242 /* RegistrationCounterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationCounterView.swift; sourceTree = "<group>"; };
+		F151A29627C8667A000D7242 /* RegisterNameAvatarCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNameAvatarCoordinator.swift; sourceTree = "<group>"; };
+		F151A29827C86683000D7242 /* RegisterNameAvatarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNameAvatarViewModel.swift; sourceTree = "<group>"; };
+		F151A29A27C86691000D7242 /* RegisterPhoneViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterPhoneViewController.swift; sourceTree = "<group>"; };
+		F151A29C27C866C7000D7242 /* RegisterNameAvatarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNameAvatarView.swift; sourceTree = "<group>"; };
 		F1B5FCBB27C67DB00018729B /* WelcomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeViewController.swift; sourceTree = "<group>"; };
 		F1B5FCBD27C68EA70018729B /* OnboardingView+BottomButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OnboardingView+BottomButtons.swift"; sourceTree = "<group>"; };
 		F1B5FCC227C6BC330018729B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -564,9 +572,20 @@
 			path = Components;
 			sourceTree = "<group>";
 		};
+		F151A29527C86657000D7242 /* Name */ = {
+			isa = PBXGroup;
+			children = (
+				F151A29627C8667A000D7242 /* RegisterNameAvatarCoordinator.swift */,
+				F151A29827C86683000D7242 /* RegisterNameAvatarViewModel.swift */,
+				F151A29C27C866C7000D7242 /* RegisterNameAvatarView.swift */,
+			);
+			path = Name;
+			sourceTree = "<group>";
+		};
 		F1B5FCCA27C6F7CC0018729B /* Registration */ = {
 			isa = PBXGroup;
 			children = (
+				F151A29527C86657000D7242 /* Name */,
 				F1B5FCCB27C6F7D40018729B /* Phone */,
 			);
 			path = Registration;
@@ -579,6 +598,7 @@
 				F1B5FCCC27C6F7E10018729B /* RegisterPhoneCoordinator.swift */,
 				F1B5FCCE27C6F7E80018729B /* RegisterPhoneViewModel.swift */,
 				F1B5FCD027C6F7EF0018729B /* RegisterPhoneView.swift */,
+				F151A29A27C86691000D7242 /* RegisterPhoneViewController.swift */,
 			);
 			path = Phone;
 			sourceTree = "<group>";
@@ -900,6 +920,7 @@
 				B08F399A27AE7D87008B344F /* OnboardingCoordinator.swift in Sources */,
 				B08F392227AE7112008B344F /* UIColor+.swift in Sources */,
 				B08F396A27AE7112008B344F /* URLRequest+.swift in Sources */,
+				F151A29727C8667A000D7242 /* RegisterNameAvatarCoordinator.swift in Sources */,
 				B08F399727AE7D33008B344F /* SplashScreenView.swift in Sources */,
 				F1C6D09727BDAD7F009BD506 /* LargeButton.swift in Sources */,
 				F151A29427C826AD000D7242 /* RegistrationCounterView.swift in Sources */,
@@ -912,6 +933,7 @@
 				B0F206F727AEB2C000A44E72 /* UIViewStyle.swift in Sources */,
 				B08F392E27AE7112008B344F /* UserService.swift in Sources */,
 				F1B5FCCD27C6F7E10018729B /* RegisterPhoneCoordinator.swift in Sources */,
+				F151A29B27C86691000D7242 /* RegisterPhoneViewController.swift in Sources */,
 				B08F392A27AE7112008B344F /* ServiceAssembly.swift in Sources */,
 				B08F38DF27AE7110008B344F /* DIContainer.swift in Sources */,
 				B08F391E27AE7112008B344F /* AppDelegate.swift in Sources */,
@@ -954,8 +976,10 @@
 				B08F393227AE7112008B344F /* SceneDelegate.swift in Sources */,
 				B0EEE11827B14D360097031E /* WelcomeViewModel.swift in Sources */,
 				F1B5FCBE27C68EA70018729B /* OnboardingView+BottomButtons.swift in Sources */,
+				F151A29927C86683000D7242 /* RegisterNameAvatarViewModel.swift in Sources */,
 				B08F394127AE7112008B344F /* Shortcuts.swift in Sources */,
 				F1B5FCD827C7040C0018729B /* RoundedCorners.swift in Sources */,
+				F151A29D27C866C7000D7242 /* RegisterNameAvatarView.swift in Sources */,
 				B08F395F27AE7112008B344F /* String+.swift in Sources */,
 				F1C6D0A027BDECB0009BD506 /* WelcomeView+LogoImageView.swift in Sources */,
 				B08F399327AE7D1F008B344F /* SplashScreenCoordinator.swift in Sources */,
