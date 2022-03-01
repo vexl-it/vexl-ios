@@ -12,13 +12,15 @@ struct RegistrationCardView<Content>: View where Content: View {
 
     let title: String
     let subtitle: String
+    let iconName: String?
     let content: Content
 
     var body: some View {
         VStack(alignment: .leading, spacing: Appearance.GridGuide.point) {
 
             RegistrationCardTitleView(title: title,
-                                      subtitle: subtitle)
+                                      subtitle: subtitle,
+                                      iconName: iconName)
 
             content
         }
@@ -32,6 +34,7 @@ struct RegistrationHeaderCardView<Header, Content>: View where Header: View, Con
 
     let title: String
     let subtitle: String
+    let iconName: String?
     let header: Header
     let content: Content
 
@@ -41,7 +44,8 @@ struct RegistrationHeaderCardView<Header, Content>: View where Header: View, Con
             header
 
             RegistrationCardTitleView(title: title,
-                                      subtitle: subtitle)
+                                      subtitle: subtitle,
+                                      iconName: iconName)
 
             content
         }
@@ -55,6 +59,7 @@ private struct RegistrationCardTitleView: View {
 
     let title: String
     let subtitle: String
+    let iconName: String?
 
     var body: some View {
         VStack(alignment: .leading,
@@ -62,10 +67,18 @@ private struct RegistrationCardTitleView: View {
             Text(title)
                 .textStyle(.h2)
 
-            Text(subtitle)
-                .textStyle(.paragraph)
-                .foregroundColor(Appearance.Colors.gray2)
-                .padding(.top, Appearance.GridGuide.mediumPadding1)
+            HStack {
+
+                if let  iconName = iconName {
+                    Image(iconName)
+                }
+
+                Text(subtitle)
+                    .textStyle(.paragraph)
+                    .foregroundColor(Appearance.Colors.gray2)
+                    
+            }
+            .padding(.top, Appearance.GridGuide.mediumPadding1)
         }
     }
 }
@@ -80,11 +93,13 @@ struct RegistrationCardViewPreview: PreviewProvider {
 
         RegistrationHeaderCardView(title: title,
                                    subtitle: subtitle,
+                                   iconName: R.image.onboarding.eye.name,
                                    header: header,
                                    content: text)
 
         RegistrationCardView(title: title,
                              subtitle: subtitle,
+                             iconName: nil,
                              content: text)
     }
 }

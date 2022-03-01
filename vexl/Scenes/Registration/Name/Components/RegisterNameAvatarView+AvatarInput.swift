@@ -19,15 +19,20 @@ extension RegisterNameAvatarView {
         var body: some View {
             RegistrationHeaderCardView(title: L.registerNameAvatarImageTitle(),
                                        subtitle: L.registerNameAvatarImageSubtitle(),
+                                       iconName: R.image.onboarding.eye.name,
                                        header: greetingView,
                                        content: addAvatarButton)
                 .padding(.all, Appearance.GridGuide.point)
         }
 
         var greetingView: some View {
-            Text(L.registerNameAvatarImageHeader(name))
-                .foregroundColor(Appearance.Colors.purple4)
-                .textStyle(.h2)
+            HStack {
+                Image(R.image.onboarding.wave.name)
+
+                Text(L.registerNameAvatarImageHeader(name))
+                    .foregroundColor(Appearance.Colors.purple4)
+                    .textStyle(.h2)
+            }
         }
 
         var addAvatarButton: some View {
