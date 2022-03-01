@@ -28,7 +28,11 @@ class RegisterNameAvatarCoordinator: BaseCoordinator<RouterResult<Void>> {
             .filter { $0 == .continueTapped }
             .map { _ -> RouterResult<Void> in .finished(()) }
 
-        return next
+        let dismissByRouter = viewController
+            .dismissPublisher
+            .map { _ in RouterResult<Void>.dismissedByRouter }
+
+        return dismissByRouter
             .receive(on: RunLoop.main)
             .prefix(1)
             .eraseToAnyPublisher()
