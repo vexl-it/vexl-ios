@@ -98,6 +98,7 @@ final class RegisterNameAvatarViewModel: ViewModelType {
                         owner.route.send(.continueTapped)
                     }
                 case .addAvatar:
+                    // TODO: implemente ImagePicker
                     owner.avatar = UIImage(named: R.image.onboarding.testAvatar.name)
                 case .deleteAvatar:
                     owner.avatar = nil
