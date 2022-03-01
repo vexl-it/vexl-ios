@@ -32,6 +32,8 @@ final class RegisterNameAvatarViewModel: ViewModelType {
 
     enum UserAction: Equatable {
         case nextTap
+        case addAvatar
+        case deleteAvatar
     }
 
     let action: ActionSubject<UserAction> = .init()
@@ -40,6 +42,7 @@ final class RegisterNameAvatarViewModel: ViewModelType {
 
     @Published var username = ""
     @Published var currentState: State = .usernameInput
+    @Published var avatar: UIImage?
     @Published var isActionEnabled = false
 
     var primaryActivity: Activity = .init()
@@ -76,6 +79,13 @@ final class RegisterNameAvatarViewModel: ViewModelType {
             }
             .store(in: cancelBag)
 
+        $avatar
+            .withUnretained(self)
+            .sink { owner, image in
+                owner.isActionEnabled = image != nil
+            }
+            .store(in: cancelBag)
+
         action
             .withUnretained(self)
             .sink { owner, action in
@@ -87,6 +97,10 @@ final class RegisterNameAvatarViewModel: ViewModelType {
                     case .avatarInput:
                         owner.route.send(.continueTapped)
                     }
+                case .addAvatar:
+                    owner.avatar = UIImage(named: R.image.onboarding.testAvatar.name)
+                case .deleteAvatar:
+                    owner.avatar = nil
                 }
             }
             .store(in: cancelBag)

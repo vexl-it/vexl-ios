@@ -19,7 +19,7 @@ struct WelcomeView: View {
                 .edgesIgnoringSafeArea(.vertical)
 
             LogoImageView()
-                .padding(.top, Appearance.GridGuide.largePadding)
+                .padding(.top, Appearance.GridGuide.largePadding1)
 
             VStack {
                 title
@@ -28,9 +28,9 @@ struct WelcomeView: View {
                 AgreementSwitch(text: L.welcomeTermsAgreements(),
                                 links: [L.welcomeTermsAgreementsLink(): L.welcomeTermsAgreementsUrl()],
                                 isOn: $viewModel.hasAgreedTermsAndConditions)
-                    .padding(.horizontal, Appearance.GridGuide.largePadding)
-                    .padding(.bottom, Appearance.GridGuide.largePadding)
-                    .padding(.top, Appearance.GridGuide.largePadding)
+                    .padding(.horizontal, Appearance.GridGuide.largePadding1)
+                    .padding(.bottom, Appearance.GridGuide.largePadding1)
+                    .padding(.top, Appearance.GridGuide.largePadding1)
 
                 SolidButton(Text(L.continue()),
                             isEnabled: $viewModel.hasAgreedTermsAndConditions,

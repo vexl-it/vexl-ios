@@ -42,11 +42,16 @@ struct Appearance {
         static let padding: CGFloat = 16
         static let mediumPadding1: CGFloat = 24
         static let mediumPadding2: CGFloat = 32
-        static let largePadding: CGFloat = 48
+        static let largePadding1: CGFloat = 48
+        static let largePadding2: CGFloat = 64
 
         // MARK: Button
 
         static let largeButtonHeight: CGFloat = 64
+
+        // MARK: Avatar
+
+        static let avatarSize = CGSize(width: 190, height: 190)
     }
 
     // MARK: - Global

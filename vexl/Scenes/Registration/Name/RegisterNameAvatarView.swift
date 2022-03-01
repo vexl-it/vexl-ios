@@ -20,7 +20,14 @@ struct RegisterNameAvatarView: View {
             if viewModel.currentState == .usernameInput {
                 NameInputView(username: $viewModel.username)
             } else {
-                AvatarInputView(name: viewModel.username)
+                AvatarInputView(name: viewModel.username,
+                                avatar: viewModel.avatar,
+                                addAction: {
+                    viewModel.send(action: .addAvatar)
+                },
+                                deleteAction: {
+                    viewModel.send(action: .deleteAvatar)
+                })
             }
 
             Spacer()

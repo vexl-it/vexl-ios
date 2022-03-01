@@ -57,7 +57,8 @@ private struct RegistrationCardTitleView: View {
     let subtitle: String
 
     var body: some View {
-        VStack(spacing: Appearance.GridGuide.point) {
+        VStack(alignment: .leading,
+               spacing: Appearance.GridGuide.point) {
             Text(title)
                 .textStyle(.h2)
 
@@ -66,5 +67,24 @@ private struct RegistrationCardTitleView: View {
                 .foregroundColor(Appearance.Colors.gray2)
                 .padding(.top, Appearance.GridGuide.mediumPadding1)
         }
+    }
+}
+
+struct RegistrationCardViewPreview: PreviewProvider {
+    static var previews: some View {
+
+        let title = "Hello World"
+        let subtitle = "This is a subtitle"
+        let text = Text("Text goes here")
+        let header = Text("Header goes here")
+
+        RegistrationHeaderCardView(title: title,
+                                   subtitle: subtitle,
+                                   header: header,
+                                   content: text)
+
+        RegistrationCardView(title: title,
+                             subtitle: subtitle,
+                             content: text)
     }
 }
