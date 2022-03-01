@@ -17,29 +17,34 @@ struct RegisterNameAvatarView: View {
     var body: some View {
         VStack {
 
-            if viewModel.currentState == .usernameInput {
-                NameInputView(username: $viewModel.username)
+            if viewModel.currentState == .phoneVerified {
+                PhoneVerified()
             } else {
-                AvatarInputView(name: viewModel.username,
-                                avatar: viewModel.avatar,
-                                addAction: {
-                    viewModel.send(action: .addAvatar)
-                },
-                                deleteAction: {
-                    viewModel.send(action: .deleteAvatar)
-                })
+                if viewModel.currentState == .usernameInput {
+                    NameInputView(username: $viewModel.username)
+                } else {
+                    AvatarInputView(name: viewModel.username,
+                                    avatar: viewModel.avatar,
+                                    addAction: {
+                        viewModel.send(action: .addAvatar)
+                    },
+                                    deleteAction: {
+                        viewModel.send(action: .deleteAvatar)
+                    })
+                }
+
+                Spacer()
+
+                SolidButton(Text(L.continue()),
+                            isEnabled: $viewModel.isActionEnabled,
+                            font: Appearance.TextStyle.h3.font.asFont,
+                            colors: SolidButtonColor.welcome,
+                            dimensions: SolidButtonDimension.largeButton) {
+                    viewModel.send(action: .nextTap)
+                }
+                .padding(.horizontal, Appearance.GridGuide.padding)
             }
 
-            Spacer()
-
-            SolidButton(Text(L.continue()),
-                        isEnabled: $viewModel.isActionEnabled,
-                        font: Appearance.TextStyle.h3.font.asFont,
-                        colors: SolidButtonColor.welcome,
-                        dimensions: SolidButtonDimension.largeButton) {
-                viewModel.send(action: .nextTap)
-            }
-            .padding(.horizontal, Appearance.GridGuide.padding)
         }
         .frame(maxWidth: .infinity)
         .background(Color.black.edgesIgnoringSafeArea(.all))

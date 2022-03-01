@@ -15,11 +15,14 @@ final class RegisterNameAvatarViewModel: ViewModelType {
     // MARK: - View State
 
     enum State {
+        case phoneVerified
         case usernameInput
         case avatarInput
 
         var next: State {
             switch self {
+            case .phoneVerified:
+                return .usernameInput
             case .usernameInput:
                 return .avatarInput
             case .avatarInput:
@@ -41,7 +44,7 @@ final class RegisterNameAvatarViewModel: ViewModelType {
     // MARK: - View Bindings
 
     @Published var username = ""
-    @Published var currentState: State = .usernameInput
+    @Published var currentState: State = .phoneVerified
     @Published var avatar: UIImage?
     @Published var isActionEnabled = false
 
@@ -71,6 +74,10 @@ final class RegisterNameAvatarViewModel: ViewModelType {
             .withUnretained(self)
             .sink { owner, state in
                 switch state {
+                case .phoneVerified:
+                    after(2) {
+                        owner.currentState = owner.currentState.next
+                    }
                 case .usernameInput:
                     owner.isActionEnabled = owner.validateUsername(owner.username)
                 case .avatarInput:
@@ -96,6 +103,8 @@ final class RegisterNameAvatarViewModel: ViewModelType {
                         owner.currentState = owner.currentState.next
                     case .avatarInput:
                         owner.route.send(.continueTapped)
+                    case .phoneVerified:
+                        break
                     }
                 case .addAvatar:
                     // TODO: implemente ImagePicker
