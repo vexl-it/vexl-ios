@@ -44,7 +44,6 @@ struct RegisterNameAvatarView: View {
                 }
                 .padding(.horizontal, Appearance.GridGuide.padding)
             }
-
         }
         .frame(maxWidth: .infinity)
         .background(Color.black.edgesIgnoringSafeArea(.all))

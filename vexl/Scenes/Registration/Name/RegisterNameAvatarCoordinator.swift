@@ -24,9 +24,19 @@ class RegisterNameAvatarCoordinator: BaseCoordinator<RouterResult<Void>> {
         let viewController = RegisterNameAvatarViewController(rootView: RegisterNameAvatarView(viewModel: viewModel))
         router.present(viewController, animated: animated)
 
-        let next = viewModel.route
+        viewModel
+            .route
+            .receive(on: RunLoop.main)
             .filter { $0 == .continueTapped }
-            .map { _ -> RouterResult<Void> in .finished(()) }
+            .withUnretained(self)
+            .flatMap { owner, route -> CoordinatingResult<RouterResult<Void>> in
+                switch route {
+                case .continueTapped:
+                    return owner.showRegisterPhoneContacts(router: owner.router)
+                }
+            }
+            .sink(receiveValue: { _ in })
+            .store(in: cancelBag)
 
         let dismissByRouter = viewController
             .dismissPublisher
@@ -35,6 +45,19 @@ class RegisterNameAvatarCoordinator: BaseCoordinator<RouterResult<Void>> {
         return dismissByRouter
             .receive(on: RunLoop.main)
             .prefix(1)
+            .eraseToAnyPublisher()
+    }
+}
+
+extension RegisterNameAvatarCoordinator {
+    private func showRegisterPhoneContacts(router: Router) -> CoordinatingResult<RouterResult<Void>> {
+        coordinate(to: RegisterPhoneContactsCoordinator(router: router, animated: true))
+            .flatMap { result -> CoordinatingResult<RouterResult<Void>> in
+                guard result != .dismissedByRouter else {
+                    return Just(result).eraseToAnyPublisher()
+                }
+                return router.dismiss(animated: true, returning: result)
+            }
             .eraseToAnyPublisher()
     }
 }

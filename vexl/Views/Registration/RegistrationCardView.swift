@@ -76,7 +76,6 @@ private struct RegistrationCardTitleView: View {
                 Text(subtitle)
                     .textStyle(.paragraph)
                     .foregroundColor(Appearance.Colors.gray2)
-                    
             }
             .padding(.top, Appearance.GridGuide.mediumPadding1)
         }
