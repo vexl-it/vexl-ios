@@ -17,17 +17,19 @@ extension RegisterPhoneView {
         @Binding var code: String
 
         var body: some View {
-            VStack(alignment: .leading, spacing: 8) {
-                Text(L.registerPhoneCodeInputTitle())
-                    .textStyle(.h2)
+            RegistrationCardView(title: L.registerPhoneCodeInputTitle(),
+                                 subtitle: L.registerPhoneCodeInputSubtitle(phoneNumber),
+                                 iconName: R.image.onboarding.eye.name,
+                                 content: phoneInputView.padding(.top, Appearance.GridGuide.largePadding1))
+        }
 
-                Text(L.registerPhoneCodeInputSubtitle(phoneNumber))
-                    .textStyle(.paragraph)
-                    .foregroundColor(Appearance.Colors.gray2)
-                    .padding(.top, 24)
-
-                phoneInputView
-                    .padding(.top, 40)
+        private var phoneInputView: some View {
+            VStack {
+                BorderedTextField(placeholder: "", text: $code)
+                    .multilineTextAlignment(.center)
+                    .textStyle(.h3)
+                    .keyboardType(.numberPad)
+                    .disabled(!isEnabled)
 
                 // TODO: Add countdown after to show retry timer
 
@@ -37,21 +39,6 @@ extension RegisterPhoneView {
                     .frame(maxWidth: .infinity)
                     .padding(.top, Appearance.GridGuide.padding)
             }
-            .padding(.all, Appearance.GridGuide.padding)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .modifier(CardViewModifier())
-        }
-
-        private var phoneInputView: some View {
-            HStack {
-                TextField("", text: $code)
-                    .multilineTextAlignment(.center)
-                    .textStyle(.h3)
-                    .keyboardType(.numberPad)
-                    .disabled(!isEnabled)
-            }
-            .padding()
-            .makeCorneredBorder(color: Appearance.Colors.gray3, borderWidth: 1)
         }
     }
 }

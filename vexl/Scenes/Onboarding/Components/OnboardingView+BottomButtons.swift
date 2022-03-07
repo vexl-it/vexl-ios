@@ -20,7 +20,7 @@ extension OnboardingView {
             HStack(alignment: .center) {
                 SolidButton(Text("Skip")
                                 .padding(.horizontal,
-                                         Appearance.GridGuide.point + Appearance.GridGuide.padding),
+                                         Appearance.GridGuide.mediumPadding1),
                             fullWidth: false,
                             font: Appearance.TextStyle.h3.font.asFont,
                             colors: SolidButtonColor.skip,

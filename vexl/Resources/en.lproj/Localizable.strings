@@ -16,3 +16,10 @@
 "register.phone.code.input.retry" = "Didn’t receive code? Resend in %@";
 "register.phone.code.input.verifying" = "Verifying...";
 "register.phone.code.input.success" = "Success!";
+"register.name.avatar.input.title" = "What do your friends call you?";
+"register.name.avatar.input.subtitle" = "Nobody will see your name until you allow it";
+"register.name.avatar.input.placeholder" = "Full name, username";
+"register.name.avatar.image.title" = "What do you look like?";
+"register.name.avatar.image.subtitle" = "Nobody will see your face until you allow it";
+"register.name.avatar.image.header" = "Hey %@";
+"register.name.avatar.phone.validated" = "Phone verified.\nLet’s setup your profile.";
