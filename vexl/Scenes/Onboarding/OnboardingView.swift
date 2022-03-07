@@ -20,7 +20,7 @@ struct OnboardingView: View {
 
             OnboardingPresentation(selectedIndex: $viewModel.selectedIndex,
                                    title: viewModel.title)
-                .padding(.vertical, Appearance.GridGuide.mediumPadding)
+                .padding(.vertical, Appearance.GridGuide.mediumPadding2)
 
             Spacer()
 
