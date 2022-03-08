@@ -10,7 +10,14 @@ import Combine
 import Cleevio
 import SwiftUI
 
-final class RegisterPhoneContactsViewModel: ViewModelType {
+final class RegisterContactsViewModel: ViewModelType {
+
+    // MARK: - View State
+
+    enum ViewState {
+        case phone
+        case facebook
+    }
 
     // MARK: - Actions Bindings
 
@@ -31,4 +38,12 @@ final class RegisterPhoneContactsViewModel: ViewModelType {
     }
 
     var route: CoordinatingSubject<Route> = .init()
+
+    // MARK: - Variables
+
+    var currentState: ViewState = .phone
+
+    private(set) var phoneViewModel: PhoneContactsViewModel = {
+        PhoneContactsViewModel()
+    }()
 }

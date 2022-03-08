@@ -9,7 +9,7 @@ import Foundation
 import Combine
 import Cleevio
 
-class RegisterPhoneContactsCoordinator: BaseCoordinator<RouterResult<Void>> {
+class RegisterContactsCoordinator: BaseCoordinator<RouterResult<Void>> {
 
     private let router: Router
     private let animated: Bool
@@ -20,8 +20,8 @@ class RegisterPhoneContactsCoordinator: BaseCoordinator<RouterResult<Void>> {
     }
 
     override func start() -> CoordinatingResult<RouterResult<Void>> {
-        let viewModel = RegisterPhoneContactsViewModel()
-        let viewController = BaseViewController(rootView: RegisterPhoneContactsView(viewModel: viewModel))
+        let viewModel = RegisterContactsViewModel()
+        let viewController = RegisterViewController(currentPage: 2, numberOfPages: 3, rootView: RegisterContactsView(viewModel: viewModel))
         router.present(viewController, animated: animated)
 
         let dismissByRouter = viewController

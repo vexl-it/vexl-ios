@@ -69,7 +69,7 @@ private struct RegistrationCardTitleView: View {
 
             HStack {
 
-                if let  iconName = iconName {
+                if let iconName = iconName {
                     Image(iconName)
                 }
 

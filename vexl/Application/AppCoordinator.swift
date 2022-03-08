@@ -62,8 +62,9 @@ extension AppCoordinator {
 
     private func showOnboardingCoordinator() -> CoordinatingResult<Void> {
         coordinate(to:
-            WindowNavigationCoordinator(window: window) { router, animated -> OnboardingCoordinator in
-                OnboardingCoordinator(router: router, animated: animated)
+                    //TODO: - Rollback to OnboardingCoordinator
+            WindowNavigationCoordinator(window: window) { router, animated -> RegisterContactsCoordinator in
+                RegisterContactsCoordinator(router: router, animated: animated)
             }
         ).asVoid()
     }

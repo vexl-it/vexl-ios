@@ -21,7 +21,7 @@ class RegisterNameAvatarCoordinator: BaseCoordinator<RouterResult<Void>> {
 
     override func start() -> CoordinatingResult<CoordinationResult> {
         let viewModel = RegisterNameAvatarViewModel()
-        let viewController = RegisterNameAvatarViewController(rootView: RegisterNameAvatarView(viewModel: viewModel))
+        let viewController = RegisterViewController(currentPage: 1, numberOfPages: 3, rootView: RegisterNameAvatarView(viewModel: viewModel))
         router.present(viewController, animated: animated)
 
         viewModel
@@ -51,7 +51,7 @@ class RegisterNameAvatarCoordinator: BaseCoordinator<RouterResult<Void>> {
 
 extension RegisterNameAvatarCoordinator {
     private func showRegisterPhoneContacts(router: Router) -> CoordinatingResult<RouterResult<Void>> {
-        coordinate(to: RegisterPhoneContactsCoordinator(router: router, animated: true))
+        coordinate(to: RegisterContactsCoordinator(router: router, animated: true))
             .flatMap { result -> CoordinatingResult<RouterResult<Void>> in
                 guard result != .dismissedByRouter else {
                     return Just(result).eraseToAnyPublisher()
