@@ -19,18 +19,20 @@ platform :ios do
 	firebase_tester_group_id = "FIXME"
 	firebase_cli_path = "/usr/local/bin/firebase"
 	slackUrl = "FIXME"
-	appSpecificPassword = "FIXME"
 
 	# ***************************************************** #
 	# ******************** BEFORE ALL ********************* #
 	# ***************************************************** #
 
-	before_all do
-    	ENV["FASTLANE_DONT_STORE_PASSWORD"] = "1"
-    	ENV["FASTLANE_USER"] = "dev@cleevio.cz"
-    	ENV["FASTLANE_PASSWORD"] = "SmartDevsCleevio123"
-    	ENV["FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD"] = appSpecificPassword
-  	end
+	ensure_env_vars(
+		env_vars: [
+			'FASTLANE_DONT_STORE_PASSWORD', 
+			'FASTLANE_USER', 
+			'FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD',
+			'FASTLANE_PASSWORD', 
+			'MATCH_PASSWORD'
+		]
+	)
 
 	# ***************************************************** #
 	# ******************** FUNCTIONS ********************** #
