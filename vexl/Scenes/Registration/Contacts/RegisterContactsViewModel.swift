@@ -16,7 +16,9 @@ final class RegisterContactsViewModel: ViewModelType {
 
     enum ViewState {
         case phone
+        case importPhoneContacts
         case facebook
+        case importFacebookContacts
     }
 
     // MARK: - Actions Bindings
@@ -39,11 +41,29 @@ final class RegisterContactsViewModel: ViewModelType {
 
     var route: CoordinatingSubject<Route> = .init()
 
+    // MARK: - Subviews View Models and State
+
+    @Published var currentState: ViewState = .phone
+    @Published var phoneViewModel: PhoneViewModel
+    @Published var importPhoneContactsViewModel: ImportContactViewModel
+
     // MARK: - Variables
 
-    var currentState: ViewState = .phone
+    private let cancelBag: CancelBag = .init()
 
-    private(set) var phoneViewModel: PhoneContactsViewModel = {
-        PhoneContactsViewModel()
-    }()
+    init() {
+        phoneViewModel = PhoneViewModel(userName: "Diego")
+        importPhoneContactsViewModel = ImportContactViewModel()
+        setupPhoneViewBindings()
+    }
+
+    private func setupPhoneViewBindings() {
+        phoneViewModel.onCompleted
+            .withUnretained(self)
+            .sink { owner, _ in
+                owner.currentState = .importPhoneContacts
+                owner.phoneViewModel.current = .initial
+            }
+            .store(in: cancelBag)
+    }
 }

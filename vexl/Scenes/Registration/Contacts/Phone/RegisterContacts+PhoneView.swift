@@ -12,7 +12,7 @@ extension RegisterContactsView {
 
     struct PhoneContactsView: View {
 
-        @ObservedObject var viewModel: RegisterContactsViewModel.PhoneContactsViewModel
+        @ObservedObject var viewModel: RegisterContactsViewModel.PhoneViewModel
 
         var body: some View {
             VStack {
@@ -35,13 +35,24 @@ extension RegisterContactsView {
                             font: Appearance.TextStyle.h3.font.asFont,
                             colors: SolidButtonColor.welcome,
                             dimensions: SolidButtonDimension.largeButton) {
+                    viewModel.next()
                 }
                 .padding(.horizontal, Appearance.GridGuide.mediumPadding1)
+            }
+            .alert(item: $viewModel.alert) { alert in
+                Alert(title: Text(alert.title),
+                      message: Text(alert.message),
+                      primaryButton: Alert.Button.cancel(Text("Cancel"), action: {
+                    viewModel.cancel()
+                }),
+                      secondaryButton: Alert.Button.default(Text("Ok"), action: {
+                    viewModel.next()
+                }))
             }
         }
 
         private var portraitView: some View {
-            RegisterContactsView.RegisterPortraitsView(name: "Diego",
+            RegisterContactsView.RegisterPortraitsView(name: viewModel.userName,
                                                        avatar: R.image.onboarding.testAvatar()!)
         }
 
@@ -59,7 +70,7 @@ extension RegisterContactsView {
 
 struct RegisterContactsPhoneViewPreview: PreviewProvider {
     static var previews: some View {
-        RegisterContactsView.PhoneContactsView(viewModel: .init())
+        RegisterContactsView.PhoneContactsView(viewModel: RegisterContactsViewModel.PhoneViewModel(userName: "Diego"))
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color.black.edgesIgnoringSafeArea(.all))
     }

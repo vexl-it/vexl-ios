@@ -17,8 +17,10 @@ struct RegisterContactsView: View {
             switch viewModel.currentState {
             case .phone:
                 PhoneContactsView(viewModel: viewModel.phoneViewModel)
-            case .facebook:
-                Text("Facebook contacts").foregroundColor(.white)
+            case .importPhoneContacts:
+                ImportContactsView(viewModel: viewModel.importPhoneContactsViewModel)
+            case .facebook, .importFacebookContacts:
+                Text("contacts").foregroundColor(.white)
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)

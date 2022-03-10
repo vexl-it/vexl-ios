@@ -74,7 +74,7 @@ extension RegisterContactsView {
     }
 }
 
-struct RegisterContactsViewPortraitViewPreview: PreviewProvider {
+struct RegisterContacts_PortraitViewPreview: PreviewProvider {
     static var previews: some View {
         RegisterContactsView.PortraitView(name: "Diego", image: nil)
             .frame(maxWidth: .infinity, maxHeight: .infinity)

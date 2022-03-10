@@ -39,6 +39,7 @@ struct Appearance {
 
         // MARK: Margins
 
+        static let smallPadding: CGFloat = 4
         static let point: CGFloat = 8
         static let padding: CGFloat = 16
         static let mediumPadding1: CGFloat = 24
@@ -67,6 +68,8 @@ struct Appearance {
         case h3
         case paragraph
         case paragraphBold
+        case description
+        case descriptionSemibold
 
         var font: UIFont {
             switch self {
@@ -78,6 +81,10 @@ struct Appearance {
                 return UIFont.preferredFont(forTextStyle: .body, weight: .regular)
             case .paragraphBold:
                 return UIFont.preferredFont(forTextStyle: .body, weight: .bold)
+            case .description:
+                return UIFont.preferredFont(forTextStyle: .footnote, weight: .regular)
+            case .descriptionSemibold:
+                return UIFont.preferredFont(forTextStyle: .footnote, weight: .semibold)
             }
         }
     }

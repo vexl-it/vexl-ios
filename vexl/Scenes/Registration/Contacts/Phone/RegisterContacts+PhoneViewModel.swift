@@ -2,29 +2,112 @@
 //  RegisterContacts+PhoneViewModel.swift
 //  vexl
 //
-//  Created by Diego Espinoza on 7/03/22.
+//  Created by Diego Espinoza on 9/03/22.
 //
 
 import Foundation
 import Combine
-import Cleevio
 import SwiftUI
+import Cleevio
 
 extension RegisterContactsViewModel {
 
-    class PhoneContactsViewModel: ObservableObject {
+    final class PhoneViewModel: ObservableObject {
 
-        // MARK: - View State
+        // swiftlint:disable nesting
+        enum AlertType: Int, Identifiable {
+            case request = 1
+            case reject = 2
 
-        enum ViewState {
-            case intro
-            case selection
-            case success
+            var id: Int {
+                self.rawValue
+            }
+
+            var title: String {
+                switch self {
+                case .request:
+                    return "1234"
+                case .reject:
+                    return "4321"
+                }
+            }
+
+            var message: String {
+                switch self {
+                case .request:
+                    return "12345"
+                case .reject:
+                    return "54321"
+                }
+            }
         }
 
-        // MARK: - View Bindings
+        // swiftlint:disable nesting
+        enum ViewState {
+            case initial
+            case requestAccess
+            case rejectAccess
+            case completed
 
-        @Published var currentState: ViewState = .intro
+            var next: ViewState {
+                switch self {
+                case .initial:
+                    return .requestAccess
+                case .requestAccess, .rejectAccess:
+                    return .completed
+                case .completed:
+                    return .initial
+                }
+            }
+
+            var cancel: ViewState {
+                switch self {
+                case .initial, .rejectAccess, .completed:
+                    return .initial
+                case .requestAccess:
+                    return .rejectAccess
+                }
+            }
+        }
+
+        @Published var current: ViewState = .initial {
+            didSet {
+                updateState()
+            }
+        }
+        @Published var alert: AlertType?
+        @Published var onCompleted: ActionSubject<Void> = .init()
+
+        var userName: String
+        
+        init(userName: String) {
+            self.userName = userName
+        }
+
+        func next() {
+            current = current.next
+        }
+
+        func cancel() {
+            current = current.cancel
+        }
+
+        private func updateState() {
+            updateAlert()
+            if current == .completed {
+                onCompleted.send()
+            }
+        }
+
+        private func updateAlert() {
+            switch current {
+            case .initial, .completed:
+                alert = nil
+            case .requestAccess:
+                alert = .request
+            case .rejectAccess:
+                alert = .reject
+            }
+        }
     }
-
 }
