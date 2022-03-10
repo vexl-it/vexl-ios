@@ -24,5 +24,6 @@ extension RegisterContactsViewModel {
         }
 
         @Published var current: ViewState = .empty
+        @Published var items: [RegisterContactsViewModel.ContactItem] = []
     }
 }

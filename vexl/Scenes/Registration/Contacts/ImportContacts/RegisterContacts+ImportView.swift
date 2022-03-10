@@ -32,7 +32,7 @@ extension RegisterContactsView {
         }
 
         private var contactList: some View {
-            RegisterContactsView.ContactListView()
+            RegisterContactsView.ContactListView(items: viewModel.items)
         }
     }
 }

@@ -608,6 +608,7 @@
 		F12A14DA27D6770B0096543E /* Phone */ = {
 			isa = PBXGroup;
 			children = (
+				F12A14F827D99DD00096543E /* Components */,
 				F12A14E727D6A8690096543E /* RegisterContacts+PhoneView.swift */,
 				F12A14EF27D912410096543E /* RegisterContacts+PhoneViewModel.swift */,
 			);
@@ -617,8 +618,6 @@
 		F12A14E927D6B1BC0096543E /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				F12A14EA27D6B1CF0096543E /* RegisterContactsView+PortraitView.swift */,
-				F12A14F627D9768E0096543E /* RegisterContactsView+ContactsListView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -626,10 +625,27 @@
 		F12A14F127D96FB00096543E /* ImportContacts */ = {
 			isa = PBXGroup;
 			children = (
+				F12A14F927D99DDC0096543E /* Components */,
 				F12A14F227D96FD40096543E /* RegisterContacts+ImportView.swift */,
 				F12A14F427D96FDC0096543E /* RegisterContacts+ImportViewModel.swift */,
 			);
 			path = ImportContacts;
+			sourceTree = "<group>";
+		};
+		F12A14F827D99DD00096543E /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				F12A14EA27D6B1CF0096543E /* RegisterContactsView+PortraitView.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		F12A14F927D99DDC0096543E /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				F12A14F627D9768E0096543E /* RegisterContactsView+ContactsListView.swift */,
+			);
+			path = Components;
 			sourceTree = "<group>";
 		};
 		F151A28E27C806F3000D7242 /* Components */ = {

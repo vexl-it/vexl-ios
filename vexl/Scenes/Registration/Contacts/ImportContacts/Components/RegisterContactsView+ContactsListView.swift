@@ -10,18 +10,29 @@ import SwiftUI
 
 extension RegisterContactsView {
 
-    struct RegisterContactItem: Identifiable {
-        var id: Int
-        var name: String
-        var phone: String
-        var avatar: Data?
+    struct ContactListView: View {
 
-        static func stub() -> [RegisterContactItem] {
-            [
-                RegisterContactItem(id: 1, name: "Diego Espinoza 1", phone: "999 944 222", avatar: nil),
-                RegisterContactItem(id: 2, name: "Diego Espinoza 2", phone: "929 944 222", avatar: nil),
-                RegisterContactItem(id: 3, name: "Diego Espinoza 3", phone: "969 944 222", avatar: nil)
-            ]
+        let items: [RegisterContactsViewModel.ContactItem]
+
+        var body: some View {
+            VStack {
+                if !items.isEmpty {
+                    HStack(spacing: Appearance.GridGuide.point) {
+                        TextField("Search", text: .constant(""))
+                        Button("Deselect All") {
+                            print("123")
+                        }
+                    }
+                    .padding(Appearance.GridGuide.padding)
+
+                    ForEach(items) { item in
+                        RegisterContactsView.ContactItemView(item: item)
+                    }
+                }
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+            .background(Color.white)
+            .cornerRadius(Appearance.GridGuide.padding)
         }
     }
 
@@ -30,7 +41,7 @@ extension RegisterContactsView {
         private let imageSize = CGSize(width: 48, height: 48)
         private let checkSize = CGSize(width: 38, height: 38)
 
-        let item: RegisterContactItem
+        let item: RegisterContactsViewModel.ContactItem
 
         var body: some View {
             HStack {
@@ -61,36 +72,11 @@ extension RegisterContactsView {
             .padding(.bottom, Appearance.GridGuide.point)
         }
     }
-
-    struct ContactListView: View {
-
-        private let items: [RegisterContactItem] = RegisterContactItem.stub()
-
-        var body: some View {
-            VStack {
-
-                HStack(spacing: Appearance.GridGuide.point) {
-                    TextField("Search", text: .constant(""))
-                    Button("Deselect All") {
-                        print("123")
-                    }
-                }
-                .padding(Appearance.GridGuide.padding)
-
-                ForEach(items) { item in
-                    RegisterContactsView.ContactItemView(item: item)
-                }
-            }
-            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
-            .background(Color.white)
-            .cornerRadius(Appearance.GridGuide.padding)
-        }
-    }
 }
 
 struct RegisterContacts_ContactListViewPreview: PreviewProvider {
     static var previews: some View {
-        RegisterContactsView.ContactListView()
+        RegisterContactsView.ContactListView(items: RegisterContactsViewModel.ContactItem.stub())
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color.black.edgesIgnoringSafeArea(.all))
     }
