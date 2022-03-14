@@ -33,5 +33,11 @@
 "register.name.avatar.phone.validated" = "Phone verified.\nLet’s setup your profile.";
 "register.contacts.import.button" = "Import contacts";
 "register.contacts.import.deselect" = "Deselect All";
+"register.contacts.import.alert.allow" = "Allow";
+"register.contacts.import.alert.not.allow" = "Don’t allow";
 "register.phone.contacts.title" = "Looking cute,\nlet’s find you some friends.";
 "register.phone.contacts.subtitle" = "vexl doesn’t see your contacts";
+"register.phone.alert.request.title" = "Allow contacts";
+"register.phone.alert.request.description" = "vexl wants to access your contacts in order to work. We won’t ever see them";
+"register.phone.alert.reject.title" = "Really?";
+"register.phone.alert.reject.description" = "vexl literally only works with your contacts...";

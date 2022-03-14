@@ -26,18 +26,18 @@ extension RegisterContactsViewModel {
             var title: String {
                 switch self {
                 case .request:
-                    return "1234"
+                    return L.registerPhoneAlertRequestTitle()
                 case .reject:
-                    return "4321"
+                    return L.registerPhoneAlertRejectTitle()
                 }
             }
 
             var message: String {
                 switch self {
                 case .request:
-                    return "12345"
+                    return L.registerPhoneAlertRequestDescription()
                 case .reject:
-                    return "54321"
+                    return L.registerPhoneAlertRejectDescription()
                 }
             }
         }

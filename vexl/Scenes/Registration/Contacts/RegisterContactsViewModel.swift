@@ -43,7 +43,7 @@ final class RegisterContactsViewModel: ViewModelType {
 
     // MARK: - Subviews View Models and State
 
-    @Published var currentState: ViewState = .importPhoneContacts
+    @Published var currentState: ViewState = .phone
     @Published var phoneViewModel: PhoneViewModel
     @Published var importPhoneContactsViewModel: ImportContactViewModel
 
