@@ -21,7 +21,7 @@ extension RegisterContactsView {
                 .padding(.horizontal, Appearance.GridGuide.point)
                 .padding(.vertical, Appearance.GridGuide.padding)
 
-                SolidButton(Text("Import contacts"),
+                SolidButton(Text(L.registerContactsImportButton()),
                             font: Appearance.TextStyle.h3.font.asFont,
                             colors: SolidButtonColor.welcome,
                             dimensions: SolidButtonDimension.largeButton) {

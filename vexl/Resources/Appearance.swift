@@ -21,6 +21,7 @@ struct Appearance {
         static let gray1 = Color(R.color.gray1.name)
         static let gray2 = Color(R.color.gray2.name)
         static let gray3 = Color(R.color.gray3.name)
+        static let gray4 = Color(R.color.gray4.name)
         static let green1 = Color(R.color.green1.name)
         static let green5 = Color(R.color.green5.name)
 
@@ -49,6 +50,7 @@ struct Appearance {
 
         // MARK: Button
 
+        static let baseHeight: CGFloat = 40
         static let largeButtonHeight: CGFloat = 64
 
         // MARK: Avatar

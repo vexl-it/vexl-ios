@@ -1,3 +1,11 @@
+"general.continue" = "Continue";
+"general.more" = "More";
+"general.close" = "Close";
+"general.play" = "Play";
+"general.pause" = "Pause";
+"general.cancel" = "Cancel";
+"general.ok" = "Ok";
+"general.search" = "Search";
 "next" = "Next";
 "skip" = "Skip";
 "got.it" = "Got it!";
@@ -23,3 +31,7 @@
 "register.name.avatar.image.subtitle" = "Nobody will see your face until you allow it";
 "register.name.avatar.image.header" = "Hey %@";
 "register.name.avatar.phone.validated" = "Phone verified.\nLet’s setup your profile.";
+"register.contacts.import.button" = "Import contacts";
+"register.contacts.import.deselect" = "Deselect All";
+"register.phone.contacts.title" = "Looking cute,\nlet’s find you some friends.";
+"register.phone.contacts.subtitle" = "vexl doesn’t see your contacts";

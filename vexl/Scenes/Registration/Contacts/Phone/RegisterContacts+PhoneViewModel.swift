@@ -79,7 +79,7 @@ extension RegisterContactsViewModel {
         @Published var onCompleted: ActionSubject<Void> = .init()
 
         var userName: String
-        
+
         init(userName: String) {
             self.userName = userName
         }

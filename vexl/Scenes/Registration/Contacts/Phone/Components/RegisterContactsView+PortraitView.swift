@@ -12,6 +12,9 @@ extension RegisterContactsView {
 
     struct PortraitView: View {
 
+        private let portraitSize = CGSize(width: 132, height: 132)
+        private let avatarSize = CGSize(width: 66, height: 66)
+
         let name: String
         let image: UIImage?
 
@@ -22,8 +25,8 @@ extension RegisterContactsView {
 
                     displayedImage
                 }
-                .frame(width: 132, height: 132, alignment: .center)
-                .cornerRadius(132 * 0.5)
+                .frame(width: portraitSize.height, height: portraitSize.width, alignment: .center)
+                .cornerRadius(portraitSize.height * 0.5)
                 .padding(Appearance.GridGuide.point * 0.5)
 
                 Text(name)
@@ -32,8 +35,8 @@ extension RegisterContactsView {
                     .padding(.bottom, Appearance.GridGuide.point)
             }
             .background(Appearance.Colors.green1)
-            .cornerRadius(132 * 0.5, corners: [.topLeft, .topRight])
-            .cornerRadius(8, corners: [.bottomLeft, .bottomRight])
+            .cornerRadius(portraitSize.height * 0.5, corners: [.topLeft, .topRight])
+            .cornerRadius(Appearance.GridGuide.point, corners: [.bottomLeft, .bottomRight])
         }
 
         @ViewBuilder private var displayedImage: some View {
@@ -45,7 +48,7 @@ extension RegisterContactsView {
                 Image(R.image.onboarding.emptyAvatar.name)
                     .resizable()
                     .scaledToFit()
-                    .frame(width: 66, height: 66, alignment: .center)
+                    .frame(width: avatarSize.width, height: avatarSize.height, alignment: .center)
             }
         }
     }

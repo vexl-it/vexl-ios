@@ -12,20 +12,21 @@ extension RegisterContactsView {
 
     struct ContactListView: View {
 
+        @State var searchText = ""
+
         let items: [RegisterContactsViewModel.ContactItem]
+        var filteredItems: [RegisterContactsViewModel.ContactItem] {
+            guard !searchText.isEmpty else { return items }
+            return items.filter { $0.name.contains(searchText) }
+        }
 
         var body: some View {
             VStack {
                 if !items.isEmpty {
-                    HStack(spacing: Appearance.GridGuide.point) {
-                        TextField("Search", text: .constant(""))
-                        Button("Deselect All") {
-                            print("123")
-                        }
-                    }
+                    RegisterContactsView.ContactSearchTextField(searchText: $searchText)
                     .padding(Appearance.GridGuide.padding)
 
-                    ForEach(items) { item in
+                    ForEach(filteredItems) { item in
                         RegisterContactsView.ContactItemView(item: item)
                     }
                 }
@@ -33,43 +34,6 @@ extension RegisterContactsView {
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
             .background(Color.white)
             .cornerRadius(Appearance.GridGuide.padding)
-        }
-    }
-
-    struct ContactItemView: View {
-
-        private let imageSize = CGSize(width: 48, height: 48)
-        private let checkSize = CGSize(width: 38, height: 38)
-
-        let item: RegisterContactsViewModel.ContactItem
-
-        var body: some View {
-            HStack {
-                Image(R.image.onboarding.emptyAvatar.name)
-                    .resizable()
-                    .frame(size: imageSize)
-
-                Spacer()
-
-                VStack(alignment: .leading, spacing: Appearance.GridGuide.smallPadding) {
-                    Text(item.name)
-                        .textStyle(.paragraph)
-                        .foregroundColor(Appearance.Colors.primaryText)
-
-                    Text(item.phone)
-                        .textStyle(.descriptionSemibold)
-                        .foregroundColor(Appearance.Colors.gray3)
-                }
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.horizontal, Appearance.GridGuide.point)
-
-                Spacer()
-
-                Circle()
-                    .frame(size: checkSize)
-            }
-            .padding(.horizontal, Appearance.GridGuide.padding)
-            .padding(.bottom, Appearance.GridGuide.point)
         }
     }
 }

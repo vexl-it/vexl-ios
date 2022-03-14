@@ -21,7 +21,7 @@ extension RegisterContactsView {
 
                 portraitView
 
-                Text("Looking cute,\nlet’s find you some friends.")
+                Text(L.registerPhoneContactsTitle())
                     .multilineTextAlignment(.center)
                     .textStyle(.h2)
                     .foregroundColor(.white)
@@ -31,7 +31,7 @@ extension RegisterContactsView {
                 contactsView
                     .padding(.bottom, Appearance.GridGuide.mediumPadding1)
 
-                SolidButton(Text("Import contacts"),
+                SolidButton(Text(L.registerContactsImportButton()),
                             font: Appearance.TextStyle.h3.font.asFont,
                             colors: SolidButtonColor.welcome,
                             dimensions: SolidButtonDimension.largeButton) {
@@ -42,10 +42,10 @@ extension RegisterContactsView {
             .alert(item: $viewModel.alert) { alert in
                 Alert(title: Text(alert.title),
                       message: Text(alert.message),
-                      primaryButton: Alert.Button.cancel(Text("Cancel"), action: {
+                      primaryButton: Alert.Button.cancel(Text(L.generalCancel()), action: {
                     viewModel.cancel()
                 }),
-                      secondaryButton: Alert.Button.default(Text("Ok"), action: {
+                      secondaryButton: Alert.Button.default(Text(L.generalOk()), action: {
                     viewModel.next()
                 }))
             }
@@ -60,7 +60,7 @@ extension RegisterContactsView {
             HStack {
                 Image(R.image.onboarding.eye.name)
 
-                Text("vexl doesn’t see your contacts")
+                Text(L.registerPhoneContactsSubtitle())
                     .textStyle(.paragraph)
                     .foregroundColor(Appearance.Colors.gray2)
             }

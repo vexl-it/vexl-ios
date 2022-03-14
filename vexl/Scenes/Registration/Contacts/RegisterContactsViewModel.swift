@@ -60,9 +60,6 @@ final class RegisterContactsViewModel: ViewModelType {
             after(1) {
                 self.importPhoneContactsViewModel.current = .content
                 self.importPhoneContactsViewModel.items = ContactItem.stub()
-                after(1) {
-                    self.importPhoneContactsViewModel.items = [.init(id: 4, name: "Diego Espinoza 4", phone: "9482 23 23", avatar: nil)]
-                }
             }
         }
     }
@@ -90,7 +87,9 @@ extension RegisterContactsViewModel {
             [
                 ContactItem(id: 1, name: "Diego Espinoza 1", phone: "999 944 222", avatar: nil),
                 ContactItem(id: 2, name: "Diego Espinoza 2", phone: "929 944 222", avatar: nil),
-                ContactItem(id: 3, name: "Diego Espinoza 3", phone: "969 944 222", avatar: nil)
+                ContactItem(id: 3, name: "Diego Espinoza 3", phone: "969 944 222", avatar: nil),
+                ContactItem(id: 4, name: "Diego Espinoza 4", phone: "969 944 222", avatar: nil),
+                ContactItem(id: 5, name: "Diego Test 4", phone: "969 944 222", avatar: nil)
             ]
         }
     }
