@@ -599,7 +599,6 @@
 		F12A14D927D677010096543E /* Contacts */ = {
 			isa = PBXGroup;
 			children = (
-				F12A14E927D6B1BC0096543E /* Components */,
 				F12A14DA27D6770B0096543E /* Phone */,
 				F12A14F127D96FB00096543E /* ImportContacts */,
 				F12A14DB27D677340096543E /* RegisterContactsCoordinator.swift */,
@@ -617,13 +616,6 @@
 				F12A14EF27D912410096543E /* RegisterContacts+PhoneViewModel.swift */,
 			);
 			path = Phone;
-			sourceTree = "<group>";
-		};
-		F12A14E927D6B1BC0096543E /* Components */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Components;
 			sourceTree = "<group>";
 		};
 		F12A14F127D96FB00096543E /* ImportContacts */ = {

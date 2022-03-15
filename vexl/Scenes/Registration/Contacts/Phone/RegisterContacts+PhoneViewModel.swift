@@ -76,7 +76,7 @@ extension RegisterContactsViewModel {
             }
         }
         @Published var alert: AlertType?
-        @Published var onCompleted: ActionSubject<Void> = .init()
+        var onCompleted: ActionSubject<Void> = .init()
 
         var userName: String
 

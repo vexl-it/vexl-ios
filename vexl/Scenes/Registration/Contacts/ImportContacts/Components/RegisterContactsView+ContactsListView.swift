@@ -14,9 +14,26 @@ extension RegisterContactsView {
 
         @ObservedObject var viewModel: RegisterContactsViewModel.ImportContactViewModel
 
+        private var alignment: Alignment {
+            switch viewModel.current {
+            case .loading, .empty:
+                return .center
+            case .content, .success:
+                return .top
+            }
+        }
+
         var body: some View {
             VStack {
-                if !viewModel.items.isEmpty {
+                switch viewModel.current {
+                case .empty:
+                    Text("There are no contacts to import")
+                        .foregroundColor(Appearance.Colors.primaryText)
+                        .textStyle(.h3)
+                case .loading:
+                    ProgressView()
+                        .progressViewStyle(CircularProgressViewStyle(tint: Appearance.Colors.purple4))
+                case .content, .success:
                     RegisterContactsView.ContactSearchBar(searchText: $viewModel.searchText,
                                                           hasSelectedItem: viewModel.hasSelectedItem,
                                                           onAction: {
@@ -31,7 +48,7 @@ extension RegisterContactsView {
                     }
                 }
             }
-            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: alignment)
             .background(Color.white)
             .cornerRadius(Appearance.GridGuide.padding)
         }
