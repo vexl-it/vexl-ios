@@ -26,7 +26,7 @@ extension RegisterContactsView {
 
                     ForEach(viewModel.filteredItems) { item in
                         RegisterContactsView.ContactItemView(item: item, onSelection: { isSelected in
-                            viewModel.item(item, isSelected: isSelected)
+                            viewModel.select(isSelected, item: item)
                         })
                     }
                 }

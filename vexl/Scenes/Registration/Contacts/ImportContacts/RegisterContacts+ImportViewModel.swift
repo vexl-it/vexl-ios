@@ -34,7 +34,7 @@ extension RegisterContactsViewModel {
             return items.filter { $0.name.contains(searchText) }
         }
 
-        func item(_ item: RegisterContactsViewModel.ContactItem, isSelected: Bool) {
+        func select(_ isSelected: Bool, item: RegisterContactsViewModel.ContactItem) {
             guard let selectedIndex = items.firstIndex(where: { $0.id == item.id }) else { return }
             var newItem = items[selectedIndex]
             newItem.isSelected = isSelected
