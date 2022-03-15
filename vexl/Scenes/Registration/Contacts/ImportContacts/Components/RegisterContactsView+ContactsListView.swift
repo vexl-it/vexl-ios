@@ -20,13 +20,13 @@ extension RegisterContactsView {
                     RegisterContactsView.ContactSearchBar(searchText: $viewModel.searchText,
                                                           hasSelectedItem: viewModel.hasSelectedItem,
                                                           onAction: {
-                        viewModel.unselectAllItems()
+                        viewModel.action.send(.unselectAll)
                     })
                     .padding(Appearance.GridGuide.padding)
 
                     ForEach(viewModel.filteredItems) { item in
                         RegisterContactsView.ContactItemView(item: item, onSelection: { isSelected in
-                            viewModel.select(isSelected, item: item)
+                            viewModel.action.send(.itemSelected(isSelected, item))
                         })
                     }
                 }

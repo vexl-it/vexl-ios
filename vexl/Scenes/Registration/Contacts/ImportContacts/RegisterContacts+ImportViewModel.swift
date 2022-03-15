@@ -16,6 +16,8 @@ extension RegisterContactsViewModel {
 
         // swiftlint:disable nesting
 
+        // MARK: - View State
+
         enum ViewState {
             case empty
             case loading
@@ -23,9 +25,22 @@ extension RegisterContactsViewModel {
             case success
         }
 
+        // MARK: - Action Bindings
+
+        enum UserAction {
+            case itemSelected(Bool, RegisterContactsViewModel.ContactItem)
+            case unselectAll
+        }
+
+        let action: ActionSubject<UserAction> = .init()
+
+        // MARK: - Variables
+
         @Published var current: ViewState = .empty
         @Published var items: [RegisterContactsViewModel.ContactItem] = []
         @Published var searchText = ""
+
+        private let cancelBag: CancelBag = .init()
 
         var hasSelectedItem = false
 
@@ -34,7 +49,23 @@ extension RegisterContactsViewModel {
             return items.filter { $0.name.contains(searchText) }
         }
 
-        func select(_ isSelected: Bool, item: RegisterContactsViewModel.ContactItem) {
+        // MARK: - Init
+
+        init() {
+            action
+                .withUnretained(self)
+                .sink { owner, action in
+                    switch action {
+                    case let .itemSelected(isSelected, item):
+                        owner.select(isSelected, item: item)
+                    case .unselectAll:
+                        owner.unselectAllItems()
+                    }
+                }
+                .store(in: cancelBag)
+        }
+
+        private func select(_ isSelected: Bool, item: RegisterContactsViewModel.ContactItem) {
             guard let selectedIndex = items.firstIndex(where: { $0.id == item.id }) else { return }
             var newItem = items[selectedIndex]
             newItem.isSelected = isSelected
@@ -43,7 +74,7 @@ extension RegisterContactsViewModel {
             hasSelectedItem = items.contains(where: { $0.isSelected })
         }
 
-        func unselectAllItems() {
+        private func unselectAllItems() {
             var newItems: [RegisterContactsViewModel.ContactItem] = []
             for item in items {
                 var newItem = item
