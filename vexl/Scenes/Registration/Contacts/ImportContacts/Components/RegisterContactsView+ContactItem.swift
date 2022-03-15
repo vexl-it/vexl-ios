@@ -12,12 +12,11 @@ extension RegisterContactsView {
 
     private struct ContactItemSelectionView: View {
 
-        @Binding var isSelected: Bool
+        var isSelected: Bool
         var action: () -> Void
 
         var body: some View {
             Button {
-                isSelected.toggle()
                 action()
             } label: {
                 if isSelected {
@@ -41,7 +40,7 @@ extension RegisterContactsView {
         private let checkSize = CGSize(width: 38, height: 38)
 
         let item: RegisterContactsViewModel.ContactItem
-        @State var isSelected = false
+        let onSelection: (Bool) -> Void
 
         var body: some View {
             HStack {
@@ -72,7 +71,9 @@ extension RegisterContactsView {
         }
 
         private var selectionView: some View {
-            RegisterContactsView.ContactItemSelectionView(isSelected: $isSelected, action: {})
+            RegisterContactsView.ContactItemSelectionView(isSelected: item.isSelected, action: {
+                onSelection(!item.isSelected)
+            })
                 .frame(size: checkSize)
         }
     }
@@ -80,6 +81,6 @@ extension RegisterContactsView {
 
 struct RegisterContacts_ContactItemViewPreview: PreviewProvider {
     static var previews: some View {
-        RegisterContactsView.ContactItemView(item: RegisterContactsViewModel.ContactItem.stub().first!)
+        RegisterContactsView.ContactItemView(item: RegisterContactsViewModel.ContactItem.stub().first!, onSelection: { _ in })
     }
 }

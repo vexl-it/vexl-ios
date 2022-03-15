@@ -10,10 +10,11 @@ import SwiftUI
 
 extension RegisterContactsView {
 
-    struct ContactSearchTextField: View {
+    struct ContactSearchBar: View {
 
         @Binding var searchText: String
-        @State var isEditing = false
+        var hasSelectedItem: Bool
+        var onAction: () -> Void
 
         var body: some View {
             HStack(spacing: Appearance.GridGuide.point) {
@@ -40,9 +41,9 @@ extension RegisterContactsView {
                 .frame(height: Appearance.GridGuide.baseHeight)
                 .cornerRadius(Appearance.GridGuide.buttonCorner)
 
-                if !searchText.isEmpty {
+                if hasSelectedItem {
                     Button(L.registerContactsImportDeselect()) {
-                        print("123")
+                        onAction()
                     }
                     .textStyle(.paragraph)
                     .foregroundColor(Color.white)
@@ -57,7 +58,7 @@ extension RegisterContactsView {
 
 struct RegisterContacts_ContactSearchBarPreview: PreviewProvider {
     static var previews: some View {
-        RegisterContactsView.ContactSearchTextField(searchText: .constant(""))
-        RegisterContactsView.ContactSearchTextField(searchText: .constant("Hello"))
+        RegisterContactsView.ContactSearchBar(searchText: .constant(""), hasSelectedItem: false, onAction: {})
+        RegisterContactsView.ContactSearchBar(searchText: .constant("Hello"), hasSelectedItem: false, onAction: {})
     }
 }

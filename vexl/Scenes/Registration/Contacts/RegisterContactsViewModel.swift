@@ -55,13 +55,8 @@ final class RegisterContactsViewModel: ViewModelType {
         phoneViewModel = PhoneViewModel(userName: "Diego")
         importPhoneContactsViewModel = ImportContactViewModel()
         setupPhoneViewBindings()
-        after(1) {
-            self.importPhoneContactsViewModel.current = .loading
-            after(1) {
-                self.importPhoneContactsViewModel.current = .content
-                self.importPhoneContactsViewModel.items = ContactItem.stub()
-            }
-        }
+        self.importPhoneContactsViewModel.current = .content
+        self.importPhoneContactsViewModel.items = ContactItem.stub()
     }
 
     private func setupPhoneViewBindings() {
@@ -82,6 +77,7 @@ extension RegisterContactsViewModel {
         var name: String
         var phone: String
         var avatar: Data?
+        var isSelected = false
 
         static func stub() -> [ContactItem] {
             [

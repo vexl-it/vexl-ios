@@ -25,5 +25,33 @@ extension RegisterContactsViewModel {
 
         @Published var current: ViewState = .empty
         @Published var items: [RegisterContactsViewModel.ContactItem] = []
+        @Published var searchText = ""
+
+        var hasSelectedItem = false
+
+        var filteredItems: [RegisterContactsViewModel.ContactItem] {
+            guard !searchText.isEmpty else { return items }
+            return items.filter { $0.name.contains(searchText) }
+        }
+
+        func item(_ item: RegisterContactsViewModel.ContactItem, isSelected: Bool) {
+            guard let selectedIndex = items.firstIndex(where: { $0.id == item.id }) else { return }
+            var newItem = items[selectedIndex]
+            newItem.isSelected = isSelected
+            items[selectedIndex] = newItem
+
+            hasSelectedItem = items.contains(where: { $0.isSelected })
+        }
+
+        func unselectAllItems() {
+            var newItems: [RegisterContactsViewModel.ContactItem] = []
+            for item in items {
+                var newItem = item
+                newItem.isSelected = false
+                newItems.append(newItem)
+            }
+            items = newItems
+            hasSelectedItem = false
+        }
     }
 }
