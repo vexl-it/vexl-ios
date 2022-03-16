@@ -17,6 +17,8 @@ extension RequestAccessContactsView {
 
         let name: String
         let image: UIImage?
+        let color: Color
+        let textColor: Color
 
         var body: some View {
             VStack {
@@ -31,10 +33,10 @@ extension RequestAccessContactsView {
 
                 Text(name)
                     .textStyle(.h3)
-                    .foregroundColor(Appearance.Colors.green5)
+                    .foregroundColor(textColor)
                     .padding(.bottom, Appearance.GridGuide.point)
             }
-            .background(Appearance.Colors.green1)
+            .background(color)
             .cornerRadius(portraitSize.height * 0.5, corners: [.topLeft, .topRight])
             .cornerRadius(Appearance.GridGuide.point, corners: [.bottomLeft, .bottomRight])
         }
@@ -57,21 +59,22 @@ extension RequestAccessContactsView {
 
         let name: String
         let avatar: UIImage
+        let color: Color
+        let textColor: Color
 
         var body: some View {
             ZStack {
                 HStack {
-                    PortraitView(name: "*****", image: nil)
+                    PortraitView(name: "*****", image: nil, color: color, textColor: textColor)
                         .opacity(0.5)
                         .scaleEffect(0.75)
 
-                    PortraitView(name: "*****", image: nil)
+                    PortraitView(name: "*****", image: nil, color: color, textColor: textColor)
                         .opacity(0.5)
                         .scaleEffect(0.75)
                 }
 
-                PortraitView(name: name,
-                             image: avatar)
+                PortraitView(name: name, image: avatar, color: color, textColor: textColor)
             }
         }
     }
@@ -79,16 +82,24 @@ extension RequestAccessContactsView {
 
 struct RegisterContacts_PortraitViewPreview: PreviewProvider {
     static var previews: some View {
-        RequestAccessContactsView.PortraitView(name: "Diego", image: nil)
+        RequestAccessContactsView.PortraitView(name: "Diego",
+                                               image: nil,
+                                               color: Appearance.Colors.green5,
+                                               textColor: Appearance.Colors.green1)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color.black.edgesIgnoringSafeArea(.all))
 
-        RequestAccessContactsView.PortraitView(name: "Diego", image: R.image.onboarding.testAvatar())
+        RequestAccessContactsView.PortraitView(name: "Diego",
+                                               image: R.image.onboarding.testAvatar(),
+                                               color: Appearance.Colors.green5,
+                                               textColor: Appearance.Colors.green1)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color.black.edgesIgnoringSafeArea(.all))
 
         RequestAccessContactsView.RegisterPortraitsView(name: "Diego",
-                                                        avatar: R.image.onboarding.testAvatar()!)
+                                                        avatar: R.image.onboarding.testAvatar()!,
+                                                        color: Appearance.Colors.green5,
+                                                        textColor: Appearance.Colors.green1)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color.black.edgesIgnoringSafeArea(.all))
     }

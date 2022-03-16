@@ -10,99 +10,70 @@ import Combine
 import SwiftUI
 import Cleevio
 
-final class RequestAccessContactsViewModel: ObservableObject {
-
-    enum AlertType: Int, Identifiable {
-        case request = 1
-        case reject = 2
-
-        var id: Int {
-            self.rawValue
-        }
-
-        var title: String {
-            switch self {
-            case .request:
-                return L.registerPhoneAlertRequestTitle()
-            case .reject:
-                return L.registerPhoneAlertRejectTitle()
-            }
-        }
-
-        var message: String {
-            switch self {
-            case .request:
-                return L.registerPhoneAlertRequestDescription()
-            case .reject:
-                return L.registerPhoneAlertRejectDescription()
-            }
-        }
-    }
+class RequestAccessContactsViewModel: ObservableObject {
 
     enum ViewState {
         case initial
         case requestAccess
         case rejectAccess
         case completed
-
-        var next: ViewState {
-            switch self {
-            case .initial:
-                return .requestAccess
-            case .requestAccess, .rejectAccess:
-                return .completed
-            case .completed:
-                return .initial
-            }
-        }
-
-        var cancel: ViewState {
-            switch self {
-            case .initial, .rejectAccess, .completed:
-                return .initial
-            case .requestAccess:
-                return .rejectAccess
-            }
-        }
     }
 
-    @Published var current: ViewState = .initial {
-        didSet {
-            updateState()
-        }
+    // MARK: - View Bindings
+
+    @Published var current: ViewState = .initial
+    @Published var alert: RequestAccessContactsAlertType?
+
+    // MARK: - Actions Bindings
+
+    enum UserAction: Equatable {
+        case next
+        case cancel
+        case completed
+        case skip
     }
-    @Published var alert: AlertType?
-    var onCompleted: ActionSubject<Void> = .init()
+
+    let action: ActionSubject<UserAction> = .init()
+
+    // MARK: - Variables
 
     var userName: String
+    var title: String { "" }
+    var subtitle: String { "" }
+    var importButton: String { "" }
+    var displaySkipButton: Bool { false }
+    var portraitColor: Color { Appearance.Colors.green5 }
+    var portraitTextColor: Color { Appearance.Colors.green1 }
+
+    private let cancelBag: CancelBag = .init()
 
     init(userName: String) {
         self.userName = userName
+        $current
+            .withUnretained(self)
+            .sink { owner, state in
+                owner.update(state: state)
+            }
+            .store(in: cancelBag)
+
+        action
+            .withUnretained(self)
+            .sink { owner, action in
+                switch action {
+                case .next:
+                    owner.next()
+                case .cancel:
+                    owner.cancel()
+                case .completed, .skip:
+                    break
+                }
+            }
+            .store(in: cancelBag)
     }
 
-    func next() {
-        current = current.next
-    }
+    func next() { }
 
-    func cancel() {
-        current = current.cancel
-    }
+    func cancel() { }
 
-    private func updateState() {
-        updateAlert()
-        if current == .completed {
-            onCompleted.send()
-        }
-    }
-
-    private func updateAlert() {
-        switch current {
-        case .initial, .completed:
-            alert = nil
-        case .requestAccess:
-            alert = .request
-        case .rejectAccess:
-            alert = .reject
-        }
-    }
+    func update(state: ViewState) { }
 }

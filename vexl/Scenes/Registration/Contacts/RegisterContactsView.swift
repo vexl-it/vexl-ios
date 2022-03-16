@@ -19,7 +19,9 @@ struct RegisterContactsView: View {
                 RequestAccessContactsView(viewModel: viewModel.phoneViewModel)
             case .importPhoneContacts:
                 ImportContactsView(viewModel: viewModel.importPhoneContactsViewModel)
-            case .facebook, .importFacebookContacts:
+            case .facebook:
+                RequestAccessContactsView(viewModel: viewModel.facebookViewModel)
+            case .importFacebookContacts:
                 Text("contacts").foregroundColor(.white)
             }
         }

@@ -16,6 +16,7 @@ struct Appearance {
     struct Colors {
         // MARK: General Colors
 
+        static let purple1 = Color(R.color.purple1.name)
         static let purple4 = Color(R.color.purple4.name)
         static let purple5 = Color(R.color.purple5.name)
         static let gray1 = Color(R.color.gray1.name)
