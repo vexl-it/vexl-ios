@@ -44,7 +44,7 @@ extension ImportContactsView {
                 Button(L.registerContactsImportDeselect()) {
                     onAction()
                 }
-                .textStyle(.description)
+                .textStyle(.paragraph)
                 .foregroundColor(hasSelectedItem ? Color.white : Appearance.Colors.gray2)
                 .frame(height: Appearance.GridGuide.baseHeight)
                 .padding(.horizontal, Appearance.GridGuide.padding)
