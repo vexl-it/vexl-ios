@@ -44,7 +44,7 @@ final class RequestAccessFacebookContactsViewModel: RequestAccessContactsViewMod
 
     override func next() {
         switch current {
-        case .initial, .requestAccess, .rejectAccess:
+        case .initial, .requestAccess, .confirmRejection:
             current = .completed
         case .completed:
             current = .initial

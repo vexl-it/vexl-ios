@@ -39,7 +39,7 @@ final class RequestAccessPhoneContactsViewModel: RequestAccessContactsViewModel 
         switch current {
         case .initial:
             current = .requestAccess
-        case .requestAccess, .rejectAccess:
+        case .requestAccess, .confirmRejection:
             current = .completed
         case .completed:
             current = .initial
@@ -48,10 +48,10 @@ final class RequestAccessPhoneContactsViewModel: RequestAccessContactsViewModel 
 
     override func cancel() {
         switch current {
-        case .initial, .rejectAccess, .completed:
+        case .initial, .confirmRejection, .completed:
             current = .initial
         case .requestAccess:
-            current = .rejectAccess
+            current = .confirmRejection
         }
     }
 
@@ -61,7 +61,7 @@ final class RequestAccessPhoneContactsViewModel: RequestAccessContactsViewModel 
             alert = nil
         case .requestAccess:
             alert = .request
-        case .rejectAccess:
+        case .confirmRejection:
             alert = .reject
         }
     }

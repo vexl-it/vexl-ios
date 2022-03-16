@@ -12,10 +12,12 @@ import Cleevio
 
 class RequestAccessContactsViewModel: ObservableObject {
 
+    // MARK: - State
+
     enum ViewState {
         case initial
         case requestAccess
-        case rejectAccess
+        case confirmRejection
         case completed
     }
 
@@ -46,6 +48,8 @@ class RequestAccessContactsViewModel: ObservableObject {
     var portraitTextColor: Color { Appearance.Colors.green1 }
 
     private let cancelBag: CancelBag = .init()
+
+    // MARK: - Init
 
     init(userName: String) {
         self.userName = userName
