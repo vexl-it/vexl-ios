@@ -22,7 +22,7 @@ struct RegisterContactsView: View {
             case .facebook:
                 RequestAccessContactsView(viewModel: viewModel.facebookViewModel)
             case .importFacebookContacts:
-                Text("contacts").foregroundColor(.white)
+                ImportContactsView(viewModel: viewModel.importFacebookContactsViewModel)
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)

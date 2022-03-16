@@ -18,6 +18,7 @@ class RequestAccessContactsViewModel: ObservableObject {
         case initial
         case requestAccess
         case confirmRejection
+        case accessConfirmed
         case completed
     }
 
@@ -30,12 +31,14 @@ class RequestAccessContactsViewModel: ObservableObject {
 
     enum UserAction: Equatable {
         case next
-        case cancel
-        case completed
         case skip
+        case cancel
     }
 
     let action: ActionSubject<UserAction> = .init()
+    let accessConfirmed: ActionSubject<Void> = .init()
+    let completed: ActionSubject<Void> = .init()
+    let skipped: ActionSubject<Void> = .init()
 
     // MARK: - Variables
 
@@ -68,8 +71,8 @@ class RequestAccessContactsViewModel: ObservableObject {
                     owner.next()
                 case .cancel:
                     owner.cancel()
-                case .completed, .skip:
-                    break
+                case .skip:
+                    owner.skipped.send(())
                 }
             }
             .store(in: cancelBag)
@@ -79,5 +82,14 @@ class RequestAccessContactsViewModel: ObservableObject {
 
     func cancel() { }
 
-    func update(state: ViewState) { }
+    func update(state: ViewState) {
+        switch state {
+        case .completed:
+            completed.send(())
+        case .accessConfirmed:
+            accessConfirmed.send(())
+        case .initial, .confirmRejection, .requestAccess:
+            break
+        }
+    }
 }

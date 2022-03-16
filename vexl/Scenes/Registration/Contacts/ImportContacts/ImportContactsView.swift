@@ -20,10 +20,11 @@ struct ImportContactsView: View {
             .padding(.vertical, Appearance.GridGuide.padding)
 
             SolidButton(Text(L.registerContactsImportButton()),
+                        isEnabled: $viewModel.hasSelectedItem,
                         font: Appearance.TextStyle.h3.font.asFont,
                         colors: SolidButtonColor.welcome,
                         dimensions: SolidButtonDimension.largeButton) {
-                print("1234")
+                viewModel.action.send(.completed)
             }
             .padding(.horizontal, Appearance.GridGuide.mediumPadding1)
         }

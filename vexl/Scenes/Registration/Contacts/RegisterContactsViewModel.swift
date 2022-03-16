@@ -43,10 +43,11 @@ final class RegisterContactsViewModel: ViewModelType {
 
     // MARK: - Subviews View Models and State
 
-    @Published var currentState: ViewState = .facebook
+    @Published var currentState: ViewState = .phone
     @Published var phoneViewModel: RequestAccessContactsViewModel
     @Published var facebookViewModel: RequestAccessContactsViewModel
     @Published var importPhoneContactsViewModel: ImportContactsViewModel
+    @Published var importFacebookContactsViewModel: ImportContactsViewModel
 
     // MARK: - Variables
 
@@ -56,23 +57,98 @@ final class RegisterContactsViewModel: ViewModelType {
         phoneViewModel = RequestAccessPhoneContactsViewModel(userName: "Diego")
         importPhoneContactsViewModel = ImportContactsViewModel()
         facebookViewModel = RequestAccessFacebookContactsViewModel(userName: "Diego")
-        setupPhoneViewBindings()
-        self.importPhoneContactsViewModel.current = .content
-        self.importPhoneContactsViewModel.items = ImportContactsViewModel.ContactItem.stub()
+        importFacebookContactsViewModel = ImportContactsViewModel()
+        setupRequestPhoneContactsBindings()
+        setupImportPhoneContactsBindings()
+        setupRequestFacebookContactsBindings()
+        setupImportFacebookContactsBindings()
     }
 
-    private func setupPhoneViewBindings() {
-        phoneViewModel.action
+    private func setupRequestPhoneContactsBindings() {
+        phoneViewModel.accessConfirmed
             .withUnretained(self)
-            .sink { owner, action in
-                if action == .completed {
-                    owner.currentState = .importPhoneContacts
-                    owner.phoneViewModel.current = .initial
+            .sink { owner, _ in
+                // TODO: request access to phone contacts, set as complete to continue to next screen that has and set the contacts to the ImportPhoneViewModel
+                owner.phoneViewModel.current = .completed
+                after(2) {
+                    owner.importPhoneContactsViewModel.current = .content
+                    owner.importPhoneContactsViewModel.items = ImportContactsViewModel.ContactItem.stub()
                 }
+            }
+            .store(in: cancelBag)
+
+        phoneViewModel.completed
+            .withUnretained(self)
+            .sink { owner, _ in
+                owner.currentState = .importPhoneContacts
+                owner.phoneViewModel.current = .initial
             }
             .store(in: cancelBag)
     }
 
-    private func setupImportPhoneContactsViewBindings() {
+    private func setupImportPhoneContactsBindings() {
+        importPhoneContactsViewModel.completed
+            .withUnretained(self)
+            .sink { owner, _ in
+                owner.currentState = .facebook
+                owner.importPhoneContactsViewModel.current = .loading
+            }
+            .store(in: cancelBag)
+
+        importPhoneContactsViewModel.$items
+            .withUnretained(self)
+            .sink { _, items in
+                // TODO: set selected items to a service/manager
+                let selectedItems = items.filter { $0.isSelected }
+                print(selectedItems)
+            }
+            .store(in: cancelBag)
+    }
+
+    private func setupRequestFacebookContactsBindings() {
+        facebookViewModel.skipped
+            .withUnretained(self)
+            .sink { _, _ in
+                // TODO: create user with service and message coordinator to go to the next view
+            }
+            .store(in: cancelBag)
+
+        facebookViewModel.accessConfirmed
+            .withUnretained(self)
+            .sink { owner, _ in
+                // TODO: request access to facebook sdk confirmation, set as complete to continue to next screen that has loading state and set the contacts to the ImportPhoneViewModel
+                owner.facebookViewModel.current = .completed
+                after(2) {
+                    owner.importFacebookContactsViewModel.current = .content
+                    owner.importFacebookContactsViewModel.items = ImportContactsViewModel.ContactItem.stub()
+                }
+            }
+            .store(in: cancelBag)
+
+        facebookViewModel.completed
+            .withUnretained(self)
+            .sink { owner, _ in
+                owner.currentState = .importFacebookContacts
+                owner.facebookViewModel.current = .initial
+            }
+            .store(in: cancelBag)
+    }
+
+    private func setupImportFacebookContactsBindings() {
+        importFacebookContactsViewModel.$items
+            .withUnretained(self)
+            .sink { _, items in
+                // TODO: set selected items to a service/manager
+                let selectedItems = items.filter { $0.isSelected }
+                print(selectedItems)
+            }
+            .store(in: cancelBag)
+
+        importFacebookContactsViewModel.completed
+            .withUnretained(self)
+            .sink { _, _ in
+                // TODO: - Create user with all the information, then message router to go next
+            }
+            .store(in: cancelBag)
     }
 }

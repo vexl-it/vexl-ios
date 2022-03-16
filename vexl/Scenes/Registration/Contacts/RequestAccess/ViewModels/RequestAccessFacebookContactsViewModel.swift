@@ -36,17 +36,13 @@ final class RequestAccessFacebookContactsViewModel: RequestAccessContactsViewMod
         Appearance.Colors.purple5
     }
 
-    override func update(state: ViewState) {
-        if state == .completed {
-            action.send(.completed)
-        }
-    }
-
     override func next() {
         switch current {
-        case .initial, .requestAccess, .confirmRejection:
+        case .initial:
+            current = .accessConfirmed
+        case .accessConfirmed:
             current = .completed
-        case .completed:
+        case .completed, .requestAccess, .confirmRejection:
             current = .initial
         }
     }

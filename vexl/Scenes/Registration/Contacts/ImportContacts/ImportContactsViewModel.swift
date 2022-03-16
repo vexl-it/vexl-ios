@@ -26,24 +26,28 @@ final class ImportContactsViewModel: ObservableObject {
     enum UserAction {
         case itemSelected(Bool, ContactItem)
         case unselectAll
+        case completed
     }
 
     let action: ActionSubject<UserAction> = .init()
+    let completed: ActionSubject<Void> = .init()
 
-    // MARK: - Variables
+    // MARK: - View Bindings
 
     @Published var current: ViewState = .loading
     @Published var items: [ContactItem] = []
     @Published var searchText = ""
+    @Published var canImportContacts = false
+    @Published var hasSelectedItem = false
 
-    private let cancelBag: CancelBag = .init()
-
-    var hasSelectedItem = false
+    // MARK: - Variables
 
     var filteredItems: [ContactItem] {
         guard !searchText.isEmpty else { return items }
         return items.filter { $0.name.contains(searchText) }
     }
+
+    private let cancelBag: CancelBag = .init()
 
     // MARK: - Init
 
@@ -56,6 +60,8 @@ final class ImportContactsViewModel: ObservableObject {
                     owner.select(isSelected, item: item)
                 case .unselectAll:
                     owner.unselectAllItems()
+                case .completed:
+                    owner.completed.send(())
                 }
             }
             .store(in: cancelBag)

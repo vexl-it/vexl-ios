@@ -30,9 +30,7 @@ final class RequestAccessPhoneContactsViewModel: RequestAccessContactsViewModel 
 
     override func update(state: ViewState) {
         updateAlert(for: state)
-        if state == .completed {
-            action.send(.completed)
-        }
+        super.update(state: state)
     }
 
     override func next() {
@@ -40,6 +38,8 @@ final class RequestAccessPhoneContactsViewModel: RequestAccessContactsViewModel 
         case .initial:
             current = .requestAccess
         case .requestAccess, .confirmRejection:
+            current = .accessConfirmed
+        case .accessConfirmed:
             current = .completed
         case .completed:
             current = .initial
@@ -48,7 +48,7 @@ final class RequestAccessPhoneContactsViewModel: RequestAccessContactsViewModel 
 
     override func cancel() {
         switch current {
-        case .initial, .confirmRejection, .completed:
+        case .initial, .confirmRejection, .accessConfirmed, .completed:
             current = .initial
         case .requestAccess:
             current = .confirmRejection
@@ -57,7 +57,7 @@ final class RequestAccessPhoneContactsViewModel: RequestAccessContactsViewModel 
 
     private func updateAlert(for state: ViewState) {
         switch state {
-        case .initial, .completed:
+        case .initial, .completed, .accessConfirmed:
             alert = nil
         case .requestAccess:
             alert = .request
