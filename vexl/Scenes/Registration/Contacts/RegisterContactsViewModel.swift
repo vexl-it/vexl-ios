@@ -70,6 +70,7 @@ final class RegisterContactsViewModel: ViewModelType {
             .sink { owner, _ in
                 // TODO: request access to phone contacts, set as complete to continue to next screen that has and set the contacts to the ImportPhoneViewModel
                 owner.phoneViewModel.current = .completed
+                // TODO: remove this once integration with BE is done
                 after(2) {
                     owner.importPhoneContactsViewModel.current = .content
                     owner.importPhoneContactsViewModel.items = ImportContactsViewModel.ContactItem.stub()
@@ -118,6 +119,7 @@ final class RegisterContactsViewModel: ViewModelType {
             .sink { owner, _ in
                 // TODO: request access to facebook sdk confirmation, set as complete to continue to next screen that has loading state and set the contacts to the ImportPhoneViewModel
                 owner.facebookViewModel.current = .completed
+                // TODO: remove this once integration with BE is done
                 after(2) {
                     owner.importFacebookContactsViewModel.current = .content
                     owner.importFacebookContactsViewModel.items = ImportContactsViewModel.ContactItem.stub()
