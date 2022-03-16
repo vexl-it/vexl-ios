@@ -16,7 +16,7 @@ struct RegisterContactsView: View {
         VStack {
             switch viewModel.currentState {
             case .phone:
-                PhoneContactsView(viewModel: viewModel.phoneViewModel)
+                RequestAccessContactsView(viewModel: viewModel.phoneViewModel)
             case .importPhoneContacts:
                 ImportContactsView(viewModel: viewModel.importPhoneContactsViewModel)
             case .facebook, .importFacebookContacts:

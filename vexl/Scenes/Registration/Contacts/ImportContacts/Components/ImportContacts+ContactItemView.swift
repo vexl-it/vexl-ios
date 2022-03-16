@@ -8,38 +8,14 @@
 import Foundation
 import SwiftUI
 
-extension RegisterContactsView {
-
-    private struct ContactItemSelectionView: View {
-
-        var isSelected: Bool
-        var action: () -> Void
-
-        var body: some View {
-            Button {
-                action()
-            } label: {
-                if isSelected {
-                    ZStack {
-                        Appearance.Colors.green5
-                            .cornerRadius(Appearance.GridGuide.buttonCorner)
-                        Image(systemName: "checkmark")
-                            .foregroundColor(Appearance.Colors.green1)
-                    }
-                } else {
-                    Appearance.Colors.gray4
-                        .cornerRadius(Appearance.GridGuide.buttonCorner)
-                }
-            }
-        }
-    }
+extension ImportContactsView {
 
     struct ContactItemView: View {
 
         private let imageSize = CGSize(width: 48, height: 48)
         private let checkSize = CGSize(width: 38, height: 38)
 
-        let item: RegisterContactsViewModel.ContactItem
+        let item: ImportContactsViewModel.ContactItem
         let onSelection: (Bool) -> Void
 
         var body: some View {
@@ -71,16 +47,41 @@ extension RegisterContactsView {
         }
 
         private var selectionView: some View {
-            RegisterContactsView.ContactItemSelectionView(isSelected: item.isSelected, action: {
+            ContactSelectionView(isSelected: item.isSelected,
+                                 action: {
                 onSelection(!item.isSelected)
             })
                 .frame(size: checkSize)
+        }
+    }
+
+    private struct ContactSelectionView: View {
+
+        var isSelected: Bool
+        var action: () -> Void
+
+        var body: some View {
+            Button {
+                action()
+            } label: {
+                if isSelected {
+                    ZStack {
+                        Appearance.Colors.green5
+                            .cornerRadius(Appearance.GridGuide.buttonCorner)
+                        Image(systemName: "checkmark")
+                            .foregroundColor(Appearance.Colors.green1)
+                    }
+                } else {
+                    Appearance.Colors.gray4
+                        .cornerRadius(Appearance.GridGuide.buttonCorner)
+                }
+            }
         }
     }
 }
 
 struct RegisterContacts_ContactItemViewPreview: PreviewProvider {
     static var previews: some View {
-        RegisterContactsView.ContactItemView(item: RegisterContactsViewModel.ContactItem.stub().first!, onSelection: { _ in })
+        ImportContactsView.ContactItemView(item: ImportContactsViewModel.ContactItem.stub().first!, onSelection: { _ in })
     }
 }

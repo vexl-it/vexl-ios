@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-extension RegisterContactsView {
+extension RequestAccessContactsView {
 
     struct PortraitView: View {
 
@@ -61,17 +61,17 @@ extension RegisterContactsView {
         var body: some View {
             ZStack {
                 HStack {
-                    RegisterContactsView.PortraitView(name: "*****", image: nil)
+                    PortraitView(name: "*****", image: nil)
                         .opacity(0.5)
                         .scaleEffect(0.75)
 
-                    RegisterContactsView.PortraitView(name: "*****", image: nil)
+                    PortraitView(name: "*****", image: nil)
                         .opacity(0.5)
                         .scaleEffect(0.75)
                 }
 
-                RegisterContactsView.PortraitView(name: name,
-                                                  image: avatar)
+                PortraitView(name: name,
+                             image: avatar)
             }
         }
     }
@@ -79,16 +79,16 @@ extension RegisterContactsView {
 
 struct RegisterContacts_PortraitViewPreview: PreviewProvider {
     static var previews: some View {
-        RegisterContactsView.PortraitView(name: "Diego", image: nil)
+        RequestAccessContactsView.PortraitView(name: "Diego", image: nil)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color.black.edgesIgnoringSafeArea(.all))
 
-        RegisterContactsView.PortraitView(name: "Diego", image: R.image.onboarding.testAvatar())
+        RequestAccessContactsView.PortraitView(name: "Diego", image: R.image.onboarding.testAvatar())
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color.black.edgesIgnoringSafeArea(.all))
 
-        RegisterContactsView.RegisterPortraitsView(name: "Diego",
-                                                   avatar: R.image.onboarding.testAvatar()!)
+        RequestAccessContactsView.RegisterPortraitsView(name: "Diego",
+                                                        avatar: R.image.onboarding.testAvatar()!)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color.black.edgesIgnoringSafeArea(.all))
     }

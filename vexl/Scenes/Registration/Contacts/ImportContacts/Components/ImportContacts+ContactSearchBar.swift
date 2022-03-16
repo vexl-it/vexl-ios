@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-extension RegisterContactsView {
+extension ImportContactsView {
 
     struct ContactSearchBar: View {
 
@@ -41,24 +41,26 @@ extension RegisterContactsView {
                 .frame(height: Appearance.GridGuide.baseHeight)
                 .cornerRadius(Appearance.GridGuide.buttonCorner)
 
-                if hasSelectedItem {
-                    Button(L.registerContactsImportDeselect()) {
-                        onAction()
-                    }
-                    .textStyle(.paragraph)
-                    .foregroundColor(Color.white)
-                    .padding(Appearance.GridGuide.point)
-                    .background(Appearance.Colors.primaryText)
-                    .cornerRadius(Appearance.GridGuide.buttonCorner)
+                Button(L.registerContactsImportDeselect()) {
+                    onAction()
                 }
+                .textStyle(.description)
+                .foregroundColor(hasSelectedItem ? Color.white : Appearance.Colors.gray2)
+                .frame(height: Appearance.GridGuide.baseHeight)
+                .padding(.horizontal, Appearance.GridGuide.padding)
+                .background(hasSelectedItem ? Appearance.Colors.primaryText : Appearance.Colors.gray4)
+                .cornerRadius(Appearance.GridGuide.buttonCorner)
+                .disabled(!hasSelectedItem)
             }
+            .frame(height: Appearance.GridGuide.baseHeight)
         }
     }
 }
 
 struct RegisterContacts_ContactSearchBarPreview: PreviewProvider {
     static var previews: some View {
-        RegisterContactsView.ContactSearchBar(searchText: .constant(""), hasSelectedItem: false, onAction: {})
-        RegisterContactsView.ContactSearchBar(searchText: .constant("Hello"), hasSelectedItem: false, onAction: {})
+        ImportContactsView.ContactSearchBar(searchText: .constant(""), hasSelectedItem: true, onAction: {})
+        ImportContactsView.ContactSearchBar(searchText: .constant(""), hasSelectedItem: false, onAction: {})
+        ImportContactsView.ContactSearchBar(searchText: .constant("Hello"), hasSelectedItem: false, onAction: {})
     }
 }

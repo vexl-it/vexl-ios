@@ -8,11 +8,11 @@
 import Foundation
 import SwiftUI
 
-extension RegisterContactsView {
+extension ImportContactsView {
 
     struct ContactListView: View {
 
-        @ObservedObject var viewModel: RegisterContactsViewModel.ImportContactViewModel
+        @ObservedObject var viewModel: ImportContactsViewModel
 
         private var alignment: Alignment {
             switch viewModel.current {
@@ -34,15 +34,15 @@ extension RegisterContactsView {
                     ProgressView()
                         .progressViewStyle(CircularProgressViewStyle(tint: Appearance.Colors.purple4))
                 case .content, .success:
-                    RegisterContactsView.ContactSearchBar(searchText: $viewModel.searchText,
-                                                          hasSelectedItem: viewModel.hasSelectedItem,
-                                                          onAction: {
+                    ContactSearchBar(searchText: $viewModel.searchText,
+                                     hasSelectedItem: viewModel.hasSelectedItem,
+                                     onAction: {
                         viewModel.action.send(.unselectAll)
                     })
                     .padding(Appearance.GridGuide.padding)
 
                     ForEach(viewModel.filteredItems) { item in
-                        RegisterContactsView.ContactItemView(item: item, onSelection: { isSelected in
+                        ContactItemView(item: item, onSelection: { isSelected in
                             viewModel.action.send(.itemSelected(isSelected, item))
                         })
                     }
@@ -57,7 +57,7 @@ extension RegisterContactsView {
 
 struct RegisterContacts_ContactListViewPreview: PreviewProvider {
     static var previews: some View {
-        RegisterContactsView.ContactListView(viewModel: .init())
+        ImportContactsView.ContactListView(viewModel: .init())
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color.black.edgesIgnoringSafeArea(.all))
     }
