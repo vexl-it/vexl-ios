@@ -44,10 +44,10 @@ final class RegisterContactsViewModel: ViewModelType {
     // MARK: - Subviews View Models and State
 
     @Published var currentState: ViewState = .phone
-    @Published var phoneViewModel: RequestAccessContactsViewModel
-    @Published var facebookViewModel: RequestAccessContactsViewModel
-    @Published var importPhoneContactsViewModel: ImportContactsViewModel
-    @Published var importFacebookContactsViewModel: ImportContactsViewModel
+    var phoneViewModel: RequestAccessContactsViewModel
+    var facebookViewModel: RequestAccessContactsViewModel
+    var importPhoneContactsViewModel: ImportContactsViewModel
+    var importFacebookContactsViewModel: ImportContactsViewModel
 
     // MARK: - Variables
 
