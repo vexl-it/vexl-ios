@@ -14,6 +14,10 @@ final class RegisterPhoneViewModel: ViewModelType {
 
     // TODO: Add countdown after to show retry timer
 
+    // MARK: - Property Injection
+
+    @Inject var userService: UserServiceType
+
     // MARK: - View State
 
     enum ViewState {
@@ -126,26 +130,67 @@ final class RegisterPhoneViewModel: ViewModelType {
             }
             .store(in: cancelBag)
 
+        $currentState
+            .withUnretained(self)
+            .filter { $0.1 == .codeInput }
+            .flatMap { owner, _ in
+                owner.userService.validatePhone(phoneNumber: owner.phoneNumber)
+            }
+            .sink { error in
+                
+            } receiveValue: { isCompleted in
+                
+            }
+            .store(in: cancelBag)
+
         action
             .withUnretained(self)
-            .sink { owner, action in
-                switch action {
-                case .nextTap:
-                    switch owner.currentState {
-                    case .codeInput, .phoneInput, .codeInputValidation:
+            .filter { $0.1 == .nextTap && $0.0.currentState == .codeInputSuccess }
+            .sink { owner, _ in
+                owner.route.send(.continueTapped)
+            }
+            .store(in: cancelBag)
+
+        action
+            .withUnretained(self)
+            .filter { $0.1 == .nextTap && $0.0.currentState != .codeInputSuccess }
+            .sink { owner, _ in
+                owner.currentState = owner.currentState.next
+            }
+            .store(in: cancelBag)
+
+        action
+            .withUnretained(self)
+            .filter { $0.0.currentState != .codeInputSuccess }
+            .sink { owner, _ in
+                if owner.currentState == .codeInputValidation {
+                    after(3) {
                         owner.currentState = owner.currentState.next
-                        if owner.currentState == .codeInputValidation {
-                            // Temporal simulation of the validation of the code
-                            after(3) {
-                                owner.currentState = owner.currentState.next
-                            }
-                        }
-                    case .codeInputSuccess:
-                        owner.route.send(.continueTapped)
                     }
                 }
             }
             .store(in: cancelBag)
+
+//        action
+//            .withUnretained(self)
+//            .sink { owner, action in
+//                switch action {
+//                case .nextTap:
+//                    switch owner.currentState {
+//                    case .codeInput, .codeInputValidation, .phoneInput:
+//                        owner.currentState = owner.currentState.next
+//                        if owner.currentState == .codeInputValidation {
+//                            // Temporal simulation of the validation of the code
+//                            after(3) {
+//                                owner.currentState = owner.currentState.next
+//                            }
+//                        }
+//                    case .codeInputSuccess:
+//                        owner.route.send(.continueTapped)
+//                    }
+//                }
+//            }
+//            .store(in: cancelBag)
     }
 
     private func validatePhoneNumber(_ phoneNumber: String) -> Bool {

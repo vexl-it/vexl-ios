@@ -32,6 +32,7 @@ extension RegisterPhoneView {
 
                 TextField("", text: $phoneNumber)
                     .textStyle(.h3)
+                    .foregroundColor(Appearance.Colors.primaryText)
                     .keyboardType(.numberPad)
             }
             .padding()
