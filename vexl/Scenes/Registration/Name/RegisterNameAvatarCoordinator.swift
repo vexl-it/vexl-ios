@@ -58,6 +58,7 @@ extension RegisterNameAvatarCoordinator {
                 }
                 return router.dismiss(animated: true, returning: result)
             }
+            .prefix(1)
             .eraseToAnyPublisher()
     }
 }

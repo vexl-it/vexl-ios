@@ -34,8 +34,8 @@ struct RequestAccessPortraitsView: View {
 
 private struct SinglePortraitView: View {
 
-    private let portraitSize = CGSize(width: 132, height: 132)
-    private let avatarSize = CGSize(width: 66, height: 66)
+    private let portraitSize = CGSize(width: 132.adjusted, height: 132.adjusted)
+    private let avatarSize = CGSize(width: 66.adjusted, height: 66.adjusted)
 
     let name: String
     let image: UIImage?
