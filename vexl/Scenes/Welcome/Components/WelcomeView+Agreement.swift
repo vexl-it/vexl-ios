@@ -20,10 +20,8 @@ extension WelcomeView {
                     .labelsHidden()
                     .toggleStyle(SwitchToggleStyle(tint: Appearance.Colors.purple5))
 
-                // TODO: - Localize text in the google sheet when created
-
-                LinkTextView(text: "I agree to Terms and Privacy",
-                             links: ["Terms and Privacy": "https://google.com"],
+                LinkTextView(text: L.welcomeTermsAgreements(),
+                             links: [L.welcomeTermsAgreementsLink(): L.welcomeTermsAgreementsUrl()],
                              font: Appearance.TextStyle.paragraph.font,
                              linkFont: Appearance.TextStyle.paragraphBold.font,
                              textColor: UIColor(Appearance.Colors.gray3),

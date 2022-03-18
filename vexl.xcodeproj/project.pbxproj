@@ -66,6 +66,21 @@
 		C1A0B48D6D54EB5D7D8929FB /* Pods_vexl_vexlTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D776C4D0B95B9F6E229AF7E4 /* Pods_vexl_vexlTests.framework */; };
 		F1042BA227BEADB70048C2F0 /* WelcomeView+Agreement.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1042BA127BEADB70048C2F0 /* WelcomeView+Agreement.swift */; };
 		F1042BA527BEF0360048C2F0 /* OnboardingView+PageControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1042BA427BEF0360048C2F0 /* OnboardingView+PageControl.swift */; };
+		F12A14DC27D677340096543E /* RegisterContactsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12A14DB27D677340096543E /* RegisterContactsCoordinator.swift */; };
+		F12A14DE27D677420096543E /* RegisterContactsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12A14DD27D677420096543E /* RegisterContactsViewModel.swift */; };
+		F12A14E027D6774C0096543E /* RegisterContactsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12A14DF27D6774C0096543E /* RegisterContactsView.swift */; };
+		F12A14E427D692DB0096543E /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12A14E327D692DB0096543E /* RegisterViewController.swift */; };
+		F12A14E827D6A8690096543E /* RequestAccessContactsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12A14E727D6A8690096543E /* RequestAccessContactsView.swift */; };
+		F12A14EB27D6B1CF0096543E /* RequestAccessPortraitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12A14EA27D6B1CF0096543E /* RequestAccessPortraitView.swift */; };
+		F12A14F027D912410096543E /* RequestAccessContactsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12A14EF27D912410096543E /* RequestAccessContactsViewModel.swift */; };
+		F12A14F327D96FD40096543E /* ImportContactsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12A14F227D96FD40096543E /* ImportContactsView.swift */; };
+		F12A14F527D96FDC0096543E /* ImportContactsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12A14F427D96FDC0096543E /* ImportContactsViewModel.swift */; };
+		F12A14F727D9768E0096543E /* ImportContactListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12A14F627D9768E0096543E /* ImportContactListView.swift */; };
+		F12A14FF27DFC1620096543E /* ImportContactSearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12A14FE27DFC1620096543E /* ImportContactSearchBar.swift */; };
+		F12A150127DFC1D70096543E /* ImportContactItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12A150027DFC1D70096543E /* ImportContactItemView.swift */; };
+		F12A150427E1A4520096543E /* RequestAccessPhoneContactsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12A150327E1A4520096543E /* RequestAccessPhoneContactsViewModel.swift */; };
+		F12A150627E1A47D0096543E /* RequestAccessFacebookContactsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12A150527E1A47D0096543E /* RequestAccessFacebookContactsViewModel.swift */; };
+		F12A150827E1A4940096543E /* RequestAccessAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12A150727E1A4940096543E /* RequestAccessAlert.swift */; };
 		F14D29C727BFD93C00D1CD85 /* ButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = F14D29C627BFD93C00D1CD85 /* ButtonStyle.swift */; };
 		F14D29C927BFEA1400D1CD85 /* OnboardingView+Presentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F14D29C827BFEA1400D1CD85 /* OnboardingView+Presentation.swift */; };
 		F151A29027C80708000D7242 /* RegisterPhoneView+PhoneInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = F151A28F27C80708000D7242 /* RegisterPhoneView+PhoneInput.swift */; };
@@ -73,14 +88,13 @@
 		F151A29427C826AD000D7242 /* RegistrationCounterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F151A29327C826AD000D7242 /* RegistrationCounterView.swift */; };
 		F151A29727C8667A000D7242 /* RegisterNameAvatarCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F151A29627C8667A000D7242 /* RegisterNameAvatarCoordinator.swift */; };
 		F151A29927C86683000D7242 /* RegisterNameAvatarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F151A29827C86683000D7242 /* RegisterNameAvatarViewModel.swift */; };
-		F151A29B27C86691000D7242 /* RegisterPhoneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F151A29A27C86691000D7242 /* RegisterPhoneViewController.swift */; };
 		F151A29D27C866C7000D7242 /* RegisterNameAvatarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F151A29C27C866C7000D7242 /* RegisterNameAvatarView.swift */; };
-		F151A29F27C86A07000D7242 /* RegisterNameAvatarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F151A29E27C86A07000D7242 /* RegisterNameAvatarViewController.swift */; };
 		F151A2A227C86CA6000D7242 /* RegistrationCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F151A2A127C86CA6000D7242 /* RegistrationCardView.swift */; };
 		F151A2A427C87074000D7242 /* BorderedTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = F151A2A327C87074000D7242 /* BorderedTextField.swift */; };
 		F151A2A727C962CC000D7242 /* RegisterNameAvatarView+NameInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = F151A2A627C962CC000D7242 /* RegisterNameAvatarView+NameInput.swift */; };
 		F151A2A927C9646A000D7242 /* RegisterNameAvatarView+AvatarInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = F151A2A827C9646A000D7242 /* RegisterNameAvatarView+AvatarInput.swift */; };
 		F151A2AB27CE818C000D7242 /* RegisterNameAvatarView+PhoneVerification.swift in Sources */ = {isa = PBXBuildFile; fileRef = F151A2AA27CE818C000D7242 /* RegisterNameAvatarView+PhoneVerification.swift */; };
+		F175AB8727E4D5C8000DAB15 /* UIScreen+.swift in Sources */ = {isa = PBXBuildFile; fileRef = F175AB8627E4D5C8000DAB15 /* UIScreen+.swift */; };
 		F1B5FCBC27C67DB00018729B /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B5FCBB27C67DB00018729B /* WelcomeViewController.swift */; };
 		F1B5FCBE27C68EA70018729B /* OnboardingView+BottomButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B5FCBD27C68EA70018729B /* OnboardingView+BottomButtons.swift */; };
 		F1B5FCC327C6BC330018729B /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = F1B5FCC127C6BC330018729B /* Localizable.strings */; };
@@ -178,6 +192,21 @@
 		DF8AC1A170DAA6A83E1E979B /* Pods-vexl.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-vexl.debug.xcconfig"; path = "Target Support Files/Pods-vexl/Pods-vexl.debug.xcconfig"; sourceTree = "<group>"; };
 		F1042BA127BEADB70048C2F0 /* WelcomeView+Agreement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WelcomeView+Agreement.swift"; sourceTree = "<group>"; };
 		F1042BA427BEF0360048C2F0 /* OnboardingView+PageControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OnboardingView+PageControl.swift"; sourceTree = "<group>"; };
+		F12A14DB27D677340096543E /* RegisterContactsCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterContactsCoordinator.swift; sourceTree = "<group>"; };
+		F12A14DD27D677420096543E /* RegisterContactsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterContactsViewModel.swift; sourceTree = "<group>"; };
+		F12A14DF27D6774C0096543E /* RegisterContactsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterContactsView.swift; sourceTree = "<group>"; };
+		F12A14E327D692DB0096543E /* RegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
+		F12A14E727D6A8690096543E /* RequestAccessContactsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestAccessContactsView.swift; sourceTree = "<group>"; };
+		F12A14EA27D6B1CF0096543E /* RequestAccessPortraitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestAccessPortraitView.swift; sourceTree = "<group>"; };
+		F12A14EF27D912410096543E /* RequestAccessContactsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestAccessContactsViewModel.swift; sourceTree = "<group>"; };
+		F12A14F227D96FD40096543E /* ImportContactsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportContactsView.swift; sourceTree = "<group>"; };
+		F12A14F427D96FDC0096543E /* ImportContactsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportContactsViewModel.swift; sourceTree = "<group>"; };
+		F12A14F627D9768E0096543E /* ImportContactListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportContactListView.swift; sourceTree = "<group>"; };
+		F12A14FE27DFC1620096543E /* ImportContactSearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportContactSearchBar.swift; sourceTree = "<group>"; };
+		F12A150027DFC1D70096543E /* ImportContactItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportContactItemView.swift; sourceTree = "<group>"; };
+		F12A150327E1A4520096543E /* RequestAccessPhoneContactsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestAccessPhoneContactsViewModel.swift; sourceTree = "<group>"; };
+		F12A150527E1A47D0096543E /* RequestAccessFacebookContactsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestAccessFacebookContactsViewModel.swift; sourceTree = "<group>"; };
+		F12A150727E1A4940096543E /* RequestAccessAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestAccessAlert.swift; sourceTree = "<group>"; };
 		F14D29C627BFD93C00D1CD85 /* ButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonStyle.swift; sourceTree = "<group>"; };
 		F14D29C827BFEA1400D1CD85 /* OnboardingView+Presentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OnboardingView+Presentation.swift"; sourceTree = "<group>"; };
 		F151A28F27C80708000D7242 /* RegisterPhoneView+PhoneInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RegisterPhoneView+PhoneInput.swift"; sourceTree = "<group>"; };
@@ -185,14 +214,13 @@
 		F151A29327C826AD000D7242 /* RegistrationCounterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationCounterView.swift; sourceTree = "<group>"; };
 		F151A29627C8667A000D7242 /* RegisterNameAvatarCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNameAvatarCoordinator.swift; sourceTree = "<group>"; };
 		F151A29827C86683000D7242 /* RegisterNameAvatarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNameAvatarViewModel.swift; sourceTree = "<group>"; };
-		F151A29A27C86691000D7242 /* RegisterPhoneViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterPhoneViewController.swift; sourceTree = "<group>"; };
 		F151A29C27C866C7000D7242 /* RegisterNameAvatarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNameAvatarView.swift; sourceTree = "<group>"; };
-		F151A29E27C86A07000D7242 /* RegisterNameAvatarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNameAvatarViewController.swift; sourceTree = "<group>"; };
 		F151A2A127C86CA6000D7242 /* RegistrationCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationCardView.swift; sourceTree = "<group>"; };
 		F151A2A327C87074000D7242 /* BorderedTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorderedTextField.swift; sourceTree = "<group>"; };
 		F151A2A627C962CC000D7242 /* RegisterNameAvatarView+NameInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RegisterNameAvatarView+NameInput.swift"; sourceTree = "<group>"; };
 		F151A2A827C9646A000D7242 /* RegisterNameAvatarView+AvatarInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RegisterNameAvatarView+AvatarInput.swift"; sourceTree = "<group>"; };
 		F151A2AA27CE818C000D7242 /* RegisterNameAvatarView+PhoneVerification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RegisterNameAvatarView+PhoneVerification.swift"; sourceTree = "<group>"; };
+		F175AB8627E4D5C8000DAB15 /* UIScreen+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScreen+.swift"; sourceTree = "<group>"; };
 		F1B5FCBB27C67DB00018729B /* WelcomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeViewController.swift; sourceTree = "<group>"; };
 		F1B5FCBD27C68EA70018729B /* OnboardingView+BottomButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OnboardingView+BottomButtons.swift"; sourceTree = "<group>"; };
 		F1B5FCC227C6BC330018729B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -346,6 +374,7 @@
 				B08F397927AE7112008B344F /* Codable+.swift */,
 				B08F397D27AE7112008B344F /* UIViewController+.swift */,
 				F1B5FCD527C703BF0018729B /* View+.swift */,
+				F175AB8627E4D5C8000DAB15 /* UIScreen+.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -576,6 +605,67 @@
 			path = Components;
 			sourceTree = "<group>";
 		};
+		F12A14D927D677010096543E /* Contacts */ = {
+			isa = PBXGroup;
+			children = (
+				F12A14DA27D6770B0096543E /* RequestAccess */,
+				F12A14F127D96FB00096543E /* ImportContacts */,
+				F12A14DB27D677340096543E /* RegisterContactsCoordinator.swift */,
+				F12A14DD27D677420096543E /* RegisterContactsViewModel.swift */,
+				F12A14DF27D6774C0096543E /* RegisterContactsView.swift */,
+			);
+			path = Contacts;
+			sourceTree = "<group>";
+		};
+		F12A14DA27D6770B0096543E /* RequestAccess */ = {
+			isa = PBXGroup;
+			children = (
+				F12A150227E1A43A0096543E /* ViewModels */,
+				F12A14F827D99DD00096543E /* Components */,
+				F12A14E727D6A8690096543E /* RequestAccessContactsView.swift */,
+				F12A14EF27D912410096543E /* RequestAccessContactsViewModel.swift */,
+			);
+			path = RequestAccess;
+			sourceTree = "<group>";
+		};
+		F12A14F127D96FB00096543E /* ImportContacts */ = {
+			isa = PBXGroup;
+			children = (
+				F12A14F927D99DDC0096543E /* Components */,
+				F12A14F227D96FD40096543E /* ImportContactsView.swift */,
+				F12A14F427D96FDC0096543E /* ImportContactsViewModel.swift */,
+			);
+			path = ImportContacts;
+			sourceTree = "<group>";
+		};
+		F12A14F827D99DD00096543E /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				F12A14EA27D6B1CF0096543E /* RequestAccessPortraitView.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		F12A14F927D99DDC0096543E /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				F12A14F627D9768E0096543E /* ImportContactListView.swift */,
+				F12A14FE27DFC1620096543E /* ImportContactSearchBar.swift */,
+				F12A150027DFC1D70096543E /* ImportContactItemView.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		F12A150227E1A43A0096543E /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				F12A150327E1A4520096543E /* RequestAccessPhoneContactsViewModel.swift */,
+				F12A150527E1A47D0096543E /* RequestAccessFacebookContactsViewModel.swift */,
+				F12A150727E1A4940096543E /* RequestAccessAlert.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
 		F151A28E27C806F3000D7242 /* Components */ = {
 			isa = PBXGroup;
 			children = (
@@ -592,7 +682,6 @@
 				F151A29627C8667A000D7242 /* RegisterNameAvatarCoordinator.swift */,
 				F151A29827C86683000D7242 /* RegisterNameAvatarViewModel.swift */,
 				F151A29C27C866C7000D7242 /* RegisterNameAvatarView.swift */,
-				F151A29E27C86A07000D7242 /* RegisterNameAvatarViewController.swift */,
 			);
 			path = Name;
 			sourceTree = "<group>";
@@ -619,8 +708,10 @@
 		F1B5FCCA27C6F7CC0018729B /* Registration */ = {
 			isa = PBXGroup;
 			children = (
+				F12A14D927D677010096543E /* Contacts */,
 				F151A29527C86657000D7242 /* Name */,
 				F1B5FCCB27C6F7D40018729B /* Phone */,
+				F12A14E327D692DB0096543E /* RegisterViewController.swift */,
 			);
 			path = Registration;
 			sourceTree = "<group>";
@@ -632,7 +723,6 @@
 				F1B5FCCC27C6F7E10018729B /* RegisterPhoneCoordinator.swift */,
 				F1B5FCCE27C6F7E80018729B /* RegisterPhoneViewModel.swift */,
 				F1B5FCD027C6F7EF0018729B /* RegisterPhoneView.swift */,
-				F151A29A27C86691000D7242 /* RegisterPhoneViewController.swift */,
 			);
 			path = Phone;
 			sourceTree = "<group>";
@@ -948,17 +1038,25 @@
 			buildActionMask = 2147483647;
 			files = (
 				F1B5FCBC27C67DB00018729B /* WelcomeViewController.swift in Sources */,
+				F12A14E427D692DB0096543E /* RegisterViewController.swift in Sources */,
 				B08F392C27AE7112008B344F /* ApiInterceptor.swift in Sources */,
 				F1B5FCCF27C6F7E80018729B /* RegisterPhoneViewModel.swift in Sources */,
+				F12A14DE27D677420096543E /* RegisterContactsViewModel.swift in Sources */,
 				B08F390D27AE7110008B344F /* InfoBarView.swift in Sources */,
 				B08F399A27AE7D87008B344F /* OnboardingCoordinator.swift in Sources */,
+				F12A14F027D912410096543E /* RequestAccessContactsViewModel.swift in Sources */,
+				F12A14EB27D6B1CF0096543E /* RequestAccessPortraitView.swift in Sources */,
 				B08F392227AE7112008B344F /* UIColor+.swift in Sources */,
 				B08F396A27AE7112008B344F /* URLRequest+.swift in Sources */,
+				F12A14DC27D677340096543E /* RegisterContactsCoordinator.swift in Sources */,
 				F151A29727C8667A000D7242 /* RegisterNameAvatarCoordinator.swift in Sources */,
 				B08F399727AE7D33008B344F /* SplashScreenView.swift in Sources */,
 				F1C6D09727BDAD7F009BD506 /* LargeButton.swift in Sources */,
+				F12A14F327D96FD40096543E /* ImportContactsView.swift in Sources */,
+				F12A150827E1A4940096543E /* RequestAccessAlert.swift in Sources */,
 				F151A29427C826AD000D7242 /* RegistrationCounterView.swift in Sources */,
 				B0F206EF27AE8F6900A44E72 /* Publisher+.swift in Sources */,
+				F12A14E827D6A8690096543E /* RequestAccessContactsView.swift in Sources */,
 				B08F390727AE7110008B344F /* UserDefault.swift in Sources */,
 				B08F391727AE7112008B344F /* AuthenticationManager.swift in Sources */,
 				B08F394B27AE7112008B344F /* ServerError.swift in Sources */,
@@ -968,17 +1066,22 @@
 				B08F392E27AE7112008B344F /* UserService.swift in Sources */,
 				F1B5FCCD27C6F7E10018729B /* RegisterPhoneCoordinator.swift in Sources */,
 				F151A2A427C87074000D7242 /* BorderedTextField.swift in Sources */,
-				F151A29B27C86691000D7242 /* RegisterPhoneViewController.swift in Sources */,
 				B08F392A27AE7112008B344F /* ServiceAssembly.swift in Sources */,
+				F12A14F727D9768E0096543E /* ImportContactListView.swift in Sources */,
 				B08F38DF27AE7110008B344F /* DIContainer.swift in Sources */,
 				B08F391E27AE7112008B344F /* AppDelegate.swift in Sources */,
 				B08F394F27AE7112008B344F /* Localization.swift in Sources */,
 				B08F397227AE7112008B344F /* Formatters.swift in Sources */,
 				B0F206F127AE94C400A44E72 /* InitialScreenManager.swift in Sources */,
+				F12A14E027D6774C0096543E /* RegisterContactsView.swift in Sources */,
+				F12A150627E1A47D0096543E /* RequestAccessFacebookContactsViewModel.swift in Sources */,
+				F12A150427E1A4520096543E /* RequestAccessPhoneContactsViewModel.swift in Sources */,
+				F12A150127DFC1D70096543E /* ImportContactItemView.swift in Sources */,
 				B08F397A27AE7112008B344F /* Codable+.swift in Sources */,
 				F151A2A927C9646A000D7242 /* RegisterNameAvatarView+AvatarInput.swift in Sources */,
 				B08F395927AE7112008B344F /* ClientAPIError.swift in Sources */,
 				F1B5FCD427C703230018729B /* CardModifier.swift in Sources */,
+				F12A14F527D96FDC0096543E /* ImportContactsViewModel.swift in Sources */,
 				B08F391C27AE7112008B344F /* BaseService.swift in Sources */,
 				F1C6D09E27BDDD4C009BD506 /* TextStyle.swift in Sources */,
 				B08F393627AE7112008B344F /* UIDevice+.swift in Sources */,
@@ -1016,15 +1119,16 @@
 				F1B5FCBE27C68EA70018729B /* OnboardingView+BottomButtons.swift in Sources */,
 				F151A29927C86683000D7242 /* RegisterNameAvatarViewModel.swift in Sources */,
 				B08F394127AE7112008B344F /* Shortcuts.swift in Sources */,
-				F151A29F27C86A07000D7242 /* RegisterNameAvatarViewController.swift in Sources */,
 				F1B5FCD827C7040C0018729B /* RoundedCorners.swift in Sources */,
 				F151A29D27C866C7000D7242 /* RegisterNameAvatarView.swift in Sources */,
 				B08F395F27AE7112008B344F /* String+.swift in Sources */,
+				F12A14FF27DFC1620096543E /* ImportContactSearchBar.swift in Sources */,
 				F1C6D0A027BDECB0009BD506 /* WelcomeView+LogoImageView.swift in Sources */,
 				B08F399327AE7D1F008B344F /* SplashScreenCoordinator.swift in Sources */,
 				F1B5FCD127C6F7EF0018729B /* RegisterPhoneView.swift in Sources */,
 				B08F397027AE7112008B344F /* UserRouter.swift in Sources */,
 				B08F394327AE7112008B344F /* Keychain+.swift in Sources */,
+				F175AB8727E4D5C8000DAB15 /* UIScreen+.swift in Sources */,
 				F151A2A727C962CC000D7242 /* RegisterNameAvatarView+NameInput.swift in Sources */,
 				B08F399527AE7D29008B344F /* SplashScreenViewModel.swift in Sources */,
 				F151A29027C80708000D7242 /* RegisterPhoneView+PhoneInput.swift in Sources */,

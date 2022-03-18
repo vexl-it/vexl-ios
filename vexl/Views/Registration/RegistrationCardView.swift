@@ -69,14 +69,13 @@ private struct RegistrationCardTitleView: View {
 
             HStack {
 
-                if let  iconName = iconName {
+                if let iconName = iconName {
                     Image(iconName)
                 }
 
                 Text(subtitle)
                     .textStyle(.paragraph)
                     .foregroundColor(Appearance.Colors.gray2)
-                    
             }
             .padding(.top, Appearance.GridGuide.mediumPadding1)
         }

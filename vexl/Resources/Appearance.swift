@@ -16,11 +16,14 @@ struct Appearance {
     struct Colors {
         // MARK: General Colors
 
+        static let purple1 = Color(R.color.purple1.name)
         static let purple4 = Color(R.color.purple4.name)
         static let purple5 = Color(R.color.purple5.name)
         static let gray1 = Color(R.color.gray1.name)
         static let gray2 = Color(R.color.gray2.name)
         static let gray3 = Color(R.color.gray3.name)
+        static let gray4 = Color(R.color.gray4.name)
+        static let green1 = Color(R.color.green1.name)
         static let green5 = Color(R.color.green5.name)
 
         // MARK: Text
@@ -38,6 +41,7 @@ struct Appearance {
 
         // MARK: Margins
 
+        static let smallPadding: CGFloat = 4
         static let point: CGFloat = 8
         static let padding: CGFloat = 16
         static let mediumPadding1: CGFloat = 24
@@ -47,6 +51,7 @@ struct Appearance {
 
         // MARK: Button
 
+        static let baseHeight: CGFloat = 40
         static let largeButtonHeight: CGFloat = 64
 
         // MARK: Avatar
@@ -66,6 +71,8 @@ struct Appearance {
         case h3
         case paragraph
         case paragraphBold
+        case description
+        case descriptionSemibold
 
         var font: UIFont {
             switch self {
@@ -77,6 +84,10 @@ struct Appearance {
                 return UIFont.preferredFont(forTextStyle: .body, weight: .regular)
             case .paragraphBold:
                 return UIFont.preferredFont(forTextStyle: .body, weight: .bold)
+            case .description:
+                return UIFont.preferredFont(forTextStyle: .footnote, weight: .regular)
+            case .descriptionSemibold:
+                return UIFont.preferredFont(forTextStyle: .footnote, weight: .semibold)
             }
         }
     }
