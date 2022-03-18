@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-struct RequestAccessPortraitsView: View {
+struct RequestAccessPortraitView: View {
 
     let name: String
     let avatar: UIImage
@@ -93,7 +93,7 @@ struct RegisterContacts_PortraitViewPreview: PreviewProvider {
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color.black.edgesIgnoringSafeArea(.all))
 
-        RequestAccessPortraitsView(name: "Diego",
+        RequestAccessPortraitView(name: "Diego",
                                    avatar: R.image.onboarding.testAvatar()!,
                                    color: Appearance.Colors.green5,
                                    textColor: Appearance.Colors.green1)
