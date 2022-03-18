@@ -33,6 +33,7 @@
 "register.name.avatar.phone.validated" = "Phone verified.\nLet’s setup your profile.";
 "register.contacts.import.button" = "Import contacts";
 "register.contacts.import.deselect" = "Deselect All";
+"register.contacts.import.empty" = "There are no contacts to import";
 "register.contacts.skip" = "Skip for now";
 "register.contacts.import.alert.allow" = "Allow";
 "register.contacts.import.alert.not.allow" = "Don’t allow";

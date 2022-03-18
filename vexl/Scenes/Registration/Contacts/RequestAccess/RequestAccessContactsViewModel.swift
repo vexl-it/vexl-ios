@@ -24,7 +24,7 @@ class RequestAccessContactsViewModel: ObservableObject {
 
     // MARK: - View Bindings
 
-    @Published var current: ViewState = .initial
+    @Published var currentState: ViewState = .initial
     @Published var alert: RequestAccessContactsAlertType?
 
     // MARK: - Actions Bindings
@@ -56,7 +56,7 @@ class RequestAccessContactsViewModel: ObservableObject {
 
     init(userName: String) {
         self.userName = userName
-        $current
+        $currentState
             .withUnretained(self)
             .sink { owner, state in
                 owner.update(state: state)
@@ -68,9 +68,9 @@ class RequestAccessContactsViewModel: ObservableObject {
             .sink { owner, action in
                 switch action {
                 case .next:
-                    owner.next()
+                    owner.advanceCurrentState()
                 case .cancel:
-                    owner.cancel()
+                    owner.cancelCurrentState()
                 case .skip:
                     owner.skipped.send(())
                 }
@@ -78,9 +78,13 @@ class RequestAccessContactsViewModel: ObservableObject {
             .store(in: cancelBag)
     }
 
-    func next() { }
+    func advanceCurrentState() {
+        fatalError("Method needs to be implemented")
+    }
 
-    func cancel() { }
+    func cancelCurrentState() {
+        fatalError("Method needs to be implemented")
+    }
 
     func update(state: ViewState) {
         switch state {

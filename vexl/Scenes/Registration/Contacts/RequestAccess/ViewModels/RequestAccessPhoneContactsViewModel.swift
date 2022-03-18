@@ -33,25 +33,25 @@ final class RequestAccessPhoneContactsViewModel: RequestAccessContactsViewModel 
         super.update(state: state)
     }
 
-    override func next() {
-        switch current {
+    override func advanceCurrentState() {
+        switch currentState {
         case .initial:
-            current = .requestAccess
+            currentState = .requestAccess
         case .requestAccess, .confirmRejection:
-            current = .accessConfirmed
+            currentState = .accessConfirmed
         case .accessConfirmed:
-            current = .completed
+            currentState = .completed
         case .completed:
-            current = .initial
+            currentState = .initial
         }
     }
 
-    override func cancel() {
-        switch current {
+    override func cancelCurrentState() {
+        switch currentState {
         case .initial, .confirmRejection, .accessConfirmed, .completed:
-            current = .initial
+            currentState = .initial
         case .requestAccess:
-            current = .confirmRejection
+            currentState = .confirmRejection
         }
     }
 

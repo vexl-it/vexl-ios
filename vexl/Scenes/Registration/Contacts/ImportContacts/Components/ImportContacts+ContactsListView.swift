@@ -8,56 +8,53 @@
 import Foundation
 import SwiftUI
 
-extension ImportContactsView {
+struct ImportContactListView: View {
 
-    struct ContactListView: View {
+    @ObservedObject var viewModel: ImportContactsViewModel
 
-        @ObservedObject var viewModel: ImportContactsViewModel
-
-        private var alignment: Alignment {
-            switch viewModel.current {
-            case .loading, .empty:
-                return .center
-            case .content, .success:
-                return .top
-            }
+    private var alignment: Alignment {
+        switch viewModel.current {
+        case .loading, .empty:
+            return .center
+        case .content, .success:
+            return .top
         }
+    }
 
-        var body: some View {
-            VStack {
-                switch viewModel.current {
-                case .empty:
-                    Text("There are no contacts to import")
-                        .foregroundColor(Appearance.Colors.primaryText)
-                        .textStyle(.h3)
-                case .loading:
-                    ProgressView()
-                        .progressViewStyle(CircularProgressViewStyle(tint: Appearance.Colors.purple4))
-                case .content, .success:
-                    ContactSearchBar(searchText: $viewModel.searchText,
-                                     hasSelectedItem: viewModel.hasSelectedItem,
-                                     onAction: {
-                        viewModel.action.send(.unselectAll)
+    var body: some View {
+        VStack {
+            switch viewModel.current {
+            case .empty:
+                Text(L.registerContactsImportEmpty())
+                    .foregroundColor(Appearance.Colors.primaryText)
+                    .textStyle(.h3)
+            case .loading:
+                ProgressView()
+                    .progressViewStyle(CircularProgressViewStyle(tint: Appearance.Colors.purple4))
+            case .content, .success:
+                ImportContactSearchBar(searchText: $viewModel.searchText,
+                                       hasSelectedItem: viewModel.hasSelectedItem,
+                                       onAction: {
+                    viewModel.action.send(.unselectAll)
+                })
+                .padding(Appearance.GridGuide.padding)
+
+                ForEach(viewModel.filteredItems) { item in
+                    ImportContactItemView(item: item, onSelection: { isSelected in
+                        viewModel.action.send(.itemSelected(isSelected, item))
                     })
-                    .padding(Appearance.GridGuide.padding)
-
-                    ForEach(viewModel.filteredItems) { item in
-                        ContactItemView(item: item, onSelection: { isSelected in
-                            viewModel.action.send(.itemSelected(isSelected, item))
-                        })
-                    }
                 }
             }
-            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: alignment)
-            .background(Color.white)
-            .cornerRadius(Appearance.GridGuide.padding)
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: alignment)
+        .background(Color.white)
+        .cornerRadius(Appearance.GridGuide.padding)
     }
 }
 
 struct RegisterContacts_ContactListViewPreview: PreviewProvider {
     static var previews: some View {
-        ImportContactsView.ContactListView(viewModel: .init())
+        ImportContactListView(viewModel: .init())
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color.black.edgesIgnoringSafeArea(.all))
     }

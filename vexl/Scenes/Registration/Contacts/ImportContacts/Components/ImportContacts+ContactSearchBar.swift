@@ -8,59 +8,56 @@
 import Foundation
 import SwiftUI
 
-extension ImportContactsView {
+struct ImportContactSearchBar: View {
 
-    struct ContactSearchBar: View {
+    @Binding var searchText: String
+    var hasSelectedItem: Bool
+    var onAction: () -> Void
 
-        @Binding var searchText: String
-        var hasSelectedItem: Bool
-        var onAction: () -> Void
+    var body: some View {
+        HStack(spacing: Appearance.GridGuide.point) {
 
-        var body: some View {
-            HStack(spacing: Appearance.GridGuide.point) {
+            ZStack {
+                Rectangle()
+                    .foregroundColor(Appearance.Colors.gray4)
 
-                ZStack {
-                    Rectangle()
-                        .foregroundColor(Appearance.Colors.gray4)
-
-                    HStack {
-                        Image(systemName: "magnifyingglass")
-                        ZStack(alignment: .leading) {
-                            if searchText.isEmpty {
-                                Text(L.generalSearch())
-                                    .foregroundColor(Appearance.Colors.gray2)
-                            }
-
-                            TextField("", text: $searchText)
-                                .foregroundColor(Appearance.Colors.primaryText)
+                HStack {
+                    Image(systemName: "magnifyingglass")
+                    ZStack(alignment: .leading) {
+                        if searchText.isEmpty {
+                            Text(L.generalSearch())
+                                .foregroundColor(Appearance.Colors.gray2)
                         }
-                    }
-                    .foregroundColor(Appearance.Colors.gray2)
-                    .padding(.horizontal, Appearance.GridGuide.point)
-                }
-                .frame(height: Appearance.GridGuide.baseHeight)
-                .cornerRadius(Appearance.GridGuide.buttonCorner)
 
-                Button(L.registerContactsImportDeselect()) {
-                    onAction()
+                        TextField("", text: $searchText)
+                            .foregroundColor(Appearance.Colors.primaryText)
+                    }
                 }
-                .textStyle(.paragraph)
-                .foregroundColor(hasSelectedItem ? Color.white : Appearance.Colors.gray2)
-                .frame(height: Appearance.GridGuide.baseHeight)
-                .padding(.horizontal, Appearance.GridGuide.padding)
-                .background(hasSelectedItem ? Appearance.Colors.primaryText : Appearance.Colors.gray4)
-                .cornerRadius(Appearance.GridGuide.buttonCorner)
-                .disabled(!hasSelectedItem)
+                .foregroundColor(Appearance.Colors.gray2)
+                .padding(.horizontal, Appearance.GridGuide.point)
             }
             .frame(height: Appearance.GridGuide.baseHeight)
+            .cornerRadius(Appearance.GridGuide.buttonCorner)
+
+            Button(L.registerContactsImportDeselect()) {
+                onAction()
+            }
+            .textStyle(.paragraph)
+            .foregroundColor(hasSelectedItem ? Color.white : Appearance.Colors.gray2)
+            .frame(height: Appearance.GridGuide.baseHeight)
+            .padding(.horizontal, Appearance.GridGuide.padding)
+            .background(hasSelectedItem ? Appearance.Colors.primaryText : Appearance.Colors.gray4)
+            .cornerRadius(Appearance.GridGuide.buttonCorner)
+            .disabled(!hasSelectedItem)
         }
+        .frame(height: Appearance.GridGuide.baseHeight)
     }
 }
 
 struct RegisterContacts_ContactSearchBarPreview: PreviewProvider {
     static var previews: some View {
-        ImportContactsView.ContactSearchBar(searchText: .constant(""), hasSelectedItem: true, onAction: {})
-        ImportContactsView.ContactSearchBar(searchText: .constant(""), hasSelectedItem: false, onAction: {})
-        ImportContactsView.ContactSearchBar(searchText: .constant("Hello"), hasSelectedItem: false, onAction: {})
+        ImportContactSearchBar(searchText: .constant(""), hasSelectedItem: true, onAction: {})
+        ImportContactSearchBar(searchText: .constant(""), hasSelectedItem: false, onAction: {})
+        ImportContactSearchBar(searchText: .constant("Hello"), hasSelectedItem: false, onAction: {})
     }
 }

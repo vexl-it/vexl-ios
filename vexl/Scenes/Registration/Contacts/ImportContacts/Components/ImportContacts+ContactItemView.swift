@@ -8,73 +8,70 @@
 import Foundation
 import SwiftUI
 
-extension ImportContactsView {
+struct ImportContactItemView: View {
 
-    struct ContactItemView: View {
+    private let imageSize = CGSize(width: 48, height: 48)
+    private let checkSize = CGSize(width: 38, height: 38)
 
-        private let imageSize = CGSize(width: 48, height: 48)
-        private let checkSize = CGSize(width: 38, height: 38)
+    let item: ImportContactItem
+    let onSelection: (Bool) -> Void
 
-        let item: ImportContactsViewModel.ContactItem
-        let onSelection: (Bool) -> Void
+    var body: some View {
+        HStack {
+            Image(R.image.onboarding.emptyAvatar.name)
+                .resizable()
+                .frame(size: imageSize)
 
-        var body: some View {
-            HStack {
-                Image(R.image.onboarding.emptyAvatar.name)
-                    .resizable()
-                    .frame(size: imageSize)
+            Spacer()
 
-                Spacer()
+            VStack(alignment: .leading, spacing: Appearance.GridGuide.smallPadding) {
+                Text(item.name)
+                    .textStyle(.paragraph)
+                    .foregroundColor(Appearance.Colors.primaryText)
 
-                VStack(alignment: .leading, spacing: Appearance.GridGuide.smallPadding) {
-                    Text(item.name)
-                        .textStyle(.paragraph)
-                        .foregroundColor(Appearance.Colors.primaryText)
-
-                    Text(item.phone)
-                        .textStyle(.descriptionSemibold)
-                        .foregroundColor(Appearance.Colors.gray3)
-                }
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.horizontal, Appearance.GridGuide.point)
-
-                Spacer()
-
-                selectionView
+                Text(item.phone)
+                    .textStyle(.descriptionSemibold)
+                    .foregroundColor(Appearance.Colors.gray3)
             }
-            .padding(.horizontal, Appearance.GridGuide.padding)
-            .padding(.bottom, Appearance.GridGuide.point)
-        }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(.horizontal, Appearance.GridGuide.point)
 
-        private var selectionView: some View {
-            ContactSelectionView(isSelected: item.isSelected,
-                                 action: {
-                onSelection(!item.isSelected)
-            })
-                .frame(size: checkSize)
+            Spacer()
+
+            selectionView
         }
+        .padding(.horizontal, Appearance.GridGuide.padding)
+        .padding(.bottom, Appearance.GridGuide.point)
     }
 
-    private struct ContactSelectionView: View {
+    private var selectionView: some View {
+        ImportContactSelectionView(isSelected: item.isSelected,
+                                   action: {
+            onSelection(!item.isSelected)
+        })
+            .frame(size: checkSize)
+    }
+}
 
-        var isSelected: Bool
-        var action: () -> Void
+private struct ImportContactSelectionView: View {
 
-        var body: some View {
-            Button {
-                action()
-            } label: {
-                if isSelected {
-                    ZStack {
-                        Appearance.Colors.green5
-                            .cornerRadius(Appearance.GridGuide.buttonCorner)
-                        Image(systemName: "checkmark")
-                            .foregroundColor(Appearance.Colors.green1)
-                    }
-                } else {
-                    Appearance.Colors.gray4
+    var isSelected: Bool
+    var action: () -> Void
+
+    var body: some View {
+        Button {
+            action()
+        } label: {
+            if isSelected {
+                ZStack {
+                    Appearance.Colors.green5
                         .cornerRadius(Appearance.GridGuide.buttonCorner)
+                    Image(systemName: "checkmark")
+                        .foregroundColor(Appearance.Colors.green1)
                 }
+            } else {
+                Appearance.Colors.gray4
+                    .cornerRadius(Appearance.GridGuide.buttonCorner)
             }
         }
     }
@@ -82,6 +79,6 @@ extension ImportContactsView {
 
 struct RegisterContacts_ContactItemViewPreview: PreviewProvider {
     static var previews: some View {
-        ImportContactsView.ContactItemView(item: ImportContactsViewModel.ContactItem.stub().first!, onSelection: { _ in })
+        ImportContactItemView(item: ImportContactItem.stub().first!, onSelection: { _ in })
     }
 }
