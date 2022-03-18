@@ -28,11 +28,11 @@ final class UserService: BaseService, UserServiceType {
     }
 
     func validatePhone(phoneNumber: String) -> AnyPublisher<Bool, Error> {
-        AnyPublisher(Future<Bool, Error> { promise in
+        Future<Bool, Error> { promise in
             after(2) {
                 promise(.success(true))
             }
-        })
+        }.eraseToAnyPublisher()
     }
 
     func createUser(username: String, avatar: String) -> AnyPublisher<User, Error> {

@@ -103,6 +103,7 @@ final class RegisterPhoneViewModel: ViewModelType {
         setupBindings()
     }
 
+    // swiftlint:disable function_body_length
     private func setupBindings() {
         $phoneNumber
             .withUnretained(self)
@@ -131,21 +132,27 @@ final class RegisterPhoneViewModel: ViewModelType {
             .store(in: cancelBag)
 
         $currentState
+            .useAction(action: .codeInput)
             .withUnretained(self)
-            .filter { $0.1 == .codeInput }
             .flatMap { owner, _ in
                 owner.userService.validatePhone(phoneNumber: owner.phoneNumber)
+                    .catch { error in
+                        Just(false)
+                    }
+                    .eraseToAnyPublisher()
             }
-            .sink { error in
+            .handleEvents(receiveOutput: { _ in
                 
-            } receiveValue: { isCompleted in
+            })
+            .sink { _ in
                 
             }
             .store(in: cancelBag)
 
         action
+            .useAction(action: .nextTap)
             .withUnretained(self)
-            .filter { $0.1 == .nextTap && $0.0.currentState == .codeInputSuccess }
+            .filter { $0.0.currentState == .codeInputSuccess }
             .sink { owner, _ in
                 owner.route.send(.continueTapped)
             }
