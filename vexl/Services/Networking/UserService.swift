@@ -16,6 +16,7 @@ protocol UserServiceType {
     func createUser(username: String, avatar: String) -> AnyPublisher<User, Error>
     // temporal
     func generateKeys() -> AnyPublisher<UserKeys, Error>
+    func generateSignature(challenge: String, privateKey: String) -> AnyPublisher<UserSignature, Error>
 }
 
 final class UserService: BaseService, UserServiceType {
@@ -50,6 +51,15 @@ final class UserService: BaseService, UserServiceType {
             .eraseToAnyPublisher()
     }
 
+    func createUser(username: String, avatar: String) -> AnyPublisher<User, Error> {
+        AnyPublisher(Future<User, Error> { promise in
+            let user = User(id: 1, name: "Diego")
+            promise(.success(user))
+        })
+    }
+
+    // TODO: - Temporal delete once C library is implemented
+
     func generateKeys() -> AnyPublisher<UserKeys, Error> {
         request(type: UserKeys.self, endpoint: UserRouter.temporalGenerateKeys)
             .withUnretained(self)
@@ -60,10 +70,13 @@ final class UserService: BaseService, UserServiceType {
             .eraseToAnyPublisher()
     }
 
-    func createUser(username: String, avatar: String) -> AnyPublisher<User, Error> {
-        AnyPublisher(Future<User, Error> { promise in
-            let user = User(id: 1, name: "Diego")
-            promise(.success(user))
-        })
+    func generateSignature(challenge: String, privateKey: String) -> AnyPublisher<UserSignature, Error> {
+        request(type: UserSignature.self, endpoint: UserRouter.temporalSignature(challenge: challenge, privateKey: privateKey))
+            .withUnretained(self)
+            .handleEvents(receiveOutput: { owner, response in
+                owner.authenticationManager.setUserSignature(response)
+            })
+            .map { $0.1 }
+            .eraseToAnyPublisher()
     }
 }

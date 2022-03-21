@@ -35,6 +35,7 @@ final class RegisterPhoneViewModel: ViewModelType {
 
     let action: ActionSubject<UserAction> = .init()
     let triggerCountdown: ActionSubject<Date?>  = .init()
+    private let temporalGenerateSignature: ActionSubject<String> = .init()
 
     // MARK: - View Bindings
 
@@ -182,6 +183,11 @@ final class RegisterPhoneViewModel: ViewModelType {
                     .eraseToAnyPublisher()
             }
             .withUnretained(self)
+            .handleEvents(receiveOutput: { owner, response in
+                // TODO: - Remove/Adapt when C library is added
+                guard let response = response else { return }
+                owner.temporalGenerateSignature.send(response.challenge)
+            })
             .sink { owner, response in
                 guard response != nil else {
                     owner.currentState = .codeInput
@@ -189,7 +195,23 @@ final class RegisterPhoneViewModel: ViewModelType {
                 }
 
                 owner.currentState = .codeInputSuccess
+                owner.authenticationManager.clearPhoneVerification()
                 owner.route.send(.continueTapped)
+            }
+            .store(in: cancelBag)
+
+        temporalGenerateSignature
+            .withUnretained(self)
+            .flatMap { owner, challenge in
+                owner.userService.generateSignature(challenge: challenge,
+                                                    privateKey: owner.authenticationManager.userKeys?.privateKey ?? "")
+                    .track(activity: owner.primaryActivity)
+                    .materialize()
+                    .compactMap { $0.value }
+                    .eraseToAnyPublisher()
+            }
+            .sink { signature in
+                print("Obtained signature: \(signature)")
             }
             .store(in: cancelBag)
     }

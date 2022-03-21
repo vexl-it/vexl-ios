@@ -38,6 +38,7 @@ final class AuthenticationManager: TokenHandlerType {
     private(set) var phoneVerification = CurrentValueSubject<PhoneConfirmationResponse?, Never>(nil)
     private(set) var codeConfirmation = CurrentValueSubject<CodeValidationResponse?, Never>(nil)
     private(set) var userKeys: UserKeys?
+    private(set) var userSignature: UserSignature?
 
     // MARK: - Initialization
 
@@ -71,8 +72,16 @@ final class AuthenticationManager: TokenHandlerType {
 
 extension AuthenticationManager {
 
+    func setUserSignature(_ userSignature: UserSignature) {
+        self.userSignature = userSignature
+    }
+
     func setUserKeys(_ userKeys: UserKeys) {
         self.userKeys = userKeys
+    }
+
+    func clearPhoneVerification() {
+        self.phoneVerification.send(nil)
     }
 
     func setPhoneVerification(_ phoneVerification: PhoneConfirmationResponse) {

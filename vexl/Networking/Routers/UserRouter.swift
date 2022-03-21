@@ -15,12 +15,13 @@ enum UserRouter: ApiRouter {
     case confirmPhone(phoneNumber: String)
     case validateCode(id: Int, code: String, key: String)
     case temporalGenerateKeys
+    case temporalSignature(challenge: String, privateKey: String)
 
     var method: HTTPMethod {
         switch self {
         case .me, .temporalGenerateKeys:
             return .get
-        case .createUser, .confirmPhone, .validateCode:
+        case .createUser, .confirmPhone, .validateCode, .temporalSignature:
             return .post
         }
     }
@@ -37,6 +38,8 @@ enum UserRouter: ApiRouter {
             return "user/confirmation/code"
         case .temporalGenerateKeys:
             return "temp/key-pairs"
+        case .temporalSignature:
+            return "temp/signature"
         }
     }
 
@@ -44,6 +47,9 @@ enum UserRouter: ApiRouter {
         switch self {
         case .me, .temporalGenerateKeys:
             return [:]
+        case let .temporalSignature(challenge, privateKey):
+            return ["challenge": challenge,
+                    "privateKey": privateKey]
         case let .createUser(username, avatar):
             return ["username": username,
                     "avatar": avatar]
