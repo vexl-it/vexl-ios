@@ -15,7 +15,7 @@ struct ImportContactsView: View {
     var body: some View {
         VStack(spacing: .zero) {
 
-            contactList
+            ImportContactListView(viewModel: viewModel)
             .padding(.horizontal, Appearance.GridGuide.point)
             .padding(.vertical, Appearance.GridGuide.padding)
 
@@ -28,10 +28,6 @@ struct ImportContactsView: View {
             }
             .padding(.horizontal, Appearance.GridGuide.mediumPadding1)
         }
-    }
-
-    private var contactList: some View {
-        ContactListView(viewModel: viewModel)
     }
 }
 

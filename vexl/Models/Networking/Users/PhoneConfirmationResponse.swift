@@ -9,5 +9,10 @@ import Foundation
 
 struct PhoneConfirmationResponse: Codable {
     var verificationId: Int
-    var expirationAt: Date 
+    var expirationAt: String
+
+    var expirationDate: Date? {
+        UserService.temporal
+        //Formatters.dateApiFormatter.date(from: expirationAt)
+    }
 }

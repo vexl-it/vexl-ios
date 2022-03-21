@@ -33,6 +33,11 @@ final class AuthenticationManager: TokenHandlerType {
 
     private let cancelBag: CancelBag = .init()
 
+    // MARK: - Variables for user registration
+
+    private(set) var phoneVerification = CurrentValueSubject<PhoneConfirmationResponse?, Never>(nil)
+    private(set) var codeConfirmation = CurrentValueSubject<CodeValidationResponse?, Never>(nil)
+
     // MARK: - Initialization
 
     init() {
@@ -64,6 +69,21 @@ final class AuthenticationManager: TokenHandlerType {
 // MARK: - Methods
 
 extension AuthenticationManager {
+
+    func getPublicKey() -> String {
+        "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEzIdBL0Q/P+OEk84pJTaEIwro2mY9Y3JihBzNlMn5jTxVtzyi0MEepbgu57Z5nBZG6kNo0D8FTrY0Oe/2niL13w=="
+    }
+
+    func setPhoneVerification(_ phoneVerification: PhoneConfirmationResponse) {
+        self.phoneVerification.send(phoneVerification)
+    }
+
+    func setCodeConfirmation(_ codeValidation: CodeValidationResponse) {
+        self.codeConfirmation.send(codeValidation)
+    }
+
+    // MARK: - Base Authentication Methods
+
     func setAccessToken(token: String) {
         accessToken = token
     }

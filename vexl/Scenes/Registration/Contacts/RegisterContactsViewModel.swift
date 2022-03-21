@@ -69,11 +69,11 @@ final class RegisterContactsViewModel: ViewModelType {
             .withUnretained(self)
             .sink { owner, _ in
                 // TODO: request access to phone contacts, set as complete to continue to next screen that has and set the contacts to the ImportPhoneViewModel
-                owner.phoneViewModel.current = .completed
+                owner.phoneViewModel.currentState = .completed
                 // TODO: remove this once integration with BE is done
                 after(2) {
                     owner.importPhoneContactsViewModel.current = .content
-                    owner.importPhoneContactsViewModel.items = ImportContactsViewModel.ContactItem.stub()
+                    owner.importPhoneContactsViewModel.items = ImportContactItem.stub()
                 }
             }
             .store(in: cancelBag)
@@ -82,7 +82,7 @@ final class RegisterContactsViewModel: ViewModelType {
             .withUnretained(self)
             .sink { owner, _ in
                 owner.currentState = .importPhoneContacts
-                owner.phoneViewModel.current = .initial
+                owner.phoneViewModel.currentState = .initial
             }
             .store(in: cancelBag)
     }
@@ -118,11 +118,11 @@ final class RegisterContactsViewModel: ViewModelType {
             .withUnretained(self)
             .sink { owner, _ in
                 // TODO: request access to facebook sdk confirmation, set as complete to continue to next screen that has loading state and set the contacts to the ImportPhoneViewModel
-                owner.facebookViewModel.current = .completed
+                owner.facebookViewModel.currentState = .completed
                 // TODO: remove this once integration with BE is done
                 after(2) {
                     owner.importFacebookContactsViewModel.current = .content
-                    owner.importFacebookContactsViewModel.items = ImportContactsViewModel.ContactItem.stub()
+                    owner.importFacebookContactsViewModel.items = ImportContactItem.stub()
                 }
             }
             .store(in: cancelBag)
@@ -131,7 +131,7 @@ final class RegisterContactsViewModel: ViewModelType {
             .withUnretained(self)
             .sink { owner, _ in
                 owner.currentState = .importFacebookContacts
-                owner.facebookViewModel.current = .initial
+                owner.facebookViewModel.currentState = .initial
             }
             .store(in: cancelBag)
     }

@@ -12,12 +12,14 @@ import Alamofire
 enum UserRouter: ApiRouter {
     case me
     case createUser(username: String, avatar: String)
+    case confirmPhone(phoneNumber: String)
+    case validateCode(id: Int, code: String, key: String)
 
     var method: HTTPMethod {
         switch self {
         case .me:
             return .get
-        case .createUser:
+        case .createUser, .confirmPhone, .validateCode:
             return .post
         }
     }
@@ -28,6 +30,10 @@ enum UserRouter: ApiRouter {
             return "user/me"
         case .createUser:
             return "user"
+        case .confirmPhone:
+            return "user/confirmation/phone"
+        case .validateCode:
+            return "user/confirmation/code"
         }
     }
 
@@ -35,8 +41,15 @@ enum UserRouter: ApiRouter {
         switch self {
         case .me:
             return [:]
-        case .createUser(let username, let avatar):
-            return ["username": username, "avatar": avatar]
+        case let .createUser(username, avatar):
+            return ["username": username,
+                    "avatar": avatar]
+        case let .confirmPhone(phoneNumber):
+            return ["phoneNumber": phoneNumber]
+        case let .validateCode(id, code, key):
+            return ["id": id,
+                    "code": code,
+                    "userPublicKey": key]
         }
     }
 

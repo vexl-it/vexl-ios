@@ -14,7 +14,13 @@ extension RegisterPhoneView {
 
         let phoneNumber: String
         let isEnabled: Bool
+        let remainingTime: Int
         @Binding var code: String
+        var retryAction: () -> Void
+        
+        private var isCodeDisabled: Bool {
+            remainingTime > 0
+        }
 
         var body: some View {
             RegistrationCardView(title: L.registerPhoneCodeInputTitle(),
@@ -32,13 +38,16 @@ extension RegisterPhoneView {
                     .keyboardType(.numberPad)
                     .disabled(!isEnabled)
 
-                // TODO: Add countdown after to show retry timer
-
-                Text("\(L.registerPhoneCodeInputRetry("28s"))")
-                    .foregroundColor(Appearance.Colors.gray2)
-                    .textStyle(.paragraph)
-                    .frame(maxWidth: .infinity)
-                    .padding(.top, Appearance.GridGuide.padding)
+                Button {
+                    retryAction()
+                } label: {
+                    Text(isCodeDisabled ? "\(L.registerPhoneCodeInputRetry("\(remainingTime)"))" : "Send Code Again")
+                        .foregroundColor(isCodeDisabled ? Appearance.Colors.gray2 : Appearance.Colors.purple4)
+                        .textStyle(.paragraph)
+                        .frame(maxWidth: .infinity)
+                        .padding(.top, Appearance.GridGuide.padding)
+                }
+                .disabled(isCodeDisabled)
             }
         }
     }
@@ -48,6 +57,8 @@ struct RegisterPhoneView_CodeInput_Preview: PreviewProvider {
     static var previews: some View {
         RegisterPhoneView.CodeInputView(phoneNumber: "+420 720 183 578",
                                         isEnabled: true,
-                                        code: .constant("1234"))
+                                        remainingTime: 30,
+                                        code: .constant("1234"),
+                                        retryAction: {})
     }
 }

@@ -24,7 +24,7 @@ final class ImportContactsViewModel: ObservableObject {
     // MARK: - Action Bindings
 
     enum UserAction {
-        case itemSelected(Bool, ContactItem)
+        case itemSelected(Bool, ImportContactItem)
         case unselectAll
         case completed
     }
@@ -35,14 +35,14 @@ final class ImportContactsViewModel: ObservableObject {
     // MARK: - View Bindings
 
     @Published var current: ViewState = .loading
-    @Published var items: [ContactItem] = []
+    @Published var items: [ImportContactItem] = []
     @Published var searchText = ""
     @Published var canImportContacts = false
     @Published var hasSelectedItem = false
 
     // MARK: - Variables
 
-    var filteredItems: [ContactItem] {
+    var filteredItems: [ImportContactItem] {
         guard !searchText.isEmpty else { return items }
         return items.filter { $0.name.contains(searchText) }
     }
@@ -67,7 +67,7 @@ final class ImportContactsViewModel: ObservableObject {
             .store(in: cancelBag)
     }
 
-    private func select(_ isSelected: Bool, item: ContactItem) {
+    private func select(_ isSelected: Bool, item: ImportContactItem) {
         guard let selectedIndex = items.firstIndex(where: { $0.id == item.id }) else { return }
         items[selectedIndex].isSelected = isSelected
         hasSelectedItem = items.contains(where: { $0.isSelected })
@@ -81,23 +81,20 @@ final class ImportContactsViewModel: ObservableObject {
     }
 }
 
-extension ImportContactsViewModel {
+struct ImportContactItem: Identifiable {
+    var id: Int
+    var name: String
+    var phone: String
+    var avatar: Data?
+    var isSelected = false
 
-    struct ContactItem: Identifiable {
-        var id: Int
-        var name: String
-        var phone: String
-        var avatar: Data?
-        var isSelected = false
-
-        static func stub() -> [ContactItem] {
-            [
-                ContactItem(id: 1, name: "Diego Espinoza 1", phone: "999 944 222", avatar: nil),
-                ContactItem(id: 2, name: "Diego Espinoza 2", phone: "929 944 222", avatar: nil),
-                ContactItem(id: 3, name: "Diego Espinoza 3", phone: "969 944 222", avatar: nil),
-                ContactItem(id: 4, name: "Diego Espinoza 4", phone: "969 944 222", avatar: nil),
-                ContactItem(id: 5, name: "Diego Test 4", phone: "969 944 222", avatar: nil)
-            ]
-        }
+    static func stub() -> [ImportContactItem] {
+        [
+            ImportContactItem(id: 1, name: "Diego Espinoza 1", phone: "999 944 222", avatar: nil),
+            ImportContactItem(id: 2, name: "Diego Espinoza 2", phone: "929 944 222", avatar: nil),
+            ImportContactItem(id: 3, name: "Diego Espinoza 3", phone: "969 944 222", avatar: nil),
+            ImportContactItem(id: 4, name: "Diego Espinoza 4", phone: "969 944 222", avatar: nil),
+            ImportContactItem(id: 5, name: "Diego Test 4", phone: "969 944 222", avatar: nil)
+        ]
     }
 }

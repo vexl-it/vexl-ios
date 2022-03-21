@@ -16,14 +16,14 @@ struct Constants {
 
     struct API {
         #if APPSTORE
-        private static let apiHostname = "https://"
+        private static let apiHostname = "https://user.vexl.devel.cleevio.io"
         #else
-        private static let apiHostname = "http://"
+        private static let apiHostname = "https://user.vexl.devel.cleevio.io"
         #endif
 
         private static let apiVersion = "v1/"
 
-        static let baseURLString = "\(apiHostname)/\(apiVersion)"
+        static let baseURLString = "\(apiHostname)/api/\(apiVersion)"
     }
 
     // MARK: - Keychain keys

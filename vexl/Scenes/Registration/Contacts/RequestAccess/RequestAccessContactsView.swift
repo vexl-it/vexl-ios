@@ -60,10 +60,10 @@ struct RequestAccessContactsView: View {
     }
 
     private var portraitView: some View {
-        RequestAccessContactsView.RegisterPortraitsView(name: viewModel.userName,
-                                                        avatar: R.image.onboarding.testAvatar()!,
-                                                        color: viewModel.portraitColor,
-                                                        textColor: viewModel.portraitTextColor)
+        RequestAccessPortraitView(name: viewModel.userName,
+                                  avatar: R.image.onboarding.testAvatar()!,
+                                  color: viewModel.portraitColor,
+                                  textColor: viewModel.portraitTextColor)
     }
 
     private var contactsView: some View {

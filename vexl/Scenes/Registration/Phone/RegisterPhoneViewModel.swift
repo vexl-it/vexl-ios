@@ -12,11 +12,10 @@ import SwiftUI
 
 final class RegisterPhoneViewModel: ViewModelType {
 
-    // TODO: Add countdown after to show retry timer
-
     // MARK: - Property Injection
 
     @Inject var userService: UserServiceType
+    @Inject var authenticationManager: AuthenticationManager
 
     // MARK: - View State
 
@@ -25,28 +24,17 @@ final class RegisterPhoneViewModel: ViewModelType {
         case codeInput
         case codeInputValidation
         case codeInputSuccess
-
-        var next: ViewState {
-            switch self {
-            case .phoneInput:
-                return .codeInput
-            case .codeInput:
-                return .codeInputValidation
-            case .codeInputValidation:
-                return .codeInputSuccess
-            case .codeInputSuccess:
-                return .codeInputSuccess
-            }
-        }
     }
 
     // MARK: - Actions Bindings
 
     enum UserAction: Equatable {
         case nextTap
+        case sendCode
     }
 
     let action: ActionSubject<UserAction> = .init()
+    let triggerCountdown: ActionSubject<Date?>  = .init()
 
     // MARK: - View Bindings
 
@@ -55,7 +43,16 @@ final class RegisterPhoneViewModel: ViewModelType {
     @Published var isActionEnabled = false
     @Published var currentState = ViewState.phoneInput
 
-    var primaryActivity: Activity = .init()
+    @Published var loading = false
+    @Published var error: Error?
+
+    @Published var countdown = 0
+
+    // MARK: - Activities
+
+    var primaryActivity: Activity
+    var errorIndicator: ErrorIndicator = .init()
+    var activityIndicator: ActivityIndicator = .init()
 
     // MARK: - Coordinator Bindings
 
@@ -97,14 +94,95 @@ final class RegisterPhoneViewModel: ViewModelType {
         }
     }
 
+    // MARK: - Timer
+
+    private var timer: Timer.TimerPublisher?
     private let cancelBag: CancelBag = .init()
 
     init() {
-        setupBindings()
+        self.primaryActivity = .init(indicator: activityIndicator, error: errorIndicator)
+        setupActivity()
+        setupActionBindings()
+        setupStateBindings()
+        timerBindings()
     }
 
-    // swiftlint:disable function_body_length
-    private func setupBindings() {
+    private func setupActivity() {
+        activityIndicator
+            .loading
+            .assign(to: &$loading)
+
+//        TODO: - how to solve this? if the property is type Error, it needs to be optional?
+//        errorIndicator
+//            .errors
+//            .assign(to: &$error)
+    }
+
+    private func setupActionBindings() {
+
+        action
+            .useAction(action: .nextTap)
+            .withUnretained(self)
+            .filter { $0.0.currentState == .phoneInput }
+            .flatMap { owner, _ in
+                owner.userService.requestVerificationCode(phoneNumber: owner.phoneNumber)
+                    .track(activity: owner.primaryActivity)
+                    .materialize()
+                    .compactMap { $0.value }
+                    .eraseToAnyPublisher()
+            }
+            .withUnretained(self)
+            .handleEvents(receiveOutput: { owner, response in
+                owner.triggerCountdown.send(response.expirationDate)
+            })
+            .sink { owner, _ in
+                owner.currentState = .codeInput
+            }
+            .store(in: cancelBag)
+
+        let onCodeInput = action
+            .useAction(action: .nextTap)
+            .withUnretained(self)
+            .filter { $0.0.currentState == .codeInput }
+
+        Publishers.CombineLatest(onCodeInput, authenticationManager.phoneVerification)
+            .compactMap { $0.1?.verificationId }
+            .withUnretained(self)
+            .filter { $0.0.currentState == .codeInput }
+            .handleEvents(receiveOutput: { owner, _ in
+                owner.currentState = .codeInputValidation
+            })
+            .flatMap { owner, verificationId -> AnyPublisher<CodeValidationResponse?, Never> in
+                owner.userService.confirmValidationCode(id: verificationId,
+                                                        code: owner.validationCode,
+                                                        key: owner.authenticationManager.getPublicKey())
+                    .track(activity: owner.primaryActivity)
+                    .materialize()
+                    .map { $0.value }
+                    .eraseToAnyPublisher()
+            }
+            .withUnretained(self)
+            .sink { owner, response in
+                guard response != nil else {
+                    owner.currentState = .codeInput
+                    return
+                }
+
+                owner.currentState = .codeInputSuccess
+                owner.route.send(.continueTapped)
+            }
+            .store(in: cancelBag)
+
+        action
+            .useAction(action: .sendCode)
+            .withUnretained(self)
+            .sink { owner, _ in
+                owner.createCountdown(with: UserService.temporal)
+            }
+            .store(in: cancelBag)
+    }
+
+    private func setupStateBindings() {
         $phoneNumber
             .withUnretained(self)
             .map { $0.validatePhoneNumber($1) && $0.currentState == .phoneInput }
@@ -130,81 +208,59 @@ final class RegisterPhoneViewModel: ViewModelType {
                 }
             }
             .store(in: cancelBag)
+    }
 
-        $currentState
-            .useAction(action: .codeInput)
+    private func timerBindings() {
+        timer?
             .withUnretained(self)
-            .flatMap { owner, _ in
-                owner.userService.validatePhone(phoneNumber: owner.phoneNumber)
-                    .catch { error in
-                        Just(false)
-                    }
-                    .eraseToAnyPublisher()
-            }
-            .handleEvents(receiveOutput: { _ in
-                
-            })
-            .sink { _ in
-                
-            }
-            .store(in: cancelBag)
-
-        action
-            .useAction(action: .nextTap)
-            .withUnretained(self)
-            .filter { $0.0.currentState == .codeInputSuccess }
             .sink { owner, _ in
-                owner.route.send(.continueTapped)
-            }
-            .store(in: cancelBag)
-
-        action
-            .withUnretained(self)
-            .filter { $0.1 == .nextTap && $0.0.currentState != .codeInputSuccess }
-            .sink { owner, _ in
-                owner.currentState = owner.currentState.next
-            }
-            .store(in: cancelBag)
-
-        action
-            .withUnretained(self)
-            .filter { $0.0.currentState != .codeInputSuccess }
-            .sink { owner, _ in
-                if owner.currentState == .codeInputValidation {
-                    after(3) {
-                        owner.currentState = owner.currentState.next
-                    }
+                owner.countdown -= 1
+                if owner.countdown == 0 {
+                    owner.timer?.connect().cancel()
                 }
             }
             .store(in: cancelBag)
 
-//        action
-//            .withUnretained(self)
-//            .sink { owner, action in
-//                switch action {
-//                case .nextTap:
-//                    switch owner.currentState {
-//                    case .codeInput, .codeInputValidation, .phoneInput:
-//                        owner.currentState = owner.currentState.next
-//                        if owner.currentState == .codeInputValidation {
-//                            // Temporal simulation of the validation of the code
-//                            after(3) {
-//                                owner.currentState = owner.currentState.next
-//                            }
-//                        }
-//                    case .codeInputSuccess:
-//                        owner.route.send(.continueTapped)
-//                    }
-//                }
-//            }
-//            .store(in: cancelBag)
+        triggerCountdown
+            .withUnretained(self)
+            .sink { owner, date in
+                owner.createCountdown(with: date)
+            }
+            .store(in: cancelBag)
     }
+
+    // MARK: - Helper methods
 
     private func validatePhoneNumber(_ phoneNumber: String) -> Bool {
         !phoneNumber.isEmpty
     }
 
     private func validateCode(_ code: String) -> Bool {
-        !code.isEmpty
+        !code.isEmpty && code.count == 6
+    }
+
+    private func createCountdown(with expirationDate: Date?) {
+        calculateCountdown(expirationDate: expirationDate)
+        timer = Timer.TimerPublisher(interval: 1, runLoop: .main, mode: .default)
+        _ = timer?.connect()
+
+        timer?
+            .withUnretained(self)
+            .sink { owner, _ in
+                owner.countdown -= 1
+                if owner.countdown == 0 {
+                    owner.timer?.connect().cancel()
+                }
+            }
+            .store(in: cancelBag)
+    }
+
+    private func calculateCountdown(expirationDate: Date?) {
+        guard let expirationDate = expirationDate else {
+            countdown = -1
+            return
+        }
+
+        countdown = Int(expirationDate.timeIntervalSinceNow)
     }
 }
