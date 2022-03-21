@@ -12,7 +12,6 @@ struct PhoneConfirmationResponse: Codable {
     var expirationAt: String
 
     var expirationDate: Date? {
-        UserService.temporal
-        //Formatters.dateApiFormatter.date(from: expirationAt)
+        Formatters.dateApiFormatter.date(from: expirationAt)
     }
 }

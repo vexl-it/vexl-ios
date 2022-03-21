@@ -13,7 +13,7 @@ struct Formatters {
 
     static let dateApiFormatter: DateFormatter = {
         let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZZZZZ"
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZZZZ"
         formatter.locale = Locale(identifier: "en_US_POSIX")
         return formatter
     }()

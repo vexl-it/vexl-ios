@@ -17,7 +17,7 @@ extension RegisterPhoneView {
         let remainingTime: Int
         @Binding var code: String
         var retryAction: () -> Void
-        
+
         private var isCodeDisabled: Bool {
             remainingTime > 0
         }
@@ -41,9 +41,9 @@ extension RegisterPhoneView {
                 Button {
                     retryAction()
                 } label: {
-                    Text(isCodeDisabled ? "\(L.registerPhoneCodeInputRetry("\(remainingTime)"))" : "Send Code Again")
+                    Text(isCodeDisabled ? "\(L.registerPhoneCodeInputRetry("\(remainingTime)"))" : L.registerPhoneCodeInputSendCode())
                         .foregroundColor(isCodeDisabled ? Appearance.Colors.gray2 : Appearance.Colors.purple4)
-                        .textStyle(.paragraph)
+                        .textStyle(isCodeDisabled ? .paragraph : .paragraphBold)
                         .frame(maxWidth: .infinity)
                         .padding(.top, Appearance.GridGuide.padding)
                 }

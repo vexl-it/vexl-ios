@@ -21,7 +21,8 @@
 "register.phone.number.input.subtitle" = "Your number will be anonymous";
 "register.phone.code.input.title" = "We sent you a code";
 "register.phone.code.input.subtitle" = "Enter it bellow to verify %@";
-"register.phone.code.input.retry" = "Didn’t receive code? Resend in %@";
+"register.phone.code.input.retry" = "Didn’t receive code? Resend in %@ s";
+"register.phone.code.input.send.code" = "Didn’t receive code? Resend";
 "register.phone.code.input.verifying" = "Verifying...";
 "register.phone.code.input.success" = "Success!";
 "register.name.avatar.input.title" = "What do your friends call you?";

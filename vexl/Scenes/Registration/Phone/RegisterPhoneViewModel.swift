@@ -101,6 +101,17 @@ final class RegisterPhoneViewModel: ViewModelType {
 
     init() {
         self.primaryActivity = .init(indicator: activityIndicator, error: errorIndicator)
+
+        //Temporal
+        userService.generateKeys()
+            .materialize()
+            .compactMap { $0.value }
+            .sink { keys in
+                print("Generated Private and Public keys")
+                print(keys)
+            }
+            .store(in: cancelBag)
+
         setupActivity()
         setupActionBindings()
         setupStateBindings()
@@ -118,12 +129,20 @@ final class RegisterPhoneViewModel: ViewModelType {
 //            .assign(to: &$error)
     }
 
+    // swiftlint:disable function_body_length
     private func setupActionBindings() {
 
-        action
+        let phoneInput = action
             .useAction(action: .nextTap)
             .withUnretained(self)
             .filter { $0.0.currentState == .phoneInput }
+
+        let sendCode = action
+            .useAction(action: .sendCode)
+            .withUnretained(self)
+            .filter { $0.0.currentState == .codeInput }
+
+        Publishers.Merge(phoneInput, sendCode)
             .flatMap { owner, _ in
                 owner.userService.requestVerificationCode(phoneNumber: owner.phoneNumber)
                     .track(activity: owner.primaryActivity)
@@ -146,16 +165,17 @@ final class RegisterPhoneViewModel: ViewModelType {
             .filter { $0.0.currentState == .codeInput }
 
         Publishers.CombineLatest(onCodeInput, authenticationManager.phoneVerification)
-            .compactMap { $0.1?.verificationId }
             .withUnretained(self)
             .filter { $0.0.currentState == .codeInput }
+            .compactMap { $0.1.1?.verificationId }
+            .withUnretained(self)
             .handleEvents(receiveOutput: { owner, _ in
                 owner.currentState = .codeInputValidation
             })
             .flatMap { owner, verificationId -> AnyPublisher<CodeValidationResponse?, Never> in
                 owner.userService.confirmValidationCode(id: verificationId,
                                                         code: owner.validationCode,
-                                                        key: owner.authenticationManager.getPublicKey())
+                                                        key: owner.authenticationManager.userKeys?.publicKey ?? "")
                     .track(activity: owner.primaryActivity)
                     .materialize()
                     .map { $0.value }
@@ -170,14 +190,6 @@ final class RegisterPhoneViewModel: ViewModelType {
 
                 owner.currentState = .codeInputSuccess
                 owner.route.send(.continueTapped)
-            }
-            .store(in: cancelBag)
-
-        action
-            .useAction(action: .sendCode)
-            .withUnretained(self)
-            .sink { owner, _ in
-                owner.createCountdown(with: UserService.temporal)
             }
             .store(in: cancelBag)
     }
