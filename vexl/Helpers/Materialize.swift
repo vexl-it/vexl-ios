@@ -88,10 +88,20 @@ public extension Publishers.Materialized {
             failure: self.map { $0.failure }.eraseToAnyPublisher()
         )
     }
+    
+    func ignoreCompleted() -> AnyPublisher<Output, Never> {
+        self.filter { !$0.isCompleted }
+        .eraseToAnyPublisher()
+    }
 }
 
 public extension Publisher {
     func materialize() -> Publishers.Materialized<Self> {
         Publishers.Materialized(upstream: self)
+    }
+    
+    func materializeIgnoreCompleted() -> Publishers.Filter<Publishers.Materialized<Self>> {
+        Publishers.Filter(upstream: Publishers.Materialized(upstream: self),
+                          isIncluded: { !$0.isCompleted })
     }
 }

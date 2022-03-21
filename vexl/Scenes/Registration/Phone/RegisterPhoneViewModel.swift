@@ -179,7 +179,7 @@ final class RegisterPhoneViewModel: ViewModelType {
                                                         code: owner.validationCode,
                                                         key: owner.authenticationManager.userKeys?.publicKey ?? "")
                     .track(activity: owner.primaryActivity)
-                    .materialize()
+                    .materializeIgnoreCompleted()
                     .map { $0.value }
                     .eraseToAnyPublisher()
             }
@@ -197,9 +197,10 @@ final class RegisterPhoneViewModel: ViewModelType {
                     return
                 }
 
-                owner.currentState = .codeInputSuccess
+                owner.currentState = .phoneInput
                 owner.authenticationManager.clearPhoneVerification()
                 owner.route.send(.continueTapped)
+                //cancel everything now
             }
             .store(in: cancelBag)
 
