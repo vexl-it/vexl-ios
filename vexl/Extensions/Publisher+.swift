@@ -20,6 +20,13 @@ public extension Publisher {
             return (obj, element)
         }
     }
+    
+    func asOptional() -> AnyPublisher<Output?, Failure> {
+        self.map { value -> Output? in
+            value
+        }
+        .eraseToAnyPublisher()
+    }
 }
 
 public extension Publisher where Output == Void {
