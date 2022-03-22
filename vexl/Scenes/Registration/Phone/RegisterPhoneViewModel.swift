@@ -178,6 +178,9 @@ final class RegisterPhoneViewModel: ViewModelType {
                                                             key: owner.authenticationManager.userKeys?.publicKey ?? "")
                     .track(activity: owner.primaryActivity)
                     .materializeIgnoreCompleted()
+                    .handleEvents(receiveCompletion: { _ in
+                        owner.currentState = .codeInput
+                    })
                     .map { $0.value }
                     .eraseToAnyPublisher()
             }

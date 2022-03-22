@@ -45,7 +45,6 @@ final class UserService: BaseService, UserServiceType {
         request(type: CodeValidationResponse.self, endpoint: UserRouter.validateCode(id: id, code: code, key: key))
             .withUnretained(self)
             .handleEvents(receiveOutput: { owner, response in
-                print("confirmValidationCode time!")
                 owner.authenticationManager.setCodeConfirmation(response)
             })
             .map { $0.1 }

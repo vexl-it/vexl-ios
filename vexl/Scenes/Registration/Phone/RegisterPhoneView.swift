@@ -15,13 +15,13 @@ struct RegisterPhoneView: View {
 
     var body: some View {
         ZStack {
-
-            if let error = viewModel.error {
-                Text(error.getMessage())
-                    .foregroundColor(Color.white)
-                    .background(Color.red)
-                    .frame(width: 50, height: 50)
-            }
+//
+//            if let error = viewModel.error {
+//                Text(error.getMessage())
+//                    .foregroundColor(Color.white)
+//                    .background(Color.red)
+//                    .frame(width: 200, height: 200)
+//            }
 
             if viewModel.loading {
                 LoadingIndicatorView()
