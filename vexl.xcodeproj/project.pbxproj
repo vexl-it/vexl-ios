@@ -101,6 +101,7 @@
 		F175AB8D27E817D4000DAB15 /* CodeValidationResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = F175AB8C27E817D4000DAB15 /* CodeValidationResponse.swift */; };
 		F175AB8F27E8C622000DAB15 /* UserKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = F175AB8E27E8C622000DAB15 /* UserKeys.swift */; };
 		F175AB9127E8E223000DAB15 /* UserSignature.swift in Sources */ = {isa = PBXBuildFile; fileRef = F175AB9027E8E223000DAB15 /* UserSignature.swift */; };
+		F175AB9527EA6A8E000DAB15 /* PlaceholderTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = F175AB9427EA6A8E000DAB15 /* PlaceholderTextField.swift */; };
 		F1B5FCBC27C67DB00018729B /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B5FCBB27C67DB00018729B /* WelcomeViewController.swift */; };
 		F1B5FCBE27C68EA70018729B /* OnboardingView+BottomButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B5FCBD27C68EA70018729B /* OnboardingView+BottomButtons.swift */; };
 		F1B5FCC327C6BC330018729B /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = F1B5FCC127C6BC330018729B /* Localizable.strings */; };
@@ -233,6 +234,7 @@
 		F175AB8C27E817D4000DAB15 /* CodeValidationResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeValidationResponse.swift; sourceTree = "<group>"; };
 		F175AB8E27E8C622000DAB15 /* UserKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserKeys.swift; sourceTree = "<group>"; };
 		F175AB9027E8E223000DAB15 /* UserSignature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSignature.swift; sourceTree = "<group>"; };
+		F175AB9427EA6A8E000DAB15 /* PlaceholderTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceholderTextField.swift; sourceTree = "<group>"; };
 		F1B5FCBB27C67DB00018729B /* WelcomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeViewController.swift; sourceTree = "<group>"; };
 		F1B5FCBD27C68EA70018729B /* OnboardingView+BottomButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OnboardingView+BottomButtons.swift"; sourceTree = "<group>"; };
 		F1B5FCC227C6BC330018729B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -448,6 +450,7 @@
 				F1C6D0A127BE9157009BD506 /* LinkTextView.swift */,
 				F151A2A327C87074000D7242 /* BorderedTextField.swift */,
 				F175AB8A27E8062A000DAB15 /* LoadingIndicatorView.swift */,
+				F175AB9427EA6A8E000DAB15 /* PlaceholderTextField.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1152,6 +1155,7 @@
 				B08F394527AE7112008B344F /* ReusableView.swift in Sources */,
 				B08F395B27AE7112008B344F /* Appearance.swift in Sources */,
 				B0F206F327AEA4C800A44E72 /* WindowCoordinator.swift in Sources */,
+				F175AB9527EA6A8E000DAB15 /* PlaceholderTextField.swift in Sources */,
 				B0EEE11627B14D320097031E /* WelcomeCoordinator.swift in Sources */,
 				B08F393227AE7112008B344F /* SceneDelegate.swift in Sources */,
 				B0EEE11827B14D360097031E /* WelcomeViewModel.swift in Sources */,

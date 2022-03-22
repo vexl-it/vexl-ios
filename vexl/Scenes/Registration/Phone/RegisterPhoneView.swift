@@ -33,6 +33,7 @@ struct RegisterPhoneView: View {
                     CodeInputView(phoneNumber: viewModel.phoneNumber,
                                   isEnabled: viewModel.codeInputEnabled,
                                   remainingTime: viewModel.countdown,
+                                  displayRetry: viewModel.currentState != .codeInputSuccess,
                                   code: $viewModel.validationCode,
                                   retryAction: {
                         viewModel.send(action: .sendCode)

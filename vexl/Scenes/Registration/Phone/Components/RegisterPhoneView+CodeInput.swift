@@ -15,6 +15,7 @@ extension RegisterPhoneView {
         let phoneNumber: String
         let isEnabled: Bool
         let remainingTime: Int
+        let displayRetry: Bool
         @Binding var code: String
         var retryAction: () -> Void
 
@@ -38,16 +39,18 @@ extension RegisterPhoneView {
                     .keyboardType(.numberPad)
                     .disabled(!isEnabled)
 
-                Button {
-                    retryAction()
-                } label: {
-                    Text(isCodeDisabled ? "\(L.registerPhoneCodeInputRetry("\(remainingTime)"))" : L.registerPhoneCodeInputSendCode())
-                        .foregroundColor(isCodeDisabled ? Appearance.Colors.gray2 : Appearance.Colors.purple4)
-                        .textStyle(isCodeDisabled ? .paragraph : .paragraphBold)
-                        .frame(maxWidth: .infinity)
-                        .padding(.top, Appearance.GridGuide.padding)
+                if displayRetry {
+                    Button {
+                        retryAction()
+                    } label: {
+                        Text(isCodeDisabled ? "\(L.registerPhoneCodeInputRetry("\(remainingTime)"))" : L.registerPhoneCodeInputSendCode())
+                            .foregroundColor(isCodeDisabled ? Appearance.Colors.gray2 : Appearance.Colors.purple4)
+                            .textStyle(isCodeDisabled ? .paragraph : .paragraphBold)
+                            .frame(maxWidth: .infinity)
+                            .padding(.top, Appearance.GridGuide.padding)
+                    }
+                    .disabled(isCodeDisabled)
                 }
-                .disabled(isCodeDisabled)
             }
         }
     }
@@ -58,6 +61,7 @@ struct RegisterPhoneView_CodeInput_Preview: PreviewProvider {
         RegisterPhoneView.CodeInputView(phoneNumber: "+420 720 183 578",
                                         isEnabled: true,
                                         remainingTime: 30,
+                                        displayRetry: true,
                                         code: .constant("1234"),
                                         retryAction: {})
     }

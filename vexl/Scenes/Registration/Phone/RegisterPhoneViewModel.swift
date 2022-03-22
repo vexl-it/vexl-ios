@@ -183,11 +183,6 @@ final class RegisterPhoneViewModel: ViewModelType {
             }
             .withUnretained(self)
             .handleEvents(receiveOutput: { owner, response in
-                // TODO: - Remove/Adapt when C library is added
-                guard let response = response else { return }
-                owner.temporalGenerateSignature.send(response.challenge)
-            })
-            .sink { owner, response in
                 guard let response = response else {
                     owner.currentState = .phoneInput
                     return
@@ -198,13 +193,12 @@ final class RegisterPhoneViewModel: ViewModelType {
                 } else {
                     owner.currentState = .codeInput
                 }
-            }
-            .store(in: cancelBag)
-
-        action
-            .useAction(action: .nextTap)
-            .withUnretained(self)
+                // TODO: - Remove/Adapt when C library is added
+                owner.temporalGenerateSignature.send(response.challenge)
+            })
             .filter { $0.0.currentState == .codeInputSuccess }
+            .delay(for: .seconds(1), scheduler: RunLoop.main)
+            .withUnretained(self)
             .sink { owner, _ in
                 owner.route.send(.continueTapped)
                 owner.clearState()
