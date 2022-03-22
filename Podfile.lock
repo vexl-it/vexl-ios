@@ -1,23 +1,23 @@
 PODS:
-  - ACKLocalization (1.1.3)
+  - ACKLocalization (1.2.0)
   - Alamofire (5.4.4)
   - AlamofireNetworkActivityIndicator (3.1.0):
     - Alamofire (~> 5.1)
   - AlamofireNetworkActivityLogger (3.4.0):
     - Alamofire (~> 5.4.0)
-  - Cleevio (1.0.4):
-    - Cleevio/Full (= 1.0.4)
-  - Cleevio/Full (1.0.4)
-  - Firebase/Core (8.12.1):
+  - Cleevio (1.0.5):
+    - Cleevio/Full (= 1.0.5)
+  - Cleevio/Full (1.0.5)
+  - Firebase/Core (8.14.0):
     - Firebase/CoreOnly
-    - FirebaseAnalytics (~> 8.12.0)
-  - Firebase/CoreOnly (8.12.1):
-    - FirebaseCore (= 8.12.1)
-  - Firebase/Crashlytics (8.12.1):
+    - FirebaseAnalytics (~> 8.14.0)
+  - Firebase/CoreOnly (8.14.0):
+    - FirebaseCore (= 8.14.0)
+  - Firebase/Crashlytics (8.14.0):
     - Firebase/CoreOnly
-    - FirebaseCrashlytics (~> 8.12.0)
-  - FirebaseAnalytics (8.12.0):
-    - FirebaseAnalytics/AdIdSupport (= 8.12.0)
+    - FirebaseCrashlytics (~> 8.14.0)
+  - FirebaseAnalytics (8.14.0):
+    - FirebaseAnalytics/AdIdSupport (= 8.14.0)
     - FirebaseCore (~> 8.0)
     - FirebaseInstallations (~> 8.0)
     - GoogleUtilities/AppDelegateSwizzler (~> 7.7)
@@ -25,51 +25,51 @@ PODS:
     - GoogleUtilities/Network (~> 7.7)
     - "GoogleUtilities/NSData+zlib (~> 7.7)"
     - nanopb (~> 2.30908.0)
-  - FirebaseAnalytics/AdIdSupport (8.12.0):
+  - FirebaseAnalytics/AdIdSupport (8.14.0):
     - FirebaseCore (~> 8.0)
     - FirebaseInstallations (~> 8.0)
-    - GoogleAppMeasurement (= 8.12.0)
+    - GoogleAppMeasurement (= 8.14.0)
     - GoogleUtilities/AppDelegateSwizzler (~> 7.7)
     - GoogleUtilities/MethodSwizzler (~> 7.7)
     - GoogleUtilities/Network (~> 7.7)
     - "GoogleUtilities/NSData+zlib (~> 7.7)"
     - nanopb (~> 2.30908.0)
-  - FirebaseCore (8.12.1):
+  - FirebaseCore (8.14.0):
     - FirebaseCoreDiagnostics (~> 8.0)
     - GoogleUtilities/Environment (~> 7.7)
     - GoogleUtilities/Logger (~> 7.7)
-  - FirebaseCoreDiagnostics (8.12.0):
+  - FirebaseCoreDiagnostics (8.14.0):
     - GoogleDataTransport (~> 9.1)
     - GoogleUtilities/Environment (~> 7.7)
     - GoogleUtilities/Logger (~> 7.7)
     - nanopb (~> 2.30908.0)
-  - FirebaseCrashlytics (8.12.0):
+  - FirebaseCrashlytics (8.14.0):
     - FirebaseCore (~> 8.0)
     - FirebaseInstallations (~> 8.0)
     - GoogleDataTransport (~> 9.1)
     - GoogleUtilities/Environment (~> 7.7)
     - nanopb (~> 2.30908.0)
     - PromisesObjC (< 3.0, >= 1.2)
-  - FirebaseInstallations (8.12.0):
+  - FirebaseInstallations (8.14.0):
     - FirebaseCore (~> 8.0)
     - GoogleUtilities/Environment (~> 7.7)
     - GoogleUtilities/UserDefaults (~> 7.7)
     - PromisesObjC (< 3.0, >= 1.2)
-  - GoogleAppMeasurement (8.12.0):
-    - GoogleAppMeasurement/AdIdSupport (= 8.12.0)
+  - GoogleAppMeasurement (8.14.0):
+    - GoogleAppMeasurement/AdIdSupport (= 8.14.0)
     - GoogleUtilities/AppDelegateSwizzler (~> 7.7)
     - GoogleUtilities/MethodSwizzler (~> 7.7)
     - GoogleUtilities/Network (~> 7.7)
     - "GoogleUtilities/NSData+zlib (~> 7.7)"
     - nanopb (~> 2.30908.0)
-  - GoogleAppMeasurement/AdIdSupport (8.12.0):
-    - GoogleAppMeasurement/WithoutAdIdSupport (= 8.12.0)
+  - GoogleAppMeasurement/AdIdSupport (8.14.0):
+    - GoogleAppMeasurement/WithoutAdIdSupport (= 8.14.0)
     - GoogleUtilities/AppDelegateSwizzler (~> 7.7)
     - GoogleUtilities/MethodSwizzler (~> 7.7)
     - GoogleUtilities/Network (~> 7.7)
     - "GoogleUtilities/NSData+zlib (~> 7.7)"
     - nanopb (~> 2.30908.0)
-  - GoogleAppMeasurement/WithoutAdIdSupport (8.12.0):
+  - GoogleAppMeasurement/WithoutAdIdSupport (8.14.0):
     - GoogleUtilities/AppDelegateSwizzler (~> 7.7)
     - GoogleUtilities/MethodSwizzler (~> 7.7)
     - GoogleUtilities/Network (~> 7.7)
@@ -99,7 +99,7 @@ PODS:
   - GoogleUtilities/UserDefaults (7.7.0):
     - GoogleUtilities/Logger
   - KeychainAccess (4.2.2)
-  - Kingfisher (7.1.2)
+  - Kingfisher (7.2.0)
   - nanopb (2.30908.0):
     - nanopb/decode (= 2.30908.0)
     - nanopb/encode (= 2.30908.0)
@@ -110,7 +110,7 @@ PODS:
     - R.swift.Library (~> 5.3.0)
   - R.swift.Library (5.3.0)
   - SnapKit (5.0.1)
-  - SwiftLint (0.46.3)
+  - SwiftLint (0.46.5)
   - SwiftyBeaver (1.9.5)
   - Swinject (2.8.1)
 
@@ -119,7 +119,7 @@ DEPENDENCIES:
   - Alamofire
   - AlamofireNetworkActivityIndicator
   - AlamofireNetworkActivityLogger
-  - Cleevio (from `https://gitlab.cleevio.cz/cleevio-dev-ios/CleevioFramework-ios.git`)
+  - "Cleevio (from `git@gitlab.cleevio.cz:cleevio-dev-ios/CleevioFramework-ios.git`)"
   - Firebase/Core
   - Firebase/Crashlytics
   - KeychainAccess
@@ -158,39 +158,39 @@ SPEC REPOS:
 
 EXTERNAL SOURCES:
   Cleevio:
-    :git: https://gitlab.cleevio.cz/cleevio-dev-ios/CleevioFramework-ios.git
+    :git: "git@gitlab.cleevio.cz:cleevio-dev-ios/CleevioFramework-ios.git"
 
 CHECKOUT OPTIONS:
   Cleevio:
-    :commit: 0e8d167e05842bb4e32ffc17f18e4f0297da5446
-    :git: https://gitlab.cleevio.cz/cleevio-dev-ios/CleevioFramework-ios.git
+    :commit: 395f748ad6dd2ab90a7d8d6658badda4297ba0ef
+    :git: "git@gitlab.cleevio.cz:cleevio-dev-ios/CleevioFramework-ios.git"
 
 SPEC CHECKSUMS:
-  ACKLocalization: 63cfa5f3f048492caf07358e1105bebbc73d5e96
+  ACKLocalization: d3e621c2a6cd829caacecd24a7cddc89b11e8543
   Alamofire: f3b09a368f1582ab751b3fff5460276e0d2cf5c9
   AlamofireNetworkActivityIndicator: 6564782bd7b9e6c430ae67d9277af01907b01ca4
   AlamofireNetworkActivityLogger: 162ab8aee00e6267a4304d7cc134e13ccfe3bcc5
-  Cleevio: 192155f8ec9492acf686ac319d4321775de268e0
-  Firebase: 580d09e8edafc3073ebf09c03fd42e4d80d35fe9
-  FirebaseAnalytics: bd10d7706ba8d6e01ea2816f8fe9e9b881cb0918
-  FirebaseCore: 8138de860a90ca7eec5e324da5788fb0ebf1d93c
-  FirebaseCoreDiagnostics: 3b40dfadef5b90433a60ae01f01e90fe87aa76aa
-  FirebaseCrashlytics: 7952ffd988006128325510664b99dc8ca5851dff
-  FirebaseInstallations: 25764cf322e77f99449395870a65b2bef88e1545
-  GoogleAppMeasurement: ae033c3aad67e68294369373056b4d74cc8ae0d6
+  Cleevio: 4c648c67170686068856887cb13dcabb2c348df6
+  Firebase: 7e8fe528c161b9271d365217a74c16aaf834578e
+  FirebaseAnalytics: 2fc3876e2eb347673ad2f35e249ae7b15d6c88f5
+  FirebaseCore: b84a44ee7ba999e0f9f76d198a9c7f60a797b848
+  FirebaseCoreDiagnostics: fd0c8490f34287229c1d6c103d3a55f81ec85712
+  FirebaseCrashlytics: 079ef36f5c4b7161188928faec40fa276ebefd84
+  FirebaseInstallations: 7d1d967a307c12f1aadd76844fc321cef699b1ce
+  GoogleAppMeasurement: 71156240babd3cc6ced03e0d54816f01a880c730
   GoogleDataTransport: 629c20a4d363167143f30ea78320d5a7eb8bd940
   GoogleUtilities: e0913149f6b0625b553d70dae12b49fc62914fd1
   KeychainAccess: c0c4f7f38f6fc7bbe58f5702e25f7bd2f65abf51
-  Kingfisher: 44ed6a8504763f27bab46163adfac83f5deb240c
+  Kingfisher: 3ac0b75b155cabc0e544877d1a4deea29feece92
   nanopb: a0ba3315591a9ae0a16a309ee504766e90db0c96
   PromisesObjC: 68159ce6952d93e17b2dfe273b8c40907db5ba58
   R.swift: ec98ff71c4ab2f6fd01dd077e5afd15e63a4834c
   R.swift.Library: 0fc583cb55a99e28901299cc451614cad1161962
   SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
-  SwiftLint: ae76d82f056734f853c8cd0371503252c606c482
+  SwiftLint: 2c16e8fa99dac2e440dc0c70ea74d2532048f6cf
   SwiftyBeaver: 84069991dd5dca07d7069100985badaca7f0ce82
   Swinject: 97112918bd7e0785dc2df7036213f3c8cbba6586
 
-PODFILE CHECKSUM: c22ccba1ab26246fd5d39ab1fc4cbbd0c47e09e1
+PODFILE CHECKSUM: 1edfef218a021f2cdc0c7ae7f1a58a75e755bdfd
 
 COCOAPODS: 1.10.2
