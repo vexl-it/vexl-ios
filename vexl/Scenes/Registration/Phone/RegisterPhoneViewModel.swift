@@ -102,17 +102,6 @@ final class RegisterPhoneViewModel: ViewModelType {
 
     init() {
         self.primaryActivity = .init(indicator: activityIndicator, error: errorIndicator)
-
-        //Temporal
-        userService.generateKeys()
-            .materialize()
-            .compactMap { $0.value }
-            .sink { keys in
-                print("Generated Private and Public keys")
-                print(keys)
-            }
-            .store(in: cancelBag)
-
         setupActivity()
         setupActionBindings()
         setupStateBindings()
@@ -145,6 +134,13 @@ final class RegisterPhoneViewModel: ViewModelType {
 
         Publishers.Merge(phoneInput, sendCode)
             .flatMap { owner, _ in
+                // TODO: - temporal remove/replace when C library is available
+                owner.userService.generateKeys()
+                    .track(activity: owner.primaryActivity)
+                    .materializeIgnoreCompleted()
+            }
+            .withUnretained(self)
+            .flatMap { owner, _ in
                 owner.userService.requestVerificationCode(phoneNumber: owner.phoneNumber)
                     .track(activity: owner.primaryActivity)
                     .materialize()
@@ -166,7 +162,6 @@ final class RegisterPhoneViewModel: ViewModelType {
             .filter { $0.0.currentState == .codeInput }
             .withUnretained(self)
             .handleEvents(receiveOutput: { owner, _ in
-                print("handleEvents 1 time!")
                 owner.currentState = .codeInputValidation
             })
             .compactMap { owner, _ in
@@ -175,9 +170,9 @@ final class RegisterPhoneViewModel: ViewModelType {
             }
             .withUnretained(self)
             .flatMap { owner, verificationId in
-                owner.userService.confirmValidationCode(id: verificationId,
-                                                        code: owner.validationCode,
-                                                        key: owner.authenticationManager.userKeys?.publicKey ?? "")
+                    owner.userService.confirmValidationCode(id: verificationId,
+                                                            code: owner.validationCode,
+                                                            key: owner.authenticationManager.userKeys?.publicKey ?? "")
                     .track(activity: owner.primaryActivity)
                     .materializeIgnoreCompleted()
                     .map { $0.value }
@@ -186,64 +181,34 @@ final class RegisterPhoneViewModel: ViewModelType {
             .withUnretained(self)
             .handleEvents(receiveOutput: { owner, response in
                 // TODO: - Remove/Adapt when C library is added
-                print("handleEvents 2 time!")
                 guard let response = response else { return }
                 owner.temporalGenerateSignature.send(response.challenge)
             })
             .sink { owner, response in
-                print("sinking time!")
-                guard response != nil else {
-                    owner.currentState = .codeInput
+                guard let response = response else {
+                    owner.currentState = .phoneInput
                     return
                 }
 
-                owner.currentState = .phoneInput
-                owner.authenticationManager.clearPhoneVerification()
-                owner.route.send(.continueTapped)
-                //cancel everything now
+                if response.phoneVerified {
+                    owner.currentState = .codeInputSuccess
+                } else {
+                    owner.currentState = .codeInput
+                }
             }
             .store(in: cancelBag)
 
-//        let onCodeInput = action
-//            .useAction(action: .nextTap)
-//            .withUnretained(self)
-//            .filter { $0.0.currentState == .codeInput }
+        action
+            .useAction(action: .nextTap)
+            .withUnretained(self)
+            .filter { $0.0.currentState == .codeInputSuccess }
+            .sink { owner, _ in
+                owner.route.send(.continueTapped)
+                owner.clearState()
+            }
+            .store(in: cancelBag)
 
-//        Publishers.CombineLatest(onCodeInput, authenticationManager.phoneVerification)
-//            .withUnretained(self)
-//            .filter { $0.0.currentState == .codeInput }
-//            .compactMap { $0.1.1?.verificationId }
-//            .withUnretained(self)
-//            .handleEvents(receiveOutput: { owner, _ in
-//                owner.currentState = .codeInputValidation
-//            })
-//            .flatMap { owner, verificationId -> AnyPublisher<CodeValidationResponse?, Never> in
-//                owner.userService.confirmValidationCode(id: verificationId,
-//                                                        code: owner.validationCode,
-//                                                        key: owner.authenticationManager.userKeys?.publicKey ?? "")
-//                    .track(activity: owner.primaryActivity)
-//                    .materialize()
-//                    .map { $0.value }
-//                    .eraseToAnyPublisher()
-//            }
-//            .withUnretained(self)
-//            .handleEvents(receiveOutput: { owner, response in
-//                // TODO: - Remove/Adapt when C library is added
-//                guard let response = response else { return }
-//                owner.temporalGenerateSignature.send(response.challenge)
-//            })
-//            .sink { owner, response in
-//                guard response != nil else {
-//                    owner.currentState = .codeInput
-//                    return
-//                }
-//
-//                owner.currentState = .codeInputSuccess
-//                owner.authenticationManager.clearPhoneVerification()
-//                owner.route.send(.continueTapped)
-//            }
-//            .store(in: cancelBag)
-
+        // Temporal delete me
         temporalGenerateSignature
             .withUnretained(self)
             .flatMap { owner, challenge in
@@ -340,5 +305,13 @@ final class RegisterPhoneViewModel: ViewModelType {
         }
 
         countdown = Int(expirationDate.timeIntervalSinceNow)
+    }
+
+    private func clearState() {
+        phoneNumber = ""
+        validationCode = ""
+        currentState = .phoneInput
+        authenticationManager.clearPhoneVerification()
+        timer?.connect().cancel()
     }
 }
