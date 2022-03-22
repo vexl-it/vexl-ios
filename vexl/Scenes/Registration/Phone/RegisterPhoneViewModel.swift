@@ -180,28 +180,22 @@ final class RegisterPhoneViewModel: ViewModelType {
             }
             .withUnretained(self)
             .handleEvents(receiveOutput: { owner, response in
-                // TODO: - Remove/Adapt when C library is added
-                guard let response = response else { return }
-                owner.temporalGenerateSignature.send(response.challenge)
-            })
-            .sink { owner, response in
                 guard let response = response else {
                     owner.currentState = .phoneInput
                     return
                 }
+
+                // TODO: - Remove/Adapt temporal when C library is added
+                owner.temporalGenerateSignature.send(response.challenge)
 
                 if response.phoneVerified {
                     owner.currentState = .codeInputSuccess
                 } else {
                     owner.currentState = .codeInput
                 }
-            }
-            .store(in: cancelBag)
-
-        action
-            .useAction(action: .nextTap)
-            .withUnretained(self)
+            })
             .filter { $0.0.currentState == .codeInputSuccess }
+            .delay(for: .seconds(1), scheduler: RunLoop.main)
             .sink { owner, _ in
                 owner.route.send(.continueTapped)
                 owner.clearState()
@@ -219,9 +213,7 @@ final class RegisterPhoneViewModel: ViewModelType {
                     .compactMap { $0.value }
                     .eraseToAnyPublisher()
             }
-            .sink { signature in
-                print("Obtained signature: \(signature)")
-            }
+            .sink { _ in }
             .store(in: cancelBag)
     }
 
@@ -313,5 +305,25 @@ final class RegisterPhoneViewModel: ViewModelType {
         currentState = .phoneInput
         authenticationManager.clearPhoneVerification()
         timer?.connect().cancel()
+    }
+
+    private func test() {
+        
+    }
+    
+    private func updateState(with response: CodeValidationResponse?) {
+//        guard let response = response else {
+//            currentState = .phoneInput
+//            return
+//        }
+//
+//        // TODO: - Remove/Adapt temporal when C library is added
+//        temporalGenerateSignature.send(response.challenge)
+//
+//        if response.phoneVerified {
+//            currentState = .codeInputSuccess
+//        } else {
+//            currentState = .codeInput
+//        }
     }
 }

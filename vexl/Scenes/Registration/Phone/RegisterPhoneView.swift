@@ -26,13 +26,16 @@ struct RegisterPhoneView: View {
                     CodeInputView(phoneNumber: viewModel.phoneNumber,
                                   isEnabled: viewModel.codeInputEnabled,
                                   remainingTime: viewModel.countdown,
+                                  displayRetry: viewModel.currentState != .codeInputSuccess,
                                   code: $viewModel.validationCode,
                                   retryAction: {
                         viewModel.send(action: .sendCode)
                     })
                         .padding(.all, Appearance.GridGuide.point)
                 } else {
-                    PhoneInputView(phoneNumber: $viewModel.phoneNumber)
+                    PhoneInputView(phoneNumber: $viewModel.phoneNumber) {
+                        // TODO: - implement country picker once its done
+                    }
                         .padding(.all, Appearance.GridGuide.point)
                 }
 

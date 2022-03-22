@@ -14,7 +14,7 @@ struct LoadingIndicatorView: View {
                 .progressViewStyle(CircularProgressViewStyle(tint: Appearance.Colors.purple4))
         }
         .frame(width: Appearance.GridGuide.largePadding2 * 2, height: Appearance.GridGuide.largePadding2 * 2)
-        .background(Color.white)
+        .background(Appearance.Colors.gray4)
         .cornerRadius(Appearance.GridGuide.point)
     }
 }
