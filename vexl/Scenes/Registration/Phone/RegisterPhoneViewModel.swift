@@ -113,10 +113,12 @@ final class RegisterPhoneViewModel: ViewModelType {
             .loading
             .assign(to: &$loading)
 
-//        TODO: - how to solve this? if the property is type Error, it needs to be optional?
-//        errorIndicator
-//            .errors
-//            .assign(to: &$error)
+        errorIndicator
+            .errors
+            .map { value -> Error? in
+                value
+            }
+            .assign(to: &$error)
     }
 
     // swiftlint:disable function_body_length
@@ -307,23 +309,19 @@ final class RegisterPhoneViewModel: ViewModelType {
         timer?.connect().cancel()
     }
 
-    private func test() {
-        
-    }
-    
     private func updateState(with response: CodeValidationResponse?) {
-//        guard let response = response else {
-//            currentState = .phoneInput
-//            return
-//        }
-//
-//        // TODO: - Remove/Adapt temporal when C library is added
-//        temporalGenerateSignature.send(response.challenge)
-//
-//        if response.phoneVerified {
-//            currentState = .codeInputSuccess
-//        } else {
-//            currentState = .codeInput
-//        }
+        guard let response = response else {
+            currentState = .phoneInput
+            return
+        }
+
+        // TODO: - Remove/Adapt temporal when C library is added
+        temporalGenerateSignature.send(response.challenge)
+
+        if response.phoneVerified {
+            currentState = .codeInputSuccess
+        } else {
+            currentState = .codeInput
+        }
     }
 }
