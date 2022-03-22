@@ -51,9 +51,13 @@ final class RegisterPhoneViewModel: ViewModelType {
 
     // MARK: - Activities
 
-    var primaryActivity: Activity
-    var errorIndicator: ErrorIndicator = .init()
-    var activityIndicator: ActivityIndicator = .init()
+    var primaryActivity: Activity = .init()
+    var errorIndicator: ErrorIndicator {
+        primaryActivity.error
+    }
+    var activityIndicator: ActivityIndicator {
+        primaryActivity.indicator
+    }
 
     // MARK: - Coordinator Bindings
 
@@ -101,7 +105,6 @@ final class RegisterPhoneViewModel: ViewModelType {
     private let cancelBag: CancelBag = .init()
 
     init() {
-        self.primaryActivity = .init(indicator: activityIndicator, error: errorIndicator)
         setupActivity()
         setupActionBindings()
         setupStateBindings()
