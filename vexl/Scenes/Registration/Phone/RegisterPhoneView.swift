@@ -32,26 +32,34 @@ struct RegisterPhoneView: View {
                         viewModel.send(action: .sendCode)
                     })
                         .padding(.all, Appearance.GridGuide.point)
+                    Spacer()
+                    actionButton {
+                        viewModel.send(action: .validateCode)
+                    }
                 } else {
                     PhoneInputView(phoneNumber: $viewModel.phoneNumber)
                         .padding(.all, Appearance.GridGuide.point)
+                    Spacer()
+                    actionButton {
+                        viewModel.send(action: .sendPhoneNumber)
+                    }
                 }
-
-                Spacer()
-
-                SolidButton(Text(viewModel.actionTitle),
-                            isEnabled: $viewModel.isActionEnabled,
-                            font: Appearance.TextStyle.h3.font.asFont,
-                            colors: viewModel.actionColor,
-                            dimensions: SolidButtonDimension.largeButton) {
-                    viewModel.send(action: .nextTap)
-                }
-                .padding(.horizontal, Appearance.GridGuide.padding)
-                .padding(.bottom, Appearance.GridGuide.padding)
             }
             .zIndex(1)
         }
         .background(Color.black.edgesIgnoringSafeArea(.all))
+    }
+
+    @ViewBuilder private func actionButton(with action: @escaping () -> Void) -> some View {
+        SolidButton(Text(viewModel.actionTitle),
+                    isEnabled: $viewModel.isActionEnabled,
+                    font: Appearance.TextStyle.h3.font.asFont,
+                    colors: viewModel.actionColor,
+                    dimensions: SolidButtonDimension.largeButton) {
+            action()
+        }
+        .padding(.horizontal, Appearance.GridGuide.padding)
+        .padding(.bottom, Appearance.GridGuide.padding)
     }
 }
 

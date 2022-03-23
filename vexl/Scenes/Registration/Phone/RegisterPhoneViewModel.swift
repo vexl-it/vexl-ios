@@ -30,6 +30,8 @@ final class RegisterPhoneViewModel: ViewModelType {
 
     enum UserAction: Equatable {
         case nextTap
+        case sendPhoneNumber
+        case validateCode
         case sendCode
     }
 
@@ -126,9 +128,8 @@ final class RegisterPhoneViewModel: ViewModelType {
     private func setupActionBindings() {
 
         let phoneInput = action
-            .useAction(action: .nextTap)
+            .useAction(action: .sendPhoneNumber)
             .withUnretained(self)
-            .filter { $0.0.currentState == .phoneInput }
 
         let sendCode = action
             .useAction(action: .sendCode)
@@ -160,9 +161,7 @@ final class RegisterPhoneViewModel: ViewModelType {
             .store(in: cancelBag)
 
         action
-            .useAction(action: .nextTap)
-            .withUnretained(self)
-            .filter { $0.0.currentState == .codeInput }
+            .useAction(action: .validateCode)
             .withUnretained(self)
             .handleEvents(receiveOutput: { owner, _ in
                 owner.currentState = .codeInputValidation
