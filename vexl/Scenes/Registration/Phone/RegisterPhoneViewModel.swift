@@ -254,16 +254,6 @@ final class RegisterPhoneViewModel: ViewModelType {
     }
 
     private func timerBindings() {
-        timer?
-            .withUnretained(self)
-            .sink { owner, _ in
-                owner.countdown -= 1
-                if owner.countdown == 0 {
-                    owner.timer?.connect().cancel()
-                }
-            }
-            .store(in: cancelBag)
-
         triggerCountdown
             .withUnretained(self)
             .sink { owner, date in
