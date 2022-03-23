@@ -172,42 +172,97 @@ final class RegisterPhoneViewModel: ViewModelType {
             }
             .withUnretained(self)
             .flatMap { owner, verificationId in
-                owner.userService.confirmValidationCode(id: verificationId,
-                                                        code: owner.validationCode,
-                                                        key: owner.authenticationManager.userKeys?.publicKey ?? "")
-                .track(activity: owner.primaryActivity)
-                .materializeIgnoreCompleted()
-                .handleEvents(receiveCompletion: { _ in
-                    if owner.currentState == .codeInputValidation {
-                        owner.currentState = .codeInput
-                    }
-                })
-                .map { $0.value }
-                .eraseToAnyPublisher()
+                owner
+                    .userService
+                    .confirmValidationCode(id: verificationId,
+                                           code: owner.validationCode,
+                                           key: owner.authenticationManager.userKeys?.publicKey ?? "")
+                    .track(activity: owner.primaryActivity)
+                    .materialize()
+                    .eraseToAnyPublisher()
             }
             .withUnretained(self)
             .handleEvents(receiveOutput: { owner, response in
-                guard let response = response else {
-                    owner.currentState = .phoneInput
-                    return
-                }
-
-                if response.phoneVerified {
-                    owner.currentState = .codeInputSuccess
-                } else {
+                if response.value == nil && owner.currentState == .codeInputValidation {
                     owner.currentState = .codeInput
                 }
-                // TODO: - Remove/Adapt when C library is added
-                owner.temporalGenerateSignature.send(response.challenge)
             })
-            .filter { $0.0.currentState == .codeInputSuccess }
-            .delay(for: .seconds(1), scheduler: RunLoop.main)
+            .compactMap { $0.1.value }
             .withUnretained(self)
+            .handleEvents(receiveOutput: { owner, response in
+                owner.temporalGenerateSignature.send(response.challenge)
+                owner.currentState = response.phoneVerified ? .codeInputSuccess : .codeInput
+            })
+            .filter { [weak self] owner, _ in
+                //THIS WORKS
+//                print(owner)
+//                return owner.currentState == .codeInputSuccess
+                
+                //THIS DOESNT WORK for w/e reason with a print it works
+                //return owner.currentState == .codeInputSuccess
+                
+                //THIS WORKS
+//                if owner.currentState == .codeInputSuccess { return true }
+//                else { return false }
+//
+                guard let self = self else { return false }
+                return self.currentState == .codeInputSuccess
+            }
+            .delay(for: .seconds(1), scheduler: RunLoop.main)
             .sink { owner, _ in
                 owner.route.send(.continueTapped)
                 owner.clearState()
             }
             .store(in: cancelBag)
+
+//        action
+//            .useAction(action: .validateCode)
+//            .withUnretained(self)
+//            .handleEvents(receiveOutput: { owner, _ in
+//                owner.currentState = .codeInputValidation
+//            })
+//            .compactMap { owner, _ in
+//                guard let verificationId = owner.authenticationManager.phoneVerification?.verificationId else { return nil }
+//                return verificationId
+//            }
+//            .withUnretained(self)
+//            .flatMap { owner, verificationId in
+//                owner.userService.confirmValidationCode(id: verificationId,
+//                                                        code: owner.validationCode,
+//                                                        key: owner.authenticationManager.userKeys?.publicKey ?? "")
+//                .track(activity: owner.primaryActivity)
+//                .materializeIgnoreCompleted()
+//                .handleEvents(receiveCompletion: { _ in
+//                    if owner.currentState == .codeInputValidation {
+//                        owner.currentState = .codeInput
+//                    }
+//                })
+//                .map { $0.value }
+//                .eraseToAnyPublisher()
+//            }
+//            .withUnretained(self)
+//            .handleEvents(receiveOutput: { owner, response in
+//                guard let response = response else {
+//                    owner.currentState = .phoneInput
+//                    return
+//                }
+//
+//                if response.phoneVerified {
+//                    owner.currentState = .codeInputSuccess
+//                } else {
+//                    owner.currentState = .codeInput
+//                }
+//                // TODO: - Remove/Adapt when C library is added
+//                owner.temporalGenerateSignature.send(response.challenge)
+//            })
+//            .filter { $0.0.currentState == .codeInputSuccess }
+//            .delay(for: .seconds(1), scheduler: RunLoop.main)
+//            .withUnretained(self)
+//            .sink { owner, _ in
+//                owner.route.send(.continueTapped)
+//                owner.clearState()
+//            }
+//            .store(in: cancelBag)
 
         // Temporal delete me
         temporalGenerateSignature
