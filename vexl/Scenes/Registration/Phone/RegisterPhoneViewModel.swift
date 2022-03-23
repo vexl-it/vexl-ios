@@ -178,8 +178,13 @@ final class RegisterPhoneViewModel: ViewModelType {
                                                             key: owner.authenticationManager.userKeys?.publicKey ?? "")
                     .track(activity: owner.primaryActivity)
                     .materializeIgnoreCompleted()
-                    .handleEvents(receiveCompletion: { _ in
-                        owner.currentState = .codeInput
+                    .handleEvents(receiveCompletion: { response in
+                        switch response {
+                        case .failure:
+                            owner.currentState = .codeInput
+                        default:
+                            break
+                        }
                     })
                     .map { $0.value }
                     .eraseToAnyPublisher()
@@ -200,7 +205,7 @@ final class RegisterPhoneViewModel: ViewModelType {
                 owner.temporalGenerateSignature.send(response.challenge)
             })
             .filter { $0.0.currentState == .codeInputSuccess }
-            .delay(for: .seconds(1), scheduler: RunLoop.main)
+            .delay(for: .seconds(0.5), scheduler: RunLoop.main)
             .withUnretained(self)
             .sink { owner, _ in
                 owner.route.send(.continueTapped)
