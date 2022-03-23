@@ -9,12 +9,18 @@ import SwiftUI
 
 struct LoadingIndicatorView: View {
     var body: some View {
-        VStack {
-            ProgressView()
-                .progressViewStyle(CircularProgressViewStyle(tint: Appearance.Colors.purple4))
+        ZStack {
+            Color.black
+                .opacity(0.25)
+                .edgesIgnoringSafeArea(.all)
+
+            VStack {
+                ProgressView()
+                    .progressViewStyle(CircularProgressViewStyle(tint: Appearance.Colors.purple4))
+            }
+            .frame(width: Appearance.GridGuide.largePadding2 * 2, height: Appearance.GridGuide.largePadding2 * 2)
+            .background(Color.white)
+            .cornerRadius(Appearance.GridGuide.point)
         }
-        .frame(width: Appearance.GridGuide.largePadding2 * 2, height: Appearance.GridGuide.largePadding2 * 2)
-        .background(Color.white)
-        .cornerRadius(Appearance.GridGuide.point)
     }
 }

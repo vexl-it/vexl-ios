@@ -53,8 +53,10 @@ final class UserService: BaseService, UserServiceType {
 
     func createUser(username: String, avatar: String) -> AnyPublisher<User, Error> {
         AnyPublisher(Future<User, Error> { promise in
-            let user = User(id: 1, name: "Diego")
-            promise(.success(user))
+            after(2) {
+                let user = User(id: 1, name: "Diego")
+                promise(.success(user))
+            }
         })
     }
 

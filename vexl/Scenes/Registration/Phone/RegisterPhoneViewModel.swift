@@ -173,21 +173,18 @@ final class RegisterPhoneViewModel: ViewModelType {
             }
             .withUnretained(self)
             .flatMap { owner, verificationId in
-                    owner.userService.confirmValidationCode(id: verificationId,
-                                                            code: owner.validationCode,
-                                                            key: owner.authenticationManager.userKeys?.publicKey ?? "")
-                    .track(activity: owner.primaryActivity)
-                    .materializeIgnoreCompleted()
-                    .handleEvents(receiveCompletion: { response in
-                        switch response {
-                        case .failure:
-                            owner.currentState = .codeInput
-                        default:
-                            break
-                        }
-                    })
-                    .map { $0.value }
-                    .eraseToAnyPublisher()
+                owner.userService.confirmValidationCode(id: verificationId,
+                                                        code: owner.validationCode,
+                                                        key: owner.authenticationManager.userKeys?.publicKey ?? "")
+                .track(activity: owner.primaryActivity)
+                .materializeIgnoreCompleted()
+                .handleEvents(receiveCompletion: { _ in
+                    if owner.currentState == .codeInputValidation {
+                        owner.currentState = .codeInput
+                    }
+                })
+                .map { $0.value }
+                .eraseToAnyPublisher()
             }
             .withUnretained(self)
             .handleEvents(receiveOutput: { owner, response in
@@ -205,7 +202,7 @@ final class RegisterPhoneViewModel: ViewModelType {
                 owner.temporalGenerateSignature.send(response.challenge)
             })
             .filter { $0.0.currentState == .codeInputSuccess }
-            .delay(for: .seconds(0.5), scheduler: RunLoop.main)
+            .delay(for: .seconds(1), scheduler: RunLoop.main)
             .withUnretained(self)
             .sink { owner, _ in
                 owner.route.send(.continueTapped)

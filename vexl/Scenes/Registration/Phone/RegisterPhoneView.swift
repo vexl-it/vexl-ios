@@ -17,6 +17,7 @@ struct RegisterPhoneView: View {
         ZStack {
             if viewModel.loading {
                 LoadingIndicatorView()
+                    .zIndex(2)
             }
 
             VStack {
@@ -48,6 +49,7 @@ struct RegisterPhoneView: View {
                 .padding(.horizontal, Appearance.GridGuide.padding)
                 .padding(.bottom, Appearance.GridGuide.padding)
             }
+            .zIndex(1)
         }
         .background(Color.black.edgesIgnoringSafeArea(.all))
     }
