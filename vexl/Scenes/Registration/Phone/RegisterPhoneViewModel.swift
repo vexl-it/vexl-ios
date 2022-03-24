@@ -211,16 +211,27 @@ final class RegisterPhoneViewModel: ViewModelType {
         temporalGenerateSignature
             .withUnretained(self)
             .flatMap { owner, challenge in
-                owner.userService.generateSignature(challenge: challenge,
-                                                    privateKey: owner.authenticationManager.userKeys?.privateKey ?? "")
+                owner
+                    .userService
+                    .generateSignature(challenge: challenge,
+                                       privateKey: owner.authenticationManager.userKeys?.privateKey ?? "")
                     .track(activity: owner.primaryActivity)
                     .materialize()
                     .compactMap { $0.value }
                     .eraseToAnyPublisher()
             }
-            .sink { signature in
-                print("Obtained signature: \(signature)")
+            .compactMap { $0.signed }
+            .withUnretained(self)
+            .flatMap { owner, signature in
+                owner
+                    .userService
+                    .validateChallenge(key: owner.authenticationManager.userKeys?.publicKey ?? "",
+                                       signature: signature)
+                    .track(activity: owner.primaryActivity)
+                    .materialize()
+                    .eraseToAnyPublisher()
             }
+            .sink { _ in }
             .store(in: cancelBag)
     }
 

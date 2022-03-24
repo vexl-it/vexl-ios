@@ -39,6 +39,16 @@ final class AuthenticationManager: TokenHandlerType {
     private(set) var codeConfirmation = CurrentValueSubject<CodeValidationResponse?, Never>(nil)
     private(set) var userKeys: UserKeys?
     private(set) var userSignature: UserSignature?
+    private(set) var challengeValidation: ChallengeValidation?
+
+    var securityHeader: SecurityHeader? {
+        guard let signature = challengeValidation?.signature,
+              let publicKey = userKeys?.publicKey,
+              let hash = challengeValidation?.hash else {
+                  return nil
+              }
+        return SecurityHeader(hash: hash, publicKey: publicKey, signature: signature)
+    }
 
     // MARK: - Initialization
 
@@ -86,6 +96,14 @@ extension AuthenticationManager {
 
     func setPhoneVerification(_ phoneVerification: PhoneConfirmationResponse) {
         self.phoneVerification = phoneVerification
+    }
+
+    func setHash(_ challengeValidation: ChallengeValidation) {
+        self.challengeValidation = challengeValidation
+    }
+
+    func clearHash() {
+        self.challengeValidation = nil
     }
 
     func setCodeConfirmation(_ codeValidation: CodeValidationResponse) {

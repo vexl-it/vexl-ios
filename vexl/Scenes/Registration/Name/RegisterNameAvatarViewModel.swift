@@ -100,8 +100,10 @@ final class RegisterNameAvatarViewModel: ViewModelType {
             .useAction(action: .createUser)
             .withUnretained(self)
             .flatMap { owner, _ in
-                owner.userService.createUser(username: owner.username,
-                                             avatar: "")
+                owner
+                    .userService
+                    .createUser(username: owner.username,
+                                avatar: "")
                     .track(activity: owner.primaryActivity)
                     .materialize()
                     .compactMap { $0.value }
