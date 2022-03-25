@@ -47,7 +47,7 @@ final class RegisterPhoneViewModel: ViewModelType {
     @Published var currentState = ViewState.phoneInput
 
     @Published var loading = false
-    @Published var error: Error?
+    @Published var error: AlertError?
 
     @Published var countdown = 0
 
@@ -120,8 +120,11 @@ final class RegisterPhoneViewModel: ViewModelType {
 
         errorIndicator
             .errors
-            .asOptional()
-            .assign(to: &$error)
+            .withUnretained(self)
+            .sink { owner, error in
+                owner.error = AlertError(error: error)
+            }
+            .store(in: cancelBag)
     }
 
     // swiftlint:disable function_body_length

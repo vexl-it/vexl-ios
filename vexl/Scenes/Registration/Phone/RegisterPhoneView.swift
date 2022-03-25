@@ -48,6 +48,9 @@ struct RegisterPhoneView: View {
             .zIndex(1)
         }
         .background(Color.black.edgesIgnoringSafeArea(.all))
+        .alert(item: $viewModel.error) { alert in
+            Alert(title: Text(alert.message), message: nil, dismissButton: Alert.Button.default(Text(L.generalOk())))
+        }
     }
 
     @ViewBuilder private func actionButton(with action: @escaping () -> Void) -> some View {
