@@ -20,6 +20,7 @@ protocol UserServiceType {
     func requestVerificationCode(phoneNumber: String) -> AnyPublisher<PhoneConfirmationResponse, Error>
     func confirmValidationCode(id: Int, code: String, key: String) -> AnyPublisher<CodeValidationResponse, Error>
     func validateChallenge(key: String, signature: String) -> AnyPublisher<ChallengeValidation, Error>
+    func validateUsername(username: String) -> AnyPublisher<UserAvailable, Error>
     func createUser(username: String, avatar: String?) -> AnyPublisher<User, Error>
     // temporal
     func generateKeys() -> AnyPublisher<UserKeys, Error>
@@ -65,6 +66,15 @@ final class UserService: BaseService, UserServiceType {
                 owner.authenticationManager.setHash(response)
             })
             .map { $0.1 }
+            .eraseToAnyPublisher()
+    }
+
+    // swiftlint:disable array_init
+    func validateUsername(username: String) -> AnyPublisher<UserAvailable, Error> {
+        let security = authenticationManager.securityHeader
+        return request(type: UserAvailable.self, endpoint: UserRouter.validateUsername(username: username,
+                                                                                       security: security))
+            .map { $0 }
             .eraseToAnyPublisher()
     }
 

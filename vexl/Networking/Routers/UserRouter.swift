@@ -15,6 +15,7 @@ enum UserRouter: ApiRouter {
     case confirmPhone(phoneNumber: String)
     case validateCode(id: Int, code: String, key: String)
     case validateChallenge(signature: String, key: String)
+    case validateUsername(username: String, security: SecurityHeader?)
     case temporalGenerateKeys
     case temporalSignature(challenge: String, privateKey: String)
 
@@ -22,7 +23,7 @@ enum UserRouter: ApiRouter {
         switch self {
         case .me, .temporalGenerateKeys:
             return .get
-        case .createUser, .confirmPhone, .validateCode, .temporalSignature, .validateChallenge:
+        case .createUser, .confirmPhone, .validateCode, .temporalSignature, .validateChallenge, .validateUsername:
             return .post
         }
     }
@@ -30,6 +31,8 @@ enum UserRouter: ApiRouter {
     var additionalHeaders: [Header] {
         switch self {
         case let .createUser(_, _, security):
+            return security?.header ?? []
+        case let .validateUsername(_, security):
             return security?.header ?? []
         default:
             return []
@@ -46,6 +49,8 @@ enum UserRouter: ApiRouter {
             return "user/confirmation/phone"
         case .validateCode:
             return "user/confirmation/code"
+        case .validateUsername:
+            return "user/username/availability"
         case .validateChallenge:
             return "user/confirmation/challenge"
         case .temporalGenerateKeys:
@@ -69,6 +74,8 @@ enum UserRouter: ApiRouter {
                     "signature": signature]
         case let .confirmPhone(phoneNumber):
             return ["phoneNumber": phoneNumber]
+        case let .validateUsername(username, _):
+            return ["username": username]
         case let .validateCode(id, code, key):
             return ["id": id,
                     "code": code,

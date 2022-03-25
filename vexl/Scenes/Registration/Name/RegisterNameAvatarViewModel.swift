@@ -121,6 +121,16 @@ final class RegisterNameAvatarViewModel: ViewModelType {
         action
             .useAction(action: .setUsername)
             .withUnretained(self)
+            .flatMap { owner, _ in
+                owner.userService
+                    .validateUsername(username: owner.username)
+                    .track(activity: owner.primaryActivity)
+                    .materialize()
+                    .compactMap { $0.value }
+                    .eraseToAnyPublisher()
+            }
+            .filter { $0.available }
+            .withUnretained(self)
             .sink { owner, _ in
                 owner.currentState = .avatarInput
             }
