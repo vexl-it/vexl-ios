@@ -42,6 +42,7 @@ final class RegisterNameAvatarViewModel: ViewModelType {
     @Published var isActionEnabled = false
 
     @Published var loading = false
+    @Published var error: AlertError?
 
     var primaryActivity: Activity = .init()
     var activityIndicator: ActivityIndicator {
@@ -62,12 +63,23 @@ final class RegisterNameAvatarViewModel: ViewModelType {
     private let cancelBag: CancelBag = .init()
 
     init() {
+        setupActivity()
+        setupStateBinding()
+        setupActionBindings()
+    }
+
+    private func setupActivity() {
         activityIndicator
             .loading
             .assign(to: &$loading)
 
-        setupStateBinding()
-        setupActionBindings()
+        errorIndicator
+            .errors
+            .withUnretained(self)
+            .sink { owner, error in
+                owner.error = AlertError(error: error)
+            }
+            .store(in: cancelBag)
     }
 
     private func setupStateBinding() {

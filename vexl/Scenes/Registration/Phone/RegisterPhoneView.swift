@@ -14,12 +14,21 @@ struct RegisterPhoneView: View {
     @ObservedObject var viewModel: RegisterPhoneViewModel
 
     var body: some View {
-        ZStack {
-            if viewModel.loading {
-                LoadingIndicatorView()
-                    .zIndex(2)
+        AlertContainerView(error: $viewModel.error) {
+            LoadingContainerView(loading: viewModel.loading) {
+                ContentView(viewModel: viewModel)
             }
+        }
+    }
+}
 
+extension RegisterPhoneView {
+
+    private struct ContentView: View {
+
+        @ObservedObject var viewModel: RegisterPhoneViewModel
+
+        var body: some View {
             VStack {
 
                 if viewModel.showCodeInput {
@@ -45,24 +54,20 @@ struct RegisterPhoneView: View {
                     }
                 }
             }
-            .zIndex(1)
+            .background(Color.black.edgesIgnoringSafeArea(.all))
         }
-        .background(Color.black.edgesIgnoringSafeArea(.all))
-        .alert(item: $viewModel.error) { alert in
-            Alert(title: Text(alert.message), message: nil, dismissButton: Alert.Button.default(Text(L.generalOk())))
-        }
-    }
 
-    @ViewBuilder private func actionButton(with action: @escaping () -> Void) -> some View {
-        SolidButton(Text(viewModel.actionTitle),
-                    isEnabled: $viewModel.isActionEnabled,
-                    font: Appearance.TextStyle.h3.font.asFont,
-                    colors: viewModel.actionColor,
-                    dimensions: SolidButtonDimension.largeButton) {
-            action()
+        @ViewBuilder private func actionButton(with action: @escaping () -> Void) -> some View {
+            SolidButton(Text(viewModel.actionTitle),
+                        isEnabled: $viewModel.isActionEnabled,
+                        font: Appearance.TextStyle.h3.font.asFont,
+                        colors: viewModel.actionColor,
+                        dimensions: SolidButtonDimension.largeButton) {
+                action()
+            }
+            .padding(.horizontal, Appearance.GridGuide.padding)
+            .padding(.bottom, Appearance.GridGuide.padding)
         }
-        .padding(.horizontal, Appearance.GridGuide.padding)
-        .padding(.bottom, Appearance.GridGuide.padding)
     }
 }
 
