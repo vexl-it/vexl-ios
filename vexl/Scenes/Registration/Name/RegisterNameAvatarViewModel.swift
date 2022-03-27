@@ -12,29 +12,22 @@ import Cleevio
 
 final class RegisterNameAvatarViewModel: ViewModelType {
 
+    @Inject var userService: UserServiceType
+
     // MARK: - View State
 
     enum State {
         case phoneVerified
         case usernameInput
         case avatarInput
-
-        var next: State {
-            switch self {
-            case .phoneVerified:
-                return .usernameInput
-            case .usernameInput:
-                return .avatarInput
-            case .avatarInput:
-                return .avatarInput
-            }
-        }
     }
 
     // MARK: - Actions Bindings
 
     enum UserAction: Equatable {
         case nextTap
+        case setUsername
+        case createUser
         case addAvatar
         case deleteAvatar
     }
@@ -48,7 +41,16 @@ final class RegisterNameAvatarViewModel: ViewModelType {
     @Published var avatar: UIImage?
     @Published var isActionEnabled = false
 
+    @Published var loading = false
+    @Published var error: AlertError?
+
     var primaryActivity: Activity = .init()
+    var activityIndicator: ActivityIndicator {
+        primaryActivity.indicator
+    }
+    var errorIndicator: ErrorIndicator {
+        primaryActivity.error
+    }
 
     // MARK: - Coordinator Bindings
 
@@ -61,12 +63,29 @@ final class RegisterNameAvatarViewModel: ViewModelType {
     private let cancelBag: CancelBag = .init()
 
     init() {
-        setupBinding()
+        setupActivity()
+        setupStateBinding()
+        setupActionBindings()
     }
 
-    private func setupBinding() {
+    private func setupActivity() {
+        activityIndicator
+            .loading
+            .assign(to: &$loading)
+
+        errorIndicator
+            .errors
+            .withUnretained(self)
+            .sink { owner, error in
+                owner.error = AlertError(error: error)
+            }
+            .store(in: cancelBag)
+    }
+
+    private func setupStateBinding() {
         $username
             .withUnretained(self)
+            .filter { $0.0.currentState == .usernameInput }
             .map { $0.validateUsername($1) }
             .assign(to: &$isActionEnabled)
 
@@ -75,43 +94,73 @@ final class RegisterNameAvatarViewModel: ViewModelType {
             .sink { owner, state in
                 switch state {
                 case .phoneVerified:
-                    after(2) {
-                        owner.currentState = owner.currentState.next
+                    after(1) {
+                        owner.currentState = .usernameInput
                     }
                 case .usernameInput:
                     owner.isActionEnabled = owner.validateUsername(owner.username)
                 case .avatarInput:
-                    owner.isActionEnabled = false
+                    owner.isActionEnabled = true
                 }
             }
             .store(in: cancelBag)
+    }
 
-        $avatar
+    private func setupActionBindings() {
+
+        action
+            .useAction(action: .createUser)
             .withUnretained(self)
-            .sink { owner, image in
-                owner.isActionEnabled = image != nil
+            .flatMap { owner, _ in
+                owner
+                    .userService
+                    .createUser(username: owner.username,
+                                avatar: "")
+                    .track(activity: owner.primaryActivity)
+                    .materialize()
+                    .compactMap { $0.value }
+                    .eraseToAnyPublisher()
+            }
+            .withUnretained(self)
+            .sink { owner, _ in
+                owner.route.send(.continueTapped)
+                owner.currentState = .usernameInput
+                owner.username = ""
+                owner.avatar = nil
             }
             .store(in: cancelBag)
 
         action
+            .useAction(action: .setUsername)
             .withUnretained(self)
-            .sink { owner, action in
-                switch action {
-                case .nextTap:
-                    switch owner.currentState {
-                    case .usernameInput:
-                        owner.currentState = owner.currentState.next
-                    case .avatarInput:
-                        owner.route.send(.continueTapped)
-                    case .phoneVerified:
-                        break
-                    }
-                case .addAvatar:
-                    // TODO: implemente ImagePicker
-                    owner.avatar = UIImage(named: R.image.onboarding.testAvatar.name)
-                case .deleteAvatar:
-                    owner.avatar = nil
-                }
+            .flatMap { owner, _ in
+                owner.userService
+                    .validateUsername(username: owner.username)
+                    .track(activity: owner.primaryActivity)
+                    .materialize()
+                    .compactMap { $0.value }
+                    .eraseToAnyPublisher()
+            }
+            .filter { $0.available }
+            .withUnretained(self)
+            .sink { owner, _ in
+                owner.currentState = .avatarInput
+            }
+            .store(in: cancelBag)
+
+        action
+            .useAction(action: .deleteAvatar)
+            .withUnretained(self)
+            .sink { owner, _ in
+                owner.avatar = nil
+            }
+            .store(in: cancelBag)
+
+        action
+            .useAction(action: .addAvatar)
+            .withUnretained(self)
+            .sink { owner, _ in
+                owner.avatar = UIImage(named: R.image.onboarding.testAvatar.name)
             }
             .store(in: cancelBag)
     }

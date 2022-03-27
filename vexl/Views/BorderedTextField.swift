@@ -15,7 +15,7 @@ struct BorderedTextField: View {
     @Binding var text: String
 
     var body: some View {
-        PlaceholderTextView(text: $text, placeholder: placeholder)
+        PlaceholderTextField(placeholder: placeholder, text: $text)
             .padding()
             .makeCorneredBorder(color: Appearance.Colors.gray3, borderWidth: 1)
     }

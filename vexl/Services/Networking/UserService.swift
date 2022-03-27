@@ -9,11 +9,19 @@
 import Foundation
 import Combine
 
+struct ChallengeValidation: Codable {
+    var hash: String
+    var signature: String
+    var challengeVerified: Bool
+}
+
 protocol UserServiceType {
     func me() -> AnyPublisher<User, Error>
     func requestVerificationCode(phoneNumber: String) -> AnyPublisher<PhoneConfirmationResponse, Error>
     func confirmValidationCode(id: Int, code: String, key: String) -> AnyPublisher<CodeValidationResponse, Error>
-    func createUser(username: String, avatar: String) -> AnyPublisher<User, Error>
+    func validateChallenge(key: String, signature: String) -> AnyPublisher<ChallengeValidation, Error>
+    func validateUsername(username: String) -> AnyPublisher<UserAvailable, Error>
+    func createUser(username: String, avatar: String?) -> AnyPublisher<User, Error>
     // temporal
     func generateKeys() -> AnyPublisher<UserKeys, Error>
     func generateSignature(challenge: String, privateKey: String) -> AnyPublisher<UserSignature, Error>
@@ -45,18 +53,40 @@ final class UserService: BaseService, UserServiceType {
         request(type: CodeValidationResponse.self, endpoint: UserRouter.validateCode(id: id, code: code, key: key))
             .withUnretained(self)
             .handleEvents(receiveOutput: { owner, response in
-                print("confirmValidationCode time!")
                 owner.authenticationManager.setCodeConfirmation(response)
             })
             .map { $0.1 }
             .eraseToAnyPublisher()
     }
 
-    func createUser(username: String, avatar: String) -> AnyPublisher<User, Error> {
-        AnyPublisher(Future<User, Error> { promise in
-            let user = User(id: 1, name: "Diego")
-            promise(.success(user))
-        })
+    func validateChallenge(key: String, signature: String) -> AnyPublisher<ChallengeValidation, Error> {
+        request(type: ChallengeValidation.self, endpoint: UserRouter.validateChallenge(signature: signature, key: key))
+            .withUnretained(self)
+            .handleEvents(receiveOutput: { owner, response in
+                owner.authenticationManager.setHash(response)
+            })
+            .map { $0.1 }
+            .eraseToAnyPublisher()
+    }
+
+    // swiftlint:disable array_init
+    func validateUsername(username: String) -> AnyPublisher<UserAvailable, Error> {
+        let security = authenticationManager.securityHeader
+        return request(type: UserAvailable.self, endpoint: UserRouter.validateUsername(username: username,
+                                                                                       security: security))
+            .map { $0 }
+            .eraseToAnyPublisher()
+    }
+
+    func createUser(username: String, avatar: String?) -> AnyPublisher<User, Error> {
+        let security = authenticationManager.securityHeader
+        return request(type: User.self, endpoint: UserRouter.createUser(username: username, avatar: avatar, security: security))
+            .withUnretained(self)
+            .handleEvents(receiveOutput: { owner, response in
+                print(response)
+            })
+            .map { $0.1 }
+            .eraseToAnyPublisher()
     }
 
     // TODO: - Temporal delete once C library is implemented
