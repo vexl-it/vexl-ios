@@ -9,6 +9,7 @@ platform :ios do
 	debug_identifier = "FIXME"
 	devel_identifier = "FIXME"
     appstore_identifier = "FIXME"
+    xcodeproj_identifier = "vexl.xcodeproj"
 
 	main_scheme = "vexl"
 	gsp_path_beta = "vexl/Resources/GoogleServices/Devel/GoogleService-Info.plist"
@@ -19,18 +20,20 @@ platform :ios do
 	firebase_tester_group_id = "FIXME"
 	firebase_cli_path = "/usr/local/bin/firebase"
 	slackUrl = "FIXME"
-	appSpecificPassword = "FIXME"
 
 	# ***************************************************** #
 	# ******************** BEFORE ALL ********************* #
 	# ***************************************************** #
 
-	before_all do
-    	ENV["FASTLANE_DONT_STORE_PASSWORD"] = "1"
-    	ENV["FASTLANE_USER"] = "dev@cleevio.cz"
-    	ENV["FASTLANE_PASSWORD"] = "SmartDevsCleevio123"
-    	ENV["FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD"] = appSpecificPassword
-  	end
+	ensure_env_vars(
+		env_vars: [
+			'FASTLANE_DONT_STORE_PASSWORD', 
+			'FASTLANE_USER', 
+			'FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD',
+			'FASTLANE_PASSWORD', 
+			'MATCH_PASSWORD'
+		]
+	)
 
 	# ***************************************************** #
 	# ******************** FUNCTIONS ********************** #
@@ -105,7 +108,7 @@ platform :ios do
 		version = get_version_number
 		build = increment_build_number(
 			build_number: ENV['CI_JOBENV_ID'],
-			xcodeproj: ENV['XCODE_PROJECT']
+			xcodeproj: xcodeproj_identifier
 		)
 
 		clean_build_artifacts
@@ -113,7 +116,7 @@ platform :ios do
 		unless git_tag_exists(tag: "#{version}(#{build})")
 			commit_version_bump(
 				message: "[ci skip] Build version Bump: #{version}(#{build})",
-				xcodeproj: ENV['XCODE_PROJECT']
+				xcodeproj: xcodeproj_identifier
 			)
 			add_git_tag(tag: "#{version}(#{build})")
 	
@@ -194,7 +197,7 @@ platform :ios do
 
 		version = get_version_number
 		build = get_build_number(
-			xcodeproj: ENV['XCODE_PROJECT']
+			xcodeproj: xcodeproj_identifier
 		)
 
 		puts "Version #{version} - build #{build} will be deploy to Testflight"
