@@ -36,7 +36,7 @@ final class AuthenticationManager: TokenHandlerType {
     // MARK: - Variables for user registration
 
     private(set) var phoneVerification: PhoneConfirmationResponse?
-    private(set) var codeConfirmation = CurrentValueSubject<CodeValidationResponse?, Never>(nil)
+    private(set) var codeConfirmation: CodeValidationResponse?
     private(set) var userKeys: UserKeys?
     private(set) var userSignature: UserSignature?
     private(set) var challengeValidation: ChallengeValidation?
@@ -106,8 +106,8 @@ extension AuthenticationManager {
         self.challengeValidation = nil
     }
 
-    func setCodeConfirmation(_ codeValidation: CodeValidationResponse) {
-        self.codeConfirmation.send(codeValidation)
+    func setCodeConfirmation(_ codeConfirmation: CodeValidationResponse) {
+        self.codeConfirmation = codeConfirmation
     }
 
     // MARK: - Base Authentication Methods

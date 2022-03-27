@@ -142,13 +142,17 @@ final class RegisterPhoneViewModel: ViewModelType {
         Publishers.Merge(phoneInput, sendCode)
             .flatMap { owner, _ in
                 // TODO: - temporal remove/replace when C library is available
-                owner.userService.generateKeys()
+                owner
+                    .userService
+                    .generateKeys()
                     .track(activity: owner.primaryActivity)
                     .materializeIgnoreCompleted()
             }
             .withUnretained(self)
             .flatMap { owner, _ in
-                owner.userService.requestVerificationCode(phoneNumber: owner.phoneNumber)
+                owner
+                    .userService
+                    .requestVerificationCode(phoneNumber: owner.phoneNumber)
                     .track(activity: owner.primaryActivity)
                     .materialize()
                     .compactMap { $0.value }

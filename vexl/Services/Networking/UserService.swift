@@ -82,9 +82,6 @@ final class UserService: BaseService, UserServiceType {
         let security = authenticationManager.securityHeader
         return request(type: User.self, endpoint: UserRouter.createUser(username: username, avatar: avatar, security: security))
             .withUnretained(self)
-            .handleEvents(receiveOutput: { owner, response in
-                print(response)
-            })
             .map { $0.1 }
             .eraseToAnyPublisher()
     }
