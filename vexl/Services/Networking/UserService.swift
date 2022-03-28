@@ -71,16 +71,13 @@ final class UserService: BaseService, UserServiceType {
 
     // swiftlint:disable array_init
     func validateUsername(username: String) -> AnyPublisher<UserAvailable, Error> {
-        let security = authenticationManager.securityHeader
-        return request(type: UserAvailable.self, endpoint: UserRouter.validateUsername(username: username,
-                                                                                       security: security))
+        request(type: UserAvailable.self, endpoint: UserRouter.validateUsername(username: username))
             .map { $0 }
             .eraseToAnyPublisher()
     }
 
     func createUser(username: String, avatar: String?) -> AnyPublisher<User, Error> {
-        let security = authenticationManager.securityHeader
-        return request(type: User.self, endpoint: UserRouter.createUser(username: username, avatar: avatar, security: security))
+        request(type: User.self, endpoint: UserRouter.createUser(username: username, avatar: avatar))
             .withUnretained(self)
             .map { $0.1 }
             .eraseToAnyPublisher()

@@ -23,6 +23,7 @@ enum AuthType {
 
 protocol ApiRouter: URLRequestConvertible {
     var tokenHandler: TokenHandlerType { get }
+    var securityHeader: [Header] { get }
     var method: HTTPMethod { get }
     var path: String { get }
     var parameters: Parameters { get }
@@ -35,6 +36,11 @@ protocol ApiRouter: URLRequestConvertible {
 extension ApiRouter {
     var tokenHandler: TokenHandlerType {
         DIContainer.shared.getDependency(type: TokenHandlerType.self)
+    }
+
+    var securityHeader: [Header] {
+        let authManager = DIContainer.shared.getDependency(type: AuthenticationManager.self)
+        return authManager.securityHeader?.header ?? []
     }
 
     var additionalHeaders: [Header] { [] }

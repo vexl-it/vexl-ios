@@ -11,11 +11,11 @@ import Alamofire
 
 enum UserRouter: ApiRouter {
     case me
-    case createUser(username: String, avatar: String?, security: SecurityHeader?)
+    case createUser(username: String, avatar: String?)
     case confirmPhone(phoneNumber: String)
     case validateCode(id: Int, code: String, key: String)
     case validateChallenge(signature: String, key: String)
-    case validateUsername(username: String, security: SecurityHeader?)
+    case validateUsername(username: String)
     case temporalGenerateKeys
     case temporalSignature(challenge: String, privateKey: String)
 
@@ -30,10 +30,8 @@ enum UserRouter: ApiRouter {
 
     var additionalHeaders: [Header] {
         switch self {
-        case let .createUser(_, _, security):
-            return security?.header ?? []
-        case let .validateUsername(_, security):
-            return security?.header ?? []
+        case .createUser, .validateUsername:
+            return securityHeader
         default:
             return []
         }
@@ -67,7 +65,7 @@ enum UserRouter: ApiRouter {
         case let .temporalSignature(challenge, privateKey):
             return ["challenge": challenge,
                     "privateKey": privateKey]
-        case let .createUser(username, avatar, _):
+        case let .createUser(username, avatar):
             guard let avatar = avatar else {
                 return ["username": username]
             }
@@ -77,7 +75,7 @@ enum UserRouter: ApiRouter {
                     "signature": signature]
         case let .confirmPhone(phoneNumber):
             return ["phoneNumber": phoneNumber]
-        case let .validateUsername(username, _):
+        case let .validateUsername(username):
             return ["username": username]
         case let .validateCode(id, code, key):
             return ["id": id,
