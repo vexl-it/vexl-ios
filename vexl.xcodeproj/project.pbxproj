@@ -94,11 +94,11 @@
 		F151A2A727C962CC000D7242 /* RegisterNameAvatarView+NameInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = F151A2A627C962CC000D7242 /* RegisterNameAvatarView+NameInput.swift */; };
 		F151A2A927C9646A000D7242 /* RegisterNameAvatarView+AvatarInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = F151A2A827C9646A000D7242 /* RegisterNameAvatarView+AvatarInput.swift */; };
 		F151A2AB27CE818C000D7242 /* RegisterNameAvatarView+PhoneVerification.swift in Sources */ = {isa = PBXBuildFile; fileRef = F151A2AA27CE818C000D7242 /* RegisterNameAvatarView+PhoneVerification.swift */; };
-		F175AB8527E4CC2E000DAB15 /* PhoneConfirmationResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = F175AB8427E4CC2E000DAB15 /* PhoneConfirmationResponse.swift */; };
+		F175AB8527E4CC2E000DAB15 /* PhoneConfirmation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F175AB8427E4CC2E000DAB15 /* PhoneConfirmation.swift */; };
 		F175AB8727E4D5C8000DAB15 /* UIScreen+.swift in Sources */ = {isa = PBXBuildFile; fileRef = F175AB8627E4D5C8000DAB15 /* UIScreen+.swift */; };
 		F175AB8927E4F493000DAB15 /* Materialize.swift in Sources */ = {isa = PBXBuildFile; fileRef = F175AB8827E4F493000DAB15 /* Materialize.swift */; };
 		F175AB8B27E8062A000DAB15 /* LoadingIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F175AB8A27E8062A000DAB15 /* LoadingIndicatorView.swift */; };
-		F175AB8D27E817D4000DAB15 /* CodeValidationResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = F175AB8C27E817D4000DAB15 /* CodeValidationResponse.swift */; };
+		F175AB8D27E817D4000DAB15 /* CodeValidation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F175AB8C27E817D4000DAB15 /* CodeValidation.swift */; };
 		F175AB8F27E8C622000DAB15 /* UserKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = F175AB8E27E8C622000DAB15 /* UserKeys.swift */; };
 		F175AB9127E8E223000DAB15 /* UserSignature.swift in Sources */ = {isa = PBXBuildFile; fileRef = F175AB9027E8E223000DAB15 /* UserSignature.swift */; };
 		F175AB9527EA6A8E000DAB15 /* PlaceholderTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = F175AB9427EA6A8E000DAB15 /* PlaceholderTextField.swift */; };
@@ -228,11 +228,11 @@
 		F151A2A627C962CC000D7242 /* RegisterNameAvatarView+NameInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RegisterNameAvatarView+NameInput.swift"; sourceTree = "<group>"; };
 		F151A2A827C9646A000D7242 /* RegisterNameAvatarView+AvatarInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RegisterNameAvatarView+AvatarInput.swift"; sourceTree = "<group>"; };
 		F151A2AA27CE818C000D7242 /* RegisterNameAvatarView+PhoneVerification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RegisterNameAvatarView+PhoneVerification.swift"; sourceTree = "<group>"; };
-		F175AB8427E4CC2E000DAB15 /* PhoneConfirmationResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneConfirmationResponse.swift; sourceTree = "<group>"; };
+		F175AB8427E4CC2E000DAB15 /* PhoneConfirmation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneConfirmation.swift; sourceTree = "<group>"; };
 		F175AB8627E4D5C8000DAB15 /* UIScreen+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScreen+.swift"; sourceTree = "<group>"; };
 		F175AB8827E4F493000DAB15 /* Materialize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Materialize.swift; sourceTree = "<group>"; };
 		F175AB8A27E8062A000DAB15 /* LoadingIndicatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingIndicatorView.swift; sourceTree = "<group>"; };
-		F175AB8C27E817D4000DAB15 /* CodeValidationResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeValidationResponse.swift; sourceTree = "<group>"; };
+		F175AB8C27E817D4000DAB15 /* CodeValidation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeValidation.swift; sourceTree = "<group>"; };
 		F175AB8E27E8C622000DAB15 /* UserKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserKeys.swift; sourceTree = "<group>"; };
 		F175AB9027E8E223000DAB15 /* UserSignature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSignature.swift; sourceTree = "<group>"; };
 		F175AB9427EA6A8E000DAB15 /* PlaceholderTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceholderTextField.swift; sourceTree = "<group>"; };
@@ -737,8 +737,8 @@
 		F175AB8327E4CC04000DAB15 /* Users */ = {
 			isa = PBXGroup;
 			children = (
-				F175AB8427E4CC2E000DAB15 /* PhoneConfirmationResponse.swift */,
-				F175AB8C27E817D4000DAB15 /* CodeValidationResponse.swift */,
+				F175AB8427E4CC2E000DAB15 /* PhoneConfirmation.swift */,
+				F175AB8C27E817D4000DAB15 /* CodeValidation.swift */,
 				F175AB8E27E8C622000DAB15 /* UserKeys.swift */,
 				F175AB9027E8E223000DAB15 /* UserSignature.swift */,
 			);
@@ -1135,10 +1135,9 @@
 				F1B5FCD627C703BF0018729B /* View+.swift in Sources */,
 				B08F396627AE7112008B344F /* Constants.swift in Sources */,
 				F1C6D0A227BE9157009BD506 /* LinkTextView.swift in Sources */,
-				F175AB9327EA0CDA000DAB15 /* PlaceholderTextView.swift in Sources */,
 				B08F391527AE7112008B344F /* ApiService.swift in Sources */,
 				B08F391927AE7112008B344F /* User.swift in Sources */,
-				F175AB8527E4CC2E000DAB15 /* PhoneConfirmationResponse.swift in Sources */,
+				F175AB8527E4CC2E000DAB15 /* PhoneConfirmation.swift in Sources */,
 				B08F399C27AE7D8D008B344F /* OnboardingViewModel.swift in Sources */,
 				B08F397E27AE7112008B344F /* UIViewController+.swift in Sources */,
 				B08F396427AE7112008B344F /* UserError.swift in Sources */,
@@ -1148,7 +1147,7 @@
 				B08F38E227AE7110008B344F /* Inject.swift in Sources */,
 				B08F395727AE7112008B344F /* ApiRouter.swift in Sources */,
 				F1042BA227BEADB70048C2F0 /* WelcomeView+Agreement.swift in Sources */,
-				F175AB8D27E817D4000DAB15 /* CodeValidationResponse.swift in Sources */,
+				F175AB8D27E817D4000DAB15 /* CodeValidation.swift in Sources */,
 				B08F394D27AE7112008B344F /* AppCoordinator.swift in Sources */,
 				F175AB9127E8E223000DAB15 /* UserSignature.swift in Sources */,
 				B0F206FE27AEBDD500A44E72 /* AuthRouter.swift in Sources */,

@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct PhoneConfirmationResponse: Codable {
+struct PhoneConfirmation: Codable {
     var verificationId: Int
     var expirationAt: String
 
