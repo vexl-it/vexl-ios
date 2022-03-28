@@ -68,7 +68,10 @@ enum UserRouter: ApiRouter {
             return ["challenge": challenge,
                     "privateKey": privateKey]
         case let .createUser(username, avatar, _):
-            return ["username": username]
+            guard let avatar = avatar else {
+                return ["username": username]
+            }
+            return ["username": username, "avatar": avatar]
         case let .validateChallenge(signature, key):
             return ["userPublicKey": key,
                     "signature": signature]

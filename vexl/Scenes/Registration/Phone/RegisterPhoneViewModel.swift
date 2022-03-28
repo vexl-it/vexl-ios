@@ -322,7 +322,7 @@ final class RegisterPhoneViewModel: ViewModelType {
         timer?.connect().cancel()
     }
 
-    private func updateState(with response: CodeValidationResponse?) {
+    private func updateState(with response: CodeValidation?) {
         guard let response = response else {
             currentState = .phoneInput
             return

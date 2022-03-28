@@ -17,8 +17,8 @@ struct ChallengeValidation: Codable {
 
 protocol UserServiceType {
     func me() -> AnyPublisher<User, Error>
-    func requestVerificationCode(phoneNumber: String) -> AnyPublisher<PhoneConfirmationResponse, Error>
-    func confirmValidationCode(id: Int, code: String, key: String) -> AnyPublisher<CodeValidationResponse, Error>
+    func requestVerificationCode(phoneNumber: String) -> AnyPublisher<PhoneConfirmation, Error>
+    func confirmValidationCode(id: Int, code: String, key: String) -> AnyPublisher<CodeValidation, Error>
     func validateChallenge(key: String, signature: String) -> AnyPublisher<ChallengeValidation, Error>
     func validateUsername(username: String) -> AnyPublisher<UserAvailable, Error>
     func createUser(username: String, avatar: String?) -> AnyPublisher<User, Error>
@@ -39,8 +39,8 @@ final class UserService: BaseService, UserServiceType {
         request(type: User.self, endpoint: UserRouter.me)
     }
 
-    func requestVerificationCode(phoneNumber: String) -> AnyPublisher<PhoneConfirmationResponse, Error> {
-        request(type: PhoneConfirmationResponse.self, endpoint: UserRouter.confirmPhone(phoneNumber: phoneNumber))
+    func requestVerificationCode(phoneNumber: String) -> AnyPublisher<PhoneConfirmation, Error> {
+        request(type: PhoneConfirmation.self, endpoint: UserRouter.confirmPhone(phoneNumber: phoneNumber))
             .withUnretained(self)
             .handleEvents(receiveOutput: { owner, response in
                 owner.authenticationManager.setPhoneVerification(response)
@@ -49,8 +49,8 @@ final class UserService: BaseService, UserServiceType {
             .eraseToAnyPublisher()
     }
 
-    func confirmValidationCode(id: Int, code: String, key: String) -> AnyPublisher<CodeValidationResponse, Error> {
-        request(type: CodeValidationResponse.self, endpoint: UserRouter.validateCode(id: id, code: code, key: key))
+    func confirmValidationCode(id: Int, code: String, key: String) -> AnyPublisher<CodeValidation, Error> {
+        request(type: CodeValidation.self, endpoint: UserRouter.validateCode(id: id, code: code, key: key))
             .withUnretained(self)
             .handleEvents(receiveOutput: { owner, response in
                 owner.authenticationManager.setCodeConfirmation(response)
