@@ -12,7 +12,9 @@ struct ContactUser: Codable { }
 
 struct ContactsImport: Codable { }
 
-struct ContactsAvailable: Codable { }
+struct ContactsAvailable: Codable {
+    var newContacts: [String]
+}
 
 protocol ContactsServiceType {
     func createUser(with key: String, hash: String) -> AnyPublisher<ContactUser, Error>
@@ -40,6 +42,11 @@ class ContactsService: BaseService, ContactsServiceType {
 
     func getAvailableContacts(_ contacts: [String]) -> AnyPublisher<ContactsAvailable, Error> {
         request(type: ContactsAvailable.self, endpoint: ContactsRouter.getAvailableContacts(contacts: contacts))
+            .withUnretained(self)
+            .handleEvents(receiveOutput: { owner, contacts in
+                owner.contactsManager.setAvailable(phoneContacts: contacts.newContacts)
+            })
+            .map { $0.1 }
             .eraseToAnyPublisher()
     }
 }

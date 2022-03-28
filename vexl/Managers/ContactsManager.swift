@@ -27,34 +27,18 @@ struct ImportContactItem: Identifiable {
     }
 }
 
-protocol ContactsManangerType {
-    var contacts: CurrentValueSubject<ContactsManager.Content, Never> { get set }
-}
+final class ContactsManager {
 
-final class ContactsManager: ContactsManangerType {
+    // MARK: - Bindings
 
-    enum Content: Equatable {
-        case loading
-        case empty
-        case content(items: [ImportContactItem])
+    var phoneContacts: CurrentValueSubject<[ImportContactItem], Never> = .init([])
+    
+    // MARK: - Properties
 
-        static func == (lhs: Content, rhs: Content) -> Bool {
-            switch (lhs, rhs) {
-            case (.loading, .loading):
-                return true
-            case (.empty, .empty):
-                return true
-            case (.content, content):
-                return true
-            default:
-                return false
-            }
-        }
-    }
+    private var userPhoneContacts: [ImportContactItem] = []
+    private(set) var availablePhoneContacts: [ImportContactItem] = []
 
-    var contacts: CurrentValueSubject<Content, Never> = .init(.loading)
-
-    func fetchPhoneContacts() {
+    func fetchPhoneContacts() -> [ImportContactItem] {
         var contacts = [ImportContactItem]()
         //let fullName = CNContactFormatter.descriptorForRequiredKeys(for: .fullName)
         let keys = [CNContactPhoneNumbersKey,
@@ -76,9 +60,17 @@ final class ContactsManager: ContactsManangerType {
                                                     avatar: avatar)
                 contacts.append(userContact)
             }
-            self.contacts.send(.content(items: contacts))
+            return contacts
         } catch {
-            self.contacts.send(.empty)
+            return []
         }
+    }
+
+    func setAvailable(phoneContacts: [String]) {
+        let availableContacts = userPhoneContacts.filter { item in
+            phoneContacts.contains(item.phone)
+        }
+        availablePhoneContacts = availableContacts
+        self.phoneContacts.send(availableContacts)
     }
 }

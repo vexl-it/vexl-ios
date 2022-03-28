@@ -15,12 +15,13 @@ class ImportContactsViewModel: ObservableObject {
     // MARK: - Dependencies
 
     @Inject var contactsManager: ContactsManager
+    @Inject var contactsService: ContactsServiceType
 
     // MARK: - View State
 
     enum ViewState {
+        case none
         case empty
-        case loading
         case content
         case success
     }
@@ -38,11 +39,21 @@ class ImportContactsViewModel: ObservableObject {
 
     // MARK: - View Bindings
 
-    @Published var currentState: ViewState = .loading
+    @Published var currentState: ViewState = .none
     @Published var items: [ImportContactItem] = []
     @Published var searchText = ""
-    @Published var canImportContacts = false
     @Published var hasSelectedItem = false
+
+    @Published var loading = false
+    @Published var error: AlertError?
+
+    var primaryActivity: Activity = .init()
+    var activityIndicator: ActivityIndicator {
+        primaryActivity.indicator
+    }
+    var errorIndicator: ErrorIndicator {
+        primaryActivity.error
+    }
 
     // MARK: - Variables
 
@@ -51,11 +62,30 @@ class ImportContactsViewModel: ObservableObject {
         return items.filter { $0.name.contains(searchText) }
     }
 
-    private let cancelBag: CancelBag = .init()
+    let cancelBag: CancelBag = .init()
 
     // MARK: - Init
 
     init() {
+        setupActivity()
+        setupActions()
+    }
+
+    private func setupActivity() {
+        activityIndicator
+            .loading
+            .assign(to: &$loading)
+
+        errorIndicator
+            .errors
+            .withUnretained(self)
+            .sink { owner, error in
+                owner.error = AlertError(error: error)
+            }
+            .store(in: cancelBag)
+    }
+
+    private func setupActions() {
         action
             .withUnretained(self)
             .sink { owner, action in
@@ -66,24 +96,6 @@ class ImportContactsViewModel: ObservableObject {
                     owner.unselectAllItems()
                 case .completed:
                     owner.completed.send(())
-                }
-            }
-            .store(in: cancelBag)
-
-        contactsManager
-            .contacts
-            .withUnretained(self)
-            .sink { owner, content in
-                switch content {
-                case .empty:
-                    owner.currentState = .empty
-                    owner.items = []
-                case .loading:
-                    owner.currentState = .loading
-                    owner.items = []
-                case let .content(items):
-                    owner.currentState = .content
-                    owner.items = items
                 }
             }
             .store(in: cancelBag)
@@ -109,6 +121,25 @@ class ImportContactsViewModel: ObservableObject {
 
 class PhoneImportContactsViewModel: ImportContactsViewModel {
     override func fetchContacts() {
-        contactsManager.fetchPhoneContacts()
+        let contacts = contactsManager.fetchPhoneContacts()
+        let phones = contacts.map { $0.phone }
+
+        contactsService
+            .getAvailableContacts(phones)
+            .track(activity: primaryActivity)
+            .materialize()
+            .withUnretained(self)
+            .sink { owner, _ in
+                let availableContacts = owner.contactsManager.availablePhoneContacts
+                owner.currentState = availableContacts.isEmpty ? .empty : .content
+                owner.items = availableContacts
+            }
+            .store(in: cancelBag)
+    }
+}
+
+class FacebookImportContactsViewModel: ImportContactsViewModel {
+    override func fetchContacts() {
+        let contacts = contactsManager.fetchPhoneContacts()
     }
 }

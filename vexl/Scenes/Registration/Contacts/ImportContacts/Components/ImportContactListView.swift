@@ -14,7 +14,7 @@ struct ImportContactListView: View {
 
     private var alignment: Alignment {
         switch viewModel.currentState {
-        case .loading, .empty:
+        case .none, .empty:
             return .center
         case .content, .success:
             return .top
@@ -28,9 +28,8 @@ struct ImportContactListView: View {
                 Text(L.registerContactsImportEmpty())
                     .foregroundColor(Appearance.Colors.primaryText)
                     .textStyle(.h3)
-            case .loading:
-                ProgressView()
-                    .progressViewStyle(CircularProgressViewStyle(tint: Appearance.Colors.purple4))
+            case .none:
+                EmptyView()
             case .content, .success:
                 ImportContactSearchBar(searchText: $viewModel.searchText,
                                        hasSelectedItem: viewModel.hasSelectedItem,

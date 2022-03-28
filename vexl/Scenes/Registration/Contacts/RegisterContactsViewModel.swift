@@ -87,7 +87,7 @@ final class RegisterContactsViewModel: ViewModelType {
             .withUnretained(self)
             .sink { owner, _ in
                 owner.currentState = .facebook
-                owner.importPhoneContactsViewModel.currentState = .loading
+                owner.importPhoneContactsViewModel.currentState = .none
             }
             .store(in: cancelBag)
 

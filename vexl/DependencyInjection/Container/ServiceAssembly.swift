@@ -24,7 +24,7 @@ class ServiceAssembly: Assembly {
             UserService(authenticationManager: container.resolve(AuthenticationManager.self)!)
         }
 
-        container.register(ContactsService.self) { container in
+        container.register(ContactsServiceType.self) { container in
             ContactsService(contactsManager: container.resolve(ContactsManager.self)!)
         }
     }

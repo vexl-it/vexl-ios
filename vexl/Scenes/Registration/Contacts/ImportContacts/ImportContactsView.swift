@@ -13,20 +13,36 @@ struct ImportContactsView: View {
     @ObservedObject var viewModel: ImportContactsViewModel
 
     var body: some View {
-        VStack(spacing: .zero) {
-
-            ImportContactListView(viewModel: viewModel)
-            .padding(.horizontal, Appearance.GridGuide.point)
-            .padding(.vertical, Appearance.GridGuide.padding)
-
-            SolidButton(Text(L.registerContactsImportButton()),
-                        isEnabled: $viewModel.hasSelectedItem,
-                        font: Appearance.TextStyle.h3.font.asFont,
-                        colors: SolidButtonColor.welcome,
-                        dimensions: SolidButtonDimension.largeButton) {
-                viewModel.action.send(.completed)
+        AlertContainerView(error: $viewModel.error) {
+            LoadingContainerView(loading: viewModel.loading) {
+                ContentView(viewModel: viewModel)
             }
-            .padding(.horizontal, Appearance.GridGuide.mediumPadding1)
+        }
+    }
+}
+
+extension ImportContactsView {
+
+    struct ContentView: View {
+
+        @ObservedObject var viewModel: ImportContactsViewModel
+
+        var body: some View {
+            VStack(spacing: .zero) {
+
+                ImportContactListView(viewModel: viewModel)
+                .padding(.horizontal, Appearance.GridGuide.point)
+                .padding(.vertical, Appearance.GridGuide.padding)
+
+                SolidButton(Text(L.registerContactsImportButton()),
+                            isEnabled: $viewModel.hasSelectedItem,
+                            font: Appearance.TextStyle.h3.font.asFont,
+                            colors: SolidButtonColor.welcome,
+                            dimensions: SolidButtonDimension.largeButton) {
+                    viewModel.action.send(.completed)
+                }
+                .padding(.horizontal, Appearance.GridGuide.mediumPadding1)
+            }
         }
     }
 }
