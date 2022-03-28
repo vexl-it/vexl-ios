@@ -23,5 +23,10 @@ class ManagerAssembly: Assembly {
             InitialScreenManager()
         }
         .inObjectScope(.container)
+
+        container.register(ContactsManager.self) { _ in
+            ContactsManager()
+        }
+        .inObjectScope(.container)
     }
 }
