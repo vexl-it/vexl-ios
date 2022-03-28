@@ -10,7 +10,11 @@ import Combine
 import SwiftUI
 import Cleevio
 
-final class ImportContactsViewModel: ObservableObject {
+class ImportContactsViewModel: ObservableObject {
+
+    // MARK: - Dependencies
+
+    @Inject var contactsManager: ContactsManager
 
     // MARK: - View State
 
@@ -34,7 +38,7 @@ final class ImportContactsViewModel: ObservableObject {
 
     // MARK: - View Bindings
 
-    @Published var current: ViewState = .loading
+    @Published var currentState: ViewState = .loading
     @Published var items: [ImportContactItem] = []
     @Published var searchText = ""
     @Published var canImportContacts = false
@@ -65,6 +69,24 @@ final class ImportContactsViewModel: ObservableObject {
                 }
             }
             .store(in: cancelBag)
+
+        contactsManager
+            .contacts
+            .withUnretained(self)
+            .sink { owner, content in
+                switch content {
+                case .empty:
+                    owner.currentState = .empty
+                    owner.items = []
+                case .loading:
+                    owner.currentState = .loading
+                    owner.items = []
+                case let .content(items):
+                    owner.currentState = .content
+                    owner.items = items
+                }
+            }
+            .store(in: cancelBag)
     }
 
     private func select(_ isSelected: Bool, item: ImportContactItem) {
@@ -79,22 +101,14 @@ final class ImportContactsViewModel: ObservableObject {
         }
         hasSelectedItem = false
     }
+
+    func fetchContacts() {
+        fatalError("Must implement fetch contacts")
+    }
 }
 
-struct ImportContactItem: Identifiable {
-    var id: Int
-    var name: String
-    var phone: String
-    var avatar: Data?
-    var isSelected = false
-
-    static func stub() -> [ImportContactItem] {
-        [
-            ImportContactItem(id: 1, name: "Diego Espinoza 1", phone: "999 944 222", avatar: nil),
-            ImportContactItem(id: 2, name: "Diego Espinoza 2", phone: "929 944 222", avatar: nil),
-            ImportContactItem(id: 3, name: "Diego Espinoza 3", phone: "969 944 222", avatar: nil),
-            ImportContactItem(id: 4, name: "Diego Espinoza 4", phone: "969 944 222", avatar: nil),
-            ImportContactItem(id: 5, name: "Diego Test 4", phone: "969 944 222", avatar: nil)
-        ]
+class PhoneImportContactsViewModel: ImportContactsViewModel {
+    override func fetchContacts() {
+        contactsManager.fetchPhoneContacts()
     }
 }

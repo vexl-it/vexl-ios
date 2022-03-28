@@ -13,7 +13,7 @@ struct ImportContactListView: View {
     @ObservedObject var viewModel: ImportContactsViewModel
 
     private var alignment: Alignment {
-        switch viewModel.current {
+        switch viewModel.currentState {
         case .loading, .empty:
             return .center
         case .content, .success:
@@ -23,7 +23,7 @@ struct ImportContactListView: View {
 
     var body: some View {
         VStack {
-            switch viewModel.current {
+            switch viewModel.currentState {
             case .empty:
                 Text(L.registerContactsImportEmpty())
                     .foregroundColor(Appearance.Colors.primaryText)
