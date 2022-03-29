@@ -34,12 +34,12 @@ extension ImportContactsView {
                 .padding(.horizontal, Appearance.GridGuide.point)
                 .padding(.vertical, Appearance.GridGuide.padding)
 
-                SolidButton(Text(L.registerContactsImportButton()),
+                SolidButton(Text(viewModel.currentState == .success ? L.registerPhoneCodeInputSuccess() : L.registerContactsImportButton()),
                             isEnabled: $viewModel.hasSelectedItem,
                             font: Appearance.TextStyle.h3.font.asFont,
-                            colors: SolidButtonColor.welcome,
+                            colors: viewModel.currentState == .success ? SolidButtonColor.success : SolidButtonColor.welcome,
                             dimensions: SolidButtonDimension.largeButton) {
-                    viewModel.action.send(.completed)
+                    viewModel.action.send(.importContacts)
                 }
                 .padding(.horizontal, Appearance.GridGuide.mediumPadding1)
             }

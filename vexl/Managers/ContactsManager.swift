@@ -32,7 +32,7 @@ final class ContactsManager {
     // MARK: - Bindings
 
     var phoneContacts: CurrentValueSubject<[ImportContactItem], Never> = .init([])
-    
+
     // MARK: - Properties
 
     private var userPhoneContacts: [ImportContactItem] = []
@@ -40,7 +40,6 @@ final class ContactsManager {
 
     func fetchPhoneContacts() -> [ImportContactItem] {
         var contacts = [ImportContactItem]()
-        //let fullName = CNContactFormatter.descriptorForRequiredKeys(for: .fullName)
         let keys = [CNContactPhoneNumbersKey,
                     CNContactGivenNameKey,
                     CNContactFamilyNameKey,
@@ -60,8 +59,10 @@ final class ContactsManager {
                                                     avatar: avatar)
                 contacts.append(userContact)
             }
+            self.userPhoneContacts = contacts
             return contacts
         } catch {
+            self.userPhoneContacts = []
             return []
         }
     }

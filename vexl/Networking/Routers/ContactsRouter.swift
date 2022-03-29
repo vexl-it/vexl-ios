@@ -21,7 +21,7 @@ enum ContactsRouter: ApiRouter {
     }
 
     var additionalHeaders: [Header] {
-        []
+        securityHeader
     }
 
     var path: String {
@@ -38,11 +38,12 @@ enum ContactsRouter: ApiRouter {
     var parameters: Parameters {
         switch self {
         case let .createUser(key, hash):
-            return [:]
+            return ["publicKey": key,
+                    "hash": hash]
         case let .getAvailableContacts(contacts):
-            return [:]
+            return ["contacts": contacts]
         case let .importContacts(contacts):
-            return [:]
+            return ["contacts": contacts]
         }
     }
 

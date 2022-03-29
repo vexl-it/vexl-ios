@@ -16,6 +16,7 @@ class ImportContactsViewModel: ObservableObject {
 
     @Inject var contactsManager: ContactsManager
     @Inject var contactsService: ContactsServiceType
+    @Inject var authenticationManager: AuthenticationManager
 
     // MARK: - View State
 
@@ -28,10 +29,23 @@ class ImportContactsViewModel: ObservableObject {
 
     // MARK: - Action Bindings
 
-    enum UserAction {
+    enum UserAction: Equatable {
         case itemSelected(Bool, ImportContactItem)
         case unselectAll
-        case completed
+        case importContacts
+
+        static func == (lhs: UserAction, rhs: UserAction) -> Bool {
+            switch (lhs, rhs) {
+            case (.itemSelected, .itemSelected):
+                return true
+            case (.unselectAll, .unselectAll):
+                return true
+            case (.importContacts, .importContacts):
+                return true
+            default:
+                return false
+            }
+        }
     }
 
     let action: ActionSubject<UserAction> = .init()
@@ -61,6 +75,11 @@ class ImportContactsViewModel: ObservableObject {
         guard !searchText.isEmpty else { return items }
         return items.filter { $0.name.contains(searchText) }
     }
+    
+    private var selectedItems: [ImportContactItem] {
+        return items
+            .filter { $0.isSelected }
+    }
 
     let cancelBag: CancelBag = .init()
 
@@ -86,17 +105,61 @@ class ImportContactsViewModel: ObservableObject {
     }
 
     private func setupActions() {
+
         action
-            .withUnretained(self)
-            .sink { owner, action in
+            .filter { action in
                 switch action {
-                case let .itemSelected(isSelected, item):
-                    owner.select(isSelected, item: item)
-                case .unselectAll:
-                    owner.unselectAllItems()
-                case .completed:
-                    owner.completed.send(())
+                case .itemSelected:
+                    return true
+                case .unselectAll, .importContacts:
+                    return false
                 }
+            }
+            .compactMap { action -> (Bool, ImportContactItem)? in
+                if case let .itemSelected(isSelected, item) = action {
+                    return (isSelected, item)
+                }
+                return nil
+            }
+            .withUnretained(self)
+            .sink { owner, selection in
+                owner.select(selection.0, item: selection.1)
+            }
+            .store(in: cancelBag)
+
+        action
+            .useAction(action: .unselectAll)
+            .withUnretained(self)
+            .sink { owner, _ in
+                owner.unselectAllItems()
+            }
+            .store(in: cancelBag)
+
+        let importContact = action
+            .useAction(action: .importContacts)
+            .withUnretained(self)
+            .filter { $0.0.currentState == .content }
+            .map { $0.0.selectedItems.map { $0.phone } }
+            .withUnretained(self)
+            .flatMap { owner, contacts in
+                owner.contactsService
+                    .importContacts(contacts)
+                    .track(activity: owner.primaryActivity)
+                    .materialize()
+                    .eraseToAnyPublisher()
+            }
+
+        importContact
+            .compactMap { $0.value }
+            .withUnretained(self)
+            .handleEvents(receiveOutput: { owner, response in
+                if response.imported {
+                    owner.currentState = .success
+                }
+            })
+            .delay(for: .seconds(1), scheduler: RunLoop.main)
+            .sink { owner, _ in
+                owner.completed.send(())
             }
             .store(in: cancelBag)
     }
@@ -125,9 +188,19 @@ class PhoneImportContactsViewModel: ImportContactsViewModel {
         let phones = contacts.map { $0.phone }
 
         contactsService
-            .getAvailableContacts(phones)
+            .createUser(with: authenticationManager.userKeys?.publicKey ?? "", hash: authenticationManager.challengeValidation?.hash ?? "")
             .track(activity: primaryActivity)
             .materialize()
+            .compactMap { $0.value }
+            .withUnretained(self)
+            .flatMap { owner, _ in
+                owner.contactsService
+                    .getAvailableContacts(phones)
+                    .track(activity: owner.primaryActivity)
+                    .materialize()
+                    .compactMap { $0.value }
+                    .eraseToAnyPublisher()
+            }
             .withUnretained(self)
             .sink { owner, _ in
                 let availableContacts = owner.contactsManager.availablePhoneContacts

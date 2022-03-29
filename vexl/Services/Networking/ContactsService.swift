@@ -8,9 +8,16 @@
 import Foundation
 import Combine
 
-struct ContactUser: Codable { }
+struct ContactUser: Codable {
+    var id: Int
+    var publicKey: String
+    var hash: String
+}
 
-struct ContactsImport: Codable { }
+struct ContactsImport: Codable {
+    var imported: Bool
+    var message: String
+}
 
 struct ContactsAvailable: Codable {
     var newContacts: [String]
@@ -32,6 +39,8 @@ class ContactsService: BaseService, ContactsServiceType {
 
     func createUser(with key: String, hash: String) -> AnyPublisher<ContactUser, Error> {
         request(type: ContactUser.self, endpoint: ContactsRouter.createUser(key: key, hash: hash))
+            .withUnretained(self)
+            .map { $0.1 }
             .eraseToAnyPublisher()
     }
 
