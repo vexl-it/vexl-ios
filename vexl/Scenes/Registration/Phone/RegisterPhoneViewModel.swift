@@ -37,7 +37,7 @@ final class RegisterPhoneViewModel: ViewModelType {
 
     let action: ActionSubject<UserAction> = .init()
     private let triggerCountdown: ActionSubject<Date?>  = .init()
-    private let temporalGenerateSignature: ActionSubject<String> = .init()
+    private let generateSignature: ActionSubject<String> = .init()
 
     // MARK: - View Bindings
 
@@ -203,8 +203,12 @@ final class RegisterPhoneViewModel: ViewModelType {
         updateAfterCodeValidation
             .withUnretained(self)
             .handleEvents(receiveOutput: { owner, response in
-                owner.temporalGenerateSignature.send(response.challenge)
-                owner.currentState = response.phoneVerified ? .codeInputSuccess : .codeInput
+                if response.phoneVerified {
+                    owner.error = AlertError(error: RegistryError.invalidValidationCode)
+                } else {
+                    owner.generateSignature.send(response.challenge)
+                    owner.currentState = response.phoneVerified ? .codeInputSuccess : .codeInput
+                }
             })
             .filter { $0.0.currentState == .codeInputSuccess }
             .delay(for: .seconds(1), scheduler: RunLoop.main)
@@ -215,7 +219,7 @@ final class RegisterPhoneViewModel: ViewModelType {
             .store(in: cancelBag)
 
         // Temporal delete me
-        temporalGenerateSignature
+        let generateSignature = generateSignature
             .withUnretained(self)
             .flatMap { owner, challenge in
                 owner
@@ -228,6 +232,8 @@ final class RegisterPhoneViewModel: ViewModelType {
                     .eraseToAnyPublisher()
             }
             .compactMap { $0.signed }
+
+        generateSignature
             .withUnretained(self)
             .flatMap { owner, signature in
                 owner
@@ -236,8 +242,15 @@ final class RegisterPhoneViewModel: ViewModelType {
                                        signature: signature)
                     .track(activity: owner.primaryActivity)
                     .materialize()
+                    .compactMap { $0.value }
                     .eraseToAnyPublisher()
             }
+            .withUnretained(self)
+            .handleEvents(receiveOutput: { owner, response in
+                if response.challengeVerified {
+                    owner.error = AlertError(error: RegistryError.invalidChallenge)
+                }
+            })
             .sink { _ in }
             .store(in: cancelBag)
     }
@@ -329,7 +342,7 @@ final class RegisterPhoneViewModel: ViewModelType {
         }
 
         // TODO: - Remove/Adapt temporal when C library is added
-        temporalGenerateSignature.send(response.challenge)
+        generateSignature.send(response.challenge)
 
         if response.phoneVerified {
             currentState = .codeInputSuccess

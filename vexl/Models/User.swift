@@ -14,7 +14,3 @@ struct User: Decodable {
     let avatar: String?
     let publicKey: String
 }
-
-struct UserAvailable: Codable {
-    let available: Bool
-}

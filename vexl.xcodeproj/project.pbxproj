@@ -103,6 +103,10 @@
 		F175AB9127E8E223000DAB15 /* UserSignature.swift in Sources */ = {isa = PBXBuildFile; fileRef = F175AB9027E8E223000DAB15 /* UserSignature.swift */; };
 		F175AB9527EA6A8E000DAB15 /* PlaceholderTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = F175AB9427EA6A8E000DAB15 /* PlaceholderTextField.swift */; };
 		F175AB9727ECC159000DAB15 /* SecurityHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = F175AB9627ECC159000DAB15 /* SecurityHeader.swift */; };
+		F175ABA027F4A7EC000DAB15 /* RegistryError.swift in Sources */ = {isa = PBXBuildFile; fileRef = F175AB9F27F4A7EC000DAB15 /* RegistryError.swift */; };
+		F175ABA227F4A8F8000DAB15 /* UserValidation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F175ABA127F4A8F8000DAB15 /* UserValidation.swift */; };
+		F175ABA527F4A98B000DAB15 /* AlertContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F175ABA427F4A98B000DAB15 /* AlertContainerView.swift */; };
+		F175ABA727F4A997000DAB15 /* LoadingContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F175ABA627F4A997000DAB15 /* LoadingContainerView.swift */; };
 		F1B5FCBC27C67DB00018729B /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B5FCBB27C67DB00018729B /* WelcomeViewController.swift */; };
 		F1B5FCBE27C68EA70018729B /* OnboardingView+BottomButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B5FCBD27C68EA70018729B /* OnboardingView+BottomButtons.swift */; };
 		F1B5FCC327C6BC330018729B /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = F1B5FCC127C6BC330018729B /* Localizable.strings */; };
@@ -237,6 +241,10 @@
 		F175AB9027E8E223000DAB15 /* UserSignature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSignature.swift; sourceTree = "<group>"; };
 		F175AB9427EA6A8E000DAB15 /* PlaceholderTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceholderTextField.swift; sourceTree = "<group>"; };
 		F175AB9627ECC159000DAB15 /* SecurityHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecurityHeader.swift; sourceTree = "<group>"; };
+		F175AB9F27F4A7EC000DAB15 /* RegistryError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistryError.swift; sourceTree = "<group>"; };
+		F175ABA127F4A8F8000DAB15 /* UserValidation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserValidation.swift; sourceTree = "<group>"; };
+		F175ABA427F4A98B000DAB15 /* AlertContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertContainerView.swift; sourceTree = "<group>"; };
+		F175ABA627F4A997000DAB15 /* LoadingContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingContainerView.swift; sourceTree = "<group>"; };
 		F1B5FCBB27C67DB00018729B /* WelcomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeViewController.swift; sourceTree = "<group>"; };
 		F1B5FCBD27C68EA70018729B /* OnboardingView+BottomButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OnboardingView+BottomButtons.swift"; sourceTree = "<group>"; };
 		F1B5FCC227C6BC330018729B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -445,6 +453,7 @@
 		B08F38F827AE7110008B344F /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				F175ABA327F4A97C000DAB15 /* Containers */,
 				F151A2A027C86C9B000D7242 /* Registration */,
 				F1B5FCD227C703160018729B /* Modifiers */,
 				F1C6D09527BDAD71009BD506 /* Buttons */,
@@ -518,6 +527,7 @@
 				B08F394A27AE7112008B344F /* ServerError.swift */,
 				B08F395827AE7112008B344F /* ClientAPIError.swift */,
 				B08F396327AE7112008B344F /* UserError.swift */,
+				F175AB9F27F4A7EC000DAB15 /* RegistryError.swift */,
 			);
 			path = Errors;
 			sourceTree = "<group>";
@@ -741,8 +751,18 @@
 				F175AB8C27E817D4000DAB15 /* CodeValidation.swift */,
 				F175AB8E27E8C622000DAB15 /* UserKeys.swift */,
 				F175AB9027E8E223000DAB15 /* UserSignature.swift */,
+				F175ABA127F4A8F8000DAB15 /* UserValidation.swift */,
 			);
 			path = Users;
+			sourceTree = "<group>";
+		};
+		F175ABA327F4A97C000DAB15 /* Containers */ = {
+			isa = PBXGroup;
+			children = (
+				F175ABA427F4A98B000DAB15 /* AlertContainerView.swift */,
+				F175ABA627F4A997000DAB15 /* LoadingContainerView.swift */,
+			);
+			path = Containers;
 			sourceTree = "<group>";
 		};
 		F1B5FCCA27C6F7CC0018729B /* Registration */ = {
@@ -1092,6 +1112,7 @@
 				F12A14DC27D677340096543E /* RegisterContactsCoordinator.swift in Sources */,
 				F151A29727C8667A000D7242 /* RegisterNameAvatarCoordinator.swift in Sources */,
 				B08F399727AE7D33008B344F /* SplashScreenView.swift in Sources */,
+				F175ABA527F4A98B000DAB15 /* AlertContainerView.swift in Sources */,
 				F1C6D09727BDAD7F009BD506 /* LargeButton.swift in Sources */,
 				F12A14F327D96FD40096543E /* ImportContactsView.swift in Sources */,
 				F12A150827E1A4940096543E /* RequestAccessAlert.swift in Sources */,
@@ -1149,6 +1170,7 @@
 				F1042BA227BEADB70048C2F0 /* WelcomeView+Agreement.swift in Sources */,
 				F175AB8D27E817D4000DAB15 /* CodeValidation.swift in Sources */,
 				B08F394D27AE7112008B344F /* AppCoordinator.swift in Sources */,
+				F175ABA227F4A8F8000DAB15 /* UserValidation.swift in Sources */,
 				F175AB9127E8E223000DAB15 /* UserSignature.swift in Sources */,
 				B0F206FE27AEBDD500A44E72 /* AuthRouter.swift in Sources */,
 				B08F399E27AE7D92008B344F /* OnboardingView.swift in Sources */,
@@ -1174,6 +1196,8 @@
 				F1C6D0A027BDECB0009BD506 /* WelcomeView+LogoImageView.swift in Sources */,
 				B08F399327AE7D1F008B344F /* SplashScreenCoordinator.swift in Sources */,
 				F1B5FCD127C6F7EF0018729B /* RegisterPhoneView.swift in Sources */,
+				F175ABA727F4A997000DAB15 /* LoadingContainerView.swift in Sources */,
+				F175ABA027F4A7EC000DAB15 /* RegistryError.swift in Sources */,
 				B08F397027AE7112008B344F /* UserRouter.swift in Sources */,
 				B08F394327AE7112008B344F /* Keychain+.swift in Sources */,
 				F175AB8727E4D5C8000DAB15 /* UIScreen+.swift in Sources */,
