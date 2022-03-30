@@ -10,14 +10,16 @@ import Foundation
 
 enum UserError: Error {
     case invalidEmail
+    case unavailableUsername
 }
 
 extension UserError: LocalizedError {
     var errorDescription: String? {
-        #warning("Careful with non-localize strings")
         switch self {
         case .invalidEmail:
-            fatalError("This should have been localized")
+            return L.errorRegisterInvalidEmail()
+        case .unavailableUsername:
+            return L.errorRegisterInvalidUsername()
         }
     }
 }

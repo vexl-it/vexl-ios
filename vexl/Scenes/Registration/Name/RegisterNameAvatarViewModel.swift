@@ -141,8 +141,13 @@ final class RegisterNameAvatarViewModel: ViewModelType {
                     .compactMap { $0.value }
                     .eraseToAnyPublisher()
             }
-            .filter { $0.available }
             .withUnretained(self)
+            .handleEvents(receiveOutput: { owner, response in
+                if !response.available {
+                    owner.error = AlertError(error: UserError.unavailableUsername)
+                }
+            })
+            .filter { $0.1.available }
             .sink { owner, _ in
                 owner.currentState = .avatarInput
             }
