@@ -247,7 +247,7 @@ final class RegisterPhoneViewModel: ViewModelType {
             }
             .withUnretained(self)
             .handleEvents(receiveOutput: { owner, response in
-                if response.challengeVerified {
+                if !response.challengeVerified {
                     owner.error = AlertError(error: RegistryError.invalidChallenge)
                 }
             })
