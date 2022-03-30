@@ -203,7 +203,7 @@ final class RegisterPhoneViewModel: ViewModelType {
         updateAfterCodeValidation
             .withUnretained(self)
             .handleEvents(receiveOutput: { owner, response in
-                if response.phoneVerified {
+                if !response.phoneVerified {
                     owner.error = AlertError(error: RegistryError.invalidValidationCode)
                 } else {
                     owner.generateSignature.send(response.challenge)
