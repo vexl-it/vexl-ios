@@ -35,11 +35,24 @@ final class AuthenticationManager: TokenHandlerType {
 
     // MARK: - Variables for user registration
 
-    private(set) var phoneVerification: PhoneConfirmation?
-    private(set) var codeConfirmation: CodeValidation?
-    private(set) var userKeys: UserKeys?
-    private(set) var userSignature: UserSignature?
-    private(set) var challengeValidation: ChallengeValidation?
+    private var phoneValidation: PhoneValidation = .init()
+    private var userSecurity: UserSecurity = .init()
+
+    var phoneConfirmation: PhoneConfirmation? {
+        phoneValidation.phoneConfirmation
+    }
+    var codeValidation: CodeValidation? {
+        phoneValidation.codeValidation
+    }
+    var userKeys: UserKeys? {
+        userSecurity.keys
+    }
+    var userSignature: UserSignature? {
+        userSecurity.signature
+    }
+    var challengeValidation: ChallengeValidation? {
+        userSecurity.challenge
+    }
 
     private(set) var currentUser: User?
 
@@ -89,31 +102,31 @@ extension AuthenticationManager {
     }
 
     func setUserSignature(_ userSignature: UserSignature) {
-        self.userSignature = userSignature
+        self.userSecurity.signature = userSignature
     }
 
     func setUserKeys(_ userKeys: UserKeys) {
-        self.userKeys = userKeys
+        self.userSecurity.keys = userKeys
     }
 
     func clearPhoneVerification() {
-        self.phoneVerification = nil
+        self.phoneValidation.phoneConfirmation = nil
     }
 
-    func setPhoneVerification(_ phoneVerification: PhoneConfirmation) {
-        self.phoneVerification = phoneVerification
+    func setPhoneConfirmation(_ phoneConfirmation: PhoneConfirmation) {
+        self.phoneValidation.phoneConfirmation = phoneConfirmation
+    }
+
+    func setCodeValidation(_ codeValidation: CodeValidation) {
+        self.phoneValidation.codeValidation = codeValidation
     }
 
     func setHash(_ challengeValidation: ChallengeValidation) {
-        self.challengeValidation = challengeValidation
+        self.userSecurity.challenge = challengeValidation
     }
 
     func clearHash() {
-        self.challengeValidation = nil
-    }
-
-    func setCodeConfirmation(_ codeConfirmation: CodeValidation) {
-        self.codeConfirmation = codeConfirmation
+        self.userSecurity.challenge = nil
     }
 
     // MARK: - Base Authentication Methods
