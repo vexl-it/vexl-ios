@@ -174,7 +174,7 @@ final class RegisterPhoneViewModel: ViewModelType {
                 owner.currentState = .codeInputValidation
             })
             .compactMap { owner, _ in
-                guard let verificationId = owner.authenticationManager.phoneVerification?.verificationId else { return nil }
+                guard let verificationId = owner.authenticationManager.phoneConfirmation?.verificationId else { return nil }
                 return verificationId
             }
             .withUnretained(self)

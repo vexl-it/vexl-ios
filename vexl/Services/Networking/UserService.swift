@@ -43,7 +43,7 @@ final class UserService: BaseService, UserServiceType {
         request(type: PhoneConfirmation.self, endpoint: UserRouter.confirmPhone(phoneNumber: phoneNumber))
             .withUnretained(self)
             .handleEvents(receiveOutput: { owner, response in
-                owner.authenticationManager.setPhoneVerification(response)
+                owner.authenticationManager.setPhoneConfirmation(response)
             })
             .map { $0.1 }
             .eraseToAnyPublisher()
@@ -53,7 +53,7 @@ final class UserService: BaseService, UserServiceType {
         request(type: CodeValidation.self, endpoint: UserRouter.validateCode(id: id, code: code, key: key))
             .withUnretained(self)
             .handleEvents(receiveOutput: { owner, response in
-                owner.authenticationManager.setCodeConfirmation(response)
+                owner.authenticationManager.setCodeValidation(response)
             })
             .map { $0.1 }
             .eraseToAnyPublisher()
