@@ -15,13 +15,14 @@ enum UserRouter: ApiRouter {
     case confirmPhone(phoneNumber: String)
     case validateCode(id: Int, code: String, key: String)
     case validateChallenge(signature: String, key: String)
+    case facebookSignature(id: String)
     case validateUsername(username: String)
     case temporalGenerateKeys
     case temporalSignature(challenge: String, privateKey: String)
 
     var method: HTTPMethod {
         switch self {
-        case .me, .temporalGenerateKeys:
+        case .me, .temporalGenerateKeys, .facebookSignature:
             return .get
         case .createUser, .confirmPhone, .validateCode, .temporalSignature, .validateChallenge, .validateUsername:
             return .post
@@ -51,6 +52,8 @@ enum UserRouter: ApiRouter {
             return "user/username/availability"
         case .validateChallenge:
             return "user/confirmation/challenge"
+        case let .facebookSignature(id):
+            return "user/signature/\(id)"
         case .temporalGenerateKeys:
             return "temp/key-pairs"
         case .temporalSignature:
@@ -60,7 +63,7 @@ enum UserRouter: ApiRouter {
 
     var parameters: Parameters {
         switch self {
-        case .me, .temporalGenerateKeys:
+        case .me, .facebookSignature, .temporalGenerateKeys:
             return [:]
         case let .temporalSignature(challenge, privateKey):
             return ["challenge": challenge,

@@ -40,6 +40,7 @@ final class AuthenticationManager: TokenHandlerType {
     private(set) var userKeys: UserKeys?
     private(set) var userSignature: UserSignature?
     private(set) var challengeValidation: ChallengeValidation?
+    private(set) var facebookSignature: FacebookUserSignature?
 
     private(set) var currentUser: User?
 
@@ -47,6 +48,15 @@ final class AuthenticationManager: TokenHandlerType {
         guard let signature = challengeValidation?.signature,
               let publicKey = userKeys?.publicKey,
               let hash = challengeValidation?.hash else {
+                  return nil
+              }
+        return SecurityHeader(hash: hash, publicKey: publicKey, signature: signature)
+    }
+
+    var facebookSecurityHeader: SecurityHeader? {
+        guard let signature = facebookSignature?.signature,
+              let publicKey = userKeys?.publicKey,
+              let hash = facebookSignature?.hash else {
                   return nil
               }
         return SecurityHeader(hash: hash, publicKey: publicKey, signature: signature)
@@ -86,6 +96,10 @@ extension AuthenticationManager {
 
     func setUser(_ user: User) {
         self.currentUser = user
+    }
+
+    func setFacebookSignature(_ facebookSignature: FacebookUserSignature) {
+        self.facebookSignature = facebookSignature
     }
 
     func setUserSignature(_ userSignature: UserSignature) {

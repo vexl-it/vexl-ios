@@ -79,6 +79,19 @@ final class UserService: BaseService, UserServiceType {
     func createUser(username: String, avatar: String?) -> AnyPublisher<User, Error> {
         request(type: User.self, endpoint: UserRouter.createUser(username: username, avatar: avatar))
             .withUnretained(self)
+            .handleEvents(receiveOutput: { owner, response in
+                owner.authenticationManager.setUser(response)
+            })
+            .map { $0.1 }
+            .eraseToAnyPublisher()
+    }
+
+    func facebookSignature(id: String) -> AnyPublisher<FacebookUserSignature, Error> {
+        request(type: FacebookUserSignature.self, endpoint: UserRouter.facebookSignature(id: id))
+            .withUnretained(self)
+            .handleEvents(receiveOutput: { owner, response in
+                owner.authenticationManager.setFacebookSignature(response)
+            })
             .map { $0.1 }
             .eraseToAnyPublisher()
     }
