@@ -75,10 +75,9 @@ class ImportContactsViewModel: ObservableObject {
         guard !searchText.isEmpty else { return items }
         return items.filter { $0.name.contains(searchText) }
     }
-    
+
     private var selectedItems: [ImportContactItem] {
-        return items
-            .filter { $0.isSelected }
+        items.filter { $0.isSelected }
     }
 
     let cancelBag: CancelBag = .init()
@@ -88,6 +87,7 @@ class ImportContactsViewModel: ObservableObject {
     init() {
         setupActivity()
         setupActions()
+        fetchContacts()
     }
 
     private func setupActivity() {
@@ -108,12 +108,7 @@ class ImportContactsViewModel: ObservableObject {
 
         action
             .filter { action in
-                switch action {
-                case .itemSelected:
-                    return true
-                case .unselectAll, .importContacts:
-                    return false
-                }
+                ![UserAction.unselectAll, .importContacts].contains(action)
             }
             .compactMap { action -> (Bool, ImportContactItem)? in
                 if case let .itemSelected(isSelected, item) = action {
@@ -157,6 +152,7 @@ class ImportContactsViewModel: ObservableObject {
                     owner.currentState = .success
                 }
             })
+            .filter { $0.0.currentState == .success }
             .delay(for: .seconds(1), scheduler: RunLoop.main)
             .sink { owner, _ in
                 owner.completed.send(())
@@ -179,40 +175,5 @@ class ImportContactsViewModel: ObservableObject {
 
     func fetchContacts() {
         fatalError("Must implement fetch contacts")
-    }
-}
-
-class PhoneImportContactsViewModel: ImportContactsViewModel {
-    override func fetchContacts() {
-        let contacts = contactsManager.fetchPhoneContacts()
-        let phones = contacts.map { $0.phone }
-
-        contactsService
-            .createUser(with: authenticationManager.userKeys?.publicKey ?? "", hash: authenticationManager.challengeValidation?.hash ?? "")
-            .track(activity: primaryActivity)
-            .materialize()
-            .compactMap { $0.value }
-            .withUnretained(self)
-            .flatMap { owner, _ in
-                owner.contactsService
-                    .getAvailableContacts(phones)
-                    .track(activity: owner.primaryActivity)
-                    .materialize()
-                    .compactMap { $0.value }
-                    .eraseToAnyPublisher()
-            }
-            .withUnretained(self)
-            .sink { owner, _ in
-                let availableContacts = owner.contactsManager.availablePhoneContacts
-                owner.currentState = availableContacts.isEmpty ? .empty : .content
-                owner.items = availableContacts
-            }
-            .store(in: cancelBag)
-    }
-}
-
-class FacebookImportContactsViewModel: ImportContactsViewModel {
-    override func fetchContacts() {
-        let contacts = contactsManager.fetchPhoneContacts()
     }
 }

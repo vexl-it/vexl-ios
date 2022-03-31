@@ -41,6 +41,8 @@ final class AuthenticationManager: TokenHandlerType {
     private(set) var userSignature: UserSignature?
     private(set) var challengeValidation: ChallengeValidation?
 
+    private(set) var currentUser: User?
+
     var securityHeader: SecurityHeader? {
         guard let signature = challengeValidation?.signature,
               let publicKey = userKeys?.publicKey,
@@ -81,6 +83,10 @@ final class AuthenticationManager: TokenHandlerType {
 // MARK: - Methods
 
 extension AuthenticationManager {
+
+    func setUser(_ user: User) {
+        self.currentUser = user
+    }
 
     func setUserSignature(_ userSignature: UserSignature) {
         self.userSignature = userSignature
@@ -123,6 +129,7 @@ extension AuthenticationManager {
     private func clearUser() {
         accessToken = nil
         refreshToken = nil
+        currentUser = nil
         let userDefaults = UserDefaults.standard
 
         userDefaults.dictionaryRepresentation().keys.forEach(userDefaults.removeObject)

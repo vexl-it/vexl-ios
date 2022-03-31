@@ -46,18 +46,18 @@ final class RegisterContactsViewModel: ViewModelType {
     @Published var currentState: ViewState = .phone
     var phoneViewModel: RequestAccessContactsViewModel
     var facebookViewModel: RequestAccessContactsViewModel
-    var importPhoneContactsViewModel: PhoneImportContactsViewModel
-    var importFacebookContactsViewModel: ImportContactsViewModel
+    var importPhoneContactsViewModel: ImportPhoneContactsViewModel
+    var importFacebookContactsViewModel: ImportFacebookContactsViewModel
 
     // MARK: - Variables
 
     private let cancelBag: CancelBag = .init()
 
-    init() {
-        phoneViewModel = RequestAccessPhoneContactsViewModel(userName: "Diego")
-        importPhoneContactsViewModel = PhoneImportContactsViewModel()
-        facebookViewModel = RequestAccessFacebookContactsViewModel(userName: "Diego")
-        importFacebookContactsViewModel = ImportContactsViewModel()
+    init(username: String) {
+        phoneViewModel = RequestAccessPhoneContactsViewModel(username: username)
+        importPhoneContactsViewModel = ImportPhoneContactsViewModel()
+        facebookViewModel = RequestAccessFacebookContactsViewModel(username: username)
+        importFacebookContactsViewModel = ImportFacebookContactsViewModel()
         setupRequestPhoneContactsBindings()
         setupImportPhoneContactsBindings()
         setupRequestFacebookContactsBindings()
@@ -68,7 +68,6 @@ final class RegisterContactsViewModel: ViewModelType {
         phoneViewModel.accessConfirmed
             .withUnretained(self)
             .sink { owner, _ in
-                owner.importPhoneContactsViewModel.fetchContacts()
                 owner.phoneViewModel.currentState = .completed
             }
             .store(in: cancelBag)

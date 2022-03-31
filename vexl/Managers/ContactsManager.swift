@@ -67,6 +67,10 @@ final class ContactsManager {
         }
     }
 
+    func fetchFacebookContacts() -> [String] {
+        return []
+    }
+
     func setAvailable(phoneContacts: [String]) {
         let availableContacts = userPhoneContacts.filter { item in
             phoneContacts.contains(item.phone)
