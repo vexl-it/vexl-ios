@@ -8,6 +8,14 @@ PODS:
   - Cleevio (1.0.5):
     - Cleevio/Full (= 1.0.5)
   - Cleevio/Full (1.0.5)
+  - FBAEMKit (13.1.0):
+    - FBSDKCoreKit_Basics (= 13.1.0)
+  - FBSDKCoreKit (13.1.0):
+    - FBAEMKit (= 13.1.0)
+    - FBSDKCoreKit_Basics (= 13.1.0)
+  - FBSDKCoreKit_Basics (13.1.0)
+  - FBSDKLoginKit (13.1.0):
+    - FBSDKCoreKit (= 13.1.0)
   - Firebase/Core (8.14.0):
     - Firebase/CoreOnly
     - FirebaseAnalytics (~> 8.14.0)
@@ -120,6 +128,8 @@ DEPENDENCIES:
   - AlamofireNetworkActivityIndicator
   - AlamofireNetworkActivityLogger
   - Cleevio (from `https://gitlab.cleevio.cz/cleevio-dev-ios/CleevioFramework-ios.git`)
+  - FBSDKCoreKit (~> 13.1)
+  - FBSDKLoginKit (~> 13.1)
   - Firebase/Core
   - Firebase/Crashlytics
   - KeychainAccess
@@ -136,6 +146,10 @@ SPEC REPOS:
     - Alamofire
     - AlamofireNetworkActivityIndicator
     - AlamofireNetworkActivityLogger
+    - FBAEMKit
+    - FBSDKCoreKit
+    - FBSDKCoreKit_Basics
+    - FBSDKLoginKit
     - Firebase
     - FirebaseAnalytics
     - FirebaseCore
@@ -171,6 +185,10 @@ SPEC CHECKSUMS:
   AlamofireNetworkActivityIndicator: 6564782bd7b9e6c430ae67d9277af01907b01ca4
   AlamofireNetworkActivityLogger: 162ab8aee00e6267a4304d7cc134e13ccfe3bcc5
   Cleevio: 4c648c67170686068856887cb13dcabb2c348df6
+  FBAEMKit: 3be32ffb79fe7c0603fed00d81742b23241e89a5
+  FBSDKCoreKit: eff97dea778dbe6cc4498959cffb619c75675102
+  FBSDKCoreKit_Basics: c151609a1cf6976a5958febcf0043266a8fd5151
+  FBSDKLoginKit: 42932c7ad6f6b91854fc0a6bcc79b7e807bcde4b
   Firebase: 7e8fe528c161b9271d365217a74c16aaf834578e
   FirebaseAnalytics: 2fc3876e2eb347673ad2f35e249ae7b15d6c88f5
   FirebaseCore: b84a44ee7ba999e0f9f76d198a9c7f60a797b848
@@ -191,6 +209,6 @@ SPEC CHECKSUMS:
   SwiftyBeaver: 84069991dd5dca07d7069100985badaca7f0ce82
   Swinject: 97112918bd7e0785dc2df7036213f3c8cbba6586
 
-PODFILE CHECKSUM: c22ccba1ab26246fd5d39ab1fc4cbbd0c47e09e1
+PODFILE CHECKSUM: 39056cf7e6094a9c7670daaae56513b033480d77
 
 COCOAPODS: 1.10.2

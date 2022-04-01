@@ -46,6 +46,10 @@ target 'vexl' do
     # UI
     pod 'SnapKit'
 
+    # Facebook
+    pod 'FBSDKCoreKit', '~> 13.1'
+    pod 'FBSDKLoginKit', '~> 13.1'
+
     target 'vexlTests' do
     end
 
