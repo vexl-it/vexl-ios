@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct UserKeys: Codable {
+struct UserKeys: Decodable {
     var privateKey: String
     var publicKey: String
 }
