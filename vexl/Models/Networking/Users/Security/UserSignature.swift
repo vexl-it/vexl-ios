@@ -7,6 +7,6 @@
 
 import Foundation
 
-struct UserSignature: Codable {
+struct UserSignature: Decodable {
     var signed: String
 }

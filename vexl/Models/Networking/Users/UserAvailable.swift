@@ -7,6 +7,6 @@
 
 import Foundation
 
-struct UserAvailable: Codable {
+struct UserAvailable: Decodable {
     let available: Bool
 }
