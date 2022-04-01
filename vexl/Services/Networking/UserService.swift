@@ -17,7 +17,7 @@ struct ChallengeValidation: Codable {
 
 protocol UserServiceType {
     func me() -> AnyPublisher<User, Error>
-    func requestVerificationCode(phoneNumber: String) -> AnyPublisher<PhoneConfirmation, Error>
+    func requestVerificationCode(phoneNumber: String) -> AnyPublisher<PhoneVerification, Error>
     func confirmValidationCode(id: Int, code: String, key: String) -> AnyPublisher<CodeValidation, Error>
     func validateChallenge(key: String, signature: String) -> AnyPublisher<ChallengeValidation, Error>
     func validateUsername(username: String) -> AnyPublisher<UserAvailable, Error>
@@ -39,8 +39,8 @@ final class UserService: BaseService, UserServiceType {
         request(type: User.self, endpoint: UserRouter.me)
     }
 
-    func requestVerificationCode(phoneNumber: String) -> AnyPublisher<PhoneConfirmation, Error> {
-        request(type: PhoneConfirmation.self, endpoint: UserRouter.confirmPhone(phoneNumber: phoneNumber))
+    func requestVerificationCode(phoneNumber: String) -> AnyPublisher<PhoneVerification, Error> {
+        request(type: PhoneVerification.self, endpoint: UserRouter.confirmPhone(phoneNumber: phoneNumber))
             .withUnretained(self)
             .handleEvents(receiveOutput: { owner, response in
                 owner.authenticationManager.setPhoneConfirmation(response)

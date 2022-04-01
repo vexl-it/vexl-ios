@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct CodeValidation: Codable {
+struct CodeValidation: Decodable {
     var challenge: String
     var phoneVerified: Bool
 }

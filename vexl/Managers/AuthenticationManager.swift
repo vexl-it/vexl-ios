@@ -35,11 +35,11 @@ final class AuthenticationManager: TokenHandlerType {
 
     // MARK: - Variables for user registration
 
-    private var phoneValidation: PhoneValidation = .init()
+    private var phoneValidation: PhoneConfirmation = .init()
     private var userSecurity: UserSecurity = .init()
 
-    var phoneConfirmation: PhoneConfirmation? {
-        phoneValidation.phoneConfirmation
+    var phoneConfirmation: PhoneVerification? {
+        phoneValidation.phoneVerification
     }
     var codeValidation: CodeValidation? {
         phoneValidation.codeValidation
@@ -47,19 +47,19 @@ final class AuthenticationManager: TokenHandlerType {
     var userKeys: UserKeys? {
         userSecurity.keys
     }
-    var userSignature: UserSignature? {
+    var userSignature: String? {
         userSecurity.signature
     }
-    var challengeValidation: ChallengeValidation? {
-        userSecurity.challenge
+    var userHash: String? {
+        userSecurity.hash
     }
 
     private(set) var currentUser: User?
 
     var securityHeader: SecurityHeader? {
-        guard let signature = challengeValidation?.signature,
+        guard let signature = userSignature,
               let publicKey = userKeys?.publicKey,
-              let hash = challengeValidation?.hash else {
+              let hash = userHash else {
                   return nil
               }
         return SecurityHeader(hash: hash, publicKey: publicKey, signature: signature)
@@ -102,7 +102,7 @@ extension AuthenticationManager {
     }
 
     func setUserSignature(_ userSignature: UserSignature) {
-        self.userSecurity.signature = userSignature
+        self.userSecurity.signature = userSignature.signed
     }
 
     func setUserKeys(_ userKeys: UserKeys) {
@@ -110,11 +110,11 @@ extension AuthenticationManager {
     }
 
     func clearPhoneVerification() {
-        self.phoneValidation.phoneConfirmation = nil
+        self.phoneValidation.phoneVerification = nil
     }
 
-    func setPhoneConfirmation(_ phoneConfirmation: PhoneConfirmation) {
-        self.phoneValidation.phoneConfirmation = phoneConfirmation
+    func setPhoneConfirmation(_ phoneVerification: PhoneVerification) {
+        self.phoneValidation.phoneVerification = phoneVerification
     }
 
     func setCodeValidation(_ codeValidation: CodeValidation) {
@@ -122,11 +122,14 @@ extension AuthenticationManager {
     }
 
     func setHash(_ challengeValidation: ChallengeValidation) {
-        self.userSecurity.challenge = challengeValidation
+        self.userSecurity.hash = challengeValidation.hash
+        self.userSecurity.signature = challengeValidation.signature
     }
 
-    func clearHash() {
-        self.userSecurity.challenge = nil
+    func clearSecurity() {
+        self.userSecurity.hash = nil
+        self.userSecurity.signature = nil
+        self.userSecurity.keys = nil
     }
 
     // MARK: - Base Authentication Methods
@@ -143,6 +146,7 @@ extension AuthenticationManager {
         accessToken = nil
         refreshToken = nil
         currentUser = nil
+        clearSecurity()
         let userDefaults = UserDefaults.standard
 
         userDefaults.dictionaryRepresentation().keys.forEach(userDefaults.removeObject)
