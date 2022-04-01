@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct FacebookUserSignature: Codable {
+struct FacebookUserSignature: Decodable {
     var hash: String
     var signature: String
     var challengeVerified: String

@@ -37,7 +37,6 @@ final class AuthenticationManager: TokenHandlerType {
 
     private var phoneValidation: PhoneConfirmation = .init()
     private var userSecurity: UserSecurity = .init()
-    private(set) var facebookSignature: FacebookUserSignature?
 
     var phoneConfirmation: PhoneVerification? {
         phoneValidation.phoneVerification
@@ -67,9 +66,9 @@ final class AuthenticationManager: TokenHandlerType {
     }
 
     var facebookSecurityHeader: SecurityHeader? {
-        guard let signature = facebookSignature?.signature,
+        guard let signature = userSecurity.facebookSignature,
               let publicKey = userKeys?.publicKey,
-              let hash = facebookSignature?.hash else {
+              let hash = userSecurity.facebookHash else {
                   return nil
               }
         return SecurityHeader(hash: hash, publicKey: publicKey, signature: signature)
@@ -112,7 +111,8 @@ extension AuthenticationManager {
     }
 
     func setFacebookSignature(_ facebookSignature: FacebookUserSignature) {
-        self.facebookSignature = facebookSignature
+        self.userSecurity.facebookSignature = facebookSignature.signature
+        self.userSecurity.facebookHash = facebookSignature.hash
     }
 
     func setUserSignature(_ userSignature: UserSignature) {

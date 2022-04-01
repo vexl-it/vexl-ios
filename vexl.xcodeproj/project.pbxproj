@@ -767,7 +767,6 @@
 		F175AB8327E4CC04000DAB15 /* Users */ = {
 			isa = PBXGroup;
 			children = (
-				F1CFF3B527F56F7F007D9FE1 /* FacebokUserSignature.swift */,
 				F1A9452F27F68055009B5AE3 /* Security */,
 				F1A9452B27F67FC6009B5AE3 /* Confirmation */,
 				F175ABA127F4A8F8000DAB15 /* UserAvailable.swift */,
@@ -814,6 +813,7 @@
 		F1A9452F27F68055009B5AE3 /* Security */ = {
 			isa = PBXGroup;
 			children = (
+				F1CFF3B527F56F7F007D9FE1 /* FacebokUserSignature.swift */,
 				F1A9453127F686C8009B5AE3 /* UserKeys.swift */,
 				F1A9453027F686C8009B5AE3 /* UserSignature.swift */,
 				F1CFF3B727F6015B007D9FE1 /* UserSecurity.swift */,
