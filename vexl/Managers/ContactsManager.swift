@@ -8,12 +8,15 @@
 import Foundation
 import Combine
 import Contacts
+import FBSDKCoreKit
+import FBSDKLoginKit
 
 struct ImportContactItem: Identifiable {
     var id: String
     var name: String
     var phone: String
     var avatar: Data?
+    var avatarURL: String?
     var isSelected = false
 
     static func stub() -> [ImportContactItem] {
@@ -29,14 +32,13 @@ struct ImportContactItem: Identifiable {
 
 final class ContactsManager {
 
-    // MARK: - Bindings
-
-    var phoneContacts: CurrentValueSubject<[ImportContactItem], Never> = .init([])
-
     // MARK: - Properties
 
     private var userPhoneContacts: [ImportContactItem] = []
     private(set) var availablePhoneContacts: [ImportContactItem] = []
+
+    private var userFacebookContacts: [ImportContactItem] = []
+    private(set) var availableFacebookContacts: [ImportContactItem] = []
 
     func fetchPhoneContacts() -> [ImportContactItem] {
         var contacts = [ImportContactItem]()
@@ -67,15 +69,61 @@ final class ContactsManager {
         }
     }
 
-    func fetchFacebookContacts() -> [String] {
-        return []
+    func fetchFacebookContacts() -> AnyPublisher<[ImportContactItem], Error> {
+        AnyPublisher(Future { [weak self] promise in
+
+            guard AccessToken.current != nil else {
+                promise(.failure(UserError.facebookAccess))
+                return
+            }
+
+            let params = ["fields": "id, name, picture"]
+            self?.userFacebookContacts = []
+
+            let request = GraphRequest(graphPath: "me/friends", parameters: params, httpMethod: .get)
+            request.start { _, result, error in
+                if let error = error {
+                    promise(.failure(error))
+                } else {
+                    guard let dictonary = result as? [String: Any],
+                          let data = dictonary["data"] as? [[String: Any]] else {
+                              promise(.failure(UserError.fetchFacebookFriends))
+                              return
+                    }
+
+                    var contacts = [ImportContactItem]()
+
+                    for item in data {
+                        guard let name = item["name"] as? String,
+                              let id = item["id"] as? String else {
+                                  continue
+                              }
+
+                        let pictureData = item["data"] as? [String: Any]
+                        let pictureURL = pictureData?["url"] as? String
+                        let contact = ImportContactItem(id: id, name: name, phone: "", avatarURL: pictureURL)
+                        contacts.append(contact)
+                    }
+
+                    promise(.success(contacts))
+                    self?.userFacebookContacts = contacts
+                }
+            }
+        })
     }
 
     func setAvailable(phoneContacts: [String]) {
-        let availableContacts = userPhoneContacts.filter { item in
-            phoneContacts.contains(item.phone)
-        }
+        let availableContacts = userPhoneContacts.filter { phoneContacts.contains($0.phone) }
         availablePhoneContacts = availableContacts
-        self.phoneContacts.send(availableContacts)
+    }
+
+    func setFacebookFriendsWithApp(contacts: [String]) {
+        let filteredContacts = userFacebookContacts.filter { contacts.contains($0.id) }
+        userFacebookContacts = filteredContacts
+    }
+
+    func setAvailable(facebookContacts: [String]) {
+        let availableContacts = userFacebookContacts.filter { facebookContacts.contains($0.id) }
+        availableFacebookContacts = availableContacts
     }
 }

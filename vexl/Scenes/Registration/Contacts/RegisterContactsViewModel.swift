@@ -12,6 +12,10 @@ import SwiftUI
 
 final class RegisterContactsViewModel: ViewModelType {
 
+    @Inject var authenticationManager: AuthenticationManager
+    @Inject var userService: UserServiceType
+    @Inject var contactsService: ContactsServiceType
+
     // MARK: - View State
 
     enum ViewState {
@@ -77,6 +81,7 @@ final class RegisterContactsViewModel: ViewModelType {
             .sink { owner, _ in
                 owner.currentState = .importPhoneContacts
                 owner.phoneViewModel.currentState = .initial
+                owner.importPhoneContactsViewModel.fetchContacts()
             }
             .store(in: cancelBag)
     }
@@ -108,24 +113,71 @@ final class RegisterContactsViewModel: ViewModelType {
             }
             .store(in: cancelBag)
 
-        facebookViewModel.accessConfirmed
+        let loginFacebookUser = facebookViewModel.accessConfirmed
+            .withUnretained(self)
+            .flatMap { owner, _ in
+                owner.authenticationManager
+                    .loginWithFacebook(fromViewController: nil)
+                    .track(activity: owner.primaryActivity)
+                    .materialize()
+                    .eraseToAnyPublisher()
+            }
+            .compactMap { $0.value }
+            .handleEvents(receiveOutput: { facebookId in
+                if facebookId == nil {
+                    print("canceled")
+                }
+            })
+            .compactMap { $0 }
+
+        loginFacebookUser
+            .withUnretained(self)
+            .flatMap { owner, facebookId in
+                owner.userService
+                    .facebookSignature(id: facebookId)
+                    .track(activity: owner.primaryActivity)
+                    .materialize()
+                    .eraseToAnyPublisher()
+            }
+            .compactMap { $0.value }
+            .handleEvents(receiveOutput: { response in
+                //send error when challenge is not verified
+                if !response.challengeVerified {
+                    
+                }
+            })
+            .filter { $0.challengeVerified }
             .withUnretained(self)
             .sink { owner, _ in
-                // TODO: request access to facebook sdk confirmation, set as complete to continue to next screen that has loading state and set the contacts to the ImportPhoneViewModel
                 owner.facebookViewModel.currentState = .completed
-                // TODO: remove this once integration with BE is done
-                after(2) {
-                    owner.importFacebookContactsViewModel.currentState = .content
-                    owner.importFacebookContactsViewModel.items = ImportContactItem.stub()
-                }
             }
             .store(in: cancelBag)
+
+//        createFacebookUser
+//            .withUnretained(self)
+//            .flatMap { owner, data in
+//                owner.contactsService
+//                    .
+//            }
+        
+//            .sink { owner, _ in
+//                // TODO: request access to facebook sdk confirmation, set as complete to continue to next screen that has loading state and set the contacts to the ImportPhoneViewModel
+//
+//                //owner.facebookViewModel.currentState = .completed
+//                // TODO: remove this once integration with BE is done
+////                after(2) {
+////                    owner.importFacebookContactsViewModel.currentState = .content
+////                    owner.importFacebookContactsViewModel.items = ImportContactItem.stub()
+////                }
+//            }
+//            .store(in: cancelBag)
 
         facebookViewModel.completed
             .withUnretained(self)
             .sink { owner, _ in
                 owner.currentState = .importFacebookContacts
                 owner.facebookViewModel.currentState = .initial
+                owner.importFacebookContactsViewModel.fetchContacts()
             }
             .store(in: cancelBag)
     }

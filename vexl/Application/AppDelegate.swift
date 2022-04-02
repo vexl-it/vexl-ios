@@ -8,13 +8,20 @@
 
 import UIKit
 import SwiftyBeaver
+import FBSDKCoreKit
 
 let log = SwiftyBeaver.self
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        true
+
+        ApplicationDelegate.shared.application(
+            application,
+            didFinishLaunchingWithOptions: launchOptions
+        )
+
+        return true
     }
 
     // MARK: UISceneSession Lifecycle

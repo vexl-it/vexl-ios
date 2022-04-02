@@ -10,8 +10,11 @@ import Foundation
 import Combine
 import KeychainAccess
 import Cleevio
+import FBSDKLoginKit
+import FBSDKCoreKit
 
 typealias BearerToken = String
+typealias FacebookUserInfo = (id: String?, token: String?)
 
 protocol TokenHandlerType {
     var accessToken: BearerToken? { get }
@@ -52,6 +55,12 @@ final class AuthenticationManager: TokenHandlerType {
     }
     var userHash: String? {
         userSecurity.hash
+    }
+    var userFacebookHash: String? {
+        userSecurity.facebookHash
+    }
+    var userFacebookSignature: String? {
+        userSecurity.facebookSignature
     }
 
     private(set) var currentUser: User?
@@ -102,12 +111,39 @@ final class AuthenticationManager: TokenHandlerType {
     }
 }
 
+// MARK: - Facebook
+
+extension AuthenticationManager {
+
+    func loginWithFacebook(fromViewController viewController: UIViewController? = nil) -> AnyPublisher<String?, Error> {
+        AnyPublisher(Future { promise in
+            let loginManager = LoginManager()
+            loginManager.logIn(permissions: [.publicProfile, .userFriends], viewController: nil) { [weak self] result in
+                switch result {
+                case .cancelled:
+                    promise(.success(nil))
+                case let .failed(error):
+                    promise(.failure(error))
+                case let .success(_, _, token):
+                    self?.setFacebookUser(id: token?.userID, token: token?.tokenString)
+                    promise(.success(token?.userID))
+                }
+            }
+        })
+    }
+}
+
 // MARK: - Methods
 
 extension AuthenticationManager {
 
     func setUser(_ user: User) {
         self.currentUser = user
+    }
+
+    func setFacebookUser(id: String?, token: String?) {
+        self.currentUser?.facebookId = id
+        self.currentUser?.facebookToken = token
     }
 
     func setFacebookSignature(_ facebookSignature: FacebookUserSignature) {

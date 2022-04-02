@@ -13,4 +13,7 @@ struct User: Decodable {
     let username: String
     let avatar: String?
     let publicKey: String
+    
+    var facebookId: String?
+    var facebookToken: String?
 }

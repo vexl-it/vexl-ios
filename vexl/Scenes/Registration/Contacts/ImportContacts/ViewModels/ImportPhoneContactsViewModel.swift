@@ -21,7 +21,7 @@ class ImportPhoneContactsViewModel: ImportContactsViewModel {
               }
 
         contactsService
-            .createUser(with: publicKey, hash: hash)
+            .createUser(withPublicKey: publicKey, hash: hash)
             .track(activity: primaryActivity)
             .materialize()
             .compactMap { $0.value }

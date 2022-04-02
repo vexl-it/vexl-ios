@@ -9,12 +9,6 @@
 import Foundation
 import Combine
 
-struct ChallengeValidation: Codable {
-    var hash: String
-    var signature: String
-    var challengeVerified: Bool
-}
-
 protocol UserServiceType {
     func me() -> AnyPublisher<User, Error>
     func requestVerificationCode(phoneNumber: String) -> AnyPublisher<PhoneVerification, Error>
@@ -22,6 +16,7 @@ protocol UserServiceType {
     func validateChallenge(key: String, signature: String) -> AnyPublisher<ChallengeValidation, Error>
     func validateUsername(username: String) -> AnyPublisher<UserAvailable, Error>
     func createUser(username: String, avatar: String?) -> AnyPublisher<User, Error>
+    func facebookSignature(id: String) -> AnyPublisher<FacebookUserSignature, Error>
     // temporal
     func generateKeys() -> AnyPublisher<UserKeys, Error>
     func generateSignature(challenge: String, privateKey: String) -> AnyPublisher<UserSignature, Error>

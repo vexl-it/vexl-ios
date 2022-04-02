@@ -31,7 +31,7 @@ enum UserRouter: ApiRouter {
 
     var additionalHeaders: [Header] {
         switch self {
-        case .createUser, .validateUsername:
+        case .createUser, .validateUsername, .facebookSignature:
             return securityHeader
         default:
             return []

@@ -1,13 +1,13 @@
 //
-//  FacebokUserSignature.swift
+//  ChallengeValidation.swift
 //  vexl
 //
-//  Created by Diego Espinoza on 31/03/22.
+//  Created by Diego Espinoza on 1/04/22.
 //
 
 import Foundation
 
-struct FacebookUserSignature: Decodable {
+struct ChallengeValidation: Codable {
     var hash: String
     var signature: String
     var challengeVerified: Bool
