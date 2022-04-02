@@ -33,9 +33,20 @@ final class RegisterContactsViewModel: ViewModelType {
 
     let action: ActionSubject<UserAction> = .init()
 
-    // MARK: - View Bindings
+    // MARK: - Activities
 
     var primaryActivity: Activity = .init()
+    var errorIndicator: ErrorIndicator {
+        primaryActivity.error
+    }
+    var activityIndicator: ActivityIndicator {
+        primaryActivity.indicator
+    }
+
+    // MARK: - View Bindings
+
+    @Published var loading = false
+    @Published var error: AlertError?
 
     // MARK: - Coordinator Bindings
 
@@ -62,10 +73,25 @@ final class RegisterContactsViewModel: ViewModelType {
         importPhoneContactsViewModel = ImportPhoneContactsViewModel()
         facebookViewModel = RequestAccessFacebookContactsViewModel(username: username)
         importFacebookContactsViewModel = ImportFacebookContactsViewModel()
+        setupActivity()
         setupRequestPhoneContactsBindings()
         setupImportPhoneContactsBindings()
         setupRequestFacebookContactsBindings()
         setupImportFacebookContactsBindings()
+    }
+
+    private func setupActivity() {
+        activityIndicator
+            .loading
+            .assign(to: &$loading)
+
+        errorIndicator
+            .errors
+            .withUnretained(self)
+            .sink { owner, error in
+                owner.error = AlertError(error: error)
+            }
+            .store(in: cancelBag)
     }
 
     private func setupRequestPhoneContactsBindings() {
@@ -95,21 +121,21 @@ final class RegisterContactsViewModel: ViewModelType {
             }
             .store(in: cancelBag)
 
-        importPhoneContactsViewModel.$items
-            .withUnretained(self)
-            .sink { _, items in
-                // TODO: set selected items to a service/manager
-                let selectedItems = items.filter { $0.isSelected }
-                print(selectedItems)
-            }
-            .store(in: cancelBag)
+//        importPhoneContactsViewModel.$items
+//            .withUnretained(self)
+//            .sink { _, items in
+//                // set selected items to a service/manager
+//                let selectedItems = items.filter { $0.isSelected }
+//                print(selectedItems)
+//            }
+//            .store(in: cancelBag)
     }
 
     private func setupRequestFacebookContactsBindings() {
         facebookViewModel.skipped
             .withUnretained(self)
-            .sink { _, _ in
-                // TODO: create user with service and message coordinator to go to the next view
+            .sink { owner, _ in
+                owner.route.send(.continueTapped)
             }
             .store(in: cancelBag)
 
@@ -122,13 +148,12 @@ final class RegisterContactsViewModel: ViewModelType {
                     .materialize()
                     .eraseToAnyPublisher()
             }
-            .compactMap { $0.value }
-            .handleEvents(receiveOutput: { facebookId in
-                if facebookId == nil {
-                    print("canceled")
+            .compactMap { response -> String? in
+                guard let value = response.value, let facebookId = value else {
+                    return nil
                 }
-            })
-            .compactMap { $0 }
+                return facebookId
+            }
 
         loginFacebookUser
             .withUnretained(self)
@@ -140,37 +165,17 @@ final class RegisterContactsViewModel: ViewModelType {
                     .eraseToAnyPublisher()
             }
             .compactMap { $0.value }
-            .handleEvents(receiveOutput: { response in
-                //send error when challenge is not verified
+            .withUnretained(self)
+            .handleEvents(receiveOutput: { owner, response in
                 if !response.challengeVerified {
-                    
+                    owner.error = AlertError(error: UserError.facebookValidation)
                 }
             })
-            .filter { $0.challengeVerified }
-            .withUnretained(self)
+            .filter { $0.1.challengeVerified }
             .sink { owner, _ in
                 owner.facebookViewModel.currentState = .completed
             }
             .store(in: cancelBag)
-
-//        createFacebookUser
-//            .withUnretained(self)
-//            .flatMap { owner, data in
-//                owner.contactsService
-//                    .
-//            }
-        
-//            .sink { owner, _ in
-//                // TODO: request access to facebook sdk confirmation, set as complete to continue to next screen that has loading state and set the contacts to the ImportPhoneViewModel
-//
-//                //owner.facebookViewModel.currentState = .completed
-//                // TODO: remove this once integration with BE is done
-////                after(2) {
-////                    owner.importFacebookContactsViewModel.currentState = .content
-////                    owner.importFacebookContactsViewModel.items = ImportContactItem.stub()
-////                }
-//            }
-//            .store(in: cancelBag)
 
         facebookViewModel.completed
             .withUnretained(self)
@@ -183,19 +188,19 @@ final class RegisterContactsViewModel: ViewModelType {
     }
 
     private func setupImportFacebookContactsBindings() {
-        importFacebookContactsViewModel.$items
-            .withUnretained(self)
-            .sink { _, items in
-                // TODO: set selected items to a service/manager
-                let selectedItems = items.filter { $0.isSelected }
-                print(selectedItems)
-            }
-            .store(in: cancelBag)
+//        importFacebookContactsViewModel.$items
+//            .withUnretained(self)
+//            .sink { _, items in
+//                // set selected items to a service/manager
+//                let selectedItems = items.filter { $0.isSelected }
+//                print(selectedItems)
+//            }
+//            .store(in: cancelBag)
 
         importFacebookContactsViewModel.completed
             .withUnretained(self)
-            .sink { _, _ in
-                // TODO: - Create user with all the information, then message router to go next
+            .sink { owner, _ in
+                owner.route.send(.continueTapped)
             }
             .store(in: cancelBag)
     }

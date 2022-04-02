@@ -13,6 +13,7 @@ enum UserError: Error {
     case unavailableUsername
     case facebookAccess
     case fetchFacebookFriends
+    case facebookValidation
 }
 
 extension UserError: LocalizedError {
@@ -26,6 +27,8 @@ extension UserError: LocalizedError {
             return "Couldn't access facebook account"
         case .fetchFacebookFriends:
             return "Couldn't load facebook friends"
+        case .facebookValidation:
+            return "Error 123"
         }
     }
 }

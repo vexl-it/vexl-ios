@@ -11,37 +11,18 @@ import Contacts
 import FBSDKCoreKit
 import FBSDKLoginKit
 
-struct ImportContactItem: Identifiable {
-    var id: String
-    var name: String
-    var phone: String
-    var avatar: Data?
-    var avatarURL: String?
-    var isSelected = false
-
-    static func stub() -> [ImportContactItem] {
-        [
-            ImportContactItem(id: "1", name: "Diego Espinoza 1", phone: "999 944 222", avatar: nil),
-            ImportContactItem(id: "2", name: "Diego Espinoza 2", phone: "929 944 222", avatar: nil),
-            ImportContactItem(id: "3", name: "Diego Espinoza 3", phone: "969 944 222", avatar: nil),
-            ImportContactItem(id: "4", name: "Diego Espinoza 4", phone: "969 944 222", avatar: nil),
-            ImportContactItem(id: "5", name: "Diego Test 4", phone: "969 944 222", avatar: nil)
-        ]
-    }
-}
-
 final class ContactsManager {
 
     // MARK: - Properties
 
-    private var userPhoneContacts: [ImportContactItem] = []
-    private(set) var availablePhoneContacts: [ImportContactItem] = []
+    private var userPhoneContacts: [ContactInformation] = []
+    private(set) var availablePhoneContacts: [ContactInformation] = []
 
-    private var userFacebookContacts: [ImportContactItem] = []
-    private(set) var availableFacebookContacts: [ImportContactItem] = []
+    private var userFacebookContacts: [ContactInformation] = []
+    private(set) var availableFacebookContacts: [ContactInformation] = []
 
-    func fetchPhoneContacts() -> [ImportContactItem] {
-        var contacts = [ImportContactItem]()
+    func fetchPhoneContacts() -> [ContactInformation] {
+        var contacts = [ContactInformation]()
         let keys = [CNContactPhoneNumbersKey,
                     CNContactGivenNameKey,
                     CNContactFamilyNameKey,
@@ -55,10 +36,11 @@ final class ContactsManager {
             try contactStore.enumerateContacts(with: request) { contact, _ in
                 let phone = contact.phoneNumbers.first?.value.stringValue ?? ""
                 let avatar = contact.imageData
-                let userContact = ImportContactItem(id: contact.identifier,
-                                                    name: "\(contact.givenName) \(contact.familyName)",
-                                                    phone: phone,
-                                                    avatar: avatar)
+                let userContact = ContactInformation(id: contact.identifier,
+                                                     name: "\(contact.givenName) \(contact.familyName)",
+                                                     phone: phone,
+                                                     avatar: avatar,
+                                                     source: .phone)
                 contacts.append(userContact)
             }
             self.userPhoneContacts = contacts
@@ -69,7 +51,7 @@ final class ContactsManager {
         }
     }
 
-    func fetchFacebookContacts() -> AnyPublisher<[ImportContactItem], Error> {
+    func fetchFacebookContacts() -> AnyPublisher<[ContactInformation], Error> {
         AnyPublisher(Future { [weak self] promise in
 
             guard AccessToken.current != nil else {
@@ -91,7 +73,7 @@ final class ContactsManager {
                               return
                     }
 
-                    var contacts = [ImportContactItem]()
+                    var contacts = [ContactInformation]()
 
                     for item in data {
                         guard let name = item["name"] as? String,
@@ -101,7 +83,7 @@ final class ContactsManager {
 
                         let pictureData = item["data"] as? [String: Any]
                         let pictureURL = pictureData?["url"] as? String
-                        let contact = ImportContactItem(id: id, name: name, phone: "", avatarURL: pictureURL)
+                        let contact = ContactInformation(id: id, name: name, phone: "", avatarURL: pictureURL, source: .facebook)
                         contacts.append(contact)
                     }
 
@@ -113,17 +95,17 @@ final class ContactsManager {
     }
 
     func setAvailable(phoneContacts: [String]) {
-        let availableContacts = userPhoneContacts.filter { phoneContacts.contains($0.phone) }
+        let availableContacts = userPhoneContacts.filter { phoneContacts.contains($0.sourceIdentifier) }
         availablePhoneContacts = availableContacts
     }
 
     func setFacebookFriendsWithApp(contacts: [String]) {
-        let filteredContacts = userFacebookContacts.filter { contacts.contains($0.id) }
+        let filteredContacts = userFacebookContacts.filter { contacts.contains($0.sourceIdentifier) }
         userFacebookContacts = filteredContacts
     }
 
     func setAvailable(facebookContacts: [String]) {
-        let availableContacts = userFacebookContacts.filter { facebookContacts.contains($0.id) }
+        let availableContacts = userFacebookContacts.filter { facebookContacts.contains($0.sourceIdentifier) }
         availableFacebookContacts = availableContacts
     }
 }

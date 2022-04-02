@@ -114,6 +114,10 @@
 		F1A9453627F686D1009B5AE3 /* CodeValidation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1A9453427F686D1009B5AE3 /* CodeValidation.swift */; };
 		F1A9453727F686D1009B5AE3 /* PhoneVerification.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1A9453527F686D1009B5AE3 /* PhoneVerification.swift */; };
 		F1A9453C27F7E01D009B5AE3 /* ChallengeValidation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1A9453B27F7E01D009B5AE3 /* ChallengeValidation.swift */; };
+		F1A9454027F811D3009B5AE3 /* ContactUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1A9453F27F811D3009B5AE3 /* ContactUser.swift */; };
+		F1A9454227F81200009B5AE3 /* ContactsImported.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1A9454127F81200009B5AE3 /* ContactsImported.swift */; };
+		F1A9454427F81211009B5AE3 /* ContactsAvailable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1A9454327F81211009B5AE3 /* ContactsAvailable.swift */; };
+		F1A9454627F81278009B5AE3 /* ContactInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1A9454527F81278009B5AE3 /* ContactInformation.swift */; };
 		F1B5FCBC27C67DB00018729B /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B5FCBB27C67DB00018729B /* WelcomeViewController.swift */; };
 		F1B5FCBE27C68EA70018729B /* OnboardingView+BottomButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B5FCBD27C68EA70018729B /* OnboardingView+BottomButtons.swift */; };
 		F1B5FCC327C6BC330018729B /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = F1B5FCC127C6BC330018729B /* Localizable.strings */; };
@@ -261,6 +265,10 @@
 		F1A9453427F686D1009B5AE3 /* CodeValidation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodeValidation.swift; sourceTree = "<group>"; };
 		F1A9453527F686D1009B5AE3 /* PhoneVerification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhoneVerification.swift; sourceTree = "<group>"; };
 		F1A9453B27F7E01D009B5AE3 /* ChallengeValidation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeValidation.swift; sourceTree = "<group>"; };
+		F1A9453F27F811D3009B5AE3 /* ContactUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactUser.swift; sourceTree = "<group>"; };
+		F1A9454127F81200009B5AE3 /* ContactsImported.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsImported.swift; sourceTree = "<group>"; };
+		F1A9454327F81211009B5AE3 /* ContactsAvailable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsAvailable.swift; sourceTree = "<group>"; };
+		F1A9454527F81278009B5AE3 /* ContactInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactInformation.swift; sourceTree = "<group>"; };
 		F1B5FCBB27C67DB00018729B /* WelcomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeViewController.swift; sourceTree = "<group>"; };
 		F1B5FCBD27C68EA70018729B /* OnboardingView+BottomButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OnboardingView+BottomButtons.swift"; sourceTree = "<group>"; };
 		F1B5FCC227C6BC330018729B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -448,6 +456,7 @@
 			children = (
 				F175AB8227E4CBFE000DAB15 /* Networking */,
 				B08F391827AE7112008B344F /* User.swift */,
+				F1A9454527F81278009B5AE3 /* ContactInformation.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -761,6 +770,7 @@
 		F175AB8227E4CBFE000DAB15 /* Networking */ = {
 			isa = PBXGroup;
 			children = (
+				F1A9453E27F811CA009B5AE3 /* Contacts */,
 				F175AB8327E4CC04000DAB15 /* Users */,
 			);
 			path = Networking;
@@ -830,6 +840,16 @@
 				B08F391627AE7112008B344F /* AuthenticationManager.swift */,
 			);
 			path = AuthenticationManager;
+						sourceTree = "<group>";
+		};
+		F1A9453E27F811CA009B5AE3 /* Contacts */ = {
+			isa = PBXGroup;
+			children = (
+				F1A9453F27F811D3009B5AE3 /* ContactUser.swift */,
+				F1A9454127F81200009B5AE3 /* ContactsImported.swift */,
+				F1A9454327F81211009B5AE3 /* ContactsAvailable.swift */,
+			);
+			path = Contacts;
 			sourceTree = "<group>";
 		};
 		F1B5FCCA27C6F7CC0018729B /* Registration */ = {
@@ -1194,6 +1214,7 @@
 				B08F391727AE7112008B344F /* AuthenticationManager.swift in Sources */,
 				B08F394B27AE7112008B344F /* ServerError.swift in Sources */,
 				F14D29C927BFEA1400D1CD85 /* OnboardingView+Presentation.swift in Sources */,
+				F1A9454427F81211009B5AE3 /* ContactsAvailable.swift in Sources */,
 				B0EEE11A27B14D3D0097031E /* WelcomeView.swift in Sources */,
 				F175AB8B27E8062A000DAB15 /* LoadingIndicatorView.swift in Sources */,
 				B0F206F727AEB2C000A44E72 /* UIViewStyle.swift in Sources */,
@@ -1251,6 +1272,8 @@
 				B08F393F27AE7112008B344F /* APIError.swift in Sources */,
 				F1A9452D27F67FD5009B5AE3 /* PhoneConfirmation.swift in Sources */,
 				F151A2A227C86CA6000D7242 /* RegistrationCardView.swift in Sources */,
+				F1A9454027F811D3009B5AE3 /* ContactUser.swift in Sources */,
+				F1A9454627F81278009B5AE3 /* ContactInformation.swift in Sources */,
 				B08F391327AE7112008B344F /* ManagerAssembly.swift in Sources */,
 				F14D29C727BFD93C00D1CD85 /* ButtonStyle.swift in Sources */,
 				B08F394527AE7112008B344F /* ReusableView.swift in Sources */,
@@ -1264,6 +1287,7 @@
 				F151A2AB27CE818C000D7242 /* RegisterNameAvatarView+PhoneVerification.swift in Sources */,
 				F1B5FCBE27C68EA70018729B /* OnboardingView+BottomButtons.swift in Sources */,
 				F151A29927C86683000D7242 /* RegisterNameAvatarViewModel.swift in Sources */,
+				F1A9454227F81200009B5AE3 /* ContactsImported.swift in Sources */,
 				B08F394127AE7112008B344F /* Shortcuts.swift in Sources */,
 				F1B5FCD827C7040C0018729B /* RoundedCorners.swift in Sources */,
 				F151A29D27C866C7000D7242 /* RegisterNameAvatarView.swift in Sources */,

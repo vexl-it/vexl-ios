@@ -13,7 +13,7 @@ struct ImportContactItemView: View {
     private let imageSize = CGSize(width: 48, height: 48)
     private let checkSize = CGSize(width: 38, height: 38)
 
-    let item: ImportContactItem
+    let item: ContactInformation
     let onSelection: (Bool) -> Void
 
     var body: some View {
@@ -79,6 +79,6 @@ private struct ImportContactSelectionView: View {
 
 struct RegisterContacts_ContactItemViewPreview: PreviewProvider {
     static var previews: some View {
-        ImportContactItemView(item: ImportContactItem.stub().first!, onSelection: { _ in })
+        ImportContactItemView(item: ContactInformation.stub().first!, onSelection: { _ in })
     }
 }
