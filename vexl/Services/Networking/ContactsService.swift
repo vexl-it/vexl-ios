@@ -8,24 +8,9 @@
 import Foundation
 import Combine
 
-struct ContactUser: Codable {
-    var id: Int
-    var publicKey: String
-    var hash: String
-}
-
-struct ContactsImport: Codable {
-    var imported: Bool
-    var message: String
-}
-
-struct ContactsAvailable: Codable {
-    var newContacts: [String]
-}
-
 protocol ContactsServiceType {
     func createUser(with key: String, hash: String) -> AnyPublisher<ContactUser, Error>
-    func importContacts(_ contacts: [String]) -> AnyPublisher<ContactsImport, Error>
+    func importContacts(_ contacts: [String]) -> AnyPublisher<ContactsImported, Error>
     func getAvailableContacts(_ contacts: [String]) -> AnyPublisher<ContactsAvailable, Error>
 }
 
@@ -44,8 +29,8 @@ class ContactsService: BaseService, ContactsServiceType {
             .eraseToAnyPublisher()
     }
 
-    func importContacts(_ contacts: [String]) -> AnyPublisher<ContactsImport, Error> {
-        request(type: ContactsImport.self, endpoint: ContactsRouter.importContacts(contacts: contacts))
+    func importContacts(_ contacts: [String]) -> AnyPublisher<ContactsImported, Error> {
+        request(type: ContactsImported.self, endpoint: ContactsRouter.importContacts(contacts: contacts))
             .eraseToAnyPublisher()
     }
 
