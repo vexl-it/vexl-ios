@@ -31,15 +31,15 @@ final class ContactsManager {
 
     // MARK: - Bindings
 
-    var phoneContacts: CurrentValueSubject<[ImportContactItem], Never> = .init([])
+    var phoneContacts: CurrentValueSubject<[ContactInformation], Never> = .init([])
 
     // MARK: - Properties
 
-    private var userPhoneContacts: [ImportContactItem] = []
-    private(set) var availablePhoneContacts: [ImportContactItem] = []
+    private var userPhoneContacts: [ContactInformation] = []
+    private(set) var availablePhoneContacts: [ContactInformation] = []
 
-    func fetchPhoneContacts() -> [ImportContactItem] {
-        var contacts = [ImportContactItem]()
+    func fetchPhoneContacts() -> [ContactInformation] {
+        var contacts = [ContactInformation]()
         let keys = [CNContactPhoneNumbersKey,
                     CNContactGivenNameKey,
                     CNContactFamilyNameKey,
@@ -53,10 +53,11 @@ final class ContactsManager {
             try contactStore.enumerateContacts(with: request) { contact, _ in
                 let phone = contact.phoneNumbers.first?.value.stringValue ?? ""
                 let avatar = contact.imageData
-                let userContact = ImportContactItem(id: contact.identifier,
-                                                    name: "\(contact.givenName) \(contact.familyName)",
-                                                    phone: phone,
-                                                    avatar: avatar)
+                let userContact = ContactInformation(id: contact.identifier,
+                                                     name: "\(contact.givenName) \(contact.familyName)",
+                                                     phone: phone,
+                                                     avatar: avatar,
+                                                     source: .phone)
                 contacts.append(userContact)
             }
             self.userPhoneContacts = contacts

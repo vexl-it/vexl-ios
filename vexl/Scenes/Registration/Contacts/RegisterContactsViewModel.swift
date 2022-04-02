@@ -116,7 +116,7 @@ final class RegisterContactsViewModel: ViewModelType {
                 // TODO: remove this once integration with BE is done
                 after(2) {
                     owner.importFacebookContactsViewModel.currentState = .content
-                    owner.importFacebookContactsViewModel.items = ImportContactItem.stub()
+                    owner.importFacebookContactsViewModel.items = ContactInformation.stub()
                 }
             }
             .store(in: cancelBag)

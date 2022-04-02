@@ -30,7 +30,7 @@ class ImportContactsViewModel: ObservableObject {
     // MARK: - Action Bindings
 
     enum UserAction: Equatable {
-        case itemSelected(Bool, ImportContactItem)
+        case itemSelected(Bool, ContactInformation)
         case unselectAll
         case importContacts
 
@@ -54,7 +54,7 @@ class ImportContactsViewModel: ObservableObject {
     // MARK: - View Bindings
 
     @Published var currentState: ViewState = .none
-    @Published var items: [ImportContactItem] = []
+    @Published var items: [ContactInformation] = []
     @Published var searchText = ""
     @Published var hasSelectedItem = false
 
@@ -71,12 +71,12 @@ class ImportContactsViewModel: ObservableObject {
 
     // MARK: - Variables
 
-    var filteredItems: [ImportContactItem] {
+    var filteredItems: [ContactInformation] {
         guard !searchText.isEmpty else { return items }
         return items.filter { $0.name.contains(searchText) }
     }
 
-    private var selectedItems: [ImportContactItem] {
+    private var selectedItems: [ContactInformation] {
         items.filter { $0.isSelected }
     }
 
@@ -110,7 +110,7 @@ class ImportContactsViewModel: ObservableObject {
             .filter { action in
                 ![UserAction.unselectAll, .importContacts].contains(action)
             }
-            .compactMap { action -> (Bool, ImportContactItem)? in
+            .compactMap { action -> (Bool, ContactInformation)? in
                 if case let .itemSelected(isSelected, item) = action {
                     return (isSelected, item)
                 }
@@ -160,7 +160,7 @@ class ImportContactsViewModel: ObservableObject {
             .store(in: cancelBag)
     }
 
-    private func select(_ isSelected: Bool, item: ImportContactItem) {
+    private func select(_ isSelected: Bool, item: ContactInformation) {
         guard let selectedIndex = items.firstIndex(where: { $0.id == item.id }) else { return }
         items[selectedIndex].isSelected = isSelected
         hasSelectedItem = items.contains(where: { $0.isSelected })
