@@ -17,9 +17,14 @@ class ImportFacebookContactsViewModel: ImportContactsViewModel {
               let hash = authenticationManager.userFacebookHash else {
                   return
               }
+        
+        guard let facebookId = authenticationManager.currentUser?.facebookId,
+              let facebookToken = authenticationManager.currentUser?.facebookToken else {
+                  return
+              }
 
         let facebookContacts = contactsService
-            .createUser(withPublicKey: publicKey, hash: hash)
+            .createUser(withPublicKey: publicKey, hash: hash, forFacebook: true)
             .track(activity: primaryActivity)
             .materialize()
             .compactMap { $0.value }
@@ -42,7 +47,7 @@ class ImportFacebookContactsViewModel: ImportContactsViewModel {
                 // Fetch facebook friends that have/use the app from the Backend
 
                 owner.contactsService
-                    .getFacebookContacts()
+                    .getFacebookContacts(id: facebookId, accessToken: facebookToken)
                     .track(activity: owner.primaryActivity)
                     .materialize()
             }
@@ -55,7 +60,7 @@ class ImportFacebookContactsViewModel: ImportContactsViewModel {
                 // Fetch facebook friends that can be imported/have not been imported to the Backend
 
                 owner.contactsService
-                    .getAvailableFacebookContacts()
+                    .getAvailableFacebookContacts(id: facebookId, accessToken: facebookToken)
                     .track(activity: owner.primaryActivity)
                     .materialize()
             }

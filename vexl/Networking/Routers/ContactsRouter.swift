@@ -11,7 +11,7 @@ import Alamofire
 enum ContactsRouter: ApiRouter {
     case importContacts(contacts: [String])
     case getAvailableContacts(contacts: [String])
-    case createUser(key: String, hash: String)
+    case createUser(key: String, hash: String, useFacebookHeader: Bool)
     case getFacebookContacts(id: String, accessToken: String)
     case getAvailableFacebookContacts(id: String, accessToken: String)
 
@@ -28,8 +28,14 @@ enum ContactsRouter: ApiRouter {
         switch self {
         case .getFacebookContacts, .getAvailableFacebookContacts:
             return facebookSecurityHeader
-        case .importContacts, .getAvailableContacts, .createUser:
+        case .importContacts, .getAvailableContacts:
             return securityHeader
+        case let .createUser(_, _, useFacebookHeader):
+            if useFacebookHeader {
+                return facebookSecurityHeader
+            } else {
+                return securityHeader
+            }
         }
     }
 
@@ -52,7 +58,7 @@ enum ContactsRouter: ApiRouter {
         switch self {
         case .getFacebookContacts, .getAvailableFacebookContacts:
             return [:]
-        case let .createUser(key, hash):
+        case let .createUser(key, hash, _):
             return ["publicKey": key,
                     "hash": hash]
         case let .getAvailableContacts(contacts):
