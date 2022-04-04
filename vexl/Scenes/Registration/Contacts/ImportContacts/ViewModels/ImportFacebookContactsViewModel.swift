@@ -17,30 +17,19 @@ class ImportFacebookContactsViewModel: ImportContactsViewModel {
               let hash = authenticationManager.userFacebookHash else {
                   return
               }
-        
+
         guard let facebookId = authenticationManager.currentUser?.facebookId,
               let facebookToken = authenticationManager.currentUser?.facebookToken else {
                   return
               }
 
-        let facebookContacts = contactsService
+        let createFacebookUser = contactsService
             .createUser(withPublicKey: publicKey, hash: hash, forFacebook: true)
             .track(activity: primaryActivity)
             .materialize()
             .compactMap { $0.value }
-            .withUnretained(self)
-            .flatMap { owner, _ in
 
-                // Fetching facebook friends information using the SDK
-
-                owner.contactsManager
-                    .fetchFacebookContacts()
-                    .track(activity: owner.primaryActivity)
-                    .materialize()
-            }
-            .compactMap { $0.value }
-
-        let inAppFacebookContacts = facebookContacts
+        let facebookContacts = createFacebookUser
             .withUnretained(self)
             .flatMap { owner, _ in
 
@@ -53,7 +42,7 @@ class ImportFacebookContactsViewModel: ImportContactsViewModel {
             }
             .compactMap { $0.value }
 
-        inAppFacebookContacts
+        facebookContacts
             .withUnretained(self)
             .flatMap { owner, _ in
 

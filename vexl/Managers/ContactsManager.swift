@@ -99,9 +99,10 @@ final class ContactsManager {
         availablePhoneContacts = availableContacts
     }
 
-    func setFacebookFriendsWithApp(contacts: [String]) {
-        let filteredContacts = userFacebookContacts.filter { contacts.contains($0.sourceIdentifier) }
-        userFacebookContacts = filteredContacts
+    func setFacebookFriends(contacts: [FacebookContacts.FacebookUser]) {
+        userFacebookContacts = contacts.map { user in
+            ContactInformation(id: user.id, name: user.name, phone: "", avatarURL: user.profilePicture?.data?.url,source: .facebook)
+        }
     }
 
     func setAvailable(facebookContacts: [String]) {

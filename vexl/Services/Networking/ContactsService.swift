@@ -8,17 +8,6 @@
 import Foundation
 import Combine
 
-struct FacebookContacts: Decodable {
-
-    var facebookUser: FacebookUser
-
-    struct FacebookUser: Decodable {
-        var id: String
-        var name: String
-        var friends: [FacebookUser]
-    }
-}
-
 protocol ContactsServiceType {
     func createUser(withPublicKey key: String, hash: String, forFacebook isFacebook: Bool) -> AnyPublisher<ContactUser, Error>
     func importContacts(_ contacts: [String]) -> AnyPublisher<ContactsImported, Error>
@@ -61,7 +50,7 @@ class ContactsService: BaseService, ContactsServiceType {
         request(type: FacebookContacts.self, endpoint: ContactsRouter.getFacebookContacts(id: id, accessToken: accessToken))
             .withUnretained(self)
             .handleEvents(receiveOutput: { owner, contacts in
-                owner.contactsManager.setFacebookFriendsWithApp(contacts: contacts.facebookUser.friends.map { $0.id })
+                owner.contactsManager.setFacebookFriends(contacts: contacts.facebookUser.friends)
             })
             .map { $0.1 }
             .eraseToAnyPublisher()

@@ -120,15 +120,6 @@ final class RegisterContactsViewModel: ViewModelType {
                 owner.importPhoneContactsViewModel.currentState = .none
             }
             .store(in: cancelBag)
-
-//        importPhoneContactsViewModel.$items
-//            .withUnretained(self)
-//            .sink { _, items in
-//                // set selected items to a service/manager
-//                let selectedItems = items.filter { $0.isSelected }
-//                print(selectedItems)
-//            }
-//            .store(in: cancelBag)
     }
 
     private func setupRequestFacebookContactsBindings() {
@@ -188,15 +179,6 @@ final class RegisterContactsViewModel: ViewModelType {
     }
 
     private func setupImportFacebookContactsBindings() {
-//        importFacebookContactsViewModel.$items
-//            .withUnretained(self)
-//            .sink { _, items in
-//                // set selected items to a service/manager
-//                let selectedItems = items.filter { $0.isSelected }
-//                print(selectedItems)
-//            }
-//            .store(in: cancelBag)
-
         importFacebookContactsViewModel.completed
             .withUnretained(self)
             .sink { owner, _ in
