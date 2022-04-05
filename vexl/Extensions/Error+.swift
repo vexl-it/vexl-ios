@@ -22,17 +22,15 @@ extension Error {
 }
 
 struct AlertError: Identifiable {
-    var id: String {
-        self.message
-    }
-
-    var message: String {
-        self.error.getMessage()
-    }
-
+    let id: Int
     var error: Error
 
-    init(error: Error) {
+    var message: String {
+        error.getMessage()
+    }
+
+    init(id: Int, error: Error) {
         self.error = error
+        self.id = id
     }
 }

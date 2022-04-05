@@ -122,7 +122,7 @@ final class RegisterPhoneViewModel: ViewModelType {
             .errors
             .withUnretained(self)
             .sink { owner, error in
-                owner.error = AlertError(error: error)
+                owner.error = AlertError(id: 1, error: error)
             }
             .store(in: cancelBag)
     }
@@ -204,7 +204,7 @@ final class RegisterPhoneViewModel: ViewModelType {
             .withUnretained(self)
             .handleEvents(receiveOutput: { owner, response in
                 if !response.phoneVerified {
-                    owner.error = AlertError(error: RegistryError.invalidValidationCode)
+                    owner.error = AlertError(id: 1, error: RegistryError.invalidValidationCode)
                 } else {
                     owner.generateSignature.send(response.challenge)
                     owner.currentState = response.phoneVerified ? .codeInputSuccess : .codeInput
@@ -248,7 +248,7 @@ final class RegisterPhoneViewModel: ViewModelType {
             .withUnretained(self)
             .handleEvents(receiveOutput: { owner, response in
                 if !response.challengeVerified {
-                    owner.error = AlertError(error: RegistryError.invalidChallenge)
+                    owner.error = AlertError(id: 1, error: RegistryError.invalidChallenge)
                 }
             })
             .sink { _ in }

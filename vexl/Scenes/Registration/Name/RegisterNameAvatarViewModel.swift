@@ -77,7 +77,7 @@ final class RegisterNameAvatarViewModel: ViewModelType {
             .errors
             .withUnretained(self)
             .sink { owner, error in
-                owner.error = AlertError(error: error)
+                owner.error = AlertError(id: 1, error: error)
             }
             .store(in: cancelBag)
     }
@@ -90,18 +90,27 @@ final class RegisterNameAvatarViewModel: ViewModelType {
             .assign(to: &$isActionEnabled)
 
         $currentState
+            .useAction(action: .phoneVerified)
+            .delay(for: .seconds(1), scheduler: RunLoop.main)
             .withUnretained(self)
-            .sink { owner, state in
-                switch state {
-                case .phoneVerified:
-                    after(1) {
-                        owner.currentState = .usernameInput
-                    }
-                case .usernameInput:
-                    owner.isActionEnabled = owner.validateUsername(owner.username)
-                case .avatarInput:
-                    owner.isActionEnabled = true
-                }
+            .sink { owner, _ in
+                owner.currentState = .usernameInput
+            }
+            .store(in: cancelBag)
+
+        $currentState
+            .useAction(action: .usernameInput)
+            .withUnretained(self)
+            .sink { owner, _ in
+                owner.isActionEnabled = owner.validateUsername(owner.username)
+            }
+            .store(in: cancelBag)
+
+        $currentState
+            .useAction(action: .avatarInput)
+            .withUnretained(self)
+            .sink { owner, _ in
+                owner.isActionEnabled = true
             }
             .store(in: cancelBag)
     }
@@ -144,7 +153,7 @@ final class RegisterNameAvatarViewModel: ViewModelType {
             .withUnretained(self)
             .handleEvents(receiveOutput: { owner, response in
                 if !response.available {
-                    owner.error = AlertError(error: UserError.unavailableUsername)
+                    owner.error = AlertError(id: 1, error: UserError.unavailableUsername)
                 }
             })
             .filter { $0.1.available }
