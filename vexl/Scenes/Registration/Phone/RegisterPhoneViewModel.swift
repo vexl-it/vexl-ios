@@ -108,7 +108,9 @@ final class RegisterPhoneViewModel: ViewModelType {
 
     init() {
         setupActivity()
-        setupActionBindings()
+        setupPhoneInputActionBindings()
+        setupValidationActionBindings()
+        setupGenerateSignatureActionBindings()
         setupStateBindings()
         timerBindings()
     }
@@ -124,8 +126,7 @@ final class RegisterPhoneViewModel: ViewModelType {
             .assign(to: &$error)
     }
 
-    // swiftlint:disable function_body_length
-    private func setupActionBindings() {
+    private func setupPhoneInputActionBindings() {
 
         let phoneInput = action
             .useAction(action: .sendPhoneNumber)
@@ -163,7 +164,9 @@ final class RegisterPhoneViewModel: ViewModelType {
                 owner.currentState = .codeInput
             }
             .store(in: cancelBag)
+    }
 
+    private func setupValidationActionBindings() {
         let validateCode = action
             .useAction(action: .validateCode)
             .withUnretained(self)
@@ -214,7 +217,9 @@ final class RegisterPhoneViewModel: ViewModelType {
                 owner.clearState()
             }
             .store(in: cancelBag)
+    }
 
+    private func setupGenerateSignatureActionBindings() {
         // Temporal delete me
         let generateSignature = generateSignature
             .withUnretained(self)
