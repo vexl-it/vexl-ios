@@ -127,7 +127,7 @@ final class RegisterNameAvatarViewModel: ViewModelType {
                                 avatar: "")
                     .track(activity: owner.primaryActivity)
                     .materialize()
-                    .compactMap { $0.value }
+                    .compactMap(\.value)
                     .eraseToAnyPublisher()
             }
             .withUnretained(self)
@@ -147,7 +147,7 @@ final class RegisterNameAvatarViewModel: ViewModelType {
                     .validateUsername(username: owner.username)
                     .track(activity: owner.primaryActivity)
                     .materialize()
-                    .compactMap { $0.value }
+                    .compactMap(\.value)
                     .eraseToAnyPublisher()
             }
             .withUnretained(self)

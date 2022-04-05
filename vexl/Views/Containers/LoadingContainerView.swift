@@ -14,13 +14,11 @@ struct LoadingContainerView<Content: View>: View {
 
     var body: some View {
         ZStack {
+            content()
+
             if loading {
                 LoadingIndicatorView()
-                    .zIndex(2)
             }
-
-            content()
-                .zIndex(1)
         }
     }
 }

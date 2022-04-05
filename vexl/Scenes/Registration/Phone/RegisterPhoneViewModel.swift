@@ -120,11 +120,8 @@ final class RegisterPhoneViewModel: ViewModelType {
 
         errorIndicator
             .errors
-            .withUnretained(self)
-            .sink { owner, error in
-                owner.error = AlertError(id: 1, error: error)
-            }
-            .store(in: cancelBag)
+            .map { AlertError(id: 1, error: $0) }
+            .assign(to: &$error)
     }
 
     // swiftlint:disable function_body_length
@@ -155,7 +152,7 @@ final class RegisterPhoneViewModel: ViewModelType {
                     .requestVerificationCode(phoneNumber: owner.phoneNumber)
                     .track(activity: owner.primaryActivity)
                     .materialize()
-                    .compactMap { $0.value }
+                    .compactMap(\.value)
                     .eraseToAnyPublisher()
             }
             .withUnretained(self)
@@ -228,10 +225,10 @@ final class RegisterPhoneViewModel: ViewModelType {
                                        privateKey: owner.authenticationManager.userKeys?.privateKey ?? "")
                     .track(activity: owner.primaryActivity)
                     .materialize()
-                    .compactMap { $0.value }
+                    .compactMap(\.value)
                     .eraseToAnyPublisher()
             }
-            .compactMap { $0.signed }
+            .map(\.signed)
 
         generateSignature
             .withUnretained(self)
