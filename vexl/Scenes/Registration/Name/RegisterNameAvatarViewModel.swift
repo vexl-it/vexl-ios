@@ -90,7 +90,7 @@ final class RegisterNameAvatarViewModel: ViewModelType {
             .assign(to: &$isActionEnabled)
 
         $currentState
-            .useAction(action: .phoneVerified)
+            .filter { $0 == .phoneVerified }
             .delay(for: .seconds(1), scheduler: RunLoop.main)
             .withUnretained(self)
             .sink { owner, _ in
@@ -99,7 +99,7 @@ final class RegisterNameAvatarViewModel: ViewModelType {
             .store(in: cancelBag)
 
         $currentState
-            .useAction(action: .usernameInput)
+            .filter { $0 == .usernameInput }
             .withUnretained(self)
             .sink { owner, _ in
                 owner.isActionEnabled = owner.validateUsername(owner.username)
@@ -107,7 +107,7 @@ final class RegisterNameAvatarViewModel: ViewModelType {
             .store(in: cancelBag)
 
         $currentState
-            .useAction(action: .avatarInput)
+            .filter { $0 == .avatarInput }
             .withUnretained(self)
             .sink { owner, _ in
                 owner.isActionEnabled = true
@@ -118,7 +118,7 @@ final class RegisterNameAvatarViewModel: ViewModelType {
     private func setupActionBindings() {
 
         action
-            .useAction(action: .createUser)
+            .filter { $0 == .createUser }
             .withUnretained(self)
             .flatMap { owner, _ in
                 owner
@@ -140,7 +140,7 @@ final class RegisterNameAvatarViewModel: ViewModelType {
             .store(in: cancelBag)
 
         action
-            .useAction(action: .setUsername)
+            .filter { $0 == .setUsername }
             .withUnretained(self)
             .flatMap { owner, _ in
                 owner.userService
@@ -163,7 +163,7 @@ final class RegisterNameAvatarViewModel: ViewModelType {
             .store(in: cancelBag)
 
         action
-            .useAction(action: .deleteAvatar)
+            .filter { $0 == .deleteAvatar }
             .withUnretained(self)
             .sink { owner, _ in
                 owner.avatar = nil
@@ -171,7 +171,7 @@ final class RegisterNameAvatarViewModel: ViewModelType {
             .store(in: cancelBag)
 
         action
-            .useAction(action: .addAvatar)
+            .filter { $0 == .addAvatar }
             .withUnretained(self)
             .sink { owner, _ in
                 owner.avatar = UIImage(named: R.image.onboarding.testAvatar.name)

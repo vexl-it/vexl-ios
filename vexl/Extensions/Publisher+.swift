@@ -35,9 +35,3 @@ public extension Publisher where Output == Void {
         }
     }
 }
-
-extension Publisher where Output: Equatable {
-    func useAction(action: Output) -> AnyPublisher<Output, Failure> {
-        self.filter { $0 == action }.eraseToAnyPublisher()
-    }
-}

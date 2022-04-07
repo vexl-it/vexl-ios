@@ -131,11 +131,11 @@ final class RegisterPhoneViewModel: ViewModelType {
     private func setupPhoneInputActionBindings() {
 
         let phoneInput = action
-            .useAction(action: .sendPhoneNumber)
+            .filter { $0 == .sendPhoneNumber }
             .withUnretained(self)
 
         let sendCode = action
-            .useAction(action: .sendCode)
+            .filter { $0 == .sendCode }
             .withUnretained(self)
             .filter { $0.0.currentState == .codeInput }
 
@@ -171,7 +171,7 @@ final class RegisterPhoneViewModel: ViewModelType {
 
     private func setupValidationActionBindings() {
         let validateCode = action
-            .useAction(action: .validateCode)
+            .filter { $0 == .validateCode }
             .withUnretained(self)
             .handleEvents(receiveOutput: { owner, _ in
                 owner.currentState = .codeInputValidation
