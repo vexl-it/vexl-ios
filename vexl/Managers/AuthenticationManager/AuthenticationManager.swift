@@ -21,7 +21,24 @@ protocol TokenHandlerType {
     var refreshToken: BearerToken? { get }
 }
 
-final class AuthenticationManager: TokenHandlerType {
+protocol AuthenticationManagerType {
+    func logoutUser()
+}
+
+protocol UserSecurityType {
+
+    var userSecurity: UserSecurity { get set }
+    var userKeys: UserKeys? { get }
+    var userSignature: String? { get }
+    var userHash: String? { get }
+    var securityHeader: SecurityHeader? { get }
+
+    func setUserSignature(_ userSignature: UserSignature)
+    func setUserKeys(_ userKeys: UserKeys)
+    func setHash(_ challengeValidation: ChallengeValidation)
+}
+
+final class AuthenticationManager: AuthenticationManagerType, TokenHandlerType {
     enum AuthenticationState {
         case signedIn
         case signedOut
@@ -38,50 +55,8 @@ final class AuthenticationManager: TokenHandlerType {
 
     // MARK: - Variables for user registration
 
-    private var phoneValidation: PhoneConfirmation = .init()
-    private var userSecurity: UserSecurity = .init()
-
-    var phoneConfirmation: PhoneVerification? {
-        phoneValidation.phoneVerification
-    }
-    var codeValidation: CodeValidation? {
-        phoneValidation.codeValidation
-    }
-    var userKeys: UserKeys? {
-        userSecurity.keys
-    }
-    var userSignature: String? {
-        userSecurity.signature
-    }
-    var userHash: String? {
-        userSecurity.hash
-    }
-    var userFacebookHash: String? {
-        userSecurity.facebookHash
-    }
-    var userFacebookSignature: String? {
-        userSecurity.facebookSignature
-    }
-
+    var userSecurity: UserSecurity = .init()
     private(set) var currentUser: User?
-
-    var securityHeader: SecurityHeader? {
-        guard let signature = userSignature,
-              let publicKey = userKeys?.publicKey,
-              let hash = userHash else {
-                  return nil
-              }
-        return SecurityHeader(hash: hash, publicKey: publicKey, signature: signature)
-    }
-
-    var facebookSecurityHeader: SecurityHeader? {
-        guard let signature = userSecurity.facebookSignature,
-              let publicKey = userKeys?.publicKey,
-              let hash = userSecurity.facebookHash else {
-                  return nil
-              }
-        return SecurityHeader(hash: hash, publicKey: publicKey, signature: signature)
-    }
 
     // MARK: - Initialization
 
@@ -109,6 +84,10 @@ final class AuthenticationManager: TokenHandlerType {
             .map { $0.isEmpty ? .signedOut : .signedIn }
             .assign(to: &$authenticationState)
     }
+
+    func setUser(_ user: User) {
+        self.currentUser = user
+    }
 }
 
 // MARK: - Facebook
@@ -133,12 +112,45 @@ extension AuthenticationManager {
     }
 }
 
-// MARK: - Methods
+// MARK: - User Security properties
 
-extension AuthenticationManager {
+extension AuthenticationManager: UserSecurityType {
+    var userKeys: UserKeys? {
+        userSecurity.keys
+    }
+    var userSignature: String? {
+        userSecurity.signature
+    }
+    var userHash: String? {
+        userSecurity.hash
+    }
 
-    func setUser(_ user: User) {
-        self.currentUser = user
+    var userFacebookHash: String? {
+        userSecurity.facebookHash
+    }
+    var userFacebookSignature: String? {
+        userSecurity.facebookSignature
+    }
+
+    var securityHeader: SecurityHeader? {
+        SecurityHeader(hash: userHash, publicKey: userKeys?.publicKey, signature: userSignature)
+    }
+
+    var facebookSecurityHeader: SecurityHeader? {
+        SecurityHeader(hash: userFacebookHash, publicKey: userKeys?.publicKey, signature: userFacebookSignature)
+    }
+
+    func setUserSignature(_ userSignature: UserSignature) {
+        self.userSecurity.signature = userSignature.signed
+    }
+
+    func setUserKeys(_ userKeys: UserKeys) {
+        self.userSecurity.keys = userKeys
+    }
+
+    func setHash(_ challengeValidation: ChallengeValidation) {
+        self.userSecurity.hash = challengeValidation.hash
+        self.userSecurity.signature = challengeValidation.signature
     }
 
     func setFacebookUser(id: String?, token: String?) {
@@ -151,36 +163,16 @@ extension AuthenticationManager {
         self.userSecurity.facebookHash = facebookSignature.hash
     }
 
-    func setUserSignature(_ userSignature: UserSignature) {
-        self.userSecurity.signature = userSignature.signed
-    }
-
-    func setUserKeys(_ userKeys: UserKeys) {
-        self.userSecurity.keys = userKeys
-    }
-
-    func clearPhoneVerification() {
-        self.phoneValidation.phoneVerification = nil
-    }
-
-    func setPhoneConfirmation(_ phoneVerification: PhoneVerification) {
-        self.phoneValidation.phoneVerification = phoneVerification
-    }
-
-    func setCodeValidation(_ codeValidation: CodeValidation) {
-        self.phoneValidation.codeValidation = codeValidation
-    }
-
-    func setHash(_ challengeValidation: ChallengeValidation) {
-        self.userSecurity.hash = challengeValidation.hash
-        self.userSecurity.signature = challengeValidation.signature
-    }
-
     func clearSecurity() {
         self.userSecurity.hash = nil
         self.userSecurity.signature = nil
         self.userSecurity.keys = nil
     }
+}
+
+// MARK: - Methods
+
+extension AuthenticationManager {
 
     // MARK: - Base Authentication Methods
 

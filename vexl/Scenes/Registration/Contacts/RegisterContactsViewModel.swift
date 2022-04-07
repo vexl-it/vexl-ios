@@ -46,7 +46,7 @@ final class RegisterContactsViewModel: ViewModelType {
     // MARK: - View Bindings
 
     @Published var loading = false
-    @Published var error: AlertError?
+    @Published var error: Error?
 
     // MARK: - Coordinator Bindings
 
@@ -87,11 +87,8 @@ final class RegisterContactsViewModel: ViewModelType {
 
         errorIndicator
             .errors
-            .withUnretained(self)
-            .sink { owner, error in
-                owner.error = AlertError(error: error)
-            }
-            .store(in: cancelBag)
+            .asOptional()
+            .assign(to: &$error)
     }
 
     private func setupRequestPhoneContactsBindings() {
@@ -159,7 +156,7 @@ final class RegisterContactsViewModel: ViewModelType {
             .withUnretained(self)
             .handleEvents(receiveOutput: { owner, response in
                 if !response.challengeVerified {
-                    owner.error = AlertError(error: UserError.facebookValidation)
+                    owner.error = UserError.facebookValidation
                 }
             })
             .filter { $0.1.challengeVerified }

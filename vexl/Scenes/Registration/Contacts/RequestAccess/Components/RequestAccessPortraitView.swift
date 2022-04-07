@@ -80,23 +80,23 @@ private struct SinglePortraitView: View {
 struct RegisterContacts_PortraitViewPreview: PreviewProvider {
     static var previews: some View {
         SinglePortraitView(name: "Diego",
-                     image: nil,
-                     color: Appearance.Colors.green5,
-                     textColor: Appearance.Colors.green1)
+                           image: nil,
+                           color: Appearance.Colors.green5,
+                           textColor: Appearance.Colors.green1)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color.black.edgesIgnoringSafeArea(.all))
 
         SinglePortraitView(name: "Diego",
-                     image: R.image.onboarding.testAvatar(),
-                     color: Appearance.Colors.green5,
-                     textColor: Appearance.Colors.green1)
+                           image: R.image.onboarding.testAvatar(),
+                           color: Appearance.Colors.green5,
+                           textColor: Appearance.Colors.green1)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color.black.edgesIgnoringSafeArea(.all))
 
         RequestAccessPortraitView(name: "Diego",
-                                   avatar: R.image.onboarding.testAvatar()!,
-                                   color: Appearance.Colors.green5,
-                                   textColor: Appearance.Colors.green1)
+                                  avatar: R.image.onboarding.testAvatar()!,
+                                  color: Appearance.Colors.green5,
+                                  textColor: Appearance.Colors.green1)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color.black.edgesIgnoringSafeArea(.all))
     }

@@ -13,37 +13,20 @@ struct RegisterContactsView: View {
     @ObservedObject var viewModel: RegisterContactsViewModel
 
     var body: some View {
-        LoadingContainerView(loading: viewModel.loading) {
-            ContentView(viewModel: viewModel)
-        }
-    }
-}
-
-extension RegisterContactsView {
-
-    struct ContentView: View {
-        @ObservedObject var viewModel: RegisterContactsViewModel
-
-        var body: some View {
-            VStack {
-                switch viewModel.currentState {
-                case .phone:
-                    RequestAccessContactsView(viewModel: viewModel.phoneViewModel)
-                case .importPhoneContacts:
-                    AlertContainerView(error: $viewModel.error) {
-                        ImportContactsView(viewModel: viewModel.importPhoneContactsViewModel)
-                    }
-                case .facebook:
-                    RequestAccessContactsView(viewModel: viewModel.facebookViewModel)
-                case .importFacebookContacts:
-                    AlertContainerView(error: $viewModel.error) {
-                        ImportContactsView(viewModel: viewModel.importFacebookContactsViewModel)
-                    }
-                }
+        VStack {
+            switch viewModel.currentState {
+            case .phone:
+                RequestAccessContactsView(viewModel: viewModel.phoneViewModel)
+            case .importPhoneContacts:
+                ImportContactsView(viewModel: viewModel.importPhoneContactsViewModel)
+            case .facebook:
+                RequestAccessContactsView(viewModel: viewModel.facebookViewModel)
+            case .importFacebookContacts:
+                ImportContactsView(viewModel: viewModel.importFacebookContactsViewModel)
             }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(Color.black.edgesIgnoringSafeArea(.all))
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(Color.black.edgesIgnoringSafeArea(.all))
     }
 }
 

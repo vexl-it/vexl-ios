@@ -25,6 +25,14 @@ class RegisterNameAvatarCoordinator: BaseCoordinator<RouterResult<Void>> {
         router.present(viewController, animated: animated)
 
         viewModel
+            .$error
+            .assign(to: &viewController.$error)
+
+        viewModel
+            .$loading
+            .assign(to: &viewController.$loading)
+
+        viewModel
             .route
             .receive(on: RunLoop.main)
             .filter { $0 == .continueTapped }

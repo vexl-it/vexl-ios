@@ -13,18 +13,13 @@ import Cleevio
 class ImportFacebookContactsViewModel: ImportContactsViewModel {
     override func fetchContacts() {
 
-        guard let publicKey = authenticationManager.userKeys?.publicKey,
-              let hash = authenticationManager.userFacebookHash else {
-                  return
-              }
-
         guard let facebookId = authenticationManager.currentUser?.facebookId,
               let facebookToken = authenticationManager.currentUser?.facebookToken else {
                   return
               }
 
         let createFacebookUser = contactsService
-            .createUser(withPublicKey: publicKey, hash: hash, forFacebook: true)
+            .createUser(forFacebook: true)
             .track(activity: primaryActivity)
             .materialize()
             .compactMap { $0.value }

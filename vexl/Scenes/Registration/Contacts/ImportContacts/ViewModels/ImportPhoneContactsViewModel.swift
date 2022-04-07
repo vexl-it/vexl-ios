@@ -15,13 +15,8 @@ class ImportPhoneContactsViewModel: ImportContactsViewModel {
         let contacts = contactsManager.fetchPhoneContacts()
         let phones = contacts.map { $0.phone }
 
-        guard let publicKey = authenticationManager.userKeys?.publicKey,
-              let hash = authenticationManager.userHash else {
-                  return
-              }
-
         contactsService
-            .createUser(withPublicKey: publicKey, hash: hash, forFacebook: false)
+            .createUser(forFacebook: false)
             .track(activity: primaryActivity)
             .materialize()
             .compactMap { $0.value }

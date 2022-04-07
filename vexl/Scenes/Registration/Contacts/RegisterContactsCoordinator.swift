@@ -26,6 +26,14 @@ class RegisterContactsCoordinator: BaseCoordinator<RouterResult<Void>> {
         let viewController = RegisterViewController(currentPage: 2, numberOfPages: 3, rootView: RegisterContactsView(viewModel: viewModel))
         router.present(viewController, animated: animated)
 
+        viewModel
+            .$error
+            .assign(to: &viewController.$error)
+
+        viewModel
+            .$loading
+            .assign(to: &viewController.$loading)
+
         let dismissByRouter = viewController
             .dismissPublisher
             .map { _ in RouterResult<Void>.dismissedByRouter }

@@ -17,8 +17,8 @@ enum UserRouter: ApiRouter {
     case validateChallenge(signature: String, key: String)
     case facebookSignature(id: String)
     case validateUsername(username: String)
-    case temporalGenerateKeys
-    case temporalSignature(challenge: String, privateKey: String)
+    case temporalGenerateKeys // TODO: - Remove this endpoint after the C library is implemented.
+    case temporalSignature(challenge: String, privateKey: String) // TODO: - Remove this endpoint after the C library is implemented.
 
     var method: HTTPMethod {
         switch self {

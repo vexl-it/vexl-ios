@@ -36,21 +36,11 @@ final class UserService: BaseService, UserServiceType {
 
     func requestVerificationCode(phoneNumber: String) -> AnyPublisher<PhoneVerification, Error> {
         request(type: PhoneVerification.self, endpoint: UserRouter.confirmPhone(phoneNumber: phoneNumber))
-            .withUnretained(self)
-            .handleEvents(receiveOutput: { owner, response in
-                owner.authenticationManager.setPhoneConfirmation(response)
-            })
-            .map { $0.1 }
             .eraseToAnyPublisher()
     }
 
     func confirmValidationCode(id: Int, code: String, key: String) -> AnyPublisher<CodeValidation, Error> {
         request(type: CodeValidation.self, endpoint: UserRouter.validateCode(id: id, code: code, key: key))
-            .withUnretained(self)
-            .handleEvents(receiveOutput: { owner, response in
-                owner.authenticationManager.setCodeValidation(response)
-            })
-            .map { $0.1 }
             .eraseToAnyPublisher()
     }
 
@@ -64,20 +54,13 @@ final class UserService: BaseService, UserServiceType {
             .eraseToAnyPublisher()
     }
 
-    // swiftlint:disable array_init
     func validateUsername(username: String) -> AnyPublisher<UserAvailable, Error> {
         request(type: UserAvailable.self, endpoint: UserRouter.validateUsername(username: username))
-            .map { $0 }
             .eraseToAnyPublisher()
     }
 
     func createUser(username: String, avatar: String?) -> AnyPublisher<User, Error> {
         request(type: User.self, endpoint: UserRouter.createUser(username: username, avatar: avatar))
-            .withUnretained(self)
-            .handleEvents(receiveOutput: { owner, response in
-                owner.authenticationManager.setUser(response)
-            })
-            .map { $0.1 }
             .eraseToAnyPublisher()
     }
 

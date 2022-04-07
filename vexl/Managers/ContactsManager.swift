@@ -101,7 +101,11 @@ final class ContactsManager {
 
     func setFacebookFriends(contacts: [FacebookContacts.FacebookUser]) {
         userFacebookContacts = contacts.map { user in
-            ContactInformation(id: user.id, name: user.name, phone: "", avatarURL: user.profilePicture?.data?.url,source: .facebook)
+            ContactInformation(id: user.id,
+                               name: user.name,
+                               phone: "",
+                               avatarURL: user.profilePicture?.data?.url,
+                               source: .facebook)
         }
     }
 

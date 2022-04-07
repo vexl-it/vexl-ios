@@ -13,11 +13,7 @@ struct ImportContactsView: View {
     @ObservedObject var viewModel: ImportContactsViewModel
 
     var body: some View {
-        AlertContainerView(error: $viewModel.error) {
-            LoadingContainerView(loading: viewModel.loading) {
-                ContentView(viewModel: viewModel)
-            }
-        }
+        ContentView(viewModel: viewModel)
     }
 }
 

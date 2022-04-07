@@ -9,7 +9,7 @@ import Foundation
 import Combine
 
 protocol ContactsServiceType {
-    func createUser(withPublicKey key: String, hash: String, forFacebook isFacebook: Bool) -> AnyPublisher<ContactUser, Error>
+    func createUser(forFacebook isFacebook: Bool) -> AnyPublisher<Void, Error>
     func importContacts(_ contacts: [String]) -> AnyPublisher<ContactsImported, Error>
     func getAvailableContacts(_ contacts: [String]) -> AnyPublisher<ContactsAvailable, Error>
     func getAvailableFacebookContacts(id: String, accessToken: String) -> AnyPublisher<FacebookContacts, Error>
@@ -24,10 +24,8 @@ class ContactsService: BaseService, ContactsServiceType {
         self.contactsManager = contactsManager
     }
 
-    func createUser(withPublicKey key: String, hash: String, forFacebook isFacebook: Bool) -> AnyPublisher<ContactUser, Error> {
-        request(type: ContactUser.self, endpoint: ContactsRouter.createUser(key: key, hash: hash, useFacebookHeader: isFacebook))
-            .withUnretained(self)
-            .map { $0.1 }
+    func createUser(forFacebook isFacebook: Bool) -> AnyPublisher<Void, Error> {
+        request(endpoint: ContactsRouter.createUser(useFacebookHeader: isFacebook))
             .eraseToAnyPublisher()
     }
 
