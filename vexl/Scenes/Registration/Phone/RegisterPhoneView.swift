@@ -19,10 +19,17 @@ struct RegisterPhoneView: View {
             if viewModel.showCodeInput {
                 CodeInputView(phoneNumber: viewModel.phoneNumber,
                               isEnabled: viewModel.codeInputEnabled,
-                              code: $viewModel.validationCode)
+                              remainingTime: viewModel.countdown,
+                              displayRetry: viewModel.currentState != .codeInputSuccess,
+                              code: $viewModel.validationCode,
+                              retryAction: {
+                    viewModel.send(action: .sendCode)
+                })
                     .padding(.all, Appearance.GridGuide.point)
             } else {
-                PhoneInputView(phoneNumber: $viewModel.phoneNumber)
+                PhoneInputView(phoneNumber: $viewModel.phoneNumber) {
+                    // TODO: - implement country picker once its done
+                }
                     .padding(.all, Appearance.GridGuide.point)
             }
 
@@ -33,7 +40,7 @@ struct RegisterPhoneView: View {
                         font: Appearance.TextStyle.h3.font.asFont,
                         colors: viewModel.actionColor,
                         dimensions: SolidButtonDimension.largeButton) {
-                viewModel.send(action: .nextTap)
+                viewModel.send(action: viewModel.showCodeInput ? .validateCode : .sendPhoneNumber)
             }
             .padding(.horizontal, Appearance.GridGuide.padding)
             .padding(.bottom, Appearance.GridGuide.padding)

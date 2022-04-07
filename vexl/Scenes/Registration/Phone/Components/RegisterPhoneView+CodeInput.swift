@@ -14,7 +14,14 @@ extension RegisterPhoneView {
 
         let phoneNumber: String
         let isEnabled: Bool
+        let remainingTime: Int
+        let displayRetry: Bool
         @Binding var code: String
+        var retryAction: () -> Void
+
+        private var isCodeDisabled: Bool {
+            remainingTime > 0
+        }
 
         var body: some View {
             RegistrationCardView(title: L.registerPhoneCodeInputTitle(),
@@ -27,17 +34,23 @@ extension RegisterPhoneView {
             VStack {
                 BorderedTextField(placeholder: "", text: $code)
                     .multilineTextAlignment(.center)
+                    .foregroundColor(Appearance.Colors.primaryText)
                     .textStyle(.h3)
                     .keyboardType(.numberPad)
                     .disabled(!isEnabled)
 
-                // TODO: Add countdown after to show retry timer
-
-                Text("\(L.registerPhoneCodeInputRetry("28s"))")
-                    .foregroundColor(Appearance.Colors.gray2)
-                    .textStyle(.paragraph)
-                    .frame(maxWidth: .infinity)
-                    .padding(.top, Appearance.GridGuide.padding)
+                if displayRetry {
+                    Button {
+                        retryAction()
+                    } label: {
+                        Text(isCodeDisabled ? "\(L.registerPhoneCodeInputRetry("\(remainingTime)"))" : L.registerPhoneCodeInputSendCode())
+                            .foregroundColor(isCodeDisabled ? Appearance.Colors.gray2 : Appearance.Colors.purple4)
+                            .textStyle(isCodeDisabled ? .paragraph : .paragraphBold)
+                            .frame(maxWidth: .infinity)
+                            .padding(.top, Appearance.GridGuide.padding)
+                    }
+                    .disabled(isCodeDisabled)
+                }
             }
         }
     }
@@ -47,6 +60,9 @@ struct RegisterPhoneView_CodeInput_Preview: PreviewProvider {
     static var previews: some View {
         RegisterPhoneView.CodeInputView(phoneNumber: "+420 720 183 578",
                                         isEnabled: true,
-                                        code: .constant("1234"))
+                                        remainingTime: 30,
+                                        displayRetry: true,
+                                        code: .constant("1234"),
+                                        retryAction: {})
     }
 }

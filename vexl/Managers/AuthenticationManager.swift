@@ -18,7 +18,24 @@ protocol TokenHandlerType {
     var refreshToken: BearerToken? { get }
 }
 
-final class AuthenticationManager: TokenHandlerType {
+protocol AuthenticationManagerType {
+    func logoutUser()
+}
+
+protocol UserSecurityType {
+
+    var userSecurity: UserSecurity { get set }
+    var userKeys: UserKeys? { get }
+    var userSignature: String? { get }
+    var userHash: String? { get }
+    var securityHeader: SecurityHeader? { get }
+
+    func setUserSignature(_ userSignature: UserSignature)
+    func setUserKeys(_ userKeys: UserKeys)
+    func setHash(_ challengeValidation: ChallengeValidation)
+}
+
+final class AuthenticationManager: AuthenticationManagerType, TokenHandlerType {
     enum AuthenticationState {
         case signedIn
         case signedOut
@@ -32,6 +49,10 @@ final class AuthenticationManager: TokenHandlerType {
     @Published private(set) var refreshToken: String?
 
     private let cancelBag: CancelBag = .init()
+
+    // MARK: - Variables for user registration
+
+    var userSecurity: UserSecurity = .init()
 
     // MARK: - Initialization
 
@@ -61,9 +82,49 @@ final class AuthenticationManager: TokenHandlerType {
     }
 }
 
+// MARK: - User Security properties
+
+extension AuthenticationManager: UserSecurityType {
+    var userKeys: UserKeys? {
+        userSecurity.keys
+    }
+    var userSignature: String? {
+        userSecurity.signature
+    }
+    var userHash: String? {
+        userSecurity.hash
+    }
+
+    var securityHeader: SecurityHeader? {
+        SecurityHeader(hash: userHash, publicKey: userKeys?.publicKey, signature: userSignature)
+    }
+
+    func setUserSignature(_ userSignature: UserSignature) {
+        self.userSecurity.signature = userSignature.signed
+    }
+
+    func setUserKeys(_ userKeys: UserKeys) {
+        self.userSecurity.keys = userKeys
+    }
+
+    func setHash(_ challengeValidation: ChallengeValidation) {
+        self.userSecurity.hash = challengeValidation.hash
+        self.userSecurity.signature = challengeValidation.signature
+    }
+
+    func clearSecurity() {
+        self.userSecurity.hash = nil
+        self.userSecurity.signature = nil
+        self.userSecurity.keys = nil
+    }
+}
+
 // MARK: - Methods
 
 extension AuthenticationManager {
+
+    // MARK: - Base Authentication Methods
+
     func setAccessToken(token: String) {
         accessToken = token
     }
@@ -75,6 +136,7 @@ extension AuthenticationManager {
     private func clearUser() {
         accessToken = nil
         refreshToken = nil
+        clearSecurity()
         let userDefaults = UserDefaults.standard
 
         userDefaults.dictionaryRepresentation().keys.forEach(userDefaults.removeObject)

@@ -23,12 +23,14 @@ enum AuthType {
 
 protocol ApiRouter: URLRequestConvertible {
     var tokenHandler: TokenHandlerType { get }
+    var securityHeader: [Header] { get }
     var method: HTTPMethod { get }
     var path: String { get }
     var parameters: Parameters { get }
     var authType: AuthType { get }
     var rootKey: String { get }
     var additionalHeaders: [Header] { get }
+    var url: String { get }
 }
 
 extension ApiRouter {
@@ -36,11 +38,17 @@ extension ApiRouter {
         DIContainer.shared.getDependency(type: TokenHandlerType.self)
     }
 
+    var securityHeader: [Header] {
+        let authManager = DIContainer.shared.getDependency(type: AuthenticationManager.self)
+        return authManager.securityHeader?.header ?? []
+    }
+
     var additionalHeaders: [Header] { [] }
     var rootKey: String { "data" }
+    var url: String { Constants.API.baseURLString }
 
     public func asURL() throws -> URL {
-        let urlPath = "\(Constants.API.baseURLString)\(path)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
+        let urlPath = "\(url)\(path)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
         return try urlPath.asURL()
     }
 

@@ -16,37 +16,43 @@ struct RegisterNameAvatarView: View {
 
     var body: some View {
         VStack {
-
-            if viewModel.currentState == .phoneVerified {
+            switch viewModel.currentState {
+            case .phoneVerified:
                 PhoneVerified()
-            } else {
-                if viewModel.currentState == .usernameInput {
-                    NameInputView(username: $viewModel.username)
-                } else {
-                    AvatarInputView(name: viewModel.username,
-                                    avatar: viewModel.avatar,
-                                    addAction: {
-                        viewModel.send(action: .addAvatar)
-                    },
-                                    deleteAction: {
-                        viewModel.send(action: .deleteAvatar)
-                    })
-                }
-
+            case .usernameInput:
+                NameInputView(username: $viewModel.username)
                 Spacer()
-
-                SolidButton(Text(L.continue()),
-                            isEnabled: $viewModel.isActionEnabled,
-                            font: Appearance.TextStyle.h3.font.asFont,
-                            colors: SolidButtonColor.welcome,
-                            dimensions: SolidButtonDimension.largeButton) {
-                    viewModel.send(action: .nextTap)
+                actionButton {
+                    viewModel.send(action: .setUsername)
                 }
-                .padding(.horizontal, Appearance.GridGuide.padding)
+            case .avatarInput:
+                AvatarInputView(name: viewModel.username,
+                                avatar: viewModel.avatar,
+                                addAction: {
+                    viewModel.send(action: .addAvatar)
+                },
+                                deleteAction: {
+                    viewModel.send(action: .deleteAvatar)
+                })
+                Spacer()
+                actionButton {
+                    viewModel.send(action: .createUser)
+                }
             }
         }
         .frame(maxWidth: .infinity)
         .background(Color.black.edgesIgnoringSafeArea(.all))
+    }
+
+    @ViewBuilder private func actionButton(with action: @escaping () -> Void) -> some View {
+        SolidButton(Text(L.continue()),
+                    isEnabled: $viewModel.isActionEnabled,
+                    font: Appearance.TextStyle.h3.font.asFont,
+                    colors: SolidButtonColor.welcome,
+                    dimensions: SolidButtonDimension.largeButton) {
+            action()
+        }
+        .padding(.horizontal, Appearance.GridGuide.padding)
     }
 }
 

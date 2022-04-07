@@ -20,8 +20,8 @@ class ServiceAssembly: Assembly {
             )
         }
 
-        container.register(UserServiceType.self) { _ in
-            UserService()
+        container.register(UserServiceType.self) { container in
+            UserService(authenticationManager: container.resolve(AuthenticationManager.self)!)
         }
     }
 }

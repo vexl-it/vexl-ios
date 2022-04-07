@@ -13,6 +13,7 @@ extension RegisterPhoneView {
     struct PhoneInputView: View {
 
         @Binding var phoneNumber: String
+        var pickerTap: () -> Void
 
         var body: some View {
             RegistrationCardView(title: L.registerPhoneNumberInputTitle(),
@@ -23,15 +24,9 @@ extension RegisterPhoneView {
 
         private var phoneInputView: some View {
             HStack {
-                Text("🇨🇿")
-                    .textStyle(.h3)
-
-                Text("+420")
-                    .textStyle(.h3)
-                    .foregroundColor(Appearance.Colors.gray2)
-
                 TextField("", text: $phoneNumber)
                     .textStyle(.h3)
+                    .foregroundColor(Appearance.Colors.primaryText)
                     .keyboardType(.numberPad)
             }
             .padding()

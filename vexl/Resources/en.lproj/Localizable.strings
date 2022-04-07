@@ -5,6 +5,8 @@
 "general.pause" = "Pause";
 "general.cancel" = "Cancel";
 "general.ok" = "Ok";
+"general.internal.server.error" = "There was a server error. Please try again.";
+"general.timeout" = "The request timed out. Please try again.";
 "general.search" = "Search";
 "next" = "Next";
 "skip" = "Skip";
@@ -21,7 +23,8 @@
 "register.phone.number.input.subtitle" = "Your number will be anonymous";
 "register.phone.code.input.title" = "We sent you a code";
 "register.phone.code.input.subtitle" = "Enter it bellow to verify %@";
-"register.phone.code.input.retry" = "Didn’t receive code? Resend in %@";
+"register.phone.code.input.retry" = "Didn’t receive code? Resend in %@ s";
+"register.phone.code.input.send.code" = "Didn’t receive code? Resend";
 "register.phone.code.input.verifying" = "Verifying...";
 "register.phone.code.input.success" = "Success!";
 "register.name.avatar.input.title" = "What do your friends call you?";
@@ -44,3 +47,7 @@
 "register.phone.alert.reject.title" = "Really?";
 "register.phone.alert.reject.description" = "vexl literally only works with your contacts...";
 "register.facebook.contacts.title" = "Expand your network with Facebook";
+"error.register.invalid.validation.code" = "The validation code is invalid";
+"error.register.invalid.challenge" = "There was an error validating the user";
+"error.register.invalid.email" = "The email is invalid";
+"error.register.invalid.username" = "The username is unavailable";

@@ -16,6 +16,17 @@ extension UIViewController {
             self?.present(alertController, animated: true, completion: nil)
         }
     }
+    
+    func presentError(title: String?, onDismiss: @escaping () -> Void) {
+        let alertController = UIAlertController(title: title, message: nil, preferredStyle: .alert)
+        let dismissAction = UIAlertAction(title: L.generalOk(), style: .cancel) { _ in
+            onDismiss()
+        }
+        alertController.addAction(dismissAction)
+        DispatchQueue.main.async { [weak self] in
+            self?.present(alertController, animated: true)
+        }
+    }
 }
 
 // MARK: - Show message
