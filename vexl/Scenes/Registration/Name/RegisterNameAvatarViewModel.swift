@@ -42,7 +42,7 @@ final class RegisterNameAvatarViewModel: ViewModelType {
     @Published var isActionEnabled = false
 
     @Published var loading = false
-    @Published var error: AlertError?
+    @Published var error: Error?
 
     var primaryActivity: Activity = .init()
     var activityIndicator: ActivityIndicator {
@@ -75,11 +75,8 @@ final class RegisterNameAvatarViewModel: ViewModelType {
 
         errorIndicator
             .errors
-            .withUnretained(self)
-            .sink { owner, error in
-                owner.error = AlertError(id: 1, error: error)
-            }
-            .store(in: cancelBag)
+            .asOptional()
+            .assign(to: &$error)
     }
 
     private func setupStateBinding() {
@@ -153,7 +150,7 @@ final class RegisterNameAvatarViewModel: ViewModelType {
             .withUnretained(self)
             .handleEvents(receiveOutput: { owner, response in
                 if !response.available {
-                    owner.error = AlertError(id: 1, error: UserError.unavailableUsername)
+                    owner.error = UserError.unavailableUsername
                 }
             })
             .filter { $0.1.available }
