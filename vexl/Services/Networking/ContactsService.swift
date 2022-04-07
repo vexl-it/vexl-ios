@@ -9,7 +9,7 @@ import Foundation
 import Combine
 
 protocol ContactsServiceType {
-    func createUser(with key: String, hash: String) -> AnyPublisher<ContactUser, Error>
+    func createUser() -> AnyPublisher<Void, Error>
     func importContacts(_ contacts: [String]) -> AnyPublisher<ContactsImported, Error>
     func getAvailableContacts(_ contacts: [String]) -> AnyPublisher<ContactsAvailable, Error>
 }
@@ -22,8 +22,8 @@ class ContactsService: BaseService, ContactsServiceType {
         self.contactsManager = contactsManager
     }
 
-    func createUser(with key: String, hash: String) -> AnyPublisher<ContactUser, Error> {
-        request(type: ContactUser.self, endpoint: ContactsRouter.createUser(key: key, hash: hash))
+    func createUser() -> AnyPublisher<Void, Error> {
+        request(endpoint: ContactsRouter.createUser)
             .eraseToAnyPublisher()
     }
 

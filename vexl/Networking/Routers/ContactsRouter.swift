@@ -11,7 +11,7 @@ import Alamofire
 enum ContactsRouter: ApiRouter {
     case importContacts(contacts: [String])
     case getAvailableContacts(contacts: [String])
-    case createUser(key: String, hash: String)
+    case createUser
 
     var method: HTTPMethod {
         switch self {
@@ -37,9 +37,8 @@ enum ContactsRouter: ApiRouter {
 
     var parameters: Parameters {
         switch self {
-        case let .createUser(key, hash):
-            return ["publicKey": key,
-                    "hash": hash]
+        case .createUser:
+            return [:]
         case let .getAvailableContacts(contacts):
             return ["contacts": contacts]
         case let .importContacts(contacts):
