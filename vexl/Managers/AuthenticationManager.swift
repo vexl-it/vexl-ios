@@ -96,7 +96,7 @@ extension AuthenticationManager: UserSecurityType {
     }
 
     var securityHeader: SecurityHeader? {
-        SecurityHeader(hash: userSignature, publicKey: userKeys?.publicKey, signature: userHash)
+        SecurityHeader(hash: userHash, publicKey: userKeys?.publicKey, signature: userSignature)
     }
 
     func setUserSignature(_ userSignature: UserSignature) {
