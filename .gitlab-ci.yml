@@ -23,7 +23,7 @@ lint:
     - branches
   except:
     - tags
-  tags: [iMac]
+  tags: [ios]
   artifacts:
     paths:
       - fastlane/swiftlint.html
@@ -57,7 +57,7 @@ deploy_beta:
     - devel
   except:
     - tags
-  tags: [iMac]
+  tags: [ios]
   allow_failure: false
 
 deploy_beta_manual:
@@ -68,7 +68,7 @@ deploy_beta_manual:
   script:
     - bundle exec fastlane deploy_beta
   when: manual
-  tags: [iMac]
+  tags: [ios]
 
 deploy_AppStore:
   stage: deploy
@@ -77,5 +77,5 @@ deploy_AppStore:
   script:
     - bundle exec fastlane deploy_AppStore
   when: manual
-  tags: [iMac]
+  tags: [ios]
 
