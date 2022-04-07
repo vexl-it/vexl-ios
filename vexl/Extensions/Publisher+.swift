@@ -8,12 +8,10 @@
 import Combine
 
 public extension Publisher {
-    func asVoid() -> AnyPublisher<Void, Self.Failure> {
-        self
-            .map { _ in }
-            .eraseToAnyPublisher()
+    func asVoid() -> Publishers.Map<Self, Void> {
+        self.map { _ in }
     }
-
+    
     func withUnretained<ReferenceType: AnyObject>(_ obj: ReferenceType) -> Publishers.CompactMap<Self, (ReferenceType, Self.Output)> {
         compactMap { [weak obj] element -> (ReferenceType, Output)? in
             guard let obj = obj else { return nil }
@@ -21,9 +19,8 @@ public extension Publisher {
         }
     }
     
-    func asOptional() -> AnyPublisher<Output?, Failure> {
+    func asOptional() -> Publishers.Map<Self, Self.Output?> {
         self.map { $0 }
-        .eraseToAnyPublisher()
     }
 }
 
