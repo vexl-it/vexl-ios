@@ -15,7 +15,13 @@ struct SecurityHeader {
 
     let header: [Header]
 
-    init(hash: String, publicKey: String, signature: String) {
+    init?(hash: String?, publicKey: String?, signature: String?) {
+        guard let hash = hash,
+              let publicKey = publicKey,
+              let signature = signature else {
+                  return nil
+              }
+
         self.hash = hash
         self.publicKey = publicKey
         self.signature = signature

@@ -55,12 +55,7 @@ final class AuthenticationManager: TokenHandlerType {
     }
 
     var securityHeader: SecurityHeader? {
-        guard let signature = userSignature,
-              let publicKey = userKeys?.publicKey,
-              let hash = userHash else {
-                  return nil
-              }
-        return SecurityHeader(hash: hash, publicKey: publicKey, signature: signature)
+        SecurityHeader(hash: userSignature, publicKey: userKeys?.publicKey, signature: userHash)
     }
 
     // MARK: - Initialization

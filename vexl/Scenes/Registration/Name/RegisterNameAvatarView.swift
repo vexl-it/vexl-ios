@@ -29,35 +29,33 @@ extension RegisterNameAvatarView {
         @ObservedObject var viewModel: RegisterNameAvatarViewModel
 
         var body: some View {
-            ZStack {
-                VStack {
-                    switch viewModel.currentState {
-                    case .phoneVerified:
-                        PhoneVerified()
-                    case .usernameInput:
-                        NameInputView(username: $viewModel.username)
-                        Spacer()
-                        actionButton {
-                            viewModel.send(action: .setUsername)
-                        }
-                    case .avatarInput:
-                        AvatarInputView(name: viewModel.username,
-                                        avatar: viewModel.avatar,
-                                        addAction: {
-                            viewModel.send(action: .addAvatar)
-                        },
-                                        deleteAction: {
-                            viewModel.send(action: .deleteAvatar)
-                        })
-                        Spacer()
-                        actionButton {
-                            viewModel.send(action: .createUser)
-                        }
+            VStack {
+                switch viewModel.currentState {
+                case .phoneVerified:
+                    PhoneVerified()
+                case .usernameInput:
+                    NameInputView(username: $viewModel.username)
+                    Spacer()
+                    actionButton {
+                        viewModel.send(action: .setUsername)
+                    }
+                case .avatarInput:
+                    AvatarInputView(name: viewModel.username,
+                                    avatar: viewModel.avatar,
+                                    addAction: {
+                        viewModel.send(action: .addAvatar)
+                    },
+                                    deleteAction: {
+                        viewModel.send(action: .deleteAvatar)
+                    })
+                    Spacer()
+                    actionButton {
+                        viewModel.send(action: .createUser)
                     }
                 }
-                .frame(maxWidth: .infinity)
-                .background(Color.black.edgesIgnoringSafeArea(.all))
             }
+            .frame(maxWidth: .infinity)
+            .background(Color.black.edgesIgnoringSafeArea(.all))
         }
 
         @ViewBuilder private func actionButton(with action: @escaping () -> Void) -> some View {
