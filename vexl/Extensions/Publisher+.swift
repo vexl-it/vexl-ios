@@ -10,7 +10,7 @@ import Combine
 public extension Publisher {
     func asVoid() -> AnyPublisher<Void, Self.Failure> {
         self
-            .map { _ -> Void in }
+            .map { _ in }
             .eraseToAnyPublisher()
     }
 
@@ -22,9 +22,7 @@ public extension Publisher {
     }
     
     func asOptional() -> AnyPublisher<Output?, Failure> {
-        self.map { value -> Output? in
-            value
-        }
+        self.map { $0 }
         .eraseToAnyPublisher()
     }
 }

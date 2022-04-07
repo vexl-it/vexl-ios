@@ -47,7 +47,7 @@ final class RegisterPhoneViewModel: ViewModelType {
     @Published var currentState = ViewState.phoneInput
 
     @Published var loading = false
-    @Published var error: AlertError?
+    @Published var error: Error?
 
     @Published var countdown = 0
 
@@ -101,6 +101,8 @@ final class RegisterPhoneViewModel: ViewModelType {
         }
     }
 
+    private var phoneVerificationId: Int?
+
     // MARK: - Timer
 
     private var timer: Timer.TimerPublisher?
@@ -122,7 +124,7 @@ final class RegisterPhoneViewModel: ViewModelType {
 
         errorIndicator
             .errors
-            .map { AlertError(id: 1, error: $0) }
+            .asOptional()
             .assign(to: &$error)
     }
 
@@ -160,7 +162,8 @@ final class RegisterPhoneViewModel: ViewModelType {
             .handleEvents(receiveOutput: { owner, response in
                 owner.triggerCountdown.send(response.expirationDate)
             })
-            .sink { owner, _ in
+            .sink { owner, response in
+                owner.phoneVerificationId = response.verificationId
                 owner.currentState = .codeInput
             }
             .store(in: cancelBag)
@@ -174,8 +177,7 @@ final class RegisterPhoneViewModel: ViewModelType {
                 owner.currentState = .codeInputValidation
             })
             .compactMap { owner, _ in
-                guard let verificationId = owner.authenticationManager.phoneConfirmation?.verificationId else { return nil }
-                return verificationId
+                owner.phoneVerificationId
             }
             .withUnretained(self)
             .flatMap { owner, verificationId in
@@ -204,7 +206,7 @@ final class RegisterPhoneViewModel: ViewModelType {
             .withUnretained(self)
             .handleEvents(receiveOutput: { owner, response in
                 if !response.phoneVerified {
-                    owner.error = AlertError(id: 1, error: RegistryError.invalidValidationCode)
+                    owner.error = RegistryError.invalidValidationCode
                 } else {
                     owner.generateSignature.send(response.challenge)
                     owner.currentState = response.phoneVerified ? .codeInputSuccess : .codeInput
@@ -248,13 +250,9 @@ final class RegisterPhoneViewModel: ViewModelType {
                     .eraseToAnyPublisher()
             }
             .withUnretained(self)
-            .handleEvents(receiveOutput: { owner, response in
-                if !response.challengeVerified {
-                    owner.error = AlertError(id: 1, error: RegistryError.invalidChallenge)
-                }
-            })
-            .sink { _ in }
-            .store(in: cancelBag)
+            .filter { !$0.1.challengeVerified }
+            .map { _ in RegistryError.invalidChallenge }
+            .assign(to: &$error)
     }
 
     private func setupStateBindings() {
@@ -333,7 +331,7 @@ final class RegisterPhoneViewModel: ViewModelType {
         phoneNumber = ""
         validationCode = ""
         currentState = .phoneInput
-        authenticationManager.clearPhoneVerification()
+        phoneVerificationId = nil
         timer?.connect().cancel()
     }
 

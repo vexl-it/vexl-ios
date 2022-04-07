@@ -14,11 +14,7 @@ struct RegisterPhoneView: View {
     @ObservedObject var viewModel: RegisterPhoneViewModel
 
     var body: some View {
-        AlertContainerView(error: $viewModel.error) {
-            LoadingContainerView(loading: viewModel.loading) {
-                ContentView(viewModel: viewModel)
-            }
-        }
+        ContentView(viewModel: viewModel)
     }
 }
 

@@ -18,7 +18,24 @@ protocol TokenHandlerType {
     var refreshToken: BearerToken? { get }
 }
 
-final class AuthenticationManager: TokenHandlerType {
+protocol AuthenticationManagerType {
+    func logoutUser()
+}
+
+protocol UserSecurityType {
+
+    var userSecurity: UserSecurity { get set }
+    var userKeys: UserKeys? { get }
+    var userSignature: String? { get }
+    var userHash: String? { get }
+    var securityHeader: SecurityHeader? { get }
+
+    func setUserSignature(_ userSignature: UserSignature)
+    func setUserKeys(_ userKeys: UserKeys)
+    func setHash(_ challengeValidation: ChallengeValidation)
+}
+
+final class AuthenticationManager: AuthenticationManagerType, TokenHandlerType {
     enum AuthenticationState {
         case signedIn
         case signedOut
@@ -35,28 +52,7 @@ final class AuthenticationManager: TokenHandlerType {
 
     // MARK: - Variables for user registration
 
-    private var phoneValidation: PhoneConfirmation = .init()
-    private var userSecurity: UserSecurity = .init()
-
-    var phoneConfirmation: PhoneVerification? {
-        phoneValidation.phoneVerification
-    }
-    var codeValidation: CodeValidation? {
-        phoneValidation.codeValidation
-    }
-    var userKeys: UserKeys? {
-        userSecurity.keys
-    }
-    var userSignature: String? {
-        userSecurity.signature
-    }
-    var userHash: String? {
-        userSecurity.hash
-    }
-
-    var securityHeader: SecurityHeader? {
-        SecurityHeader(hash: userSignature, publicKey: userKeys?.publicKey, signature: userHash)
-    }
+    var userSecurity: UserSecurity = .init()
 
     // MARK: - Initialization
 
@@ -86,9 +82,22 @@ final class AuthenticationManager: TokenHandlerType {
     }
 }
 
-// MARK: - Methods
+// MARK: - User Security properties
 
-extension AuthenticationManager {
+extension AuthenticationManager: UserSecurityType {
+    var userKeys: UserKeys? {
+        userSecurity.keys
+    }
+    var userSignature: String? {
+        userSecurity.signature
+    }
+    var userHash: String? {
+        userSecurity.hash
+    }
+
+    var securityHeader: SecurityHeader? {
+        SecurityHeader(hash: userSignature, publicKey: userKeys?.publicKey, signature: userHash)
+    }
 
     func setUserSignature(_ userSignature: UserSignature) {
         self.userSecurity.signature = userSignature.signed
@@ -96,18 +105,6 @@ extension AuthenticationManager {
 
     func setUserKeys(_ userKeys: UserKeys) {
         self.userSecurity.keys = userKeys
-    }
-
-    func clearPhoneVerification() {
-        self.phoneValidation.phoneVerification = nil
-    }
-
-    func setPhoneConfirmation(_ phoneVerification: PhoneVerification) {
-        self.phoneValidation.phoneVerification = phoneVerification
-    }
-
-    func setCodeValidation(_ codeValidation: CodeValidation) {
-        self.phoneValidation.codeValidation = codeValidation
     }
 
     func setHash(_ challengeValidation: ChallengeValidation) {
@@ -120,6 +117,11 @@ extension AuthenticationManager {
         self.userSecurity.signature = nil
         self.userSecurity.keys = nil
     }
+}
+
+// MARK: - Methods
+
+extension AuthenticationManager {
 
     // MARK: - Base Authentication Methods
 
