@@ -65,7 +65,9 @@ extension AppCoordinator {
             WindowNavigationCoordinator(window: window) { router, animated -> OnboardingCoordinator in
                 OnboardingCoordinator(router: router, animated: animated)
             }
-        ).asVoid()
+        )
+            .asVoid()
+            .eraseToAnyPublisher()
     }
 
     private func showHomeScreen() -> CoordinatingResult<Void> {

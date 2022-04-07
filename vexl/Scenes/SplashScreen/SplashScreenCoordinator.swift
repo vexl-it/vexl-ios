@@ -29,7 +29,7 @@ final class SplashScreenCoordinator: BaseCoordinator<Void> {
             .route
             .receive(on: RunLoop.main)
             .prefix(1)
-            .eraseToAnyPublisher()
             .asVoid()
+            .eraseToAnyPublisher()
     }
 }

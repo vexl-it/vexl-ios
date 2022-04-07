@@ -42,7 +42,7 @@ final class RegisterNameAvatarViewModel: ViewModelType {
     @Published var isActionEnabled = false
 
     @Published var loading = false
-    @Published var error: AlertError?
+    @Published var error: Error?
 
     var primaryActivity: Activity = .init()
     var activityIndicator: ActivityIndicator {
@@ -75,11 +75,8 @@ final class RegisterNameAvatarViewModel: ViewModelType {
 
         errorIndicator
             .errors
-            .withUnretained(self)
-            .sink { owner, error in
-                owner.error = AlertError(error: error)
-            }
-            .store(in: cancelBag)
+            .asOptional()
+            .assign(to: &$error)
     }
 
     private func setupStateBinding() {
@@ -90,18 +87,27 @@ final class RegisterNameAvatarViewModel: ViewModelType {
             .assign(to: &$isActionEnabled)
 
         $currentState
+            .filter { $0 == .phoneVerified }
+            .delay(for: .seconds(1), scheduler: RunLoop.main)
             .withUnretained(self)
-            .sink { owner, state in
-                switch state {
-                case .phoneVerified:
-                    after(1) {
-                        owner.currentState = .usernameInput
-                    }
-                case .usernameInput:
-                    owner.isActionEnabled = owner.validateUsername(owner.username)
-                case .avatarInput:
-                    owner.isActionEnabled = true
-                }
+            .sink { owner, _ in
+                owner.currentState = .usernameInput
+            }
+            .store(in: cancelBag)
+
+        $currentState
+            .filter { $0 == .usernameInput }
+            .withUnretained(self)
+            .sink { owner, _ in
+                owner.isActionEnabled = owner.validateUsername(owner.username)
+            }
+            .store(in: cancelBag)
+
+        $currentState
+            .filter { $0 == .avatarInput }
+            .withUnretained(self)
+            .sink { owner, _ in
+                owner.isActionEnabled = true
             }
             .store(in: cancelBag)
     }
@@ -109,7 +115,7 @@ final class RegisterNameAvatarViewModel: ViewModelType {
     private func setupActionBindings() {
 
         action
-            .useAction(action: .createUser)
+            .filter { $0 == .createUser }
             .withUnretained(self)
             .flatMap { owner, _ in
                 owner
@@ -118,7 +124,7 @@ final class RegisterNameAvatarViewModel: ViewModelType {
                                 avatar: "")
                     .track(activity: owner.primaryActivity)
                     .materialize()
-                    .compactMap { $0.value }
+                    .compactMap(\.value)
                     .eraseToAnyPublisher()
             }
             .withUnretained(self)
@@ -131,20 +137,20 @@ final class RegisterNameAvatarViewModel: ViewModelType {
             .store(in: cancelBag)
 
         action
-            .useAction(action: .setUsername)
+            .filter { $0 == .setUsername }
             .withUnretained(self)
             .flatMap { owner, _ in
                 owner.userService
                     .validateUsername(username: owner.username)
                     .track(activity: owner.primaryActivity)
                     .materialize()
-                    .compactMap { $0.value }
+                    .compactMap(\.value)
                     .eraseToAnyPublisher()
             }
             .withUnretained(self)
             .handleEvents(receiveOutput: { owner, response in
                 if !response.available {
-                    owner.error = AlertError(error: UserError.unavailableUsername)
+                    owner.error = UserError.unavailableUsername
                 }
             })
             .filter { $0.1.available }
@@ -154,7 +160,7 @@ final class RegisterNameAvatarViewModel: ViewModelType {
             .store(in: cancelBag)
 
         action
-            .useAction(action: .deleteAvatar)
+            .filter { $0 == .deleteAvatar }
             .withUnretained(self)
             .sink { owner, _ in
                 owner.avatar = nil
@@ -162,7 +168,7 @@ final class RegisterNameAvatarViewModel: ViewModelType {
             .store(in: cancelBag)
 
         action
-            .useAction(action: .addAvatar)
+            .filter { $0 == .addAvatar }
             .withUnretained(self)
             .sink { owner, _ in
                 owner.avatar = UIImage(named: R.image.onboarding.testAvatar.name)

@@ -24,8 +24,6 @@ class ContactsService: BaseService, ContactsServiceType {
 
     func createUser(with key: String, hash: String) -> AnyPublisher<ContactUser, Error> {
         request(type: ContactUser.self, endpoint: ContactsRouter.createUser(key: key, hash: hash))
-            .withUnretained(self)
-            .map { $0.1 }
             .eraseToAnyPublisher()
     }
 

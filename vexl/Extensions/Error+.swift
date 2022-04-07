@@ -20,19 +20,3 @@ extension Error {
         }
     }
 }
-
-struct AlertError: Identifiable {
-    var id: String {
-        self.message
-    }
-
-    var message: String {
-        self.error.getMessage()
-    }
-
-    var error: Error
-
-    init(error: Error) {
-        self.error = error
-    }
-}

@@ -59,7 +59,7 @@ class ImportContactsViewModel: ObservableObject {
     @Published var hasSelectedItem = false
 
     @Published var loading = false
-    @Published var error: AlertError?
+    @Published var error: Error?
 
     var primaryActivity: Activity = .init()
     var activityIndicator: ActivityIndicator {
@@ -97,11 +97,8 @@ class ImportContactsViewModel: ObservableObject {
 
         errorIndicator
             .errors
-            .withUnretained(self)
-            .sink { owner, error in
-                owner.error = AlertError(error: error)
-            }
-            .store(in: cancelBag)
+            .asOptional()
+            .assign(to: &$error)
     }
 
     private func setupActions() {
@@ -123,7 +120,7 @@ class ImportContactsViewModel: ObservableObject {
             .store(in: cancelBag)
 
         action
-            .useAction(action: .unselectAll)
+            .filter { $0 == .unselectAll }
             .withUnretained(self)
             .sink { owner, _ in
                 owner.unselectAllItems()
@@ -131,7 +128,7 @@ class ImportContactsViewModel: ObservableObject {
             .store(in: cancelBag)
 
         let importContact = action
-            .useAction(action: .importContacts)
+            .filter { $0 == .importContacts }
             .withUnretained(self)
             .filter { $0.0.currentState == .content }
             .map { $0.0.selectedItems.map { $0.phone } }

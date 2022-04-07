@@ -47,7 +47,7 @@ final class RegisterPhoneViewModel: ViewModelType {
     @Published var currentState = ViewState.phoneInput
 
     @Published var loading = false
-    @Published var error: AlertError?
+    @Published var error: Error?
 
     @Published var countdown = 0
 
@@ -101,6 +101,8 @@ final class RegisterPhoneViewModel: ViewModelType {
         }
     }
 
+    private var phoneVerificationId: Int?
+
     // MARK: - Timer
 
     private var timer: Timer.TimerPublisher?
@@ -108,7 +110,9 @@ final class RegisterPhoneViewModel: ViewModelType {
 
     init() {
         setupActivity()
-        setupActionBindings()
+        setupPhoneInputActionBindings()
+        setupValidationActionBindings()
+        setupGenerateSignatureActionBindings()
         setupStateBindings()
         timerBindings()
     }
@@ -120,22 +124,18 @@ final class RegisterPhoneViewModel: ViewModelType {
 
         errorIndicator
             .errors
-            .withUnretained(self)
-            .sink { owner, error in
-                owner.error = AlertError(error: error)
-            }
-            .store(in: cancelBag)
+            .asOptional()
+            .assign(to: &$error)
     }
 
-    // swiftlint:disable function_body_length
-    private func setupActionBindings() {
+    private func setupPhoneInputActionBindings() {
 
         let phoneInput = action
-            .useAction(action: .sendPhoneNumber)
+            .filter { $0 == .sendPhoneNumber }
             .withUnretained(self)
 
         let sendCode = action
-            .useAction(action: .sendCode)
+            .filter { $0 == .sendCode }
             .withUnretained(self)
             .filter { $0.0.currentState == .codeInput }
 
@@ -155,27 +155,29 @@ final class RegisterPhoneViewModel: ViewModelType {
                     .requestVerificationCode(phoneNumber: owner.phoneNumber)
                     .track(activity: owner.primaryActivity)
                     .materialize()
-                    .compactMap { $0.value }
+                    .compactMap(\.value)
                     .eraseToAnyPublisher()
             }
             .withUnretained(self)
             .handleEvents(receiveOutput: { owner, response in
                 owner.triggerCountdown.send(response.expirationDate)
             })
-            .sink { owner, _ in
+            .sink { owner, response in
+                owner.phoneVerificationId = response.verificationId
                 owner.currentState = .codeInput
             }
             .store(in: cancelBag)
+    }
 
+    private func setupValidationActionBindings() {
         let validateCode = action
-            .useAction(action: .validateCode)
+            .filter { $0 == .validateCode }
             .withUnretained(self)
             .handleEvents(receiveOutput: { owner, _ in
                 owner.currentState = .codeInputValidation
             })
             .compactMap { owner, _ in
-                guard let verificationId = owner.authenticationManager.phoneConfirmation?.verificationId else { return nil }
-                return verificationId
+                owner.phoneVerificationId
             }
             .withUnretained(self)
             .flatMap { owner, verificationId in
@@ -204,7 +206,7 @@ final class RegisterPhoneViewModel: ViewModelType {
             .withUnretained(self)
             .handleEvents(receiveOutput: { owner, response in
                 if !response.phoneVerified {
-                    owner.error = AlertError(error: RegistryError.invalidValidationCode)
+                    owner.error = RegistryError.invalidValidationCode
                 } else {
                     owner.generateSignature.send(response.challenge)
                     owner.currentState = response.phoneVerified ? .codeInputSuccess : .codeInput
@@ -217,7 +219,9 @@ final class RegisterPhoneViewModel: ViewModelType {
                 owner.clearState()
             }
             .store(in: cancelBag)
+    }
 
+    private func setupGenerateSignatureActionBindings() {
         // Temporal delete me
         let generateSignature = generateSignature
             .withUnretained(self)
@@ -228,10 +232,10 @@ final class RegisterPhoneViewModel: ViewModelType {
                                        privateKey: owner.authenticationManager.userKeys?.privateKey ?? "")
                     .track(activity: owner.primaryActivity)
                     .materialize()
-                    .compactMap { $0.value }
+                    .compactMap(\.value)
                     .eraseToAnyPublisher()
             }
-            .compactMap { $0.signed }
+            .map(\.signed)
 
         generateSignature
             .withUnretained(self)
@@ -246,13 +250,9 @@ final class RegisterPhoneViewModel: ViewModelType {
                     .eraseToAnyPublisher()
             }
             .withUnretained(self)
-            .handleEvents(receiveOutput: { owner, response in
-                if !response.challengeVerified {
-                    owner.error = AlertError(error: RegistryError.invalidChallenge)
-                }
-            })
-            .sink { _ in }
-            .store(in: cancelBag)
+            .filter { !$0.1.challengeVerified }
+            .map { _ in RegistryError.invalidChallenge }
+            .assign(to: &$error)
     }
 
     private func setupStateBindings() {
@@ -331,7 +331,7 @@ final class RegisterPhoneViewModel: ViewModelType {
         phoneNumber = ""
         validationCode = ""
         currentState = .phoneInput
-        authenticationManager.clearPhoneVerification()
+        phoneVerificationId = nil
         timer?.connect().cancel()
     }
 
