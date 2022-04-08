@@ -1,6 +1,7 @@
-- Requires uninstall: **YES** ⚠️
+- Requires uninstall: NO
 
 ### Improvements
+Add firebase tester group
 
 ### Fixes
 

@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 
-gem "fastlane", "2.191.0"
+gem "fastlane", "2.205.1"
 gem "cocoapods", "1.10.2"
 gem "synx"
 
