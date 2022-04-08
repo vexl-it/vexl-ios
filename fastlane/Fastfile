@@ -148,7 +148,7 @@ platform :ios do
 
 		changelog = "\#\##{version}(#{build})"
 		changelog += "\n"
-		changelog += File.read("../___PACKAGENAME___/Changelog.txt")
+		changelog += File.read("../vexl/Changelog.txt")
 
 		firebase_app_distribution(
 			app: firebase_app_id_devel,
