@@ -112,21 +112,19 @@ platform :ios do
 
 		clean_build_artifacts
 
-		unless git_tag_exists(tag: "#{version}(#{build})")
-			commit_version_bump(
-				message: "[ci skip] Build version Bump: #{version}(#{build})",
-				xcodeproj: xcodeproj_identifier
-			)
-		
-			branch = git_branch
-			push_to_git_remote(
-				remote: "origin",
-				local_branch: "HEAD",
-				remote_branch: branch,
-				force: false,
-				tags: true
-			)
-		end
+		commit_version_bump(
+			message: "[ci skip] Build version Bump: #{version}(#{build})",
+			xcodeproj: xcodeproj_identifier
+		)
+	
+		branch = git_branch
+		push_to_git_remote(
+			remote: "origin",
+			local_branch: "HEAD",
+			remote_branch: branch,
+			force: false,
+			tags: true
+		)
 
 		match(
 			type: "adhoc",
