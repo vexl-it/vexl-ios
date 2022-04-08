@@ -146,8 +146,6 @@ platform :ios do
 			}
 		)
 
-		sh("pwd")
-
 		changelog = "\#\##{version}(#{build})"
 		changelog += "\n"
 		changelog += File.read("../Changelog.txt")
