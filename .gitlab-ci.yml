@@ -52,7 +52,7 @@ lint:
 deploy_beta:
   stage: deploy
   script:
-    - bundle exec fastlane deploy_beta
+    - bundle exec fastlane deploy_devel
   only:
     - devel
   except:
@@ -66,7 +66,7 @@ deploy_beta_manual:
     - master
     - devel
   script:
-    - bundle exec fastlane deploy_beta
+    - bundle exec fastlane deploy_devel
   when: manual
   tags: [ios]
 
