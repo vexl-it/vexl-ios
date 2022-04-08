@@ -1,10 +1,10 @@
 # Email address for an Apple ID account.
-apple_id "dev@cleevio.cz"
+apple_id "dev.ios@cleevio.com"
 
 # Apple Developer portal team name and ID. Be sure to specify the client's team here.
-team_name "FIXME"
-team_id "FIXME"
+team_name "CLEEVIO s.r.o."
+team_id "SHD6TUKSPH"
 
 # iTunesConnect team name and ID. ID can be found with Spaceship.
-itc_team_name "FIXME"
-itc_team_id "FIXME"
+itc_team_name "CLEEVIO s.r.o."
+itc_team_id "563115"

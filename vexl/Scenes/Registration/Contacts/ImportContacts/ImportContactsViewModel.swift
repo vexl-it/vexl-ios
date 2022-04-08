@@ -138,7 +138,7 @@ class ImportContactsViewModel: ObservableObject {
         action
             .filter { $0 == .importContacts }
             .withUnretained(self)
-            .filter { $0.0.currentState == .content && !$0.0.hasSelectedItem }
+            .filter { $0.0.currentState == .content && !$0.0.hasSelectedItem || $0.0.currentState == .none }
             .sink { owner, _ in
                 owner.completed.send(())
             }

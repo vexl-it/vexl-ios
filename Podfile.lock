@@ -127,7 +127,7 @@ DEPENDENCIES:
   - Alamofire
   - AlamofireNetworkActivityIndicator
   - AlamofireNetworkActivityLogger
-  - Cleevio (from `https://gitlab.cleevio.cz/cleevio-dev-ios/CleevioFramework-ios.git`)
+  - "Cleevio (from `git@gitlab.cleevio.cz:cleevio-dev-ios/CleevioFramework-ios.git`)"
   - FBSDKCoreKit (~> 13.1)
   - FBSDKLoginKit (~> 13.1)
   - Firebase/Core
@@ -172,12 +172,12 @@ SPEC REPOS:
 
 EXTERNAL SOURCES:
   Cleevio:
-    :git: https://gitlab.cleevio.cz/cleevio-dev-ios/CleevioFramework-ios.git
+    :git: "git@gitlab.cleevio.cz:cleevio-dev-ios/CleevioFramework-ios.git"
 
 CHECKOUT OPTIONS:
   Cleevio:
-    :commit: 395f748ad6dd2ab90a7d8d6658badda4297ba0ef
-    :git: https://gitlab.cleevio.cz/cleevio-dev-ios/CleevioFramework-ios.git
+    :commit: 4e0c4c4633f3dfd3b81f7cf4c11db4663b6d3938
+    :git: "git@gitlab.cleevio.cz:cleevio-dev-ios/CleevioFramework-ios.git"
 
 SPEC CHECKSUMS:
   ACKLocalization: d3e621c2a6cd829caacecd24a7cddc89b11e8543
@@ -209,6 +209,6 @@ SPEC CHECKSUMS:
   SwiftyBeaver: 84069991dd5dca07d7069100985badaca7f0ce82
   Swinject: 97112918bd7e0785dc2df7036213f3c8cbba6586
 
-PODFILE CHECKSUM: 39056cf7e6094a9c7670daaae56513b033480d77
+PODFILE CHECKSUM: 1f8e5c2948d4d4b377ce3b3a1df9ecc006cba053
 
 COCOAPODS: 1.10.2
