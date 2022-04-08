@@ -173,6 +173,7 @@ final class RegisterPhoneViewModel: ViewModelType {
         let validateCode = action
             .filter { $0 == .validateCode }
             .withUnretained(self)
+            .filter { $0.0.currentState == .codeInput }
             .handleEvents(receiveOutput: { owner, _ in
                 owner.currentState = .codeInputValidation
             })

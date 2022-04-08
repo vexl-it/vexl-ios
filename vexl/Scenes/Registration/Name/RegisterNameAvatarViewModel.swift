@@ -40,6 +40,7 @@ final class RegisterNameAvatarViewModel: ViewModelType {
     @Published var currentState: State = .phoneVerified
     @Published var avatar: UIImage?
     @Published var isActionEnabled = false
+    @Published var showImagePicker = false
 
     @Published var loading = false
     @Published var error: Error?
@@ -171,7 +172,7 @@ final class RegisterNameAvatarViewModel: ViewModelType {
             .filter { $0 == .addAvatar }
             .withUnretained(self)
             .sink { owner, _ in
-                owner.avatar = UIImage(named: R.image.onboarding.testAvatar.name)
+                owner.showImagePicker = true
             }
             .store(in: cancelBag)
     }

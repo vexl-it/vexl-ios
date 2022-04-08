@@ -42,6 +42,9 @@ struct RegisterNameAvatarView: View {
         }
         .frame(maxWidth: .infinity)
         .background(Color.black.edgesIgnoringSafeArea(.all))
+        .sheet(isPresented: $viewModel.showImagePicker) {
+            ImagePicker(sourceType: .photoLibrary, selectedImage: $viewModel.avatar)
+        }
     }
 
     @ViewBuilder private func actionButton(with action: @escaping () -> Void) -> some View {
