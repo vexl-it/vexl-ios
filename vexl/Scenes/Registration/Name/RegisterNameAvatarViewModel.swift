@@ -45,6 +45,14 @@ final class RegisterNameAvatarViewModel: ViewModelType {
     @Published var loading = false
     @Published var error: Error?
 
+    var avatarData: String? {
+        guard let avatar = avatar else {
+            return nil
+        }
+        let avatarData = avatar.jpegData(compressionQuality: 1)
+        return avatarData?.base64EncodedString(options: .lineLength64Characters)
+    }
+    
     var primaryActivity: Activity = .init()
     var activityIndicator: ActivityIndicator {
         primaryActivity.indicator
@@ -122,7 +130,7 @@ final class RegisterNameAvatarViewModel: ViewModelType {
                 owner
                     .userService
                     .createUser(username: owner.username,
-                                avatar: "")
+                                avatar: owner.avatarData)
                     .track(activity: owner.primaryActivity)
                     .materialize()
                     .compactMap(\.value)
