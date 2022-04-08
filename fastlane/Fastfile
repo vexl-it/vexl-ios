@@ -146,9 +146,11 @@ platform :ios do
 			}
 		)
 
+		sh("pwd")
+
 		changelog = "\#\##{version}(#{build})"
 		changelog += "\n"
-		changelog += File.read("./Changelog.txt")
+		changelog += File.read("../Changelog.txt")
 
 		firebase_app_distribution(
 			app: firebase_app_id_devel,
