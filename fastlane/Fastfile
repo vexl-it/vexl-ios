@@ -19,7 +19,7 @@ platform :ios do
 	firebase_app_id_devel = "1:386907112085:ios:d4eb7c5afaefc79e50d19c"
 	firebase_app_id_staging = "1:386907112085:ios:c4f9a9b9df3c50ce50d19c"
 	firebase_app_id_appstore = "1:386907112085:ios:388bfa4f7b872e4650d19c"
-	firebase_tester_group_id = "FIXME"
+	firebase_tester_group_id = "Cleevio"
 	firebase_cli_path = "/usr/local/bin/firebase"
 	slackUrl = "https://hooks.slack.com/services/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"
 
