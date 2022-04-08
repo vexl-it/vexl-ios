@@ -85,14 +85,14 @@ platform :ios do
 			git_branch: main_scheme,
 			type: "development",
 			app_identifier: debug_identifier,
-			readonly: true
+			readonly: true  # TODO: remove this line once we have a app store access
 		)
 
 		match(
 			git_branch: main_scheme,
 			type: "adhoc",
 			app_identifier: devel_identifier,
-			readonly: true
+			readonly: true  # TODO: remove this line once we have a app store access
 		)
 	end
 
@@ -117,7 +117,6 @@ platform :ios do
 				message: "[ci skip] Build version Bump: #{version}(#{build})",
 				xcodeproj: xcodeproj_identifier
 			)
-			add_git_tag(tag: "#{version}(#{build})")
 		
 			branch = git_branch
 			push_to_git_remote(
@@ -129,12 +128,11 @@ platform :ios do
 			)
 		end
 
-
 		match(
 			type: "adhoc",
 			git_branch: main_scheme,
 			app_identifier: devel_identifier,
-			readonly: true # TODO: change to `force_for_new_devices: true` once we have a app store deployment
+			readonly: true # TODO: change to `readonly: is_ci` once we have a app store access
 		)
 
 		clear_derived_data
