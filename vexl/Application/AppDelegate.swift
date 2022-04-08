@@ -9,6 +9,9 @@
 import UIKit
 import SwiftyBeaver
 import FBSDKCoreKit
+#if DEBUG
+import AlamofireNetworkActivityLogger
+#endif
 
 let log = SwiftyBeaver.self
 
@@ -21,6 +24,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             didFinishLaunchingWithOptions: launchOptions
         )
 
+        #if DEBUG
+        NetworkActivityLogger.shared.startLogging()
+        NetworkActivityLogger.shared.level = .debug
+        #endif
         return true
     }
 
