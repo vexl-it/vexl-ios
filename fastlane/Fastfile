@@ -158,7 +158,7 @@ platform :ios do
 		)
 
 		upload_symbols_to_crashlytics(
-			gsp_path: gsp_path_beta
+			gsp_path: gsp_path_devel
 		)
 
 		slack(
