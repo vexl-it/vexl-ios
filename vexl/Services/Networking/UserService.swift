@@ -61,6 +61,11 @@ final class UserService: BaseService, UserServiceType {
 
     func createUser(username: String, avatar: String?) -> AnyPublisher<User, Error> {
         request(type: User.self, endpoint: UserRouter.createUser(username: username, avatar: avatar))
+            .withUnretained(self)
+            .handleEvents(receiveOutput: { owner, response in
+                owner.authenticationManager.setUser(response)
+            })
+            .map { $0.1 }
             .eraseToAnyPublisher()
     }
 

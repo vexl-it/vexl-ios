@@ -18,12 +18,6 @@ class ImportFacebookContactsViewModel: ImportContactsViewModel {
                   return
               }
 
-//        let createFacebookUser = contactsService
-//            .createUser(forFacebook: true)
-//            .track(activity: primaryActivity)
-//            .materialize()
-//            .compactMap { $0.value }
-
         let facebookContacts = contactsService
             .getFacebookContacts(id: facebookId, accessToken: facebookToken)
             .track(activity: primaryActivity)
