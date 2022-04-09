@@ -94,6 +94,15 @@ final class RegisterContactsViewModel: ViewModelType {
     private func setupRequestPhoneContactsBindings() {
         phoneViewModel.accessConfirmed
             .withUnretained(self)
+            .flatMap { owner, _ in
+                owner.contactsService
+                    .createUser(forFacebook: false)
+                    .track(activity: owner.primaryActivity)
+                    .materialize()
+                    .compactMap { $0.value }
+                    .eraseToAnyPublisher()
+            }
+            .withUnretained(self)
             .sink { owner, _ in
                 owner.phoneViewModel.currentState = .completed
             }
@@ -160,6 +169,16 @@ final class RegisterContactsViewModel: ViewModelType {
                 }
             })
             .filter { $0.1.challengeVerified }
+            .withUnretained(self)
+            .flatMap { owner, _ in
+                owner.contactsService
+                    .createUser(forFacebook: true)
+                    .track(activity: owner.primaryActivity)
+                    .materialize()
+                    .compactMap { $0.value }
+                    .eraseToAnyPublisher()
+            }
+            .withUnretained(self)
             .sink { owner, _ in
                 owner.facebookViewModel.currentState = .completed
             }

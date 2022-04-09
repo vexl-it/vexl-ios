@@ -8,6 +8,10 @@
 import Foundation
 import Combine
 
+struct ContactUser: Decodable {
+    var id: Int?
+}
+
 protocol ContactsServiceType {
     func createUser(forFacebook isFacebook: Bool) -> AnyPublisher<Void, Error>
     func importContacts(_ contacts: [String]) -> AnyPublisher<ContactsImported, Error>

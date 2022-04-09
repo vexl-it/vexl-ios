@@ -18,23 +18,16 @@ class ImportFacebookContactsViewModel: ImportContactsViewModel {
                   return
               }
 
-        let createFacebookUser = contactsService
-            .createUser(forFacebook: true)
+//        let createFacebookUser = contactsService
+//            .createUser(forFacebook: true)
+//            .track(activity: primaryActivity)
+//            .materialize()
+//            .compactMap { $0.value }
+
+        let facebookContacts = contactsService
+            .getFacebookContacts(id: facebookId, accessToken: facebookToken)
             .track(activity: primaryActivity)
             .materialize()
-            .compactMap { $0.value }
-
-        let facebookContacts = createFacebookUser
-            .withUnretained(self)
-            .flatMap { owner, _ in
-
-                // Fetch facebook friends that have/use the app from the Backend
-
-                owner.contactsService
-                    .getFacebookContacts(id: facebookId, accessToken: facebookToken)
-                    .track(activity: owner.primaryActivity)
-                    .materialize()
-            }
             .compactMap { $0.value }
 
         facebookContacts

@@ -16,19 +16,11 @@ class ImportPhoneContactsViewModel: ImportContactsViewModel {
         let phones = contacts.map { $0.phone }
 
         contactsService
-            .createUser(forFacebook: false)
+            .getAvailableContacts(phones)
             .track(activity: primaryActivity)
             .materialize()
             .compactMap { $0.value }
-            .withUnretained(self)
-            .flatMap { owner, _ in
-                owner.contactsService
-                    .getAvailableContacts(phones)
-                    .track(activity: owner.primaryActivity)
-                    .materialize()
-                    .compactMap { $0.value }
-                    .eraseToAnyPublisher()
-            }
+            .eraseToAnyPublisher()
             .withUnretained(self)
             .sink { owner, _ in
                 let availableContacts = owner.contactsManager.availablePhoneContacts
