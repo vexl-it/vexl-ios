@@ -62,9 +62,10 @@ extension AppCoordinator {
 
     private func showOnboardingCoordinator() -> CoordinatingResult<Void> {
         coordinate(to:
-            WindowNavigationCoordinator(window: window) { router, animated -> BuySellCoordinator in
+            WindowNavigationCoordinator(window: window) { router, animated -> UserProfileCoordinator in
                 //OnboardingCoordinator(router: router, animated: animated)
-                BuySellCoordinator(router: router, animated: animated)
+                //BuySellCoordinator(router: router, animated: animated)
+                UserProfileCoordinator(router: router, animated: animated)
             }
         )
             .asVoid()

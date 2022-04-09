@@ -15,7 +15,11 @@ struct BuySellView: View {
 
     var body: some View {
         VStack {
-            Text("1231244")
+            CoinValueVariationHeader(currencySymbol: "$", amount: "1231.43")
+            
+            Spacer()
+            
+            Text("1234")
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
         .background(Appearance.Colors.green1.edgesIgnoringSafeArea(.all))
