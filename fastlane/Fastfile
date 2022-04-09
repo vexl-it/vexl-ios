@@ -152,6 +152,7 @@ platform :ios do
 
 		firebase_app_distribution(
 			app: firebase_app_id_devel,
+			groups: firebase_tester_group_id,
 			release_notes: changelog,
 			firebase_cli_path: firebase_cli_path,
 			ipa_path: ipa_path
