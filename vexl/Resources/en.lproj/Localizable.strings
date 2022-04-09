@@ -51,3 +51,11 @@
 "error.register.invalid.challenge" = "There was an error validating the user";
 "error.register.invalid.email" = "The email is invalid";
 "error.register.invalid.username" = "The username is unavailable";
+"user.profile.change.picture" = "Change profile picture";
+"user.profile.edit.name" = "Edit name";
+"user.profile.pin.faceId" = "Set PIN / FaceID";
+"user.profile.imported.contacts" = "Contacts Imported";
+"user.profile.imported.contacts.subtitle" = "%@ friends";
+"user.profile.import.facebook" = "Import Facebook";
+"user.profile.request.data" = "Request known data";
+"user.profile.logout" = "Log out";

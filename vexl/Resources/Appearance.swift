@@ -16,6 +16,7 @@ struct Appearance {
     struct Colors {
         // MARK: General Colors
 
+        static let black1 = Color(R.color.black1.name)
         static let purple1 = Color(R.color.purple1.name)
         static let purple4 = Color(R.color.purple4.name)
         static let purple5 = Color(R.color.purple5.name)
@@ -58,6 +59,7 @@ struct Appearance {
         // MARK: Avatar
 
         static let avatarSize = CGSize(width: 190, height: 190)
+        static let iconSize = CGSize(width: 24, height: 24)
     }
 
     // MARK: - Global
@@ -68,15 +70,19 @@ struct Appearance {
     // MARK: - Fonts
 
     enum TextStyle {
+        case h1
         case h2
         case h3
         case paragraph
         case paragraphBold
         case description
         case descriptionSemibold
+        case micro
 
         var font: UIFont {
             switch self {
+            case .h1:
+                return UIFont.systemFont(ofSize: 54, weight: .bold)
             case .h2:
                 return UIFont.preferredFont(forTextStyle: .largeTitle, weight: .bold)
             case .h3:
@@ -89,6 +95,8 @@ struct Appearance {
                 return UIFont.preferredFont(forTextStyle: .footnote, weight: .regular)
             case .descriptionSemibold:
                 return UIFont.preferredFont(forTextStyle: .footnote, weight: .semibold)
+            case .micro:
+                return UIFont.preferredFont(forTextStyle: .caption1, weight: .regular)
             }
         }
     }
