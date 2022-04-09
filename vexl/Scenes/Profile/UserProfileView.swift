@@ -17,7 +17,8 @@ struct UserProfileView: View {
 
     var body: some View {
         VStack {
-            header
+            CoinValueVariationHeader(currencySymbol: viewModel.currencySymbol,
+                                     amount: viewModel.amount)
 
             Spacer()
 
@@ -25,26 +26,6 @@ struct UserProfileView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
         .background(Appearance.Colors.green1.edgesIgnoringSafeArea(.all))
-    }
-
-    private var header: some View {
-        HStack {
-            Image(R.image.profile.graph.name)
-                .padding(.leading, Appearance.GridGuide.padding)
-
-            Spacer()
-
-            HStack(alignment: .top) {
-                Text(viewModel.currencySymbol)
-                    .foregroundColor(.white)
-                    .padding(.top, Appearance.GridGuide.smallPadding)
-                Text(viewModel.amount)
-                    .textStyle(.h2)
-                    .foregroundColor(Color(R.color.green5.name))
-            }
-            .padding(.trailing, Appearance.GridGuide.mediumPadding1)
-        }
-        .frame(alignment: .top)
     }
 
     private var content: some View {
@@ -103,7 +84,9 @@ struct UserProfileView: View {
                 .resizable()
         }
     }
+}
 
+extension UserProfileView {
     struct Item: View {
 
         let title: String
