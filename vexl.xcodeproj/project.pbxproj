@@ -124,6 +124,7 @@
 		F1BFA95C280247E700F4E745 /* BuySellCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1BFA95B280247E700F4E745 /* BuySellCoordinator.swift */; };
 		F1BFA95E280247EE00F4E745 /* BuySellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1BFA95D280247EE00F4E745 /* BuySellViewModel.swift */; };
 		F1BFA960280247F500F4E745 /* BuySellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1BFA95F280247F500F4E745 /* BuySellView.swift */; };
+		F1BFA9682802526B00F4E745 /* CoinVariationHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1BFA9672802526B00F4E745 /* CoinVariationHeaderView.swift */; };
 		F1C6D09727BDAD7F009BD506 /* LargeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1C6D09627BDAD7F009BD506 /* LargeButton.swift */; };
 		F1C6D09E27BDDD4C009BD506 /* TextStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1C6D09D27BDDD4C009BD506 /* TextStyle.swift */; };
 		F1C6D0A027BDECB0009BD506 /* WelcomeView+LogoImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1C6D09F27BDECB0009BD506 /* WelcomeView+LogoImageView.swift */; };
@@ -276,6 +277,7 @@
 		F1BFA95B280247E700F4E745 /* BuySellCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuySellCoordinator.swift; sourceTree = "<group>"; };
 		F1BFA95D280247EE00F4E745 /* BuySellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuySellViewModel.swift; sourceTree = "<group>"; };
 		F1BFA95F280247F500F4E745 /* BuySellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuySellView.swift; sourceTree = "<group>"; };
+		F1BFA9672802526B00F4E745 /* CoinVariationHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinVariationHeaderView.swift; sourceTree = "<group>"; };
 		F1C6D09627BDAD7F009BD506 /* LargeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LargeButton.swift; sourceTree = "<group>"; };
 		F1C6D09D27BDDD4C009BD506 /* TextStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextStyle.swift; sourceTree = "<group>"; };
 		F1C6D09F27BDECB0009BD506 /* WelcomeView+LogoImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WelcomeView+LogoImageView.swift"; sourceTree = "<group>"; };
@@ -492,6 +494,7 @@
 		B08F38F827AE7110008B344F /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				F1BFA9662802524100F4E745 /* Header */,
 				F151A2A027C86C9B000D7242 /* Registration */,
 				F1B5FCD227C703160018729B /* Modifiers */,
 				F1C6D09527BDAD71009BD506 /* Buttons */,
@@ -871,6 +874,14 @@
 				F1BFA95F280247F500F4E745 /* BuySellView.swift */,
 			);
 			path = BuySell;
+			sourceTree = "<group>";
+		};
+		F1BFA9662802524100F4E745 /* Header */ = {
+			isa = PBXGroup;
+			children = (
+				F1BFA9672802526B00F4E745 /* CoinVariationHeaderView.swift */,
+			);
+			path = Header;
 			sourceTree = "<group>";
 		};
 		F1C6D09527BDAD71009BD506 /* Buttons */ = {
@@ -1279,6 +1290,7 @@
 				F1B5FCD827C7040C0018729B /* RoundedCorners.swift in Sources */,
 				F151A29D27C866C7000D7242 /* RegisterNameAvatarView.swift in Sources */,
 				B08F395F27AE7112008B344F /* String+.swift in Sources */,
+				F1BFA9682802526B00F4E745 /* CoinVariationHeaderView.swift in Sources */,
 				F12A14FF27DFC1620096543E /* ImportContactSearchBar.swift in Sources */,
 				F1C6D0A027BDECB0009BD506 /* WelcomeView+LogoImageView.swift in Sources */,
 				B08F399327AE7D1F008B344F /* SplashScreenCoordinator.swift in Sources */,

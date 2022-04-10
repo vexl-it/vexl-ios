@@ -17,8 +17,9 @@ struct UserProfileView: View {
 
     var body: some View {
         VStack {
-            CoinValueVariationHeader(currencySymbol: viewModel.currencySymbol,
-                                     amount: viewModel.amount)
+
+            CoinVariationHeaderView(currencySymbol: viewModel.currencySymbol,
+                                    amount: viewModel.amount)
 
             Spacer()
 

@@ -15,7 +15,7 @@ struct BuySellView: View {
 
     var body: some View {
         VStack {
-            CoinValueVariationHeader(currencySymbol: "$", amount: "1231.43")
+            CoinVariationHeaderView(currencySymbol: "$", amount: "1231.43")
             
             Spacer()
             
@@ -23,5 +23,12 @@ struct BuySellView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
         .background(Appearance.Colors.green1.edgesIgnoringSafeArea(.all))
+    }
+}
+
+struct BuySellViewPreview: PreviewProvider {
+    static var previews: some View {
+        BuySellView(viewModel: .init())
+            .previewDevice("iPhone 11")
     }
 }
