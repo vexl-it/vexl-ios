@@ -127,9 +127,8 @@ class ImportContactsViewModel: ObservableObject {
             .store(in: cancelBag)
 
         let importContact = action
-            .filter { $0 == .importContacts }
             .withUnretained(self)
-            .filter { $0.0.currentState == .content }
+            .filter { $0.0.currentState == .content && $0.1 == .importContacts }
             .map { $0.0.selectedItems.map { $0.phone } }
             .withUnretained(self)
             .flatMap { owner, contacts in
