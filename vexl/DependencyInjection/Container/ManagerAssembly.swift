@@ -24,7 +24,7 @@ class ManagerAssembly: Assembly {
         }
         .inObjectScope(.container)
 
-        container.register(ContactsManager.self) { _ in
+        container.register(ContactsManagerType.self) { _ in
             ContactsManager()
         }
         .inObjectScope(.container)

@@ -16,9 +16,9 @@ protocol ContactsServiceType {
 
 class ContactsService: BaseService, ContactsServiceType {
 
-    var contactsManager: ContactsManager
+    var contactsManager: ContactsManagerType
 
-    init(contactsManager: ContactsManager) {
+    init(contactsManager: ContactsManagerType) {
         self.contactsManager = contactsManager
     }
 

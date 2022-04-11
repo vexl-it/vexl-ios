@@ -9,33 +9,18 @@ import Foundation
 import Combine
 import Contacts
 
-struct ImportContactItem: Identifiable {
-    var id: String
-    var name: String
-    var phone: String
-    var avatar: Data?
-    var isSelected = false
+protocol ContactsManagerType {
+    var userPhoneContacts: [ContactInformation] { get set }
 
-    static func stub() -> [ImportContactItem] {
-        [
-            ImportContactItem(id: "1", name: "Diego Espinoza 1", phone: "999 944 222", avatar: nil),
-            ImportContactItem(id: "2", name: "Diego Espinoza 2", phone: "929 944 222", avatar: nil),
-            ImportContactItem(id: "3", name: "Diego Espinoza 3", phone: "969 944 222", avatar: nil),
-            ImportContactItem(id: "4", name: "Diego Espinoza 4", phone: "969 944 222", avatar: nil),
-            ImportContactItem(id: "5", name: "Diego Test 4", phone: "969 944 222", avatar: nil)
-        ]
-    }
+    func fetchPhoneContacts() -> [ContactInformation]
+    func setAvailable(phoneContacts: [String])
 }
 
-final class ContactsManager {
-
-    // MARK: - Bindings
-
-    var phoneContacts: CurrentValueSubject<[ContactInformation], Never> = .init([])
+final class ContactsManager: ContactsManagerType {
 
     // MARK: - Properties
 
-    private var userPhoneContacts: [ContactInformation] = []
+    var userPhoneContacts: [ContactInformation] = []
     private(set) var availablePhoneContacts: [ContactInformation] = []
 
     func fetchPhoneContacts() -> [ContactInformation] {
@@ -68,15 +53,8 @@ final class ContactsManager {
         }
     }
 
-    func fetchFacebookContacts() -> [String] {
-        return []
-    }
-
     func setAvailable(phoneContacts: [String]) {
-        let availableContacts = userPhoneContacts.filter { item in
-            phoneContacts.contains(item.phone)
-        }
+        let availableContacts = userPhoneContacts.filter { phoneContacts.contains($0.phone) }
         availablePhoneContacts = availableContacts
-        self.phoneContacts.send(availableContacts)
     }
 }

@@ -12,6 +12,6 @@ import Cleevio
 
 class ImportFacebookContactsViewModel: ImportContactsViewModel {
     override func fetchContacts() {
-        let contacts = contactsManager.fetchFacebookContacts()
+
     }
 }
