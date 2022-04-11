@@ -14,7 +14,7 @@ protocol ContactsManagerType {
     var availablePhoneContacts: [ContactInformation] { get }
 
     func fetchPhoneContacts() -> [ContactInformation]
-    func setAvailable(phoneContacts: [String])
+    func setPhoneContactsWithAppInstalled(_ contacts: [String])
 }
 
 final class ContactsManager: ContactsManagerType {
@@ -54,8 +54,8 @@ final class ContactsManager: ContactsManagerType {
         }
     }
 
-    func setAvailable(phoneContacts: [String]) {
-        let availableContacts = userPhoneContacts.filter { phoneContacts.contains($0.phone) }
+    func setPhoneContactsWithAppInstalled(_ contacts: [String]) {
+        let availableContacts = userPhoneContacts.filter { contacts.contains($0.phone) }
         availablePhoneContacts = availableContacts
     }
 }

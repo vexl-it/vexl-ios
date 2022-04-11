@@ -10,7 +10,7 @@ import Combine
 import SwiftUI
 import Cleevio
 
-class ImportPhoneContactsViewModel: ImportContactsViewModel {
+final class ImportPhoneContactsViewModel: ImportContactsViewModel {
     override func fetchContacts() {
         let contacts = contactsManager.fetchPhoneContacts()
         let phones = contacts.map { $0.phone }

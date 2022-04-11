@@ -14,7 +14,7 @@ protocol ContactsServiceType {
     func getAvailableContacts(_ contacts: [String]) -> AnyPublisher<ContactsAvailable, Error>
 }
 
-class ContactsService: BaseService, ContactsServiceType {
+final class ContactsService: BaseService, ContactsServiceType {
 
     var contactsManager: ContactsManagerType
 
@@ -36,7 +36,7 @@ class ContactsService: BaseService, ContactsServiceType {
         request(type: ContactsAvailable.self, endpoint: ContactsRouter.getAvailableContacts(contacts: contacts))
             .withUnretained(self)
             .handleEvents(receiveOutput: { owner, contacts in
-                owner.contactsManager.setAvailable(phoneContacts: contacts.newContacts)
+                owner.contactsManager.setPhoneContactsWithAppInstalled(contacts.newContacts)
             })
             .map { $0.1 }
             .eraseToAnyPublisher()

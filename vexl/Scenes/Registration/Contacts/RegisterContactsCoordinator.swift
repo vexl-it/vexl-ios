@@ -9,7 +9,7 @@ import Foundation
 import Combine
 import Cleevio
 
-class RegisterContactsCoordinator: BaseCoordinator<RouterResult<Void>> {
+final class RegisterContactsCoordinator: BaseCoordinator<RouterResult<Void>> {
 
     @Inject var authenticationManager: AuthenticationManagerType
 
