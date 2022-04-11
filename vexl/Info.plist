@@ -56,6 +56,6 @@
 		<true/>
 	</dict>
 	<key>NSContactsUsageDescription</key>
-	<string>We require access to your contacts so that we can upload the information.</string>
+	<string>Vexl wants to access your contacts in order to work.</string>
 </dict>
 </plist>
