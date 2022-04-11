@@ -31,6 +31,7 @@ struct Appearance {
         // MARK: Text
 
         static let primaryText = Color.black
+        static let whiteText = Color.white
     }
 
     // MARK: - Grid Guide
