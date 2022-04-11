@@ -50,13 +50,7 @@ struct UserProfileView: View {
     }
 
     private var avatarImage: some View {
-        var image: Image
-        if let data = viewModel.avatar, let uiImage = UIImage(data: data) {
-            image = Image(uiImage: uiImage)
-        } else {
-            image = Image(R.image.onboarding.emptyAvatar.name)
-        }
-        return image
+        Image(data: viewModel.avatar, placeholder: R.image.onboarding.emptyAvatar.name)
             .resizable()
             .frame(width: Appearance.GridGuide.baseHeight, height: Appearance.GridGuide.baseHeight)
             .cornerRadius(Appearance.GridGuide.baseHeight * 0.5, corners: .allCorners)
