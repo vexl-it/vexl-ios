@@ -11,7 +11,7 @@ import Cleevio
 
 class RegisterContactsCoordinator: BaseCoordinator<RouterResult<Void>> {
 
-    @Inject var authenticationManager: AuthenticationManager
+    @Inject var authenticationManager: AuthenticationManagerType
 
     private let router: Router
     private let animated: Bool

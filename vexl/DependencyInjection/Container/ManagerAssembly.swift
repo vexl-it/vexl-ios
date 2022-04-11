@@ -15,6 +15,14 @@ class ManagerAssembly: Assembly {
         }
         .inObjectScope(.container)
 
+        container.register(AuthenticationManagerType.self) { resolver in
+            resolver.resolve(AuthenticationManager.self)!
+        }
+
+        container.register(UserSecurityType.self) { resolver in
+            resolver.resolve(AuthenticationManager.self)!
+        }
+
         container.register(TokenHandlerType.self) { resolver in
             resolver.resolve(AuthenticationManager.self)!
         }

@@ -19,6 +19,8 @@ protocol TokenHandlerType {
 }
 
 protocol AuthenticationManagerType {
+    var currentUser: User? { get }
+
     func logoutUser()
 }
 

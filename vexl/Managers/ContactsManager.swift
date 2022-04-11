@@ -11,6 +11,7 @@ import Contacts
 
 protocol ContactsManagerType {
     var userPhoneContacts: [ContactInformation] { get set }
+    var availablePhoneContacts: [ContactInformation] { get }
 
     func fetchPhoneContacts() -> [ContactInformation]
     func setAvailable(phoneContacts: [String])

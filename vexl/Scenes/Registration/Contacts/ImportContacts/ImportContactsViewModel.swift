@@ -14,9 +14,8 @@ class ImportContactsViewModel: ObservableObject {
 
     // MARK: - Dependencies
 
-    @Inject var contactsManager: ContactsManager
+    @Inject var contactsManager: ContactsManagerType
     @Inject var contactsService: ContactsServiceType
-    @Inject var authenticationManager: AuthenticationManager
 
     // MARK: - View State
 
