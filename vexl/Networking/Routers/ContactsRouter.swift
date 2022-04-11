@@ -31,11 +31,7 @@ enum ContactsRouter: ApiRouter {
         case .importContacts, .getAvailableContacts:
             return securityHeader
         case let .createUser(useFacebookHeader):
-            if useFacebookHeader {
-                return facebookSecurityHeader
-            } else {
-                return securityHeader
-            }
+            return useFacebookHeader ? facebookSecurityHeader : securityHeader
         }
     }
 
