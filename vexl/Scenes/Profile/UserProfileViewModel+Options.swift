@@ -16,6 +16,7 @@ extension UserProfileViewModel {
     }
 
     enum Option: Int, Identifiable {
+
         case profilePicture = 0
         case editName
         case pinFaceId

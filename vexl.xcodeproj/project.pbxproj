@@ -122,8 +122,8 @@
 		F1BFA958280223BD00F4E745 /* UserProfileViewModel+Options.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1BFA954280223BD00F4E745 /* UserProfileViewModel+Options.swift */; };
 		F1BFA959280223BD00F4E745 /* UserProfileCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1BFA955280223BD00F4E745 /* UserProfileCoordinator.swift */; };
 		F1BFA9682802526B00F4E745 /* CoinVariationHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1BFA9672802526B00F4E745 /* CoinVariationHeaderView.swift */; };
-		F1BFA96C2803A41600F4E745 /* LineDivider.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1BFA96B2803A41600F4E745 /* LineDivider.swift */; };
 		F1BFA96E2803A49300F4E745 /* UserProfileView+Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1BFA96D2803A49300F4E745 /* UserProfileView+Item.swift */; };
+		F1BFA9712804321900F4E745 /* LineDivider.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1BFA9702804321900F4E745 /* LineDivider.swift */; };
 		F1C6D09727BDAD7F009BD506 /* LargeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1C6D09627BDAD7F009BD506 /* LargeButton.swift */; };
 		F1C6D09E27BDDD4C009BD506 /* TextStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1C6D09D27BDDD4C009BD506 /* TextStyle.swift */; };
 		F1C6D0A027BDECB0009BD506 /* WelcomeView+LogoImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1C6D09F27BDECB0009BD506 /* WelcomeView+LogoImageView.swift */; };
@@ -274,8 +274,8 @@
 		F1BFA954280223BD00F4E745 /* UserProfileViewModel+Options.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UserProfileViewModel+Options.swift"; sourceTree = "<group>"; };
 		F1BFA955280223BD00F4E745 /* UserProfileCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfileCoordinator.swift; sourceTree = "<group>"; };
 		F1BFA9672802526B00F4E745 /* CoinVariationHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinVariationHeaderView.swift; sourceTree = "<group>"; };
-		F1BFA96B2803A41600F4E745 /* LineDivider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LineDivider.swift; path = ../../../../../../../Desktop/LineDivider.swift; sourceTree = "<group>"; };
 		F1BFA96D2803A49300F4E745 /* UserProfileView+Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserProfileView+Item.swift"; sourceTree = "<group>"; };
+		F1BFA9702804321900F4E745 /* LineDivider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LineDivider.swift; sourceTree = "<group>"; };
 		F1C6D09627BDAD7F009BD506 /* LargeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LargeButton.swift; sourceTree = "<group>"; };
 		F1C6D09D27BDDD4C009BD506 /* TextStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextStyle.swift; sourceTree = "<group>"; };
 		F1C6D09F27BDECB0009BD506 /* WelcomeView+LogoImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WelcomeView+LogoImageView.swift"; sourceTree = "<group>"; };
@@ -500,8 +500,8 @@
 				F1C6D0A127BE9157009BD506 /* LinkTextView.swift */,
 				F151A2A327C87074000D7242 /* BorderedTextField.swift */,
 				F175AB8A27E8062A000DAB15 /* LoadingIndicatorView.swift */,
+				F1BFA9702804321900F4E745 /* LineDivider.swift */,
 				F175AB9427EA6A8E000DAB15 /* PlaceholderTextField.swift */,
-				F1BFA96B2803A41600F4E745 /* LineDivider.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1190,7 +1190,6 @@
 				F12A14DE27D677420096543E /* RegisterContactsViewModel.swift in Sources */,
 				B08F390D27AE7110008B344F /* InfoBarView.swift in Sources */,
 				B08F399A27AE7D87008B344F /* OnboardingCoordinator.swift in Sources */,
-				F1BFA96C2803A41600F4E745 /* LineDivider.swift in Sources */,
 				F12A14F027D912410096543E /* RequestAccessContactsViewModel.swift in Sources */,
 				F12A14EB27D6B1CF0096543E /* RequestAccessPortraitView.swift in Sources */,
 				F1CFF3B827F6015B007D9FE1 /* UserSecurity.swift in Sources */,
@@ -1259,6 +1258,7 @@
 				B08F38E227AE7110008B344F /* Inject.swift in Sources */,
 				B08F395727AE7112008B344F /* ApiRouter.swift in Sources */,
 				F1042BA227BEADB70048C2F0 /* WelcomeView+Agreement.swift in Sources */,
+				F1BFA9712804321900F4E745 /* LineDivider.swift in Sources */,
 				F175AB8D27E817D4000DAB15 /* CodeValidation.swift in Sources */,
 				B08F394D27AE7112008B344F /* AppCoordinator.swift in Sources */,
 				F1BFA8D227FE915200F4E745 /* AlertBaseViewController.swift in Sources */,
