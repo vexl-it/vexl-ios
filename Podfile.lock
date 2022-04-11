@@ -119,7 +119,7 @@ DEPENDENCIES:
   - Alamofire
   - AlamofireNetworkActivityIndicator
   - AlamofireNetworkActivityLogger
-  - "Cleevio (from `git@gitlab.cleevio.cz:cleevio-dev-ios/CleevioFramework-ios.git`)"
+  - Cleevio (from `../CleevioFramework-ios`)
   - Firebase/Core
   - Firebase/Crashlytics
   - KeychainAccess
@@ -158,12 +158,7 @@ SPEC REPOS:
 
 EXTERNAL SOURCES:
   Cleevio:
-    :git: "git@gitlab.cleevio.cz:cleevio-dev-ios/CleevioFramework-ios.git"
-
-CHECKOUT OPTIONS:
-  Cleevio:
-    :commit: 4e0c4c4633f3dfd3b81f7cf4c11db4663b6d3938
-    :git: "git@gitlab.cleevio.cz:cleevio-dev-ios/CleevioFramework-ios.git"
+    :path: "../CleevioFramework-ios"
 
 SPEC CHECKSUMS:
   ACKLocalization: d3e621c2a6cd829caacecd24a7cddc89b11e8543
