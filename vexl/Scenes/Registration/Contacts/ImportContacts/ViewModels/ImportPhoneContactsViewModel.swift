@@ -13,20 +13,20 @@ import Cleevio
 final class ImportPhoneContactsViewModel: ImportContactsViewModel {
     override func fetchContacts() {
         let contacts = contactsManager.fetchPhoneContacts()
-        let phones = contacts.map { $0.phone }
+        let phones = contacts.map(\.phone)
 
         contactsService
             .createUser()
             .track(activity: primaryActivity)
             .materialize()
-            .compactMap { $0.value }
+            .compactMap(\.value)
             .withUnretained(self)
             .flatMap { owner, _ in
                 owner.contactsService
                     .getAvailableContacts(phones)
                     .track(activity: owner.primaryActivity)
                     .materialize()
-                    .compactMap { $0.value }
+                    .compactMap(\.value)
                     .eraseToAnyPublisher()
             }
             .withUnretained(self)

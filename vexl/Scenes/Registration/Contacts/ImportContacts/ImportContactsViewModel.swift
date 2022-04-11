@@ -20,7 +20,7 @@ class ImportContactsViewModel: ObservableObject {
     // MARK: - View State
 
     enum ViewState {
-        case none
+        case loading
         case empty
         case content
         case success
@@ -52,7 +52,7 @@ class ImportContactsViewModel: ObservableObject {
 
     // MARK: - View Bindings
 
-    @Published var currentState: ViewState = .none
+    @Published var currentState: ViewState = .loading
     @Published var items: [ContactInformation] = []
     @Published var searchText = ""
     @Published var hasSelectedItem = false

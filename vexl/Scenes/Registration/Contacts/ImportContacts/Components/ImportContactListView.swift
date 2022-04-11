@@ -14,7 +14,7 @@ struct ImportContactListView: View {
 
     private var alignment: Alignment {
         switch viewModel.currentState {
-        case .none, .empty:
+        case .loading, .empty:
             return .center
         case .content, .success:
             return .top
@@ -28,7 +28,7 @@ struct ImportContactListView: View {
                 Text(L.registerContactsImportEmpty())
                     .foregroundColor(Appearance.Colors.primaryText)
                     .textStyle(.h3)
-            case .none:
+            case .loading:
                 EmptyView()
             case .content, .success:
                 ImportContactSearchBar(searchText: $viewModel.searchText,
