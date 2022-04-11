@@ -54,7 +54,7 @@ final class AuthenticationManager: AuthenticationManagerType, TokenHandlerType {
 
     var userSecurity: UserSecurity = .init()
     private(set) var currentUser: User?
-    
+
     // MARK: - Initialization
 
     init() {
