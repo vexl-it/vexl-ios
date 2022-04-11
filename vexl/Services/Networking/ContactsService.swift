@@ -36,7 +36,7 @@ final class ContactsService: BaseService, ContactsServiceType {
         request(type: ContactsAvailable.self, endpoint: ContactsRouter.getAvailableContacts(contacts: contacts))
             .withUnretained(self)
             .handleEvents(receiveOutput: { owner, contacts in
-                owner.contactsManager.setPhoneContactsWithAppInstalled(contacts.newContacts)
+                owner.contactsManager.setActivePhoneContacts(contacts.newContacts)
             })
             .map { $0.1 }
             .eraseToAnyPublisher()
