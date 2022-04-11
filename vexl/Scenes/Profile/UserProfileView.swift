@@ -15,7 +15,6 @@ struct UserProfileView: View {
 
     var body: some View {
         VStack {
-
             CoinVariationHeaderView(currencySymbol: viewModel.currencySymbol,
                                     amount: viewModel.amount)
 
@@ -30,10 +29,6 @@ struct UserProfileView: View {
         VStack {
             HStack(spacing: Appearance.GridGuide.padding) {
                 avatarImage
-                    .frame(width: Appearance.GridGuide.baseHeight,
-                           height: Appearance.GridGuide.baseHeight)
-                    .cornerRadius(Appearance.GridGuide.baseHeight * 0.5,
-                                  corners: .allCorners)
 
                 Text(viewModel.username)
                     .textStyle(.h1)
@@ -54,14 +49,17 @@ struct UserProfileView: View {
         .edgesIgnoringSafeArea(.bottom)
     }
 
-    @ViewBuilder private var avatarImage: some View {
-        if let data = viewModel.avatar, let image = UIImage(data: data) {
-            Image(uiImage: image)
-                .resizable()
+    private var avatarImage: some View {
+        var image: Image
+        if let data = viewModel.avatar, let uiImage = UIImage(data: data) {
+            image = Image(uiImage: uiImage)
         } else {
-            Image(R.image.onboarding.emptyAvatar.name)
-                .resizable()
+            image = Image(R.image.onboarding.emptyAvatar.name)
         }
+        return image
+            .resizable()
+            .frame(width: Appearance.GridGuide.baseHeight, height: Appearance.GridGuide.baseHeight)
+            .cornerRadius(Appearance.GridGuide.baseHeight * 0.5, corners: .allCorners)
     }
 
     @ViewBuilder private var profileItems: some View {
