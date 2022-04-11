@@ -13,8 +13,6 @@ struct UserProfileView: View {
 
     @ObservedObject var viewModel: UserProfileViewModel
 
-    private let headerHeight: CGFloat = 150
-
     var body: some View {
         VStack {
 
@@ -25,13 +23,12 @@ struct UserProfileView: View {
 
             content
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
         .background(Appearance.Colors.green1.edgesIgnoringSafeArea(.all))
     }
 
     private var content: some View {
         VStack {
-            HStack {
+            HStack(spacing: Appearance.GridGuide.padding) {
                 avatarImage
                     .frame(width: Appearance.GridGuide.baseHeight,
                            height: Appearance.GridGuide.baseHeight)
@@ -41,35 +38,16 @@ struct UserProfileView: View {
                 Text(viewModel.username)
                     .textStyle(.h1)
                     .foregroundColor(.white)
-                    .padding(.leading, Appearance.GridGuide.padding)
 
                 Spacer()
             }
             .padding(.horizontal, Appearance.GridGuide.padding)
             .padding(.vertical, Appearance.GridGuide.mediumPadding2)
 
-            Color.white
-                .frame(height: 3)
-                .padding(.horizontal, Appearance.GridGuide.point)
+            LineDivider()
 
-            List {
-                ForEach(viewModel.options) { group in
-                    Section {
-                        ForEach(group.options) { item in
-                            Item(title: item.title,
-                                 subtitle: item == .contacts ? item.subtitle(withParam: viewModel.contacts) : item.subtitle(),
-                                 icon: item.iconName)
-                        }
-                    }
-                }
-            }
-            .listStyle(.insetGrouped)
-            .onAppear {
-                UITableView.appearance().backgroundColor = UIColor.clear
-            }
-            .padding(.horizontal, -Appearance.GridGuide.point)
+            profileItems
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
         .background(Color.black)
         .cornerRadius(Appearance.GridGuide.padding,
                       corners: [.topLeft, .topRight])
@@ -85,39 +63,24 @@ struct UserProfileView: View {
                 .resizable()
         }
     }
-}
 
-extension UserProfileView {
-    struct Item: View {
-
-        let title: String
-        let subtitle: String?
-        let icon: String
-
-        var body: some View {
-            HStack {
-
-                Image(icon)
-                    .resizable()
-                    .frame(size: Appearance.GridGuide.iconSize)
-
-                VStack(alignment: .leading) {
-                    Text(title)
-                        .textStyle(.paragraph)
-                        .foregroundColor(.white)
-
-                    if let subtitle = subtitle {
-                        Text(subtitle)
-                            .textStyle(.micro)
-                            .foregroundColor(.white)
+    @ViewBuilder private var profileItems: some View {
+        List {
+            ForEach(viewModel.options) { group in
+                Section {
+                    ForEach(group.options) { item in
+                        Item(title: item.title,
+                             subtitle: viewModel.subtitle(for: item),
+                             icon: item.iconName)
                     }
                 }
-                .padding(.horizontal, Appearance.GridGuide.mediumPadding1)
             }
-            .listRowBackground(Appearance.Colors.black1)
-            .frame(height: Appearance.GridGuide.largeButtonHeight)
-            .padding(.vertical, 0)
         }
+        .listStyle(.insetGrouped)
+        .onAppear {
+            UITableView.appearance().backgroundColor = UIColor.clear
+        }
+        .padding(.horizontal, -Appearance.GridGuide.point)
     }
 }
 
