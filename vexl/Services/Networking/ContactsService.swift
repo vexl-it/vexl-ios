@@ -16,12 +16,6 @@ protocol ContactsServiceType {
 
 final class ContactsService: BaseService, ContactsServiceType {
 
-    var contactsManager: ContactsManagerType
-
-    init(contactsManager: ContactsManagerType) {
-        self.contactsManager = contactsManager
-    }
-
     func createUser() -> AnyPublisher<Void, Error> {
         request(endpoint: ContactsRouter.createUser)
             .eraseToAnyPublisher()
@@ -34,11 +28,6 @@ final class ContactsService: BaseService, ContactsServiceType {
 
     func getAvailableContacts(_ contacts: [String]) -> AnyPublisher<ContactsAvailable, Error> {
         request(type: ContactsAvailable.self, endpoint: ContactsRouter.getAvailableContacts(contacts: contacts))
-            .withUnretained(self)
-            .handleEvents(receiveOutput: { owner, contacts in
-                owner.contactsManager.setActivePhoneContacts(contacts.newContacts)
-            })
-            .map { $0.1 }
             .eraseToAnyPublisher()
     }
 }

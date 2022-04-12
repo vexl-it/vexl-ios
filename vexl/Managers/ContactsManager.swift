@@ -10,18 +10,19 @@ import Combine
 import Contacts
 
 protocol ContactsManagerType {
-    var userPhoneContacts: [ContactInformation] { get set }
     var availablePhoneContacts: [ContactInformation] { get }
 
     func fetchPhoneContacts() -> [ContactInformation]
-    func setActivePhoneContacts(_ contacts: [String])
+    func getActivePhoneContacts(_ contacts: [String]) -> AnyPublisher<[ContactInformation], Error>
 }
 
 final class ContactsManager: ContactsManagerType {
 
+    @Inject var contactsService: ContactsServiceType
+
     // MARK: - Properties
 
-    var userPhoneContacts: [ContactInformation] = []
+    private var userPhoneContacts: [ContactInformation] = []
     private(set) var availablePhoneContacts: [ContactInformation] = []
 
     func fetchPhoneContacts() -> [ContactInformation] {
@@ -54,8 +55,15 @@ final class ContactsManager: ContactsManagerType {
         }
     }
 
-    func setActivePhoneContacts(_ contacts: [String]) {
-        let availableContacts = userPhoneContacts.filter { contacts.contains($0.phone) }
-        availablePhoneContacts = availableContacts
+    func getActivePhoneContacts(_ contacts: [String]) -> AnyPublisher<[ContactInformation], Error> {
+        contactsService
+            .getAvailableContacts(contacts)
+            .withUnretained(self)
+            .handleEvents(receiveOutput: { owner, contacts in
+                let availableContacts = owner.userPhoneContacts.filter { contacts.newContacts.contains($0.phone) }
+                owner.availablePhoneContacts = availableContacts
+            })
+            .map { $0.0.availablePhoneContacts }
+            .eraseToAnyPublisher()
     }
 }

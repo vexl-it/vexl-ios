@@ -22,16 +22,15 @@ final class ImportPhoneContactsViewModel: ImportContactsViewModel {
             .compactMap(\.value)
             .withUnretained(self)
             .flatMap { owner, _ in
-                owner.contactsService
-                    .getAvailableContacts(phones)
+                owner.contactsManager
+                    .getActivePhoneContacts(phones)
                     .track(activity: owner.primaryActivity)
                     .materialize()
                     .compactMap(\.value)
                     .eraseToAnyPublisher()
             }
             .withUnretained(self)
-            .sink { owner, _ in
-                let availableContacts = owner.contactsManager.availablePhoneContacts
+            .sink { owner, availableContacts in
                 owner.currentState = availableContacts.isEmpty ? .empty : .content
                 owner.items = availableContacts
             }
