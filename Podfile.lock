@@ -5,9 +5,9 @@ PODS:
     - Alamofire (~> 5.1)
   - AlamofireNetworkActivityLogger (3.4.0):
     - Alamofire (~> 5.4.0)
-  - Cleevio (1.1.0):
-    - Cleevio/Full (= 1.1.0)
-  - Cleevio/Full (1.1.0)
+  - Cleevio (1.1.1):
+    - Cleevio/Full (= 1.1.1)
+  - Cleevio/Full (1.1.1)
   - Firebase/Core (8.14.0):
     - Firebase/CoreOnly
     - FirebaseAnalytics (~> 8.14.0)
@@ -162,7 +162,7 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   Cleevio:
-    :commit: 5d6debef3cb7835f1e8356722592afb7fed77f5a
+    :commit: c835d1b78acee12e6652369b033da2a4d64a9672
     :git: "git@gitlab.cleevio.cz:cleevio-dev-ios/CleevioFramework-ios.git"
 
 SPEC CHECKSUMS:
@@ -170,7 +170,7 @@ SPEC CHECKSUMS:
   Alamofire: f3b09a368f1582ab751b3fff5460276e0d2cf5c9
   AlamofireNetworkActivityIndicator: 6564782bd7b9e6c430ae67d9277af01907b01ca4
   AlamofireNetworkActivityLogger: 162ab8aee00e6267a4304d7cc134e13ccfe3bcc5
-  Cleevio: 0b5d6412a1b6db96d15e9210fe8be99df163bc02
+  Cleevio: 253a5f2d39c2a6faf37c996c498bfca3841219e4
   Firebase: 7e8fe528c161b9271d365217a74c16aaf834578e
   FirebaseAnalytics: 2fc3876e2eb347673ad2f35e249ae7b15d6c88f5
   FirebaseCore: b84a44ee7ba999e0f9f76d198a9c7f60a797b848
@@ -191,6 +191,6 @@ SPEC CHECKSUMS:
   SwiftyBeaver: 84069991dd5dca07d7069100985badaca7f0ce82
   Swinject: 97112918bd7e0785dc2df7036213f3c8cbba6586
 
-PODFILE CHECKSUM: 025e64ef5d6acc9cd62c5d707f02cc8ab2179186
+PODFILE CHECKSUM: bc848dd4617b7ca0e786518efccb7c33b1c934ea
 
 COCOAPODS: 1.10.2

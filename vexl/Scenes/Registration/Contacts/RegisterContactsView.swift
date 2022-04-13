@@ -32,6 +32,6 @@ struct RegisterContactsView: View {
 
 struct RegisterContactsViewPreview: PreviewProvider {
     static var previews: some View {
-        RegisterContactsView(viewModel: .init())
+        RegisterContactsView(viewModel: .init(username: "Diego"))
     }
 }

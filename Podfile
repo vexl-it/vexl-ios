@@ -10,7 +10,7 @@ target 'vexl' do
     if File.exist?("../CleevioFramework-ios")
         pod 'Cleevio', :path => "../CleevioFramework-ios"
     else
-        pod 'Cleevio', :git => 'git@gitlab.cleevio.cz:cleevio-dev-ios/CleevioFramework-ios.git'
+        pod 'Cleevio', :git => 'git@gitlab.cleevio.cz:cleevio-dev-ios/CleevioFramework-ios.git' 
     end
 
     pod 'ACKLocalization'

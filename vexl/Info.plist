@@ -55,5 +55,7 @@
 		<key>NSAllowsArbitraryLoadsInWebContent</key>
 		<true/>
 	</dict>
+	<key>NSContactsUsageDescription</key>
+	<string>Vexl wants to access your contacts in order to work.</string>
 </dict>
 </plist>
