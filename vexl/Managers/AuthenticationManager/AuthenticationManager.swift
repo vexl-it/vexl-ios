@@ -14,7 +14,6 @@ import FBSDKLoginKit
 import FBSDKCoreKit
 
 typealias BearerToken = String
-typealias FacebookUserInfo = (id: String?, token: String?)
 
 protocol TokenHandlerType {
     var accessToken: BearerToken? { get }

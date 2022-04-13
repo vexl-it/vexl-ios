@@ -18,29 +18,29 @@ class ImportFacebookContactsViewModel: ImportContactsViewModel {
                   return
               }
 
-        let facebookContacts = contactsService
-            .getFacebookContacts(id: facebookId, accessToken: facebookToken)
+        let facebookContacts = contactsManager
+            .fetchFacebookContacts(id: facebookId, accessToken: facebookToken)
             .track(activity: primaryActivity)
             .materialize()
             .compactMap { $0.value }
 
         facebookContacts
+            .map { $0.map { $0.id } }
             .withUnretained(self)
-            .flatMap { owner, _ in
+            .flatMap { owner, contactIds in
 
                 // Fetch facebook friends that can be imported/have not been imported to the Backend
 
-                owner.contactsService
-                    .getAvailableFacebookContacts(id: facebookId, accessToken: facebookToken)
+                owner.contactsManager
+                    .getActiveFacebookContacts(contactIds, withId: facebookId, token: facebookToken)
                     .track(activity: owner.primaryActivity)
                     .materialize()
             }
             .compactMap { $0.value }
             .withUnretained(self)
-            .sink { owner, _ in
-                //let availableContacts = owner.contactsManager.availableFacebookContacts
-                //owner.currentState = availableContacts.isEmpty ? .empty : .content
-                //owner.items = availableContacts
+            .sink { owner, availableContacts in
+                owner.currentState = availableContacts.isEmpty ? .empty : .content
+                owner.items = availableContacts
             }
             .store(in: cancelBag)
     }

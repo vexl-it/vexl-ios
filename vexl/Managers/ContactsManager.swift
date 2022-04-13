@@ -13,9 +13,13 @@ import FBSDKLoginKit
 
 protocol ContactsManagerType {
     var availablePhoneContacts: [ContactInformation] { get }
+    var availableFacebookContacts: [ContactInformation] { get }
 
     func fetchPhoneContacts() -> [ContactInformation]
     func getActivePhoneContacts(_ contacts: [String]) -> AnyPublisher<[ContactInformation], Error>
+
+    func fetchFacebookContacts(id: String, accessToken: String) -> AnyPublisher<[ContactInformation], Error>
+    func getActiveFacebookContacts(_ contacts: [String], withId id: String, token: String) -> AnyPublisher<[ContactInformation], Error>
 }
 
 final class ContactsManager: ContactsManagerType {
@@ -60,47 +64,24 @@ final class ContactsManager: ContactsManagerType {
         }
     }
 
-    func fetchFacebookContacts() -> AnyPublisher<[ContactInformation], Error> {
-        AnyPublisher(Future { [weak self] promise in
-
-            guard AccessToken.current != nil else {
-                promise(.failure(UserError.facebookAccess))
-                return
-            }
-
-            let params = ["fields": "id, name, picture"]
-            self?.userFacebookContacts = []
-
-            let request = GraphRequest(graphPath: "me/friends", parameters: params, httpMethod: .get)
-            request.start { _, result, error in
-                if let error = error {
-                    promise(.failure(error))
-                } else {
-                    guard let dictonary = result as? [String: Any],
-                          let data = dictonary["data"] as? [[String: Any]] else {
-                              promise(.failure(UserError.fetchFacebookFriends))
-                              return
-                    }
-
-                    var contacts = [ContactInformation]()
-
-                    for item in data {
-                        guard let name = item["name"] as? String,
-                              let id = item["id"] as? String else {
-                                  continue
-                              }
-
-                        let pictureData = item["data"] as? [String: Any]
-                        let pictureURL = pictureData?["url"] as? String
-                        let contact = ContactInformation(id: id, name: name, phone: "", avatarURL: pictureURL, source: .facebook)
-                        contacts.append(contact)
-                    }
-
-                    promise(.success(contacts))
-                    self?.userFacebookContacts = contacts
+    func fetchFacebookContacts(id: String, accessToken: String) -> AnyPublisher<[ContactInformation], Error> {
+        contactsService
+            .getFacebookContacts(id: id, accessToken: accessToken)
+            .map { contacts in
+                contacts.facebookUser.friends.map { user in
+                    ContactInformation(id: user.id,
+                                       name: user.name,
+                                       phone: "",
+                                       avatarURL: user.profilePicture?.data?.url,
+                                       source: .facebook)
                 }
             }
-        })
+            .withUnretained(self)
+            .handleEvents(receiveOutput: { owner, contacts in
+                owner.userFacebookContacts = contacts
+            })
+            .map { $0.1 }
+            .eraseToAnyPublisher()
     }
 
     func getActivePhoneContacts(_ contacts: [String]) -> AnyPublisher<[ContactInformation], Error> {
@@ -108,25 +89,22 @@ final class ContactsManager: ContactsManagerType {
             .getActivePhoneContacts(contacts)
             .withUnretained(self)
             .handleEvents(receiveOutput: { owner, contacts in
-                let availableContacts = owner.userPhoneContacts.filter { contacts.newContacts.contains($0.phone) }
+                let availableContacts = owner.userPhoneContacts.filter { contacts.newContacts.contains($0.sourceIdentifier) }
                 owner.availablePhoneContacts = availableContacts
             })
             .map { $0.0.availablePhoneContacts }
             .eraseToAnyPublisher()
     }
 
-    func setFacebookFriends(contacts: [FacebookContacts.FacebookUser]) {
-        userFacebookContacts = contacts.map { user in
-            ContactInformation(id: user.id,
-                               name: user.name,
-                               phone: "",
-                               avatarURL: user.profilePicture?.data?.url,
-                               source: .facebook)
-        }
-    }
-
-    func setAvailable(facebookContacts: [String]) {
-        let availableContacts = userFacebookContacts.filter { facebookContacts.contains($0.sourceIdentifier) }
-        availableFacebookContacts = availableContacts
+    func getActiveFacebookContacts(_ contacts: [String], withId id: String, token: String) -> AnyPublisher<[ContactInformation], Error> {
+        contactsService
+            .getActiveFacebookContacts(id: id, accessToken: token)
+            .withUnretained(self)
+            .handleEvents(receiveOutput: { owner, contacts in
+                let friends = contacts.facebookUser.friends.map { $0.id }
+                owner.availableFacebookContacts = owner.userFacebookContacts.filter { friends.contains($0.sourceIdentifier) }
+            })
+            .map { $0.0.availableFacebookContacts }
+            .eraseToAnyPublisher()
     }
 }
