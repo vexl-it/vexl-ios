@@ -26,6 +26,7 @@ struct Appearance {
         static let gray4 = Color(R.color.gray4.name)
         static let gray5 = Color(R.color.gray5.name)
         static let green1 = Color(R.color.green1.name)
+        static let green4 = Color(R.color.green4.name)
         static let green5 = Color(R.color.green5.name)
 
         // MARK: Text
@@ -60,7 +61,9 @@ struct Appearance {
         // MARK: Avatar
 
         static let avatarSize = CGSize(width: 190, height: 190)
+        static let smallIconSize = CGSize(width: 12, height: 12)
         static let iconSize = CGSize(width: 24, height: 24)
+        static let mediumIconSize = CGSize(width: 48, height: 48)
     }
 
     // MARK: - Global

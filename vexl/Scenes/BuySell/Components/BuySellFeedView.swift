@@ -20,8 +20,15 @@ struct BuySellFeedView: View {
 
             BuySellFeedDetailView()
                 .padding(.horizontal, Appearance.GridGuide.padding)
-            
-            Text("123123")
+
+            // TODO: - set contact type from viewmodel + real action
+            BuySellFeedFooterView(contactType: .facebook,
+                                  isRequested: true,
+                                  location: "Prague") {
+                print("facebook")
+            }
+                .padding(.horizontal, Appearance.GridGuide.padding)
+                .padding(.bottom, Appearance.GridGuide.padding)
         }
         .background(Appearance.Colors.whiteText)
         .cornerRadius(Appearance.GridGuide.buttonCorner)

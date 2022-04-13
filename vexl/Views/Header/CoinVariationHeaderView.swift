@@ -20,7 +20,7 @@ struct CoinVariationHeaderView: View {
                 .padding(.leading, Appearance.GridGuide.padding)
 
             Spacer()
-        
+
             HStack(alignment: .top) {
                 Text(currencySymbol)
                     .foregroundColor(.white)

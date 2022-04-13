@@ -30,6 +30,7 @@ struct BuySellView: View {
             .frame(maxHeight: .infinity, alignment: .top)
             .background(Color.black)
             .cornerRadius(Appearance.GridGuide.padding)
+            .edgesIgnoringSafeArea(.bottom)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
         .background(Appearance.Colors.green1.edgesIgnoringSafeArea(.all))

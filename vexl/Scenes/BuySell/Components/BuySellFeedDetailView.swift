@@ -31,8 +31,8 @@ extension BuySellFeedDetailView {
 
         var body: some View {
             Text(title)
-                .textStyle(.paragraph)
-                .foregroundColor(Appearance.Colors.gray2)
+                .textStyle(.paragraphBold)
+                .foregroundColor(Appearance.Colors.primaryText)
                 .padding(Appearance.GridGuide.point)
                 .frame(height: 52)
         }
