@@ -24,11 +24,11 @@ extension UserError: LocalizedError {
         case .unavailableUsername:
             return L.errorRegisterInvalidUsername()
         case .facebookAccess:
-            return "Couldn't access facebook account"
+            return L.errorRegisterFacebookAccess()
         case .fetchFacebookFriends:
-            return "Couldn't load facebook friends"
+            return L.errorRegisterFacebookFriends()
         case .facebookValidation:
-            return "Error 123"
+            return L.errorRegisterFacebookAccess()
         }
     }
 }

@@ -1329,7 +1329,6 @@
 				B08F395727AE7112008B344F /* ApiRouter.swift in Sources */,
 				F1042BA227BEADB70048C2F0 /* WelcomeView+Agreement.swift in Sources */,
 				F1BFA9712804321900F4E745 /* LineDivider.swift in Sources */,
-				F175AB8D27E817D4000DAB15 /* CodeValidation.swift in Sources */,
 				B08F394D27AE7112008B344F /* AppCoordinator.swift in Sources */,
 				F1BFA8D227FE915200F4E745 /* AlertBaseViewController.swift in Sources */,
 				F175ABA227F4A8F8000DAB15 /* UserAvailable.swift in Sources */,

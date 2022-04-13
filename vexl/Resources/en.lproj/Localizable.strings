@@ -51,6 +51,8 @@
 "error.register.invalid.challenge" = "There was an error validating the user";
 "error.register.invalid.email" = "The email is invalid";
 "error.register.invalid.username" = "The username is unavailable";
+"error.register.facebook.access" = "Couldn't access facebook account";
+"error.register.facebook.friends" = "Couldn't load facebook friends";
 "user.profile.change.picture" = "Change profile picture";
 "user.profile.edit.name" = "Edit name";
 "user.profile.pin.faceId" = "Set PIN / FaceID";
