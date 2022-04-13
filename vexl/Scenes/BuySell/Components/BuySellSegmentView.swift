@@ -36,7 +36,6 @@ struct BuySellSegmentView: View {
                         .foregroundColor(selectedIndex == .sell ? Appearance.Colors.whiteText : Appearance.Colors.gray1)
                 }
                 .frame(maxWidth: .infinity)
-
             }
         }
     }

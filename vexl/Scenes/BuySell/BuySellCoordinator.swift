@@ -29,7 +29,6 @@ class BuySellCoordinator: BaseCoordinator<RouterResult<Void>> {
 
         return dismissByRouter
             .receive(on: RunLoop.main)
-            .prefix(1)
             .eraseToAnyPublisher()
     }
 }

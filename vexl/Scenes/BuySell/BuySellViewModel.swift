@@ -34,5 +34,12 @@ final class BuySellViewModel: ViewModelType, ObservableObject {
 
     // MARK: - Variables
 
+    var currencySymbol: String {
+        "$"
+    }
+    var amount: String {
+        "1234.4"
+    }
+
     private let cancelBag: CancelBag = .init()
 }

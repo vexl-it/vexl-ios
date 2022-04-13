@@ -105,6 +105,7 @@
 		F175AB9727ECC159000DAB15 /* SecurityHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = F175AB9627ECC159000DAB15 /* SecurityHeader.swift */; };
 		F175ABA027F4A7EC000DAB15 /* RegistryError.swift in Sources */ = {isa = PBXBuildFile; fileRef = F175AB9F27F4A7EC000DAB15 /* RegistryError.swift */; };
 		F175ABA227F4A8F8000DAB15 /* UserAvailable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F175ABA127F4A8F8000DAB15 /* UserAvailable.swift */; };
+		F18D722B2806B7C6001B3D3A /* BuySellFilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18D722A2806B7C6001B3D3A /* BuySellFilterView.swift */; };
 		F1A9452D27F67FD5009B5AE3 /* PhoneConfirmation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1A9452C27F67FD5009B5AE3 /* PhoneConfirmation.swift */; };
 		F1B5FCBC27C67DB00018729B /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B5FCBB27C67DB00018729B /* WelcomeViewController.swift */; };
 		F1B5FCBE27C68EA70018729B /* OnboardingView+BottomButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B5FCBD27C68EA70018729B /* OnboardingView+BottomButtons.swift */; };
@@ -259,6 +260,7 @@
 		F175AB9627ECC159000DAB15 /* SecurityHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecurityHeader.swift; sourceTree = "<group>"; };
 		F175AB9F27F4A7EC000DAB15 /* RegistryError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistryError.swift; sourceTree = "<group>"; };
 		F175ABA127F4A8F8000DAB15 /* UserAvailable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAvailable.swift; sourceTree = "<group>"; };
+		F18D722A2806B7C6001B3D3A /* BuySellFilterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuySellFilterView.swift; sourceTree = "<group>"; };
 		F1A9452C27F67FD5009B5AE3 /* PhoneConfirmation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneConfirmation.swift; sourceTree = "<group>"; };
 		F1B5FCBB27C67DB00018729B /* WelcomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeViewController.swift; sourceTree = "<group>"; };
 		F1B5FCBD27C68EA70018729B /* OnboardingView+BottomButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OnboardingView+BottomButtons.swift"; sourceTree = "<group>"; };
@@ -891,6 +893,7 @@
 			isa = PBXGroup;
 			children = (
 				F1BFA9752804426500F4E745 /* BuySellSegmentView.swift */,
+				F18D722A2806B7C6001B3D3A /* BuySellFilterView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -1288,6 +1291,7 @@
 				B08F394527AE7112008B344F /* ReusableView.swift in Sources */,
 				B08F395B27AE7112008B344F /* Appearance.swift in Sources */,
 				B0F206F327AEA4C800A44E72 /* WindowCoordinator.swift in Sources */,
+				F18D722B2806B7C6001B3D3A /* BuySellFilterView.swift in Sources */,
 				F175AB9527EA6A8E000DAB15 /* PlaceholderTextField.swift in Sources */,
 				F1BFA960280247F500F4E745 /* BuySellView.swift in Sources */,
 				B0EEE11627B14D320097031E /* WelcomeCoordinator.swift in Sources */,
