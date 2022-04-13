@@ -31,6 +31,7 @@ struct ContactInformation: Identifiable {
         }
     }
 
+    #if DEBUG || DEVEL
     static func stub() -> [ContactInformation] {
         [
             ContactInformation(id: "1", name: "Diego Espinoza 1", phone: "999 944 222", avatar: nil, source: .phone),
@@ -40,4 +41,5 @@ struct ContactInformation: Identifiable {
             ContactInformation(id: "5", name: "Diego Test 4", phone: "969 944 222", avatar: nil, source: .phone)
         ]
     }
+    #endif
 }

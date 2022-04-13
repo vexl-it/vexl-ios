@@ -89,6 +89,22 @@ final class RegisterContactsViewModel: ViewModelType {
             .errors
             .asOptional()
             .assign(to: &$error)
+
+        importPhoneContactsViewModel
+            .$loading
+            .assign(to: &$loading)
+
+        importPhoneContactsViewModel
+            .$error
+            .assign(to: &$error)
+
+        importFacebookContactsViewModel
+            .$loading
+            .assign(to: &$loading)
+
+        importFacebookContactsViewModel
+            .$error
+            .assign(to: &$error)
     }
 
     private func setupRequestPhoneContactsBindings() {
@@ -123,7 +139,7 @@ final class RegisterContactsViewModel: ViewModelType {
             .withUnretained(self)
             .sink { owner, _ in
                 owner.currentState = .facebook
-                owner.importPhoneContactsViewModel.currentState = .none
+                owner.importPhoneContactsViewModel.currentState = .loading
             }
             .store(in: cancelBag)
     }

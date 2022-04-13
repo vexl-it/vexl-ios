@@ -5,9 +5,9 @@ PODS:
     - Alamofire (~> 5.1)
   - AlamofireNetworkActivityLogger (3.4.0):
     - Alamofire (~> 5.4.0)
-  - Cleevio (1.0.5):
-    - Cleevio/Full (= 1.0.5)
-  - Cleevio/Full (1.0.5)
+  - Cleevio (1.1.1):
+    - Cleevio/Full (= 1.1.1)
+  - Cleevio/Full (1.1.1)
   - FBAEMKit (13.1.0):
     - FBSDKCoreKit_Basics (= 13.1.0)
   - FBSDKCoreKit (13.1.0):
@@ -176,7 +176,7 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   Cleevio:
-    :commit: 4e0c4c4633f3dfd3b81f7cf4c11db4663b6d3938
+    :commit: c835d1b78acee12e6652369b033da2a4d64a9672
     :git: "git@gitlab.cleevio.cz:cleevio-dev-ios/CleevioFramework-ios.git"
 
 SPEC CHECKSUMS:
@@ -184,7 +184,7 @@ SPEC CHECKSUMS:
   Alamofire: f3b09a368f1582ab751b3fff5460276e0d2cf5c9
   AlamofireNetworkActivityIndicator: 6564782bd7b9e6c430ae67d9277af01907b01ca4
   AlamofireNetworkActivityLogger: 162ab8aee00e6267a4304d7cc134e13ccfe3bcc5
-  Cleevio: 4c648c67170686068856887cb13dcabb2c348df6
+  Cleevio: 253a5f2d39c2a6faf37c996c498bfca3841219e4
   FBAEMKit: 3be32ffb79fe7c0603fed00d81742b23241e89a5
   FBSDKCoreKit: eff97dea778dbe6cc4498959cffb619c75675102
   FBSDKCoreKit_Basics: c151609a1cf6976a5958febcf0043266a8fd5151
@@ -209,6 +209,6 @@ SPEC CHECKSUMS:
   SwiftyBeaver: 84069991dd5dca07d7069100985badaca7f0ce82
   Swinject: 97112918bd7e0785dc2df7036213f3c8cbba6586
 
-PODFILE CHECKSUM: 1f8e5c2948d4d4b377ce3b3a1df9ecc006cba053
+PODFILE CHECKSUM: 6b07ce6d828a60a2f3b7ed25ce3c56d331022560
 
 COCOAPODS: 1.10.2

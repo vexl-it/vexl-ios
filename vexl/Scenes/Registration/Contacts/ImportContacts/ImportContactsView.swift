@@ -13,31 +13,18 @@ struct ImportContactsView: View {
     @ObservedObject var viewModel: ImportContactsViewModel
 
     var body: some View {
-        ContentView(viewModel: viewModel)
-    }
-}
-
-extension ImportContactsView {
-
-    struct ContentView: View {
-
-        @ObservedObject var viewModel: ImportContactsViewModel
-
-        var body: some View {
-            VStack(spacing: .zero) {
-
-                ImportContactListView(viewModel: viewModel)
+        VStack(spacing: .zero) {
+            ImportContactListView(viewModel: viewModel)
                 .padding(.horizontal, Appearance.GridGuide.point)
                 .padding(.vertical, Appearance.GridGuide.padding)
 
-                SolidButton(Text(viewModel.actionTitle),
-                            font: Appearance.TextStyle.h3.font.asFont,
-                            colors: viewModel.currentState == .success ? SolidButtonColor.success : SolidButtonColor.welcome,
-                            dimensions: SolidButtonDimension.largeButton) {
-                    viewModel.action.send(.importContacts)
-                }
-                .padding(.horizontal, Appearance.GridGuide.mediumPadding1)
+            SolidButton(Text(viewModel.actionTitle),
+                        font: Appearance.TextStyle.h3.font.asFont,
+                        colors: viewModel.currentState == .success ? SolidButtonColor.success : SolidButtonColor.welcome,
+                        dimensions: SolidButtonDimension.largeButton) {
+                viewModel.action.send(.importContacts)
             }
+            .padding(.horizontal, Appearance.GridGuide.mediumPadding1)
         }
     }
 }

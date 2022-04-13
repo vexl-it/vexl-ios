@@ -38,9 +38,9 @@ class ImportFacebookContactsViewModel: ImportContactsViewModel {
             .compactMap { $0.value }
             .withUnretained(self)
             .sink { owner, _ in
-                let availableContacts = owner.contactsManager.availableFacebookContacts
-                owner.currentState = availableContacts.isEmpty ? .empty : .content
-                owner.items = availableContacts
+                //let availableContacts = owner.contactsManager.availableFacebookContacts
+                //owner.currentState = availableContacts.isEmpty ? .empty : .content
+                //owner.items = availableContacts
             }
             .store(in: cancelBag)
     }

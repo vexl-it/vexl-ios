@@ -11,7 +11,16 @@ import Contacts
 import FBSDKCoreKit
 import FBSDKLoginKit
 
-final class ContactsManager {
+protocol ContactsManagerType {
+    var availablePhoneContacts: [ContactInformation] { get }
+
+    func fetchPhoneContacts() -> [ContactInformation]
+    func getActivePhoneContacts(_ contacts: [String]) -> AnyPublisher<[ContactInformation], Error>
+}
+
+final class ContactsManager: ContactsManagerType {
+
+    @Inject var contactsService: ContactsServiceType
 
     // MARK: - Properties
 
@@ -94,9 +103,16 @@ final class ContactsManager {
         })
     }
 
-    func setAvailable(phoneContacts: [String]) {
-        let availableContacts = userPhoneContacts.filter { phoneContacts.contains($0.sourceIdentifier) }
-        availablePhoneContacts = availableContacts
+    func getActivePhoneContacts(_ contacts: [String]) -> AnyPublisher<[ContactInformation], Error> {
+        contactsService
+            .getActivePhoneContacts(contacts)
+            .withUnretained(self)
+            .handleEvents(receiveOutput: { owner, contacts in
+                let availableContacts = owner.userPhoneContacts.filter { contacts.newContacts.contains($0.phone) }
+                owner.availablePhoneContacts = availableContacts
+            })
+            .map { $0.0.availablePhoneContacts }
+            .eraseToAnyPublisher()
     }
 
     func setFacebookFriends(contacts: [FacebookContacts.FacebookUser]) {

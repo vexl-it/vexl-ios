@@ -14,7 +14,7 @@ class ImportContactsViewModel: ObservableObject {
 
     // MARK: - Dependencies
 
-    @Inject var contactsManager: ContactsManager
+    @Inject var contactsManager: ContactsManagerType
     @Inject var contactsService: ContactsServiceType
     @Inject var authenticationManager: AuthenticationManager
     @Inject var userService: UserServiceType
@@ -22,7 +22,7 @@ class ImportContactsViewModel: ObservableObject {
     // MARK: - View State
 
     enum ViewState {
-        case none
+        case loading
         case empty
         case content
         case success
@@ -54,7 +54,7 @@ class ImportContactsViewModel: ObservableObject {
 
     // MARK: - View Bindings
 
-    @Published var currentState: ViewState = .none
+    @Published var currentState: ViewState = .loading
     @Published var items: [ContactInformation] = []
     @Published var searchText = ""
     @Published var hasSelectedItem = false
@@ -145,9 +145,8 @@ class ImportContactsViewModel: ObservableObject {
             .store(in: cancelBag)
 
         let importContact = action
-            .filter { $0 == .importContacts }
             .withUnretained(self)
-            .filter { $0.0.currentState == .content && $0.0.hasSelectedItem }
+            .filter { $0.0.currentState == .content && $0.0.hasSelectedItem && $0.1 == .importContacts }
             .map { $0.0.selectedItems.map { $0.sourceIdentifier } }
             .withUnretained(self)
             .flatMap { owner, contacts in
