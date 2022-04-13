@@ -51,8 +51,8 @@ struct ImportContactItemView: View {
         if let avatarURL = item.avatarURL, let url = URL(string: avatarURL) {
             KFImage(url)
                 .resizable()
-        } else if let data = item.avatar {
-            Image(data: data, placeholder: R.image.onboarding.emptyAvatar.name)
+        } else {
+            Image(data: item.avatar, placeholder: R.image.onboarding.emptyAvatar.name)
                 .resizable()
         }
     }

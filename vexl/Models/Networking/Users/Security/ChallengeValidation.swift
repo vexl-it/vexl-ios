@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct ChallengeValidation: Codable {
+struct ChallengeValidation: Decodable {
     var hash: String
     var signature: String
     var challengeVerified: Bool
