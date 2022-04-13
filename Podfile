@@ -30,7 +30,7 @@ target 'vexl' do
     # Networking
     pod 'Alamofire'
     pod 'AlamofireNetworkActivityIndicator'
-    pod 'AlamofireNetworkActivityLogger', configuration: ['Debug']
+    pod 'AlamofireNetworkActivityLogger', configuration: ['Debug', 'Devel']
     pod 'Kingfisher'
 
  

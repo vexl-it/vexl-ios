@@ -9,7 +9,7 @@
 import UIKit
 import SwiftyBeaver
 import FBSDKCoreKit
-#if DEBUG
+#if DEBUG || DEVEL
 import AlamofireNetworkActivityLogger
 #endif
 
@@ -24,7 +24,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             didFinishLaunchingWithOptions: launchOptions
         )
 
-        #if DEBUG
+        #if DEBUG || DEVEL
         NetworkActivityLogger.shared.startLogging()
         NetworkActivityLogger.shared.level = .debug
         #endif
