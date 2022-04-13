@@ -80,7 +80,7 @@ final class ContactsManager: ContactsManagerType {
             .handleEvents(receiveOutput: { owner, contacts in
                 owner.userFacebookContacts = contacts
             })
-            .map { $0.1 }
+            .map(\.1)
             .eraseToAnyPublisher()
     }
 
@@ -92,7 +92,7 @@ final class ContactsManager: ContactsManagerType {
                 let availableContacts = owner.userPhoneContacts.filter { contacts.newContacts.contains($0.sourceIdentifier) }
                 owner.availablePhoneContacts = availableContacts
             })
-            .map { $0.0.availablePhoneContacts }
+            .map(\.0.availablePhoneContacts)
             .eraseToAnyPublisher()
     }
 
@@ -104,7 +104,7 @@ final class ContactsManager: ContactsManagerType {
                 let friends = contacts.facebookUser.friends.map { $0.id }
                 owner.availableFacebookContacts = owner.userFacebookContacts.filter { friends.contains($0.sourceIdentifier) }
             })
-            .map { $0.0.availableFacebookContacts }
+            .map(\.0.availableFacebookContacts)
             .eraseToAnyPublisher()
     }
 }

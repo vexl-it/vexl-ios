@@ -22,7 +22,7 @@ class ImportFacebookContactsViewModel: ImportContactsViewModel {
             .fetchFacebookContacts(id: facebookId, accessToken: facebookToken)
             .track(activity: primaryActivity)
             .materialize()
-            .compactMap { $0.value }
+            .compactMap(\.value)
 
         facebookContacts
             .map { $0.map { $0.id } }
@@ -36,7 +36,7 @@ class ImportFacebookContactsViewModel: ImportContactsViewModel {
                     .track(activity: owner.primaryActivity)
                     .materialize()
             }
-            .compactMap { $0.value }
+            .compactMap(\.value)
             .withUnretained(self)
             .sink { owner, availableContacts in
                 owner.currentState = availableContacts.isEmpty ? .empty : .content
