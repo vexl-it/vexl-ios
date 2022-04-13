@@ -15,8 +15,8 @@ struct ImportContactsView: View {
     var body: some View {
         VStack(spacing: .zero) {
             ImportContactListView(viewModel: viewModel)
-            .padding(.horizontal, Appearance.GridGuide.point)
-            .padding(.vertical, Appearance.GridGuide.padding)
+                .padding(.horizontal, Appearance.GridGuide.point)
+                .padding(.vertical, Appearance.GridGuide.padding)
 
             SolidButton(Text(viewModel.currentState == .success ? L.registerPhoneCodeInputSuccess() : L.registerContactsImportButton()),
                         isEnabled: $viewModel.hasSelectedItem,
