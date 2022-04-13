@@ -58,3 +58,13 @@ extension BuySellFilterView {
         }
     }
 }
+
+#if DEBUG || DEVEL
+struct BuySellFilterViewPreview: PreviewProvider {
+    static var previews: some View {
+        BuySellFilterView()
+            .background(Color.black)
+            .previewDevice("iPhone 11")
+    }
+}
+#endif

@@ -23,6 +23,9 @@ struct BuySellView: View {
                     .padding(.top, Appearance.GridGuide.mediumPadding2)
 
                 BuySellFilterView()
+
+                BuySellFeedView(title: "I’ll be wearing a red hat, Don’t text me before 9am — I love to sleep...")
+                    .padding(.horizontal, Appearance.GridGuide.padding)
             }
             .frame(maxHeight: .infinity, alignment: .top)
             .background(Color.black)
