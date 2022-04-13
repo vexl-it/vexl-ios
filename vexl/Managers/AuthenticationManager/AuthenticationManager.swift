@@ -32,11 +32,16 @@ protocol UserSecurityType {
     var userKeys: UserKeys? { get }
     var userSignature: String? { get }
     var userHash: String? { get }
+    var userFacebookHash: String? { get }
+    var userFacebookSignature: String? { get }
     var securityHeader: SecurityHeader? { get }
+    var facebookSecurityHeader: SecurityHeader? { get }
 
     func setUserSignature(_ userSignature: UserSignature)
     func setUserKeys(_ userKeys: UserKeys)
     func setHash(_ challengeValidation: ChallengeValidation)
+    func setFacebookUser(id: String?, token: String?)
+    func setFacebookSignature(_ facebookSignature: FacebookUserSignature)
 }
 
 final class AuthenticationManager: AuthenticationManagerType, TokenHandlerType {
@@ -136,7 +141,6 @@ extension AuthenticationManager: UserSecurityType {
     var securityHeader: SecurityHeader? {
         SecurityHeader(hash: userHash, publicKey: userKeys?.publicKey, signature: userSignature)
     }
-
     var facebookSecurityHeader: SecurityHeader? {
         SecurityHeader(hash: userFacebookHash, publicKey: userKeys?.publicKey, signature: userFacebookSignature)
     }
