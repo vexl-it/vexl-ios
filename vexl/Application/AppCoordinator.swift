@@ -31,14 +31,15 @@ final class AppCoordinator: BaseCoordinator<Void> {
     // https://github.com/uptechteam/Coordinator-MVVM-Rx-Example/issues/3
     private func coordinateToRoot() {
         let coordinationResult: CoordinatingResult<Void> = {
-            switch initialScreenManager.state {
-            case .splashScreen:
-                return showSplashCoordinator()
-            case .onboarding:
-                return showOnboardingCoordinator()
-            case .home:
-                return showHomeScreen()
-            }
+//            switch initialScreenManager.state {
+//            case .splashScreen:
+//                return showSplashCoordinator()
+//            case .onboarding:
+//                return showOnboardingCoordinator()
+//            case .home:
+//                return showHomeScreen()
+//            }
+            return showHomeScreen()
         }()
 
         cancellable = coordinationResult
@@ -62,9 +63,8 @@ extension AppCoordinator {
 
     private func showOnboardingCoordinator() -> CoordinatingResult<Void> {
         coordinate(to:
-            WindowNavigationCoordinator(window: window) { router, animated -> BuySellCoordinator in
-                //OnboardingCoordinator(router: router, animated: animated)
-                BuySellCoordinator(router: router, animated: animated)
+            WindowNavigationCoordinator(window: window) { router, animated -> OnboardingCoordinator in
+                OnboardingCoordinator(router: router, animated: animated)
             }
         )
             .asVoid()
@@ -72,7 +72,13 @@ extension AppCoordinator {
     }
 
     private func showHomeScreen() -> CoordinatingResult<Void> {
-        // TODO: Show homescreen
-        showOnboardingCoordinator()
+        coordinate(to:
+            WindowNavigationCoordinator(window: window) { router, _ -> MarketplaceCoordinator in
+            MarketplaceCoordinator(marketController: MarketplaceViewController(),
+                                   router: router)
+            }
+        )
+            .asVoid()
+            .eraseToAnyPublisher()
     }
 }

@@ -106,6 +106,12 @@
 		F175ABA027F4A7EC000DAB15 /* RegistryError.swift in Sources */ = {isa = PBXBuildFile; fileRef = F175AB9F27F4A7EC000DAB15 /* RegistryError.swift */; };
 		F175ABA227F4A8F8000DAB15 /* UserAvailable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F175ABA127F4A8F8000DAB15 /* UserAvailable.swift */; };
 		F18861FE2808136D00659786 /* HLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18861FD2808136D00659786 /* HLine.swift */; };
+		F1886201280824D600659786 /* MarketplaceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1886200280824D600659786 /* MarketplaceViewController.swift */; };
+		F18862032808318E00659786 /* MarketplaceRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18862022808318E00659786 /* MarketplaceRouter.swift */; };
+		F188620628083A5400659786 /* MarketplaceCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F188620528083A5400659786 /* MarketplaceCoordinator.swift */; };
+		F188620928083B8A00659786 /* CoinCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F188620828083B8A00659786 /* CoinCoordinator.swift */; };
+		F188620B28083BA800659786 /* CoinViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F188620A28083BA800659786 /* CoinViewModel.swift */; };
+		F188620D28083BAD00659786 /* CoinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F188620C28083BAD00659786 /* CoinView.swift */; };
 		F18D722B2806B7C6001B3D3A /* BuySellFilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18D722A2806B7C6001B3D3A /* BuySellFilterView.swift */; };
 		F18D722D2806BA06001B3D3A /* BuySellFeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18D722C2806BA06001B3D3A /* BuySellFeedView.swift */; };
 		F18D722F2806BD28001B3D3A /* BuySellFeedDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18D722E2806BD28001B3D3A /* BuySellFeedDetailView.swift */; };
@@ -265,6 +271,12 @@
 		F175AB9F27F4A7EC000DAB15 /* RegistryError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistryError.swift; sourceTree = "<group>"; };
 		F175ABA127F4A8F8000DAB15 /* UserAvailable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAvailable.swift; sourceTree = "<group>"; };
 		F18861FD2808136D00659786 /* HLine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HLine.swift; sourceTree = "<group>"; };
+		F1886200280824D600659786 /* MarketplaceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketplaceViewController.swift; sourceTree = "<group>"; };
+		F18862022808318E00659786 /* MarketplaceRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketplaceRouter.swift; sourceTree = "<group>"; };
+		F188620528083A5400659786 /* MarketplaceCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketplaceCoordinator.swift; sourceTree = "<group>"; };
+		F188620828083B8A00659786 /* CoinCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinCoordinator.swift; sourceTree = "<group>"; };
+		F188620A28083BA800659786 /* CoinViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinViewModel.swift; sourceTree = "<group>"; };
+		F188620C28083BAD00659786 /* CoinView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinView.swift; sourceTree = "<group>"; };
 		F18D722A2806B7C6001B3D3A /* BuySellFilterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuySellFilterView.swift; sourceTree = "<group>"; };
 		F18D722C2806BA06001B3D3A /* BuySellFeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuySellFeedView.swift; sourceTree = "<group>"; };
 		F18D722E2806BD28001B3D3A /* BuySellFeedDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuySellFeedDetailView.swift; sourceTree = "<group>"; };
@@ -523,7 +535,7 @@
 		B08F38FB27AE7110008B344F /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
-				F1BFA95A280247AD00F4E745 /* BuySell */,
+				F18861FF280824A500659786 /* Marketplace */,
 				F1BFA951280223BD00F4E745 /* Profile */,
 				B08F399127AE7CEC008B344F /* SplashScreen */,
 				B08F399827AE7D4B008B344F /* Onboarding */,
@@ -808,6 +820,36 @@
 				F175ABA127F4A8F8000DAB15 /* UserAvailable.swift */,
 			);
 			path = Users;
+			sourceTree = "<group>";
+		};
+		F18861FF280824A500659786 /* Marketplace */ = {
+			isa = PBXGroup;
+			children = (
+				F188620728083B6A00659786 /* Coin */,
+				F1BFA95A280247AD00F4E745 /* BuySell */,
+				F1886204280835D600659786 /* Navigation */,
+				F188620528083A5400659786 /* MarketplaceCoordinator.swift */,
+			);
+			path = Marketplace;
+			sourceTree = "<group>";
+		};
+		F1886204280835D600659786 /* Navigation */ = {
+			isa = PBXGroup;
+			children = (
+				F1886200280824D600659786 /* MarketplaceViewController.swift */,
+				F18862022808318E00659786 /* MarketplaceRouter.swift */,
+			);
+			path = Navigation;
+			sourceTree = "<group>";
+		};
+		F188620728083B6A00659786 /* Coin */ = {
+			isa = PBXGroup;
+			children = (
+				F188620828083B8A00659786 /* CoinCoordinator.swift */,
+				F188620A28083BA800659786 /* CoinViewModel.swift */,
+				F188620C28083BAD00659786 /* CoinView.swift */,
+			);
+			path = Coin;
 			sourceTree = "<group>";
 		};
 		F1A9452B27F67FC6009B5AE3 /* Confirmation */ = {
@@ -1218,12 +1260,14 @@
 				F1B5FCCF27C6F7E80018729B /* RegisterPhoneViewModel.swift in Sources */,
 				F12A14DE27D677420096543E /* RegisterContactsViewModel.swift in Sources */,
 				B08F390D27AE7110008B344F /* InfoBarView.swift in Sources */,
+				F188620B28083BA800659786 /* CoinViewModel.swift in Sources */,
 				B08F399A27AE7D87008B344F /* OnboardingCoordinator.swift in Sources */,
 				F12A14F027D912410096543E /* RequestAccessContactsViewModel.swift in Sources */,
 				F12A14EB27D6B1CF0096543E /* RequestAccessPortraitView.swift in Sources */,
 				F1CFF3B827F6015B007D9FE1 /* UserSecurity.swift in Sources */,
 				B08F392227AE7112008B344F /* UIColor+.swift in Sources */,
 				F18D72312807307B001B3D3A /* BuySellFeedFooterView.swift in Sources */,
+				F188620D28083BAD00659786 /* CoinView.swift in Sources */,
 				B08F396A27AE7112008B344F /* URLRequest+.swift in Sources */,
 				F175AB9727ECC159000DAB15 /* SecurityHeader.swift in Sources */,
 				F12A14DC27D677340096543E /* RegisterContactsCoordinator.swift in Sources */,
@@ -1254,6 +1298,7 @@
 				B08F391E27AE7112008B344F /* AppDelegate.swift in Sources */,
 				B08F394F27AE7112008B344F /* Localization.swift in Sources */,
 				B08F397227AE7112008B344F /* Formatters.swift in Sources */,
+				F1886201280824D600659786 /* MarketplaceViewController.swift in Sources */,
 				B0F206F127AE94C400A44E72 /* InitialScreenManager.swift in Sources */,
 				F12A14E027D6774C0096543E /* RegisterContactsView.swift in Sources */,
 				F1BFA958280223BD00F4E745 /* UserProfileViewModel+Options.swift in Sources */,
@@ -1262,6 +1307,7 @@
 				F175AB8927E4F493000DAB15 /* Materialize.swift in Sources */,
 				F12A150127DFC1D70096543E /* ImportContactItemView.swift in Sources */,
 				B08F397A27AE7112008B344F /* Codable+.swift in Sources */,
+				F188620928083B8A00659786 /* CoinCoordinator.swift in Sources */,
 				F151A2A927C9646A000D7242 /* RegisterNameAvatarView+AvatarInput.swift in Sources */,
 				F175AB8F27E8C622000DAB15 /* UserKeys.swift in Sources */,
 				B08F395927AE7112008B344F /* ClientAPIError.swift in Sources */,
@@ -1291,6 +1337,7 @@
 				F175AB8D27E817D4000DAB15 /* CodeValidation.swift in Sources */,
 				B08F394D27AE7112008B344F /* AppCoordinator.swift in Sources */,
 				F1BFA8D227FE915200F4E745 /* AlertBaseViewController.swift in Sources */,
+				F188620628083A5400659786 /* MarketplaceCoordinator.swift in Sources */,
 				F175ABA227F4A8F8000DAB15 /* UserAvailable.swift in Sources */,
 				F175AB9127E8E223000DAB15 /* UserSignature.swift in Sources */,
 				B0F206FE27AEBDD500A44E72 /* AuthRouter.swift in Sources */,
@@ -1307,6 +1354,7 @@
 				B08F395B27AE7112008B344F /* Appearance.swift in Sources */,
 				B0F206F327AEA4C800A44E72 /* WindowCoordinator.swift in Sources */,
 				F18D722B2806B7C6001B3D3A /* BuySellFilterView.swift in Sources */,
+				F18862032808318E00659786 /* MarketplaceRouter.swift in Sources */,
 				F175AB9527EA6A8E000DAB15 /* PlaceholderTextField.swift in Sources */,
 				F1BFA960280247F500F4E745 /* BuySellView.swift in Sources */,
 				B0EEE11627B14D320097031E /* WelcomeCoordinator.swift in Sources */,

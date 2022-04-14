@@ -14,16 +14,9 @@ struct BuySellView: View {
     @ObservedObject var viewModel: BuySellViewModel
 
     var body: some View {
-        VStack {
-            ExpandableCoinVariationHeaderView(currencySymbol: viewModel.currencySymbol,
-                                              amount: viewModel.amount)
-
-            content
-                .background(Color.black.edgesIgnoringSafeArea(.bottom))
-        }
-        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
-        .background(Appearance.Colors.green1
-                        .edgesIgnoringSafeArea(.all))
+        content
+            .background(Color.black.edgesIgnoringSafeArea(.bottom))
+            .cornerRadius(Appearance.GridGuide.buttonCorner, corners: [.topLeft, .topRight])
     }
 
     private var content: some View {
@@ -31,7 +24,9 @@ struct BuySellView: View {
             BuySellSegmentView()
                 .padding(.top, Appearance.GridGuide.mediumPadding2)
 
-            BuySellFilterView()
+            BuySellFilterView {
+                viewModel.route.send(.showOffer)
+            }
 
             ScrollView {
                 ForEach(viewModel.feedItems) { item in

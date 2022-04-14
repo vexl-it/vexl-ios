@@ -10,6 +10,8 @@ import SwiftUI
 
 struct BuySellFilterView: View {
 
+    let action: () -> Void
+
     var body: some View {
         HStack(spacing: Appearance.GridGuide.smallPadding) {
             FilterButton(title: "Revolut") {
@@ -27,7 +29,7 @@ struct BuySellFilterView: View {
             Spacer()
 
             Button("+") {
-                print("1")
+                action()
             }
             .textStyle(.h3)
             .foregroundColor(Appearance.Colors.green5)
@@ -62,7 +64,7 @@ extension BuySellFilterView {
 #if DEBUG || DEVEL
 struct BuySellFilterViewPreview: PreviewProvider {
     static var previews: some View {
-        BuySellFilterView()
+        BuySellFilterView {}
             .background(Color.black)
             .previewDevice("iPhone 11")
     }

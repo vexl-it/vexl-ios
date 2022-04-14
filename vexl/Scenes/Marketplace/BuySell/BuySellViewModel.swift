@@ -33,7 +33,7 @@ final class BuySellViewModel: ViewModelType, ObservableObject {
     // MARK: - Coordinator Bindings
 
     enum Route: Equatable {
-        case dismissTapped
+        case showOffer
         case continueTapped
     }
 
