@@ -105,6 +105,7 @@
 		F175AB9727ECC159000DAB15 /* SecurityHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = F175AB9627ECC159000DAB15 /* SecurityHeader.swift */; };
 		F175ABA027F4A7EC000DAB15 /* RegistryError.swift in Sources */ = {isa = PBXBuildFile; fileRef = F175AB9F27F4A7EC000DAB15 /* RegistryError.swift */; };
 		F175ABA227F4A8F8000DAB15 /* UserAvailable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F175ABA127F4A8F8000DAB15 /* UserAvailable.swift */; };
+		F18861FE2808136D00659786 /* HLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18861FD2808136D00659786 /* HLine.swift */; };
 		F18D722B2806B7C6001B3D3A /* BuySellFilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18D722A2806B7C6001B3D3A /* BuySellFilterView.swift */; };
 		F18D722D2806BA06001B3D3A /* BuySellFeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18D722C2806BA06001B3D3A /* BuySellFeedView.swift */; };
 		F18D722F2806BD28001B3D3A /* BuySellFeedDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18D722E2806BD28001B3D3A /* BuySellFeedDetailView.swift */; };
@@ -263,6 +264,7 @@
 		F175AB9627ECC159000DAB15 /* SecurityHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecurityHeader.swift; sourceTree = "<group>"; };
 		F175AB9F27F4A7EC000DAB15 /* RegistryError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistryError.swift; sourceTree = "<group>"; };
 		F175ABA127F4A8F8000DAB15 /* UserAvailable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAvailable.swift; sourceTree = "<group>"; };
+		F18861FD2808136D00659786 /* HLine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HLine.swift; sourceTree = "<group>"; };
 		F18D722A2806B7C6001B3D3A /* BuySellFilterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuySellFilterView.swift; sourceTree = "<group>"; };
 		F18D722C2806BA06001B3D3A /* BuySellFeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuySellFeedView.swift; sourceTree = "<group>"; };
 		F18D722E2806BD28001B3D3A /* BuySellFeedDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuySellFeedDetailView.swift; sourceTree = "<group>"; };
@@ -513,6 +515,7 @@
 				F151A2A327C87074000D7242 /* BorderedTextField.swift */,
 				F175AB8A27E8062A000DAB15 /* LoadingIndicatorView.swift */,
 				F175AB9427EA6A8E000DAB15 /* PlaceholderTextField.swift */,
+				F18861FD2808136D00659786 /* HLine.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1297,6 +1300,7 @@
 				F151A2A227C86CA6000D7242 /* RegistrationCardView.swift in Sources */,
 				F1BFA95E280247EE00F4E745 /* BuySellViewModel.swift in Sources */,
 				B08F391327AE7112008B344F /* ManagerAssembly.swift in Sources */,
+				F18861FE2808136D00659786 /* HLine.swift in Sources */,
 				F14D29C727BFD93C00D1CD85 /* ButtonStyle.swift in Sources */,
 				F1BFA9762804426500F4E745 /* BuySellSegmentView.swift in Sources */,
 				B08F394527AE7112008B344F /* ReusableView.swift in Sources */,

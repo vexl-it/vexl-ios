@@ -14,6 +14,9 @@ struct BuySellSegmentView: View {
         case buy, sell
     }
 
+    private let selectorHeight: CGFloat = 3
+    private let lineWidth: CGFloat = 2
+
     @State var selectedOption = Option.buy
 
     var body: some View {
@@ -38,62 +41,30 @@ struct BuySellSegmentView: View {
                 .frame(maxWidth: .infinity)
             }
 
-            //selectorView
-            HLine()
-                .stroke(style: StrokeStyle(lineWidth: 2, dash: [8]))
-                .foregroundColor(Appearance.Colors.gray1)
-                .frame(height: 3)
+            selectorView
         }
-        .overlay(
-            GeometryReader { reader in
-                Color.white
-                    .frame(width: reader.size.width * 0.5, height: 3, alignment: .bottom)
-            }
-            .frame(height: 3, alignment: .bottom)
-        )
-//        .overlay(
-//            VStack {
-//                Spacer()
-//
-//                ZStack {
-//                    HLine()
-//                        .stroke(style: StrokeStyle(lineWidth: 2, dash: [8]))
-//                        .foregroundColor(Appearance.Colors.gray1)
-//
-//                    selectorView
-//                }.frame(height: 3, alignment: .bottom)
-//            }
-//        )
     }
 
     @ViewBuilder var selectorView: some View {
         ZStack {
             HLine()
-                .stroke(style: StrokeStyle(lineWidth: 2, dash: [8]))
+                .stroke(style: StrokeStyle(lineWidth: lineWidth, dash: [8]))
                 .foregroundColor(Appearance.Colors.gray1)
 
             GeometryReader { reader in
                 Color.white
-                    .frame(width: reader.size.width * 0.5, height: 3)
+                    .frame(width: reader.size.width * 0.5, height: selectorHeight)
                     .offset(x: selectedOption == .buy ? 0 : reader.size.width * 0.5)
+                    .animation(.easeIn, value: selectedOption)
             }
-        }.frame(height: 3, alignment: .bottom)
-    }
-}
-
-struct HLine: Shape {
-    func path(in rect: CGRect) -> Path {
-        Path { path in
-            path.move(to: CGPoint(x: rect.minX, y: rect.midY))
-            path.addLine(to: CGPoint(x: rect.maxX, y: rect.midY))
-        }
+        }.frame(height: selectorHeight, alignment: .bottom)
     }
 }
 
 #if DEBUG || DEVEL
 struct BuySellSegmentViewPreview: PreviewProvider {
     static var previews: some View {
-        BuySellSegmentView(selectedOption: .sell)
+        BuySellSegmentView(selectedOption: .buy)
             .background(Color.black)
             .previewDevice("iPhone 11")
     }
