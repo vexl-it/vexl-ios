@@ -34,3 +34,61 @@ struct CoinVariationHeaderView: View {
         .frame(alignment: .top)
     }
 }
+
+struct ExpandableCoinVariationHeaderView: View {
+
+    var currencySymbol: String
+    var amount: String
+
+    @State var isExpanded = false
+
+    var body: some View {
+        VStack {
+            CoinVariationHeaderView(currencySymbol: currencySymbol,
+                                    amount: amount)
+
+            if isExpanded {
+                graphView
+                PeriodSelectorView()
+            }
+        }
+        .onTapGesture {
+            withAnimation(.easeInOut) {
+                isExpanded.toggle()
+            }
+        }
+    }
+
+    private var graphView: some View {
+        VStack(alignment: .center) {
+            Text("Graph should go there")
+                .foregroundColor(.white)
+        }
+        .frame(height: 100)
+    }
+}
+
+struct PeriodSelectorView: View {
+    var body: some View {
+        HStack {
+            Group {
+                Spacer()
+                Text("1 day")
+                Spacer()
+                Text("1 day")
+                Spacer()
+                Text("1 day")
+                Spacer()
+            }
+            Group {
+                Text("1 day")
+                Spacer()
+                Text("1 day")
+                Spacer()
+                Text("1 day")
+                Spacer()
+            }
+        }
+        .frame(height: 25)
+    }
+}

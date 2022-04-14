@@ -55,7 +55,8 @@ struct BuySellSegmentView: View {
                 Color.white
                     .frame(width: reader.size.width * 0.5, height: selectorHeight)
                     .offset(x: selectedOption == .buy ? 0 : reader.size.width * 0.5)
-                    .animation(.easeIn, value: selectedOption)
+                    .animation(.easeIn(duration: 0.15),
+                               value: selectedOption)
             }
         }.frame(height: selectorHeight, alignment: .bottom)
     }

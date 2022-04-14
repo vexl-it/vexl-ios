@@ -15,25 +15,35 @@ struct BuySellView: View {
 
     var body: some View {
         VStack {
-            CoinVariationHeaderView(currencySymbol: viewModel.currencySymbol,
-                                    amount: viewModel.amount)
+            ExpandableCoinVariationHeaderView(currencySymbol: viewModel.currencySymbol,
+                                              amount: viewModel.amount)
 
-            VStack(spacing: Appearance.GridGuide.mediumPadding2) {
-                BuySellSegmentView()
-                    .padding(.top, Appearance.GridGuide.mediumPadding2)
-
-                BuySellFilterView()
-
-                BuySellFeedView(title: "I’ll be wearing a red hat, Don’t text me before 9am — I love to sleep...")
-                    .padding(.horizontal, Appearance.GridGuide.padding)
-            }
-            .frame(maxHeight: .infinity, alignment: .top)
-            .background(Color.black)
-            .cornerRadius(Appearance.GridGuide.padding)
-            .edgesIgnoringSafeArea(.bottom)
+            content
+                .background(Color.black.edgesIgnoringSafeArea(.bottom))
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
-        .background(Appearance.Colors.green1.edgesIgnoringSafeArea(.all))
+        .background(Appearance.Colors.green1
+                        .edgesIgnoringSafeArea(.all))
+    }
+
+    private var content: some View {
+        VStack(spacing: Appearance.GridGuide.mediumPadding2) {
+            BuySellSegmentView()
+                .padding(.top, Appearance.GridGuide.mediumPadding2)
+
+            BuySellFilterView()
+
+            ScrollView {
+                ForEach(viewModel.feedItems) { item in
+                    BuySellFeedView(title: item.title,
+                                    isRequested: item.isRequested,
+                                    location: item.location)
+                        .padding(.horizontal, Appearance.GridGuide.point)
+                }
+            }
+        }
+        .frame(maxHeight: .infinity, alignment: .top)
+        .cornerRadius(Appearance.GridGuide.padding)
     }
 }
 
