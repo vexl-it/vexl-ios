@@ -10,25 +10,23 @@ import SwiftUI
 
 struct BuySellFilterView: View {
 
+    let items: [FilterItem]
+    let actionTitle: String
+    let filterAction: (Int) -> Void
     let action: () -> Void
 
     var body: some View {
         HStack(spacing: Appearance.GridGuide.smallPadding) {
-            FilterButton(title: "Revolut") {
-                print("1")
-            }
-
-            FilterButton(title: "up to 10K") {
-                print("1")
-            }
-
-            FilterButton(title: "▽") {
-                print("1")
+            ForEach(items.indices, id: \.self) { index in
+                let item = items[index]
+                FilterButton(title: item.title) {
+                    filterAction(index)
+                }
             }
 
             Spacer()
 
-            Button("+") {
+            Button(actionTitle) {
                 action()
             }
             .textStyle(.h3)
@@ -43,6 +41,11 @@ struct BuySellFilterView: View {
 }
 
 extension BuySellFilterView {
+
+    struct FilterItem: Identifiable {
+        let id: Int
+        let title: String
+    }
 
     private struct FilterButton: View {
 
@@ -64,7 +67,14 @@ extension BuySellFilterView {
 #if DEBUG || DEVEL
 struct BuySellFilterViewPreview: PreviewProvider {
     static var previews: some View {
-        BuySellFilterView {}
+        BuySellFilterView(
+            items: [
+                BuySellFilterView.FilterItem(id: 1, title: "Hello")
+            ],
+            actionTitle: "Offer",
+            filterAction: { _ in },
+            action: { }
+        )
             .background(Color.black)
             .previewDevice("iPhone 11")
     }

@@ -825,9 +825,9 @@
 		F18861FF280824A500659786 /* Marketplace */ = {
 			isa = PBXGroup;
 			children = (
+				F1886204280835D600659786 /* Navigation */,
 				F188620728083B6A00659786 /* Coin */,
 				F1BFA95A280247AD00F4E745 /* BuySell */,
-				F1886204280835D600659786 /* Navigation */,
 				F188620528083A5400659786 /* MarketplaceCoordinator.swift */,
 			);
 			path = Marketplace;

@@ -16,17 +16,16 @@ struct BuySellView: View {
     var body: some View {
         content
             .background(Color.black.edgesIgnoringSafeArea(.bottom))
-            .cornerRadius(Appearance.GridGuide.buttonCorner, corners: [.topLeft, .topRight])
+            .cornerRadius(Appearance.GridGuide.buttonCorner,
+                          corners: [.topLeft, .topRight])
     }
 
     private var content: some View {
         VStack(spacing: Appearance.GridGuide.mediumPadding2) {
-            BuySellSegmentView()
+            BuySellSegmentView(selectedOption: $viewModel.selectedOption)
                 .padding(.top, Appearance.GridGuide.mediumPadding2)
 
-            BuySellFilterView {
-                viewModel.route.send(.showOffer)
-            }
+            filter
 
             ScrollView {
                 ForEach(viewModel.feedItems) { item in
@@ -39,6 +38,29 @@ struct BuySellView: View {
         }
         .frame(maxHeight: .infinity, alignment: .top)
         .cornerRadius(Appearance.GridGuide.padding)
+    }
+
+    private var filter: some View {
+        switch viewModel.selectedOption {
+        case .buy:
+            return BuySellFilterView(items: viewModel.buyFilters,
+                                     actionTitle: "+",
+                                     filterAction: { index in
+                print("filter from \(index) has been tapped")
+            },
+                                     action: {
+                print("+ is pressed")
+            })
+        case .sell:
+            return BuySellFilterView(items: viewModel.sellFilters,
+                                     actionTitle: "Offer",
+                                     filterAction: { index in
+                print("filter from \(index) has been tapped")
+            },
+                                     action: {
+                viewModel.route.send(.showOffer)
+            })
+        }
     }
 }
 

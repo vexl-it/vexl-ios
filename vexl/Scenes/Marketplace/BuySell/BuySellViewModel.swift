@@ -18,6 +18,10 @@ struct FeedItem: Identifiable {
 
 final class BuySellViewModel: ViewModelType, ObservableObject {
 
+    enum Option {
+        case buy, sell
+    }
+
     // MARK: - Actions Bindings
 
     enum UserAction: Equatable {
@@ -29,6 +33,7 @@ final class BuySellViewModel: ViewModelType, ObservableObject {
     // MARK: - View Bindings
 
     @Published var primaryActivity: Activity = .init()
+    @Published var selectedOption: Option = .buy
 
     // MARK: - Coordinator Bindings
 
@@ -46,6 +51,22 @@ final class BuySellViewModel: ViewModelType, ObservableObject {
     }
     var amount: String {
         "1234.4"
+    }
+
+    var buyFilters: [BuySellFilterView.FilterItem] {
+        [
+            .init(id: 1, title: "Revolut"),
+            .init(id: 2, title: "up to 10K"),
+            .init(id: 3, title: "▽")
+        ]
+    }
+
+    var sellFilters: [BuySellFilterView.FilterItem] {
+        [
+            .init(id: 4, title: "Revolut2"),
+            .init(id: 5, title: "up to 20K"),
+            .init(id: 6, title: "▽")
+        ]
     }
 
     var feedItems: [FeedItem] = [

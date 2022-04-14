@@ -10,14 +10,10 @@ import SwiftUI
 
 struct BuySellSegmentView: View {
 
-    enum Option {
-        case buy, sell
-    }
-
     private let selectorHeight: CGFloat = 3
     private let lineWidth: CGFloat = 2
 
-    @State var selectedOption = Option.buy
+    @Binding var selectedOption: BuySellViewModel.Option
 
     var body: some View {
         VStack(spacing: Appearance.GridGuide.mediumPadding2) {
@@ -65,7 +61,7 @@ struct BuySellSegmentView: View {
 #if DEBUG || DEVEL
 struct BuySellSegmentViewPreview: PreviewProvider {
     static var previews: some View {
-        BuySellSegmentView(selectedOption: .buy)
+        BuySellSegmentView(selectedOption: .constant(.buy))
             .background(Color.black)
             .previewDevice("iPhone 11")
     }
