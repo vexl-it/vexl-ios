@@ -67,7 +67,7 @@ final class UserService: BaseService, UserServiceType {
     func createUser(username: String, avatar: String?) -> AnyPublisher<User, Error> {
         request(type: User.self, endpoint: UserRouter.createUser(username: username,
                                                                  avatar: avatar,
-                                                                 imageExtension: "jpeg"))
+                                                                 imageExtension: Constants.jpegFormat))
             .withUnretained(self)
             .handleEvents(receiveOutput: { owner, response in
                 let avatarData = avatar?.dataFromBase64

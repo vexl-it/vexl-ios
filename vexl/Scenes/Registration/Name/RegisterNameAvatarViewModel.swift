@@ -17,7 +17,7 @@ final class RegisterNameAvatarViewModel: ViewModelType {
     enum ImageSource {
         case photoAlbum, camera
     }
-    
+
     // MARK: - View State
 
     enum State {
