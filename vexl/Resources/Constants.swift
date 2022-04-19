@@ -51,4 +51,6 @@ struct Constants {
         encoder.dateEncodingStrategy = .formatted(Formatters.dateApiFormatter)
         return encoder
     }()
+
+    static let jpegFormat = "jpeg"
 }

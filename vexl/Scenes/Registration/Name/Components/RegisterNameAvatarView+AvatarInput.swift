@@ -53,7 +53,7 @@ extension RegisterNameAvatarView {
         var deleteAction: () -> Void
 
         private var defaultImageSize: CGSize {
-            R.image.onboarding.addAvatar()?.size ?? Appearance.GridGuide.avatarSize
+            Appearance.GridGuide.avatarSize
         }
 
         var body: some View {
@@ -67,7 +67,7 @@ extension RegisterNameAvatarView {
                             Image(uiImage: image)
                                 .resizable()
                                 .frame(size: defaultImageSize)
-                                .cornerRadius(defaultImageSize.height * 0.5)
+                                .clipShape(Circle())
                         } else {
                             Image(R.image.onboarding.addAvatar.name)
                         }
