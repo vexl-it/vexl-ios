@@ -40,8 +40,7 @@ class RegisterNameAvatarCoordinator: BaseCoordinator<RouterResult<Void>> {
             .flatMap { owner, route -> CoordinatingResult<RouterResult<Void>> in
                 switch route {
                 case .continueTapped:
-                    return owner.showRegisterPhoneContacts(router: owner.router,
-                                                           avatar: viewModel.avatar?.jpegData(compressionQuality: 1))
+                    return owner.showRegisterPhoneContacts(router: owner.router)
                 }
             }
             .sink(receiveValue: { _ in })
@@ -59,8 +58,8 @@ class RegisterNameAvatarCoordinator: BaseCoordinator<RouterResult<Void>> {
 }
 
 extension RegisterNameAvatarCoordinator {
-    private func showRegisterPhoneContacts(router: Router, avatar: Data?) -> CoordinatingResult<RouterResult<Void>> {
-        coordinate(to: RegisterContactsCoordinator(router: router, animated: true, avatar: avatar))
+    private func showRegisterPhoneContacts(router: Router) -> CoordinatingResult<RouterResult<Void>> {
+        coordinate(to: RegisterContactsCoordinator(router: router, animated: true))
             .flatMap { result -> CoordinatingResult<RouterResult<Void>> in
                 guard result != .dismissedByRouter else {
                     return Just(result).eraseToAnyPublisher()

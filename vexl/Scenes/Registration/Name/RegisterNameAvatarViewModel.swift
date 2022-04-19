@@ -132,6 +132,8 @@ final class RegisterNameAvatarViewModel: ViewModelType {
             .sink { owner, _ in
                 owner.route.send(.continueTapped)
                 owner.currentState = .usernameInput
+                owner.username = ""
+                owner.avatar = nil
             }
             .store(in: cancelBag)
 

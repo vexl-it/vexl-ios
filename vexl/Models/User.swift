@@ -12,7 +12,6 @@ struct User: Decodable {
     let userId: Int
     let username: String
     let avatar: String?
-    let avatarImage: Data?
     let publicKey: String
 
     var avatarURL: String? {
@@ -21,4 +20,6 @@ struct User: Decodable {
         }
         return "\(Constants.API.userBaseURLString)/\(avatar)"
     }
+
+    var avatarImage: Data?
 }

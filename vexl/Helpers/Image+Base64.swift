@@ -20,4 +20,8 @@ extension String {
         }
         return UIImage(data: imageData)
     }
+
+    var dataFromBase64: Data? {
+        Data(base64Encoded: self, options: .ignoreUnknownCharacters)
+    }
 }

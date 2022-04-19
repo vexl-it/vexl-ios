@@ -69,8 +69,9 @@ final class UserService: BaseService, UserServiceType {
                                                                  avatar: avatar,
                                                                  imageExtension: "jpeg"))
             .withUnretained(self)
-            .handleEvents(receiveOutput: { owner, user in
-                owner.authenticationManager.setUser(user)
+            .handleEvents(receiveOutput: { owner, response in
+                let avatarData = avatar?.dataFromBase64
+                owner.authenticationManager.setUser(response, withAvatar: avatarData)
             })
             .map(\.1)
             .eraseToAnyPublisher()
