@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct FacebookContacts: Decodable {
+struct FacebookUserData: Decodable {
 
     var facebookUser: FacebookUser
 

@@ -186,7 +186,7 @@ class ImportContactsViewModel: ObservableObject {
         hasSelectedItem = false
     }
 
-    func fetchContacts() {
+    func fetchContacts() throws {
         fatalError("Must implement fetch contacts")
     }
 }

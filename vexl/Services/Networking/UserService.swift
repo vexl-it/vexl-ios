@@ -16,7 +16,7 @@ protocol UserServiceType {
     func validateChallenge(key: String, signature: String) -> AnyPublisher<ChallengeValidation, Error>
     func validateUsername(username: String) -> AnyPublisher<UserAvailable, Error>
     func createUser(username: String, avatar: String?) -> AnyPublisher<User, Error>
-    func facebookSignature(id: String) -> AnyPublisher<FacebookUserSignature, Error>
+    func facebookSignature(id: String) -> AnyPublisher<ChallengeValidation, Error>
     // temporal
     func generateKeys() -> AnyPublisher<UserKeys, Error>
     func generateSignature(challenge: String, privateKey: String) -> AnyPublisher<UserSignature, Error>
@@ -69,8 +69,8 @@ final class UserService: BaseService, UserServiceType {
             .eraseToAnyPublisher()
     }
 
-    func facebookSignature(id: String) -> AnyPublisher<FacebookUserSignature, Error> {
-        request(type: FacebookUserSignature.self, endpoint: UserRouter.facebookSignature(id: id))
+    func facebookSignature(id: String) -> AnyPublisher<ChallengeValidation, Error> {
+        request(type: ChallengeValidation.self, endpoint: UserRouter.facebookSignature(id: id))
             .withUnretained(self)
             .handleEvents(receiveOutput: { owner, response in
                 owner.authenticationManager.setFacebookSignature(response)

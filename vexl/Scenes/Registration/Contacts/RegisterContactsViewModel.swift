@@ -115,7 +115,7 @@ final class RegisterContactsViewModel: ViewModelType {
                     .createUser(forFacebook: false)
                     .track(activity: owner.primaryActivity)
                     .materialize()
-                    .compactMap { $0.value }
+                    .compactMap(\.value)
                     .eraseToAnyPublisher()
             }
             .withUnretained(self)
@@ -129,7 +129,7 @@ final class RegisterContactsViewModel: ViewModelType {
             .sink { owner, _ in
                 owner.currentState = .importPhoneContacts
                 owner.phoneViewModel.currentState = .initial
-                owner.importPhoneContactsViewModel.fetchContacts()
+                try? owner.importPhoneContactsViewModel.fetchContacts()
             }
             .store(in: cancelBag)
     }
@@ -191,7 +191,7 @@ final class RegisterContactsViewModel: ViewModelType {
                     .createUser(forFacebook: true)
                     .track(activity: owner.primaryActivity)
                     .materialize()
-                    .compactMap { $0.value }
+                    .compactMap(\.value)
                     .eraseToAnyPublisher()
             }
             .withUnretained(self)
@@ -205,9 +205,17 @@ final class RegisterContactsViewModel: ViewModelType {
             .sink { owner, _ in
                 owner.currentState = .importFacebookContacts
                 owner.facebookViewModel.currentState = .initial
-                owner.importFacebookContactsViewModel.fetchContacts()
+                owner.fetchFacebookContacts()
             }
             .store(in: cancelBag)
+    }
+
+    private func fetchFacebookContacts() {
+        do {
+            try importFacebookContactsViewModel.fetchContacts()
+        } catch let facebookError {
+            error = facebookError
+        }
     }
 
     private func setupImportFacebookContactsBindings() {

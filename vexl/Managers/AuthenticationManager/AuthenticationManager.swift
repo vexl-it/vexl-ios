@@ -41,7 +41,7 @@ protocol UserSecurityType {
     func setUserKeys(_ userKeys: UserKeys)
     func setHash(_ challengeValidation: ChallengeValidation)
     func setFacebookUser(id: String?, token: String?)
-    func setFacebookSignature(_ facebookSignature: FacebookUserSignature)
+    func setFacebookSignature(_ facebookSignature: ChallengeValidation)
 }
 
 final class AuthenticationManager: AuthenticationManagerType, TokenHandlerType {
@@ -163,7 +163,7 @@ extension AuthenticationManager: UserSecurityType {
         self.currentUser?.facebookToken = token
     }
 
-    func setFacebookSignature(_ facebookSignature: FacebookUserSignature) {
+    func setFacebookSignature(_ facebookSignature: ChallengeValidation) {
         self.userSecurity.facebookSignature = facebookSignature.signature
         self.userSecurity.facebookHash = facebookSignature.hash
     }

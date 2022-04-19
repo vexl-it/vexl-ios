@@ -11,11 +11,11 @@ import SwiftUI
 import Cleevio
 
 class ImportFacebookContactsViewModel: ImportContactsViewModel {
-    override func fetchContacts() {
+    override func fetchContacts() throws {
 
         guard let facebookId = authenticationManager.currentUser?.facebookId,
               let facebookToken = authenticationManager.currentUser?.facebookToken else {
-                  return
+                  throw UserError.fetchFacebookFriends
               }
 
         let facebookContacts = contactsManager

@@ -106,6 +106,7 @@
 		F175ABA227F4A8F8000DAB15 /* UserAvailable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F175ABA127F4A8F8000DAB15 /* UserAvailable.swift */; };
 		F175ABAA27F4FC3F000DAB15 /* ImportPhoneContactsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F175ABA927F4FC3E000DAB15 /* ImportPhoneContactsViewModel.swift */; };
 		F175ABAC27F4FF30000DAB15 /* ImportFacebookContactsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F175ABAB27F4FF30000DAB15 /* ImportFacebookContactsViewModel.swift */; };
+		F188620F280EABB600659786 /* FetchImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F188620E280EABB600659786 /* FetchImage.swift */; };
 		F1A9452D27F67FD5009B5AE3 /* PhoneConfirmation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1A9452C27F67FD5009B5AE3 /* PhoneConfirmation.swift */; };
 		F1A9453227F686C8009B5AE3 /* UserSignature.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1A9453027F686C8009B5AE3 /* UserSignature.swift */; };
 		F1A9453327F686C8009B5AE3 /* UserKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1A9453127F686C8009B5AE3 /* UserKeys.swift */; };
@@ -125,7 +126,7 @@
 		F1B5FCD427C703230018729B /* CardModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B5FCD327C703230018729B /* CardModifier.swift */; };
 		F1B5FCD627C703BF0018729B /* View+.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B5FCD527C703BF0018729B /* View+.swift */; };
 		F1B5FCD827C7040C0018729B /* RoundedCorners.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B5FCD727C7040C0018729B /* RoundedCorners.swift */; };
-		F1BFA8D027FB31E800F4E745 /* FacebookContacts.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1BFA8CF27FB31E800F4E745 /* FacebookContacts.swift */; };
+		F1BFA8D027FB31E800F4E745 /* FacebookUserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1BFA8CF27FB31E800F4E745 /* FacebookUserData.swift */; };
 		F1BFA8D227FE915200F4E745 /* AlertBaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1BFA8D127FE915200F4E745 /* AlertBaseViewController.swift */; };
 		F1BFA956280223BD00F4E745 /* UserProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1BFA952280223BD00F4E745 /* UserProfileView.swift */; };
 		F1BFA957280223BD00F4E745 /* UserProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1BFA953280223BD00F4E745 /* UserProfileViewModel.swift */; };
@@ -270,6 +271,7 @@
 		F175ABA127F4A8F8000DAB15 /* UserAvailable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAvailable.swift; sourceTree = "<group>"; };
 		F175ABA927F4FC3E000DAB15 /* ImportPhoneContactsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportPhoneContactsViewModel.swift; sourceTree = "<group>"; };
 		F175ABAB27F4FF30000DAB15 /* ImportFacebookContactsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportFacebookContactsViewModel.swift; sourceTree = "<group>"; };
+		F188620E280EABB600659786 /* FetchImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchImage.swift; sourceTree = "<group>"; };
 		F1A9452C27F67FD5009B5AE3 /* PhoneConfirmation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneConfirmation.swift; sourceTree = "<group>"; };
 		F1A9453027F686C8009B5AE3 /* UserSignature.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserSignature.swift; sourceTree = "<group>"; };
 		F1A9453127F686C8009B5AE3 /* UserKeys.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserKeys.swift; sourceTree = "<group>"; };
@@ -289,7 +291,7 @@
 		F1B5FCD327C703230018729B /* CardModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardModifier.swift; sourceTree = "<group>"; };
 		F1B5FCD527C703BF0018729B /* View+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+.swift"; sourceTree = "<group>"; };
 		F1B5FCD727C7040C0018729B /* RoundedCorners.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedCorners.swift; sourceTree = "<group>"; };
-		F1BFA8CF27FB31E800F4E745 /* FacebookContacts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookContacts.swift; sourceTree = "<group>"; };
+		F1BFA8CF27FB31E800F4E745 /* FacebookUserData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookUserData.swift; sourceTree = "<group>"; };
 		F1BFA8D127FE915200F4E745 /* AlertBaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertBaseViewController.swift; sourceTree = "<group>"; };
 		F1BFA952280223BD00F4E745 /* UserProfileView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfileView.swift; sourceTree = "<group>"; };
 		F1BFA953280223BD00F4E745 /* UserProfileViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfileViewModel.swift; sourceTree = "<group>"; };
@@ -529,6 +531,7 @@
 				F175AB8A27E8062A000DAB15 /* LoadingIndicatorView.swift */,
 				F1BFA9702804321900F4E745 /* LineDivider.swift */,
 				F175AB9427EA6A8E000DAB15 /* PlaceholderTextField.swift */,
+				F188620E280EABB600659786 /* FetchImage.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -878,7 +881,7 @@
 			children = (
 				F1A9454127F81200009B5AE3 /* ContactsImported.swift */,
 				F1A9454327F81211009B5AE3 /* ContactsAvailable.swift */,
-				F1BFA8CF27FB31E800F4E745 /* FacebookContacts.swift */,
+				F1BFA8CF27FB31E800F4E745 /* FacebookUserData.swift */,
 			);
 			path = Contacts;
 			sourceTree = "<group>";
@@ -1299,6 +1302,7 @@
 				F12A150127DFC1D70096543E /* ImportContactItemView.swift in Sources */,
 				F1BFA96E2803A49300F4E745 /* UserProfileView+Item.swift in Sources */,
 				B08F397A27AE7112008B344F /* Codable+.swift in Sources */,
+				F188620F280EABB600659786 /* FetchImage.swift in Sources */,
 				F175AB9B27F1432E000DAB15 /* ContactsRouter.swift in Sources */,
 				F151A2A927C9646A000D7242 /* RegisterNameAvatarView+AvatarInput.swift in Sources */,
 				B08F395927AE7112008B344F /* ClientAPIError.swift in Sources */,
@@ -1333,7 +1337,7 @@
 				F1BFA8D227FE915200F4E745 /* AlertBaseViewController.swift in Sources */,
 				F175ABA227F4A8F8000DAB15 /* UserAvailable.swift in Sources */,
 				B0F206FE27AEBDD500A44E72 /* AuthRouter.swift in Sources */,
-				F1BFA8D027FB31E800F4E745 /* FacebookContacts.swift in Sources */,
+				F1BFA8D027FB31E800F4E745 /* FacebookUserData.swift in Sources */,
 				B08F399E27AE7D92008B344F /* OnboardingView.swift in Sources */,
 				B08F393F27AE7112008B344F /* APIError.swift in Sources */,
 				F1A9452D27F67FD5009B5AE3 /* PhoneConfirmation.swift in Sources */,

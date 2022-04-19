@@ -12,8 +12,8 @@ protocol ContactsServiceType {
     func createUser(forFacebook isFacebook: Bool) -> AnyPublisher<Void, Error>
     func importContacts(_ contacts: [String]) -> AnyPublisher<ContactsImported, Error>
     func getActivePhoneContacts(_ contacts: [String]) -> AnyPublisher<ContactsAvailable, Error>
-    func getActiveFacebookContacts(id: String, accessToken: String) -> AnyPublisher<FacebookContacts, Error>
-    func getFacebookContacts(id: String, accessToken: String) -> AnyPublisher<FacebookContacts, Error>
+    func getActiveFacebookContacts(id: String, accessToken: String) -> AnyPublisher<FacebookUserData, Error>
+    func getFacebookContacts(id: String, accessToken: String) -> AnyPublisher<FacebookUserData, Error>
 }
 
 final class ContactsService: BaseService, ContactsServiceType {
@@ -33,13 +33,13 @@ final class ContactsService: BaseService, ContactsServiceType {
             .eraseToAnyPublisher()
     }
 
-    func getFacebookContacts(id: String, accessToken: String) -> AnyPublisher<FacebookContacts, Error> {
-        request(type: FacebookContacts.self, endpoint: ContactsRouter.getFacebookContacts(id: id, accessToken: accessToken))
+    func getFacebookContacts(id: String, accessToken: String) -> AnyPublisher<FacebookUserData, Error> {
+        request(type: FacebookUserData.self, endpoint: ContactsRouter.getFacebookContacts(id: id, accessToken: accessToken))
             .eraseToAnyPublisher()
     }
 
-    func getActiveFacebookContacts(id: String, accessToken: String) -> AnyPublisher<FacebookContacts, Error> {
-        request(type: FacebookContacts.self, endpoint: ContactsRouter.getAvailableFacebookContacts(id: id, accessToken: accessToken))
+    func getActiveFacebookContacts(id: String, accessToken: String) -> AnyPublisher<FacebookUserData, Error> {
+        request(type: FacebookUserData.self, endpoint: ContactsRouter.getAvailableFacebookContacts(id: id, accessToken: accessToken))
             .eraseToAnyPublisher()
     }
 }

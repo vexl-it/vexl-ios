@@ -11,7 +11,7 @@ import SwiftUI
 import Cleevio
 
 final class ImportPhoneContactsViewModel: ImportContactsViewModel {
-    override func fetchContacts() {
+    override func fetchContacts() throws {
         let contacts = contactsManager.fetchPhoneContacts()
         let phones = contacts.map(\.phone)
 
