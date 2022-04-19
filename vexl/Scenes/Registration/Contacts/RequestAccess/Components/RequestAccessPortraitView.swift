@@ -68,7 +68,6 @@ private struct SinglePortraitView: View {
             Image(data: image, placeholder: R.image.onboarding.emptyAvatar.name)
                 .resizable()
                 .scaledToFit()
-                .frame(width: avatarSize.width, height: avatarSize.height, alignment: .center)
         } else {
             Image(R.image.onboarding.emptyAvatar.name)
                 .resizable()
