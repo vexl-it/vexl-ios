@@ -53,7 +53,7 @@ final class RegisterContactsViewModel: ViewModelType {
 
     private let cancelBag: CancelBag = .init()
 
-    init(username: String, avatar: String?) {
+    init(username: String, avatar: Data?) {
         phoneViewModel = RequestAccessPhoneContactsViewModel(username: username, avatar: avatar)
         importPhoneContactsViewModel = ImportPhoneContactsViewModel()
         facebookViewModel = RequestAccessFacebookContactsViewModel(username: username, avatar: avatar)

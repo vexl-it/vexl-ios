@@ -68,6 +68,11 @@ final class UserService: BaseService, UserServiceType {
         request(type: User.self, endpoint: UserRouter.createUser(username: username,
                                                                  avatar: avatar,
                                                                  imageExtension: "jpeg"))
+            .withUnretained(self)
+            .handleEvents(receiveOutput: { owner, user in
+                owner.authenticationManager.setUser(user)
+            })
+            .map(\.1)
             .eraseToAnyPublisher()
     }
 

@@ -61,7 +61,7 @@ struct RequestAccessContactsView: View {
 
     private var portraitView: some View {
         RequestAccessPortraitView(name: viewModel.username,
-                                  avatar: R.image.onboarding.testAvatar()!,
+                                  avatar: viewModel.avatar,
                                   color: viewModel.portraitColor,
                                   textColor: viewModel.portraitTextColor)
     }

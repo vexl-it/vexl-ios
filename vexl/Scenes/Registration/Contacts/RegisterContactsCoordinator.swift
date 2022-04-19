@@ -23,7 +23,7 @@ final class RegisterContactsCoordinator: BaseCoordinator<RouterResult<Void>> {
 
     override func start() -> CoordinatingResult<RouterResult<Void>> {
         let viewModel = RegisterContactsViewModel(username: authenticationManager.currentUser?.username ?? "",
-                                                  avatar: authenticationManager.currentUser?.avatarURL)
+                                                  avatar: authenticationManager.currentUser?.avatarImage)
         let viewController = RegisterViewController(currentPage: 2, numberOfPages: 3, rootView: RegisterContactsView(viewModel: viewModel))
         router.present(viewController, animated: animated)
 
