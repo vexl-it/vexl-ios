@@ -60,10 +60,13 @@ final class UserService: BaseService, UserServiceType {
     }
 
     func createUser(username: String, avatar: String?) -> AnyPublisher<User, Error> {
-        request(type: User.self, endpoint: UserRouter.createUser(username: username, avatar: avatar))
+        request(type: User.self, endpoint: UserRouter.createUser(username: username,
+                                                                 avatar: avatar,
+                                                                 imageExtension: Constants.jpegFormat))
             .withUnretained(self)
             .handleEvents(receiveOutput: { owner, response in
-                owner.authenticationManager.setUser(response)
+                let avatarData = avatar?.dataFromBase64
+                owner.authenticationManager.setUser(response, withAvatar: avatarData)
             })
             .map(\.1)
             .eraseToAnyPublisher()

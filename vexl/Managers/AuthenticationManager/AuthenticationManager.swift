@@ -91,8 +91,9 @@ final class AuthenticationManager: AuthenticationManagerType, TokenHandlerType {
             .assign(to: &$authenticationState)
     }
 
-    func setUser(_ user: User) {
+    func setUser(_ user: User, withAvatar avatar: Data? = nil) {
         self.currentUser = user
+        self.currentUser?.avatarImage = avatar
     }
 }
 
