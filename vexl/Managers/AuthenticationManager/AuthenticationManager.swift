@@ -101,7 +101,7 @@ final class AuthenticationManager: AuthenticationManagerType, TokenHandlerType {
 extension AuthenticationManager {
 
     func loginWithFacebook(fromViewController viewController: UIViewController? = nil) -> AnyPublisher<String?, Error> {
-        AnyPublisher(Future { promise in
+        Future { promise in
             let loginManager = LoginManager()
             loginManager.logIn(permissions: [.publicProfile, .userFriends], viewController: nil) { [weak self] result in
                 switch result {
@@ -114,7 +114,8 @@ extension AuthenticationManager {
                     promise(.success(token?.userID))
                 }
             }
-        })
+        }
+        .eraseToAnyPublisher()
     }
 }
 

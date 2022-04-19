@@ -147,11 +147,11 @@ class ImportContactsViewModel: ObservableObject {
         let importContact = action
             .withUnretained(self)
             .filter { $0.0.currentState == .content && $0.0.hasSelectedItem && $0.1 == .importContacts }
-            .map { $0.0.selectedItems.map { $0.sourceIdentifier } }
+            .map(\.0.selectedItems)
             .withUnretained(self)
             .flatMap { owner, contacts in
                 owner.contactsService
-                    .importContacts(contacts)
+                    .importContacts(contacts.map(\.sourceIdentifier))
                     .track(activity: owner.primaryActivity)
                     .materialize()
                     .eraseToAnyPublisher()
