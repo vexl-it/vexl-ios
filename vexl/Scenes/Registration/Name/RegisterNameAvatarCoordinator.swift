@@ -30,7 +30,7 @@ class RegisterNameAvatarCoordinator: BaseCoordinator<RouterResult<Void>> {
 
         viewModel
             .$loading
-            .assign(to: &viewController.$loading)
+            .assign(to: &viewController.$isLoading)
 
         viewModel
             .route

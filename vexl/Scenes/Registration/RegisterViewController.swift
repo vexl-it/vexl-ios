@@ -9,7 +9,7 @@ import UIKit
 import SwiftUI
 import Cleevio
 
-final class RegisterViewController<T: View>: AlertBaseViewController<T> {
+final class RegisterViewController<T: View>: BaseViewController<T> {
 
     private let currentPage: Int
     private let numberOfPages: Int
