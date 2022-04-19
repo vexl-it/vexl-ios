@@ -39,6 +39,7 @@ struct ExpandableCoinVariationHeaderView: View {
 
     var currencySymbol: String
     var amount: String
+    var onTap: () -> Void
 
     @State var isExpanded = false
 
@@ -55,6 +56,7 @@ struct ExpandableCoinVariationHeaderView: View {
         .onTapGesture {
             withAnimation(.easeInOut) {
                 isExpanded.toggle()
+                onTap()
             }
         }
     }

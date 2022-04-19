@@ -46,18 +46,18 @@ final class RegisterContactsViewModel: ViewModelType {
     @Published var currentState: ViewState = .phone
     var phoneViewModel: RequestAccessContactsViewModel
     var facebookViewModel: RequestAccessContactsViewModel
-    var importPhoneContactsViewModel: ImportContactsViewModel
-    var importFacebookContactsViewModel: ImportContactsViewModel
+    var importPhoneContactsViewModel: ImportPhoneContactsViewModel
+    var importFacebookContactsViewModel: ImportFacebookContactsViewModel
 
     // MARK: - Variables
 
     private let cancelBag: CancelBag = .init()
 
-    init() {
-        phoneViewModel = RequestAccessPhoneContactsViewModel(userName: "Diego")
-        importPhoneContactsViewModel = ImportContactsViewModel()
-        facebookViewModel = RequestAccessFacebookContactsViewModel(userName: "Diego")
-        importFacebookContactsViewModel = ImportContactsViewModel()
+    init(username: String, avatar: Data?) {
+        phoneViewModel = RequestAccessPhoneContactsViewModel(username: username, avatar: avatar)
+        importPhoneContactsViewModel = ImportPhoneContactsViewModel()
+        facebookViewModel = RequestAccessFacebookContactsViewModel(username: username, avatar: avatar)
+        importFacebookContactsViewModel = ImportFacebookContactsViewModel()
         setupRequestPhoneContactsBindings()
         setupImportPhoneContactsBindings()
         setupRequestFacebookContactsBindings()
@@ -68,13 +68,7 @@ final class RegisterContactsViewModel: ViewModelType {
         phoneViewModel.accessConfirmed
             .withUnretained(self)
             .sink { owner, _ in
-                // TODO: request access to phone contacts, set as complete to continue to next screen that has and set the contacts to the ImportPhoneViewModel
                 owner.phoneViewModel.currentState = .completed
-                // TODO: remove this once integration with BE is done
-                after(2) {
-                    owner.importPhoneContactsViewModel.current = .content
-                    owner.importPhoneContactsViewModel.items = ImportContactItem.stub()
-                }
             }
             .store(in: cancelBag)
 
@@ -92,7 +86,7 @@ final class RegisterContactsViewModel: ViewModelType {
             .withUnretained(self)
             .sink { owner, _ in
                 owner.currentState = .facebook
-                owner.importPhoneContactsViewModel.current = .loading
+                owner.importPhoneContactsViewModel.currentState = .loading
             }
             .store(in: cancelBag)
 
@@ -121,8 +115,8 @@ final class RegisterContactsViewModel: ViewModelType {
                 owner.facebookViewModel.currentState = .completed
                 // TODO: remove this once integration with BE is done
                 after(2) {
-                    owner.importFacebookContactsViewModel.current = .content
-                    owner.importFacebookContactsViewModel.items = ImportContactItem.stub()
+                    owner.importFacebookContactsViewModel.currentState = .content
+                    owner.importFacebookContactsViewModel.items = ContactInformation.stub()
                 }
             }
             .store(in: cancelBag)

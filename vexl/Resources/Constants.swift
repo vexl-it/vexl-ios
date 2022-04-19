@@ -17,14 +17,17 @@ struct Constants {
     struct API {
         #if APPSTORE
         private static let userApiHostname = "https://user.vexl.devel.cleevio.io"
+        private static let contactsApiHostname = "https://contact.vexl.devel.cleevio.io"
         #else
         private static let userApiHostname = "https://user.vexl.devel.cleevio.io"
+        private static let contactsApiHostname = "https://contact.vexl.devel.cleevio.io"
         #endif
 
         private static let apiVersion = "v1/"
 
         static let baseURLString = ""
         static let userBaseURLString = "\(userApiHostname)/api/\(apiVersion)"
+        static let contactsBaseURLString = "\(contactsApiHostname)/api/\(apiVersion)"
     }
 
     // MARK: - Keychain keys
@@ -48,4 +51,6 @@ struct Constants {
         encoder.dateEncodingStrategy = .formatted(Formatters.dateApiFormatter)
         return encoder
     }()
+
+    static let jpegFormat = "jpeg"
 }

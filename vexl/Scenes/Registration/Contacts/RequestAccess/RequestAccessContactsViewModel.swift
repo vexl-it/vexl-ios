@@ -42,7 +42,8 @@ class RequestAccessContactsViewModel: ObservableObject {
 
     // MARK: - Variables
 
-    var userName: String
+    var username: String
+    var avatar: Data?
     var title: String { "" }
     var subtitle: String { "" }
     var importButton: String { "" }
@@ -54,8 +55,9 @@ class RequestAccessContactsViewModel: ObservableObject {
 
     // MARK: - Init
 
-    init(userName: String) {
-        self.userName = userName
+    init(username: String, avatar: Data?) {
+        self.username = username
+        self.avatar = avatar
         $currentState
             .withUnretained(self)
             .sink { owner, state in

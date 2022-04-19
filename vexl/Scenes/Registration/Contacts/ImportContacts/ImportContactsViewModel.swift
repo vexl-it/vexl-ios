@@ -10,23 +10,41 @@ import Combine
 import SwiftUI
 import Cleevio
 
-final class ImportContactsViewModel: ObservableObject {
+class ImportContactsViewModel: ObservableObject {
+
+    // MARK: - Dependencies
+
+    @Inject var contactsManager: ContactsManagerType
+    @Inject var contactsService: ContactsServiceType
 
     // MARK: - View State
 
     enum ViewState {
-        case empty
         case loading
+        case empty
         case content
         case success
     }
 
     // MARK: - Action Bindings
 
-    enum UserAction {
-        case itemSelected(Bool, ImportContactItem)
+    enum UserAction: Equatable {
+        case itemSelected(Bool, ContactInformation)
         case unselectAll
-        case completed
+        case importContacts
+
+        static func == (lhs: UserAction, rhs: UserAction) -> Bool {
+            switch (lhs, rhs) {
+            case (.itemSelected, .itemSelected):
+                return true
+            case (.unselectAll, .unselectAll):
+                return true
+            case (.importContacts, .importContacts):
+                return true
+            default:
+                return false
+            }
+        }
     }
 
     let action: ActionSubject<UserAction> = .init()
@@ -34,40 +52,110 @@ final class ImportContactsViewModel: ObservableObject {
 
     // MARK: - View Bindings
 
-    @Published var current: ViewState = .loading
-    @Published var items: [ImportContactItem] = []
+    @Published var currentState: ViewState = .loading
+    @Published var items: [ContactInformation] = []
     @Published var searchText = ""
-    @Published var canImportContacts = false
     @Published var hasSelectedItem = false
+
+    @Published var loading = false
+    @Published var error: Error?
+
+    var primaryActivity: Activity = .init()
+    var activityIndicator: ActivityIndicator {
+        primaryActivity.indicator
+    }
+    var errorIndicator: ErrorIndicator {
+        primaryActivity.error
+    }
 
     // MARK: - Variables
 
-    var filteredItems: [ImportContactItem] {
+    var filteredItems: [ContactInformation] {
         guard !searchText.isEmpty else { return items }
         return items.filter { $0.name.contains(searchText) }
     }
 
-    private let cancelBag: CancelBag = .init()
+    private var selectedItems: [ContactInformation] {
+        items.filter { $0.isSelected }
+    }
+
+    let cancelBag: CancelBag = .init()
 
     // MARK: - Init
 
     init() {
+        setupActivity()
+        setupActions()
+        fetchContacts()
+    }
+
+    private func setupActivity() {
+        activityIndicator
+            .loading
+            .assign(to: &$loading)
+
+        errorIndicator
+            .errors
+            .asOptional()
+            .assign(to: &$error)
+    }
+
+    private func setupActions() {
+
         action
-            .withUnretained(self)
-            .sink { owner, action in
-                switch action {
-                case let .itemSelected(isSelected, item):
-                    owner.select(isSelected, item: item)
-                case .unselectAll:
-                    owner.unselectAllItems()
-                case .completed:
-                    owner.completed.send(())
+            .filter { action in
+                ![UserAction.unselectAll, .importContacts].contains(action)
+            }
+            .compactMap { action -> (Bool, ContactInformation)? in
+                if case let .itemSelected(isSelected, item) = action {
+                    return (isSelected, item)
                 }
+                return nil
+            }
+            .withUnretained(self)
+            .sink { owner, selection in
+                owner.select(selection.0, item: selection.1)
+            }
+            .store(in: cancelBag)
+
+        action
+            .filter { $0 == .unselectAll }
+            .withUnretained(self)
+            .sink { owner, _ in
+                owner.unselectAllItems()
+            }
+            .store(in: cancelBag)
+
+        let importContact = action
+            .withUnretained(self)
+            .filter { $0.0.currentState == .content && $0.1 == .importContacts }
+            .map { $0.0.selectedItems.map { $0.phone } }
+            .withUnretained(self)
+            .flatMap { owner, contacts in
+                owner.contactsService
+                    .importContacts(contacts)
+                    .track(activity: owner.primaryActivity)
+                    .materialize()
+                    .eraseToAnyPublisher()
+            }
+
+        importContact
+            .compactMap { $0.value }
+            .withUnretained(self)
+            .handleEvents(receiveOutput: { owner, response in
+                if response.imported {
+                    owner.currentState = .success
+                }
+            })
+            .filter { $0.0.currentState == .success }
+            .delay(for: .seconds(1), scheduler: RunLoop.main)
+            .sink { owner, _ in
+                owner.completed.send(())
             }
             .store(in: cancelBag)
     }
 
-    private func select(_ isSelected: Bool, item: ImportContactItem) {
+    private func select(_ isSelected: Bool, item: ContactInformation) {
         guard let selectedIndex = items.firstIndex(where: { $0.id == item.id }) else { return }
         items[selectedIndex].isSelected = isSelected
         hasSelectedItem = items.contains(where: { $0.isSelected })
@@ -79,22 +167,8 @@ final class ImportContactsViewModel: ObservableObject {
         }
         hasSelectedItem = false
     }
-}
 
-struct ImportContactItem: Identifiable {
-    var id: Int
-    var name: String
-    var phone: String
-    var avatar: Data?
-    var isSelected = false
-
-    static func stub() -> [ImportContactItem] {
-        [
-            ImportContactItem(id: 1, name: "Diego Espinoza 1", phone: "999 944 222", avatar: nil),
-            ImportContactItem(id: 2, name: "Diego Espinoza 2", phone: "929 944 222", avatar: nil),
-            ImportContactItem(id: 3, name: "Diego Espinoza 3", phone: "969 944 222", avatar: nil),
-            ImportContactItem(id: 4, name: "Diego Espinoza 4", phone: "969 944 222", avatar: nil),
-            ImportContactItem(id: 5, name: "Diego Test 4", phone: "969 944 222", avatar: nil)
-        ]
+    func fetchContacts() {
+        fatalError("Must implement fetch contacts")
     }
 }

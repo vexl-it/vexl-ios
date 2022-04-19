@@ -42,6 +42,25 @@ struct RegisterNameAvatarView: View {
         }
         .frame(maxWidth: .infinity)
         .background(Color.black.edgesIgnoringSafeArea(.all))
+        .actionSheet(isPresented: $viewModel.showImagePickerActionSheet, content: {
+            ActionSheet(title: Text(L.registerNameAvatarImagePicker()),
+                        message: nil,
+                        buttons: [
+                            .default(Text(L.registerNameAvatarCamera())) {
+                                viewModel.showImagePicker = true
+                                viewModel.imageSource = .camera
+                            },
+                            .default(Text(L.registerNameAvatarPhotoAlbum())) {
+                                viewModel.showImagePicker = true
+                                viewModel.imageSource = .photoAlbum
+                            },
+                            .cancel()
+                        ])
+        })
+        .sheet(isPresented: $viewModel.showImagePicker) {
+            ImagePicker(sourceType: viewModel.imageSource == .photoAlbum ? .photoLibrary : .camera,
+                        selectedImage: $viewModel.avatar)
+        }
     }
 
     @ViewBuilder private func actionButton(with action: @escaping () -> Void) -> some View {

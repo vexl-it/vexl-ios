@@ -7,6 +7,7 @@
 
 import Foundation
 import Cleevio
+import SwiftUI
 
 final class MarketplaceCoordinator: BaseCoordinator<RouterResult<Void>> {
 
@@ -33,7 +34,17 @@ final class MarketplaceCoordinator: BaseCoordinator<RouterResult<Void>> {
 
         router.present(marketController, animated: false)
 
-        buySellViewModel.route
+        coinViewModel
+            .action
+            .filter { $0 == .contentTap }
+            .withUnretained(self)
+            .sink { owner, _ in
+                owner.marketController.resizeStuff()
+            }
+            .store(in: cancelBag)
+
+        buySellViewModel
+            .route
             .filter { $0 == .showOffer }
             .withUnretained(self)
             .sink { owner, _ in

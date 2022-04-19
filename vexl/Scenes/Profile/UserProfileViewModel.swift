@@ -36,6 +36,7 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
     // MARK: - Variables
 
     private let cancelBag: CancelBag = .init()
+    // TODO: - Remove hardcoded values
     let username: String = "Diego"
     var contacts: String {
         "34"
@@ -51,5 +52,14 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
     }
     var options: [OptionGroup] {
         Option.groupedOptions
+    }
+
+    func subtitle(for item: UserProfileViewModel.Option) -> String? {
+        switch item {
+        case .contacts:
+            return item.subtitle(withParam: contacts)
+        default:
+            return nil
+        }
     }
 }

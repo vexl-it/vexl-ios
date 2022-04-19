@@ -106,6 +106,16 @@ final class MarketplaceViewController: UIViewController {
             self?.currentViewController = nil
         }
     }
+
+    func resizeStuff() {
+        self.topViewController?.view.backgroundColor = R.color.green1()
+        DispatchQueue.main.async {
+            self.topViewController?.view.invalidateIntrinsicContentSize()
+            UIView.animate(withDuration: 0.5) {
+                self.topViewController?.view.bounds.size = self.topViewController!.view.intrinsicContentSize
+            }
+        }
+    }
 }
 
 // TODO: - remove this

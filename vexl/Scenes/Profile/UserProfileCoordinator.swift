@@ -29,7 +29,6 @@ final class UserProfileCoordinator: BaseCoordinator<RouterResult<Void>> {
 
         return dismiss
             .receive(on: RunLoop.main)
-            .prefix(1)
             .eraseToAnyPublisher()
     }
 }

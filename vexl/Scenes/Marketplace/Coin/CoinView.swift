@@ -14,7 +14,10 @@ struct CoinView: View {
 
     var body: some View {
         ExpandableCoinVariationHeaderView(currencySymbol: "$",
-                                          amount: "123123")
+                                          amount: "123123",
+                                          isExpanded: viewModel.isExpanded) {
+            viewModel.action.send(.contentTap)
+        }
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
             .background(Appearance.Colors.green1
                             .edgesIgnoringSafeArea(.all))

@@ -15,7 +15,8 @@ final class RegisterPhoneViewModel: ViewModelType {
     // MARK: - Property Injection
 
     @Inject var userService: UserServiceType
-    @Inject var authenticationManager: AuthenticationManager
+    @Inject var authenticationManager: AuthenticationManagerType
+    @Inject var userSecurity: UserSecurityType
 
     // MARK: - View State
 
@@ -173,6 +174,7 @@ final class RegisterPhoneViewModel: ViewModelType {
         let validateCode = action
             .filter { $0 == .validateCode }
             .withUnretained(self)
+            .filter { $0.0.currentState == .codeInput }
             .handleEvents(receiveOutput: { owner, _ in
                 owner.currentState = .codeInputValidation
             })
@@ -185,7 +187,7 @@ final class RegisterPhoneViewModel: ViewModelType {
                     .userService
                     .confirmValidationCode(id: verificationId,
                                            code: owner.validationCode,
-                                           key: owner.authenticationManager.userKeys?.publicKey ?? "")
+                                           key: owner.userSecurity.userKeys?.publicKey ?? "")
                     .track(activity: owner.primaryActivity)
                     .materialize()
                     .eraseToAnyPublisher()
@@ -229,7 +231,7 @@ final class RegisterPhoneViewModel: ViewModelType {
                 owner
                     .userService
                     .generateSignature(challenge: challenge,
-                                       privateKey: owner.authenticationManager.userKeys?.privateKey ?? "")
+                                       privateKey: owner.userSecurity.userKeys?.privateKey ?? "")
                     .track(activity: owner.primaryActivity)
                     .materialize()
                     .compactMap(\.value)
@@ -242,7 +244,7 @@ final class RegisterPhoneViewModel: ViewModelType {
             .flatMap { owner, signature in
                 owner
                     .userService
-                    .validateChallenge(key: owner.authenticationManager.userKeys?.publicKey ?? "",
+                    .validateChallenge(key: owner.userSecurity.userKeys?.publicKey ?? "",
                                        signature: signature)
                     .track(activity: owner.primaryActivity)
                     .materialize()

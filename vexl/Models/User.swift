@@ -13,4 +13,13 @@ struct User: Decodable {
     let username: String
     let avatar: String?
     let publicKey: String
+
+    var avatarURL: String? {
+        guard let avatar = avatar else {
+            return nil
+        }
+        return "\(Constants.API.userBaseURLString)/\(avatar)"
+    }
+
+    var avatarImage: Data?
 }

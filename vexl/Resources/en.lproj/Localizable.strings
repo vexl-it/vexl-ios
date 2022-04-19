@@ -34,6 +34,9 @@
 "register.name.avatar.image.subtitle" = "Nobody will see your face until you allow it";
 "register.name.avatar.image.header" = "Hey %@";
 "register.name.avatar.phone.validated" = "Phone verified.\nLet’s setup your profile.";
+"register.name.avatar.camera" = "Camera";
+"register.name.avatar.photo.album" = "Photo Album";
+"register.name.avatar.image.picker" = "Select the source of your avatar";
 "register.contacts.import.button" = "Import contacts";
 "register.contacts.import.deselect" = "Deselect All";
 "register.contacts.import.empty" = "There are no contacts to import";
@@ -61,6 +64,13 @@
 "user.profile.import.facebook" = "Import Facebook";
 "user.profile.request.data" = "Request known data";
 "user.profile.logout" = "Log out";
+"marketplace.currency.bitcoin" = "Bitcoin";
+"marketplace.currency.1day" = "1 day";
+"marketplace.currency.1week" = "1 week";
+"marketplace.currency.1month" = "1 mth";
+"marketplace.currency.3month" = "3 mth";
+"marketplace.currency.6month" = "6 mth";
+"marketplace.currency.1year" = "1 year";
 "marketplace.buy" = "Buy";
 "marketplace.sell" = "Sell";
 "marketplace.facebook.friend" = "Facebook Friend";

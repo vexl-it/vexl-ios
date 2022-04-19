@@ -8,13 +8,20 @@
 
 import UIKit
 import SwiftyBeaver
+#if DEBUG
+import AlamofireNetworkActivityLogger
+#endif
 
 let log = SwiftyBeaver.self
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        true
+        #if DEBUG
+        NetworkActivityLogger.shared.startLogging()
+        NetworkActivityLogger.shared.level = .debug
+        #endif
+        return true
     }
 
     // MARK: UISceneSession Lifecycle

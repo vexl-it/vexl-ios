@@ -13,7 +13,7 @@ final class CoinViewModel: ViewModelType, ObservableObject {
     // MARK: - Actions Bindings
 
     enum UserAction: Equatable {
-        case continueTap
+        case contentTap
     }
 
     let action: ActionSubject<UserAction> = .init()
@@ -21,7 +21,8 @@ final class CoinViewModel: ViewModelType, ObservableObject {
     // MARK: - View Bindings
 
     @Published var primaryActivity: Activity = .init()
-
+    @Published var isExpanded = false
+    
     // MARK: - Coordinator Bindings
 
     enum Route: Equatable {

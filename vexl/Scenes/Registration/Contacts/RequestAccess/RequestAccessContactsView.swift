@@ -60,8 +60,8 @@ struct RequestAccessContactsView: View {
     }
 
     private var portraitView: some View {
-        RequestAccessPortraitView(name: viewModel.userName,
-                                  avatar: R.image.onboarding.testAvatar()!,
+        RequestAccessPortraitView(name: viewModel.username,
+                                  avatar: viewModel.avatar,
                                   color: viewModel.portraitColor,
                                   textColor: viewModel.portraitTextColor)
     }
@@ -79,7 +79,7 @@ struct RequestAccessContactsView: View {
 
 struct RegisterContactsPhoneViewPreview: PreviewProvider {
     static var previews: some View {
-        RequestAccessContactsView(viewModel: .init(userName: "Diego"))
+        RequestAccessContactsView(viewModel: .init(username: "Diego", avatar: nil))
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color.black.edgesIgnoringSafeArea(.all))
     }

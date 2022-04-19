@@ -90,17 +90,6 @@ final class ApiService: ApiServiceType {
             .asVoid()
             .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()
-            .sink(receiveCompletion: { _ in }, receiveValue: { })
-            .store(in: &cancellables)
-
-        return sessionManager.request(endpoint)
-            .validate()
-            .validate(contentType: [ApiService.jsonContentType])
-            .publishData()
-            .tryMap(handleResponse)
-            .asVoid()
-            .receive(on: DispatchQueue.main)
-            .eraseToAnyPublisher()
     }
 
     private func handleResponse(_ response: DataResponse<Data, AFError>) throws -> Data? {
