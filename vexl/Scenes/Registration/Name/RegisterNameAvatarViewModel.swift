@@ -14,6 +14,10 @@ final class RegisterNameAvatarViewModel: ViewModelType {
 
     @Inject var userService: UserServiceType
 
+    enum ImageSource {
+        case photoAlbum, camera
+    }
+    
     // MARK: - View State
 
     enum State {
@@ -41,6 +45,7 @@ final class RegisterNameAvatarViewModel: ViewModelType {
     @Published var avatar: UIImage?
     @Published var isActionEnabled = false
     @Published var showImagePicker = false
+    @Published var showImagePickerActionSheet = false
 
     @Published var loading = false
     @Published var error: Error?
@@ -62,6 +67,7 @@ final class RegisterNameAvatarViewModel: ViewModelType {
     var route: CoordinatingSubject<Route> = .init()
 
     private let cancelBag: CancelBag = .init()
+    var imageSource = ImageSource.photoAlbum
 
     init() {
         setupActivity()
@@ -172,7 +178,7 @@ final class RegisterNameAvatarViewModel: ViewModelType {
             .filter { $0 == .addAvatar }
             .withUnretained(self)
             .sink { owner, _ in
-                owner.showImagePicker = true
+                owner.showImagePickerActionSheet = true
             }
             .store(in: cancelBag)
     }
