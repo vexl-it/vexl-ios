@@ -65,7 +65,7 @@ final class UserService: BaseService, UserServiceType {
             .handleEvents(receiveOutput: { owner, response in
                 owner.authenticationManager.setUser(response)
             })
-            .map { $0.1 }
+            .map(\.1)
             .eraseToAnyPublisher()
     }
 
