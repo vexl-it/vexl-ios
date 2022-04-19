@@ -8,11 +8,9 @@
 import SwiftUI
 
 struct CoinValueVariationHeader: View {
-    
     var body: some View {
         Text("123123")
     }
-
 }
 
 struct CoinValueVariationHeaderPreview: PreviewProvider {

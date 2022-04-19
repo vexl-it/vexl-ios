@@ -14,6 +14,10 @@ struct FeedItem: Identifiable {
     let title: String
     let isRequested: Bool
     let location: String
+
+    let maxAmount: String
+    let paymentMethod: String
+    let fee: String?
 }
 
 final class BuySellViewModel: ViewModelType, ObservableObject {
@@ -73,19 +77,31 @@ final class BuySellViewModel: ViewModelType, ObservableObject {
         FeedItem(id: 1,
                  title: "I’ll be wearing a red hat, Don’t text me before 9am — I love to sleep...",
                  isRequested: false,
-                 location: "Prague"),
+                 location: "Prague",
+                 maxAmount: "up to $10k",
+                 paymentMethod: "Revolut",
+                 fee: nil),
         FeedItem(id: 2,
                  title: "I’ll be wearing a red hat, Don’t text me before 9am — I love to sleep...",
                  isRequested: true,
-                 location: "Prague"),
+                 location: "Prague",
+                 maxAmount: "up to $10k",
+                 paymentMethod: "Revolut",
+                 fee: "Wants $30 fee per transaction"),
         FeedItem(id: 3,
                  title: "I’ll be wearing a red hat, Don’t text me before 9am — I love to sleep...",
                  isRequested: true,
-                 location: "Prague"),
+                 location: "Prague",
+                 maxAmount: "up to $10k",
+                 paymentMethod: "Revolut",
+                 fee: nil),
         FeedItem(id: 4,
                  title: "I’ll be wearing a red hat, Don’t text me before 9am — I love to sleep...",
                  isRequested: false,
-                 location: "Prague")
+                 location: "Prague",
+                 maxAmount: "up to $10k",
+                 paymentMethod: "Revolut",
+                 fee: "Wants $30 fee per transaction")
     ]
 
     private let cancelBag: CancelBag = .init()

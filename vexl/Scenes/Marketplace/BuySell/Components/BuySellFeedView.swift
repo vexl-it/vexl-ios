@@ -13,6 +13,10 @@ struct BuySellFeedView: View {
     let isRequested: Bool
     let location: String
 
+    let maxAmount: String
+    let paymentMethod: String
+    let fee: String?
+
     var body: some View {
         VStack(spacing: Appearance.GridGuide.padding) {
             Text(title)
@@ -20,7 +24,9 @@ struct BuySellFeedView: View {
                 .foregroundColor(Appearance.Colors.primaryText)
                 .padding([.horizontal, .top], Appearance.GridGuide.mediumPadding1)
 
-            BuySellFeedDetailView()
+            BuySellFeedDetailView(maxAmount: maxAmount,
+                                  paymentMethod: paymentMethod,
+                                  fee: fee)
                 .padding(.horizontal, Appearance.GridGuide.padding)
 
             // TODO: - set contact type from viewmodel + real action
@@ -42,7 +48,10 @@ struct BuySellFeedViewViewPreview: PreviewProvider {
     static var previews: some View {
         BuySellFeedView(title: "I’ll be wearing a red hat, Don’t text me before 9am — I love to sleep...",
                         isRequested: true,
-                        location: "Prague")
+                        location: "Prague",
+                        maxAmount: "up to $10K",
+                        paymentMethod: "Revolut",
+                        fee: nil)
             .previewDevice("iPhone 11")
             .frame(maxWidth: .infinity,
                    maxHeight: .infinity)

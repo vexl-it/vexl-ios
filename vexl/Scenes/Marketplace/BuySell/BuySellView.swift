@@ -31,7 +31,10 @@ struct BuySellView: View {
                 ForEach(viewModel.feedItems) { item in
                     BuySellFeedView(title: item.title,
                                     isRequested: item.isRequested,
-                                    location: item.location)
+                                    location: item.location,
+                                    maxAmount: item.maxAmount,
+                                    paymentMethod: item.paymentMethod,
+                                    fee: item.fee)
                         .padding(.horizontal, Appearance.GridGuide.point)
                 }
             }

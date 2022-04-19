@@ -9,7 +9,7 @@ import Foundation
 import Cleevio
 
 final class CoinViewModel: ViewModelType, ObservableObject {
-    
+
     // MARK: - Actions Bindings
 
     enum UserAction: Equatable {
@@ -30,5 +30,4 @@ final class CoinViewModel: ViewModelType, ObservableObject {
     }
 
     var route: CoordinatingSubject<Route> = .init()
-    
 }

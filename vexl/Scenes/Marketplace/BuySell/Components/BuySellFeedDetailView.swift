@@ -10,15 +10,21 @@ import SwiftUI
 
 struct BuySellFeedDetailView: View {
 
+    let maxAmount: String
+    let paymentMethod: String
+    let fee: String?
+
     var body: some View {
         VStack(spacing: 0) {
-            DoubleDetailItem(firstTitle: "123", secondTitle: "345")
+            DoubleDetailItem(firstTitle: maxAmount, secondTitle: paymentMethod)
 
             Divider()
                 .background(Appearance.Colors.gray4)
                 .padding(.horizontal, Appearance.GridGuide.point)
 
-            SingleDetailItem(title: "78800")
+            if let fee = fee {
+                SingleDetailItem(title: fee)
+            }
         }
         .makeCorneredBorder(color: Appearance.Colors.gray4, borderWidth: 1, cornerRadius: Appearance.GridGuide.buttonCorner)
     }
@@ -67,7 +73,9 @@ extension BuySellFeedDetailView {
 #if DEBUG || DEVEL
 struct BuySellFeedDetailViewPreview: PreviewProvider {
     static var previews: some View {
-        BuySellFeedDetailView()
+        BuySellFeedDetailView(maxAmount: "up to $10k",
+                              paymentMethod: "Revolut",
+                              fee: "Wants $30 fee per transaction")
             .previewDevice("iPhone 11")
     }
 }
