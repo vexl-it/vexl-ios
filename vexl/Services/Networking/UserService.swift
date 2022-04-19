@@ -65,7 +65,9 @@ final class UserService: BaseService, UserServiceType {
     }
 
     func createUser(username: String, avatar: String?) -> AnyPublisher<User, Error> {
-        request(type: User.self, endpoint: UserRouter.createUser(username: username, avatar: avatar))
+        request(type: User.self, endpoint: UserRouter.createUser(username: username,
+                                                                 avatar: avatar,
+                                                                 imageExtension: "jpeg"))
             .eraseToAnyPublisher()
     }
 

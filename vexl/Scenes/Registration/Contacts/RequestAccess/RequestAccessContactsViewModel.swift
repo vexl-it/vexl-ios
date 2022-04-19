@@ -42,7 +42,8 @@ class RequestAccessContactsViewModel: ObservableObject {
 
     // MARK: - Variables
 
-    var userName: String
+    var username: String
+    var avatar: String?
     var title: String { "" }
     var subtitle: String { "" }
     var importButton: String { "" }
@@ -50,12 +51,20 @@ class RequestAccessContactsViewModel: ObservableObject {
     var portraitColor: Color { Appearance.Colors.green5 }
     var portraitTextColor: Color { Appearance.Colors.green1 }
 
+    var avatarData: Data? {
+        guard let avatar = avatar, let url = URL(string: avatar) else {
+            return nil
+        }
+        return try? Data(contentsOf: url)
+    }
+
     private let cancelBag: CancelBag = .init()
 
     // MARK: - Init
 
-    init(userName: String) {
-        self.userName = userName
+    init(username: String, avatar: String?) {
+        self.username = username
+        self.avatar = avatar
         $currentState
             .withUnretained(self)
             .sink { owner, state in

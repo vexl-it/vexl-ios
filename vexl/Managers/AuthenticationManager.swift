@@ -19,6 +19,8 @@ protocol TokenHandlerType {
 }
 
 protocol AuthenticationManagerType {
+    var currentUser: User? { get }
+
     func logoutUser()
 }
 
@@ -53,6 +55,7 @@ final class AuthenticationManager: AuthenticationManagerType, TokenHandlerType {
     // MARK: - Variables for user registration
 
     var userSecurity: UserSecurity = .init()
+    private(set) var currentUser: User?
 
     // MARK: - Initialization
 
@@ -79,6 +82,10 @@ final class AuthenticationManager: AuthenticationManagerType, TokenHandlerType {
             .map { $0 ?? "" }
             .map { $0.isEmpty ? .signedOut : .signedIn }
             .assign(to: &$authenticationState)
+    }
+
+    func setUser(_ user: User) {
+        self.currentUser = user
     }
 }
 
@@ -136,6 +143,7 @@ extension AuthenticationManager {
     private func clearUser() {
         accessToken = nil
         refreshToken = nil
+        currentUser = nil
         clearSecurity()
         let userDefaults = UserDefaults.standard
 

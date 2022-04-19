@@ -3,8 +3,8 @@ before_script:
   - bundle install
   
   - git remote set-url origin git@gitlab.cleevio.cz:$CI_PROJECT_PATH.git
-  - git config --global user.email 'dev@cleevio.cz'
-  - git config --global user.name 'iMac CI'
+  - git config --global user.email 'dev.ios@cleevio.cz'
+  - git config --global user.name 'Mac mini CI'
 
 variables:
   LC_ALL: "en_US.UTF-8"
@@ -12,7 +12,6 @@ variables:
 
 stages:
   - lint
-  # - test
   - deploy
 
 lint:
@@ -30,29 +29,10 @@ lint:
     expire_in: 2 days
   allow_failure: false
 
-# Enable if needed
-
-# test:
-#   stage: test
-#   script:
-#     - bundle exec fastlane test
-#   only:
-#     - master
-#     - devel
-#     - merge_requests
-#   except:
-#     - tags
-#   tags: [iMac]
-#   artifacts:
-#     paths:
-#       - fastlane/tests/
-#     expire_in: 2 days
-#   allow_failure: false
-
 deploy_beta:
   stage: deploy
   script:
-    - bundle exec fastlane deploy_beta
+    - bundle exec fastlane deploy_devel
   only:
     - devel
   except:
@@ -66,9 +46,10 @@ deploy_beta_manual:
     - master
     - devel
   script:
-    - bundle exec fastlane deploy_beta
+    - bundle exec fastlane deploy_devel
   when: manual
   tags: [ios]
+  allow_failure: false
 
 deploy_AppStore:
   stage: deploy
@@ -78,4 +59,5 @@ deploy_AppStore:
     - bundle exec fastlane deploy_AppStore
   when: manual
   tags: [ios]
+  allow_failure: false
 

@@ -1,6 +1,8 @@
-- Requires uninstall: **YES** ⚠️
+- Requires uninstall: NO
 
 ### Improvements
+- Add firebase tester group
+- Uses number pad for phone number textfield
 
 ### Fixes
 
