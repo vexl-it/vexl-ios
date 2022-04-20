@@ -33,7 +33,7 @@ final class RegisterContactsCoordinator: BaseCoordinator<RouterResult<Void>> {
 
         viewModel
             .$loading
-            .assign(to: &viewController.$loading)
+            .assign(to: &viewController.$isLoading)
 
         let dismissByRouter = viewController
             .dismissPublisher
