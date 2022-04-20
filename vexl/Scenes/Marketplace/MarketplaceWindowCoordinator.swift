@@ -33,19 +33,6 @@ final class MarketplaceWindowCoordinator: BaseCoordinator<Void> {
 
         marketplaceRouter.set(bottomViewController: buySellViewController)
 
-        buySellViewModel
-            .route
-            .filter { $0 == .showOffer }
-            .withUnretained(self)
-            .sink { owner, _ in
-                let viewController = TestViewController()
-                viewController.dismiss = {
-                    owner.marketplaceRouter.dismiss(animated: true)
-                }
-                owner.marketplaceRouter.present(viewController, animated: true)
-            }
-            .store(in: cancelBag)
-
         let dismissViewController = marketplaceViewController.dismissPublisher
             .map { _ in RouterResult<Void>.dismissedByRouter }
 
@@ -75,19 +62,6 @@ final class MarketplaceCoordinator: BaseCoordinator<Void> {
 
         marketplaceRouter.set(bottomViewController: buySellViewController)
         router.present(marketplaceViewController, animated: false)
-
-        buySellViewModel
-            .route
-            .filter { $0 == .showOffer }
-            .withUnretained(self)
-            .sink { owner, _ in
-                let viewController = TestViewController()
-                viewController.dismiss = {
-                    owner.marketplaceRouter.dismiss(animated: true)
-                }
-                owner.marketplaceRouter.present(viewController, animated: true)
-            }
-            .store(in: cancelBag)
 
         let dismissViewController = marketplaceViewController.dismissPublisher
             .map { _ in RouterResult<Void>.dismissedByRouter }

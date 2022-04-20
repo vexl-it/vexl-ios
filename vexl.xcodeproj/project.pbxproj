@@ -156,7 +156,6 @@
 		F1C6D09E27BDDD4C009BD506 /* TextStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1C6D09D27BDDD4C009BD506 /* TextStyle.swift */; };
 		F1C6D0A027BDECB0009BD506 /* WelcomeView+LogoImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1C6D09F27BDECB0009BD506 /* WelcomeView+LogoImageView.swift */; };
 		F1C6D0A227BE9157009BD506 /* LinkTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1C6D0A127BE9157009BD506 /* LinkTextView.swift */; };
-		F1CFF3B627F56F7F007D9FE1 /* FacebokUserSignature.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1CFF3B527F56F7F007D9FE1 /* FacebokUserSignature.swift */; };
 		F1CFF3B827F6015B007D9FE1 /* UserSecurity.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1CFF3B727F6015B007D9FE1 /* UserSecurity.swift */; };
 /* End PBXBuildFile section */
 
@@ -337,7 +336,6 @@
 		F1C6D09D27BDDD4C009BD506 /* TextStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextStyle.swift; sourceTree = "<group>"; };
 		F1C6D09F27BDECB0009BD506 /* WelcomeView+LogoImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WelcomeView+LogoImageView.swift"; sourceTree = "<group>"; };
 		F1C6D0A127BE9157009BD506 /* LinkTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkTextView.swift; sourceTree = "<group>"; };
-		F1CFF3B527F56F7F007D9FE1 /* FacebokUserSignature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebokUserSignature.swift; sourceTree = "<group>"; };
 		F1CFF3B727F6015B007D9FE1 /* UserSecurity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSecurity.swift; sourceTree = "<group>"; };
 		F2FD3623B1DD9C04AD13743C /* Pods-vexl.devel.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-vexl.devel.xcconfig"; path = "Target Support Files/Pods-vexl/Pods-vexl.devel.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -924,7 +922,6 @@
 		F1A9452F27F68055009B5AE3 /* Security */ = {
 			isa = PBXGroup;
 			children = (
-				F1CFF3B527F56F7F007D9FE1 /* FacebokUserSignature.swift */,
 				F1A9453127F686C8009B5AE3 /* UserKeys.swift */,
 				F1A9453027F686C8009B5AE3 /* UserSignature.swift */,
 				F1CFF3B727F6015B007D9FE1 /* UserSecurity.swift */,
@@ -1447,7 +1444,6 @@
 				B0F206F327AEA4C800A44E72 /* WindowCoordinator.swift in Sources */,
 				F18D722B2806B7C6001B3D3A /* BuySellFilterView.swift in Sources */,
 				F18862032808318E00659786 /* MarketplaceRouter.swift in Sources */,
-				F1CFF3B627F56F7F007D9FE1 /* FacebokUserSignature.swift in Sources */,
 				F175AB9527EA6A8E000DAB15 /* PlaceholderTextField.swift in Sources */,
 				F1BFA960280247F500F4E745 /* BuySellView.swift in Sources */,
 				B0EEE11627B14D320097031E /* WelcomeCoordinator.swift in Sources */,
