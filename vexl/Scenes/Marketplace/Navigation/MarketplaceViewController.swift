@@ -17,13 +17,13 @@ final class MarketplaceViewController: UIViewController {
 
     var bottomViewController: UIViewController?
     var currentViewController: UIViewController?
-    
+
     var isExpanded = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .black
-        
+
         headerView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(headerView)
 
@@ -32,10 +32,10 @@ final class MarketplaceViewController: UIViewController {
             headerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             headerView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
-        
+    
         headerView.addTarget(self, action: #selector(headerTap), for: .touchUpInside)
     }
-    
+
     @objc
     private func headerTap() {
         isExpanded.toggle()
@@ -49,6 +49,7 @@ final class MarketplaceViewController: UIViewController {
         childView.backgroundColor = .black
         childView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(childView)
+
         NSLayoutConstraint.activate([
             childView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             childView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
