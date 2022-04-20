@@ -9,7 +9,7 @@ import Foundation
 import Cleevio
 import SwiftUI
 
-final class MarketplaceCoordinator: BaseCoordinator<Void> {
+final class MarketplaceWindowCoordinator: BaseCoordinator<Void> {
 
     private let marketplaceViewController: MarketplaceViewController
     private let marketplaceRouter: MarketplaceRouter

@@ -72,6 +72,6 @@ extension AppCoordinator {
     }
 
     private func showHomeScreen() -> CoordinatingResult<Void> {
-        coordinate(to: MarketplaceCoordinator(window: window))
+        coordinate(to: MarketplaceWindowCoordinator(window: window))
     }
 }
