@@ -49,8 +49,8 @@ struct BuySellSegmentView: View {
 
             GeometryReader { reader in
                 Color.white
-                    .frame(width: reader.size.width * 0.5, height: selectorHeight)
-                    .offset(x: selectedOption == .buy ? 0 : reader.size.width * 0.5)
+                    .frame(width: reader.size.width * 0.45, height: selectorHeight)
+                    .offset(x: selectedOption == .buy ? reader.size.width * 0.05 : reader.size.width * 0.5)
                     .animation(.easeIn(duration: 0.15),
                                value: selectedOption)
             }

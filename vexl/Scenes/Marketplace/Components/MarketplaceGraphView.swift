@@ -11,9 +11,19 @@ class MarketplaceGraphView: UIView {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = .red
         translatesAutoresizingMaskIntoConstraints = false
         heightAnchor.constraint(equalToConstant: 150).isActive = true
+
+        let label = UILabel()
+        label.textColor = .white
+        label.text = "Graph will go here"
+        label.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(label)
+
+        NSLayoutConstraint.activate([
+            label.centerXAnchor.constraint(equalTo: centerXAnchor),
+            label.centerYAnchor.constraint(equalTo: centerYAnchor)
+        ])
     }
 
     required init?(coder: NSCoder) {
