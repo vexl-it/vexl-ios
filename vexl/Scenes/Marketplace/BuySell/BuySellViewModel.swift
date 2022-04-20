@@ -67,9 +67,7 @@ final class BuySellViewModel: ViewModelType, ObservableObject {
 
     var sellFilters: [BuySellFilterView.FilterItem] {
         [
-            .init(id: 4, title: "Revolut2"),
-            .init(id: 5, title: "up to 20K"),
-            .init(id: 6, title: "▽")
+            .init(id: 4, title: "Filter offers ▽")
         ]
     }
 

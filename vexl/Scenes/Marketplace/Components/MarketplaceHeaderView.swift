@@ -48,17 +48,13 @@ class MarketplaceHeaderView: UIControl {
         UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseInOut) {
             self.graphView.isHidden = false
             self.graphView.alpha = 1
-        } completion: { _ in
-            
         }
     }
-    
+
     func hideGraph() {
         UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseInOut) {
             self.graphView.isHidden = true
             self.graphView.alpha = 0
-        } completion: { _ in
-            
         }
     }
 }

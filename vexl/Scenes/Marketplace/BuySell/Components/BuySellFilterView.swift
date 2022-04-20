@@ -29,7 +29,7 @@ struct BuySellFilterView: View {
             Button(actionTitle) {
                 action()
             }
-            .textStyle(.h3)
+            .textStyle(.paragraphBold)
             .foregroundColor(Appearance.Colors.green5)
             .padding(.vertical, 5)
             .padding(.horizontal, 12)

@@ -23,13 +23,9 @@ final class MarketplaceCoordinator: BaseCoordinator<RouterResult<Void>> {
 
     override func start() -> CoordinatingResult<RouterResult<Void>> {
 
-        //let coinViewModel = CoinViewModel()
-        //let coinViewController = BaseViewController(rootView: CoinView(viewModel: coinViewModel))
-
         let buySellViewModel = BuySellViewModel()
         let buySellViewController = BaseViewController(rootView: BuySellView(viewModel: buySellViewModel))
 
-        //marketplaceRouter.set(topViewController: coinViewController)
         marketplaceRouter.set(bottomViewController: buySellViewController)
 
         router.present(marketController, animated: false)

@@ -120,6 +120,7 @@
 		F1886211280EC49B00659786 /* Image+Base64.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1886210280EC49B00659786 /* Image+Base64.swift */; };
 		F1886218281005BD00659786 /* MarketplaceHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1886217281005BD00659786 /* MarketplaceHeaderView.swift */; };
 		F188621A281005F700659786 /* MarketplaceDisplayValueView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1886219281005F700659786 /* MarketplaceDisplayValueView.swift */; };
+		F188621C2810153700659786 /* MarketplaceGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F188621B2810153700659786 /* MarketplaceGraphView.swift */; };
 		F18D722B2806B7C6001B3D3A /* BuySellFilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18D722A2806B7C6001B3D3A /* BuySellFilterView.swift */; };
 		F18D722D2806BA06001B3D3A /* BuySellFeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18D722C2806BA06001B3D3A /* BuySellFeedView.swift */; };
 		F18D722F2806BD28001B3D3A /* BuySellFeedDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18D722E2806BD28001B3D3A /* BuySellFeedDetailView.swift */; };
@@ -300,6 +301,7 @@
 		F1886210280EC49B00659786 /* Image+Base64.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Image+Base64.swift"; sourceTree = "<group>"; };
 		F1886217281005BD00659786 /* MarketplaceHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketplaceHeaderView.swift; sourceTree = "<group>"; };
 		F1886219281005F700659786 /* MarketplaceDisplayValueView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketplaceDisplayValueView.swift; sourceTree = "<group>"; };
+		F188621B2810153700659786 /* MarketplaceGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketplaceGraphView.swift; sourceTree = "<group>"; };
 		F18D722A2806B7C6001B3D3A /* BuySellFilterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuySellFilterView.swift; sourceTree = "<group>"; };
 		F18D722C2806BA06001B3D3A /* BuySellFeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuySellFeedView.swift; sourceTree = "<group>"; };
 		F18D722E2806BD28001B3D3A /* BuySellFeedDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuySellFeedDetailView.swift; sourceTree = "<group>"; };
@@ -905,6 +907,7 @@
 		F1886216281005B000659786 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				F188621B2810153700659786 /* MarketplaceGraphView.swift */,
 				F1886217281005BD00659786 /* MarketplaceHeaderView.swift */,
 				F1886219281005F700659786 /* MarketplaceDisplayValueView.swift */,
 			);
@@ -1407,6 +1410,7 @@
 				F188621A281005F700659786 /* MarketplaceDisplayValueView.swift in Sources */,
 				F1C6D0A227BE9157009BD506 /* LinkTextView.swift in Sources */,
 				B08F391527AE7112008B344F /* ApiService.swift in Sources */,
+				F188621C2810153700659786 /* MarketplaceGraphView.swift in Sources */,
 				B08F391927AE7112008B344F /* User.swift in Sources */,
 				F1886218281005BD00659786 /* MarketplaceHeaderView.swift in Sources */,
 				F175AB9927F0D2D8000DAB15 /* ContactsService.swift in Sources */,

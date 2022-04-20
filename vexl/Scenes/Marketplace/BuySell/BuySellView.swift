@@ -18,6 +18,7 @@ struct BuySellView: View {
             .background(Color.black.edgesIgnoringSafeArea(.bottom))
             .cornerRadius(Appearance.GridGuide.buttonCorner,
                           corners: [.topLeft, .topRight])
+            .animation(.easeInOut)
     }
 
     private var content: some View {
