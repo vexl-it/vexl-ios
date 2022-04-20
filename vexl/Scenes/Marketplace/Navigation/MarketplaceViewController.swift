@@ -32,7 +32,6 @@ final class MarketplaceViewController: UIViewController {
             headerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             headerView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
-    
         headerView.addTarget(self, action: #selector(headerTap), for: .touchUpInside)
     }
 

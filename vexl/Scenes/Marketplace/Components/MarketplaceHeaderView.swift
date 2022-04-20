@@ -48,8 +48,6 @@ class MarketplaceHeaderView: UIControl {
         UIView.animate(withDuration: 0.7, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0) {
             self.graphView.isHidden = false
             self.graphView.alpha = 1
-        } completion: { _ in
-            
         }
     }
 
@@ -57,7 +55,6 @@ class MarketplaceHeaderView: UIControl {
         UIView.animate(withDuration: 0.7, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0) {
             self.graphView.isHidden = true
             self.graphView.alpha = 0
-        } completion: { _ in   
         }
     }
 }
