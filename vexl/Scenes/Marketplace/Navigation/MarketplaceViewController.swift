@@ -32,7 +32,6 @@ final class MarketplaceViewController: UIViewController {
             headerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             headerView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
-
         headerView.addTarget(self, action: #selector(headerTap), for: .touchUpInside)
     }
 
@@ -49,6 +48,7 @@ final class MarketplaceViewController: UIViewController {
         childView.backgroundColor = .black
         childView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(childView)
+
         NSLayoutConstraint.activate([
             childView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             childView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
