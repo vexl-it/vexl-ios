@@ -110,9 +110,6 @@
 		F1886201280824D600659786 /* MarketplaceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1886200280824D600659786 /* MarketplaceViewController.swift */; };
 		F18862032808318E00659786 /* MarketplaceRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18862022808318E00659786 /* MarketplaceRouter.swift */; };
 		F188620628083A5400659786 /* MarketplaceWindowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F188620528083A5400659786 /* MarketplaceWindowCoordinator.swift */; };
-		F188620928083B8A00659786 /* CoinCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F188620828083B8A00659786 /* CoinCoordinator.swift */; };
-		F188620B28083BA800659786 /* CoinViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F188620A28083BA800659786 /* CoinViewModel.swift */; };
-		F188620D28083BAD00659786 /* CoinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F188620C28083BAD00659786 /* CoinView.swift */; };
 		F188620F280EABB600659786 /* FetchImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F188620E280EABB600659786 /* FetchImage.swift */; };
 		F1886211280EC49B00659786 /* Image+Base64.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1886210280EC49B00659786 /* Image+Base64.swift */; };
 		F1886218281005BD00659786 /* MarketplaceHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1886217281005BD00659786 /* MarketplaceHeaderView.swift */; };
@@ -294,9 +291,6 @@
 		F1886200280824D600659786 /* MarketplaceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketplaceViewController.swift; sourceTree = "<group>"; };
 		F18862022808318E00659786 /* MarketplaceRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketplaceRouter.swift; sourceTree = "<group>"; };
 		F188620528083A5400659786 /* MarketplaceWindowCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketplaceWindowCoordinator.swift; sourceTree = "<group>"; };
-		F188620828083B8A00659786 /* CoinCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinCoordinator.swift; sourceTree = "<group>"; };
-		F188620A28083BA800659786 /* CoinViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinViewModel.swift; sourceTree = "<group>"; };
-		F188620C28083BAD00659786 /* CoinView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinView.swift; sourceTree = "<group>"; };
 		F188620E280EABB600659786 /* FetchImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchImage.swift; sourceTree = "<group>"; };
 		F1886210280EC49B00659786 /* Image+Base64.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Image+Base64.swift"; sourceTree = "<group>"; };
 		F1886217281005BD00659786 /* MarketplaceHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketplaceHeaderView.swift; sourceTree = "<group>"; };
@@ -884,7 +878,6 @@
 			children = (
 				F1886204280835D600659786 /* Navigation */,
 				F1886216281005B000659786 /* Components */,
-				F188620728083B6A00659786 /* Coin */,
 				F1BFA95A280247AD00F4E745 /* BuySell */,
 				F188620528083A5400659786 /* MarketplaceWindowCoordinator.swift */,
 			);
@@ -898,16 +891,6 @@
 				F18862022808318E00659786 /* MarketplaceRouter.swift */,
 			);
 			path = Navigation;
-			sourceTree = "<group>";
-		};
-		F188620728083B6A00659786 /* Coin */ = {
-			isa = PBXGroup;
-			children = (
-				F188620828083B8A00659786 /* CoinCoordinator.swift */,
-				F188620A28083BA800659786 /* CoinViewModel.swift */,
-				F188620C28083BAD00659786 /* CoinView.swift */,
-			);
-			path = Coin;
 			sourceTree = "<group>";
 		};
 		F1886216281005B000659786 /* Components */ = {
@@ -1357,7 +1340,6 @@
 				F1B5FCCF27C6F7E80018729B /* RegisterPhoneViewModel.swift in Sources */,
 				F12A14DE27D677420096543E /* RegisterContactsViewModel.swift in Sources */,
 				B08F390D27AE7110008B344F /* InfoBarView.swift in Sources */,
-				F188620B28083BA800659786 /* CoinViewModel.swift in Sources */,
 				F1A9453C27F7E01D009B5AE3 /* ChallengeValidation.swift in Sources */,
 				B08F399A27AE7D87008B344F /* OnboardingCoordinator.swift in Sources */,
 				F12A14F027D912410096543E /* RequestAccessContactsViewModel.swift in Sources */,
@@ -1365,7 +1347,6 @@
 				F1CFF3B827F6015B007D9FE1 /* UserSecurity.swift in Sources */,
 				B08F392227AE7112008B344F /* UIColor+.swift in Sources */,
 				F18D72312807307B001B3D3A /* BuySellFeedFooterView.swift in Sources */,
-				F188620D28083BAD00659786 /* CoinView.swift in Sources */,
 				B08F396A27AE7112008B344F /* URLRequest+.swift in Sources */,
 				F175AB9727ECC159000DAB15 /* SecurityHeader.swift in Sources */,
 				F12A14DC27D677340096543E /* RegisterContactsCoordinator.swift in Sources */,
@@ -1412,7 +1393,6 @@
 				F12A150127DFC1D70096543E /* ImportContactItemView.swift in Sources */,
 				F1BFA96E2803A49300F4E745 /* UserProfileView+Item.swift in Sources */,
 				B08F397A27AE7112008B344F /* Codable+.swift in Sources */,
-				F188620928083B8A00659786 /* CoinCoordinator.swift in Sources */,
 				F188620F280EABB600659786 /* FetchImage.swift in Sources */,
 				F175AB9B27F1432E000DAB15 /* ContactsRouter.swift in Sources */,
 				F151A2A927C9646A000D7242 /* RegisterNameAvatarView+AvatarInput.swift in Sources */,

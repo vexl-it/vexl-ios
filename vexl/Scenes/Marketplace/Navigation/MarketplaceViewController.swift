@@ -105,34 +105,3 @@ final class MarketplaceViewController: UIViewController {
         }
     }
 }
-
-// TODO: - remove this
-
-class TestViewController: UIViewController {
-
-    var dismiss: (() -> Void)?
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        view.backgroundColor = .black
-        let tapGesture = UITapGestureRecognizer()
-        tapGesture.addTarget(self, action: #selector(tap))
-        view.addGestureRecognizer(tapGesture)
-
-        let l = UILabel()
-        l.text = "GOO"
-        l.textColor = .white
-        l.translatesAutoresizingMaskIntoConstraints = false
-
-        view.addSubview(l)
-        NSLayoutConstraint.activate([
-            l.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            l.centerYAnchor.constraint(equalTo: view.centerYAnchor)
-        ])
-    }
-
-    @objc
-    private func tap() {
-        dismiss?()
-    }
-}
