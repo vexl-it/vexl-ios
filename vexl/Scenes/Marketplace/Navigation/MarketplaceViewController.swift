@@ -13,50 +13,48 @@ final class MarketplaceViewController: UIViewController {
 
     let dismissPublisher: ActionSubject<Void> = .init()
 
-    var topViewController: UIViewController?
+    var headerView = MarketplaceHeaderView()
+
     var bottomViewController: UIViewController?
     var currentViewController: UIViewController?
+    
+    var isExpanded = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .black
-    }
+        
+        headerView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(headerView)
 
-    func set(topViewController: UIViewController) {
-        self.topViewController = topViewController
-        addChild(topViewController)
-        let childView = topViewController.view!
-        childView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(childView)
         NSLayoutConstraint.activate([
-            childView.topAnchor.constraint(equalTo: view.topAnchor),
-            childView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            childView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+            headerView.topAnchor.constraint(equalTo: view.topAnchor),
+            headerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            headerView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
-
-        if let bottomChildView = bottomViewController?.view {
-            bottomChildView.topAnchor.constraint(equalTo: childView.bottomAnchor).isActive = true
-        }
-
-        topViewController.didMove(toParent: self)
+        
+        headerView.addTarget(self, action: #selector(headerTap), for: .touchUpInside)
+    }
+    
+    @objc
+    private func headerTap() {
+        isExpanded.toggle()
+        isExpanded ? headerView.presentGraph() : headerView.hideGraph()
     }
 
     func set(bottomViewController: UIViewController) {
         self.bottomViewController = bottomViewController
         addChild(bottomViewController)
         let childView = bottomViewController.view!
-        childView.backgroundColor = R.color.green1()
+        childView.backgroundColor = .black
         childView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(childView)
         NSLayoutConstraint.activate([
             childView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             childView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            childView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+            childView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            childView.topAnchor.constraint(equalTo: headerView.bottomAnchor)
         ])
-
-        if let topChildView = topViewController?.view {
-            topChildView.bottomAnchor.constraint(equalTo: childView.topAnchor).isActive = true
-        }
 
         bottomViewController.didMove(toParent: self)
     }
@@ -104,16 +102,6 @@ final class MarketplaceViewController: UIViewController {
             childView.removeFromSuperview()
             currentViewController.didMove(toParent: nil)
             self?.currentViewController = nil
-        }
-    }
-
-    func resizeStuff() {
-        self.topViewController?.view.backgroundColor = R.color.green1()
-        DispatchQueue.main.async {
-            self.topViewController?.view.invalidateIntrinsicContentSize()
-            UIView.animate(withDuration: 0.5) {
-                self.topViewController?.view.bounds.size = self.topViewController!.view.intrinsicContentSize
-            }
         }
     }
 }

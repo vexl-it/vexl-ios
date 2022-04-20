@@ -108,6 +108,8 @@
 		F175AB9D27F147B5000DAB15 /* ContactsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F175AB9C27F147B5000DAB15 /* ContactsManager.swift */; };
 		F175ABA027F4A7EC000DAB15 /* RegistryError.swift in Sources */ = {isa = PBXBuildFile; fileRef = F175AB9F27F4A7EC000DAB15 /* RegistryError.swift */; };
 		F175ABA227F4A8F8000DAB15 /* UserAvailable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F175ABA127F4A8F8000DAB15 /* UserAvailable.swift */; };
+		F175ABAA27F4FC3F000DAB15 /* ImportPhoneContactsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F175ABA927F4FC3E000DAB15 /* ImportPhoneContactsViewModel.swift */; };
+		F175ABAC27F4FF30000DAB15 /* ImportFacebookContactsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F175ABAB27F4FF30000DAB15 /* ImportFacebookContactsViewModel.swift */; };
 		F18861FE2808136D00659786 /* HLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18861FD2808136D00659786 /* HLine.swift */; };
 		F1886201280824D600659786 /* MarketplaceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1886200280824D600659786 /* MarketplaceViewController.swift */; };
 		F18862032808318E00659786 /* MarketplaceRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18862022808318E00659786 /* MarketplaceRouter.swift */; };
@@ -115,13 +117,13 @@
 		F188620928083B8A00659786 /* CoinCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F188620828083B8A00659786 /* CoinCoordinator.swift */; };
 		F188620B28083BA800659786 /* CoinViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F188620A28083BA800659786 /* CoinViewModel.swift */; };
 		F188620D28083BAD00659786 /* CoinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F188620C28083BAD00659786 /* CoinView.swift */; };
+		F1886211280EC49B00659786 /* Image+Base64.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1886210280EC49B00659786 /* Image+Base64.swift */; };
+		F1886218281005BD00659786 /* MarketplaceHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1886217281005BD00659786 /* MarketplaceHeaderView.swift */; };
+		F188621A281005F700659786 /* MarketplaceDisplayValueView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1886219281005F700659786 /* MarketplaceDisplayValueView.swift */; };
 		F18D722B2806B7C6001B3D3A /* BuySellFilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18D722A2806B7C6001B3D3A /* BuySellFilterView.swift */; };
 		F18D722D2806BA06001B3D3A /* BuySellFeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18D722C2806BA06001B3D3A /* BuySellFeedView.swift */; };
 		F18D722F2806BD28001B3D3A /* BuySellFeedDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18D722E2806BD28001B3D3A /* BuySellFeedDetailView.swift */; };
 		F18D72312807307B001B3D3A /* BuySellFeedFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18D72302807307B001B3D3A /* BuySellFeedFooterView.swift */; };
-		F175ABAA27F4FC3F000DAB15 /* ImportPhoneContactsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F175ABA927F4FC3E000DAB15 /* ImportPhoneContactsViewModel.swift */; };
-		F175ABAC27F4FF30000DAB15 /* ImportFacebookContactsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F175ABAB27F4FF30000DAB15 /* ImportFacebookContactsViewModel.swift */; };
-		F1886211280EC49B00659786 /* Image+Base64.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1886210280EC49B00659786 /* Image+Base64.swift */; };
 		F1A9452D27F67FD5009B5AE3 /* PhoneConfirmation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1A9452C27F67FD5009B5AE3 /* PhoneConfirmation.swift */; };
 		F1A9454227F81200009B5AE3 /* ContactsImported.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1A9454127F81200009B5AE3 /* ContactsImported.swift */; };
 		F1A9454427F81211009B5AE3 /* ContactsAvailable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1A9454327F81211009B5AE3 /* ContactsAvailable.swift */; };
@@ -146,10 +148,10 @@
 		F1BFA95E280247EE00F4E745 /* BuySellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1BFA95D280247EE00F4E745 /* BuySellViewModel.swift */; };
 		F1BFA960280247F500F4E745 /* BuySellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1BFA95F280247F500F4E745 /* BuySellView.swift */; };
 		F1BFA9682802526B00F4E745 /* CoinVariationHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1BFA9672802526B00F4E745 /* CoinVariationHeaderView.swift */; };
-		F1BFA9762804426500F4E745 /* BuySellSegmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1BFA9752804426500F4E745 /* BuySellSegmentView.swift */; };
 		F1BFA96E2803A49300F4E745 /* UserProfileView+Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1BFA96D2803A49300F4E745 /* UserProfileView+Item.swift */; };
 		F1BFA9712804321900F4E745 /* LineDivider.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1BFA9702804321900F4E745 /* LineDivider.swift */; };
 		F1BFA97328043D6300F4E745 /* Image+.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1BFA97228043D6300F4E745 /* Image+.swift */; };
+		F1BFA9762804426500F4E745 /* BuySellSegmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1BFA9752804426500F4E745 /* BuySellSegmentView.swift */; };
 		F1C6D09727BDAD7F009BD506 /* LargeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1C6D09627BDAD7F009BD506 /* LargeButton.swift */; };
 		F1C6D09E27BDDD4C009BD506 /* TextStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1C6D09D27BDDD4C009BD506 /* TextStyle.swift */; };
 		F1C6D0A027BDECB0009BD506 /* WelcomeView+LogoImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1C6D09F27BDECB0009BD506 /* WelcomeView+LogoImageView.swift */; };
@@ -286,6 +288,8 @@
 		F175AB9C27F147B5000DAB15 /* ContactsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsManager.swift; sourceTree = "<group>"; };
 		F175AB9F27F4A7EC000DAB15 /* RegistryError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistryError.swift; sourceTree = "<group>"; };
 		F175ABA127F4A8F8000DAB15 /* UserAvailable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAvailable.swift; sourceTree = "<group>"; };
+		F175ABA927F4FC3E000DAB15 /* ImportPhoneContactsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportPhoneContactsViewModel.swift; sourceTree = "<group>"; };
+		F175ABAB27F4FF30000DAB15 /* ImportFacebookContactsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportFacebookContactsViewModel.swift; sourceTree = "<group>"; };
 		F18861FD2808136D00659786 /* HLine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HLine.swift; sourceTree = "<group>"; };
 		F1886200280824D600659786 /* MarketplaceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketplaceViewController.swift; sourceTree = "<group>"; };
 		F18862022808318E00659786 /* MarketplaceRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketplaceRouter.swift; sourceTree = "<group>"; };
@@ -293,13 +297,13 @@
 		F188620828083B8A00659786 /* CoinCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinCoordinator.swift; sourceTree = "<group>"; };
 		F188620A28083BA800659786 /* CoinViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinViewModel.swift; sourceTree = "<group>"; };
 		F188620C28083BAD00659786 /* CoinView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinView.swift; sourceTree = "<group>"; };
+		F1886210280EC49B00659786 /* Image+Base64.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Image+Base64.swift"; sourceTree = "<group>"; };
+		F1886217281005BD00659786 /* MarketplaceHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketplaceHeaderView.swift; sourceTree = "<group>"; };
+		F1886219281005F700659786 /* MarketplaceDisplayValueView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketplaceDisplayValueView.swift; sourceTree = "<group>"; };
 		F18D722A2806B7C6001B3D3A /* BuySellFilterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuySellFilterView.swift; sourceTree = "<group>"; };
 		F18D722C2806BA06001B3D3A /* BuySellFeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuySellFeedView.swift; sourceTree = "<group>"; };
 		F18D722E2806BD28001B3D3A /* BuySellFeedDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuySellFeedDetailView.swift; sourceTree = "<group>"; };
 		F18D72302807307B001B3D3A /* BuySellFeedFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuySellFeedFooterView.swift; sourceTree = "<group>"; };
-		F175ABA927F4FC3E000DAB15 /* ImportPhoneContactsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportPhoneContactsViewModel.swift; sourceTree = "<group>"; };
-		F175ABAB27F4FF30000DAB15 /* ImportFacebookContactsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportFacebookContactsViewModel.swift; sourceTree = "<group>"; };
-		F1886210280EC49B00659786 /* Image+Base64.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Image+Base64.swift"; sourceTree = "<group>"; };
 		F1A9452C27F67FD5009B5AE3 /* PhoneConfirmation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneConfirmation.swift; sourceTree = "<group>"; };
 		F1A9454127F81200009B5AE3 /* ContactsImported.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsImported.swift; sourceTree = "<group>"; };
 		F1A9454327F81211009B5AE3 /* ContactsAvailable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsAvailable.swift; sourceTree = "<group>"; };
@@ -324,10 +328,10 @@
 		F1BFA95D280247EE00F4E745 /* BuySellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuySellViewModel.swift; sourceTree = "<group>"; };
 		F1BFA95F280247F500F4E745 /* BuySellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuySellView.swift; sourceTree = "<group>"; };
 		F1BFA9672802526B00F4E745 /* CoinVariationHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinVariationHeaderView.swift; sourceTree = "<group>"; };
-		F1BFA9752804426500F4E745 /* BuySellSegmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuySellSegmentView.swift; sourceTree = "<group>"; };
 		F1BFA96D2803A49300F4E745 /* UserProfileView+Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserProfileView+Item.swift"; sourceTree = "<group>"; };
 		F1BFA9702804321900F4E745 /* LineDivider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LineDivider.swift; sourceTree = "<group>"; };
 		F1BFA97228043D6300F4E745 /* Image+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Image+.swift"; sourceTree = "<group>"; };
+		F1BFA9752804426500F4E745 /* BuySellSegmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuySellSegmentView.swift; sourceTree = "<group>"; };
 		F1C6D09627BDAD7F009BD506 /* LargeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LargeButton.swift; sourceTree = "<group>"; };
 		F1C6D09D27BDDD4C009BD506 /* TextStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextStyle.swift; sourceTree = "<group>"; };
 		F1C6D09F27BDECB0009BD506 /* WelcomeView+LogoImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WelcomeView+LogoImageView.swift"; sourceTree = "<group>"; };
@@ -858,9 +862,19 @@
 			path = Users;
 			sourceTree = "<group>";
 		};
+		F175ABA827F4FC2B000DAB15 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				F175ABA927F4FC3E000DAB15 /* ImportPhoneContactsViewModel.swift */,
+				F175ABAB27F4FF30000DAB15 /* ImportFacebookContactsViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
 		F18861FF280824A500659786 /* Marketplace */ = {
 			isa = PBXGroup;
 			children = (
+				F1886216281005B000659786 /* Components */,
 				F1886204280835D600659786 /* Navigation */,
 				F188620728083B6A00659786 /* Coin */,
 				F1BFA95A280247AD00F4E745 /* BuySell */,
@@ -888,13 +902,13 @@
 			path = Coin;
 			sourceTree = "<group>";
 		};
-		F175ABA827F4FC2B000DAB15 /* ViewModels */ = {
+		F1886216281005B000659786 /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				F175ABA927F4FC3E000DAB15 /* ImportPhoneContactsViewModel.swift */,
-				F175ABAB27F4FF30000DAB15 /* ImportFacebookContactsViewModel.swift */,
+				F1886217281005BD00659786 /* MarketplaceHeaderView.swift */,
+				F1886219281005F700659786 /* MarketplaceDisplayValueView.swift */,
 			);
-			path = ViewModels;
+			path = Components;
 			sourceTree = "<group>";
 		};
 		F1A9452B27F67FC6009B5AE3 /* Confirmation */ = {
@@ -995,6 +1009,14 @@
 			path = Header;
 			sourceTree = "<group>";
 		};
+		F1BFA96F2803A59F00F4E745 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				F1BFA96D2803A49300F4E745 /* UserProfileView+Item.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
 		F1BFA9742804424000F4E745 /* Components */ = {
 			isa = PBXGroup;
 			children = (
@@ -1003,14 +1025,6 @@
 				F18D722C2806BA06001B3D3A /* BuySellFeedView.swift */,
 				F18D722E2806BD28001B3D3A /* BuySellFeedDetailView.swift */,
 				F18D72302807307B001B3D3A /* BuySellFeedFooterView.swift */,
-			);
-			path = Components;
-			sourceTree = "<group>";
-		};
-		F1BFA96F2803A59F00F4E745 /* Components */ = {
-			isa = PBXGroup;
-			children = (
-				F1BFA96D2803A49300F4E745 /* UserProfileView+Item.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -1390,9 +1404,11 @@
 				F1042BA527BEF0360048C2F0 /* OnboardingView+PageControl.swift in Sources */,
 				F1B5FCD627C703BF0018729B /* View+.swift in Sources */,
 				B08F396627AE7112008B344F /* Constants.swift in Sources */,
+				F188621A281005F700659786 /* MarketplaceDisplayValueView.swift in Sources */,
 				F1C6D0A227BE9157009BD506 /* LinkTextView.swift in Sources */,
 				B08F391527AE7112008B344F /* ApiService.swift in Sources */,
 				B08F391927AE7112008B344F /* User.swift in Sources */,
+				F1886218281005BD00659786 /* MarketplaceHeaderView.swift in Sources */,
 				F175AB9927F0D2D8000DAB15 /* ContactsService.swift in Sources */,
 				F175AB8527E4CC2E000DAB15 /* PhoneVerification.swift in Sources */,
 				F175AB8527E4CC2E000DAB15 /* PhoneVerification.swift in Sources */,
@@ -1687,8 +1703,8 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.tmp.vexl;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG DEVEL";
 				PROVISIONING_PROFILE_SPECIFIER = "Vexel development";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG DEVEL";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = "1,2";

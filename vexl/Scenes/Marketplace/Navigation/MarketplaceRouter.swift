@@ -17,10 +17,6 @@ final class MarketplaceRouter {
         self.marketplaceController = marketplaceController
     }
 
-    func set(topViewController viewController: UIViewController) {
-        marketplaceController.set(topViewController: viewController)
-    }
-
     func set(bottomViewController viewController: UIViewController) {
         marketplaceController.set(bottomViewController: viewController)
     }
