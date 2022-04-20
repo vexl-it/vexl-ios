@@ -72,13 +72,6 @@ extension AppCoordinator {
     }
 
     private func showHomeScreen() -> CoordinatingResult<Void> {
-        coordinate(to:
-            WindowNavigationCoordinator(window: window) { router, _ -> MarketplaceCoordinator in
-            MarketplaceCoordinator(marketController: MarketplaceViewController(),
-                                   router: router)
-            }
-        )
-            .asVoid()
-            .eraseToAnyPublisher()
+        coordinate(to: MarketplaceCoordinator(window: window))
     }
 }

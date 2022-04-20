@@ -9,26 +9,29 @@ import Foundation
 import Cleevio
 import SwiftUI
 
-final class MarketplaceCoordinator: BaseCoordinator<RouterResult<Void>> {
+final class MarketplaceCoordinator: BaseCoordinator<Void> {
 
-    private let marketController: MarketplaceViewController
+    private let marketplaceViewController: MarketplaceViewController
     private let marketplaceRouter: MarketplaceRouter
-    private let router: Router
+    private let window: UIWindow
 
-    init(marketController: MarketplaceViewController, router: Router) {
-        self.marketController = marketController
-        self.marketplaceRouter = MarketplaceRouter(marketplaceController: marketController)
-        self.router = router
+    init(window: UIWindow) {
+        self.marketplaceViewController = MarketplaceViewController()
+        self.marketplaceRouter = MarketplaceRouter(marketplaceViewController: marketplaceViewController)
+        self.window = window
     }
 
-    override func start() -> CoordinatingResult<RouterResult<Void>> {
+    override func start() -> CoordinatingResult<Void> {
 
         let buySellViewModel = BuySellViewModel()
         let buySellViewController = BaseViewController(rootView: BuySellView(viewModel: buySellViewModel))
 
-        marketplaceRouter.set(bottomViewController: buySellViewController)
+        window.tap {
+            $0.rootViewController = marketplaceViewController
+            $0.makeKeyAndVisible()
+        }
 
-        router.present(marketController, animated: false)
+        marketplaceRouter.set(bottomViewController: buySellViewController)
 
         buySellViewModel
             .route
@@ -43,11 +46,12 @@ final class MarketplaceCoordinator: BaseCoordinator<RouterResult<Void>> {
             }
             .store(in: cancelBag)
 
-        let dismissViewController = marketController.dismissPublisher
+        let dismissViewController = marketplaceViewController.dismissPublisher
             .map { _ in RouterResult<Void>.dismissedByRouter }
 
         return dismissViewController
             .receive(on: RunLoop.main)
+            .asVoid()
             .eraseToAnyPublisher()
     }
 }

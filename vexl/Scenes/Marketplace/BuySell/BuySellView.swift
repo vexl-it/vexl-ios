@@ -57,7 +57,7 @@ struct BuySellView: View {
             })
         case .sell:
             return BuySellFilterView(items: viewModel.sellFilters,
-                                     actionTitle: "Offer",
+                                     actionTitle: L.marketplaceSellOffer(),
                                      filterAction: { index in
                 print("filter from \(index) has been tapped")
             },

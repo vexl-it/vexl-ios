@@ -11,24 +11,24 @@ import Cleevio
 
 final class MarketplaceRouter {
 
-    private let marketplaceController: MarketplaceViewController
+    private let marketplaceViewController: MarketplaceViewController
 
-    init(marketplaceController: MarketplaceViewController) {
-        self.marketplaceController = marketplaceController
+    init(marketplaceViewController: MarketplaceViewController) {
+        self.marketplaceViewController = marketplaceViewController
     }
 
     func set(bottomViewController viewController: UIViewController) {
-        marketplaceController.set(bottomViewController: viewController)
+        marketplaceViewController.set(bottomViewController: viewController)
     }
 }
 
 extension MarketplaceRouter: Router {
 
     func dismiss(animated: Bool, completion: (() -> Void)?) {
-        marketplaceController.dismiss()
+        marketplaceViewController.dismiss()
     }
 
     func present(_ viewController: UIViewController, animated: Bool) {
-        marketplaceController.present(childViewController: viewController)
+        marketplaceViewController.present(childViewController: viewController)
     }
 }
