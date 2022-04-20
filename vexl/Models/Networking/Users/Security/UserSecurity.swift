@@ -11,4 +11,7 @@ struct UserSecurity {
     var keys: UserKeys?
     var signature: String?
     var hash: String?
+
+    var facebookHash: String?
+    var facebookSignature: String?
 }

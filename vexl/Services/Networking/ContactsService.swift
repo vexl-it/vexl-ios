@@ -9,15 +9,17 @@ import Foundation
 import Combine
 
 protocol ContactsServiceType {
-    func createUser() -> AnyPublisher<Void, Error>
+    func createUser(forFacebook isFacebook: Bool) -> AnyPublisher<Void, Error>
     func importContacts(_ contacts: [String]) -> AnyPublisher<ContactsImported, Error>
-    func getAvailableContacts(_ contacts: [String]) -> AnyPublisher<ContactsAvailable, Error>
+    func getActivePhoneContacts(_ contacts: [String]) -> AnyPublisher<ContactsAvailable, Error>
+    func getActiveFacebookContacts(id: String, accessToken: String) -> AnyPublisher<FacebookUserData, Error>
+    func getFacebookContacts(id: String, accessToken: String) -> AnyPublisher<FacebookUserData, Error>
 }
 
 final class ContactsService: BaseService, ContactsServiceType {
 
-    func createUser() -> AnyPublisher<Void, Error> {
-        request(endpoint: ContactsRouter.createUser)
+    func createUser(forFacebook isFacebook: Bool) -> AnyPublisher<Void, Error> {
+        request(endpoint: ContactsRouter.createUser(useFacebookHeader: isFacebook))
             .eraseToAnyPublisher()
     }
 
@@ -26,8 +28,18 @@ final class ContactsService: BaseService, ContactsServiceType {
             .eraseToAnyPublisher()
     }
 
-    func getAvailableContacts(_ contacts: [String]) -> AnyPublisher<ContactsAvailable, Error> {
+    func getActivePhoneContacts(_ contacts: [String]) -> AnyPublisher<ContactsAvailable, Error> {
         request(type: ContactsAvailable.self, endpoint: ContactsRouter.getAvailableContacts(contacts: contacts))
+            .eraseToAnyPublisher()
+    }
+
+    func getFacebookContacts(id: String, accessToken: String) -> AnyPublisher<FacebookUserData, Error> {
+        request(type: FacebookUserData.self, endpoint: ContactsRouter.getFacebookContacts(id: id, accessToken: accessToken))
+            .eraseToAnyPublisher()
+    }
+
+    func getActiveFacebookContacts(id: String, accessToken: String) -> AnyPublisher<FacebookUserData, Error> {
+        request(type: FacebookUserData.self, endpoint: ContactsRouter.getAvailableFacebookContacts(id: id, accessToken: accessToken))
             .eraseToAnyPublisher()
     }
 }

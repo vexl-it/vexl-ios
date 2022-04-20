@@ -30,7 +30,7 @@ target 'vexl' do
     # Networking
     pod 'Alamofire'
     pod 'AlamofireNetworkActivityIndicator'
-    pod 'AlamofireNetworkActivityLogger', configuration: ['Debug']
+    pod 'AlamofireNetworkActivityLogger', configuration: ['Debug', 'Devel']
     pod 'Kingfisher'
 
  
@@ -43,6 +43,10 @@ target 'vexl' do
 
     # UI
     pod 'SnapKit'
+
+    # Facebook
+    pod 'FBSDKCoreKit', '~> 13.1'
+    pod 'FBSDKLoginKit', '~> 13.1'
 
     target 'vexlTests' do
     end
