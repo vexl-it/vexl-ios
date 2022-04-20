@@ -22,7 +22,7 @@ final class CoinViewModel: ViewModelType, ObservableObject {
 
     @Published var primaryActivity: Activity = .init()
     @Published var isExpanded = false
-    
+
     // MARK: - Coordinator Bindings
 
     enum Route: Equatable {
