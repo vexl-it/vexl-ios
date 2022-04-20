@@ -38,10 +38,12 @@ struct ImportContactListView: View {
                 })
                 .padding(Appearance.GridGuide.padding)
 
-                ForEach(viewModel.filteredItems) { item in
-                    ImportContactItemView(item: item, onSelection: { isSelected in
-                        viewModel.action.send(.itemSelected(isSelected, item))
-                    })
+                ScrollView {
+                    ForEach(viewModel.filteredItems) { item in
+                        ImportContactItemView(item: item, onSelection: { isSelected in
+                            viewModel.action.send(.itemSelected(isSelected, item))
+                        })
+                    }
                 }
             }
         }
