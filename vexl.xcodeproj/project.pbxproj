@@ -94,13 +94,9 @@
 		F151A2A727C962CC000D7242 /* RegisterNameAvatarView+NameInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = F151A2A627C962CC000D7242 /* RegisterNameAvatarView+NameInput.swift */; };
 		F151A2A927C9646A000D7242 /* RegisterNameAvatarView+AvatarInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = F151A2A827C9646A000D7242 /* RegisterNameAvatarView+AvatarInput.swift */; };
 		F151A2AB27CE818C000D7242 /* RegisterNameAvatarView+PhoneVerification.swift in Sources */ = {isa = PBXBuildFile; fileRef = F151A2AA27CE818C000D7242 /* RegisterNameAvatarView+PhoneVerification.swift */; };
-		F175AB8527E4CC2E000DAB15 /* PhoneVerification.swift in Sources */ = {isa = PBXBuildFile; fileRef = F175AB8427E4CC2E000DAB15 /* PhoneVerification.swift */; };
 		F175AB8727E4D5C8000DAB15 /* UIScreen+.swift in Sources */ = {isa = PBXBuildFile; fileRef = F175AB8627E4D5C8000DAB15 /* UIScreen+.swift */; };
 		F175AB8927E4F493000DAB15 /* Materialize.swift in Sources */ = {isa = PBXBuildFile; fileRef = F175AB8827E4F493000DAB15 /* Materialize.swift */; };
 		F175AB8B27E8062A000DAB15 /* LoadingIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F175AB8A27E8062A000DAB15 /* LoadingIndicatorView.swift */; };
-		F175AB8D27E817D4000DAB15 /* CodeValidation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F175AB8C27E817D4000DAB15 /* CodeValidation.swift */; };
-		F175AB8F27E8C622000DAB15 /* UserKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = F175AB8E27E8C622000DAB15 /* UserKeys.swift */; };
-		F175AB9127E8E223000DAB15 /* UserSignature.swift in Sources */ = {isa = PBXBuildFile; fileRef = F175AB9027E8E223000DAB15 /* UserSignature.swift */; };
 		F175AB9527EA6A8E000DAB15 /* PlaceholderTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = F175AB9427EA6A8E000DAB15 /* PlaceholderTextField.swift */; };
 		F175AB9727ECC159000DAB15 /* SecurityHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = F175AB9627ECC159000DAB15 /* SecurityHeader.swift */; };
 		F175AB9927F0D2D8000DAB15 /* ContactsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F175AB9827F0D2D8000DAB15 /* ContactsService.swift */; };
@@ -117,6 +113,7 @@
 		F188620928083B8A00659786 /* CoinCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F188620828083B8A00659786 /* CoinCoordinator.swift */; };
 		F188620B28083BA800659786 /* CoinViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F188620A28083BA800659786 /* CoinViewModel.swift */; };
 		F188620D28083BAD00659786 /* CoinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F188620C28083BAD00659786 /* CoinView.swift */; };
+		F188620F280EABB600659786 /* FetchImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F188620E280EABB600659786 /* FetchImage.swift */; };
 		F1886211280EC49B00659786 /* Image+Base64.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1886210280EC49B00659786 /* Image+Base64.swift */; };
 		F1886218281005BD00659786 /* MarketplaceHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1886217281005BD00659786 /* MarketplaceHeaderView.swift */; };
 		F188621A281005F700659786 /* MarketplaceDisplayValueView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1886219281005F700659786 /* MarketplaceDisplayValueView.swift */; };
@@ -126,6 +123,11 @@
 		F18D722F2806BD28001B3D3A /* BuySellFeedDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18D722E2806BD28001B3D3A /* BuySellFeedDetailView.swift */; };
 		F18D72312807307B001B3D3A /* BuySellFeedFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18D72302807307B001B3D3A /* BuySellFeedFooterView.swift */; };
 		F1A9452D27F67FD5009B5AE3 /* PhoneConfirmation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1A9452C27F67FD5009B5AE3 /* PhoneConfirmation.swift */; };
+		F1A9453227F686C8009B5AE3 /* UserSignature.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1A9453027F686C8009B5AE3 /* UserSignature.swift */; };
+		F1A9453327F686C8009B5AE3 /* UserKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1A9453127F686C8009B5AE3 /* UserKeys.swift */; };
+		F1A9453627F686D1009B5AE3 /* CodeValidation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1A9453427F686D1009B5AE3 /* CodeValidation.swift */; };
+		F1A9453727F686D1009B5AE3 /* PhoneVerification.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1A9453527F686D1009B5AE3 /* PhoneVerification.swift */; };
+		F1A9453C27F7E01D009B5AE3 /* ChallengeValidation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1A9453B27F7E01D009B5AE3 /* ChallengeValidation.swift */; };
 		F1A9454227F81200009B5AE3 /* ContactsImported.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1A9454127F81200009B5AE3 /* ContactsImported.swift */; };
 		F1A9454427F81211009B5AE3 /* ContactsAvailable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1A9454327F81211009B5AE3 /* ContactsAvailable.swift */; };
 		F1A9454627F81278009B5AE3 /* ContactInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1A9454527F81278009B5AE3 /* ContactInformation.swift */; };
@@ -139,7 +141,7 @@
 		F1B5FCD427C703230018729B /* CardModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B5FCD327C703230018729B /* CardModifier.swift */; };
 		F1B5FCD627C703BF0018729B /* View+.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B5FCD527C703BF0018729B /* View+.swift */; };
 		F1B5FCD827C7040C0018729B /* RoundedCorners.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B5FCD727C7040C0018729B /* RoundedCorners.swift */; };
-		F1BFA8D227FE915200F4E745 /* AlertBaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1BFA8D127FE915200F4E745 /* AlertBaseViewController.swift */; };
+		F1BFA8D027FB31E800F4E745 /* FacebookUserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1BFA8CF27FB31E800F4E745 /* FacebookUserData.swift */; };
 		F1BFA8D727FFB2AC00F4E745 /* ImagePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1BFA8D627FFB2AC00F4E745 /* ImagePickerView.swift */; };
 		F1BFA956280223BD00F4E745 /* UserProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1BFA952280223BD00F4E745 /* UserProfileView.swift */; };
 		F1BFA957280223BD00F4E745 /* UserProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1BFA953280223BD00F4E745 /* UserProfileViewModel.swift */; };
@@ -157,6 +159,7 @@
 		F1C6D09E27BDDD4C009BD506 /* TextStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1C6D09D27BDDD4C009BD506 /* TextStyle.swift */; };
 		F1C6D0A027BDECB0009BD506 /* WelcomeView+LogoImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1C6D09F27BDECB0009BD506 /* WelcomeView+LogoImageView.swift */; };
 		F1C6D0A227BE9157009BD506 /* LinkTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1C6D0A127BE9157009BD506 /* LinkTextView.swift */; };
+		F1CFF3B627F56F7F007D9FE1 /* FacebokUserSignature.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1CFF3B527F56F7F007D9FE1 /* FacebokUserSignature.swift */; };
 		F1CFF3B827F6015B007D9FE1 /* UserSecurity.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1CFF3B727F6015B007D9FE1 /* UserSecurity.swift */; };
 /* End PBXBuildFile section */
 
@@ -275,13 +278,9 @@
 		F151A2A627C962CC000D7242 /* RegisterNameAvatarView+NameInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RegisterNameAvatarView+NameInput.swift"; sourceTree = "<group>"; };
 		F151A2A827C9646A000D7242 /* RegisterNameAvatarView+AvatarInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RegisterNameAvatarView+AvatarInput.swift"; sourceTree = "<group>"; };
 		F151A2AA27CE818C000D7242 /* RegisterNameAvatarView+PhoneVerification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RegisterNameAvatarView+PhoneVerification.swift"; sourceTree = "<group>"; };
-		F175AB8427E4CC2E000DAB15 /* PhoneVerification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneVerification.swift; sourceTree = "<group>"; };
 		F175AB8627E4D5C8000DAB15 /* UIScreen+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScreen+.swift"; sourceTree = "<group>"; };
 		F175AB8827E4F493000DAB15 /* Materialize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Materialize.swift; sourceTree = "<group>"; };
 		F175AB8A27E8062A000DAB15 /* LoadingIndicatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingIndicatorView.swift; sourceTree = "<group>"; };
-		F175AB8C27E817D4000DAB15 /* CodeValidation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeValidation.swift; sourceTree = "<group>"; };
-		F175AB8E27E8C622000DAB15 /* UserKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserKeys.swift; sourceTree = "<group>"; };
-		F175AB9027E8E223000DAB15 /* UserSignature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSignature.swift; sourceTree = "<group>"; };
 		F175AB9427EA6A8E000DAB15 /* PlaceholderTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceholderTextField.swift; sourceTree = "<group>"; };
 		F175AB9627ECC159000DAB15 /* SecurityHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecurityHeader.swift; sourceTree = "<group>"; };
 		F175AB9827F0D2D8000DAB15 /* ContactsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsService.swift; sourceTree = "<group>"; };
@@ -298,6 +297,7 @@
 		F188620828083B8A00659786 /* CoinCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinCoordinator.swift; sourceTree = "<group>"; };
 		F188620A28083BA800659786 /* CoinViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinViewModel.swift; sourceTree = "<group>"; };
 		F188620C28083BAD00659786 /* CoinView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinView.swift; sourceTree = "<group>"; };
+		F188620E280EABB600659786 /* FetchImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchImage.swift; sourceTree = "<group>"; };
 		F1886210280EC49B00659786 /* Image+Base64.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Image+Base64.swift"; sourceTree = "<group>"; };
 		F1886217281005BD00659786 /* MarketplaceHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketplaceHeaderView.swift; sourceTree = "<group>"; };
 		F1886219281005F700659786 /* MarketplaceDisplayValueView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketplaceDisplayValueView.swift; sourceTree = "<group>"; };
@@ -307,6 +307,11 @@
 		F18D722E2806BD28001B3D3A /* BuySellFeedDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuySellFeedDetailView.swift; sourceTree = "<group>"; };
 		F18D72302807307B001B3D3A /* BuySellFeedFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuySellFeedFooterView.swift; sourceTree = "<group>"; };
 		F1A9452C27F67FD5009B5AE3 /* PhoneConfirmation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneConfirmation.swift; sourceTree = "<group>"; };
+		F1A9453027F686C8009B5AE3 /* UserSignature.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserSignature.swift; sourceTree = "<group>"; };
+		F1A9453127F686C8009B5AE3 /* UserKeys.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserKeys.swift; sourceTree = "<group>"; };
+		F1A9453427F686D1009B5AE3 /* CodeValidation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodeValidation.swift; sourceTree = "<group>"; };
+		F1A9453527F686D1009B5AE3 /* PhoneVerification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhoneVerification.swift; sourceTree = "<group>"; };
+		F1A9453B27F7E01D009B5AE3 /* ChallengeValidation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeValidation.swift; sourceTree = "<group>"; };
 		F1A9454127F81200009B5AE3 /* ContactsImported.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsImported.swift; sourceTree = "<group>"; };
 		F1A9454327F81211009B5AE3 /* ContactsAvailable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsAvailable.swift; sourceTree = "<group>"; };
 		F1A9454527F81278009B5AE3 /* ContactInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactInformation.swift; sourceTree = "<group>"; };
@@ -320,7 +325,7 @@
 		F1B5FCD327C703230018729B /* CardModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardModifier.swift; sourceTree = "<group>"; };
 		F1B5FCD527C703BF0018729B /* View+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+.swift"; sourceTree = "<group>"; };
 		F1B5FCD727C7040C0018729B /* RoundedCorners.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedCorners.swift; sourceTree = "<group>"; };
-		F1BFA8D127FE915200F4E745 /* AlertBaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertBaseViewController.swift; sourceTree = "<group>"; };
+		F1BFA8CF27FB31E800F4E745 /* FacebookUserData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookUserData.swift; sourceTree = "<group>"; };
 		F1BFA8D627FFB2AC00F4E745 /* ImagePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerView.swift; sourceTree = "<group>"; };
 		F1BFA952280223BD00F4E745 /* UserProfileView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfileView.swift; sourceTree = "<group>"; };
 		F1BFA953280223BD00F4E745 /* UserProfileViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfileViewModel.swift; sourceTree = "<group>"; };
@@ -338,6 +343,7 @@
 		F1C6D09D27BDDD4C009BD506 /* TextStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextStyle.swift; sourceTree = "<group>"; };
 		F1C6D09F27BDECB0009BD506 /* WelcomeView+LogoImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WelcomeView+LogoImageView.swift"; sourceTree = "<group>"; };
 		F1C6D0A127BE9157009BD506 /* LinkTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkTextView.swift; sourceTree = "<group>"; };
+		F1CFF3B527F56F7F007D9FE1 /* FacebokUserSignature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebokUserSignature.swift; sourceTree = "<group>"; };
 		F1CFF3B727F6015B007D9FE1 /* UserSecurity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSecurity.swift; sourceTree = "<group>"; };
 		F2FD3623B1DD9C04AD13743C /* Pods-vexl.devel.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-vexl.devel.xcconfig"; path = "Target Support Files/Pods-vexl/Pods-vexl.devel.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -478,7 +484,6 @@
 				B0F206F627AEB2C000A44E72 /* UIViewStyle.swift */,
 				F1B5FCD727C7040C0018729B /* RoundedCorners.swift */,
 				F175AB8827E4F493000DAB15 /* Materialize.swift */,
-				F1BFA8D127FE915200F4E745 /* AlertBaseViewController.swift */,
 				F1886210280EC49B00659786 /* Image+Base64.swift */,
 			);
 			path = Helpers;
@@ -536,7 +541,7 @@
 		B08F38F227AE7110008B344F /* Managers */ = {
 			isa = PBXGroup;
 			children = (
-				B08F391627AE7112008B344F /* AuthenticationManager.swift */,
+				F1A9453827F73F5E009B5AE3 /* AuthenticationManager */,
 				B0F206F027AE94C400A44E72 /* InitialScreenManager.swift */,
 				F175AB9C27F147B5000DAB15 /* ContactsManager.swift */,
 			);
@@ -565,6 +570,7 @@
 				F1BFA9702804321900F4E745 /* LineDivider.swift */,
 				F175AB9427EA6A8E000DAB15 /* PlaceholderTextField.swift */,
 				F18861FD2808136D00659786 /* HLine.swift */,
+				F188620E280EABB600659786 /* FetchImage.swift */,
 				F1BFA8D627FFB2AC00F4E745 /* ImagePickerView.swift */,
 			);
 			path = Views;
@@ -917,9 +923,9 @@
 		F1A9452B27F67FC6009B5AE3 /* Confirmation */ = {
 			isa = PBXGroup;
 			children = (
+				F1A9453427F686D1009B5AE3 /* CodeValidation.swift */,
+				F1A9453527F686D1009B5AE3 /* PhoneVerification.swift */,
 				F1A9452C27F67FD5009B5AE3 /* PhoneConfirmation.swift */,
-				F175AB8427E4CC2E000DAB15 /* PhoneVerification.swift */,
-				F175AB8C27E817D4000DAB15 /* CodeValidation.swift */,
 			);
 			path = Confirmation;
 			sourceTree = "<group>";
@@ -935,11 +941,21 @@
 		F1A9452F27F68055009B5AE3 /* Security */ = {
 			isa = PBXGroup;
 			children = (
+				F1CFF3B527F56F7F007D9FE1 /* FacebokUserSignature.swift */,
+				F1A9453127F686C8009B5AE3 /* UserKeys.swift */,
+				F1A9453027F686C8009B5AE3 /* UserSignature.swift */,
 				F1CFF3B727F6015B007D9FE1 /* UserSecurity.swift */,
-				F175AB8E27E8C622000DAB15 /* UserKeys.swift */,
-				F175AB9027E8E223000DAB15 /* UserSignature.swift */,
+				F1A9453B27F7E01D009B5AE3 /* ChallengeValidation.swift */,
 			);
 			path = Security;
+			sourceTree = "<group>";
+		};
+		F1A9453827F73F5E009B5AE3 /* AuthenticationManager */ = {
+			isa = PBXGroup;
+			children = (
+				B08F391627AE7112008B344F /* AuthenticationManager.swift */,
+			);
+			path = AuthenticationManager;
 			sourceTree = "<group>";
 		};
 		F1A9453E27F811CA009B5AE3 /* Contacts */ = {
@@ -947,6 +963,7 @@
 			children = (
 				F1A9454127F81200009B5AE3 /* ContactsImported.swift */,
 				F1A9454327F81211009B5AE3 /* ContactsAvailable.swift */,
+				F1BFA8CF27FB31E800F4E745 /* FacebookUserData.swift */,
 			);
 			path = Contacts;
 			sourceTree = "<group>";
@@ -1341,6 +1358,7 @@
 				F12A14DE27D677420096543E /* RegisterContactsViewModel.swift in Sources */,
 				B08F390D27AE7110008B344F /* InfoBarView.swift in Sources */,
 				F188620B28083BA800659786 /* CoinViewModel.swift in Sources */,
+				F1A9453C27F7E01D009B5AE3 /* ChallengeValidation.swift in Sources */,
 				B08F399A27AE7D87008B344F /* OnboardingCoordinator.swift in Sources */,
 				F12A14F027D912410096543E /* RequestAccessContactsViewModel.swift in Sources */,
 				F12A14EB27D6B1CF0096543E /* RequestAccessPortraitView.swift in Sources */,
@@ -1360,6 +1378,7 @@
 				F12A150827E1A4940096543E /* RequestAccessAlert.swift in Sources */,
 				F151A29427C826AD000D7242 /* RegistrationCounterView.swift in Sources */,
 				B0F206EF27AE8F6900A44E72 /* Publisher+.swift in Sources */,
+				F1A9453627F686D1009B5AE3 /* CodeValidation.swift in Sources */,
 				F12A14E827D6A8690096543E /* RequestAccessContactsView.swift in Sources */,
 				B08F390727AE7110008B344F /* UserDefault.swift in Sources */,
 				B08F391727AE7112008B344F /* AuthenticationManager.swift in Sources */,
@@ -1372,6 +1391,7 @@
 				F1BFA97328043D6300F4E745 /* Image+.swift in Sources */,
 				F175AB8B27E8062A000DAB15 /* LoadingIndicatorView.swift in Sources */,
 				B0F206F727AEB2C000A44E72 /* UIViewStyle.swift in Sources */,
+				F1A9453227F686C8009B5AE3 /* UserSignature.swift in Sources */,
 				B08F392E27AE7112008B344F /* UserService.swift in Sources */,
 				F1B5FCCD27C6F7E10018729B /* RegisterPhoneCoordinator.swift in Sources */,
 				F175ABAC27F4FF30000DAB15 /* ImportFacebookContactsViewModel.swift in Sources */,
@@ -1393,12 +1413,13 @@
 				F1BFA96E2803A49300F4E745 /* UserProfileView+Item.swift in Sources */,
 				B08F397A27AE7112008B344F /* Codable+.swift in Sources */,
 				F188620928083B8A00659786 /* CoinCoordinator.swift in Sources */,
+				F188620F280EABB600659786 /* FetchImage.swift in Sources */,
 				F175AB9B27F1432E000DAB15 /* ContactsRouter.swift in Sources */,
 				F151A2A927C9646A000D7242 /* RegisterNameAvatarView+AvatarInput.swift in Sources */,
-				F175AB8F27E8C622000DAB15 /* UserKeys.swift in Sources */,
 				B08F395927AE7112008B344F /* ClientAPIError.swift in Sources */,
 				F1B5FCD427C703230018729B /* CardModifier.swift in Sources */,
 				F12A14F527D96FDC0096543E /* ImportContactsViewModel.swift in Sources */,
+				F1A9453327F686C8009B5AE3 /* UserKeys.swift in Sources */,
 				B08F391C27AE7112008B344F /* BaseService.swift in Sources */,
 				F1C6D09E27BDDD4C009BD506 /* TextStyle.swift in Sources */,
 				B08F393627AE7112008B344F /* UIDevice+.swift in Sources */,
@@ -1414,11 +1435,10 @@
 				B08F391927AE7112008B344F /* User.swift in Sources */,
 				F1886218281005BD00659786 /* MarketplaceHeaderView.swift in Sources */,
 				F175AB9927F0D2D8000DAB15 /* ContactsService.swift in Sources */,
-				F175AB8527E4CC2E000DAB15 /* PhoneVerification.swift in Sources */,
-				F175AB8527E4CC2E000DAB15 /* PhoneVerification.swift in Sources */,
 				B08F399C27AE7D8D008B344F /* OnboardingViewModel.swift in Sources */,
 				B08F397E27AE7112008B344F /* UIViewController+.swift in Sources */,
 				B08F396427AE7112008B344F /* UserError.swift in Sources */,
+				F1A9453727F686D1009B5AE3 /* PhoneVerification.swift in Sources */,
 				F175AB9D27F147B5000DAB15 /* ContactsManager.swift in Sources */,
 				B08F392027AE7112008B344F /* UserDefaultsConfig.swift in Sources */,
 				B08F397627AE7112008B344F /* Error+.swift in Sources */,
@@ -1427,13 +1447,11 @@
 				B08F395727AE7112008B344F /* ApiRouter.swift in Sources */,
 				F1042BA227BEADB70048C2F0 /* WelcomeView+Agreement.swift in Sources */,
 				F1BFA9712804321900F4E745 /* LineDivider.swift in Sources */,
-				F175AB8D27E817D4000DAB15 /* CodeValidation.swift in Sources */,
 				B08F394D27AE7112008B344F /* AppCoordinator.swift in Sources */,
-				F1BFA8D227FE915200F4E745 /* AlertBaseViewController.swift in Sources */,
 				F188620628083A5400659786 /* MarketplaceWindowCoordinator.swift in Sources */,
 				F175ABA227F4A8F8000DAB15 /* UserAvailable.swift in Sources */,
-				F175AB9127E8E223000DAB15 /* UserSignature.swift in Sources */,
 				B0F206FE27AEBDD500A44E72 /* AuthRouter.swift in Sources */,
+				F1BFA8D027FB31E800F4E745 /* FacebookUserData.swift in Sources */,
 				B08F399E27AE7D92008B344F /* OnboardingView.swift in Sources */,
 				B08F393F27AE7112008B344F /* APIError.swift in Sources */,
 				F1A9452D27F67FD5009B5AE3 /* PhoneConfirmation.swift in Sources */,
@@ -1449,6 +1467,7 @@
 				B0F206F327AEA4C800A44E72 /* WindowCoordinator.swift in Sources */,
 				F18D722B2806B7C6001B3D3A /* BuySellFilterView.swift in Sources */,
 				F18862032808318E00659786 /* MarketplaceRouter.swift in Sources */,
+				F1CFF3B627F56F7F007D9FE1 /* FacebokUserSignature.swift in Sources */,
 				F175AB9527EA6A8E000DAB15 /* PlaceholderTextField.swift in Sources */,
 				F1BFA960280247F500F4E745 /* BuySellView.swift in Sources */,
 				B0EEE11627B14D320097031E /* WelcomeCoordinator.swift in Sources */,
@@ -1590,7 +1609,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 26;
+				CURRENT_PROJECT_VERSION = 27;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = SHD6TUKSPH;
 				ENABLE_PREVIEWS = YES;
@@ -1615,7 +1634,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 26;
+				CURRENT_PROJECT_VERSION = 27;
 				DEVELOPMENT_TEAM = SHD6TUKSPH;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
@@ -1697,7 +1716,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 26;
+				CURRENT_PROJECT_VERSION = 27;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = SHD6TUKSPH;
 				ENABLE_PREVIEWS = YES;
@@ -1723,7 +1742,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 26;
+				CURRENT_PROJECT_VERSION = 27;
 				DEVELOPMENT_TEAM = SHD6TUKSPH;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
@@ -1864,7 +1883,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 26;
+				CURRENT_PROJECT_VERSION = 27;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = SHD6TUKSPH;
 				ENABLE_PREVIEWS = YES;
@@ -1889,7 +1908,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 26;
+				CURRENT_PROJECT_VERSION = 27;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
@@ -1915,7 +1934,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 26;
+				CURRENT_PROJECT_VERSION = 27;
 				DEVELOPMENT_TEAM = SHD6TUKSPH;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
@@ -1934,7 +1953,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 26;
+				CURRENT_PROJECT_VERSION = 27;
 				DEVELOPMENT_TEAM = SHD6TUKSPH;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;

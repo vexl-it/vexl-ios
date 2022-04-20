@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import Kingfisher
 
 struct ImportContactItemView: View {
 
@@ -18,9 +19,9 @@ struct ImportContactItemView: View {
 
     var body: some View {
         HStack {
-            Image(R.image.onboarding.emptyAvatar.name)
-                .resizable()
+            avatarImage
                 .frame(size: imageSize)
+                .cornerRadius(imageSize.height * 0.5, corners: .allCorners)
 
             Spacer()
 
@@ -29,9 +30,11 @@ struct ImportContactItemView: View {
                     .textStyle(.paragraph)
                     .foregroundColor(Appearance.Colors.primaryText)
 
-                Text(item.phone)
-                    .textStyle(.descriptionSemibold)
-                    .foregroundColor(Appearance.Colors.gray3)
+                if !item.phone.isEmpty {
+                    Text(item.phone)
+                        .textStyle(.descriptionSemibold)
+                        .foregroundColor(Appearance.Colors.gray3)
+                }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.horizontal, Appearance.GridGuide.point)
@@ -42,6 +45,15 @@ struct ImportContactItemView: View {
         }
         .padding(.horizontal, Appearance.GridGuide.padding)
         .padding(.bottom, Appearance.GridGuide.point)
+    }
+
+    @ViewBuilder private var avatarImage: some View {
+        if let avatarURL = item.avatarURL, let url = URL(string: avatarURL) {
+            FetchImage(url: url, placeholder: R.image.onboarding.emptyAvatar.name)
+        } else {
+            Image(data: item.avatar, placeholder: R.image.onboarding.emptyAvatar.name)
+                .resizable()
+        }
     }
 
     private var selectionView: some View {

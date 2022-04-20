@@ -16,6 +16,8 @@ class ImportContactsViewModel: ObservableObject {
 
     @Inject var contactsManager: ContactsManagerType
     @Inject var contactsService: ContactsServiceType
+    @Inject var authenticationManager: AuthenticationManager
+    @Inject var userService: UserServiceType
 
     // MARK: - View State
 
@@ -79,6 +81,14 @@ class ImportContactsViewModel: ObservableObject {
         items.filter { $0.isSelected }
     }
 
+    var actionTitle: String {
+        if hasSelectedItem {
+            return currentState == .success ? L.registerPhoneCodeInputSuccess() : L.registerContactsImportButton()
+        } else {
+            return L.continue()
+        }
+    }
+
     let cancelBag: CancelBag = .init()
 
     // MARK: - Init
@@ -86,7 +96,6 @@ class ImportContactsViewModel: ObservableObject {
     init() {
         setupActivity()
         setupActions()
-        fetchContacts()
     }
 
     private func setupActivity() {
@@ -126,14 +135,23 @@ class ImportContactsViewModel: ObservableObject {
             }
             .store(in: cancelBag)
 
+        action
+            .filter { $0 == .importContacts }
+            .withUnretained(self)
+            .filter { $0.0.currentState == .content && !$0.0.hasSelectedItem || $0.0.currentState == .loading }
+            .sink { owner, _ in
+                owner.completed.send(())
+            }
+            .store(in: cancelBag)
+
         let importContact = action
             .withUnretained(self)
-            .filter { $0.0.currentState == .content && $0.1 == .importContacts }
-            .map { $0.0.selectedItems.map { $0.phone } }
+            .filter { $0.0.currentState == .content && $0.0.hasSelectedItem && $0.1 == .importContacts }
+            .map(\.0.selectedItems)
             .withUnretained(self)
             .flatMap { owner, contacts in
                 owner.contactsService
-                    .importContacts(contacts)
+                    .importContacts(contacts.map(\.sourceIdentifier))
                     .track(activity: owner.primaryActivity)
                     .materialize()
                     .eraseToAnyPublisher()
@@ -168,7 +186,7 @@ class ImportContactsViewModel: ObservableObject {
         hasSelectedItem = false
     }
 
-    func fetchContacts() {
+    func fetchContacts() throws {
         fatalError("Must implement fetch contacts")
     }
 }
