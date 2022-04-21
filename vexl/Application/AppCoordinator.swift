@@ -75,5 +75,6 @@ extension AppCoordinator {
         coordinate(to: WindowModalCoordinator(window: window, initialCoordinatorHandler: { router, _ in
             MarketplaceCoordinator(router: router)
         }))
+        //coordinate(to: MarketplaceWindowCoordinator(window: window))
     }
 }

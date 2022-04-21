@@ -8,6 +8,7 @@
 import Foundation
 import Cleevio
 import SwiftUI
+import Combine
 
 final class MarketplaceWindowCoordinator: BaseCoordinator<Void> {
 
@@ -33,12 +34,35 @@ final class MarketplaceWindowCoordinator: BaseCoordinator<Void> {
 
         marketplaceRouter.set(bottomViewController: buySellViewController)
 
+        buySellViewModel
+            .route
+            .receive(on: RunLoop.main)
+            .filter { $0 == .showOffer }
+            .withUnretained(self)
+            .flatMap { owner, _ in
+                owner.showOffers(router: owner.marketplaceRouter)
+            }
+            .sink { _ in }
+            .store(in: cancelBag)
+
         let dismissViewController = marketplaceViewController.dismissPublisher
             .map { _ in RouterResult<Void>.dismissedByRouter }
 
         return dismissViewController
             .receive(on: RunLoop.main)
             .asVoid()
+            .eraseToAnyPublisher()
+    }
+
+    private func showOffers(router: Router) -> CoordinatingResult<RouterResult<Void>> {
+        coordinate(to: OffersCoordinator(router: router))
+            .flatMap { result -> CoordinatingResult<RouterResult<Void>> in
+                guard result != .dismissedByRouter else {
+                    return Just(result).eraseToAnyPublisher()
+                }
+                return router.dismiss(animated: true, returning: result)
+            }
+            .prefix(1)
             .eraseToAnyPublisher()
     }
 }
@@ -63,12 +87,35 @@ final class MarketplaceCoordinator: BaseCoordinator<Void> {
         marketplaceRouter.set(bottomViewController: buySellViewController)
         router.present(marketplaceViewController, animated: false)
 
+        buySellViewModel
+            .route
+            .receive(on: RunLoop.main)
+            .filter { $0 == .showOffer }
+            .withUnretained(self)
+            .flatMap { owner, _ in
+                owner.showOffers(router: owner.marketplaceRouter)
+            }
+            .sink { _ in }
+            .store(in: cancelBag)
+
         let dismissViewController = marketplaceViewController.dismissPublisher
             .map { _ in RouterResult<Void>.dismissedByRouter }
 
         return dismissViewController
             .receive(on: RunLoop.main)
             .asVoid()
+            .eraseToAnyPublisher()
+    }
+
+    private func showOffers(router: Router) -> CoordinatingResult<RouterResult<Void>> {
+        coordinate(to: OffersCoordinator(router: router))
+            .flatMap { result -> CoordinatingResult<RouterResult<Void>> in
+                guard result != .dismissedByRouter else {
+                    return Just(result).eraseToAnyPublisher()
+                }
+                return router.dismiss(animated: true, returning: result)
+            }
+            .prefix(1)
             .eraseToAnyPublisher()
     }
 }

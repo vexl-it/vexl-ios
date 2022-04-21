@@ -12,6 +12,7 @@ import Cleevio
 final class MarketplaceRouter {
 
     private let marketplaceViewController: MarketplaceViewController
+    private var isPresesentingFullscreen = false
 
     init(marketplaceViewController: MarketplaceViewController) {
         self.marketplaceViewController = marketplaceViewController
@@ -25,10 +26,21 @@ final class MarketplaceRouter {
 extension MarketplaceRouter: Router {
 
     func dismiss(animated: Bool, completion: (() -> Void)?) {
-        marketplaceViewController.dismiss()
+        marketplaceViewController.dismiss(isFullscreenPresentation: isPresesentingFullscreen)
     }
 
     func present(_ viewController: UIViewController, animated: Bool) {
+        isPresesentingFullscreen = false
         marketplaceViewController.present(childViewController: viewController)
+    }
+
+    func presentFullscreen(_ viewController: UIViewController, animated: Bool) {
+        viewController.modalPresentationStyle = .fullScreen
+        isPresesentingFullscreen = true
+        marketplaceViewController.present(viewController, animated: animated)
+    }
+    
+    func dismissFullscreen() {
+        marketplaceViewController.dismiss(animated: true)
     }
 }
