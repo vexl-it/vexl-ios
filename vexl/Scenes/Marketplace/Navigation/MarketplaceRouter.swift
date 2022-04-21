@@ -26,7 +26,8 @@ final class MarketplaceRouter {
 extension MarketplaceRouter: Router {
 
     func dismiss(animated: Bool, completion: (() -> Void)?) {
-        marketplaceViewController.dismiss(isFullscreenPresentation: isPresesentingFullscreen)
+        marketplaceViewController.dismiss(isFullscreenPresentation: isPresesentingFullscreen,
+                                          completion: completion)
     }
 
     func present(_ viewController: UIViewController, animated: Bool) {
@@ -35,12 +36,8 @@ extension MarketplaceRouter: Router {
     }
 
     func presentFullscreen(_ viewController: UIViewController, animated: Bool) {
-        viewController.modalPresentationStyle = .fullScreen
         isPresesentingFullscreen = true
+        viewController.modalPresentationStyle = .fullScreen
         marketplaceViewController.present(viewController, animated: animated)
-    }
-    
-    func dismissFullscreen() {
-        marketplaceViewController.dismiss(animated: true)
     }
 }

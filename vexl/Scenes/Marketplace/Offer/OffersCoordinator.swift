@@ -30,9 +30,6 @@ class OffersCoordinator: BaseCoordinator<RouterResult<Void>> {
             .route
             .filter { $0 == .dismissTapped }
             .map { _ -> RouterResult<Void> in .dismiss }
-            .handleEvents(receiveOutput: { _ in
-                print("should dismiss")
-            })
 
         return dismiss
             .receive(on: RunLoop.main)

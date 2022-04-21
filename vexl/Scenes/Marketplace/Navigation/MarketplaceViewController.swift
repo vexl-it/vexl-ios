@@ -87,9 +87,9 @@ final class MarketplaceViewController: UIViewController {
         }
     }
 
-    func dismiss(isFullscreenPresentation: Bool) {
+    func dismiss(isFullscreenPresentation: Bool, completion: (() -> Void)?) {
         if isFullscreenPresentation {
-            dismiss(animated: true)
+            dismiss(animated: true, completion: completion)
         } else {
             guard let currentViewController = currentViewController else {
                 return
@@ -105,6 +105,7 @@ final class MarketplaceViewController: UIViewController {
                 childView.removeFromSuperview()
                 currentViewController.didMove(toParent: nil)
                 self?.currentViewController = nil
+                completion?()
             }
         }
     }
