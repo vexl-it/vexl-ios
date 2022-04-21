@@ -27,9 +27,5 @@ class ServiceAssembly: Assembly {
         container.register(ContactsServiceType.self) { _ in
             ContactsService()
         }
-
-        container.register(ContactsServiceType.self) { _ in
-            ContactsService()
-        }
     }
 }
