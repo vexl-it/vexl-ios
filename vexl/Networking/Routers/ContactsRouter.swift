@@ -11,17 +11,28 @@ import Alamofire
 enum ContactsRouter: ApiRouter {
     case importContacts(contacts: [String])
     case getAvailableContacts(contacts: [String])
-    case createUser
+    case getFacebookContacts(id: String, accessToken: String)
+    case getAvailableFacebookContacts(id: String, accessToken: String)
+    case createUser(useFacebookHeader: Bool)
 
     var method: HTTPMethod {
         switch self {
+        case .getFacebookContacts, .getAvailableFacebookContacts:
+            return .get
         case .createUser, .importContacts, .getAvailableContacts:
             return .post
         }
     }
 
     var additionalHeaders: [Header] {
-        securityHeader
+        switch self {
+        case .getFacebookContacts, .getAvailableFacebookContacts:
+            return facebookSecurityHeader
+        case .importContacts, .getAvailableContacts:
+            return securityHeader
+        case let .createUser(useFacebookHeader):
+            return useFacebookHeader ? facebookSecurityHeader : securityHeader
+        }
     }
 
     var path: String {
@@ -32,11 +43,17 @@ enum ContactsRouter: ApiRouter {
             return "contacts/not-imported"
         case .importContacts:
             return "contacts/import"
+        case let .getFacebookContacts(id, accessToken):
+            return "facebook/\(id)/token/\(accessToken)"
+        case let .getAvailableFacebookContacts(id, accessToken):
+            return "facebook/\(id)/token/\(accessToken)/not-imported"
         }
     }
 
     var parameters: Parameters {
         switch self {
+        case .getFacebookContacts, .getAvailableFacebookContacts:
+            return [:]
         case .createUser:
             return [:]
         case let .getAvailableContacts(contacts):

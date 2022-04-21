@@ -11,17 +11,18 @@ import Alamofire
 
 enum UserRouter: ApiRouter {
     case me
-    case createUser(username: String, avatar: String?)
+    case createUser(username: String, avatar: String?, imageExtension: String)
     case confirmPhone(phoneNumber: String)
     case validateCode(id: Int, code: String, key: String)
     case validateChallenge(signature: String, key: String)
+    case facebookSignature(id: String)
     case validateUsername(username: String)
     case temporalGenerateKeys // TODO: - Remove this endpoint after the C library is implemented.
     case temporalSignature(challenge: String, privateKey: String) // TODO: - Remove this endpoint after the C library is implemented.
 
     var method: HTTPMethod {
         switch self {
-        case .me, .temporalGenerateKeys:
+        case .me, .temporalGenerateKeys, .facebookSignature:
             return .get
         case .createUser, .confirmPhone, .validateCode, .temporalSignature, .validateChallenge, .validateUsername:
             return .post
@@ -30,7 +31,7 @@ enum UserRouter: ApiRouter {
 
     var additionalHeaders: [Header] {
         switch self {
-        case .createUser, .validateUsername:
+        case .createUser, .validateUsername, .facebookSignature:
             return securityHeader
         default:
             return []
@@ -51,6 +52,8 @@ enum UserRouter: ApiRouter {
             return "user/username/availability"
         case .validateChallenge:
             return "user/confirmation/challenge"
+        case let .facebookSignature(id):
+            return "user/signature/\(id)"
         case .temporalGenerateKeys:
             return "temp/key-pairs"
         case .temporalSignature:
@@ -60,16 +63,17 @@ enum UserRouter: ApiRouter {
 
     var parameters: Parameters {
         switch self {
-        case .me, .temporalGenerateKeys:
+        case .me, .facebookSignature, .temporalGenerateKeys:
             return [:]
         case let .temporalSignature(challenge, privateKey):
             return ["challenge": challenge,
                     "privateKey": privateKey]
-        case let .createUser(username, avatar):
+        case let .createUser(username, avatar, imageExtension):
             guard let avatar = avatar else {
                 return ["username": username]
             }
-            return ["username": username, "avatar": avatar]
+            return ["username": username,
+                    "avatar": ["extension": imageExtension, "data": avatar]]
         case let .validateChallenge(signature, key):
             return ["userPublicKey": key,
                     "signature": signature]

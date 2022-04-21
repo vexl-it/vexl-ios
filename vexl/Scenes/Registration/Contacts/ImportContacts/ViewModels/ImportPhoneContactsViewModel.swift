@@ -11,24 +11,16 @@ import SwiftUI
 import Cleevio
 
 final class ImportPhoneContactsViewModel: ImportContactsViewModel {
-    override func fetchContacts() {
+    override func fetchContacts() throws {
         let contacts = contactsManager.fetchPhoneContacts()
         let phones = contacts.map(\.phone)
 
-        contactsService
-            .createUser()
+        contactsManager
+            .getActivePhoneContacts(phones)
             .track(activity: primaryActivity)
             .materialize()
             .compactMap(\.value)
-            .withUnretained(self)
-            .flatMap { owner, _ in
-                owner.contactsManager
-                    .getActivePhoneContacts(phones)
-                    .track(activity: owner.primaryActivity)
-                    .materialize()
-                    .compactMap(\.value)
-                    .eraseToAnyPublisher()
-            }
+            .eraseToAnyPublisher()
             .withUnretained(self)
             .sink { owner, availableContacts in
                 owner.currentState = availableContacts.isEmpty ? .empty : .content

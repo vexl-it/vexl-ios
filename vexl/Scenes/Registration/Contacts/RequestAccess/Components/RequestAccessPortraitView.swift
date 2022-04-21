@@ -11,7 +11,7 @@ import SwiftUI
 struct RequestAccessPortraitView: View {
 
     let name: String
-    let avatar: UIImage
+    let avatar: Data?
     let color: Color
     let textColor: Color
 
@@ -38,7 +38,7 @@ private struct SinglePortraitView: View {
     private let avatarSize = CGSize(width: 66.adjusted, height: 66.adjusted)
 
     let name: String
-    let image: UIImage?
+    let image: Data?
     let color: Color
     let textColor: Color
 
@@ -65,7 +65,7 @@ private struct SinglePortraitView: View {
 
     @ViewBuilder private var displayedImage: some View {
         if let image = image {
-            Image(uiImage: image)
+            Image(data: image, placeholder: R.image.onboarding.emptyAvatar.name)
                 .resizable()
                 .scaledToFit()
         } else {
@@ -87,14 +87,14 @@ struct RegisterContacts_PortraitViewPreview: PreviewProvider {
             .background(Color.black.edgesIgnoringSafeArea(.all))
 
         SinglePortraitView(name: "Diego",
-                           image: R.image.onboarding.testAvatar(),
+                           image: R.image.onboarding.testAvatar()?.jpegData(compressionQuality: 1),
                            color: Appearance.Colors.green5,
                            textColor: Appearance.Colors.green1)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color.black.edgesIgnoringSafeArea(.all))
 
         RequestAccessPortraitView(name: "Diego",
-                                  avatar: R.image.onboarding.testAvatar()!,
+                                  avatar: R.image.onboarding.testAvatar()?.jpegData(compressionQuality: 1),
                                   color: Appearance.Colors.green5,
                                   textColor: Appearance.Colors.green1)
             .frame(maxWidth: .infinity, maxHeight: .infinity)

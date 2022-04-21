@@ -9,12 +9,6 @@
 import Foundation
 import Combine
 
-struct ChallengeValidation: Codable {
-    var hash: String
-    var signature: String
-    var challengeVerified: Bool
-}
-
 protocol UserServiceType {
     func me() -> AnyPublisher<User, Error>
     func requestVerificationCode(phoneNumber: String) -> AnyPublisher<PhoneVerification, Error>
@@ -22,6 +16,7 @@ protocol UserServiceType {
     func validateChallenge(key: String, signature: String) -> AnyPublisher<ChallengeValidation, Error>
     func validateUsername(username: String) -> AnyPublisher<UserAvailable, Error>
     func createUser(username: String, avatar: String?) -> AnyPublisher<User, Error>
+    func facebookSignature(id: String) -> AnyPublisher<ChallengeValidation, Error>
     // temporal
     func generateKeys() -> AnyPublisher<UserKeys, Error>
     func generateSignature(challenge: String, privateKey: String) -> AnyPublisher<UserSignature, Error>
@@ -65,7 +60,25 @@ final class UserService: BaseService, UserServiceType {
     }
 
     func createUser(username: String, avatar: String?) -> AnyPublisher<User, Error> {
-        request(type: User.self, endpoint: UserRouter.createUser(username: username, avatar: avatar))
+        request(type: User.self, endpoint: UserRouter.createUser(username: username,
+                                                                 avatar: avatar,
+                                                                 imageExtension: Constants.jpegFormat))
+            .withUnretained(self)
+            .handleEvents(receiveOutput: { owner, response in
+                let avatarData = avatar?.dataFromBase64
+                owner.authenticationManager.setUser(response, withAvatar: avatarData)
+            })
+            .map(\.1)
+            .eraseToAnyPublisher()
+    }
+
+    func facebookSignature(id: String) -> AnyPublisher<ChallengeValidation, Error> {
+        request(type: ChallengeValidation.self, endpoint: UserRouter.facebookSignature(id: id))
+            .withUnretained(self)
+            .handleEvents(receiveOutput: { owner, response in
+                owner.authenticationManager.setFacebookSignature(response)
+            })
+            .map { $0.1 }
             .eraseToAnyPublisher()
     }
 

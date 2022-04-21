@@ -10,6 +10,8 @@ import Foundation
 import Combine
 import KeychainAccess
 import Cleevio
+import FBSDKLoginKit
+import FBSDKCoreKit
 
 typealias BearerToken = String
 
@@ -30,11 +32,16 @@ protocol UserSecurityType {
     var userKeys: UserKeys? { get }
     var userSignature: String? { get }
     var userHash: String? { get }
+    var userFacebookHash: String? { get }
+    var userFacebookSignature: String? { get }
     var securityHeader: SecurityHeader? { get }
+    var facebookSecurityHeader: SecurityHeader? { get }
 
     func setUserSignature(_ userSignature: UserSignature)
     func setUserKeys(_ userKeys: UserKeys)
     func setHash(_ challengeValidation: ChallengeValidation)
+    func setFacebookUser(id: String?, token: String?)
+    func setFacebookSignature(_ facebookSignature: ChallengeValidation)
 }
 
 final class AuthenticationManager: AuthenticationManagerType, TokenHandlerType {
@@ -84,8 +91,32 @@ final class AuthenticationManager: AuthenticationManagerType, TokenHandlerType {
             .assign(to: &$authenticationState)
     }
 
-    func setUser(_ user: User) {
+    func setUser(_ user: User, withAvatar avatar: Data? = nil) {
         self.currentUser = user
+        self.currentUser?.avatarImage = avatar
+    }
+}
+
+// MARK: - Facebook
+
+extension AuthenticationManager {
+
+    func loginWithFacebook(fromViewController viewController: UIViewController? = nil) -> AnyPublisher<String?, Error> {
+        Future { promise in
+            let loginManager = LoginManager()
+            loginManager.logIn(permissions: [.publicProfile, .userFriends], viewController: nil) { [weak self] result in
+                switch result {
+                case .cancelled:
+                    promise(.success(nil))
+                case let .failed(error):
+                    promise(.failure(error))
+                case let .success(_, _, token):
+                    self?.setFacebookUser(id: token?.userID, token: token?.tokenString)
+                    promise(.success(token?.userID))
+                }
+            }
+        }
+        .eraseToAnyPublisher()
     }
 }
 
@@ -102,8 +133,18 @@ extension AuthenticationManager: UserSecurityType {
         userSecurity.hash
     }
 
+    var userFacebookHash: String? {
+        userSecurity.facebookHash
+    }
+    var userFacebookSignature: String? {
+        userSecurity.facebookSignature
+    }
+
     var securityHeader: SecurityHeader? {
         SecurityHeader(hash: userHash, publicKey: userKeys?.publicKey, signature: userSignature)
+    }
+    var facebookSecurityHeader: SecurityHeader? {
+        SecurityHeader(hash: userFacebookHash, publicKey: userKeys?.publicKey, signature: userFacebookSignature)
     }
 
     func setUserSignature(_ userSignature: UserSignature) {
@@ -117,6 +158,16 @@ extension AuthenticationManager: UserSecurityType {
     func setHash(_ challengeValidation: ChallengeValidation) {
         self.userSecurity.hash = challengeValidation.hash
         self.userSecurity.signature = challengeValidation.signature
+    }
+
+    func setFacebookUser(id: String?, token: String?) {
+        self.currentUser?.facebookId = id
+        self.currentUser?.facebookToken = token
+    }
+
+    func setFacebookSignature(_ facebookSignature: ChallengeValidation) {
+        self.userSecurity.facebookSignature = facebookSignature.signature
+        self.userSecurity.facebookHash = facebookSignature.hash
     }
 
     func clearSecurity() {

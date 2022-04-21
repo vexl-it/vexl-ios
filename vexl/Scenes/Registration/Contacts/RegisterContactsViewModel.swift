@@ -12,6 +12,10 @@ import SwiftUI
 
 final class RegisterContactsViewModel: ViewModelType {
 
+    @Inject var authenticationManager: AuthenticationManager
+    @Inject var userService: UserServiceType
+    @Inject var contactsService: ContactsServiceType
+
     // MARK: - View State
 
     enum ViewState {
@@ -29,9 +33,20 @@ final class RegisterContactsViewModel: ViewModelType {
 
     let action: ActionSubject<UserAction> = .init()
 
-    // MARK: - View Bindings
+    // MARK: - Activities
 
     var primaryActivity: Activity = .init()
+    var errorIndicator: ErrorIndicator {
+        primaryActivity.error
+    }
+    var activityIndicator: ActivityIndicator {
+        primaryActivity.indicator
+    }
+
+    // MARK: - View Bindings
+
+    @Published var loading = false
+    @Published var error: Error?
 
     // MARK: - Coordinator Bindings
 
@@ -53,19 +68,56 @@ final class RegisterContactsViewModel: ViewModelType {
 
     private let cancelBag: CancelBag = .init()
 
-    init(username: String) {
-        phoneViewModel = RequestAccessPhoneContactsViewModel(username: username)
+    init(username: String, avatar: Data?) {
+        phoneViewModel = RequestAccessPhoneContactsViewModel(username: username, avatar: avatar)
         importPhoneContactsViewModel = ImportPhoneContactsViewModel()
-        facebookViewModel = RequestAccessFacebookContactsViewModel(username: username)
+        facebookViewModel = RequestAccessFacebookContactsViewModel(username: username, avatar: avatar)
         importFacebookContactsViewModel = ImportFacebookContactsViewModel()
+        setupActivity()
         setupRequestPhoneContactsBindings()
         setupImportPhoneContactsBindings()
         setupRequestFacebookContactsBindings()
         setupImportFacebookContactsBindings()
     }
 
+    private func setupActivity() {
+        activityIndicator
+            .loading
+            .assign(to: &$loading)
+
+        errorIndicator
+            .errors
+            .asOptional()
+            .assign(to: &$error)
+
+        importPhoneContactsViewModel
+            .$loading
+            .assign(to: &$loading)
+
+        importPhoneContactsViewModel
+            .$error
+            .assign(to: &$error)
+
+        importFacebookContactsViewModel
+            .$loading
+            .assign(to: &$loading)
+
+        importFacebookContactsViewModel
+            .$error
+            .assign(to: &$error)
+    }
+
     private func setupRequestPhoneContactsBindings() {
         phoneViewModel.accessConfirmed
+            .withUnretained(self)
+            .flatMap { owner, _ in
+                owner.contactsService
+                    .createUser(forFacebook: false)
+                    .track(activity: owner.primaryActivity)
+                    .materialize()
+                    .compactMap(\.value)
+                    .eraseToAnyPublisher()
+            }
             .withUnretained(self)
             .sink { owner, _ in
                 owner.phoneViewModel.currentState = .completed
@@ -77,6 +129,7 @@ final class RegisterContactsViewModel: ViewModelType {
             .sink { owner, _ in
                 owner.currentState = .importPhoneContacts
                 owner.phoneViewModel.currentState = .initial
+                try? owner.importPhoneContactsViewModel.fetchContacts()
             }
             .store(in: cancelBag)
     }
@@ -89,35 +142,61 @@ final class RegisterContactsViewModel: ViewModelType {
                 owner.importPhoneContactsViewModel.currentState = .loading
             }
             .store(in: cancelBag)
-
-        importPhoneContactsViewModel.$items
-            .withUnretained(self)
-            .sink { _, items in
-                // TODO: set selected items to a service/manager
-                let selectedItems = items.filter { $0.isSelected }
-                print(selectedItems)
-            }
-            .store(in: cancelBag)
     }
 
     private func setupRequestFacebookContactsBindings() {
         facebookViewModel.skipped
             .withUnretained(self)
-            .sink { _, _ in
-                // TODO: create user with service and message coordinator to go to the next view
+            .sink { owner, _ in
+                owner.route.send(.continueTapped)
             }
             .store(in: cancelBag)
 
-        facebookViewModel.accessConfirmed
+        let loginFacebookUser = facebookViewModel.accessConfirmed
+            .withUnretained(self)
+            .flatMap { owner, _ in
+                owner.authenticationManager
+                    .loginWithFacebook(fromViewController: nil)
+                    .track(activity: owner.primaryActivity)
+                    .materialize()
+                    .eraseToAnyPublisher()
+            }
+            .compactMap { response -> String? in
+                guard let value = response.value, let facebookId = value else {
+                    return nil
+                }
+                return facebookId
+            }
+
+        loginFacebookUser
+            .withUnretained(self)
+            .flatMap { owner, facebookId in
+                owner.userService
+                    .facebookSignature(id: facebookId)
+                    .track(activity: owner.primaryActivity)
+                    .materialize()
+                    .eraseToAnyPublisher()
+            }
+            .compactMap { $0.value }
+            .withUnretained(self)
+            .handleEvents(receiveOutput: { owner, response in
+                if !response.challengeVerified {
+                    owner.error = UserError.facebookValidation
+                }
+            })
+            .filter { $0.1.challengeVerified }
+            .withUnretained(self)
+            .flatMap { owner, _ in
+                owner.contactsService
+                    .createUser(forFacebook: true)
+                    .track(activity: owner.primaryActivity)
+                    .materialize()
+                    .compactMap(\.value)
+                    .eraseToAnyPublisher()
+            }
             .withUnretained(self)
             .sink { owner, _ in
-                // TODO: request access to facebook sdk confirmation, set as complete to continue to next screen that has loading state and set the contacts to the ImportPhoneViewModel
                 owner.facebookViewModel.currentState = .completed
-                // TODO: remove this once integration with BE is done
-                after(2) {
-                    owner.importFacebookContactsViewModel.currentState = .content
-                    owner.importFacebookContactsViewModel.items = ContactInformation.stub()
-                }
             }
             .store(in: cancelBag)
 
@@ -126,24 +205,24 @@ final class RegisterContactsViewModel: ViewModelType {
             .sink { owner, _ in
                 owner.currentState = .importFacebookContacts
                 owner.facebookViewModel.currentState = .initial
+                owner.fetchFacebookContacts()
             }
             .store(in: cancelBag)
     }
 
-    private func setupImportFacebookContactsBindings() {
-        importFacebookContactsViewModel.$items
-            .withUnretained(self)
-            .sink { _, items in
-                // TODO: set selected items to a service/manager
-                let selectedItems = items.filter { $0.isSelected }
-                print(selectedItems)
-            }
-            .store(in: cancelBag)
+    private func fetchFacebookContacts() {
+        do {
+            try importFacebookContactsViewModel.fetchContacts()
+        } catch let facebookError {
+            error = facebookError
+        }
+    }
 
+    private func setupImportFacebookContactsBindings() {
         importFacebookContactsViewModel.completed
             .withUnretained(self)
-            .sink { _, _ in
-                // TODO: - Create user with all the information, then message router to go next
+            .sink { owner, _ in
+                owner.route.send(.continueTapped)
             }
             .store(in: cancelBag)
     }

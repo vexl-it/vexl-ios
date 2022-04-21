@@ -18,8 +18,7 @@ struct ImportContactsView: View {
                 .padding(.horizontal, Appearance.GridGuide.point)
                 .padding(.vertical, Appearance.GridGuide.padding)
 
-            SolidButton(Text(viewModel.currentState == .success ? L.registerPhoneCodeInputSuccess() : L.registerContactsImportButton()),
-                        isEnabled: $viewModel.hasSelectedItem,
+            SolidButton(Text(viewModel.actionTitle),
                         font: Appearance.TextStyle.h3.font.asFont,
                         colors: viewModel.currentState == .success ? SolidButtonColor.success : SolidButtonColor.welcome,
                         dimensions: SolidButtonDimension.largeButton) {

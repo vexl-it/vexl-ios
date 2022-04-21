@@ -24,6 +24,7 @@ enum AuthType {
 protocol ApiRouter: URLRequestConvertible {
     var tokenHandler: TokenHandlerType { get }
     var securityHeader: [Header] { get }
+    var facebookSecurityHeader: [Header] { get }
     var method: HTTPMethod { get }
     var path: String { get }
     var parameters: Parameters { get }
@@ -41,6 +42,11 @@ extension ApiRouter {
     var securityHeader: [Header] {
         let authManager = DIContainer.shared.getDependency(type: AuthenticationManager.self)
         return authManager.securityHeader?.header ?? []
+    }
+
+    var facebookSecurityHeader: [Header] {
+        let authManager = DIContainer.shared.getDependency(type: AuthenticationManager.self)
+        return authManager.facebookSecurityHeader?.header ?? []
     }
 
     var additionalHeaders: [Header] { [] }
