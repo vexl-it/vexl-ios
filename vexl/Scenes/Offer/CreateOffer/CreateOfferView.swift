@@ -11,13 +11,15 @@ struct CreateOfferView: View {
 
     @ObservedObject var viewModel: CreateOfferViewModel
 
+    @State var sliderPosition: ClosedRange<Int> = 600...15_000
+
     var body: some View {
         VStack {
             OfferHeaderView {
                 viewModel.action.send(.dismissTap)
             }
 
-            ScrollView {
+            ScrollView(showsIndicators: false) {
                 OfferStatusView(pauseAction: {
                     viewModel.action.send(.pause)
                 },
@@ -25,8 +27,17 @@ struct CreateOfferView: View {
                     viewModel.action.send(.delete)
                 })
                 .padding(Appearance.GridGuide.padding)
+
+                OfferRangePickerView(currencySymbol: viewModel.currencySymbol,
+                                     currentValue: $sliderPosition,
+                                     sliderBounds: 0...30_000)
+                    .padding(.horizontal, Appearance.GridGuide.point)
+
+                OfferFeePickerView()
+                    .padding(.horizontal, Appearance.GridGuide.point)
                 
-                
+                OfferLocationPickerView()
+                    .padding(.horizontal, Appearance.GridGuide.point)
             }
         }
         .background(Color.black.edgesIgnoringSafeArea(.all))

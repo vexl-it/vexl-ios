@@ -17,29 +17,29 @@ struct OffersView: View {
                 viewModel.action.send(.dismissTap)
             }
 
-            Button {
+            DottedButton(color: Appearance.Colors.green5,
+                       content: {
+                offerLabel
+            },
+                       action: {
                 viewModel.action.send(.createOfferTap)
-            } label: {
-                HStack {
-                    Image(systemName: "plus")
-
-                    Text(L.offerSellNewOffer())
-                        .textStyle(.descriptionSemibold)
-                }
-                .foregroundColor(Appearance.Colors.green5)
-                .padding(Appearance.GridGuide.padding)
-            }
-            .frame(maxWidth: .infinity)
-            .overlay(
-                RoundedRectangle(cornerRadius: Appearance.GridGuide.buttonCorner)
-                    .stroke(style: StrokeStyle(lineWidth: 1, dash: [8]))
-                    .foregroundColor(Appearance.Colors.green5)
-            )
-            .padding(Appearance.GridGuide.point)
+            })
 
             Spacer()
         }
         .background(Color.black.edgesIgnoringSafeArea(.all))
+    }
+
+    private var offerLabel: some View {
+        HStack {
+            Image(systemName: "plus")
+
+            Text(L.offerSellNewOffer())
+                .textStyle(.descriptionSemibold)
+        }
+        .foregroundColor(Appearance.Colors.green5)
+        .padding(Appearance.GridGuide.padding)
+        .frame(maxWidth: .infinity)
     }
 }
 

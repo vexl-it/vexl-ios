@@ -36,6 +36,7 @@ class CreateOfferViewModel: ViewModelType, ObservableObject {
     // MARK: - Variables
 
     private let cancelBag: CancelBag = .init()
+    let currencySymbol = "$"
 
     init() {
         setupBindings()
