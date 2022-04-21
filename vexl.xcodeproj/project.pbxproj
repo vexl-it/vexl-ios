@@ -122,6 +122,7 @@
 		F18862492811551700659786 /* CreateOfferViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18862482811551700659786 /* CreateOfferViewModel.swift */; };
 		F188624B2811551E00659786 /* CreateOfferView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F188624A2811551E00659786 /* CreateOfferView.swift */; };
 		F188624E2811556100659786 /* OfferHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F188624D2811556100659786 /* OfferHeaderView.swift */; };
+		F18862512811710100659786 /* OfferStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18862502811710100659786 /* OfferStatusView.swift */; };
 		F18D722B2806B7C6001B3D3A /* BuySellFilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18D722A2806B7C6001B3D3A /* BuySellFilterView.swift */; };
 		F18D722D2806BA06001B3D3A /* BuySellFeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18D722C2806BA06001B3D3A /* BuySellFeedView.swift */; };
 		F18D722F2806BD28001B3D3A /* BuySellFeedDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18D722E2806BD28001B3D3A /* BuySellFeedDetailView.swift */; };
@@ -309,6 +310,7 @@
 		F18862482811551700659786 /* CreateOfferViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateOfferViewModel.swift; sourceTree = "<group>"; };
 		F188624A2811551E00659786 /* CreateOfferView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateOfferView.swift; sourceTree = "<group>"; };
 		F188624D2811556100659786 /* OfferHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferHeaderView.swift; sourceTree = "<group>"; };
+		F18862502811710100659786 /* OfferStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferStatusView.swift; sourceTree = "<group>"; };
 		F18D722A2806B7C6001B3D3A /* BuySellFilterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuySellFilterView.swift; sourceTree = "<group>"; };
 		F18D722C2806BA06001B3D3A /* BuySellFeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuySellFeedView.swift; sourceTree = "<group>"; };
 		F18D722E2806BD28001B3D3A /* BuySellFeedDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuySellFeedDetailView.swift; sourceTree = "<group>"; };
@@ -931,6 +933,7 @@
 		F1886245281154FF00659786 /* CreateOffer */ = {
 			isa = PBXGroup;
 			children = (
+				F188624F281170F200659786 /* Components */,
 				F18862462811550C00659786 /* CreateOfferCoordinator.swift */,
 				F18862482811551700659786 /* CreateOfferViewModel.swift */,
 				F188624A2811551E00659786 /* CreateOfferView.swift */,
@@ -942,6 +945,14 @@
 			isa = PBXGroup;
 			children = (
 				F188624D2811556100659786 /* OfferHeaderView.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		F188624F281170F200659786 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				F18862502811710100659786 /* OfferStatusView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -1383,6 +1394,7 @@
 				F12A14DE27D677420096543E /* RegisterContactsViewModel.swift in Sources */,
 				B08F390D27AE7110008B344F /* InfoBarView.swift in Sources */,
 				F1A9453C27F7E01D009B5AE3 /* ChallengeValidation.swift in Sources */,
+				F18862512811710100659786 /* OfferStatusView.swift in Sources */,
 				B08F399A27AE7D87008B344F /* OnboardingCoordinator.swift in Sources */,
 				F12A14F027D912410096543E /* RequestAccessContactsViewModel.swift in Sources */,
 				F12A14EB27D6B1CF0096543E /* RequestAccessPortraitView.swift in Sources */,

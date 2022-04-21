@@ -45,8 +45,9 @@ struct Appearance {
 
         // MARK: Margins
 
-        static let smallPadding: CGFloat = 4
+        static let tinyPadding: CGFloat = 4
         static let point: CGFloat = 8
+        static let smallPadding: CGFloat = 12
         static let padding: CGFloat = 16
         static let mediumPadding1: CGFloat = 24
         static let mediumPadding2: CGFloat = 32

@@ -80,3 +80,6 @@
 "offer.requested" = "Requested";
 "offer.sell.title" = "My Sell Offers";
 "offer.sell.new.offer" = "New Sell Offers";
+"offer.create.status.pause" = "Pause";
+"offer.create.status.delete" = "Delete";
+"offer.create.status.active" = "Active";

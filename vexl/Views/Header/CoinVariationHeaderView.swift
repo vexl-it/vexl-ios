@@ -24,7 +24,7 @@ struct CoinVariationHeaderView: View {
             HStack(alignment: .top) {
                 Text(currencySymbol)
                     .foregroundColor(.white)
-                    .padding(.top, Appearance.GridGuide.smallPadding)
+                    .padding(.top, Appearance.GridGuide.tinyPadding)
                 Text(amount)
                     .textStyle(.h2)
                     .foregroundColor(Color(R.color.green5.name))

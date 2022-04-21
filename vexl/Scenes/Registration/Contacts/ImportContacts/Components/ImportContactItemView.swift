@@ -25,7 +25,7 @@ struct ImportContactItemView: View {
 
             Spacer()
 
-            VStack(alignment: .leading, spacing: Appearance.GridGuide.smallPadding) {
+            VStack(alignment: .leading, spacing: Appearance.GridGuide.tinyPadding) {
                 Text(item.name)
                     .textStyle(.paragraph)
                     .foregroundColor(Appearance.Colors.primaryText)

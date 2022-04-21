@@ -7,6 +7,7 @@
 
 import Foundation
 import Cleevio
+import Combine
 
 class OffersCoordinator: BaseCoordinator<RouterResult<Void>> {
 
@@ -26,6 +27,17 @@ class OffersCoordinator: BaseCoordinator<RouterResult<Void>> {
             router.present(viewController, animated: true)
         }
 
+        viewModel
+            .route
+            .filter { $0 == .createOfferTapped }
+            .withUnretained(self)
+            .flatMap { owner, _ -> CoordinatingResult<RouterResult<Void>> in
+                let modalRouter = ModalRouter(parentViewController: viewController, presentationStyle: .fullScreen)
+                return owner.showCreateOffer(router: modalRouter)
+            }
+            .sink { _ in }
+            .store(in: cancelBag)
+
         let dismiss = viewModel
             .route
             .filter { $0 == .dismissTapped }
@@ -33,6 +45,20 @@ class OffersCoordinator: BaseCoordinator<RouterResult<Void>> {
 
         return dismiss
             .receive(on: RunLoop.main)
+            .eraseToAnyPublisher()
+    }
+}
+
+extension OffersCoordinator {
+    private func showCreateOffer(router: Router) -> CoordinatingResult<RouterResult<Void>> {
+        coordinate(to: CreateOfferCoordinator(router: router))
+            .flatMap { result -> CoordinatingResult<RouterResult<Void>> in
+                guard result != .dismissedByRouter else {
+                    return Just(result).eraseToAnyPublisher()
+                }
+                return router.dismiss(animated: true, returning: result)
+            }
+            .prefix(1)
             .eraseToAnyPublisher()
     }
 }

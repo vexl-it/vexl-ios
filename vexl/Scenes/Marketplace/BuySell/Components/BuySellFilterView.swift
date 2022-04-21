@@ -16,7 +16,7 @@ struct BuySellFilterView: View {
     let action: () -> Void
 
     var body: some View {
-        HStack(spacing: Appearance.GridGuide.smallPadding) {
+        HStack(spacing: Appearance.GridGuide.tinyPadding) {
             ForEach(items.indices, id: \.self) { index in
                 let item = items[index]
                 FilterButton(title: item.title) {
