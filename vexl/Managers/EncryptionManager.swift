@@ -22,11 +22,19 @@ enum EncryptionError: Error {
 protocol EncryptionManagerType {
     var publicKey: String { get }
 
-    func asymetric_encrypt(publicKey: String, secret: String) throws -> String
-    func asymetric_decrypt(cipher: String) throws -> String
+    func hash(data: String) -> String
 
-    func symetric_encrypt(password: String, secret: String) throws -> String
-    func symetric_decrypt(password: String, cipher: String) throws -> String
+    func hmac(password: String, message: String) -> String
+    func hmacVerify(password: String, message: String, digest: String) -> Bool
+
+    func signECDSA(publicKey: String, privateKey: String, message: String) -> String
+    func verifyECDSA(publicKey: String, message: String, signature: String) -> Bool
+
+    func encryptECIES(publicKey: String, secret: String) throws -> String
+    func decryptECIES(publicKey: String, privateKey: String, cipher: String) throws -> String
+
+    func encryptAES(password: String, secret: String) throws -> String
+    func decryptAES(password: String, cipher: String) throws -> String
 }
 
 class EncryptionManager: EncryptionManagerType {
@@ -54,20 +62,30 @@ class EncryptionManager: EncryptionManagerType {
         return keys.privateKey!
     }
 
-    }
-
     private var userKeys: ECIESKeys { .init(pubKey: publicKey, privKey: privateKey) }
 
-    init() {
-        keychain = .init()
+    func hash(data: String) -> String {
+        String(cString: sha256_hash(data.ptr, Int32(data.count)))
     }
 
-    func asymetric_encrypt(publicKey: String, secret: String) throws -> String {
-        var keyPair: KeyPair = .init()
-        let nsPublicKey = NSString(string: publicKey)
-        keyPair.pemPublicKey = UnsafeMutablePointer<CChar>(mutating: nsPublicKey.utf8String)
-        let nsSecret = NSString(string: secret)
-        let cipherPtr = ecies_encrypt(keyPair, UnsafeMutablePointer<CChar>(mutating: nsSecret.utf8String))
+    func hmac(password: String, message: String) -> String {
+        String(cString: hmac_digest(password.ptr, message.ptr))
+    }
+
+    func hmacVerify(password: String, message: String, digest: String) -> Bool {
+        hmac_verify(password.ptr, message.ptr, digest.ptr)
+    }
+
+    func signECDSA(publicKey: String, privateKey: String, message: String) -> String {
+        String(cString: ecdsa_sign(publicKey.ptr, privateKey.ptr, message.ptr, Int32(message.count)))
+    }
+
+    func verifyECDSA(publicKey: String, message: String, signature: String) -> Bool {
+        ecdsa_verify(publicKey.ptr, message.ptr, Int32(message.count), signature.ptr)
+    }
+
+    func encryptECIES(publicKey: String, secret: String) throws -> String {
+        let cipherPtr = ecies_encrypt(publicKey.ptr, secret.ptr)
         guard let cipherPtr = cipherPtr else {
             throw EncryptionError.encryptionError
         }
@@ -76,9 +94,8 @@ class EncryptionManager: EncryptionManagerType {
         return cipher
     }
 
-    func asymetric_decrypt(cipher: String) throws -> String {
-        let nsCipher = NSString(string: cipher)
-        let secretPtr = ecies_decrypt(userKeys.asKeyPair, UnsafeMutablePointer<CChar>(mutating: nsCipher.utf8String))
+    func decryptECIES(publicKey: String, privateKey: String, cipher: String) throws -> String {
+        let secretPtr = ecies_decrypt(publicKey.ptr, privateKey.ptr, cipher.ptr)
         guard let secretPtr = secretPtr else {
             throw EncryptionError.decryptionError
         }
@@ -87,7 +104,7 @@ class EncryptionManager: EncryptionManagerType {
         return secret
     }
 
-    func symetric_encrypt(password: String, secret: String) throws -> String {
+    func encryptAES(password: String, secret: String) throws -> String {
         let nsSecret = NSString(string: secret)
         let nsPassword = NSString(string: password)
         let secretPtr = UnsafeMutablePointer<CChar>(mutating: nsSecret.utf8String)
@@ -101,7 +118,7 @@ class EncryptionManager: EncryptionManagerType {
         return cipher
     }
 
-    func symetric_decrypt(password: String, cipher: String) throws -> String {
+    func decryptAES(password: String, cipher: String) throws -> String {
         let nsCipher = NSString(string: cipher)
         let nsPassword = NSString(string: password)
         let cipherPtr = UnsafeMutablePointer<CChar>(mutating: nsCipher.utf8String)
