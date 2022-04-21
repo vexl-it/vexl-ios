@@ -24,6 +24,7 @@ class CreateOfferViewModel: ViewModelType, ObservableObject {
     // MARK: - View Bindings
 
     @Published var primaryActivity: Activity = .init()
+    @Published var locations: [OfferLocationItemViewData] = OfferLocationItemViewData.stub()
 
     // MARK: - Coordinator Bindings
 

@@ -35,8 +35,14 @@ struct CreateOfferView: View {
 
                 OfferFeePickerView()
                     .padding(.horizontal, Appearance.GridGuide.point)
-                
-                OfferLocationPickerView()
+
+                OfferLocationPickerView(items: viewModel.locations,
+                                        addLocation: {
+                    
+                },
+                                        deleteLocation: { _ in
+                    
+                })
                     .padding(.horizontal, Appearance.GridGuide.point)
             }
         }

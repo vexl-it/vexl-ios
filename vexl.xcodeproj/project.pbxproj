@@ -127,6 +127,7 @@
 		F1886255281185E900659786 /* OfferFeePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1886254281185E900659786 /* OfferFeePicker.swift */; };
 		F1886257281193CA00659786 /* OfferLocationPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1886256281193CA00659786 /* OfferLocationPickerView.swift */; };
 		F18862592811CCAA00659786 /* DottedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18862582811CCAA00659786 /* DottedButton.swift */; };
+		F188625B2811D84000659786 /* SegmentedPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F188625A2811D84000659786 /* SegmentedPickerView.swift */; };
 		F18D722B2806B7C6001B3D3A /* BuySellFilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18D722A2806B7C6001B3D3A /* BuySellFilterView.swift */; };
 		F18D722D2806BA06001B3D3A /* BuySellFeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18D722C2806BA06001B3D3A /* BuySellFeedView.swift */; };
 		F18D722F2806BD28001B3D3A /* BuySellFeedDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18D722E2806BD28001B3D3A /* BuySellFeedDetailView.swift */; };
@@ -319,6 +320,7 @@
 		F1886254281185E900659786 /* OfferFeePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferFeePicker.swift; sourceTree = "<group>"; };
 		F1886256281193CA00659786 /* OfferLocationPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferLocationPickerView.swift; sourceTree = "<group>"; };
 		F18862582811CCAA00659786 /* DottedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DottedButton.swift; sourceTree = "<group>"; };
+		F188625A2811D84000659786 /* SegmentedPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentedPickerView.swift; sourceTree = "<group>"; };
 		F18D722A2806B7C6001B3D3A /* BuySellFilterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuySellFilterView.swift; sourceTree = "<group>"; };
 		F18D722C2806BA06001B3D3A /* BuySellFeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuySellFeedView.swift; sourceTree = "<group>"; };
 		F18D722E2806BD28001B3D3A /* BuySellFeedDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuySellFeedDetailView.swift; sourceTree = "<group>"; };
@@ -588,6 +590,7 @@
 				F18861FD2808136D00659786 /* HLine.swift */,
 				F188620E280EABB600659786 /* FetchImage.swift */,
 				F1BFA8D627FFB2AC00F4E745 /* ImagePickerView.swift */,
+				F188625A2811D84000659786 /* SegmentedPickerView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1548,6 +1551,7 @@
 				F1886211280EC49B00659786 /* Image+Base64.swift in Sources */,
 				F188622128105A1200659786 /* OffersViewModel.swift in Sources */,
 				B08F394327AE7112008B344F /* Keychain+.swift in Sources */,
+				F188625B2811D84000659786 /* SegmentedPickerView.swift in Sources */,
 				F175AB8727E4D5C8000DAB15 /* UIScreen+.swift in Sources */,
 				F18862472811550C00659786 /* CreateOfferCoordinator.swift in Sources */,
 				F151A2A727C962CC000D7242 /* RegisterNameAvatarView+NameInput.swift in Sources */,

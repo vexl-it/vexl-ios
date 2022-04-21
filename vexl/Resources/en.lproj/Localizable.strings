@@ -86,3 +86,5 @@
 "offer.create.status.delete" = "Delete";
 "offer.create.status.active" = "Active";
 "offer.create.status.amount.title" = "Amount";
+"offer.create.location.title" = "Location";
+"offer.create.location.add" = "Another Location";

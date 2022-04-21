@@ -27,25 +27,11 @@ struct OfferFeePickerView: View {
     var options = [Option.withoutFee, .withFee]
 
     var body: some View {
-        VStack {
-            Picker("", selection: $selectedOption) {
-                ForEach(options, id: \.self) {
-                    Text($0.title)
-                        .textStyle(.paragraph)
-                }
-            }
-            .padding(Appearance.GridGuide.point)
-            .pickerStyle(.segmented)
-            .background(Appearance.Colors.gray1)
-            .onAppear {
-                UISegmentedControl.appearance().selectedSegmentTintColor = R.color.gray2()
-                UISegmentedControl.appearance().setTitleTextAttributes([.foregroundColor: R.color.green5()!,
-                                                                        .font: Appearance.TextStyle.paragraph.font], for: .selected)
-                UISegmentedControl.appearance().setTitleTextAttributes([.foregroundColor: R.color.gray3()!,
-                                                                        .font: Appearance.TextStyle.paragraph.font], for: .normal)
-            }
+        SegmentedPickerView(selectedOption: $selectedOption,
+                            options: options) { option in
+            Text(option.title)
+                .foregroundColor(Appearance.Colors.green5)
         }
-        .cornerRadius(Appearance.GridGuide.buttonCorner)
     }
 }
 

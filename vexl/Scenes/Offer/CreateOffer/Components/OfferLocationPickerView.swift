@@ -8,9 +8,13 @@
 import SwiftUI
 import AVFoundation
 
+typealias OfferLocationItemViewData = OfferLocationPickerView.LocationViewData
+
 struct OfferLocationPickerView: View {
 
+    let items: [OfferLocationItemViewData]
     let addLocation: () -> Void
+    let deleteLocation: (Int) -> Void
 
     var body: some View {
         VStack(alignment: .leading, spacing: Appearance.GridGuide.point) {
@@ -19,20 +23,20 @@ struct OfferLocationPickerView: View {
                     .resizable()
                     .frame(size: Appearance.GridGuide.iconSize)
 
-                Text("Location")
+                Text(L.offerCreateLocationTitle())
                     .textStyle(.h3)
             }
             .padding(.vertical, Appearance.GridGuide.point)
             .foregroundColor(Appearance.Colors.whiteText)
 
-            LocationItem(name: "Prague", distance: "1km") {
-                
+            ForEach(0..<items.count) { index in
+                LocationView(name: items[index].name,
+                             distance: items[index].distance,
+                             deleteAction: {
+                    deleteLocation(index)
+                })
             }
 
-            LocationItem(name: "Prague", distance: "1km") {
-                
-            }
-            
             DottedButton(color: Appearance.Colors.gray3,
                          content: {
                 addLocationLabel
@@ -47,7 +51,7 @@ struct OfferLocationPickerView: View {
         HStack {
             Image(systemName: "plus")
 
-            Text("Another Location")
+            Text(L.offerCreateLocationAdd())
                 .textStyle(.descriptionSemibold)
         }
         .foregroundColor(Appearance.Colors.gray3)
@@ -58,7 +62,19 @@ struct OfferLocationPickerView: View {
 
 extension OfferLocationPickerView {
 
-    struct LocationItem: View {
+    struct LocationViewData {
+        let name: String
+        let distance: String
+
+        static func stub() -> [LocationViewData] {
+            [
+                .init(name: "Prague", distance: "1km"),
+                .init(name: "Brno", distance: "2km")
+            ]
+        }
+    }
+
+    struct LocationView: View {
 
         let name: String
         let distance: String
@@ -99,9 +115,9 @@ extension OfferLocationPickerView {
 #if DEBUG || DEVEL
 struct OfferLocationPickerViewPreview: PreviewProvider {
     static var previews: some View {
-        OfferLocationPickerView(addLocation: {
-            
-        })
+        OfferLocationPickerView(items: OfferLocationItemViewData.stub(),
+                                addLocation: { },
+                                deleteLocation: { _ in })
             .previewDevice("iPhone 11")
             .background(Color.black)
             .frame(height: 150)
