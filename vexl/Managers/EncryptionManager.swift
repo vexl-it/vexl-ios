@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import KeychainAccess
 
 // swiftlint:disable private_over_fileprivate
 fileprivate enum EncryptionServiceKeychain: String {
@@ -29,28 +30,30 @@ protocol EncryptionManagerType {
 }
 
 class EncryptionManager: EncryptionManagerType {
-
-    private let curve: Curve = .init(rawValue: UInt32(8)) // Using the secp224k1 curve
-    private let keychain: KeychainService<EncryptionServiceKeychain>
-
-    private var privateKey: String {
-        if let privKey = keychain.get(key: .privateKey) {
-            return privKey
-        }
-        let keys = ECIESKeys(curve: curve)
-        keychain.set(key: .publicKey, value: keys.publicKey)
-        keychain.set(key: .privateKey, value: keys.privateKey)
-        return keys.privateKey!
-    }
-
     var publicKey: String {
-        if let pubKey = keychain.get(key: .publicKey) {
+        if let pubKey = keychain[EncryptionServiceKeychain.publicKey.rawValue] {
             return pubKey
         }
         let keys = ECIESKeys(curve: curve)
-        keychain.set(key: .publicKey, value: keys.publicKey)
-        keychain.set(key: .privateKey, value: keys.privateKey)
+        keychain[EncryptionServiceKeychain.privateKey.rawValue] = keys.privateKey
+        keychain[EncryptionServiceKeychain.publicKey.rawValue] = keys.publicKey
         return keys.publicKey
+    }
+
+    private let keychain: Keychain = .init(service: Bundle.main.bundleIdentifier!)
+
+    private let curve: Curve = .init(rawValue: UInt32(8)) // Using the secp224k1 curve
+
+    private var privateKey: String {
+        if let privKey = keychain[EncryptionServiceKeychain.privateKey.rawValue] {
+            return privKey
+        }
+        let keys = ECIESKeys(curve: curve)
+        keychain[EncryptionServiceKeychain.privateKey.rawValue] = keys.privateKey
+        keychain[EncryptionServiceKeychain.publicKey.rawValue] = keys.publicKey
+        return keys.privateKey!
+    }
+
     }
 
     private var userKeys: ECIESKeys { .init(pubKey: publicKey, privKey: privateKey) }
