@@ -38,10 +38,10 @@ extern "C" {
 
 void ecies_init();
 
-char *ecies_encrypt(KeyPair keys, const char *message);
-char *ecies_decrypt(KeyPair keys, const char *encoded_cipher);
-void _ecies_encrypt(KeyPair keys, const char *message, const int message_len, char **encoded_cipher);
-void _ecies_decrypt(KeyPair keys, const char *encoded_cipher, char **message, int *message_len);
+char *ecies_encrypt(char *base64_public_key, const char *message);
+char *ecies_decrypt(const char *base64_public_key, char *base64_private_key, const char *encoded_cipher);
+void _ecies_encrypt(char *base64_public_key, const char *message, const int message_len, char **encoded_cipher);
+void _ecies_decrypt(const char *base64_public_key, char *base64_private_key, const char *encoded_cipher, char **message, int *message_len);
 
 # ifdef  __cplusplus
 }
