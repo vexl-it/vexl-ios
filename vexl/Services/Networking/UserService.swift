@@ -17,9 +17,6 @@ protocol UserServiceType {
     func validateUsername(username: String) -> AnyPublisher<UserAvailable, Error>
     func createUser(username: String, avatar: String?) -> AnyPublisher<User, Error>
     func facebookSignature(id: String) -> AnyPublisher<ChallengeValidation, Error>
-    // temporal
-    func generateKeys() -> AnyPublisher<UserKeys, Error>
-    func generateSignature(challenge: String, privateKey: String) -> AnyPublisher<UserSignature, Error>
 }
 
 final class UserService: BaseService, UserServiceType {
@@ -77,28 +74,6 @@ final class UserService: BaseService, UserServiceType {
             .withUnretained(self)
             .handleEvents(receiveOutput: { owner, response in
                 owner.authenticationManager.setFacebookSignature(response)
-            })
-            .map { $0.1 }
-            .eraseToAnyPublisher()
-    }
-
-    // TODO: - Temporal delete once C library is implemented
-
-    func generateKeys() -> AnyPublisher<UserKeys, Error> {
-        request(type: UserKeys.self, endpoint: UserRouter.temporalGenerateKeys)
-            .withUnretained(self)
-            .handleEvents(receiveOutput: { owner, response in
-                owner.authenticationManager.setUserKeys(ECCKeys(pubKey: response.publicKey, privKey: response.privateKey))
-            })
-            .map { $0.1 }
-            .eraseToAnyPublisher()
-    }
-
-    func generateSignature(challenge: String, privateKey: String) -> AnyPublisher<UserSignature, Error> {
-        request(type: UserSignature.self, endpoint: UserRouter.temporalSignature(challenge: challenge, privateKey: privateKey))
-            .withUnretained(self)
-            .handleEvents(receiveOutput: { owner, response in
-                owner.authenticationManager.setUserSignature(response)
             })
             .map { $0.1 }
             .eraseToAnyPublisher()
