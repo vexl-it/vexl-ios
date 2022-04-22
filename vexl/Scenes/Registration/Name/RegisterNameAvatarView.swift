@@ -27,7 +27,7 @@ struct RegisterNameAvatarView: View {
                 actionButton {
                     viewModel.send(action: .setUsername)
                 }
-                .animation(nil)
+                .transaction { $0.disablesAnimations = true }
             case .avatarInput:
                 AvatarInputView(name: viewModel.username,
                                 avatar: viewModel.avatar,
@@ -43,7 +43,7 @@ struct RegisterNameAvatarView: View {
                 actionButton {
                     viewModel.send(action: .createUser)
                 }
-                .animation(nil)
+                .transaction { $0.disablesAnimations = true }
             }
         }
         .frame(maxWidth: .infinity)
@@ -67,7 +67,7 @@ struct RegisterNameAvatarView: View {
             ImagePicker(sourceType: viewModel.imageSource == .photoAlbum ? .photoLibrary : .camera,
                         selectedImage: $viewModel.avatar)
         }
-        .animation(.easeInOut(duration: 0.5))
+        .animation(.easeInOut(duration: 0.5), value: viewModel.currentState)
     }
 
     @ViewBuilder private func actionButton(with action: @escaping () -> Void) -> some View {
