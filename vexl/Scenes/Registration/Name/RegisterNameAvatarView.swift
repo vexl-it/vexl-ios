@@ -21,10 +21,13 @@ struct RegisterNameAvatarView: View {
                 PhoneVerified()
             case .usernameInput:
                 NameInputView(username: $viewModel.username)
+
                 Spacer()
+
                 actionButton {
                     viewModel.send(action: .setUsername)
                 }
+                .animation(nil)
             case .avatarInput:
                 AvatarInputView(name: viewModel.username,
                                 avatar: viewModel.avatar,
@@ -34,10 +37,13 @@ struct RegisterNameAvatarView: View {
                                 deleteAction: {
                     viewModel.send(action: .deleteAvatar)
                 })
+
                 Spacer()
+
                 actionButton {
                     viewModel.send(action: .createUser)
                 }
+                .animation(nil)
             }
         }
         .frame(maxWidth: .infinity)
@@ -61,6 +67,7 @@ struct RegisterNameAvatarView: View {
             ImagePicker(sourceType: viewModel.imageSource == .photoAlbum ? .photoLibrary : .camera,
                         selectedImage: $viewModel.avatar)
         }
+        .animation(.easeInOut(duration: 0.5))
     }
 
     @ViewBuilder private func actionButton(with action: @escaping () -> Void) -> some View {

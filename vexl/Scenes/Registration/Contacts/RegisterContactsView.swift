@@ -27,6 +27,7 @@ struct RegisterContactsView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color.black.edgesIgnoringSafeArea(.all))
+        .animation(.easeInOut(duration: 0.5))
     }
 }
 
