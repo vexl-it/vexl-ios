@@ -187,7 +187,7 @@ final class RegisterPhoneViewModel: ViewModelType {
                     .userService
                     .confirmValidationCode(id: verificationId,
                                            code: owner.validationCode,
-                                           key: owner.userSecurity.userKeys?.publicKey ?? "")
+                                           key: owner.userSecurity.userKeys.publicKey)
                     .track(activity: owner.primaryActivity)
                     .materialize()
                     .eraseToAnyPublisher()
@@ -231,7 +231,7 @@ final class RegisterPhoneViewModel: ViewModelType {
                 owner
                     .userService
                     .generateSignature(challenge: challenge,
-                                       privateKey: owner.userSecurity.userKeys?.privateKey ?? "")
+                                       privateKey: owner.userSecurity.userKeys.privateKey ?? "")
                     .track(activity: owner.primaryActivity)
                     .materialize()
                     .compactMap(\.value)
@@ -244,7 +244,7 @@ final class RegisterPhoneViewModel: ViewModelType {
             .flatMap { owner, signature in
                 owner
                     .userService
-                    .validateChallenge(key: owner.userSecurity.userKeys?.publicKey ?? "",
+                    .validateChallenge(key: owner.userSecurity.userKeys.publicKey,
                                        signature: signature)
                     .track(activity: owner.primaryActivity)
                     .materialize()

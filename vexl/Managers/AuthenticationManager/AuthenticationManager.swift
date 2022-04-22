@@ -123,9 +123,15 @@ extension AuthenticationManager {
 // MARK: - User Security properties
 
 extension AuthenticationManager: UserSecurityType {
-        userSecurity.keys
     var userKeys: ECKeys {
+        guard let keys = userSecurity.keys else {
+            let newKeys = ECKeys()
+            setUserKeys(newKeys)
+            return newKeys
+        }
+        return keys
     }
+    
     var userSignature: String? {
         userSecurity.signature
     }
