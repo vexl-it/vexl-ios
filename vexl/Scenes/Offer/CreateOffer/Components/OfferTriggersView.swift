@@ -15,9 +15,9 @@ struct OfferTriggersView: View {
         var title: String {
             switch self {
             case .below:
-                return "Below"
+                return L.offerCreateTriggerBelow()
             case .above:
-                return "Above"
+                return L.offerCreateTriggerAbove()
             }
         }
     }
@@ -35,7 +35,7 @@ struct OfferTriggersView: View {
             HStack {
                 Image(systemName: "clock")
 
-                Text("Triggers")
+                Text(L.offerCreateTriggerTitle())
                     .textStyle(.h3)
 
                 Spacer()
@@ -45,7 +45,7 @@ struct OfferTriggersView: View {
             .foregroundColor(Appearance.Colors.whiteText)
 
             HStack {
-                Text("Active when price is")
+                Text(L.offerCreateTriggerActive())
                     .textStyle(.paragraph)
 
                 Spacer()

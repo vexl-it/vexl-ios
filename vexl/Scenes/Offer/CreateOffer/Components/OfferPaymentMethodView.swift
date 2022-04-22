@@ -17,11 +17,11 @@ struct OfferPaymentMethodView: View {
         var title: String {
             switch self {
             case .cash:
-                return "Cash"
+                return L.offerCreatePaymentMethodCash()
             case .revolut:
-                return "Revolut"
+                return L.offerCreatePaymentMethodRevolut()
             case .bank:
-                return "Bank"
+                return L.offerCreatePaymentMethodBank()
             }
         }
     }
@@ -34,7 +34,7 @@ struct OfferPaymentMethodView: View {
             HStack {
                 Image(systemName: "creditcard")
 
-                Text("Payment Method")
+                Text(L.offerCreatePaymentMethodTitle())
                     .textStyle(.h3)
             }
             .foregroundColor(Appearance.Colors.whiteText)
