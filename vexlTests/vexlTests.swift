@@ -31,7 +31,7 @@ class VexlTests: XCTestCase {
         XCTAssertEqual(digestSHA, "uwtXAF8BAYsZwnjFUnOmARj/3T5XkMzIpIytA5B/pSE=")
     }
 
-    func HMAC() {
+    func testHMAC() {
         XCTAssertNoThrow(try cryptoService.hashHMAC(password: password, message: message))
         let digest = try! cryptoService.hashHMAC(password: password, message: message)
         let verifiedHMAC = cryptoService.verifyHMAC(password: password, message: message, digest: digest)
