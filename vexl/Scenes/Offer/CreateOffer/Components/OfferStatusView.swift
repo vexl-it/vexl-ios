@@ -11,7 +11,7 @@ struct OfferStatusView: View {
 
     let pauseAction: () -> Void
     let deleteAction: () -> Void
-    
+
     var body: some View {
         HStack {
             HStack {

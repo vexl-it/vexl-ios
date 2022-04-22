@@ -18,10 +18,10 @@ struct OffersView: View {
             }
 
             DottedButton(color: Appearance.Colors.green5,
-                       content: {
+                         content: {
                 offerLabel
             },
-                       action: {
+                         action: {
                 viewModel.action.send(.createOfferTap)
             })
 

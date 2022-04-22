@@ -38,11 +38,19 @@ struct CreateOfferView: View {
 
                 OfferLocationPickerView(items: viewModel.locations,
                                         addLocation: {
-                    
+                    viewModel.action.send(.addLocation)
                 },
-                                        deleteLocation: { _ in
-                    
+                                        deleteLocation: { id in
+                    viewModel.action.send(.deleteLocation(id: id))
                 })
+                    .padding(.top, Appearance.GridGuide.largePadding1)
+                    .padding(.horizontal, Appearance.GridGuide.point)
+
+                OfferTradeStylePickerView()
+                    .padding(.horizontal, Appearance.GridGuide.point)
+
+                OfferPaymentMethodView()
+                    .padding(.top, Appearance.GridGuide.largePadding1)
                     .padding(.horizontal, Appearance.GridGuide.point)
             }
         }

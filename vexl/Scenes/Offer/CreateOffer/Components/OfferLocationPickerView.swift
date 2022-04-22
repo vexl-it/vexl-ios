@@ -29,11 +29,11 @@ struct OfferLocationPickerView: View {
             .padding(.vertical, Appearance.GridGuide.point)
             .foregroundColor(Appearance.Colors.whiteText)
 
-            ForEach(0..<items.count) { index in
-                LocationView(name: items[index].name,
-                             distance: items[index].distance,
+            ForEach(items, id: \.self) { item in
+                LocationView(name: item.name,
+                             distance: item.distance,
                              deleteAction: {
-                    deleteLocation(index)
+                    deleteLocation(item.id)
                 })
             }
 
@@ -62,14 +62,15 @@ struct OfferLocationPickerView: View {
 
 extension OfferLocationPickerView {
 
-    struct LocationViewData {
+    struct LocationViewData: Identifiable, Hashable {
+        var id: Int
         let name: String
         let distance: String
 
         static func stub() -> [LocationViewData] {
             [
-                .init(name: "Prague", distance: "1km"),
-                .init(name: "Brno", distance: "2km")
+                .init(id: 1, name: "Prague", distance: "1km"),
+                .init(id: 2, name: "Brno", distance: "2km")
             ]
         }
     }
