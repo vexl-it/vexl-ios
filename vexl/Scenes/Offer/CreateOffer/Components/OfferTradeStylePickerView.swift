@@ -16,9 +16,9 @@ struct OfferTradeStylePickerView: View {
         var title: String {
             switch self {
             case .online:
-                return "Online ok"
+                return L.offerCreateTradeStyleOnline()
             case .personal:
-                return "Only in person"
+                return L.offerCreateTradeStylePersonal()
             }
         }
     }
@@ -34,3 +34,14 @@ struct OfferTradeStylePickerView: View {
         }
     }
 }
+
+#if DEBUG || DEVEL
+struct OfferTradeStylePickerViewPreview: PreviewProvider {
+    static var previews: some View {
+        OfferTradeStylePickerView()
+            .previewDevice("iPhone 11")
+            .background(Color.black)
+            .frame(height: 150)
+    }
+}
+#endif

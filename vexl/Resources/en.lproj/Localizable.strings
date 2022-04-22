@@ -88,3 +88,5 @@
 "offer.create.status.amount.title" = "Amount";
 "offer.create.location.title" = "Location";
 "offer.create.location.add" = "Another Location";
+"offer.create.trade.style.online" = "Online ok";
+"offer.create.trade.style.personal" = "Only in person";
