@@ -52,6 +52,10 @@ struct CreateOfferView: View {
                 OfferPaymentMethodView()
                     .padding(.top, Appearance.GridGuide.largePadding1)
                     .padding(.horizontal, Appearance.GridGuide.point)
+
+                OfferTriggersView(amount: "")
+                    .padding(.top, Appearance.GridGuide.largePadding1)
+                    .padding(.horizontal, Appearance.GridGuide.point)
             }
         }
         .background(Color.black.edgesIgnoringSafeArea(.all))

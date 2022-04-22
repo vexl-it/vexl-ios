@@ -52,31 +52,6 @@ struct OfferPaymentMethodView: View {
     }
 }
 
-struct SingleOptionPickerView<Option: Hashable, Content: View>: View {
-
-    @Binding var selectedOption: Option
-    let options: [Option]
-    let content: (Option) -> Content
-    let action: (Option) -> Void
-
-    var body: some View {
-        HStack {
-            ForEach(options, id: \.self) { option in
-                Button {
-                    selectedOption = option
-                    action(option)
-                } label: {
-                    content(option)
-                }
-                .padding()
-                .foregroundColor(option == selectedOption ? Appearance.Colors.green5 : Appearance.Colors.gray3)
-                .background(option == selectedOption ? Appearance.Colors.gray2 : Appearance.Colors.gray1)
-                .cornerRadius(Appearance.GridGuide.buttonCorner)
-            }
-        }
-    }
-}
-
 #if DEBUG || DEVEL
 struct OfferPaymentMethodViewPreview: PreviewProvider {
     static var previews: some View {
