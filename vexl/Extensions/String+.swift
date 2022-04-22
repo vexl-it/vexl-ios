@@ -10,6 +10,12 @@ import Foundation
 import UIKit
 
 extension String {
+
+    var ptr: UnsafeMutablePointer<CChar>? {
+        let nsSelf = NSString(string: self)
+        return UnsafeMutablePointer<CChar>(mutating: nsSelf.utf8String)
+    }
+
     func removeWhitespaces() -> String {
         return components(separatedBy: .whitespaces).joined()
     }
