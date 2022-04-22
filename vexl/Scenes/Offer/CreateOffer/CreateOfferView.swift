@@ -56,6 +56,10 @@ struct CreateOfferView: View {
                 OfferTriggersView(amount: "")
                     .padding(.top, Appearance.GridGuide.largePadding1)
                     .padding(.horizontal, Appearance.GridGuide.point)
+
+                OfferAdvancedFilterView()
+                    .padding(.top, Appearance.GridGuide.largePadding1)
+                    .padding(.horizontal, Appearance.GridGuide.point)
             }
         }
         .background(Color.black.edgesIgnoringSafeArea(.all))

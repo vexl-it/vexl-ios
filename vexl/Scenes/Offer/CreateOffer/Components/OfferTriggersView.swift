@@ -69,7 +69,6 @@ struct OfferTriggersView: View {
                                            action: { index in
                         print("index \(index)")
                     })
-                        .padding(.horizontal, Appearance.GridGuide.padding)
 
                     Spacer()
 
