@@ -141,10 +141,10 @@ extension AuthenticationManager: UserSecurityType {
     }
 
     var securityHeader: SecurityHeader? {
-        SecurityHeader(hash: userHash, publicKey: userKeys?.publicKey, signature: userSignature)
+        SecurityHeader(hash: userHash, publicKey: userKeys.publicKey, signature: userSignature)
     }
     var facebookSecurityHeader: SecurityHeader? {
-        SecurityHeader(hash: userFacebookHash, publicKey: userKeys?.publicKey, signature: userFacebookSignature)
+        SecurityHeader(hash: userFacebookHash, publicKey: userKeys.publicKey, signature: userFacebookSignature)
     }
 
     func setUserSignature(_ userSignature: UserSignature) {
