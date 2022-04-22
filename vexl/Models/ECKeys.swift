@@ -7,11 +7,11 @@
 
 import Foundation
 
-struct ECIESKeys {
+struct ECKeys {
     var publicKey: String
     var privateKey: String?
 
-    init(curve: Curve) {
+    init(curve: Curve = Constants.elipticCurve) {
         let keyPair = generate_key_pair(curve)
         self.init(keyPair: keyPair)
         KeyPair_free(keyPair)

@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		0AA456AF4C162D9C8AF6AB30 /* Pods_vexl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57B3CAA27CF4369A28B748A7 /* Pods_vexl.framework */; };
 		B05A221128114E8B00BF8D58 /* vexl-crypto.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = B05A221028114E8B00BF8D58 /* vexl-crypto.xcframework */; };
+		B05A22132812BF2700BF8D58 /* Publisher+Crypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = B05A22122812BF2700BF8D58 /* Publisher+Crypto.swift */; };
 		B08F38DF27AE7110008B344F /* DIContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B08F38DE27AE7110008B344F /* DIContainer.swift */; };
 		B08F38E227AE7110008B344F /* Inject.swift in Sources */ = {isa = PBXBuildFile; fileRef = B08F38E127AE7110008B344F /* Inject.swift */; };
 		B08F390327AE7110008B344F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B08F390127AE7110008B344F /* LaunchScreen.storyboard */; };
@@ -64,8 +65,8 @@
 		B0F206F327AEA4C800A44E72 /* WindowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0F206F227AEA4C800A44E72 /* WindowCoordinator.swift */; };
 		B0F206F727AEB2C000A44E72 /* UIViewStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0F206F627AEB2C000A44E72 /* UIViewStyle.swift */; };
 		B0F206FE27AEBDD500A44E72 /* AuthRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0F206FD27AEBDD500A44E72 /* AuthRouter.swift */; };
-		B0FE523F280E822400A77EC3 /* EncryptionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0FE523E280E822400A77EC3 /* EncryptionManager.swift */; };
-		B0FE5249280E93D200A77EC3 /* ECIESKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0FE5248280E93D200A77EC3 /* ECIESKeys.swift */; };
+		B0FE523F280E822400A77EC3 /* CryptoService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0FE523E280E822400A77EC3 /* CryptoService.swift */; };
+		B0FE5249280E93D200A77EC3 /* ECKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0FE5248280E93D200A77EC3 /* ECKeys.swift */; };
 		C1A0B48D6D54EB5D7D8929FB /* Pods_vexl_vexlTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D776C4D0B95B9F6E229AF7E4 /* Pods_vexl_vexlTests.framework */; };
 		F1042BA227BEADB70048C2F0 /* WelcomeView+Agreement.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1042BA127BEADB70048C2F0 /* WelcomeView+Agreement.swift */; };
 		F1042BA527BEF0360048C2F0 /* OnboardingView+PageControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1042BA427BEF0360048C2F0 /* OnboardingView+PageControl.swift */; };
@@ -172,6 +173,7 @@
 		B021E2F727FF5B0B00D186EC /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		B021E2F927FF5B5100D186EC /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		B05A221028114E8B00BF8D58 /* vexl-crypto.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = "vexl-crypto.xcframework"; sourceTree = "<group>"; };
+		B05A22122812BF2700BF8D58 /* Publisher+Crypto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Publisher+Crypto.swift"; sourceTree = "<group>"; };
 		B08F38BD27AE7110008B344F /* vexl.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = vexl.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B08F38C027AE7110008B344F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B08F38C927AE7110008B344F /* Changelog.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = Changelog.txt; path = ../Changelog.txt; sourceTree = "<group>"; };
@@ -231,9 +233,9 @@
 		B0F206F227AEA4C800A44E72 /* WindowCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowCoordinator.swift; sourceTree = "<group>"; };
 		B0F206F627AEB2C000A44E72 /* UIViewStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewStyle.swift; sourceTree = "<group>"; };
 		B0F206FD27AEBDD500A44E72 /* AuthRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthRouter.swift; sourceTree = "<group>"; };
-		B0FE523E280E822400A77EC3 /* EncryptionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptionManager.swift; sourceTree = "<group>"; };
+		B0FE523E280E822400A77EC3 /* CryptoService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoService.swift; sourceTree = "<group>"; };
 		B0FE5244280E845000A77EC3 /* vexl-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "vexl-Bridging-Header.h"; sourceTree = "<group>"; };
-		B0FE5248280E93D200A77EC3 /* ECIESKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ECIESKeys.swift; sourceTree = "<group>"; };
+		B0FE5248280E93D200A77EC3 /* ECKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ECKeys.swift; sourceTree = "<group>"; };
 		D2644FB5ADC4F80BBF36B73B /* Pods-vexl-vexlTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-vexl-vexlTests.release.xcconfig"; path = "Target Support Files/Pods-vexl-vexlTests/Pods-vexl-vexlTests.release.xcconfig"; sourceTree = "<group>"; };
 		D776C4D0B95B9F6E229AF7E4 /* Pods_vexl_vexlTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_vexl_vexlTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DF8AC1A170DAA6A83E1E979B /* Pods-vexl.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-vexl.debug.xcconfig"; path = "Target Support Files/Pods-vexl/Pods-vexl.debug.xcconfig"; sourceTree = "<group>"; };
@@ -465,6 +467,7 @@
 			isa = PBXGroup;
 			children = (
 				B0F206EE27AE8F6900A44E72 /* Publisher+.swift */,
+				B05A22122812BF2700BF8D58 /* Publisher+Crypto.swift */,
 				B08F392127AE7112008B344F /* UIColor+.swift */,
 				B08F393527AE7112008B344F /* UIDevice+.swift */,
 				B08F394227AE7112008B344F /* Keychain+.swift */,
@@ -506,7 +509,7 @@
 				F175AB8227E4CBFE000DAB15 /* Networking */,
 				B08F391827AE7112008B344F /* User.swift */,
 				F1A9454527F81278009B5AE3 /* ContactInformation.swift */,
-				B0FE5248280E93D200A77EC3 /* ECIESKeys.swift */,
+				B0FE5248280E93D200A77EC3 /* ECKeys.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -514,7 +517,7 @@
 		B08F38F227AE7110008B344F /* Managers */ = {
 			isa = PBXGroup;
 			children = (
-				B0FE523E280E822400A77EC3 /* EncryptionManager.swift */,
+				B0FE523E280E822400A77EC3 /* CryptoService.swift */,
 				F1A9453827F73F5E009B5AE3 /* AuthenticationManager */,
 				B0F206F027AE94C400A44E72 /* InitialScreenManager.swift */,
 				F175AB9C27F147B5000DAB15 /* ContactsManager.swift */,
@@ -1345,6 +1348,7 @@
 				B08F392027AE7112008B344F /* UserDefaultsConfig.swift in Sources */,
 				B08F397627AE7112008B344F /* Error+.swift in Sources */,
 				B08F397C27AE7112008B344F /* SwipeNavigationController.swift in Sources */,
+				B05A22132812BF2700BF8D58 /* Publisher+Crypto.swift in Sources */,
 				B08F38E227AE7110008B344F /* Inject.swift in Sources */,
 				B08F395727AE7112008B344F /* ApiRouter.swift in Sources */,
 				F1042BA227BEADB70048C2F0 /* WelcomeView+Agreement.swift in Sources */,
@@ -1355,7 +1359,7 @@
 				F1BFA8D027FB31E800F4E745 /* FacebookUserData.swift in Sources */,
 				B08F399E27AE7D92008B344F /* OnboardingView.swift in Sources */,
 				B08F393F27AE7112008B344F /* APIError.swift in Sources */,
-				B0FE523F280E822400A77EC3 /* EncryptionManager.swift in Sources */,
+				B0FE523F280E822400A77EC3 /* CryptoService.swift in Sources */,
 				F1A9452D27F67FD5009B5AE3 /* PhoneConfirmation.swift in Sources */,
 				F151A2A227C86CA6000D7242 /* RegistrationCardView.swift in Sources */,
 				F1A9454627F81278009B5AE3 /* ContactInformation.swift in Sources */,
@@ -1374,7 +1378,7 @@
 				F1B5FCBE27C68EA70018729B /* OnboardingView+BottomButtons.swift in Sources */,
 				F151A29927C86683000D7242 /* RegisterNameAvatarViewModel.swift in Sources */,
 				F1A9454227F81200009B5AE3 /* ContactsImported.swift in Sources */,
-				B0FE5249280E93D200A77EC3 /* ECIESKeys.swift in Sources */,
+				B0FE5249280E93D200A77EC3 /* ECKeys.swift in Sources */,
 				B08F394127AE7112008B344F /* Shortcuts.swift in Sources */,
 				F1B5FCD827C7040C0018729B /* RoundedCorners.swift in Sources */,
 				F151A29D27C866C7000D7242 /* RegisterNameAvatarView.swift in Sources */,
