@@ -142,7 +142,7 @@ platform :ios do
 			export_method: "ad-hoc",
 			export_options: {
 				manageAppVersionAndBuildNumber: false,
-				compileBitcode: true
+				compileBitcode: false
 			}
 		)
 
