@@ -217,8 +217,8 @@ final class RegisterPhoneViewModel: ViewModelType {
         let challengeSuccess: AnyPublisher<ChallengeValidation, Never> = codeInputSuccess
             .withUnretained(self)
             .flatMap { owner, response in
-                Just(response.challenge)
-                    .signECDSA(keys: owner.userSecurity.userKeys)
+                owner.cryptoService
+                    .signECDSA(keys: owner.userSecurity.userKeys, message: response.challenge)
                     .track(activity: owner.primaryActivity)
                     .materialize()
                     .compactMap { $0.value }
@@ -227,7 +227,7 @@ final class RegisterPhoneViewModel: ViewModelType {
             .flatMap { owner, signature in
                 owner
                     .userService
-                    .validateChallenge(key: owner.userSecurity.userKeys.publicKey, signature: signature.digest)
+                    .validateChallenge(key: owner.userSecurity.userKeys.publicKey, signature: signature)
                     .track(activity: owner.primaryActivity)
                     .materialize()
                     .compactMap { $0.value }
