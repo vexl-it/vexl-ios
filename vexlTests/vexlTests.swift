@@ -25,35 +25,35 @@ class VexlTests: XCTestCase {
     }
 
     func testSHA() throws {
-        let digestSHA = try cryptoService.hashSHA(data: message)
-        XCTAssertEqual(digestSHA, "uwtXAF8BAYsZwnjFUnOmARj/3T5XkMzIpIytA5B/pSE=")
+        let digest = try message.sha.hash()
+        XCTAssertEqual(digest, "uwtXAF8BAYsZwnjFUnOmARj/3T5XkMzIpIytA5B/pSE=")
     }
 
     func testHMAC() throws {
-        let digest = try cryptoService.hashHMAC(password: password, message: message)
-        let verifiedHMAC = cryptoService.verifyHMAC(password: password, message: message, digest: digest)
-        XCTAssertTrue(verifiedHMAC)
+        let digest = try message.hmac.hash(password: password)
+        let isVerified = digest.hmac.verify(password: password, message: message)
+        XCTAssertTrue(isVerified)
     }
 
     func testAES() throws {
-        let cipher = try cryptoService.encryptAES(password: password, secret: message)
-        let decryptedMessage = try cryptoService.decryptAES(password: password, cipher: cipher)
+        let cipher = try message.aes.encrypt(password: password)
+        let decryptedMessage = try cipher.aes.decrypt(password: password)
         XCTAssertEqual(decryptedMessage, message)
     }
 
     func testECDSA() throws {
         let keys = ECCKeys()
         XCTAssertNotNil(keys.privateKey)
-        let signature = try cryptoService.signECDSA(keys: keys, message: message)
-        let verifiedECDSA = cryptoService.verifyECDSA(publicKey: keys.publicKey, message: message, signature: signature)
-        XCTAssertTrue(verifiedECDSA)
+        let signature = try message.ecc.sign(keys: keys)
+        let isVerified = signature.ecc.verify(publicKey: keys.publicKey, message: message)
+        XCTAssertTrue(isVerified)
     }
 
     func testECIES() throws {
         let keys = ECCKeys()
         XCTAssertNotNil(keys.privateKey)
-        let cipher = try cryptoService.encryptECIES(publicKey: keys.publicKey, secret: message)
-        let decryptedMessage = try cryptoService.decryptECIES(keys: keys, cipher: cipher)
+        let cipher = try message.ecc.encrypt(publicKey: keys.publicKey)
+        let decryptedMessage = try cipher.ecc.decrypt(keys: keys)
         XCTAssertEqual(decryptedMessage, message)
     }
 }
