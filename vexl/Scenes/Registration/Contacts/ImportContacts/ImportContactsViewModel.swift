@@ -139,6 +139,9 @@ class ImportContactsViewModel: ObservableObject {
             .filter { $0 == .importContacts }
             .withUnretained(self)
             .filter { $0.0.currentState == .content && !$0.0.hasSelectedItem || $0.0.currentState == .loading }
+            .handleEvents(receiveOutput: { owner, _ in
+                owner.authenticationManager.saveUser()
+            })
             .sink { owner, _ in
                 owner.completed.send(())
             }
@@ -167,6 +170,9 @@ class ImportContactsViewModel: ObservableObject {
             })
             .filter { $0.0.currentState == .success }
             .delay(for: .seconds(1), scheduler: RunLoop.main)
+            .handleEvents(receiveOutput: { owner, _ in
+                owner.authenticationManager.saveUser()
+            })
             .sink { owner, _ in
                 owner.completed.send(())
             }

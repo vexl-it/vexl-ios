@@ -23,7 +23,8 @@ protocol TokenHandlerType {
 protocol AuthenticationManagerType {
     var currentUser: User? { get }
 
-    func storeUser()
+    func saveSecurity()
+    func saveUser()
     func logoutUser()
 }
 
@@ -67,9 +68,7 @@ final class AuthenticationManager: AuthenticationManagerType, TokenHandlerType {
     // MARK: - Initialization
 
     init() {
-        accessToken = Keychain.standard[.accessToken]
-        refreshToken = Keychain.standard[.refreshToken]
-        setupSubscription()
+        authentication()
     }
 
     private func setupSubscription() {
@@ -95,9 +94,22 @@ final class AuthenticationManager: AuthenticationManagerType, TokenHandlerType {
         self.currentUser = user
         self.currentUser?.avatarImage = avatar
     }
-    
-    func storeUser() {
+
+    func saveUser() {
+        UserDefaults.standard.set(value: currentUser, forKey: UserDefaultKey.storedUser.rawValue)
+        UserDefaults.standard.set(value: userSecurity, forKey: UserDefaultKey.storedSecurity.rawValue)
         authenticationState = .signedIn
+    }
+
+    func saveSecurity() {
+        UserDefaults.standard.set(value: userSecurity, forKey: UserDefaultKey.storedSecurity.rawValue)
+    }
+
+    func authentication() {
+        self.currentUser = UserDefaults.standard.codable(forKey: UserDefaultKey.storedUser.rawValue)
+        self.userSecurity = UserDefaults.standard.codable(forKey: UserDefaultKey.storedSecurity.rawValue) ?? .init()
+
+        authenticationState = currentUser == nil ? .signedOut : .signedIn
     }
 }
 
@@ -153,25 +165,30 @@ extension AuthenticationManager: UserSecurityType {
 
     func setUserSignature(_ userSignature: UserSignature) {
         self.userSecurity.signature = userSignature.signed
+        saveSecurity()
     }
 
     func setUserKeys(_ userKeys: UserKeys) {
         self.userSecurity.keys = userKeys
+        saveSecurity()
     }
 
     func setHash(_ challengeValidation: ChallengeValidation) {
         self.userSecurity.hash = challengeValidation.hash
         self.userSecurity.signature = challengeValidation.signature
+        saveSecurity()
     }
 
     func setFacebookUser(id: String?, token: String?) {
         self.currentUser?.facebookId = id
         self.currentUser?.facebookToken = token
+        saveSecurity()
     }
 
     func setFacebookSignature(_ facebookSignature: ChallengeValidation) {
         self.userSecurity.facebookSignature = facebookSignature.signature
         self.userSecurity.facebookHash = facebookSignature.hash
+        saveSecurity()
     }
 
     func clearSecurity() {
@@ -204,6 +221,9 @@ extension AuthenticationManager {
 
         userDefaults.dictionaryRepresentation().keys.forEach(userDefaults.removeObject)
         userDefaults.synchronize()
+
+        UserDefaults.standard.removeObject(forKey: UserDefaultKey.storedUser.rawValue)
+        UserDefaults.standard.removeObject(forKey: UserDefaultKey.storedSecurity.rawValue)
     }
 
     func logoutUser() {

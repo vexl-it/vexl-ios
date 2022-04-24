@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct UserSecurity {
+struct UserSecurity: Codable {
     var keys: UserKeys?
     var signature: String?
     var hash: String?

@@ -10,6 +10,8 @@ import Foundation
 
 enum UserDefaultKey: String {
     case hasSeenOnboarding
+    case storedUser
+    case storedSecurity
 }
 
 struct UserDefaultsConfig {

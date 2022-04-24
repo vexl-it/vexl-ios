@@ -150,7 +150,6 @@ final class RegisterContactsViewModel: ViewModelType {
             .withUnretained(self)
             .sink { owner, _ in
                 owner.route.send(.skipTapped)
-                owner.authenticationManager.storeUser()
             }
             .store(in: cancelBag)
 
