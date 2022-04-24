@@ -14,7 +14,6 @@ final class WelcomeViewModel: ViewModelType {
     // MARK: - Actions Bindings
 
     enum UserAction: Equatable {
-        case dismissTap
         case continueTap
     }
 
@@ -30,7 +29,6 @@ final class WelcomeViewModel: ViewModelType {
     // MARK: - Coordinator Bindings
 
     enum Route: Equatable {
-        case dismissTapped
         case continueTapped
     }
 
@@ -48,14 +46,11 @@ final class WelcomeViewModel: ViewModelType {
 
     private func setupActions() {
         action
-            .sink(receiveValue: { [weak self] action in
-                switch action {
-                case .dismissTap:
-                    self?.route.send(.dismissTapped)
-                case .continueTap:
-                    self?.route.send(.continueTapped)
-                }
-            })
+            .filter { $0 == .continueTap }
+            .withUnretained(self)
+            .sink { owner, _ in
+                owner.route.send(.continueTapped)
+            }
             .store(in: cancelBag)
     }
 }

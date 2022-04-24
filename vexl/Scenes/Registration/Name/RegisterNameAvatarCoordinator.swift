@@ -32,25 +32,20 @@ class RegisterNameAvatarCoordinator: BaseCoordinator<RouterResult<Void>> {
             .$loading
             .assign(to: &viewController.$isLoading)
 
-        viewModel
+        let finished = viewModel
             .route
             .receive(on: RunLoop.main)
             .filter { $0 == .continueTapped }
             .withUnretained(self)
             .flatMap { owner, route -> CoordinatingResult<RouterResult<Void>> in
-                switch route {
-                case .continueTapped:
-                    return owner.showRegisterPhoneContacts(router: owner.router)
-                }
+                owner.showRegisterPhoneContacts(router: owner.router)
             }
-            .sink(receiveValue: { _ in })
-            .store(in: cancelBag)
 
         let dismissByRouter = viewController
             .dismissPublisher
             .map { _ in RouterResult<Void>.dismissedByRouter }
 
-        return dismissByRouter
+        return Publishers.Merge(finished, dismissByRouter)
             .receive(on: RunLoop.main)
             .prefix(1)
             .eraseToAnyPublisher()

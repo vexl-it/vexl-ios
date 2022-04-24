@@ -34,32 +34,21 @@ final class WelcomeCoordinator: BaseCoordinator<RouterResult<Void>> {
 
         // MARK: Routing actions
 
-        viewModel
+        let finished = viewModel
             .route
             .receive(on: RunLoop.main)
-            .filter { $0 != .dismissTapped }
+            .filter { $0 == .continueTapped }
             .withUnretained(self)
-            .flatMap { owner, route -> CoordinatingResult<RouterResult<Void>> in
-                switch route {
-                case .dismissTapped:
-                    return Empty(completeImmediately: true).eraseToAnyPublisher()
-                case .continueTapped:
-                    return owner.showRegisterPhone(router: owner.router)
-                }
+            .flatMap { owner, _ -> CoordinatingResult<RouterResult<Void>> in
+                owner.showRegisterPhone(router: owner.router)
             }
-            .sink(receiveValue: { _ in })
-            .store(in: cancelBag)
 
         // MARK: Dismiss
 
         let dismissByRouter = viewController.dismissPublisher
             .map { _ in RouterResult<Void>.dismissedByRouter }
 
-        let dismiss = viewModel.route
-            .filter { $0 == .dismissTapped }
-            .map { _ -> RouterResult<Void> in .dismiss }
-
-        return Publishers.Merge(dismiss, dismissByRouter)
+        return Publishers.Merge(dismissByRouter, finished)
             .receive(on: RunLoop.main)
             .prefix(1)
             .eraseToAnyPublisher()

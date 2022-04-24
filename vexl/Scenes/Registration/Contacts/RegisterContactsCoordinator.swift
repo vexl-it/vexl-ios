@@ -25,6 +25,7 @@ final class RegisterContactsCoordinator: BaseCoordinator<RouterResult<Void>> {
         let viewModel = RegisterContactsViewModel(username: authenticationManager.currentUser?.username ?? "",
                                                   avatar: authenticationManager.currentUser?.avatarImage)
         let viewController = RegisterViewController(currentPage: 2, numberOfPages: 3, rootView: RegisterContactsView(viewModel: viewModel))
+
         router.present(viewController, animated: animated)
 
         viewModel
@@ -39,9 +40,18 @@ final class RegisterContactsCoordinator: BaseCoordinator<RouterResult<Void>> {
             .dismissPublisher
             .map { _ in RouterResult<Void>.dismissedByRouter }
 
-        return dismissByRouter
+        let skipTap = viewModel
+            .route
+            .filter { $0 == .skipTapped }
+            .map { _ in RouterResult<Void>.dismissedByRouter }
+
+        let continueTap = viewModel
+            .route
+            .filter { $0 == .continueTapped }
+            .map { _ in RouterResult<Void>.dismissedByRouter }
+
+        return Publishers.Merge3(skipTap, continueTap, dismissByRouter)
             .receive(on: RunLoop.main)
-            .prefix(1)
             .eraseToAnyPublisher()
     }
 }

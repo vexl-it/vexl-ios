@@ -78,15 +78,19 @@ final class OnboardingViewModel: ViewModelType {
 
     private func setupActions() {
         action
-            .sink(receiveValue: { [weak self] action in
-                guard let self = self else { return }
-                switch action {
-                case .showLogin:
-                    self.route.send(.tapped)
-                case .next:
-                    self.selectedIndex += 1
-                }
-            })
+            .filter { $0 == .showLogin }
+            .withUnretained(self)
+            .sink { owner, _ in
+                owner.route.send(.tapped)
+            }
+            .store(in: cancelBag)
+
+        action
+            .filter { $0 == .next }
+            .withUnretained(self)
+            .sink { owner, _ in
+                owner.selectedIndex += 1
+            }
             .store(in: cancelBag)
     }
 }

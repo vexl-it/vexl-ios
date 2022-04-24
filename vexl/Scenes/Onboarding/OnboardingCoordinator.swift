@@ -23,31 +23,27 @@ final class OnboardingCoordinator: BaseCoordinator<RouterResult<Void>> {
         let viewModel = OnboardingViewModel()
         let viewController = BaseViewController(rootView: OnboardingView(viewModel: viewModel))
 
-        router.present(viewController, animated: animated)
-
         // MARK: Routers
+
+        router.present(viewController, animated: animated)
 
         // MARK: Routing actions
 
-        viewModel
+        let finished = viewModel
             .route
+            .filter { $0 == .tapped }
             .receive(on: RunLoop.main)
             .withUnretained(self)
-            .flatMap { owner, route -> CoordinatingResult<RouterResult<Void>> in
-                switch route {
-                case .tapped:
-                    return owner.showLoginFlow(router: owner.router)
-                }
+            .flatMap { owner, _ -> CoordinatingResult<RouterResult<Void>> in
+                owner.showLoginFlow(router: owner.router)
             }
-            .sink(receiveValue: { _ in })
-            .store(in: cancelBag)
 
         // MARK: Dismiss
 
         let dismiss = viewController.dismissPublisher
             .map { _ in RouterResult<Void>.dismissedByRouter }
 
-        return dismiss
+        return Publishers.Merge(dismiss, finished)
             .receive(on: RunLoop.main)
             .prefix(1)
             .eraseToAnyPublisher()

@@ -33,6 +33,14 @@ final class MarketplaceWindowCoordinator: BaseCoordinator<Void> {
 
         marketplaceRouter.set(bottomViewController: buySellViewController)
 
+        UIView.transition(
+            with: window,
+            duration: 0.3,
+            options: .transitionCrossDissolve,
+            animations: nil,
+            completion: nil
+        )
+
         let dismissViewController = marketplaceViewController.dismissPublisher
             .map { _ in RouterResult<Void>.dismissedByRouter }
 

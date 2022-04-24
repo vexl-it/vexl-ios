@@ -51,6 +51,7 @@ final class RegisterContactsViewModel: ViewModelType {
     // MARK: - Coordinator Bindings
 
     enum Route: Equatable {
+        case skipTapped
         case continueTapped
     }
 
@@ -148,7 +149,8 @@ final class RegisterContactsViewModel: ViewModelType {
         facebookViewModel.skipped
             .withUnretained(self)
             .sink { owner, _ in
-                owner.route.send(.continueTapped)
+                owner.route.send(.skipTapped)
+                owner.authenticationManager.storeUser()
             }
             .store(in: cancelBag)
 

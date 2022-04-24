@@ -23,11 +23,11 @@ protocol TokenHandlerType {
 protocol AuthenticationManagerType {
     var currentUser: User? { get }
 
+    func storeUser()
     func logoutUser()
 }
 
 protocol UserSecurityType {
-
     var userSecurity: UserSecurity { get set }
     var userKeys: UserKeys? { get }
     var userSignature: String? { get }
@@ -52,7 +52,7 @@ final class AuthenticationManager: AuthenticationManagerType, TokenHandlerType {
 
     // MARK: - Properties
 
-    @Published private(set) var authenticationState: AuthenticationState = .signedOut
+    @Published var authenticationState: AuthenticationState = .signedOut
 
     @Published private(set) var accessToken: String?
     @Published private(set) var refreshToken: String?
@@ -94,6 +94,10 @@ final class AuthenticationManager: AuthenticationManagerType, TokenHandlerType {
     func setUser(_ user: User, withAvatar avatar: Data? = nil) {
         self.currentUser = user
         self.currentUser?.avatarImage = avatar
+    }
+    
+    func storeUser() {
+        authenticationState = .signedIn
     }
 }
 
