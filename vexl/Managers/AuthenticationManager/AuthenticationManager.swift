@@ -29,7 +29,7 @@ protocol AuthenticationManagerType {
 protocol UserSecurityType {
 
     var userSecurity: UserSecurity { get set }
-    var userKeys: ECKeys { get }
+    var userKeys: ECCKeys { get }
     var userSignature: String? { get }
     var userHash: String? { get }
     var userFacebookHash: String? { get }
@@ -38,7 +38,7 @@ protocol UserSecurityType {
     var facebookSecurityHeader: SecurityHeader? { get }
 
     func setUserSignature(_ userSignature: UserSignature)
-    func setUserKeys(_ userKeys: ECKeys)
+    func setUserKeys(_ userKeys: ECCKeys)
     func setHash(_ challengeValidation: ChallengeValidation)
     func setFacebookUser(id: String?, token: String?)
     func setFacebookSignature(_ facebookSignature: ChallengeValidation)
@@ -123,15 +123,15 @@ extension AuthenticationManager {
 // MARK: - User Security properties
 
 extension AuthenticationManager: UserSecurityType {
-    var userKeys: ECKeys {
+    var userKeys: ECCKeys {
         guard let keys = userSecurity.keys else {
-            let newKeys = ECKeys()
+            let newKeys = ECCKeys()
             setUserKeys(newKeys)
             return newKeys
         }
         return keys
     }
-    
+
     var userSignature: String? {
         userSecurity.signature
     }
@@ -157,7 +157,7 @@ extension AuthenticationManager: UserSecurityType {
         self.userSecurity.signature = userSignature.signed
     }
 
-    func setUserKeys(_ userKeys: ECKeys) {
+    func setUserKeys(_ userKeys: ECCKeys) {
         self.userSecurity.keys = userKeys
     }
 

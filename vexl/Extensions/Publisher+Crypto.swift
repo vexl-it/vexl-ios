@@ -7,14 +7,60 @@
 
 import Combine
 
+extension Publisher where Output == String {
+    func hashSHA() throws -> Publishers.TryMap<Self, String> {
+        tryMap { data in
+            try data.sha.hash()
+        }
+    }
+
+    func hashHMAC(password: String) -> Publishers.TryMap<Self, ChecksumHMAC> {
+        tryMap { message in
+            let digest = try message.hmac.hash(password: password)
+            return (message: message, digest: digest)
+        }
+    }
+
+    func signECDSA(keys: ECCKeys) -> Publishers.TryMap<Self, Signature> {
+        tryMap { message in
+            let signature = try message.ecc.sign(keys: keys)
+            return (message: message, digest: signature)
+        }
+    }
+
+    func encryptECIES(publicKey: String) -> Publishers.TryMap<Self, String> {
+        tryMap { secret in
+            try secret.ecc.encrypt(publicKey: publicKey)
+        }
+    }
+
+    func decryptECIES(keys: ECCKeys) -> Publishers.TryMap<Self, String> {
+        tryMap { cipher in
+            try cipher.ecc.decrypt(keys: keys)
+        }
+    }
+
+    func encryptAES(password: String) -> Publishers.TryMap<Self, String> {
+        tryMap { secret in
+            try secret.aes.encrypt(password: password)
+        }
+    }
+
+    func decryptAES(password: String) -> Publishers.TryMap<Self, String> {
+        tryMap { cipher in
+            try cipher.aes.decrypt(password: password)
+        }
+    }
+}
+
 typealias Signature = (message: String, digest: String)
 
 extension Publisher where Output == Signature {
     func verifyECDSA(publicKey: String) -> Publishers.TryMap<Self, Void> {
         tryMap { signature in
-            let verified = CryptoService.verifyECDSA(publicKey: publicKey, message: signature.message, signature: signature.digest)
+            let verified = signature.digest.ecc.verify(publicKey: publicKey, message: signature.message)
             if !verified {
-                throw EncryptionError.verificationError
+                throw CryptographicError.verificationError
             }
         }
     }
@@ -25,56 +71,10 @@ typealias ChecksumHMAC = (message: String, digest: String)
 extension Publisher where Output == ChecksumHMAC {
     func verifyHMAC(password: String) -> Publishers.TryMap<Self, Void> {
         tryMap { checksum in
-            let verified = CryptoService.verifyHMAC(password: password, message: checksum.message, digest: checksum.digest)
+            let verified = checksum.digest.hmac.verify(password: password, message: checksum.message)
             if !verified {
-                throw EncryptionError.verificationError
+                throw CryptographicError.verificationError
             }
-        }
-    }
-}
-
-extension Publisher where Output == String {
-    func hashSHA() throws -> Publishers.TryMap<Self, String> {
-        tryMap { data in
-            try CryptoService.hashSHA(data: data)
-        }
-    }
-
-    func hashHMAC(password: String) -> Publishers.TryMap<Self, ChecksumHMAC> {
-        tryMap { message in
-            let digest = try CryptoService.hashHMAC(password: password, message: message)
-            return (message: message, digest: digest)
-        }
-    }
-
-    func signECDSA(keys: ECKeys) -> Publishers.TryMap<Self, Signature> {
-        tryMap { message in
-            let signature = try CryptoService.signECDSA(keys: keys, message: message)
-            return (message: message, digest: signature)
-        }
-    }
-
-    func encryptECIES(publicKey: String) -> Publishers.TryMap<Self, String> {
-        tryMap { secret in
-            try CryptoService.encryptECIES(publicKey: publicKey, secret: secret)
-        }
-    }
-
-    func decryptECIES(keys: ECKeys) -> Publishers.TryMap<Self, String> {
-        tryMap { cipher in
-            try CryptoService.decryptECIES(keys: keys, cipher: cipher)
-        }
-    }
-
-    func encryptAES(password: String) -> Publishers.TryMap<Self, String> {
-        tryMap { secret in
-            try CryptoService.encryptAES(password: password, secret: secret)
-        }
-    }
-
-    func decryptAES(password: String) -> Publishers.TryMap<Self, String> {
-        tryMap { cipher in
-            try CryptoService.decryptAES(password: password, cipher: cipher)
         }
     }
 }

@@ -8,7 +8,7 @@
 import Foundation
 
 struct UserSecurity {
-    var keys: ECKeys?
+    var keys: ECCKeys?
     var signature: String?
     var hash: String?
 

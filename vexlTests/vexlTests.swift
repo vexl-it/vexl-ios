@@ -42,7 +42,7 @@ class VexlTests: XCTestCase {
     }
 
     func testECDSA() throws {
-        let keys = ECKeys()
+        let keys = ECCKeys()
         XCTAssertNotNil(keys.privateKey)
         let signature = try cryptoService.signECDSA(keys: keys, message: message)
         let verifiedECDSA = cryptoService.verifyECDSA(publicKey: keys.publicKey, message: message, signature: signature)
@@ -50,7 +50,7 @@ class VexlTests: XCTestCase {
     }
 
     func testECIES() throws {
-        let keys = ECKeys()
+        let keys = ECCKeys()
         XCTAssertNotNil(keys.privateKey)
         let cipher = try cryptoService.encryptECIES(publicKey: keys.publicKey, secret: message)
         let decryptedMessage = try cryptoService.decryptECIES(keys: keys, cipher: cipher)

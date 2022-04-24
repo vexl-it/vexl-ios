@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct ECKeys {
+struct ECCKeys {
     var publicKey: String
     var privateKey: String?
 

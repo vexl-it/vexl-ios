@@ -57,6 +57,12 @@
 		B08F399A27AE7D87008B344F /* OnboardingCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B08F399927AE7D87008B344F /* OnboardingCoordinator.swift */; };
 		B08F399C27AE7D8D008B344F /* OnboardingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B08F399B27AE7D8D008B344F /* OnboardingViewModel.swift */; };
 		B08F399E27AE7D92008B344F /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B08F399D27AE7D92008B344F /* OnboardingView.swift */; };
+		B0E9BB272815C5750012BF1D /* String+Crypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E9BB262815C5750012BF1D /* String+Crypto.swift */; };
+		B0E9BB2A2815C7190012BF1D /* AES.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E9BB292815C7190012BF1D /* AES.swift */; };
+		B0E9BB2C2815C71E0012BF1D /* ECC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E9BB2B2815C71E0012BF1D /* ECC.swift */; };
+		B0E9BB2E2815C7260012BF1D /* HMAC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E9BB2D2815C7260012BF1D /* HMAC.swift */; };
+		B0E9BB302815C7310012BF1D /* SHA.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E9BB2F2815C7310012BF1D /* SHA.swift */; };
+		B0E9BB322815D2B60012BF1D /* CryptographicError.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E9BB312815D2B60012BF1D /* CryptographicError.swift */; };
 		B0EEE11627B14D320097031E /* WelcomeCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0EEE11527B14D320097031E /* WelcomeCoordinator.swift */; };
 		B0EEE11827B14D360097031E /* WelcomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0EEE11727B14D360097031E /* WelcomeViewModel.swift */; };
 		B0EEE11A27B14D3D0097031E /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0EEE11927B14D3D0097031E /* WelcomeView.swift */; };
@@ -66,7 +72,7 @@
 		B0F206F727AEB2C000A44E72 /* UIViewStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0F206F627AEB2C000A44E72 /* UIViewStyle.swift */; };
 		B0F206FE27AEBDD500A44E72 /* AuthRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0F206FD27AEBDD500A44E72 /* AuthRouter.swift */; };
 		B0FE523F280E822400A77EC3 /* CryptoService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0FE523E280E822400A77EC3 /* CryptoService.swift */; };
-		B0FE5249280E93D200A77EC3 /* ECKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0FE5248280E93D200A77EC3 /* ECKeys.swift */; };
+		B0FE5249280E93D200A77EC3 /* ECCKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0FE5248280E93D200A77EC3 /* ECCKeys.swift */; };
 		C1A0B48D6D54EB5D7D8929FB /* Pods_vexl_vexlTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D776C4D0B95B9F6E229AF7E4 /* Pods_vexl_vexlTests.framework */; };
 		F1042BA227BEADB70048C2F0 /* WelcomeView+Agreement.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1042BA127BEADB70048C2F0 /* WelcomeView+Agreement.swift */; };
 		F1042BA527BEF0360048C2F0 /* OnboardingView+PageControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1042BA427BEF0360048C2F0 /* OnboardingView+PageControl.swift */; };
@@ -225,6 +231,12 @@
 		B08F399927AE7D87008B344F /* OnboardingCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingCoordinator.swift; sourceTree = "<group>"; };
 		B08F399B27AE7D8D008B344F /* OnboardingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewModel.swift; sourceTree = "<group>"; };
 		B08F399D27AE7D92008B344F /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		B0E9BB262815C5750012BF1D /* String+Crypto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Crypto.swift"; sourceTree = "<group>"; };
+		B0E9BB292815C7190012BF1D /* AES.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AES.swift; sourceTree = "<group>"; };
+		B0E9BB2B2815C71E0012BF1D /* ECC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ECC.swift; sourceTree = "<group>"; };
+		B0E9BB2D2815C7260012BF1D /* HMAC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HMAC.swift; sourceTree = "<group>"; };
+		B0E9BB2F2815C7310012BF1D /* SHA.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SHA.swift; sourceTree = "<group>"; };
+		B0E9BB312815D2B60012BF1D /* CryptographicError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptographicError.swift; sourceTree = "<group>"; };
 		B0EEE11527B14D320097031E /* WelcomeCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeCoordinator.swift; sourceTree = "<group>"; };
 		B0EEE11727B14D360097031E /* WelcomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeViewModel.swift; sourceTree = "<group>"; };
 		B0EEE11927B14D3D0097031E /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
@@ -235,7 +247,7 @@
 		B0F206FD27AEBDD500A44E72 /* AuthRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthRouter.swift; sourceTree = "<group>"; };
 		B0FE523E280E822400A77EC3 /* CryptoService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoService.swift; sourceTree = "<group>"; };
 		B0FE5244280E845000A77EC3 /* vexl-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "vexl-Bridging-Header.h"; sourceTree = "<group>"; };
-		B0FE5248280E93D200A77EC3 /* ECKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ECKeys.swift; sourceTree = "<group>"; };
+		B0FE5248280E93D200A77EC3 /* ECCKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ECCKeys.swift; sourceTree = "<group>"; };
 		D2644FB5ADC4F80BBF36B73B /* Pods-vexl-vexlTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-vexl-vexlTests.release.xcconfig"; path = "Target Support Files/Pods-vexl-vexlTests/Pods-vexl-vexlTests.release.xcconfig"; sourceTree = "<group>"; };
 		D776C4D0B95B9F6E229AF7E4 /* Pods_vexl_vexlTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_vexl_vexlTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DF8AC1A170DAA6A83E1E979B /* Pods-vexl.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-vexl.debug.xcconfig"; path = "Target Support Files/Pods-vexl/Pods-vexl.debug.xcconfig"; sourceTree = "<group>"; };
@@ -450,6 +462,7 @@
 		B08F38E327AE7110008B344F /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				B0E9BB282815C70C0012BF1D /* Cryptography */,
 				F1A9452E27F68032009B5AE3 /* Security */,
 				F1C6D09A27BDDBC7009BD506 /* UI */,
 				B08F394027AE7112008B344F /* Shortcuts.swift */,
@@ -472,6 +485,7 @@
 				B08F393527AE7112008B344F /* UIDevice+.swift */,
 				B08F394227AE7112008B344F /* Keychain+.swift */,
 				B08F395E27AE7112008B344F /* String+.swift */,
+				B0E9BB262815C5750012BF1D /* String+Crypto.swift */,
 				B08F396927AE7112008B344F /* URLRequest+.swift */,
 				B08F397527AE7112008B344F /* Error+.swift */,
 				B08F397927AE7112008B344F /* Codable+.swift */,
@@ -509,7 +523,7 @@
 				F175AB8227E4CBFE000DAB15 /* Networking */,
 				B08F391827AE7112008B344F /* User.swift */,
 				F1A9454527F81278009B5AE3 /* ContactInformation.swift */,
-				B0FE5248280E93D200A77EC3 /* ECKeys.swift */,
+				B0FE5248280E93D200A77EC3 /* ECCKeys.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -694,6 +708,18 @@
 				B08F399D27AE7D92008B344F /* OnboardingView.swift */,
 			);
 			path = Onboarding;
+			sourceTree = "<group>";
+		};
+		B0E9BB282815C70C0012BF1D /* Cryptography */ = {
+			isa = PBXGroup;
+			children = (
+				B0E9BB292815C7190012BF1D /* AES.swift */,
+				B0E9BB2B2815C71E0012BF1D /* ECC.swift */,
+				B0E9BB2D2815C7260012BF1D /* HMAC.swift */,
+				B0E9BB2F2815C7310012BF1D /* SHA.swift */,
+				B0E9BB312815D2B60012BF1D /* CryptographicError.swift */,
+			);
+			path = Cryptography;
 			sourceTree = "<group>";
 		};
 		B0EEE11427B14D0B0097031E /* Welcome */ = {
@@ -1287,9 +1313,11 @@
 				F12A14F327D96FD40096543E /* ImportContactsView.swift in Sources */,
 				F12A150827E1A4940096543E /* RequestAccessAlert.swift in Sources */,
 				F151A29427C826AD000D7242 /* RegistrationCounterView.swift in Sources */,
+				B0E9BB2E2815C7260012BF1D /* HMAC.swift in Sources */,
 				B0F206EF27AE8F6900A44E72 /* Publisher+.swift in Sources */,
 				F1A9453627F686D1009B5AE3 /* CodeValidation.swift in Sources */,
 				F12A14E827D6A8690096543E /* RequestAccessContactsView.swift in Sources */,
+				B0E9BB302815C7310012BF1D /* SHA.swift in Sources */,
 				B08F390727AE7110008B344F /* UserDefault.swift in Sources */,
 				B08F391727AE7112008B344F /* AuthenticationManager.swift in Sources */,
 				B08F394B27AE7112008B344F /* ServerError.swift in Sources */,
@@ -1311,6 +1339,7 @@
 				B08F38DF27AE7110008B344F /* DIContainer.swift in Sources */,
 				B08F391E27AE7112008B344F /* AppDelegate.swift in Sources */,
 				B08F394F27AE7112008B344F /* Localization.swift in Sources */,
+				B0E9BB2C2815C71E0012BF1D /* ECC.swift in Sources */,
 				B08F397227AE7112008B344F /* Formatters.swift in Sources */,
 				B0F206F127AE94C400A44E72 /* InitialScreenManager.swift in Sources */,
 				F12A14E027D6774C0096543E /* RegisterContactsView.swift in Sources */,
@@ -1323,6 +1352,7 @@
 				B08F397A27AE7112008B344F /* Codable+.swift in Sources */,
 				F188620F280EABB600659786 /* FetchImage.swift in Sources */,
 				F175AB9B27F1432E000DAB15 /* ContactsRouter.swift in Sources */,
+				B0E9BB272815C5750012BF1D /* String+Crypto.swift in Sources */,
 				F151A2A927C9646A000D7242 /* RegisterNameAvatarView+AvatarInput.swift in Sources */,
 				B08F395927AE7112008B344F /* ClientAPIError.swift in Sources */,
 				F1B5FCD427C703230018729B /* CardModifier.swift in Sources */,
@@ -1355,6 +1385,7 @@
 				F1BFA9712804321900F4E745 /* LineDivider.swift in Sources */,
 				B08F394D27AE7112008B344F /* AppCoordinator.swift in Sources */,
 				F175ABA227F4A8F8000DAB15 /* UserAvailable.swift in Sources */,
+				B0E9BB322815D2B60012BF1D /* CryptographicError.swift in Sources */,
 				B0F206FE27AEBDD500A44E72 /* AuthRouter.swift in Sources */,
 				F1BFA8D027FB31E800F4E745 /* FacebookUserData.swift in Sources */,
 				B08F399E27AE7D92008B344F /* OnboardingView.swift in Sources */,
@@ -1369,6 +1400,7 @@
 				B08F395B27AE7112008B344F /* Appearance.swift in Sources */,
 				B0F206F327AEA4C800A44E72 /* WindowCoordinator.swift in Sources */,
 				F1CFF3B627F56F7F007D9FE1 /* FacebokUserSignature.swift in Sources */,
+				B0E9BB2A2815C7190012BF1D /* AES.swift in Sources */,
 				F175AB9527EA6A8E000DAB15 /* PlaceholderTextField.swift in Sources */,
 				B0EEE11627B14D320097031E /* WelcomeCoordinator.swift in Sources */,
 				B08F393227AE7112008B344F /* SceneDelegate.swift in Sources */,
@@ -1378,7 +1410,7 @@
 				F1B5FCBE27C68EA70018729B /* OnboardingView+BottomButtons.swift in Sources */,
 				F151A29927C86683000D7242 /* RegisterNameAvatarViewModel.swift in Sources */,
 				F1A9454227F81200009B5AE3 /* ContactsImported.swift in Sources */,
-				B0FE5249280E93D200A77EC3 /* ECKeys.swift in Sources */,
+				B0FE5249280E93D200A77EC3 /* ECCKeys.swift in Sources */,
 				B08F394127AE7112008B344F /* Shortcuts.swift in Sources */,
 				F1B5FCD827C7040C0018729B /* RoundedCorners.swift in Sources */,
 				F151A29D27C866C7000D7242 /* RegisterNameAvatarView.swift in Sources */,
