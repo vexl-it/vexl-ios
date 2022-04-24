@@ -7,7 +7,7 @@
 
 import UIKit
 
-class MarketplaceGraphView: UIView {
+class HomeCoinGraphView: UIView {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
