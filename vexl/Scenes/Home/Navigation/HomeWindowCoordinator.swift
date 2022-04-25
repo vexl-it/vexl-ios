@@ -23,15 +23,15 @@ final class HomeCoordinator: BaseCoordinator<Void> {
 
     override func start() -> CoordinatingResult<Void> {
 
-        let buySellViewModel = MarketplaceViewModel()
-        let buySellViewController = BaseViewController(rootView: MarketplaceView(viewModel: buySellViewModel))
+        let marketplaceViewModel = MarketplaceViewModel()
+        let marketplaceViewController = BaseViewController(rootView: MarketplaceView(viewModel: marketplaceViewModel))
 
         window.tap {
             $0.rootViewController = homeViewController
             $0.makeKeyAndVisible()
         }
 
-        homeRouter.set(bottomViewController: buySellViewController)
+        homeRouter.set(bottomViewController: marketplaceViewController)
 
         let dismissViewController = homeViewController.dismissPublisher
             .map { _ in RouterResult<Void>.dismissedByRouter }
