@@ -24,23 +24,17 @@ final class HomeCoordinator: BaseCoordinator<Void> {
 
     override func start() -> CoordinatingResult<Void> {
 
-        let buySellViewModel = MarketplaceViewModel()
-        let buySellViewController = BaseViewController(rootView: MarketplaceView(viewModel: buySellViewModel))
-
         window.tap {
             $0.rootViewController = homeViewController
             $0.makeKeyAndVisible()
         }
 
-        homeRouter.set(bottomViewController: buySellViewController)
+        // Setting initial child view controller
 
-        buySellViewModel
-            .route
-            .receive(on: RunLoop.main)
-            .filter { $0 == .showOffer }
+        Just(homeRouter)
             .withUnretained(self)
-            .flatMap { owner, _ in
-                owner.showOffers(router: owner.homeRouter)
+            .flatMap { owner, router in
+                owner.showMarketplaceAsRoot(router: router)
             }
             .sink { _ in }
             .store(in: cancelBag)
@@ -56,8 +50,8 @@ final class HomeCoordinator: BaseCoordinator<Void> {
 }
 
 extension HomeCoordinator {
-    private func showOffers(router: Router) -> CoordinatingResult<RouterResult<Void>> {
-        coordinate(to: OffersCoordinator(router: router))
+    private func showMarketplaceAsRoot(router: Router) -> CoordinatingResult<RouterResult<Void>> {
+        coordinate(to: MarketplaceCoordinator(router: router, animated: true))
             .flatMap { result -> CoordinatingResult<RouterResult<Void>> in
                 guard result != .dismissedByRouter else {
                     return Just(result).eraseToAnyPublisher()

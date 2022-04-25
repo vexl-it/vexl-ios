@@ -32,7 +32,11 @@ extension HomeRouter: Router {
 
     func present(_ viewController: UIViewController, animated: Bool) {
         isPresesentingFullscreen = false
-        homeViewController.present(childViewController: viewController)
+        if homeViewController.bottomViewController == nil {
+            homeViewController.set(bottomViewController: viewController)
+        } else {
+            homeViewController.present(childViewController: viewController)
+        }
     }
 
     func presentFullscreen(_ viewController: UIViewController, animated: Bool) {

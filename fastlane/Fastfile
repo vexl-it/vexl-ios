@@ -69,9 +69,10 @@ platform :ios do
 	lane :test do
 		install_pods()
 		clear_derived_data
-		scan(
-			scheme: main_scheme,
-			output_directory: "fastlane/tests"
+		run_tests(
+			workspace: "vexl.xcworkspace",
+			devices: ["iPhone 13"],
+			scheme: "vexlTests"
 		)
 	end
 
