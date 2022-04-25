@@ -37,9 +37,8 @@ final class AppCoordinator: BaseCoordinator<Void> {
 //            case .onboarding:
 //                return showOnboardingCoordinator()
 //            case .home:
-//                return showHomeScreen()
-//            }
-            return showHomeScreen()
+                return showHomeCoordinator()
+            //}
         }()
 
         cancellable = coordinationResult
@@ -71,10 +70,7 @@ extension AppCoordinator {
             .eraseToAnyPublisher()
     }
 
-    private func showHomeScreen() -> CoordinatingResult<Void> {
-        coordinate(to: WindowModalCoordinator(window: window, initialCoordinatorHandler: { router, _ in
-            MarketplaceCoordinator(router: router)
-        }))
-        //coordinate(to: MarketplaceWindowCoordinator(window: window))
+    private func showHomeCoordinator() -> CoordinatingResult<Void> {
+        coordinate(to: HomeCoordinator(window: window))
     }
 }

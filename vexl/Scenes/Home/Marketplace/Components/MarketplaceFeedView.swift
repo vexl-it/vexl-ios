@@ -7,7 +7,9 @@
 
 import SwiftUI
 
-struct BuySellFeedView: View {
+typealias MarketplaceFeedViewData = MarketplaceFeedView.ViewData
+
+struct MarketplaceFeedView: View {
 
     let title: String
     let isRequested: Bool
@@ -24,15 +26,15 @@ struct BuySellFeedView: View {
                 .foregroundColor(Appearance.Colors.primaryText)
                 .padding([.horizontal, .top], Appearance.GridGuide.mediumPadding1)
 
-            BuySellFeedDetailView(maxAmount: maxAmount,
-                                  paymentMethod: paymentMethod,
-                                  fee: fee)
+            MarketplaceFeedDetailView(maxAmount: maxAmount,
+                                      paymentMethod: paymentMethod,
+                                      fee: fee)
                 .padding(.horizontal, Appearance.GridGuide.padding)
 
             // TODO: - set contact type from viewmodel + real action
-            BuySellFeedFooterView(contactType: .facebook,
-                                  isRequested: isRequested,
-                                  location: location) {
+            MarketplaceFeedFooterView(contactType: .facebook,
+                                      isRequested: isRequested,
+                                      location: location) {
                 print("facebook")
             }
                 .padding(.horizontal, Appearance.GridGuide.padding)
@@ -43,15 +45,29 @@ struct BuySellFeedView: View {
     }
 }
 
+extension MarketplaceFeedView {
+
+    struct ViewData: Identifiable {
+        let id: Int
+        let title: String
+        let isRequested: Bool
+        let location: String
+
+        let maxAmount: String
+        let paymentMethod: String
+        let fee: String?
+    }
+}
+
 #if DEBUG || DEVEL
-struct BuySellFeedViewViewPreview: PreviewProvider {
+struct MarketplaceFeedViewViewPreview: PreviewProvider {
     static var previews: some View {
-        BuySellFeedView(title: "I’ll be wearing a red hat, Don’t text me before 9am — I love to sleep...",
-                        isRequested: true,
-                        location: "Prague",
-                        maxAmount: "up to $10K",
-                        paymentMethod: "Revolut",
-                        fee: nil)
+        MarketplaceFeedView(title: "I’ll be wearing a red hat, Don’t text me before 9am — I love to sleep...",
+                            isRequested: true,
+                            location: "Prague",
+                            maxAmount: "up to $10K",
+                            paymentMethod: "Revolut",
+                            fee: nil)
             .previewDevice("iPhone 11")
             .frame(maxWidth: .infinity,
                    maxHeight: .infinity)

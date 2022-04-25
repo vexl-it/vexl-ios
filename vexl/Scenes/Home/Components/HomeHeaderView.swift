@@ -7,10 +7,10 @@
 
 import UIKit
 
-class MarketplaceHeaderView: UIControl {
+class HomeHeaderView: UIControl {
 
-    let displayValue = MarketplaceDisplayValueView()
-    let graphView = MarketplaceGraphView()
+    let displayValue = HomeCoinValueView()
+    let graphView = HomeCoinGraphView()
     let stackView = UIStackView()
 
     override init(frame: CGRect) {

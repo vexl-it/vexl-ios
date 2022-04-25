@@ -21,8 +21,8 @@ class OffersCoordinator: BaseCoordinator<RouterResult<Void>> {
         let viewModel = OffersViewModel()
         let viewController = BaseViewController(rootView: OffersView(viewModel: viewModel))
 
-        if let marketplaceRouter = router as? MarketplaceRouter {
-            marketplaceRouter.presentFullscreen(viewController, animated: true)
+        if let homeRouter = router as? HomeRouter {
+            homeRouter.presentFullscreen(viewController, animated: true)
         } else {
             router.present(viewController, animated: true)
         }

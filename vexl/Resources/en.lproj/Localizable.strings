@@ -76,6 +76,7 @@
 "marketplace.facebook.friend" = "Facebook Friend";
 "marketplace.phone.contact" = "Phone Contact";
 "marketplace.sell.offer" = "My Offers";
+"marketplace.buy.add" = "+";
 "offer.request" = "Request";
 "offer.requested" = "Requested";
 "offer.sell.title" = "My Sell Offers";
