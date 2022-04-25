@@ -43,38 +43,3 @@ final class WindowNavigationCoordinator<ResultType, InitialCoordinator: BaseCoor
             .eraseToAnyPublisher()
     }
 }
-
-class WindowModalCoordinator<ResultType, InitialCoordinator: BaseCoordinator<ResultType>>: BaseCoordinator<ResultType> {
-
-    private let window: UIWindow
-    private let initialCoordinatorHandler: (Router, Bool) -> InitialCoordinator
-    private let router: ModalRouter
-
-    private var rootViewController: UIViewController
-
-    init(window: UIWindow, initialCoordinatorHandler: @escaping  (Router, Bool) -> InitialCoordinator) {
-        self.rootViewController = UIViewController()
-        self.window = window
-        self.router = ModalRouter(parentViewController: rootViewController, presentationStyle: .fullScreen)
-        self.initialCoordinatorHandler = initialCoordinatorHandler
-    }
-
-    override func start() -> CoordinatingResult<CoordinationResult> {
-        window.tap {
-            $0.rootViewController = rootViewController
-            $0.makeKeyAndVisible()
-        }
-
-        UIView.transition(
-            with: window,
-            duration: 0.3,
-            options: .transitionCrossDissolve,
-            animations: nil,
-            completion: nil
-        )
-
-        return coordinate(to: initialCoordinatorHandler(router, false))
-            .prefix(1)
-            .eraseToAnyPublisher()
-    }
-}
