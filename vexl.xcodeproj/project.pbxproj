@@ -874,9 +874,9 @@
 		F18861FF280824A500659786 /* Home */ = {
 			isa = PBXGroup;
 			children = (
-				F188626628169A3700659786 /* Marketplace */,
 				F1886204280835D600659786 /* Navigation */,
 				F1886216281005B000659786 /* Components */,
+				F188626628169A3700659786 /* Marketplace */,
 			);
 			path = Home;
 			sourceTree = "<group>";
