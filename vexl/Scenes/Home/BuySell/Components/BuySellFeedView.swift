@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+typealias BuySellFeedViewData = BuySellFeedView.ViewData
+
 struct BuySellFeedView: View {
 
     let title: String
@@ -40,6 +42,20 @@ struct BuySellFeedView: View {
         }
         .background(Appearance.Colors.whiteText)
         .cornerRadius(Appearance.GridGuide.buttonCorner)
+    }
+}
+
+extension BuySellFeedView {
+
+    struct ViewData: Identifiable {
+        let id: Int
+        let title: String
+        let isRequested: Bool
+        let location: String
+
+        let maxAmount: String
+        let paymentMethod: String
+        let fee: String?
     }
 }
 

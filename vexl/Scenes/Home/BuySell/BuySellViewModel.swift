@@ -9,17 +9,6 @@ import Foundation
 import Cleevio
 import Combine
 
-struct FeedItem: Identifiable {
-    let id: Int
-    let title: String
-    let isRequested: Bool
-    let location: String
-
-    let maxAmount: String
-    let paymentMethod: String
-    let fee: String?
-}
-
 final class BuySellViewModel: ViewModelType, ObservableObject {
 
     enum Option {
@@ -50,6 +39,8 @@ final class BuySellViewModel: ViewModelType, ObservableObject {
 
     // MARK: - Variables
 
+    // TODO: - Update to real data when services are ready
+
     var currencySymbol: String {
         "$"
     }
@@ -57,7 +48,7 @@ final class BuySellViewModel: ViewModelType, ObservableObject {
         "1234.4"
     }
 
-    var buyFilters: [BuySellFilterView.FilterItem] {
+    var buyFilters: [BuySellFilterData] {
         [
             .init(id: 1, title: "Revolut"),
             .init(id: 2, title: "up to 10K"),
@@ -65,41 +56,41 @@ final class BuySellViewModel: ViewModelType, ObservableObject {
         ]
     }
 
-    var sellFilters: [BuySellFilterView.FilterItem] {
+    var sellFilters: [BuySellFilterData] {
         [
             .init(id: 4, title: "Filter offers ▽")
         ]
     }
 
-    var feedItems: [FeedItem] = [
-        FeedItem(id: 1,
-                 title: "I’ll be wearing a red hat, Don’t text me before 9am — I love to sleep...",
-                 isRequested: false,
-                 location: "Prague",
-                 maxAmount: "up to $10k",
-                 paymentMethod: "Revolut",
-                 fee: nil),
-        FeedItem(id: 2,
-                 title: "I’ll be wearing a red hat, Don’t text me before 9am — I love to sleep...",
-                 isRequested: true,
-                 location: "Prague",
-                 maxAmount: "up to $10k",
-                 paymentMethod: "Revolut",
-                 fee: "Wants $30 fee per transaction"),
-        FeedItem(id: 3,
-                 title: "I’ll be wearing a red hat, Don’t text me before 9am — I love to sleep...",
-                 isRequested: true,
-                 location: "Prague",
-                 maxAmount: "up to $10k",
-                 paymentMethod: "Revolut",
-                 fee: nil),
-        FeedItem(id: 4,
-                 title: "I’ll be wearing a red hat, Don’t text me before 9am — I love to sleep...",
-                 isRequested: false,
-                 location: "Prague",
-                 maxAmount: "up to $10k",
-                 paymentMethod: "Revolut",
-                 fee: "Wants $30 fee per transaction")
+    var feedItems: [BuySellFeedViewData] = [
+        BuySellFeedViewData(id: 1,
+                            title: "I’ll be wearing a red hat, Don’t text me before 9am — I love to sleep...",
+                            isRequested: false,
+                            location: "Prague",
+                            maxAmount: "up to $10k",
+                            paymentMethod: "Revolut",
+                            fee: nil),
+        BuySellFeedViewData(id: 2,
+                            title: "I’ll be wearing a red hat, Don’t text me before 9am — I love to sleep...",
+                            isRequested: true,
+                            location: "Prague",
+                            maxAmount: "up to $10k",
+                            paymentMethod: "Revolut",
+                            fee: "Wants $30 fee per transaction"),
+        BuySellFeedViewData(id: 3,
+                            title: "I’ll be wearing a red hat, Don’t text me before 9am — I love to sleep...",
+                            isRequested: true,
+                            location: "Prague",
+                            maxAmount: "up to $10k",
+                            paymentMethod: "Revolut",
+                            fee: nil),
+        BuySellFeedViewData(id: 4,
+                            title: "I’ll be wearing a red hat, Don’t text me before 9am — I love to sleep...",
+                            isRequested: false,
+                            location: "Prague",
+                            maxAmount: "up to $10k",
+                            paymentMethod: "Revolut",
+                            fee: "Wants $30 fee per transaction")
     ]
 
     private let cancelBag: CancelBag = .init()
