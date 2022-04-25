@@ -26,7 +26,9 @@ struct MarketplaceFeedDetailView: View {
                 SingleDetailItem(title: fee)
             }
         }
-        .makeCorneredBorder(color: Appearance.Colors.gray4, borderWidth: 1, cornerRadius: Appearance.GridGuide.buttonCorner)
+        .makeCorneredBorder(color: Appearance.Colors.gray4,
+                            borderWidth: 1,
+                            cornerRadius: Appearance.GridGuide.buttonCorner)
     }
 }
 
@@ -40,7 +42,7 @@ extension MarketplaceFeedDetailView {
                 .textStyle(.paragraphBold)
                 .foregroundColor(Appearance.Colors.primaryText)
                 .padding(Appearance.GridGuide.point)
-                .frame(height: 52)
+                .frame(height: Appearance.GridGuide.feedItemHeight)
         }
     }
 
@@ -65,7 +67,7 @@ extension MarketplaceFeedDetailView {
                     .frame(maxWidth: .infinity)
             }
             .padding(Appearance.GridGuide.point)
-            .frame(height: 52)
+            .frame(height: Appearance.GridGuide.feedItemHeight)
         }
     }
 }

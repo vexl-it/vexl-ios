@@ -148,7 +148,6 @@
 		F1BFA957280223BD00F4E745 /* UserProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1BFA953280223BD00F4E745 /* UserProfileViewModel.swift */; };
 		F1BFA958280223BD00F4E745 /* UserProfileViewModel+Options.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1BFA954280223BD00F4E745 /* UserProfileViewModel+Options.swift */; };
 		F1BFA959280223BD00F4E745 /* UserProfileCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1BFA955280223BD00F4E745 /* UserProfileCoordinator.swift */; };
-		F1BFA9682802526B00F4E745 /* CoinVariationHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1BFA9672802526B00F4E745 /* CoinVariationHeaderView.swift */; };
 		F1BFA96E2803A49300F4E745 /* UserProfileView+Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1BFA96D2803A49300F4E745 /* UserProfileView+Item.swift */; };
 		F1BFA9712804321900F4E745 /* LineDivider.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1BFA9702804321900F4E745 /* LineDivider.swift */; };
 		F1BFA97328043D6300F4E745 /* Image+.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1BFA97228043D6300F4E745 /* Image+.swift */; };
@@ -328,7 +327,6 @@
 		F1BFA953280223BD00F4E745 /* UserProfileViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfileViewModel.swift; sourceTree = "<group>"; };
 		F1BFA954280223BD00F4E745 /* UserProfileViewModel+Options.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UserProfileViewModel+Options.swift"; sourceTree = "<group>"; };
 		F1BFA955280223BD00F4E745 /* UserProfileCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfileCoordinator.swift; sourceTree = "<group>"; };
-		F1BFA9672802526B00F4E745 /* CoinVariationHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinVariationHeaderView.swift; sourceTree = "<group>"; };
 		F1BFA96D2803A49300F4E745 /* UserProfileView+Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserProfileView+Item.swift"; sourceTree = "<group>"; };
 		F1BFA9702804321900F4E745 /* LineDivider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LineDivider.swift; sourceTree = "<group>"; };
 		F1BFA97228043D6300F4E745 /* Image+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Image+.swift"; sourceTree = "<group>"; };
@@ -551,7 +549,6 @@
 		B08F38F827AE7110008B344F /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				F1BFA9662802524100F4E745 /* Header */,
 				F151A2A027C86C9B000D7242 /* Registration */,
 				F1B5FCD227C703160018729B /* Modifiers */,
 				F1C6D09527BDAD71009BD506 /* Buttons */,
@@ -1013,14 +1010,6 @@
 			path = Profile;
 			sourceTree = "<group>";
 		};
-		F1BFA9662802524100F4E745 /* Header */ = {
-			isa = PBXGroup;
-			children = (
-				F1BFA9672802526B00F4E745 /* CoinVariationHeaderView.swift */,
-			);
-			path = Header;
-			sourceTree = "<group>";
-		};
 		F1BFA96F2803A59F00F4E745 /* Components */ = {
 			isa = PBXGroup;
 			children = (
@@ -1460,7 +1449,6 @@
 				F1B5FCD827C7040C0018729B /* RoundedCorners.swift in Sources */,
 				F151A29D27C866C7000D7242 /* RegisterNameAvatarView.swift in Sources */,
 				B08F395F27AE7112008B344F /* String+.swift in Sources */,
-				F1BFA9682802526B00F4E745 /* CoinVariationHeaderView.swift in Sources */,
 				F12A14FF27DFC1620096543E /* ImportContactSearchBar.swift in Sources */,
 				F1C6D0A027BDECB0009BD506 /* WelcomeView+LogoImageView.swift in Sources */,
 				B08F399327AE7D1F008B344F /* SplashScreenCoordinator.swift in Sources */,
