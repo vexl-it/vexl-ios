@@ -37,7 +37,7 @@ class RegisterNameAvatarCoordinator: BaseCoordinator<RouterResult<Void>> {
             .receive(on: RunLoop.main)
             .filter { $0 == .continueTapped }
             .withUnretained(self)
-            .flatMap { owner, route -> CoordinatingResult<RouterResult<Void>> in
+            .flatMap { owner, _ -> CoordinatingResult<RouterResult<Void>> in
                 owner.showRegisterPhoneContacts(router: owner.router)
             }
 
