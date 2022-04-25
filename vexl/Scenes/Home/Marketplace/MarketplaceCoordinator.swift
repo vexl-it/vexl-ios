@@ -21,9 +21,8 @@ class MarketplaceCoordinator: BaseCoordinator<RouterResult<Void>> {
     override func start() -> CoordinatingResult<RouterResult<Void>> {
         let viewModel = MarketplaceViewModel()
         let viewController = BaseViewController(rootView: MarketplaceView(viewModel: viewModel))
-        router.present(viewController, animated: true)
 
-        // MARK: Dismiss
+        router.present(viewController, animated: true)
 
         let dismissByRouter = viewController.dismissPublisher
             .map { _ in RouterResult<Void>.dismissedByRouter }
