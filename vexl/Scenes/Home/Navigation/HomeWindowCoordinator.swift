@@ -23,8 +23,8 @@ final class HomeCoordinator: BaseCoordinator<Void> {
 
     override func start() -> CoordinatingResult<Void> {
 
-        let buySellViewModel = BuySellViewModel()
-        let buySellViewController = BaseViewController(rootView: BuySellView(viewModel: buySellViewModel))
+        let buySellViewModel = MarketplaceViewModel()
+        let buySellViewController = BaseViewController(rootView: MarketplaceView(viewModel: buySellViewModel))
 
         window.tap {
             $0.rootViewController = homeViewController

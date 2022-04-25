@@ -8,7 +8,7 @@
 import Cleevio
 import Foundation
 
-class BuySellCoordinator: BaseCoordinator<RouterResult<Void>> {
+class MarketplaceCoordinator: BaseCoordinator<RouterResult<Void>> {
 
     private let router: Router
     private let animated: Bool
@@ -19,9 +19,10 @@ class BuySellCoordinator: BaseCoordinator<RouterResult<Void>> {
     }
 
     override func start() -> CoordinatingResult<RouterResult<Void>> {
-        let viewModel = BuySellViewModel()
-        let viewController = BaseViewController(rootView: BuySellView(viewModel: viewModel))
+        let viewModel = MarketplaceViewModel()
+        let viewController = BaseViewController(rootView: MarketplaceView(viewModel: viewModel))
         router.present(viewController, animated: true)
+
         // MARK: Dismiss
 
         let dismissByRouter = viewController.dismissPublisher

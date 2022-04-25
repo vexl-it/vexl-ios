@@ -9,9 +9,9 @@ import SwiftUI
 import Cleevio
 import Combine
 
-struct BuySellView: View {
+struct MarketplaceView: View {
 
-    @ObservedObject var viewModel: BuySellViewModel
+    @ObservedObject var viewModel: MarketplaceViewModel
 
     var body: some View {
         content
@@ -23,19 +23,19 @@ struct BuySellView: View {
 
     private var content: some View {
         VStack(spacing: Appearance.GridGuide.mediumPadding2) {
-            BuySellSegmentView(selectedOption: $viewModel.selectedOption)
+            MarketplaceSegmentView(selectedOption: $viewModel.selectedOption)
                 .padding(.top, Appearance.GridGuide.mediumPadding2)
 
             filter
 
             ScrollView {
                 ForEach(viewModel.feedItems) { item in
-                    BuySellFeedView(title: item.title,
-                                    isRequested: item.isRequested,
-                                    location: item.location,
-                                    maxAmount: item.maxAmount,
-                                    paymentMethod: item.paymentMethod,
-                                    fee: item.fee)
+                    MarketplaceFeedView(title: item.title,
+                                        isRequested: item.isRequested,
+                                        location: item.location,
+                                        maxAmount: item.maxAmount,
+                                        paymentMethod: item.paymentMethod,
+                                        fee: item.fee)
                         .padding(.horizontal, Appearance.GridGuide.point)
                 }
             }
@@ -47,18 +47,18 @@ struct BuySellView: View {
     private var filter: some View {
         switch viewModel.selectedOption {
         case .buy:
-            return BuySellFilterView(items: viewModel.buyFilters,
-                                     actionTitle: "+",
-                                     filterAction: { index in
+            return MarketplaceFilterView(items: viewModel.buyFilters,
+                                         actionTitle: "+",
+                                         filterAction: { index in
                 print("filter from \(index) has been tapped")
             },
                                      action: {
                 print("+ is pressed")
             })
         case .sell:
-            return BuySellFilterView(items: viewModel.sellFilters,
-                                     actionTitle: L.marketplaceSellOffer(),
-                                     filterAction: { index in
+            return MarketplaceFilterView(items: viewModel.sellFilters,
+                                         actionTitle: L.marketplaceSellOffer(),
+                                         filterAction: { index in
                 print("filter from \(index) has been tapped")
             },
                                      action: {
@@ -71,7 +71,7 @@ struct BuySellView: View {
 #if DEBUG || DEVEL
 struct BuySellViewPreview: PreviewProvider {
     static var previews: some View {
-        BuySellView(viewModel: .init())
+        MarketplaceView(viewModel: .init())
             .previewDevice("iPhone 11")
     }
 }
