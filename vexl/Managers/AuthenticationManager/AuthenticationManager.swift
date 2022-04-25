@@ -96,18 +96,18 @@ final class AuthenticationManager: AuthenticationManagerType, TokenHandlerType {
     }
 
     func saveUser() {
-        UserDefaults.standard.set(value: currentUser, forKey: UserDefaultKey.storedUser.rawValue)
-        UserDefaults.standard.set(value: userSecurity, forKey: UserDefaultKey.storedSecurity.rawValue)
+        UserDefaults.standard.set(value: currentUser, forKey: .storedUser)
+        UserDefaults.standard.set(value: userSecurity, forKey: .storedSecurity)
         authenticationState = .signedIn
     }
 
     func saveSecurity() {
-        UserDefaults.standard.set(value: userSecurity, forKey: UserDefaultKey.storedSecurity.rawValue)
+        UserDefaults.standard.set(value: userSecurity, forKey: .storedSecurity)
     }
 
     func authentication() {
-        self.currentUser = UserDefaults.standard.codable(forKey: UserDefaultKey.storedUser.rawValue)
-        self.userSecurity = UserDefaults.standard.codable(forKey: UserDefaultKey.storedSecurity.rawValue) ?? .init()
+        self.currentUser = UserDefaults.standard.codable(forKey: .storedUser)
+        self.userSecurity = UserDefaults.standard.codable(forKey: .storedSecurity) ?? .init()
 
         authenticationState = currentUser == nil ? .signedOut : .signedIn
     }
