@@ -41,7 +41,7 @@ final class HomeCoordinator: BaseCoordinator<Void> {
 
         UIView.transition(
             with: window,
-            duration: 0.3,
+            duration: 0.5,
             options: .transitionCrossDissolve,
             animations: nil,
             completion: nil
