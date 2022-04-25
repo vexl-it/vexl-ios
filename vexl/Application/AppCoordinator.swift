@@ -37,7 +37,7 @@ final class AppCoordinator: BaseCoordinator<Void> {
             case .onboarding:
                 return showOnboardingCoordinator()
             case .home:
-                return showHomeScreen()
+                return showHomeCoordinator()
             }
         }()
 
@@ -70,8 +70,7 @@ extension AppCoordinator {
             .eraseToAnyPublisher()
     }
 
-    private func showHomeScreen() -> CoordinatingResult<Void> {
-        // TODO: Show homescreen
-        showOnboardingCoordinator()
+    private func showHomeCoordinator() -> CoordinatingResult<Void> {
+        coordinate(to: HomeCoordinator(window: window))
     }
 }
