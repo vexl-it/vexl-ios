@@ -88,7 +88,7 @@ final class UserService: BaseService, UserServiceType {
         request(type: UserKeys.self, endpoint: UserRouter.temporalGenerateKeys)
             .withUnretained(self)
             .handleEvents(receiveOutput: { owner, response in
-                owner.authenticationManager.setUserKeys(response)
+                owner.authenticationManager.setUserKeys(ECCKeys(pubKey: response.publicKey, privKey: response.privateKey))
             })
             .map { $0.1 }
             .eraseToAnyPublisher()

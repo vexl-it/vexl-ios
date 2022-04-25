@@ -37,8 +37,8 @@ class ManagerAssembly: Assembly {
         }
         .inObjectScope(.container)
 
-        container.register(EncryptionManagerType.self) { _ in
-            EncryptionManager()
+        container.register(CryptoServiceType.self) { _ in
+            CryptoService()
         }
         .inObjectScope(.container)
     }
