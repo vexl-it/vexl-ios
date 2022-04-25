@@ -9,11 +9,11 @@ import Foundation
 import UIKit
 import Cleevio
 
-final class MarketplaceViewController: UIViewController {
+final class HomeViewController: UIViewController {
 
     let dismissPublisher: ActionSubject<Void> = .init()
 
-    var headerView = MarketplaceHeaderView()
+    var headerView = HomeHeaderView()
 
     var bottomViewController: UIViewController?
     var currentViewController: UIViewController?
@@ -23,7 +23,10 @@ final class MarketplaceViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .black
+        setupHeader()
+    }
 
+    private func setupHeader() {
         headerView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(headerView)
 

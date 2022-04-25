@@ -8,9 +8,11 @@
 import Foundation
 import SwiftUI
 
-struct BuySellFilterView: View {
+typealias MarketplaceFilterData = MarketplaceFilterView.FilterData
 
-    let items: [FilterItem]
+struct MarketplaceFilterView: View {
+
+    let items: [FilterData]
     let actionTitle: String
     let filterAction: (Int) -> Void
     let action: () -> Void
@@ -40,9 +42,9 @@ struct BuySellFilterView: View {
     }
 }
 
-extension BuySellFilterView {
+extension MarketplaceFilterView {
 
-    struct FilterItem: Identifiable {
+    struct FilterData: Identifiable {
         let id: Int
         let title: String
     }
@@ -64,11 +66,11 @@ extension BuySellFilterView {
 }
 
 #if DEBUG || DEVEL
-struct BuySellFilterViewPreview: PreviewProvider {
+struct MarketplaceFilterViewPreview: PreviewProvider {
     static var previews: some View {
-        BuySellFilterView(
+        MarketplaceFilterView(
             items: [
-                BuySellFilterView.FilterItem(id: 1, title: "Hello")
+                MarketplaceFilterView.FilterData(id: 1, title: "Hello")
             ],
             actionTitle: "Offer",
             filterAction: { _ in },
