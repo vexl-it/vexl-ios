@@ -14,6 +14,7 @@ struct MarketplaceSegmentView: View {
     private let lineWidth: CGFloat = 2
 
     @Binding var selectedOption: MarketplaceViewModel.Option
+    @State private var viewWidth: CGFloat = 0
 
     var body: some View {
         VStack(spacing: Appearance.GridGuide.mediumPadding2) {
@@ -39,21 +40,22 @@ struct MarketplaceSegmentView: View {
 
             selectorView
         }
+        .readSize { size in
+            viewWidth = size.width
+        }
     }
 
     @ViewBuilder var selectorView: some View {
-        ZStack {
+        ZStack(alignment: .leading) {
             HLine()
                 .stroke(style: StrokeStyle(lineWidth: lineWidth, dash: [8]))
                 .foregroundColor(Appearance.Colors.gray1)
 
-            GeometryReader { reader in
-                Color.white
-                    .frame(width: reader.size.width * 0.45, height: selectorHeight)
-                    .offset(x: selectedOption == .buy ? reader.size.width * 0.05 : reader.size.width * 0.5)
-                    .animation(.easeIn(duration: 0.15),
-                               value: selectedOption)
-            }
+            Color.white
+                .frame(width: viewWidth * 0.45, height: selectorHeight, alignment: .leading)
+                .offset(x: selectedOption == .buy ? viewWidth * 0.05 : viewWidth * 0.5)
+                .animation(.easeIn(duration: 0.15),
+                           value: selectedOption)
         }.frame(height: selectorHeight, alignment: .bottom)
     }
 }

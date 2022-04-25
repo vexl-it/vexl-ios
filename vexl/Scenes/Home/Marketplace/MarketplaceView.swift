@@ -18,7 +18,9 @@ struct MarketplaceView: View {
             .background(Color.black.edgesIgnoringSafeArea(.bottom))
             .cornerRadius(Appearance.GridGuide.buttonCorner,
                           corners: [.topLeft, .topRight])
-            .animation(.easeInOut)
+            .transaction { transaction in
+                transaction.animation = .easeInOut(duration: 0.25)
+            }
     }
 
     private var content: some View {

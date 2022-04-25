@@ -37,8 +37,7 @@ struct MarketplaceFeedView: View {
                                       location: location) {
                 print("facebook")
             }
-                .padding(.horizontal, Appearance.GridGuide.padding)
-                .padding(.bottom, Appearance.GridGuide.padding)
+            .padding([.horizontal, .bottom], Appearance.GridGuide.padding)
         }
         .background(Appearance.Colors.whiteText)
         .cornerRadius(Appearance.GridGuide.buttonCorner)
