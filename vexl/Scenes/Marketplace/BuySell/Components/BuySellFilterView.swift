@@ -48,7 +48,6 @@ extension BuySellFilterView {
     }
 
     private struct FilterButton: View {
-
         var title: String
         var action: () -> Void
 
