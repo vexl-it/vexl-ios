@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-struct BuySellFeedFooterView: View {
+struct MarketplaceFeedFooterView: View {
 
     enum ContactType {
         case phone
@@ -75,28 +75,28 @@ struct BuySellFeedFooterView: View {
 }
 
 #if DEBUG || DEVEL
-struct BuySellFeedFooterViewPreview: PreviewProvider {
+struct MarketplaceFeedFooterViewPreview: PreviewProvider {
     static var previews: some View {
         VStack(spacing: 16) {
-            BuySellFeedFooterView(contactType: .phone,
-                                  isRequested: true,
-                                  location: "Prague",
-                                  action: {})
+            MarketplaceFeedFooterView(contactType: .phone,
+                                      isRequested: true,
+                                      location: "Prague",
+                                      action: {})
                 .previewDevice("iPhone 11")
-            BuySellFeedFooterView(contactType: .phone,
-                                  isRequested: false,
-                                  location: "Prague",
-                                  action: {})
+            MarketplaceFeedFooterView(contactType: .phone,
+                                      isRequested: false,
+                                      location: "Prague",
+                                      action: {})
                 .previewDevice("iPhone 11")
-            BuySellFeedFooterView(contactType: .facebook,
-                                  isRequested: true,
-                                  location: "Prague",
-                                  action: {})
+            MarketplaceFeedFooterView(contactType: .facebook,
+                                      isRequested: true,
+                                      location: "Prague",
+                                      action: {})
                 .previewDevice("iPhone 11")
-            BuySellFeedFooterView(contactType: .facebook,
-                                  isRequested: false,
-                                  location: "Prague",
-                                  action: {})
+            MarketplaceFeedFooterView(contactType: .facebook,
+                                      isRequested: false,
+                                      location: "Prague",
+                                      action: {})
                 .previewDevice("iPhone 11")
         }
         .padding()

@@ -8,7 +8,7 @@
 import Foundation
 
 struct UserSecurity: Codable {
-    var keys: UserKeys?
+    var keys: ECCKeys?
     var signature: String?
     var hash: String?
 

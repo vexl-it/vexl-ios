@@ -15,11 +15,6 @@ struct UserProfileView: View {
 
     var body: some View {
         VStack {
-            CoinVariationHeaderView(currencySymbol: viewModel.currencySymbol,
-                                    amount: viewModel.amount)
-
-            Spacer()
-
             content
         }
         .background(Appearance.Colors.green1.edgesIgnoringSafeArea(.all))

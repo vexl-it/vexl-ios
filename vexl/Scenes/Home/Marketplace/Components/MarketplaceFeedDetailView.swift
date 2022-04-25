@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-struct BuySellFeedDetailView: View {
+struct MarketplaceFeedDetailView: View {
 
     let maxAmount: String
     let paymentMethod: String
@@ -26,11 +26,13 @@ struct BuySellFeedDetailView: View {
                 SingleDetailItem(title: fee)
             }
         }
-        .makeCorneredBorder(color: Appearance.Colors.gray4, borderWidth: 1, cornerRadius: Appearance.GridGuide.buttonCorner)
+        .makeCorneredBorder(color: Appearance.Colors.gray4,
+                            borderWidth: 1,
+                            cornerRadius: Appearance.GridGuide.buttonCorner)
     }
 }
 
-extension BuySellFeedDetailView {
+extension MarketplaceFeedDetailView {
 
     private struct SingleDetailItem: View {
         let title: String
@@ -40,7 +42,7 @@ extension BuySellFeedDetailView {
                 .textStyle(.paragraphBold)
                 .foregroundColor(Appearance.Colors.primaryText)
                 .padding(Appearance.GridGuide.point)
-                .frame(height: 52)
+                .frame(height: Appearance.GridGuide.feedItemHeight)
         }
     }
 
@@ -65,17 +67,17 @@ extension BuySellFeedDetailView {
                     .frame(maxWidth: .infinity)
             }
             .padding(Appearance.GridGuide.point)
-            .frame(height: 52)
+            .frame(height: Appearance.GridGuide.feedItemHeight)
         }
     }
 }
 
 #if DEBUG || DEVEL
-struct BuySellFeedDetailViewPreview: PreviewProvider {
+struct MarketplaceFeedDetailViewPreview: PreviewProvider {
     static var previews: some View {
-        BuySellFeedDetailView(maxAmount: "up to $10k",
-                              paymentMethod: "Revolut",
-                              fee: "Wants $30 fee per transaction")
+        MarketplaceFeedDetailView(maxAmount: "up to $10k",
+                                  paymentMethod: "Revolut",
+                                  fee: "Wants $30 fee per transaction")
             .previewDevice("iPhone 11")
     }
 }

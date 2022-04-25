@@ -8,12 +8,12 @@
 import Cleevio
 import SwiftUI
 
-struct BuySellSegmentView: View {
+struct MarketplaceSegmentView: View {
 
     private let selectorHeight: CGFloat = 3
     private let lineWidth: CGFloat = 2
 
-    @Binding var selectedOption: BuySellViewModel.Option
+    @Binding var selectedOption: MarketplaceViewModel.Option
 
     var body: some View {
         VStack(spacing: Appearance.GridGuide.mediumPadding2) {
@@ -59,9 +59,9 @@ struct BuySellSegmentView: View {
 }
 
 #if DEBUG || DEVEL
-struct BuySellSegmentViewPreview: PreviewProvider {
+struct MarketplaceSegmentViewPreview: PreviewProvider {
     static var previews: some View {
-        BuySellSegmentView(selectedOption: .constant(.buy))
+        MarketplaceSegmentView(selectedOption: .constant(.buy))
             .background(Color.black)
             .previewDevice("iPhone 11")
     }

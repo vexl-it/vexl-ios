@@ -7,7 +7,7 @@
 
 import UIKit
 
-class MarketplaceDisplayValueView: UIView {
+class HomeCoinValueView: UIView {
 
     private let valueLabel = UILabel()
     private let minigraphView = UIImageView()
@@ -38,6 +38,8 @@ class MarketplaceDisplayValueView: UIView {
             minigraphView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Appearance.GridGuide.padding)
         ])
     }
+
+    //TODO: - set real information when using services
 
     private func setupViews() {
         minigraphView.image = R.image.profile.graph()

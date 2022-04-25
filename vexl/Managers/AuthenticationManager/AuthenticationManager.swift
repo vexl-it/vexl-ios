@@ -30,7 +30,7 @@ protocol AuthenticationManagerType {
 
 protocol UserSecurityType {
     var userSecurity: UserSecurity { get set }
-    var userKeys: UserKeys? { get }
+    var userKeys: ECCKeys { get }
     var userSignature: String? { get }
     var userHash: String? { get }
     var userFacebookHash: String? { get }
@@ -39,7 +39,7 @@ protocol UserSecurityType {
     var facebookSecurityHeader: SecurityHeader? { get }
 
     func setUserSignature(_ userSignature: UserSignature)
-    func setUserKeys(_ userKeys: UserKeys)
+    func setUserKeys(_ userKeys: ECCKeys)
     func setHash(_ challengeValidation: ChallengeValidation)
     func setFacebookUser(id: String?, token: String?)
     func setFacebookSignature(_ facebookSignature: ChallengeValidation)
@@ -139,9 +139,15 @@ extension AuthenticationManager {
 // MARK: - User Security properties
 
 extension AuthenticationManager: UserSecurityType {
-    var userKeys: UserKeys? {
-        userSecurity.keys
+    var userKeys: ECCKeys {
+        guard let keys = userSecurity.keys else {
+            let newKeys = ECCKeys()
+            setUserKeys(newKeys)
+            return newKeys
+        }
+        return keys
     }
+
     var userSignature: String? {
         userSecurity.signature
     }
@@ -157,10 +163,10 @@ extension AuthenticationManager: UserSecurityType {
     }
 
     var securityHeader: SecurityHeader? {
-        SecurityHeader(hash: userHash, publicKey: userKeys?.publicKey, signature: userSignature)
+        SecurityHeader(hash: userHash, publicKey: userKeys.publicKey, signature: userSignature)
     }
     var facebookSecurityHeader: SecurityHeader? {
-        SecurityHeader(hash: userFacebookHash, publicKey: userKeys?.publicKey, signature: userFacebookSignature)
+        SecurityHeader(hash: userFacebookHash, publicKey: userKeys.publicKey, signature: userFacebookSignature)
     }
 
     func setUserSignature(_ userSignature: UserSignature) {
@@ -168,7 +174,7 @@ extension AuthenticationManager: UserSecurityType {
         saveSecurity()
     }
 
-    func setUserKeys(_ userKeys: UserKeys) {
+    func setUserKeys(_ userKeys: ECCKeys) {
         self.userSecurity.keys = userKeys
         saveSecurity()
     }
