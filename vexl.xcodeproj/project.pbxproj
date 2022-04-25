@@ -557,8 +557,8 @@
 		B08F38F227AE7110008B344F /* Managers */ = {
 			isa = PBXGroup;
 			children = (
-				B0FE523E280E822400A77EC3 /* CryptoService.swift */,
 				F1A9453827F73F5E009B5AE3 /* AuthenticationManager */,
+				B0FE523E280E822400A77EC3 /* CryptoService.swift */,
 				B0F206F027AE94C400A44E72 /* InitialScreenManager.swift */,
 				F175AB9C27F147B5000DAB15 /* ContactsManager.swift */,
 			);
@@ -1485,7 +1485,6 @@
 				B08F395B27AE7112008B344F /* Appearance.swift in Sources */,
 				B0F206F327AEA4C800A44E72 /* WindowCoordinator.swift in Sources */,
 				F18862032808318E00659786 /* HomeRouter.swift in Sources */,
-				F1CFF3B627F56F7F007D9FE1 /* FacebokUserSignature.swift in Sources */,
 				B0E9BB2A2815C7190012BF1D /* AES.swift in Sources */,
 				F175AB9527EA6A8E000DAB15 /* PlaceholderTextField.swift in Sources */,
 				B0EEE11627B14D320097031E /* WelcomeCoordinator.swift in Sources */,
