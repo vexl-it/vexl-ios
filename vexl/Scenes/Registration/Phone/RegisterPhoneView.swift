@@ -44,8 +44,10 @@ struct RegisterPhoneView: View {
             }
             .padding(.horizontal, Appearance.GridGuide.padding)
             .padding(.bottom, Appearance.GridGuide.padding)
+            .transaction { $0.disablesAnimations = true }
         }
         .background(Color.black.edgesIgnoringSafeArea(.all))
+        .animation(.easeInOut(duration: 0.5), value: viewModel.showCodeInput)
     }
 }
 

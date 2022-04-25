@@ -36,5 +36,10 @@ class ManagerAssembly: Assembly {
             ContactsManager()
         }
         .inObjectScope(.container)
+
+        container.register(CryptoServiceType.self) { _ in
+            CryptoService()
+        }
+        .inObjectScope(.container)
     }
 }

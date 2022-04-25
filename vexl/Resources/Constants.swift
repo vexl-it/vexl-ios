@@ -53,4 +53,6 @@ struct Constants {
     }()
 
     static let jpegFormat = "jpeg"
+
+    static let elipticCurve: Curve = .init(rawValue: UInt32(10))
 }

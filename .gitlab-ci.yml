@@ -12,6 +12,7 @@ variables:
 
 stages:
   - lint
+  - test
   - deploy
 
 lint:
@@ -27,6 +28,17 @@ lint:
     paths:
       - fastlane/swiftlint.html
     expire_in: 2 days
+  allow_failure: false
+
+test:
+  stage: test
+  script:
+    - bundle exec fastlane test
+  only:
+    - branches
+  except:
+    - tags
+  tags: [ios]
   allow_failure: false
 
 deploy_beta:
