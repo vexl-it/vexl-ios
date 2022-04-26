@@ -29,7 +29,7 @@ final class OnboardingViewModel: ViewModelType {
     // MARK: - Coordinator Bindings
 
     enum Route: Equatable {
-        case tapped
+        case skipTapped
     }
 
     var route: CoordinatingSubject<Route> = .init()
@@ -81,7 +81,7 @@ final class OnboardingViewModel: ViewModelType {
             .filter { $0 == .showLogin }
             .withUnretained(self)
             .sink { owner, _ in
-                owner.route.send(.tapped)
+                owner.route.send(.skipTapped)
             }
             .store(in: cancelBag)
 

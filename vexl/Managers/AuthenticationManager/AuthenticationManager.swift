@@ -211,9 +211,6 @@ extension AuthenticationManager {
 
         userDefaults.dictionaryRepresentation().keys.forEach(userDefaults.removeObject)
         userDefaults.synchronize()
-
-        UserDefaults.standard.removeObject(forKey: UserDefaultKey.storedUser.rawValue)
-        UserDefaults.standard.removeObject(forKey: UserDefaultKey.storedSecurity.rawValue)
     }
 
     func logoutUser() {

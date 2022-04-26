@@ -36,4 +36,8 @@ extension UserDefaults {
         let element = try? JSONDecoder().decode(Element.self, from: data)
         return element
     }
+
+    func remove(key: UserDefaultKey) {
+        UserDefaults.standard.removeObject(forKey: key.rawValue)
+    }
 }

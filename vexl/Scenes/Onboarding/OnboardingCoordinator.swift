@@ -31,7 +31,7 @@ final class OnboardingCoordinator: BaseCoordinator<RouterResult<Void>> {
 
         let finished = viewModel
             .route
-            .filter { $0 == .tapped }
+            .filter { $0 == .skipTapped }
             .receive(on: RunLoop.main)
             .withUnretained(self)
             .flatMap { owner, _ -> CoordinatingResult<RouterResult<Void>> in
