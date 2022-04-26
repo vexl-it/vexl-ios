@@ -23,6 +23,8 @@ protocol TokenHandlerType {
 protocol AuthenticationManagerType {
     var currentUser: User? { get }
 
+    func setUser(_ user: User, withAvatar avatar: Data?)
+    func setFacebookUser(id: String?, token: String?)
     func saveSecurity()
     func saveUser()
     func logoutUser()
@@ -41,7 +43,6 @@ protocol UserSecurityType {
     func setUserSignature(_ userSignature: UserSignature)
     func setUserKeys(_ userKeys: ECCKeys)
     func setHash(_ challengeValidation: ChallengeValidation)
-    func setFacebookUser(id: String?, token: String?)
     func setFacebookSignature(_ facebookSignature: ChallengeValidation)
 }
 
@@ -71,35 +72,22 @@ final class AuthenticationManager: AuthenticationManagerType, TokenHandlerType {
         authentication()
     }
 
-    private func setupSubscription() {
-        $accessToken
-            .sink { accessToken in
-                Keychain.standard[.accessToken] = accessToken
-            }
-            .store(in: cancelBag)
-
-        $refreshToken
-            .sink { refreshToken in
-                Keychain.standard[.refreshToken] = refreshToken
-            }
-            .store(in: cancelBag)
-
-        $accessToken
-            .map { $0 ?? "" }
-            .map { $0.isEmpty ? .signedOut : .signedIn }
-            .assign(to: &$authenticationState)
-    }
-
     func setUser(_ user: User, withAvatar avatar: Data? = nil) {
         self.currentUser = user
         self.currentUser?.avatarImage = avatar
+        saveUser()
+    }
+
+    func setFacebookUser(id: String?, token: String?) {
+        self.currentUser?.facebookId = id
+        self.currentUser?.facebookToken = token
+        saveUser()
     }
 
     // TODO: - Storing this in the UserDefaults is just a temporal solution for the PoC, later we should discuss how to store the data in the device: CoreData, Encrypted Files, not Realm, etc.
 
     func saveUser() {
         UserDefaults.standard.set(value: currentUser, forKey: .storedUser)
-        UserDefaults.standard.set(value: userSecurity, forKey: .storedSecurity)
         authenticationState = .signedIn
     }
 
@@ -184,12 +172,6 @@ extension AuthenticationManager: UserSecurityType {
     func setHash(_ challengeValidation: ChallengeValidation) {
         self.userSecurity.hash = challengeValidation.hash
         self.userSecurity.signature = challengeValidation.signature
-        saveSecurity()
-    }
-
-    func setFacebookUser(id: String?, token: String?) {
-        self.currentUser?.facebookId = id
-        self.currentUser?.facebookToken = token
         saveSecurity()
     }
 
