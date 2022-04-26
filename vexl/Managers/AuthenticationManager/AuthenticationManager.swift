@@ -25,8 +25,6 @@ protocol AuthenticationManagerType {
 
     func setUser(_ user: User, withAvatar avatar: Data?)
     func setFacebookUser(id: String?, token: String?)
-    func saveSecurity()
-    func saveUser()
     func logoutUser()
 }
 
