@@ -29,7 +29,7 @@ final class OnboardingViewModel: ViewModelType {
     // MARK: - Coordinator Bindings
 
     enum Route: Equatable {
-        case tapped
+        case skipTapped
     }
 
     var route: CoordinatingSubject<Route> = .init()
@@ -78,15 +78,19 @@ final class OnboardingViewModel: ViewModelType {
 
     private func setupActions() {
         action
-            .sink(receiveValue: { [weak self] action in
-                guard let self = self else { return }
-                switch action {
-                case .showLogin:
-                    self.route.send(.tapped)
-                case .next:
-                    self.selectedIndex += 1
-                }
-            })
+            .filter { $0 == .showLogin }
+            .withUnretained(self)
+            .sink { owner, _ in
+                owner.route.send(.skipTapped)
+            }
+            .store(in: cancelBag)
+
+        action
+            .filter { $0 == .next }
+            .withUnretained(self)
+            .sink { owner, _ in
+                owner.selectedIndex += 1
+            }
             .store(in: cancelBag)
     }
 }

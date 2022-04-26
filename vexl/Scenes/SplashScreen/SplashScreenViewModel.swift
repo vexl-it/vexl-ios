@@ -63,7 +63,7 @@ final class SplashScreenViewModel: ViewModelType {
                 Just(())
                     // TODO: Load initial data
                     .map { _ -> InitialScreenManager.State in
-                        .onboarding
+                        .home
                     }
                     .track(activity: owner.primaryActivity)
             }

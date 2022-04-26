@@ -39,6 +39,14 @@ final class HomeCoordinator: BaseCoordinator<Void> {
             .sink { _ in }
             .store(in: cancelBag)
 
+        UIView.transition(
+            with: window,
+            duration: 0.5,
+            options: .transitionCrossDissolve,
+            animations: nil,
+            completion: nil
+        )
+
         let dismissViewController = homeViewController.dismissPublisher
             .map { _ in RouterResult<Void>.dismissedByRouter }
 
