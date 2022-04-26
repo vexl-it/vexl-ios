@@ -11,8 +11,6 @@ struct CreateOfferView: View {
 
     @ObservedObject var viewModel: CreateOfferViewModel
 
-    @State var sliderPosition: ClosedRange<Int> = 600...15_000
-
     var body: some View {
         VStack {
             OfferHeaderView {
@@ -28,12 +26,16 @@ struct CreateOfferView: View {
                 })
                 .padding(Appearance.GridGuide.padding)
 
+                Text("Add description textarea")
+                    .foregroundColor(.white)
+
                 OfferRangePickerView(currencySymbol: viewModel.currencySymbol,
-                                     currentValue: $sliderPosition,
-                                     sliderBounds: 0...30_000)
+                                     currentValue: $viewModel.currentAmountRange,
+                                     sliderBounds: viewModel.amountRange)
                     .padding(.horizontal, Appearance.GridGuide.point)
 
-                OfferFeePickerView()
+                OfferFeePickerView(selectedOption: $viewModel.selectedFeeOption,
+                                   feeValue: $viewModel.feeAmount)
                     .padding(.horizontal, Appearance.GridGuide.point)
 
                 OfferLocationPickerView(items: viewModel.locations,
@@ -46,18 +48,15 @@ struct CreateOfferView: View {
                     .padding(.top, Appearance.GridGuide.largePadding1)
                     .padding(.horizontal, Appearance.GridGuide.point)
 
-                OfferTradeStylePickerView()
+                OfferTradeStylePickerView(selectedOption: $viewModel.selectedTradeStyleOption)
                     .padding(.horizontal, Appearance.GridGuide.point)
 
-                OfferPaymentMethodView()
+                OfferPaymentMethodView(selectedOptions: $viewModel.selectedPaymentMethodOptions)
                     .padding(.top, Appearance.GridGuide.largePadding1)
                     .padding(.horizontal, Appearance.GridGuide.point)
 
-                OfferTriggersView(amount: "")
-                    .padding(.top, Appearance.GridGuide.largePadding1)
-                    .padding(.horizontal, Appearance.GridGuide.point)
-
-                OfferAdvancedFilterView()
+                OfferAdvancedFilterView(selectedTypeOptions: $viewModel.selectedTypeOption,
+                                        selectedFriendDegreeOption: $viewModel.selectedFriendDegreeOption)
                     .padding(.top, Appearance.GridGuide.largePadding1)
                     .padding(.horizontal, Appearance.GridGuide.point)
             }

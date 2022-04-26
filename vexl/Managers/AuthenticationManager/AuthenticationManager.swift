@@ -23,11 +23,12 @@ protocol TokenHandlerType {
 protocol AuthenticationManagerType {
     var currentUser: User? { get }
 
+    func setUser(_ user: User, withAvatar avatar: Data?)
+    func setFacebookUser(id: String?, token: String?)
     func logoutUser()
 }
 
 protocol UserSecurityType {
-
     var userSecurity: UserSecurity { get set }
     var userKeys: ECCKeys { get }
     var userSignature: String? { get }
@@ -40,7 +41,6 @@ protocol UserSecurityType {
     func setUserSignature(_ userSignature: UserSignature)
     func setUserKeys(_ userKeys: ECCKeys)
     func setHash(_ challengeValidation: ChallengeValidation)
-    func setFacebookUser(id: String?, token: String?)
     func setFacebookSignature(_ facebookSignature: ChallengeValidation)
 }
 
@@ -52,7 +52,7 @@ final class AuthenticationManager: AuthenticationManagerType, TokenHandlerType {
 
     // MARK: - Properties
 
-    @Published private(set) var authenticationState: AuthenticationState = .signedOut
+    @Published var authenticationState: AuthenticationState = .signedOut
 
     @Published private(set) var accessToken: String?
     @Published private(set) var refreshToken: String?
@@ -67,33 +67,37 @@ final class AuthenticationManager: AuthenticationManagerType, TokenHandlerType {
     // MARK: - Initialization
 
     init() {
-        accessToken = Keychain.standard[.accessToken]
-        refreshToken = Keychain.standard[.refreshToken]
-        setupSubscription()
-    }
-
-    private func setupSubscription() {
-        $accessToken
-            .sink { accessToken in
-                Keychain.standard[.accessToken] = accessToken
-            }
-            .store(in: cancelBag)
-
-        $refreshToken
-            .sink { refreshToken in
-                Keychain.standard[.refreshToken] = refreshToken
-            }
-            .store(in: cancelBag)
-
-        $accessToken
-            .map { $0 ?? "" }
-            .map { $0.isEmpty ? .signedOut : .signedIn }
-            .assign(to: &$authenticationState)
+        authentication()
     }
 
     func setUser(_ user: User, withAvatar avatar: Data? = nil) {
         self.currentUser = user
         self.currentUser?.avatarImage = avatar
+        saveUser()
+    }
+
+    func setFacebookUser(id: String?, token: String?) {
+        self.currentUser?.facebookId = id
+        self.currentUser?.facebookToken = token
+        saveUser()
+    }
+
+    // TODO: - Storing this in the UserDefaults is just a temporal solution for the PoC, later we should discuss how to store the data in the device: CoreData, Encrypted Files, not Realm, etc.
+
+    func saveUser() {
+        UserDefaults.standard.set(value: currentUser, forKey: .storedUser)
+        authenticationState = .signedIn
+    }
+
+    func saveSecurity() {
+        UserDefaults.standard.set(value: userSecurity, forKey: .storedSecurity)
+    }
+
+    func authentication() {
+        self.currentUser = UserDefaults.standard.codable(forKey: .storedUser)
+        self.userSecurity = UserDefaults.standard.codable(forKey: .storedSecurity) ?? .init()
+
+        authenticationState = currentUser == nil ? .signedOut : .signedIn
     }
 }
 
@@ -155,25 +159,24 @@ extension AuthenticationManager: UserSecurityType {
 
     func setUserSignature(_ userSignature: UserSignature) {
         self.userSecurity.signature = userSignature.signed
+        saveSecurity()
     }
 
     func setUserKeys(_ userKeys: ECCKeys) {
         self.userSecurity.keys = userKeys
+        saveSecurity()
     }
 
     func setHash(_ challengeValidation: ChallengeValidation) {
         self.userSecurity.hash = challengeValidation.hash
         self.userSecurity.signature = challengeValidation.signature
-    }
-
-    func setFacebookUser(id: String?, token: String?) {
-        self.currentUser?.facebookId = id
-        self.currentUser?.facebookToken = token
+        saveSecurity()
     }
 
     func setFacebookSignature(_ facebookSignature: ChallengeValidation) {
         self.userSecurity.facebookSignature = facebookSignature.signature
         self.userSecurity.facebookHash = facebookSignature.hash
+        saveSecurity()
     }
 
     func clearSecurity() {

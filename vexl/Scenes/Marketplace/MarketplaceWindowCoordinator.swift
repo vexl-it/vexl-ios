@@ -8,7 +8,10 @@
 import Foundation
 import Cleevio
 import SwiftUI
+<<<<<<< HEAD
 import Combine
+=======
+>>>>>>> 7a538cf5c4edb203cb12d89bca1c5015fc6d60db
 
 final class MarketplaceWindowCoordinator: BaseCoordinator<Void> {
 
@@ -34,6 +37,7 @@ final class MarketplaceWindowCoordinator: BaseCoordinator<Void> {
 
         marketplaceRouter.set(bottomViewController: buySellViewController)
 
+<<<<<<< HEAD
         buySellViewModel
             .route
             .receive(on: RunLoop.main)
@@ -97,6 +101,15 @@ final class MarketplaceCoordinator: BaseCoordinator<Void> {
             }
             .sink { _ in }
             .store(in: cancelBag)
+=======
+        UIView.transition(
+            with: window,
+            duration: 0.3,
+            options: .transitionCrossDissolve,
+            animations: nil,
+            completion: nil
+        )
+>>>>>>> 7a538cf5c4edb203cb12d89bca1c5015fc6d60db
 
         let dismissViewController = marketplaceViewController.dismissPublisher
             .map { _ in RouterResult<Void>.dismissedByRouter }
@@ -106,6 +119,7 @@ final class MarketplaceCoordinator: BaseCoordinator<Void> {
             .asVoid()
             .eraseToAnyPublisher()
     }
+<<<<<<< HEAD
 
     private func showOffers(router: Router) -> CoordinatingResult<RouterResult<Void>> {
         coordinate(to: OffersCoordinator(router: router))
@@ -118,4 +132,6 @@ final class MarketplaceCoordinator: BaseCoordinator<Void> {
             .prefix(1)
             .eraseToAnyPublisher()
     }
+=======
+>>>>>>> 7a538cf5c4edb203cb12d89bca1c5015fc6d60db
 }

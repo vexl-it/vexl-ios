@@ -26,7 +26,21 @@ class CreateOfferViewModel: ViewModelType, ObservableObject {
     // MARK: - View Bindings
 
     @Published var primaryActivity: Activity = .init()
+
+    @Published var amountRange: ClosedRange<Int>
+    @Published var currentAmountRange: ClosedRange<Int>
+
+    @Published var selectedFeeOption: OfferFeeOption = .withoutFee
+    @Published var feeAmount: Double = 0
+
     @Published var locations: [OfferLocationItemViewData] = OfferLocationItemViewData.stub()
+
+    @Published var selectedTradeStyleOption: OfferTradeStyleOption = .online
+
+    @Published var selectedPaymentMethodOptions: [OfferPaymentMethodOption] = []
+
+    @Published var selectedFriendDegreeOption: OfferAdvancedFriendDegreeOption = .firstDegree
+    @Published var selectedTypeOption: [OfferAdvancedTypeOption] = []
 
     // MARK: - Coordinator Bindings
 
@@ -39,9 +53,21 @@ class CreateOfferViewModel: ViewModelType, ObservableObject {
     // MARK: - Variables
 
     private let cancelBag: CancelBag = .init()
+
+    var minFee: Double = 0
+    var maxFee: Double = 10
+    var feeValue: Double? {
+        guard selectedFeeOption == .withFee else {
+            return nil
+        }
+        return (maxFee - minFee) * feeAmount
+    }
+
     let currencySymbol = "$"
 
     init() {
+        amountRange = 0...30_000
+        currentAmountRange = 0...30_000
         setupBindings()
     }
 

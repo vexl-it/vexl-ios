@@ -7,8 +7,25 @@
 
 import SwiftUI
 
+typealias OfferTradeStyleOption = OfferTradeStylePickerView.Option
+
 struct OfferTradeStylePickerView: View {
 
+    @Binding var selectedOption: Option
+    private let options = [Option.online, .personal]
+
+    var body: some View {
+        SegmentedPickerView(selectedOption: $selectedOption,
+                            options: options) { option in
+            Text(option.title)
+                .foregroundColor(Appearance.Colors.green5)
+        }
+        .background(Appearance.Colors.gray1)
+        .cornerRadius(Appearance.GridGuide.buttonCorner)
+    }
+}
+
+extension OfferTradeStylePickerView {
     enum Option {
         case online
         case personal
@@ -22,23 +39,12 @@ struct OfferTradeStylePickerView: View {
             }
         }
     }
-
-    @State private var selectedOption = Option.online
-    var options = [Option.online, .personal]
-
-    var body: some View {
-        SegmentedPickerView(selectedOption: $selectedOption,
-                            options: options) { option in
-            Text(option.title)
-                .foregroundColor(Appearance.Colors.green5)
-        }
-    }
 }
 
 #if DEBUG || DEVEL
 struct OfferTradeStylePickerViewPreview: PreviewProvider {
     static var previews: some View {
-        OfferTradeStylePickerView()
+        OfferTradeStylePickerView(selectedOption: .constant(.online))
             .previewDevice("iPhone 11")
             .background(Color.black)
             .frame(height: 150)

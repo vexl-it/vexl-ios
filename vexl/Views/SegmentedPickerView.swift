@@ -22,7 +22,6 @@ struct SegmentedPickerView<Option: Hashable, Content: View>: View {
             }
             .padding(Appearance.GridGuide.point)
             .pickerStyle(.segmented)
-            .background(Appearance.Colors.gray1)
             .onAppear {
                 UISegmentedControl.appearance().selectedSegmentTintColor = R.color.gray2()
                 UISegmentedControl.appearance().setTitleTextAttributes([.foregroundColor: R.color.green5()!,
@@ -31,6 +30,5 @@ struct SegmentedPickerView<Option: Hashable, Content: View>: View {
                                                                         .font: Appearance.TextStyle.paragraph.font], for: .normal)
             }
         }
-        .cornerRadius(Appearance.GridGuide.buttonCorner)
     }
 }

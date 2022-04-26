@@ -91,6 +91,11 @@
 		F12A150427E1A4520096543E /* RequestAccessPhoneContactsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12A150327E1A4520096543E /* RequestAccessPhoneContactsViewModel.swift */; };
 		F12A150627E1A47D0096543E /* RequestAccessFacebookContactsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12A150527E1A47D0096543E /* RequestAccessFacebookContactsViewModel.swift */; };
 		F12A150827E1A4940096543E /* RequestAccessAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12A150727E1A4940096543E /* RequestAccessAlert.swift */; };
+		F13B265528183A840011F2FB /* OptionPickerItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F13B265428183A840011F2FB /* OptionPickerItemView.swift */; };
+		F13B265728183AA90011F2FB /* MultipleOptionPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F13B265628183AA90011F2FB /* MultipleOptionPickerView.swift */; };
+		F13B265928188A580011F2FB /* SliderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F13B265828188A580011F2FB /* SliderView.swift */; };
+		F13B265C281897DE0011F2FB /* OfferAdvanceFilterFriendDegreeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F13B265B281897DE0011F2FB /* OfferAdvanceFilterFriendDegreeView.swift */; };
+		F13B265E281899250011F2FB /* OfferAdvancedFilterTypeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F13B265D281899250011F2FB /* OfferAdvancedFilterTypeView.swift */; };
 		F14D29C727BFD93C00D1CD85 /* ButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = F14D29C627BFD93C00D1CD85 /* ButtonStyle.swift */; };
 		F14D29C927BFEA1400D1CD85 /* OnboardingView+Presentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F14D29C827BFEA1400D1CD85 /* OnboardingView+Presentation.swift */; };
 		F151A29027C80708000D7242 /* RegisterPhoneView+PhoneInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = F151A28F27C80708000D7242 /* RegisterPhoneView+PhoneInput.swift */; };
@@ -299,6 +304,11 @@
 		F12A150327E1A4520096543E /* RequestAccessPhoneContactsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestAccessPhoneContactsViewModel.swift; sourceTree = "<group>"; };
 		F12A150527E1A47D0096543E /* RequestAccessFacebookContactsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestAccessFacebookContactsViewModel.swift; sourceTree = "<group>"; };
 		F12A150727E1A4940096543E /* RequestAccessAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestAccessAlert.swift; sourceTree = "<group>"; };
+		F13B265428183A840011F2FB /* OptionPickerItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionPickerItemView.swift; sourceTree = "<group>"; };
+		F13B265628183AA90011F2FB /* MultipleOptionPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipleOptionPickerView.swift; sourceTree = "<group>"; };
+		F13B265828188A580011F2FB /* SliderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SliderView.swift; sourceTree = "<group>"; };
+		F13B265B281897DE0011F2FB /* OfferAdvanceFilterFriendDegreeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferAdvanceFilterFriendDegreeView.swift; sourceTree = "<group>"; };
+		F13B265D281899250011F2FB /* OfferAdvancedFilterTypeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferAdvancedFilterTypeView.swift; sourceTree = "<group>"; };
 		F14D29C627BFD93C00D1CD85 /* ButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonStyle.swift; sourceTree = "<group>"; };
 		F14D29C827BFEA1400D1CD85 /* OnboardingView+Presentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OnboardingView+Presentation.swift"; sourceTree = "<group>"; };
 		F151A28F27C80708000D7242 /* RegisterPhoneView+PhoneInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RegisterPhoneView+PhoneInput.swift"; sourceTree = "<group>"; };
@@ -593,9 +603,8 @@
 		B08F38F227AE7110008B344F /* Managers */ = {
 			isa = PBXGroup;
 			children = (
-				B0FE523E280E822400A77EC3 /* CryptoService.swift */,
 				F1A9453827F73F5E009B5AE3 /* AuthenticationManager */,
-				B0FE523E280E822400A77EC3 /* EncryptionManager.swift */,
+				B0FE523E280E822400A77EC3 /* CryptoService.swift */,
 				B0F206F027AE94C400A44E72 /* InitialScreenManager.swift */,
 				F175AB9C27F147B5000DAB15 /* ContactsManager.swift */,
 			);
@@ -613,6 +622,7 @@
 		B08F38F827AE7110008B344F /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				F13B265328183A710011F2FB /* OptionPicker */,
 				F151A2A027C86C9B000D7242 /* Registration */,
 				F1B5FCD227C703160018729B /* Modifiers */,
 				F1C6D09527BDAD71009BD506 /* Buttons */,
@@ -626,7 +636,7 @@
 				F188620E280EABB600659786 /* FetchImage.swift */,
 				F1BFA8D627FFB2AC00F4E745 /* ImagePickerView.swift */,
 				F188625A2811D84000659786 /* SegmentedPickerView.swift */,
-				F188626228129F1E00659786 /* SingleOptionPickerView.swift */,
+				F13B265828188A580011F2FB /* SliderView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -882,6 +892,26 @@
 			path = ViewModels;
 			sourceTree = "<group>";
 		};
+		F13B265328183A710011F2FB /* OptionPicker */ = {
+			isa = PBXGroup;
+			children = (
+				F188626228129F1E00659786 /* SingleOptionPickerView.swift */,
+				F13B265428183A840011F2FB /* OptionPickerItemView.swift */,
+				F13B265628183AA90011F2FB /* MultipleOptionPickerView.swift */,
+			);
+			path = OptionPicker;
+			sourceTree = "<group>";
+		};
+		F13B265A281897890011F2FB /* Advanced */ = {
+			isa = PBXGroup;
+			children = (
+				F18862642812E91700659786 /* OfferAdvancedFilterView.swift */,
+				F13B265B281897DE0011F2FB /* OfferAdvanceFilterFriendDegreeView.swift */,
+				F13B265D281899250011F2FB /* OfferAdvancedFilterTypeView.swift */,
+			);
+			path = Advanced;
+			sourceTree = "<group>";
+		};
 		F151A28E27C806F3000D7242 /* Components */ = {
 			isa = PBXGroup;
 			children = (
@@ -1013,6 +1043,7 @@
 		F188624F281170F200659786 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				F13B265A281897890011F2FB /* Advanced */,
 				F18862502811710100659786 /* OfferStatusView.swift */,
 				F18862522811734A00659786 /* OfferRangePickerView.swift */,
 				F1886254281185E900659786 /* OfferFeePicker.swift */,
@@ -1020,7 +1051,6 @@
 				F1886256281193CA00659786 /* OfferLocationPickerView.swift */,
 				F188625E2811E53400659786 /* OfferPaymentMethodView.swift */,
 				F188626028129ED600659786 /* OfferTriggersView.swift */,
-				F18862642812E91700659786 /* OfferAdvancedFilterView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -1540,11 +1570,13 @@
 				F1B5FCD627C703BF0018729B /* View+.swift in Sources */,
 				B08F396627AE7112008B344F /* Constants.swift in Sources */,
 				F188621A281005F700659786 /* HomeCoinValueView.swift in Sources */,
+				F13B265E281899250011F2FB /* OfferAdvancedFilterTypeView.swift in Sources */,
 				F1C6D0A227BE9157009BD506 /* LinkTextView.swift in Sources */,
 				B08F391527AE7112008B344F /* ApiService.swift in Sources */,
 				F188621C2810153700659786 /* HomeCoinGraphView.swift in Sources */,
 				F188627028169A3700659786 /* MarketplaceCoordinator.swift in Sources */,
 				B08F391927AE7112008B344F /* User.swift in Sources */,
+				F13B265528183A840011F2FB /* OptionPickerItemView.swift in Sources */,
 				F1886218281005BD00659786 /* HomeHeaderView.swift in Sources */,
 				F175AB9927F0D2D8000DAB15 /* ContactsService.swift in Sources */,
 				B08F399C27AE7D8D008B344F /* OnboardingViewModel.swift in Sources */,
@@ -1557,6 +1589,8 @@
 				B08F397627AE7112008B344F /* Error+.swift in Sources */,
 				F188627928169A7400659786 /* MarketplaceView.swift in Sources */,
 				B08F397C27AE7112008B344F /* SwipeNavigationController.swift in Sources */,
+				F13B265728183AA90011F2FB /* MultipleOptionPickerView.swift in Sources */,
+				F13B265C281897DE0011F2FB /* OfferAdvanceFilterFriendDegreeView.swift in Sources */,
 				B05A22132812BF2700BF8D58 /* Publisher+Crypto.swift in Sources */,
 				B08F38E227AE7110008B344F /* Inject.swift in Sources */,
 				B08F395727AE7112008B344F /* ApiRouter.swift in Sources */,
@@ -1580,11 +1614,11 @@
 				F18861FE2808136D00659786 /* HLine.swift in Sources */,
 				F18862652812E91700659786 /* OfferAdvancedFilterView.swift in Sources */,
 				F14D29C727BFD93C00D1CD85 /* ButtonStyle.swift in Sources */,
+				F13B265928188A580011F2FB /* SliderView.swift in Sources */,
 				B08F394527AE7112008B344F /* ReusableView.swift in Sources */,
 				B08F395B27AE7112008B344F /* Appearance.swift in Sources */,
 				B0F206F327AEA4C800A44E72 /* WindowCoordinator.swift in Sources */,
 				F18862032808318E00659786 /* HomeRouter.swift in Sources */,
-				F1CFF3B627F56F7F007D9FE1 /* FacebokUserSignature.swift in Sources */,
 				B0E9BB2A2815C7190012BF1D /* AES.swift in Sources */,
 				F175AB9527EA6A8E000DAB15 /* PlaceholderTextField.swift in Sources */,
 				B0EEE11627B14D320097031E /* WelcomeCoordinator.swift in Sources */,

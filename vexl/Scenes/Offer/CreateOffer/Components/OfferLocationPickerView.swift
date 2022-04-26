@@ -45,7 +45,6 @@ struct OfferLocationPickerView: View {
                 addLocation()
             })
         }
-        .animation(.easeInOut(duration: 0.25))
     }
 
     private var addLocationLabel: some View {

@@ -9,7 +9,7 @@ import Cleevio
 import Foundation
 import Combine
 
-class MarketplaceCoordinator: BaseCoordinator<RouterResult<Void>> {
+final class MarketplaceCoordinator: BaseCoordinator<RouterResult<Void>> {
 
     private let router: Router
     private let animated: Bool

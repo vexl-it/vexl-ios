@@ -7,7 +7,7 @@
 
 import UIKit
 
-class HomeHeaderView: UIControl {
+final class HomeHeaderView: UIControl {
 
     let displayValue = HomeCoinValueView()
     let graphView = HomeCoinGraphView()

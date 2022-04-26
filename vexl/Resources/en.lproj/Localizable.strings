@@ -100,3 +100,11 @@
 "offer.create.payment.method.revolut" = "Revolut";
 "offer.create.payment.method.bank" = "Bank";
 "offer.create.payment.method.title" = "Payment Method";
+"offer.create.advanced.friend.level.first" = "1st degree";
+"offer.create.advanced.friend.level.second" = "2nd degree";
+"offer.create.advanced.type.lightning" = "Lighting";
+"offer.create.advanced.type.chain" = "On Chain";
+"offer.create.description" = "Description";
+"offer.create.advanced.title" = "Advanced";
+"offer.create.advanced.type" = "Type";
+"offer.create.advanced.friend.level.title" = "Friend level";

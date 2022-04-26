@@ -7,7 +7,7 @@
 
 import UIKit
 
-class HomeCoinValueView: UIView {
+final class HomeCoinValueView: UIView {
 
     private let valueLabel = UILabel()
     private let minigraphView = UIImageView()

@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+// TODO: - This view is out of the PoC so it will remain incomplete
+
 struct OfferTriggersView: View {
 
     enum Option {

@@ -23,3 +23,21 @@ struct UserDefault<T> {
         set { UserDefaults.standard.set(newValue, forKey: key) }
     }
 }
+
+extension UserDefaults {
+
+    func set<Element: Codable>(value: Element, forKey key: UserDefaultKey) {
+        let data = try? JSONEncoder().encode(value)
+        UserDefaults.standard.setValue(data, forKey: key.rawValue)
+    }
+
+    func codable<Element: Codable>(forKey key: UserDefaultKey) -> Element? {
+        guard let data = UserDefaults.standard.data(forKey: key.rawValue) else { return nil }
+        let element = try? JSONDecoder().decode(Element.self, from: data)
+        return element
+    }
+
+    func remove(key: UserDefaultKey) {
+        UserDefaults.standard.removeObject(forKey: key.rawValue)
+    }
+}
