@@ -29,6 +29,12 @@ class CreateOfferViewModel: ViewModelType, ObservableObject {
     // MARK: - View Bindings
 
     @Published var primaryActivity: Activity = .init()
+    var errorIndicator: ErrorIndicator {
+        primaryActivity.error
+    }
+    var activityIndicator: ActivityIndicator {
+        primaryActivity.indicator
+    }
 
     @Published var amountRange: ClosedRange<Int> = 0...0
     @Published var currentAmountRange: ClosedRange<Int> = 0...0
@@ -44,6 +50,10 @@ class CreateOfferViewModel: ViewModelType, ObservableObject {
 
     @Published var selectedFriendDegreeOption: OfferAdvancedFriendDegreeOption = .firstDegree
     @Published var selectedTypeOption: [OfferAdvancedTypeOption] = []
+
+    @Published var isLoadingData = false
+    @Published var isLoading = false
+    @Published var error: Error?
 
     // MARK: - Coordinator Bindings
 
@@ -69,11 +79,24 @@ class CreateOfferViewModel: ViewModelType, ObservableObject {
     var currencySymbol = ""
 
     init() {
+        setupActivity()
         setupDataBindings()
         setupBindings()
     }
 
+    private func setupActivity() {
+        activityIndicator
+            .loading
+            .assign(to: &$isLoading)
+
+        errorIndicator
+            .errors
+            .asOptional()
+            .assign(to: &$error)
+    }
+
     private func setupDataBindings() {
+        isLoadingData = true
         offerService
             .getInitialOfferData()
             .track(activity: primaryActivity)
@@ -81,6 +104,7 @@ class CreateOfferViewModel: ViewModelType, ObservableObject {
             .compactMap(\.value)
             .withUnretained(self)
             .sink { owner, data in
+                owner.isLoadingData = false
                 owner.amountRange = data.minOffer...data.maxOffer
                 owner.currentAmountRange = data.minOffer...data.maxOffer
                 owner.minFee = data.minFee

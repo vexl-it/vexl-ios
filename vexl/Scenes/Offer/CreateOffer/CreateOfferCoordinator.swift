@@ -20,6 +20,14 @@ class CreateOfferCoordinator: BaseCoordinator<RouterResult<Void>> {
         let viewModel = CreateOfferViewModel()
         let viewController = BaseViewController(rootView: CreateOfferView(viewModel: viewModel))
 
+        viewModel
+            .$error
+            .assign(to: &viewController.$error)
+
+        viewModel
+            .$isLoading
+            .assign(to: &viewController.$isLoading)
+
         router.present(viewController, animated: true)
 
         let dismiss = viewModel

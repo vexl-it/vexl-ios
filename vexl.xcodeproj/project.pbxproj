@@ -97,6 +97,7 @@
 		F13B265C281897DE0011F2FB /* OfferAdvanceFilterFriendDegreeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F13B265B281897DE0011F2FB /* OfferAdvanceFilterFriendDegreeView.swift */; };
 		F13B265E281899250011F2FB /* OfferAdvancedFilterTypeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F13B265D281899250011F2FB /* OfferAdvancedFilterTypeView.swift */; };
 		F13B266028189F580011F2FB /* OffersService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F13B265F28189F580011F2FB /* OffersService.swift */; };
+		F13B26622818A7EC0011F2FB /* OfferDescriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F13B26612818A7EC0011F2FB /* OfferDescriptionView.swift */; };
 		F14D29C727BFD93C00D1CD85 /* ButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = F14D29C627BFD93C00D1CD85 /* ButtonStyle.swift */; };
 		F14D29C927BFEA1400D1CD85 /* OnboardingView+Presentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F14D29C827BFEA1400D1CD85 /* OnboardingView+Presentation.swift */; };
 		F151A29027C80708000D7242 /* RegisterPhoneView+PhoneInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = F151A28F27C80708000D7242 /* RegisterPhoneView+PhoneInput.swift */; };
@@ -311,6 +312,7 @@
 		F13B265B281897DE0011F2FB /* OfferAdvanceFilterFriendDegreeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferAdvanceFilterFriendDegreeView.swift; sourceTree = "<group>"; };
 		F13B265D281899250011F2FB /* OfferAdvancedFilterTypeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferAdvancedFilterTypeView.swift; sourceTree = "<group>"; };
 		F13B265F28189F580011F2FB /* OffersService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OffersService.swift; sourceTree = "<group>"; };
+		F13B26612818A7EC0011F2FB /* OfferDescriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferDescriptionView.swift; sourceTree = "<group>"; };
 		F14D29C627BFD93C00D1CD85 /* ButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonStyle.swift; sourceTree = "<group>"; };
 		F14D29C827BFEA1400D1CD85 /* OnboardingView+Presentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OnboardingView+Presentation.swift"; sourceTree = "<group>"; };
 		F151A28F27C80708000D7242 /* RegisterPhoneView+PhoneInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RegisterPhoneView+PhoneInput.swift"; sourceTree = "<group>"; };
@@ -1054,6 +1056,7 @@
 				F1886256281193CA00659786 /* OfferLocationPickerView.swift */,
 				F188625E2811E53400659786 /* OfferPaymentMethodView.swift */,
 				F188626028129ED600659786 /* OfferTriggersView.swift */,
+				F13B26612818A7EC0011F2FB /* OfferDescriptionView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -1632,6 +1635,7 @@
 				F1BFA956280223BD00F4E745 /* UserProfileView.swift in Sources */,
 				F1B5FCBE27C68EA70018729B /* OnboardingView+BottomButtons.swift in Sources */,
 				F1886255281185E900659786 /* OfferFeePicker.swift in Sources */,
+				F13B26622818A7EC0011F2FB /* OfferDescriptionView.swift in Sources */,
 				F151A29927C86683000D7242 /* RegisterNameAvatarViewModel.swift in Sources */,
 				F1A9454227F81200009B5AE3 /* ContactsImported.swift in Sources */,
 				B0FE5249280E93D200A77EC3 /* ECCKeys.swift in Sources */,

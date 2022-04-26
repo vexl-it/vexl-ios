@@ -19,61 +19,65 @@ struct CreateOfferView: View {
             }
 
             ScrollView(showsIndicators: false) {
-                OfferStatusView(pauseAction: {
-                    viewModel.action.send(.pause)
-                },
-                                deleteAction: {
-                    viewModel.action.send(.delete)
-                })
-                .padding(Appearance.GridGuide.padding)
+                if !viewModel.isLoadingData {
 
-                Text("Add description textarea")
-                    .foregroundColor(.white)
+                    OfferStatusView(pauseAction: {
+                        viewModel.action.send(.pause)
+                    },
+                                    deleteAction: {
+                        viewModel.action.send(.delete)
+                    })
+                    .padding(Appearance.GridGuide.padding)
 
-                OfferRangePickerView(currencySymbol: viewModel.currencySymbol,
-                                     currentValue: $viewModel.currentAmountRange,
-                                     sliderBounds: viewModel.amountRange)
-                    .padding(.horizontal, Appearance.GridGuide.point)
+                    OfferDescriptionView()
+                        .padding(.horizontal, Appearance.GridGuide.point)
+                        .padding(.bottom, Appearance.GridGuide.largePadding1)
 
-                OfferFeePickerView(feeLabel: "\(viewModel.feeValue ?? 0)%",
-                                   selectedOption: $viewModel.selectedFeeOption,
-                                   feeValue: $viewModel.feeAmount)
-                    .padding(.horizontal, Appearance.GridGuide.point)
+                    OfferRangePickerView(currencySymbol: viewModel.currencySymbol,
+                                         currentValue: $viewModel.currentAmountRange,
+                                         sliderBounds: viewModel.amountRange)
+                        .padding(.horizontal, Appearance.GridGuide.point)
 
-                OfferLocationPickerView(items: viewModel.locations,
-                                        addLocation: {
-                    viewModel.action.send(.addLocation)
-                },
-                                        deleteLocation: { id in
-                    viewModel.action.send(.deleteLocation(id: id))
-                })
-                    .padding(.top, Appearance.GridGuide.largePadding1)
-                    .padding(.horizontal, Appearance.GridGuide.point)
+                    OfferFeePickerView(feeLabel: "\(viewModel.feeValue ?? 0)%",
+                                       selectedOption: $viewModel.selectedFeeOption,
+                                       feeValue: $viewModel.feeAmount)
+                        .padding(.horizontal, Appearance.GridGuide.point)
 
-                OfferTradeStylePickerView(selectedOption: $viewModel.selectedTradeStyleOption)
-                    .padding(.horizontal, Appearance.GridGuide.point)
+                    OfferLocationPickerView(items: viewModel.locations,
+                                            addLocation: {
+                        viewModel.action.send(.addLocation)
+                    },
+                                            deleteLocation: { id in
+                        viewModel.action.send(.deleteLocation(id: id))
+                    })
+                        .padding(.top, Appearance.GridGuide.largePadding1)
+                        .padding(.horizontal, Appearance.GridGuide.point)
 
-                OfferPaymentMethodView(selectedOptions: $viewModel.selectedPaymentMethodOptions)
-                    .padding(.top, Appearance.GridGuide.largePadding1)
-                    .padding(.horizontal, Appearance.GridGuide.point)
+                    OfferTradeStylePickerView(selectedOption: $viewModel.selectedTradeStyleOption)
+                        .padding(.horizontal, Appearance.GridGuide.point)
 
-                OfferAdvancedFilterView(selectedTypeOptions: $viewModel.selectedTypeOption,
-                                        selectedFriendDegreeOption: $viewModel.selectedFriendDegreeOption)
-                    .padding(.top, Appearance.GridGuide.largePadding1)
-                    .padding(.horizontal, Appearance.GridGuide.point)
+                    OfferPaymentMethodView(selectedOptions: $viewModel.selectedPaymentMethodOptions)
+                        .padding(.top, Appearance.GridGuide.largePadding1)
+                        .padding(.horizontal, Appearance.GridGuide.point)
 
-                SolidButton(Text(L.offerCreateActionTitle())
-                                .padding(.horizontal,
-                                         Appearance.GridGuide.mediumPadding1),
-                            fullWidth: true,
-                            font: Appearance.TextStyle.h3.font.asFont,
-                            colors: SolidButtonColor.welcome,
-                            dimensions: SolidButtonDimension.largeButton,
-                            action: {
-                    viewModel.action.send(.createOffer)
-                })
-                    .padding(.horizontal, Appearance.GridGuide.point)
-                    .padding(.vertical, Appearance.GridGuide.largePadding1)
+                    OfferAdvancedFilterView(selectedTypeOptions: $viewModel.selectedTypeOption,
+                                            selectedFriendDegreeOption: $viewModel.selectedFriendDegreeOption)
+                        .padding(.top, Appearance.GridGuide.largePadding1)
+                        .padding(.horizontal, Appearance.GridGuide.point)
+
+                    SolidButton(Text(L.offerCreateActionTitle())
+                                    .padding(.horizontal,
+                                             Appearance.GridGuide.mediumPadding1),
+                                fullWidth: true,
+                                font: Appearance.TextStyle.h3.font.asFont,
+                                colors: SolidButtonColor.welcome,
+                                dimensions: SolidButtonDimension.largeButton,
+                                action: {
+                        viewModel.action.send(.createOffer)
+                    })
+                        .padding(.horizontal, Appearance.GridGuide.point)
+                        .padding(.vertical, Appearance.GridGuide.largePadding1)
+                }
             }
         }
         .background(Color.black.edgesIgnoringSafeArea(.all))
