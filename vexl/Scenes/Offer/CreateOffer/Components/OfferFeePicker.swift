@@ -11,9 +11,10 @@ typealias OfferFeeOption = OfferFeePickerView.Option
 
 struct OfferFeePickerView: View {
 
+    let feeLabel: String
     @Binding var selectedOption: Option
     @Binding var feeValue: Double
-    var options = [Option.withoutFee, .withFee]
+    private let options = [Option.withoutFee, .withFee]
 
     var body: some View {
         VStack(alignment: .leading) {
@@ -30,10 +31,10 @@ struct OfferFeePickerView: View {
                     .padding(.top, Appearance.GridGuide.padding)
                     .padding(.horizontal, Appearance.GridGuide.point)
 
-                Text("< 10%")
+                Text(feeLabel)
                     .textStyle(.paragraphMedium)
                     .foregroundColor(Appearance.Colors.green5)
-                    .padding(.horizontal, Appearance.GridGuide.padding)
+                    .padding(Appearance.GridGuide.padding)
 
                 SliderView(thumbColor: R.color.green5()!,
                            minTrackColor: R.color.green5(),
@@ -67,7 +68,8 @@ extension OfferFeePickerView {
 #if DEBUG || DEVEL
 struct OfferFeePickerViewPreview: PreviewProvider {
     static var previews: some View {
-        OfferFeePickerView(selectedOption: .constant(.withoutFee),
+        OfferFeePickerView(feeLabel: "10%",
+                           selectedOption: .constant(.withoutFee),
                            feeValue: .constant(5))
             .previewDevice("iPhone 11")
             .background(Color.black)

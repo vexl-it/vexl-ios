@@ -18,7 +18,7 @@ extension OnboardingView {
 
         var body: some View {
             HStack(alignment: .center) {
-                SolidButton(Text("Skip")
+                SolidButton(Text(L.skip())
                                 .padding(.horizontal,
                                          Appearance.GridGuide.mediumPadding1),
                             fullWidth: false,

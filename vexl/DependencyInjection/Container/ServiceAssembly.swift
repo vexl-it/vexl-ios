@@ -27,5 +27,9 @@ class ServiceAssembly: Assembly {
         container.register(ContactsServiceType.self) { _ in
             ContactsService()
         }
+
+        container.register(OfferServiceType.self) { _ in
+            OfferService()
+        }
     }
 }

@@ -108,3 +108,5 @@
 "offer.create.advanced.title" = "Advanced";
 "offer.create.advanced.type" = "Type";
 "offer.create.advanced.friend.level.title" = "Friend level";
+"offer.create.action.title" = "Create sell offer";
+"offer.update.action.title" = "Update sell offer";

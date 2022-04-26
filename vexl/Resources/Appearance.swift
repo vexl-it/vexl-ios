@@ -68,6 +68,7 @@ struct Appearance {
         static let thumbSize = CGSize(width: 38, height: 38)
 
         // MARK: Other
+
         static let feedItemHeight: CGFloat = 52
     }
 

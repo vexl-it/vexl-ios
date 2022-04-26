@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Cleevio
 
 struct CreateOfferView: View {
 
@@ -34,7 +35,8 @@ struct CreateOfferView: View {
                                      sliderBounds: viewModel.amountRange)
                     .padding(.horizontal, Appearance.GridGuide.point)
 
-                OfferFeePickerView(selectedOption: $viewModel.selectedFeeOption,
+                OfferFeePickerView(feeLabel: "\(viewModel.feeValue ?? 0)%",
+                                   selectedOption: $viewModel.selectedFeeOption,
                                    feeValue: $viewModel.feeAmount)
                     .padding(.horizontal, Appearance.GridGuide.point)
 
@@ -59,6 +61,19 @@ struct CreateOfferView: View {
                                         selectedFriendDegreeOption: $viewModel.selectedFriendDegreeOption)
                     .padding(.top, Appearance.GridGuide.largePadding1)
                     .padding(.horizontal, Appearance.GridGuide.point)
+
+                SolidButton(Text(L.offerCreateActionTitle())
+                                .padding(.horizontal,
+                                         Appearance.GridGuide.mediumPadding1),
+                            fullWidth: true,
+                            font: Appearance.TextStyle.h3.font.asFont,
+                            colors: SolidButtonColor.welcome,
+                            dimensions: SolidButtonDimension.largeButton,
+                            action: {
+                    viewModel.action.send(.createOffer)
+                })
+                    .padding(.horizontal, Appearance.GridGuide.point)
+                    .padding(.vertical, Appearance.GridGuide.largePadding1)
             }
         }
         .background(Color.black.edgesIgnoringSafeArea(.all))

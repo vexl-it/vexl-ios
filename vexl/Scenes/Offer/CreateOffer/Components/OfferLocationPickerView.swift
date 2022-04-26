@@ -8,11 +8,11 @@
 import SwiftUI
 import AVFoundation
 
-typealias OfferLocationItemViewData = OfferLocationPickerView.LocationViewData
+typealias OfferLocationItemData = OfferLocationPickerView.LocationViewData
 
 struct OfferLocationPickerView: View {
 
-    let items: [OfferLocationItemViewData]
+    let items: [OfferLocationItemData]
     let addLocation: () -> Void
     let deleteLocation: (Int) -> Void
 
@@ -116,7 +116,7 @@ extension OfferLocationPickerView {
 #if DEBUG || DEVEL
 struct OfferLocationPickerViewPreview: PreviewProvider {
     static var previews: some View {
-        OfferLocationPickerView(items: OfferLocationItemViewData.stub(),
+        OfferLocationPickerView(items: OfferLocationItemData.stub(),
                                 addLocation: { },
                                 deleteLocation: { _ in })
             .previewDevice("iPhone 11")
