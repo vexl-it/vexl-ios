@@ -133,8 +133,8 @@ class CreateOfferViewModel: ViewModelType, ObservableObject {
                 var newLocations = owner.locations
                 let count = newLocations.count + 1
                 let stubLocation = OfferLocationItemData(id: count,
-                                                             name: "Prague \(count)",
-                                                             distance: "\(count)km")
+                                                         name: "Prague \(count)",
+                                                         distance: "\(count)km")
                 newLocations.append(stubLocation)
                 owner.locations = newLocations
             }
@@ -164,8 +164,14 @@ class CreateOfferViewModel: ViewModelType, ObservableObject {
         action
             .filter { $0 == .createOffer }
             .withUnretained(self)
-            .sink { _, _ in
-                print("created!")
+            .sink { owner, _ in
+                print("description: \(owner.description)")
+                print("amount: \(owner.currentAmountRange)")
+                print("fee: \(owner.feeValue ?? 0)")
+                print("location: \(owner.locations)")
+                print("trade style: \(owner.selectedTradeStyleOption)")
+                print("payment type: \(owner.selectedPaymentMethodOptions)")
+                print("friends: \(owner.selectedFriendDegreeOption)")
             }
             .store(in: cancelBag)
     }
