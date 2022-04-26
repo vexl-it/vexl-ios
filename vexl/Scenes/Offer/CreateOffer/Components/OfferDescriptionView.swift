@@ -9,7 +9,7 @@ import SwiftUI
 
 struct OfferDescriptionView: View {
 
-    @State var text: String = ""
+    @Binding var text: String
 
     var body: some View {
         VStack(alignment: .leading) {

@@ -29,7 +29,7 @@ struct CreateOfferView: View {
                     })
                     .padding(Appearance.GridGuide.padding)
 
-                    OfferDescriptionView()
+                    OfferDescriptionView(text: $viewModel.description)
                         .padding(.horizontal, Appearance.GridGuide.point)
                         .padding(.bottom, Appearance.GridGuide.largePadding1)
 

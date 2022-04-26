@@ -36,6 +36,8 @@ class CreateOfferViewModel: ViewModelType, ObservableObject {
         primaryActivity.indicator
     }
 
+    @Published var description: String = ""
+
     @Published var amountRange: ClosedRange<Int> = 0...0
     @Published var currentAmountRange: ClosedRange<Int> = 0...0
 
