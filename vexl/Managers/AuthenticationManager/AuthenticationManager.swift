@@ -61,7 +61,19 @@ final class AuthenticationManager: AuthenticationManagerType, TokenHandlerType {
 
     // MARK: - Variables for user registration
 
-    var userSecurity: UserSecurity = .init()
+    var userSecurity: UserSecurity {
+        set { Keychain.standard[codable: .userSecurity] = newValue }
+        get {
+            guard let userSecurity: UserSecurity = Keychain.standard[codable: .userSecurity] else {
+                let newUserSecurity: UserSecurity = .init()
+                Keychain.standard[codable: .userSecurity] = newUserSecurity
+                return newUserSecurity
+            }
+            return userSecurity
+
+        }
+    }
+    
     private(set) var currentUser: User?
 
     // MARK: - Initialization

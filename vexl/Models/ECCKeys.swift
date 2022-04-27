@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct ECCKeys {
+struct ECCKeys: Codable {
     var publicKey: String
     var privateKey: String?
 
