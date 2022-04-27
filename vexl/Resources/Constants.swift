@@ -55,4 +55,16 @@ struct Constants {
     static let jpegFormat = "jpeg"
 
     static let elipticCurve: Curve = .init(rawValue: UInt32(10))
+
+    // MARK: - Offer
+
+    struct Offer {
+        static let minAmount = 0
+        static let maxAmount = 100_000
+
+        static let minFee: Double = 1
+        static let maxFee: Double = 25
+
+        static let currencySymbol = "$"
+    }
 }

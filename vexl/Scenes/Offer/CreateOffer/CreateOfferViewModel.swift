@@ -97,6 +97,8 @@ class CreateOfferViewModel: ViewModelType, ObservableObject {
             .assign(to: &$error)
     }
 
+    // MARK: - Bindings
+
     private func setupDataBindings() {
         isLoadingData = true
         offerService
@@ -112,7 +114,6 @@ class CreateOfferViewModel: ViewModelType, ObservableObject {
                 owner.minFee = data.minFee
                 owner.maxFee = data.maxFee
                 owner.currencySymbol = data.currencySymbol
-                owner.locations = data.locations
             }
             .store(in: cancelBag)
     }
@@ -132,6 +133,9 @@ class CreateOfferViewModel: ViewModelType, ObservableObject {
             .sink { owner, _ in
                 var newLocations = owner.locations
                 let count = newLocations.count + 1
+
+                // TODO: - Manage Locations when implementing maps + coordinates
+
                 let stubLocation = OfferLocationItemData(id: count,
                                                          name: "Prague \(count)",
                                                          distance: "\(count)km")
