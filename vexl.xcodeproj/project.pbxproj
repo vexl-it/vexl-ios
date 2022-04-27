@@ -99,6 +99,7 @@
 		F13B266028189F580011F2FB /* OffersService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F13B265F28189F580011F2FB /* OffersService.swift */; };
 		F13B26622818A7EC0011F2FB /* OfferDescriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F13B26612818A7EC0011F2FB /* OfferDescriptionView.swift */; };
 		F13B266528192BBF0011F2FB /* OfferData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F13B266428192BBF0011F2FB /* OfferData.swift */; };
+		F13B266928194A060011F2FB /* OffersRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F13B266828194A060011F2FB /* OffersRouter.swift */; };
 		F14D29C727BFD93C00D1CD85 /* ButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = F14D29C627BFD93C00D1CD85 /* ButtonStyle.swift */; };
 		F14D29C927BFEA1400D1CD85 /* OnboardingView+Presentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F14D29C827BFEA1400D1CD85 /* OnboardingView+Presentation.swift */; };
 		F151A29027C80708000D7242 /* RegisterPhoneView+PhoneInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = F151A28F27C80708000D7242 /* RegisterPhoneView+PhoneInput.swift */; };
@@ -315,6 +316,7 @@
 		F13B265F28189F580011F2FB /* OffersService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OffersService.swift; sourceTree = "<group>"; };
 		F13B26612818A7EC0011F2FB /* OfferDescriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferDescriptionView.swift; sourceTree = "<group>"; };
 		F13B266428192BBF0011F2FB /* OfferData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferData.swift; sourceTree = "<group>"; };
+		F13B266828194A060011F2FB /* OffersRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OffersRouter.swift; sourceTree = "<group>"; };
 		F14D29C627BFD93C00D1CD85 /* ButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonStyle.swift; sourceTree = "<group>"; };
 		F14D29C827BFEA1400D1CD85 /* OnboardingView+Presentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OnboardingView+Presentation.swift"; sourceTree = "<group>"; };
 		F151A28F27C80708000D7242 /* RegisterPhoneView+PhoneInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RegisterPhoneView+PhoneInput.swift"; sourceTree = "<group>"; };
@@ -761,6 +763,7 @@
 				B08F396F27AE7112008B344F /* UserRouter.swift */,
 				B0F206FD27AEBDD500A44E72 /* AuthRouter.swift */,
 				F175AB9A27F1432E000DAB15 /* ContactsRouter.swift */,
+				F13B266828194A060011F2FB /* OffersRouter.swift */,
 			);
 			path = Routers;
 			sourceTree = "<group>";
@@ -1629,6 +1632,7 @@
 				F151A2A227C86CA6000D7242 /* RegistrationCardView.swift in Sources */,
 				F1A9454627F81278009B5AE3 /* ContactInformation.swift in Sources */,
 				B08F391327AE7112008B344F /* ManagerAssembly.swift in Sources */,
+				F13B266928194A060011F2FB /* OffersRouter.swift in Sources */,
 				F188625F2811E53400659786 /* OfferPaymentMethodView.swift in Sources */,
 				F18861FE2808136D00659786 /* HLine.swift in Sources */,
 				F18862652812E91700659786 /* OfferAdvancedFilterView.swift in Sources */,
