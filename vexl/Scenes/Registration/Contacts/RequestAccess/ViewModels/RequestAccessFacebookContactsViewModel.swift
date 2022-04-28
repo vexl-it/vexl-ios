@@ -39,10 +39,12 @@ final class RequestAccessFacebookContactsViewModel: RequestAccessContactsViewMod
     override func advanceCurrentState() {
         switch currentState {
         case .initial:
+            currentState = .requestAccess
+        case .requestAccess:
             currentState = .accessConfirmed
         case .accessConfirmed:
             currentState = .completed
-        case .completed, .requestAccess, .confirmRejection:
+        case .completed, .confirmRejection:
             currentState = .initial
         }
     }

@@ -81,6 +81,10 @@ class ImportContactsViewModel: ObservableObject {
         items.filter { $0.isSelected }
     }
 
+    private var canBeCompletedWithoutSelection: Bool {
+        (currentState == .content && !hasSelectedItem) || currentState == .loading || currentState == .empty
+    }
+
     var actionTitle: String {
         if hasSelectedItem {
             return currentState == .success ? L.registerPhoneCodeInputSuccess() : L.registerContactsImportButton()
@@ -138,7 +142,7 @@ class ImportContactsViewModel: ObservableObject {
         action
             .filter { $0 == .importContacts }
             .withUnretained(self)
-            .filter { $0.0.currentState == .content && !$0.0.hasSelectedItem || $0.0.currentState == .loading }
+            .filter { $0.0.canBeCompletedWithoutSelection }
             .sink { owner, _ in
                 owner.completed.send(())
             }
