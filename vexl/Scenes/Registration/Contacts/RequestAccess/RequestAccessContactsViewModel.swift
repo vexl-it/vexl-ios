@@ -37,6 +37,8 @@ class RequestAccessContactsViewModel: ObservableObject {
 
     let action: ActionSubject<UserAction> = .init()
     let accessConfirmed: ActionSubject<Void> = .init()
+    let requestAccess: ActionSubject<Void> = .init()
+    let rejectConfirmation: ActionSubject<Void> = .init()
     let completed: ActionSubject<Void> = .init()
     let skipped: ActionSubject<Void> = .init()
 
@@ -92,9 +94,13 @@ class RequestAccessContactsViewModel: ObservableObject {
         switch state {
         case .completed:
             completed.send(())
+        case .requestAccess:
+            requestAccess.send(())
         case .accessConfirmed:
             accessConfirmed.send(())
-        case .initial, .confirmRejection, .requestAccess:
+        case .confirmRejection:
+            rejectConfirmation.send(())
+        case .initial:
             break
         }
     }

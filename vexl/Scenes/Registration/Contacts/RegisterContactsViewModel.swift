@@ -145,6 +145,7 @@ final class RegisterContactsViewModel: ViewModelType {
             .store(in: cancelBag)
     }
 
+    // swiftlint:disable function_body_length
     private func setupRequestFacebookContactsBindings() {
         facebookViewModel.skipped
             .withUnretained(self)
@@ -153,7 +154,7 @@ final class RegisterContactsViewModel: ViewModelType {
             }
             .store(in: cancelBag)
 
-        let loginFacebookUser = facebookViewModel.accessConfirmed
+        let loginFacebookUser = facebookViewModel.requestAccess
             .withUnretained(self)
             .flatMap { owner, _ in
                 owner.authenticationManager
@@ -162,8 +163,10 @@ final class RegisterContactsViewModel: ViewModelType {
                     .materialize()
                     .eraseToAnyPublisher()
             }
-            .compactMap { response -> String? in
+            .withUnretained(self)
+            .compactMap { owner, response -> String? in
                 guard let value = response.value, let facebookId = value else {
+                    owner.facebookViewModel.currentState = .initial
                     return nil
                 }
                 return facebookId
