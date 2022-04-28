@@ -60,8 +60,8 @@ final class RegisterContactsViewModel: ViewModelType {
     // MARK: - Subviews View Models and State
 
     @Published var currentState: ViewState = .phone
-    var phoneViewModel: RequestAccessContactsViewModel
-    var facebookViewModel: RequestAccessContactsViewModel
+    var phoneViewModel: RequestAccessPhoneContactsViewModel
+    var facebookViewModel: RequestAccessFacebookContactsViewModel
     var importPhoneContactsViewModel: ImportPhoneContactsViewModel
     var importFacebookContactsViewModel: ImportFacebookContactsViewModel
 
@@ -70,9 +70,9 @@ final class RegisterContactsViewModel: ViewModelType {
     private let cancelBag: CancelBag = .init()
 
     init(username: String, avatar: Data?) {
-        phoneViewModel = RequestAccessPhoneContactsViewModel(username: username, avatar: avatar)
+        phoneViewModel = RequestAccessPhoneContactsViewModel(username: username, avatar: avatar, activity: primaryActivity)
         importPhoneContactsViewModel = ImportPhoneContactsViewModel()
-        facebookViewModel = RequestAccessFacebookContactsViewModel(username: username, avatar: avatar)
+        facebookViewModel = RequestAccessFacebookContactsViewModel(username: username, avatar: avatar, activity: primaryActivity)
         importFacebookContactsViewModel = ImportFacebookContactsViewModel()
         setupActivity()
         setupRequestPhoneContactsBindings()
@@ -109,27 +109,10 @@ final class RegisterContactsViewModel: ViewModelType {
     }
 
     private func setupRequestPhoneContactsBindings() {
-        phoneViewModel.accessConfirmed
-            .withUnretained(self)
-            .flatMap { owner, _ in
-                owner.contactsService
-                    .createUser(forFacebook: false)
-                    .track(activity: owner.primaryActivity)
-                    .materialize()
-                    .compactMap(\.value)
-                    .eraseToAnyPublisher()
-            }
-            .withUnretained(self)
-            .sink { owner, _ in
-                owner.phoneViewModel.currentState = .completed
-            }
-            .store(in: cancelBag)
-
-        phoneViewModel.completed
+        phoneViewModel.contactsImported
             .withUnretained(self)
             .sink { owner, _ in
                 owner.currentState = .importPhoneContacts
-                owner.phoneViewModel.currentState = .initial
                 try? owner.importPhoneContactsViewModel.fetchContacts()
             }
             .store(in: cancelBag)
@@ -145,7 +128,6 @@ final class RegisterContactsViewModel: ViewModelType {
             .store(in: cancelBag)
     }
 
-    // swiftlint:disable function_body_length
     private func setupRequestFacebookContactsBindings() {
         facebookViewModel.skipped
             .withUnretained(self)
@@ -154,61 +136,25 @@ final class RegisterContactsViewModel: ViewModelType {
             }
             .store(in: cancelBag)
 
-        let loginFacebookUser = facebookViewModel.requestAccess
-            .withUnretained(self)
-            .flatMap { owner, _ in
-                owner.authenticationManager
-                    .loginWithFacebook(fromViewController: nil)
-                    .track(activity: owner.primaryActivity)
-                    .materialize()
-                    .eraseToAnyPublisher()
-            }
-            .withUnretained(self)
-            .compactMap { owner, response -> String? in
-                guard let value = response.value, let facebookId = value else {
-                    owner.facebookViewModel.currentState = .initial
-                    return nil
+        facebookViewModel.contactsImported
+            .compactMap { result -> Error? in
+                if case .failure(let error) = result {
+                    return error
                 }
-                return facebookId
+                return nil
             }
+            .assign(to: &$error)
 
-        loginFacebookUser
-            .withUnretained(self)
-            .flatMap { owner, facebookId in
-                owner.userService
-                    .facebookSignature(id: facebookId)
-                    .track(activity: owner.primaryActivity)
-                    .materialize()
-                    .eraseToAnyPublisher()
-            }
-            .compactMap { $0.value }
-            .withUnretained(self)
-            .handleEvents(receiveOutput: { owner, response in
-                if !response.challengeVerified {
-                    owner.error = UserError.facebookValidation
+        facebookViewModel.contactsImported
+            .filter { result in
+                if case .success = result {
+                    return true
                 }
-            })
-            .filter { $0.1.challengeVerified }
-            .withUnretained(self)
-            .flatMap { owner, _ in
-                owner.contactsService
-                    .createUser(forFacebook: true)
-                    .track(activity: owner.primaryActivity)
-                    .materialize()
-                    .compactMap(\.value)
-                    .eraseToAnyPublisher()
+                return false
             }
-            .withUnretained(self)
-            .sink { owner, _ in
-                owner.facebookViewModel.currentState = .completed
-            }
-            .store(in: cancelBag)
-
-        facebookViewModel.completed
             .withUnretained(self)
             .sink { owner, _ in
                 owner.currentState = .importFacebookContacts
-                owner.facebookViewModel.currentState = .initial
                 owner.fetchFacebookContacts()
             }
             .store(in: cancelBag)

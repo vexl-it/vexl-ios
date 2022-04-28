@@ -12,6 +12,10 @@ import Cleevio
 
 class RequestAccessContactsViewModel: ObservableObject {
 
+    @Inject var authenticationManager: AuthenticationManager
+    @Inject var userService: UserServiceType
+    @Inject var contactsService: ContactsServiceType
+
     // MARK: - State
 
     enum ViewState {
@@ -20,6 +24,16 @@ class RequestAccessContactsViewModel: ObservableObject {
         case confirmRejection
         case accessConfirmed
         case completed
+    }
+
+    // MARK: - Activities
+
+    var primaryActivity: Activity
+    var errorIndicator: ErrorIndicator {
+        primaryActivity.error
+    }
+    var activityIndicator: ActivityIndicator {
+        primaryActivity.indicator
     }
 
     // MARK: - View Bindings
@@ -53,13 +67,14 @@ class RequestAccessContactsViewModel: ObservableObject {
     var portraitColor: Color { Appearance.Colors.green5 }
     var portraitTextColor: Color { Appearance.Colors.green1 }
 
-    private let cancelBag: CancelBag = .init()
+    let cancelBag: CancelBag = .init()
 
     // MARK: - Init
 
-    init(username: String, avatar: Data?) {
+    init(username: String, avatar: Data?, activity: Activity) {
         self.username = username
         self.avatar = avatar
+        self.primaryActivity = activity
         $currentState
             .withUnretained(self)
             .sink { owner, state in

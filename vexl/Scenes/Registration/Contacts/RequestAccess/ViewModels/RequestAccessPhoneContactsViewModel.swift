@@ -28,6 +28,41 @@ final class RequestAccessPhoneContactsViewModel: RequestAccessContactsViewModel 
         false
     }
 
+    // MARK: - phone actions
+
+    var contactsImported: ActionSubject<Void> = .init()
+
+    override init(username: String, avatar: Data?, activity: Activity) {
+        super.init(username: username, avatar: avatar, activity: activity)
+        setupBindings()
+    }
+
+    private func setupBindings() {
+        accessConfirmed
+            .withUnretained(self)
+            .flatMap { owner, _ in
+                owner.contactsService
+                    .createUser(forFacebook: false)
+                    .track(activity: owner.primaryActivity)
+                    .materialize()
+                    .compactMap(\.value)
+                    .eraseToAnyPublisher()
+            }
+            .withUnretained(self)
+            .sink { owner, _ in
+                owner.currentState = .completed
+            }
+            .store(in: cancelBag)
+
+        completed
+            .withUnretained(self)
+            .sink { owner, _ in
+                owner.contactsImported.send(())
+                owner.currentState = .initial
+            }
+            .store(in: cancelBag)
+    }
+
     override func update(state: ViewState) {
         updateAlert(for: state)
         super.update(state: state)
