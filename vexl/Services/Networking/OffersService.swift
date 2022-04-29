@@ -10,26 +10,65 @@ import Combine
 
 typealias EncryptedOfferData = [String: String]
 
+struct Offer {
+    let minAmount: Double
+    let maxAmount: Double
+
+    var minAmountString: String {
+        "\(minAmount)"
+    }
+
+    var maxAmountString: String {
+        "\(maxAmount)"
+    }
+}
+
 protocol OfferServiceType {
-    func getInitialOfferData() -> AnyPublisher<OfferData, Error>
-    //func encryptOfferData(minAmount: Double) -> AnyPublisher<EncryptedOfferData, Error>
+    func getInitialOfferData() -> AnyPublisher<OfferInitialData, Error>
+    func generateOfferKeyPair() -> AnyPublisher<ECCKeys, Never>
+    func encryptOffer(withContactKey contactKey: String, offerKey: ECCKeys, offer: Offer) -> AnyPublisher<EncryptedOfferData, Error>
 }
 
 final class OfferService: OfferServiceType {
-    func getInitialOfferData() -> AnyPublisher<OfferData, Error> {
+
+    func getInitialOfferData() -> AnyPublisher<OfferInitialData, Error> {
         Future { promise in
             promise(.success(
-                OfferData.defaultValues
+                OfferInitialData.defaultValues
             ))
         }
         .eraseToAnyPublisher()
     }
-    
-//    func encryptOfferData(minAmount: Double) -> AnyPublisher<EncryptedOfferData, Error> {
-//        Future { promise in
-//            let minAmountString = try? "\(minAmount)".ecc.encrypt(publicKey: "")
-//            promise(.success(["123": minAmountString ?? ""]))
-//        }
-//        .eraseToAnyPublisher()
-//    }
+
+    func generateOfferKeyPair() -> AnyPublisher<ECCKeys, Never> {
+        Future { promise in
+            let keyPair = ECCKeys()
+            promise(.success(keyPair))
+        }
+        .eraseToAnyPublisher()
+    }
+
+    func encryptOffer(withContactKey contactPublicKey: String,
+                      offerKey: ECCKeys,
+                      offer: Offer) -> AnyPublisher<EncryptedOfferData, Error> {
+        Future { promise in
+            do {
+                let minAmount = try offer.minAmountString.ecc.encrypt(publicKey: contactPublicKey)
+                let maxAmount = try offer.maxAmountString.ecc.encrypt(publicKey: contactPublicKey)
+                let offerPublicKey = try offerKey.publicKey.ecc.encrypt(publicKey: contactPublicKey)
+
+                let body = [
+                    "userPublicKey": contactPublicKey,
+                    "offerPublicKey": offerPublicKey,
+                    "amountTopLimit": maxAmount,
+                    "amountBottomLimit": minAmount
+                ]
+
+                promise(.success(body))
+            } catch {
+                promise(.failure(EncryptionError.dataEncryption))
+            }
+        }
+        .eraseToAnyPublisher()
+    }
 }
