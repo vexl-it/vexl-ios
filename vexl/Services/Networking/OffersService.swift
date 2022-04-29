@@ -8,8 +8,11 @@
 import Foundation
 import Combine
 
+typealias EncryptedOfferData = [String: String]
+
 protocol OfferServiceType {
     func getInitialOfferData() -> AnyPublisher<OfferData, Error>
+    //func encryptOfferData(minAmount: Double) -> AnyPublisher<EncryptedOfferData, Error>
 }
 
 final class OfferService: OfferServiceType {
@@ -25,4 +28,12 @@ final class OfferService: OfferServiceType {
         }
         .eraseToAnyPublisher()
     }
+    
+//    func encryptOfferData(minAmount: Double) -> AnyPublisher<EncryptedOfferData, Error> {
+//        Future { promise in
+//            let minAmountString = try? "\(minAmount)".ecc.encrypt(publicKey: "")
+//            promise(.success(["123": minAmountString ?? ""]))
+//        }
+//        .eraseToAnyPublisher()
+//    }
 }

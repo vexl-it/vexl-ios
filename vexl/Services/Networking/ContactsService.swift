@@ -14,6 +14,7 @@ protocol ContactsServiceType {
     func getActivePhoneContacts(_ contacts: [String]) -> AnyPublisher<ContactsAvailable, Error>
     func getActiveFacebookContacts(id: String, accessToken: String) -> AnyPublisher<FacebookUserData, Error>
     func getFacebookContacts(id: String, accessToken: String) -> AnyPublisher<FacebookUserData, Error>
+    func getContacts(fromFacebook: Bool) -> AnyPublisher<[String], Error>
 }
 
 final class ContactsService: BaseService, ContactsServiceType {
@@ -40,6 +41,11 @@ final class ContactsService: BaseService, ContactsServiceType {
 
     func getActiveFacebookContacts(id: String, accessToken: String) -> AnyPublisher<FacebookUserData, Error> {
         request(type: FacebookUserData.self, endpoint: ContactsRouter.getAvailableFacebookContacts(id: id, accessToken: accessToken))
+            .eraseToAnyPublisher()
+    }
+
+    func getContacts(fromFacebook: Bool) -> AnyPublisher<[String], Error> {
+        request(type: [String].self, endpoint: ContactsRouter.getContacts(useFacebookHeader: fromFacebook))
             .eraseToAnyPublisher()
     }
 }
