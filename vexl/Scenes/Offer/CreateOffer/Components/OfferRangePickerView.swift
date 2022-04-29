@@ -122,10 +122,10 @@ struct OfferRangePickerView: View {
             }
         }
 
-        @ViewBuilder func lineBetweenThumbs(from: CGPoint, to: CGPoint) -> some View {
+        @ViewBuilder func lineBetweenThumbs(from startPoint: CGPoint, to endPoint: CGPoint) -> some View {
             Path { path in
-                path.move(to: from)
-                path.addLine(to: to)
+                path.move(to: startPoint)
+                path.addLine(to: endPoint)
             }.stroke(Appearance.Colors.green5, lineWidth: 4)
         }
 
