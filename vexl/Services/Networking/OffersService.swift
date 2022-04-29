@@ -16,11 +16,7 @@ final class OfferService: OfferServiceType {
     func getInitialOfferData() -> AnyPublisher<OfferData, Error> {
         Future { promise in
             promise(.success(
-                OfferData(minOffer: Constants.Offer.minAmount,
-                          maxOffer: Constants.Offer.maxAmount,
-                          minFee: Constants.Offer.minFee,
-                          maxFee: Constants.Offer.maxFee,
-                          currencySymbol: Constants.Offer.currencySymbol)
+                OfferData.defaultValues
             ))
         }
         .eraseToAnyPublisher()
