@@ -41,7 +41,7 @@ struct OfferAdvancedFilterView: View {
                     .padding(.top, Appearance.GridGuide.mediumPadding1)
             }
         }
-        .animation(.easeInOut(duration: 0.25))
+        .animation(.easeInOut(duration: 0.25), value: isExpanded)
     }
 }
 
