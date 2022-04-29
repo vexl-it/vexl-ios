@@ -75,6 +75,32 @@ struct Appearance {
     // MARK: - Global
 
     static func setGlobalAppearance() {
+        setDefaultNavBarStyle()
+    }
+    
+    static func navigationBarDefaultAppearance(withColor color: UIColor = .clear) -> UINavigationBarAppearance {
+        let appearance = UINavigationBarAppearance().tap {
+            $0.configureWithOpaqueBackground()
+            $0.backgroundImage = UIImage()
+            $0.shadowColor = .clear
+            $0.backgroundColor = color
+        }
+
+        return appearance
+    }
+    
+    static private func setDefaultNavBarStyle() {
+        let appearance = navigationBarDefaultAppearance()
+
+        UINavigationBar.appearance().tap {
+            $0.prefersLargeTitles = false
+            $0.standardAppearance = appearance
+            $0.compactAppearance = appearance
+            $0.scrollEdgeAppearance = appearance
+            $0.isTranslucent = true
+            $0.shadowImage = UIImage()
+            $0.setBackgroundImage(UIImage(), for: .default)
+        }
     }
 
     // MARK: - Fonts

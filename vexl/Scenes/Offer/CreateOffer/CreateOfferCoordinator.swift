@@ -7,8 +7,9 @@
 
 import Foundation
 import Cleevio
+import Combine
 
-class CreateOfferCoordinator: BaseCoordinator<RouterResult<Void>> {
+final class CreateOfferCoordinator: BaseCoordinator<RouterResult<Void>> {
 
     private let router: Router
 
@@ -35,7 +36,10 @@ class CreateOfferCoordinator: BaseCoordinator<RouterResult<Void>> {
             .filter { $0 == .dismissTapped }
             .map { _ -> RouterResult<Void> in .dismiss }
 
-        return dismiss
+        let dismissByRouter = viewController.dismissPublisher
+            .map { _ in RouterResult<Void>.dismissedByRouter }
+
+        return Publishers.Merge(dismiss, dismissByRouter)
             .receive(on: RunLoop.main)
             .eraseToAnyPublisher()
     }

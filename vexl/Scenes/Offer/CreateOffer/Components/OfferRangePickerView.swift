@@ -51,18 +51,21 @@ struct OfferRangePickerView: View {
         private let bigThumbSize = CGSize(width: 38, height: 38)
         private let smallThumbSize = CGSize(width: 30, height: 30)
 
-        let currentValue: Binding<ClosedRange<Int>>
+        @Binding var currentValue: ClosedRange<Int>
         let sliderBounds: ClosedRange<Int>
         let displayText = false
 
         public init(value: Binding<ClosedRange<Int>>, bounds: ClosedRange<Int>) {
-            self.currentValue = value
+            self._currentValue = value
             self.sliderBounds = bounds
         }
 
         var body: some View {
-            GeometryReader { geomentry in
-                sliderView(sliderSize: geomentry.size)
+
+            // TODO: - update from geometry to readsize
+
+            GeometryReader { geometry in
+                sliderView(sliderSize: geometry.size)
             }
         }
 
@@ -78,12 +81,12 @@ struct OfferRangePickerView: View {
                     let stepWidthInPixel = CGFloat(sliderSize.width) / CGFloat(sliderBoundDifference)
 
                     // Calculate Left Thumb initial position
-                    let leftThumbLocation: CGFloat = currentValue.wrappedValue.lowerBound == Int(sliderBounds.lowerBound)
+                    let leftThumbLocation: CGFloat = $currentValue.wrappedValue.lowerBound == Int(sliderBounds.lowerBound)
                         ? 0
-                        : CGFloat(currentValue.wrappedValue.lowerBound - Int(sliderBounds.lowerBound)) * stepWidthInPixel
+                        : CGFloat($currentValue.wrappedValue.lowerBound - Int(sliderBounds.lowerBound)) * stepWidthInPixel
 
                     // Calculate right thumb initial position
-                    let rightThumbLocation = CGFloat(currentValue.wrappedValue.upperBound) * stepWidthInPixel
+                    let rightThumbLocation = CGFloat($currentValue.wrappedValue.upperBound) * stepWidthInPixel
 
                     // Path between both handles
                     lineBetweenThumbs(from: CGPoint(x: leftThumbLocation, y: sliderViewYCenter),
@@ -91,7 +94,7 @@ struct OfferRangePickerView: View {
 
                     // Left Thumb Handle
                     let leftThumbPoint = CGPoint(x: leftThumbLocation, y: sliderViewYCenter)
-                    thumbView(position: leftThumbPoint, value: Int(currentValue.wrappedValue.lowerBound))
+                    thumbView(position: leftThumbPoint, value: Int($currentValue.wrappedValue.lowerBound))
                         .highPriorityGesture(DragGesture().onChanged { dragValue in
                             let dragLocation = dragValue.location
                             let xThumbOffset = min(max(0, dragLocation.x), sliderSize.width)
@@ -99,13 +102,13 @@ struct OfferRangePickerView: View {
                             let newValue = Int(sliderBounds.lowerBound) + Int(xThumbOffset / stepWidthInPixel)
 
                             // Stop the range thumbs from colliding each other
-                            if newValue < currentValue.wrappedValue.upperBound {
-                                currentValue.wrappedValue = newValue...currentValue.wrappedValue.upperBound
+                            if newValue < $currentValue.wrappedValue.upperBound {
+                                $currentValue.wrappedValue = newValue...$currentValue.wrappedValue.upperBound
                             }
                         })
 
                     // Right Thumb Handle
-                    thumbView(position: CGPoint(x: rightThumbLocation, y: sliderViewYCenter), value: currentValue.wrappedValue.upperBound)
+                    thumbView(position: CGPoint(x: rightThumbLocation, y: sliderViewYCenter), value: $currentValue.wrappedValue.upperBound)
                         .highPriorityGesture(DragGesture().onChanged { dragValue in
                             let dragLocation = dragValue.location
                             let xThumbOffset = min(max(CGFloat(leftThumbLocation), dragLocation.x), sliderSize.width)
@@ -114,18 +117,18 @@ struct OfferRangePickerView: View {
                             newValue = min(newValue, Int(sliderBounds.upperBound))
 
                             // Stop the range thumbs from colliding each other
-                            if newValue > currentValue.wrappedValue.lowerBound {
-                                currentValue.wrappedValue = currentValue.wrappedValue.lowerBound...newValue
+                            if newValue > $currentValue.wrappedValue.lowerBound {
+                                $currentValue.wrappedValue = $currentValue.wrappedValue.lowerBound...newValue
                             }
                         })
                 }
             }
         }
 
-        @ViewBuilder func lineBetweenThumbs(from: CGPoint, to: CGPoint) -> some View {
+        @ViewBuilder func lineBetweenThumbs(from startPoint: CGPoint, to endPoint: CGPoint) -> some View {
             Path { path in
-                path.move(to: from)
-                path.addLine(to: to)
+                path.move(to: startPoint)
+                path.addLine(to: endPoint)
             }.stroke(Appearance.Colors.green5, lineWidth: 4)
         }
 

@@ -8,7 +8,7 @@
 import Foundation
 import Cleevio
 
-class OffersViewModel: ViewModelType, ObservableObject {
+final class OffersViewModel: ViewModelType, ObservableObject {
 
     // MARK: - Action Binding
 
