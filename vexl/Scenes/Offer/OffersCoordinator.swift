@@ -9,7 +9,7 @@ import Foundation
 import Cleevio
 import Combine
 
-class OffersCoordinator: BaseCoordinator<RouterResult<Void>> {
+final class OffersCoordinator: BaseCoordinator<RouterResult<Void>> {
 
     private let router: Router
 

@@ -9,7 +9,7 @@ import Foundation
 import Cleevio
 import SwiftUI
 
-class CreateOfferViewModel: ViewModelType, ObservableObject {
+final class CreateOfferViewModel: ViewModelType, ObservableObject {
 
     @Inject var offerService: OfferServiceType
 
@@ -120,6 +120,7 @@ class CreateOfferViewModel: ViewModelType, ObservableObject {
 
     private func setupBindings() {
         action
+            .share()
             .filter { $0 == .dismissTap }
             .withUnretained(self)
             .sink { owner, _ in
@@ -128,6 +129,7 @@ class CreateOfferViewModel: ViewModelType, ObservableObject {
             .store(in: cancelBag)
 
         action
+            .share()
             .filter { $0 == .addLocation }
             .withUnretained(self)
             .sink { owner, _ in
@@ -145,6 +147,7 @@ class CreateOfferViewModel: ViewModelType, ObservableObject {
             .store(in: cancelBag)
 
         action
+            .share()
             .compactMap { action -> Int? in
                 switch action {
                 case let .deleteLocation(id):
@@ -166,6 +169,7 @@ class CreateOfferViewModel: ViewModelType, ObservableObject {
             .store(in: cancelBag)
 
         action
+            .share()
             .filter { $0 == .createOffer }
             .withUnretained(self)
             .sink { owner, _ in

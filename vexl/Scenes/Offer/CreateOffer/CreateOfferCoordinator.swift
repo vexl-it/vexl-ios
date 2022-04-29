@@ -8,7 +8,7 @@
 import Foundation
 import Cleevio
 
-class CreateOfferCoordinator: BaseCoordinator<RouterResult<Void>> {
+final class CreateOfferCoordinator: BaseCoordinator<RouterResult<Void>> {
 
     private let router: Router
 
