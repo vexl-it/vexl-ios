@@ -31,14 +31,14 @@ final class AppCoordinator: BaseCoordinator<Void> {
     // https://github.com/uptechteam/Coordinator-MVVM-Rx-Example/issues/3
     private func coordinateToRoot() {
         let coordinationResult: CoordinatingResult<Void> = {
-//            switch initialScreenManager.state {
-//            case .splashScreen:
-//                return showSplashCoordinator()
-//            case .onboarding:
-//                return showOnboardingCoordinator()
-//            case .home:
+            switch initialScreenManager.state {
+            case .splashScreen:
+                return showSplashCoordinator()
+            case .onboarding:
+                return showOnboardingCoordinator()
+            case .home:
                 return showHomeCoordinator()
-            //}
+            }
         }()
 
         cancellable = coordinationResult
