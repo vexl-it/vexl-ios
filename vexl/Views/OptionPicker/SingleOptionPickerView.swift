@@ -12,7 +12,7 @@ struct SingleOptionPickerView<Option: Hashable, Content: View>: View {
     @Binding var selectedOption: Option
     let options: [Option]
     let content: (Option) -> Content
-    let action: (Option) -> Void
+    let action: ((Option) -> Void)?
 
     var body: some View {
         HStack {
@@ -23,7 +23,7 @@ struct SingleOptionPickerView<Option: Hashable, Content: View>: View {
                 },
                                      action: {
                     selectedOption = option
-                    action(option)
+                    action?(option)
                 })
             }
         }

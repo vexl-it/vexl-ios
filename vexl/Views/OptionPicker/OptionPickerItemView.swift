@@ -23,6 +23,8 @@ struct OptionPickerItemView<Content: View>: View {
         .foregroundColor(isSelected ? Appearance.Colors.green5 : Appearance.Colors.gray3)
         .background(isSelected ? Appearance.Colors.gray2 : Appearance.Colors.gray1)
         .cornerRadius(Appearance.GridGuide.buttonCorner)
-        .animation(.easeInOut(duration: 0.25))
+        .transaction { transaction in
+            transaction.animation = .easeInOut(duration: 0.25)
+        }
     }
 }

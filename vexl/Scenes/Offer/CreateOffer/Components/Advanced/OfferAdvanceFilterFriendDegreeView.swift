@@ -32,9 +32,7 @@ struct OfferAdvanceFilterFriendDegreeView: View {
                 Text(option.title)
                     .frame(maxWidth: .infinity)
             },
-                                   action: { option in
-                print(option.title)
-            })
+                                   action: nil)
         }
     }
 }
