@@ -12,7 +12,7 @@ struct MultipleOptionPickerView<Option: Hashable, Content: View>: View {
     @Binding var selectedOptions: [Option]
     let options: [Option]
     let content: (Option) -> Content
-    let action: (Option, Bool) -> Void
+    let action: ((Option, Bool) -> Void)?
 
     var body: some View {
         HStack {
@@ -28,7 +28,7 @@ struct MultipleOptionPickerView<Option: Hashable, Content: View>: View {
                     } else {
                         selectedOptions.append(option)
                     }
-                    action(option, index != nil)
+                    action?(option, index != nil)
                 })
             }
         }
