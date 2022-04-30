@@ -17,6 +17,7 @@ final class RegisterPhoneViewModel: ViewModelType {
     @Inject var userService: UserServiceType
     @Inject var authenticationManager: AuthenticationManagerType
     @Inject var userSecurity: UserSecurityType
+    @Inject var cryptoService: CryptoServiceType
 
     // MARK: - View State
 
@@ -38,7 +39,7 @@ final class RegisterPhoneViewModel: ViewModelType {
 
     let action: ActionSubject<UserAction> = .init()
     private let triggerCountdown: ActionSubject<Date?>  = .init()
-    private let generateSignature: ActionSubject<String> = .init()
+    private var codeInputSuccess: AnyPublisher<CodeValidation, Never>!
 
     // MARK: - View Bindings
 
@@ -113,7 +114,7 @@ final class RegisterPhoneViewModel: ViewModelType {
         setupActivity()
         setupPhoneInputActionBindings()
         setupValidationActionBindings()
-        setupGenerateSignatureActionBindings()
+        setupChallengeActionBindings()
         setupStateBindings()
         timerBindings()
     }
@@ -141,14 +142,6 @@ final class RegisterPhoneViewModel: ViewModelType {
             .filter { $0.0.currentState == .codeInput }
 
         Publishers.Merge(phoneInput, sendCode)
-            .flatMap { owner, _ in
-                // TODO: - temporal remove/replace when C library is available
-                owner
-                    .userService
-                    .generateKeys()
-                    .track(activity: owner.primaryActivity)
-                    .materializeIgnoreCompleted()
-            }
             .withUnretained(self)
             .flatMap { owner, _ in
                 owner
@@ -171,7 +164,7 @@ final class RegisterPhoneViewModel: ViewModelType {
     }
 
     private func setupValidationActionBindings() {
-        let validateCode = action
+        let validateCode: AnyPublisher<Int, Never> = action
             .filter { $0 == .validateCode }
             .withUnretained(self)
             .filter { $0.0.currentState == .codeInput }
@@ -181,6 +174,9 @@ final class RegisterPhoneViewModel: ViewModelType {
             .compactMap { owner, _ in
                 owner.phoneVerificationId
             }
+            .eraseToAnyPublisher()
+
+        let verificationID: AnyPublisher<CodeValidation?, Never> = validateCode
             .withUnretained(self)
             .flatMap { owner, verificationId in
                 owner
@@ -190,71 +186,72 @@ final class RegisterPhoneViewModel: ViewModelType {
                                            key: owner.userSecurity.userKeys.publicKey)
                     .track(activity: owner.primaryActivity)
                     .materialize()
+                    .map(\.value)
                     .eraseToAnyPublisher()
             }
             .eraseToAnyPublisher()
 
-        let updateAfterCodeValidation = validateCode
+        let updateAfterCodeValidation: AnyPublisher<CodeValidation, Never> = verificationID
             .withUnretained(self)
-            .handleEvents(receiveOutput: { owner, response in
-                if response.value == nil && owner.currentState == .codeInputValidation {
+            .handleEvents(receiveOutput: { owner, validation in
+                if validation == nil && owner.currentState == .codeInputValidation {
                     owner.currentState = .codeInput
                 }
             })
-            .compactMap { $0.1.value }
+            .compactMap(\.1)
             .eraseToAnyPublisher()
 
-        updateAfterCodeValidation
+        codeInputSuccess = updateAfterCodeValidation
             .withUnretained(self)
             .handleEvents(receiveOutput: { owner, response in
                 if !response.phoneVerified {
                     owner.error = RegistryError.invalidValidationCode
-                } else {
-                    owner.generateSignature.send(response.challenge)
-                    owner.currentState = response.phoneVerified ? .codeInputSuccess : .codeInput
                 }
             })
-            .filter { $0.0.currentState == .codeInputSuccess }
-            .delay(for: .seconds(1), scheduler: RunLoop.main)
-            .sink { owner, _ in
-                owner.route.send(.continueTapped)
-                owner.clearState()
-            }
-            .store(in: cancelBag)
+            .map(\.1)
+            .filter(\.phoneVerified)
+            .eraseToAnyPublisher()
     }
 
-    private func setupGenerateSignatureActionBindings() {
-        // Temporal delete me
-        let generateSignature = generateSignature
+    private func setupChallengeActionBindings() {
+        let challengeSuccess: AnyPublisher<ChallengeValidation, Never> = codeInputSuccess
             .withUnretained(self)
-            .flatMap { owner, challenge in
-                owner
-                    .userService
-                    .generateSignature(challenge: challenge,
-                                       privateKey: owner.userSecurity.userKeys.privateKey ?? "")
+            .flatMap { owner, response in
+                owner.cryptoService
+                    .signECDSA(keys: owner.userSecurity.userKeys, message: response.challenge)
                     .track(activity: owner.primaryActivity)
                     .materialize()
-                    .compactMap(\.value)
-                    .eraseToAnyPublisher()
+                    .compactMap { $0.value }
             }
-            .map(\.signed)
-
-        generateSignature
             .withUnretained(self)
             .flatMap { owner, signature in
                 owner
                     .userService
-                    .validateChallenge(key: owner.userSecurity.userKeys.publicKey,
-                                       signature: signature)
+                    .validateChallenge(key: owner.userSecurity.userKeys.publicKey, signature: signature)
                     .track(activity: owner.primaryActivity)
                     .materialize()
                     .compactMap { $0.value }
                     .eraseToAnyPublisher()
             }
             .withUnretained(self)
-            .filter { !$0.1.challengeVerified }
-            .map { _ in RegistryError.invalidChallenge }
-            .assign(to: &$error)
+            .handleEvents(receiveOutput: { owner, response in
+                if !response.challengeVerified {
+                    owner.error = RegistryError.invalidChallenge
+                } else {
+                    owner.currentState = .codeInputSuccess
+                }
+            })
+            .map(\.1)
+            .filter(\.challengeVerified)
+            .eraseToAnyPublisher()
+
+        challengeSuccess
+            .withUnretained(self)
+            .sink { owner, _ in
+                owner.route.send(.continueTapped)
+                owner.clearState()
+            }
+            .store(in: cancelBag)
     }
 
     private func setupStateBindings() {
@@ -335,21 +332,5 @@ final class RegisterPhoneViewModel: ViewModelType {
         currentState = .phoneInput
         phoneVerificationId = nil
         timer?.connect().cancel()
-    }
-
-    private func updateState(with response: CodeValidation?) {
-        guard let response = response else {
-            currentState = .phoneInput
-            return
-        }
-
-        // TODO: - Remove/Adapt temporal when C library is added
-        generateSignature.send(response.challenge)
-
-        if response.phoneVerified {
-            currentState = .codeInputSuccess
-        } else {
-            currentState = .codeInput
-        }
     }
 }

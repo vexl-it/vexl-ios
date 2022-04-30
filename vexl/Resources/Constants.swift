@@ -36,6 +36,7 @@ struct Constants {
         case dummyKey
         case accessToken
         case refreshToken
+        case userSecurity
     }
 
     // MARK: - Decoder
