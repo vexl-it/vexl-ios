@@ -66,7 +66,7 @@ enum ContactsRouter: ApiRouter {
         case let .importContacts(contacts):
             return ["contacts": contacts]
         case .getContacts:
-            return [:]
+            return ["level": "all"]
         }
     }
 

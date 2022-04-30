@@ -12,6 +12,8 @@ import SwiftUI
 final class CreateOfferViewModel: ViewModelType, ObservableObject {
 
     @Inject var offerService: OfferServiceType
+    @Inject var contactsMananger: ContactsManagerType
+    @Inject var contactsService: ContactsServiceType
 
     // MARK: - Action Binding
 
@@ -67,6 +69,7 @@ final class CreateOfferViewModel: ViewModelType, ObservableObject {
 
     // MARK: - Variables
 
+    private var contactsPublicKeys: [ContactKey] = []
     private let cancelBag: CancelBag = .init()
 
     var minFee: Double = 0
@@ -114,6 +117,17 @@ final class CreateOfferViewModel: ViewModelType, ObservableObject {
                 owner.minFee = data.minFee
                 owner.maxFee = data.maxFee
                 owner.currencySymbol = data.currencySymbol
+            }
+            .store(in: cancelBag)
+
+        contactsService
+            .getContacts(fromFacebook: false)
+            .track(activity: primaryActivity)
+            .materialize()
+            .compactMap(\.value)
+            .withUnretained(self)
+            .sink { owner, response in
+                owner.contactsPublicKeys.append(contentsOf: response.items)
             }
             .store(in: cancelBag)
     }

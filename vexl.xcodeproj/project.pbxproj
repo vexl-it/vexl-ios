@@ -101,6 +101,8 @@
 		F13B266528192BBF0011F2FB /* OfferInitialData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F13B266428192BBF0011F2FB /* OfferInitialData.swift */; };
 		F13B266928194A060011F2FB /* OffersRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F13B266828194A060011F2FB /* OffersRouter.swift */; };
 		F13B266D281C8FC80011F2FB /* EncryptionError.swift in Sources */ = {isa = PBXBuildFile; fileRef = F13B266C281C8FC80011F2FB /* EncryptionError.swift */; };
+		F13B266F281D4A510011F2FB /* Paged.swift in Sources */ = {isa = PBXBuildFile; fileRef = F13B266E281D4A510011F2FB /* Paged.swift */; };
+		F13B2671281D4AB00011F2FB /* ContactKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = F13B2670281D4AB00011F2FB /* ContactKey.swift */; };
 		F14D29C727BFD93C00D1CD85 /* ButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = F14D29C627BFD93C00D1CD85 /* ButtonStyle.swift */; };
 		F14D29C927BFEA1400D1CD85 /* OnboardingView+Presentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F14D29C827BFEA1400D1CD85 /* OnboardingView+Presentation.swift */; };
 		F151A29027C80708000D7242 /* RegisterPhoneView+PhoneInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = F151A28F27C80708000D7242 /* RegisterPhoneView+PhoneInput.swift */; };
@@ -319,6 +321,8 @@
 		F13B266428192BBF0011F2FB /* OfferInitialData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferInitialData.swift; sourceTree = "<group>"; };
 		F13B266828194A060011F2FB /* OffersRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OffersRouter.swift; sourceTree = "<group>"; };
 		F13B266C281C8FC80011F2FB /* EncryptionError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptionError.swift; sourceTree = "<group>"; };
+		F13B266E281D4A510011F2FB /* Paged.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Paged.swift; sourceTree = "<group>"; };
+		F13B2670281D4AB00011F2FB /* ContactKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactKey.swift; sourceTree = "<group>"; };
 		F14D29C627BFD93C00D1CD85 /* ButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonStyle.swift; sourceTree = "<group>"; };
 		F14D29C827BFEA1400D1CD85 /* OnboardingView+Presentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OnboardingView+Presentation.swift"; sourceTree = "<group>"; };
 		F151A28F27C80708000D7242 /* RegisterPhoneView+PhoneInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RegisterPhoneView+PhoneInput.swift"; sourceTree = "<group>"; };
@@ -978,6 +982,7 @@
 				F13B266328192BAC0011F2FB /* Offers */,
 				F1A9453E27F811CA009B5AE3 /* Contacts */,
 				F175AB8327E4CC04000DAB15 /* Users */,
+				F13B266E281D4A510011F2FB /* Paged.swift */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -1144,6 +1149,7 @@
 				F1A9454127F81200009B5AE3 /* ContactsImported.swift */,
 				F1A9454327F81211009B5AE3 /* ContactsAvailable.swift */,
 				F1BFA8CF27FB31E800F4E745 /* FacebookUserData.swift */,
+				F13B2670281D4AB00011F2FB /* ContactKey.swift */,
 			);
 			path = Contacts;
 			sourceTree = "<group>";
@@ -1589,6 +1595,7 @@
 				F1C6D09E27BDDD4C009BD506 /* TextStyle.swift in Sources */,
 				F188627528169A3700659786 /* MarketplaceSegmentView.swift in Sources */,
 				B08F393627AE7112008B344F /* UIDevice+.swift in Sources */,
+				F13B266F281D4A510011F2FB /* Paged.swift in Sources */,
 				F151A29227C807DD000D7242 /* RegisterPhoneView+CodeInput.swift in Sources */,
 				B08F392627AE7112008B344F /* R.generated.swift in Sources */,
 				F1042BA527BEF0360048C2F0 /* OnboardingView+PageControl.swift in Sources */,
@@ -1623,6 +1630,7 @@
 				F1042BA227BEADB70048C2F0 /* WelcomeView+Agreement.swift in Sources */,
 				F1BFA9712804321900F4E745 /* LineDivider.swift in Sources */,
 				B08F394D27AE7112008B344F /* AppCoordinator.swift in Sources */,
+				F13B2671281D4AB00011F2FB /* ContactKey.swift in Sources */,
 				F188620628083A5400659786 /* HomeWindowCoordinator.swift in Sources */,
 				F175ABA227F4A8F8000DAB15 /* UserAvailable.swift in Sources */,
 				B0E9BB322815D2B60012BF1D /* CryptographicError.swift in Sources */,
