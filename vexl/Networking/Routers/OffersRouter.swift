@@ -9,7 +9,7 @@ import Foundation
 import Alamofire
 
 enum OffersRouter: ApiRouter {
-    case createOffer
+    case createOffer(offer: [EncryptedOffer])
 
     var method: HTTPMethod {
         switch self {
@@ -19,7 +19,7 @@ enum OffersRouter: ApiRouter {
     }
 
     var additionalHeaders: [Header] {
-        return securityHeader
+        securityHeader
     }
 
     var path: String {
@@ -31,8 +31,8 @@ enum OffersRouter: ApiRouter {
 
     var parameters: Parameters {
         switch self {
-        case .createOffer:
-            return [:]
+        case let .createOffer(offer):
+            return ["offerPrivateList": offer]
         }
     }
 
@@ -44,4 +44,3 @@ enum OffersRouter: ApiRouter {
         Constants.API.offersBaseURLString
     }
 }
-

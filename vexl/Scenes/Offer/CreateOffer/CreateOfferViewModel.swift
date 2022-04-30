@@ -87,6 +87,7 @@ final class CreateOfferViewModel: ViewModelType, ObservableObject {
         setupActivity()
         setupDataBindings()
         setupBindings()
+        setupCreateOfferBinding()
     }
 
     private func setupActivity() {
@@ -181,20 +182,56 @@ final class CreateOfferViewModel: ViewModelType, ObservableObject {
                 owner.locations = newLocations
             }
             .store(in: cancelBag)
+    }
 
+    private func setupCreateOfferBinding() {
         action
             .share()
             .filter { $0 == .createOffer }
             .withUnretained(self)
-            .sink { owner, _ in
-                print("description: \(owner.description)")
-                print("amount: \(owner.currentAmountRange)")
-                print("fee: \(owner.feeValue ?? 0)")
-                print("location: \(owner.locations)")
-                print("trade style: \(owner.selectedTradeStyleOption)")
-                print("payment type: \(owner.selectedPaymentMethodOptions)")
-                print("friends: \(owner.selectedFriendDegreeOption)")
+            .map { owner, _ in
+                Offer(minAmount: owner.amountRange.lowerBound,
+                      maxAmount: owner.amountRange.upperBound,
+                      description: owner.description,
+                      feeState: owner.selectedFeeOption.rawValue,
+                      feeAmount: owner.feeAmount,
+                      locationState: owner.selectedTradeStyleOption.rawValue,
+                      paymentMethods: owner.selectedPaymentMethodOptions.map(\.rawValue),
+                      btcNetwork: owner.selectedTypeOption.map(\.rawValue),
+                      friendLevel: owner.selectedFriendDegreeOption.rawValue)
+            }
+            .withUnretained(self)
+            .flatMap { owner, offer in
+                owner.offerService
+                    .encryptOffer(withContactKey: owner.contactsPublicKeys.map { $0.publicKey },
+                                  offerKey: ECCKeys(),
+                                  offer: offer)
+                    .track(activity: owner.primaryActivity)
+                    .materialize()
+                    .compactMap(\.value)
+            }
+            .withUnretained(self)
+            .flatMap { owner, encryptedOffer in
+                owner.offerService
+                    .createOffer(encryptedOffers: encryptedOffer)
+                    .track(activity: owner.primaryActivity)
+                    .materialize()
+                    .compactMap(\.value)
+            }
+            .sink { response in
+                print(response)
             }
             .store(in: cancelBag)
+//            .withUnretained(self)
+//            .sink { owner, _ in
+//                print("description: \(owner.description)")
+//                print("amount: \(owner.currentAmountRange)")
+//                print("fee: \(owner.feeValue ?? 0)")
+//                print("location: \(owner.locations)")
+//                print("trade style: \(owner.selectedTradeStyleOption)")
+//                print("payment type: \(owner.selectedPaymentMethodOptions)")
+//                print("friends: \(owner.selectedFriendDegreeOption)")
+//            }
+//            .store(in: cancelBag)
     }
 }

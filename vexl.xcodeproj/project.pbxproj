@@ -103,6 +103,7 @@
 		F13B266D281C8FC80011F2FB /* EncryptionError.swift in Sources */ = {isa = PBXBuildFile; fileRef = F13B266C281C8FC80011F2FB /* EncryptionError.swift */; };
 		F13B266F281D4A510011F2FB /* Paged.swift in Sources */ = {isa = PBXBuildFile; fileRef = F13B266E281D4A510011F2FB /* Paged.swift */; };
 		F13B2671281D4AB00011F2FB /* ContactKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = F13B2670281D4AB00011F2FB /* ContactKey.swift */; };
+		F13B2673281D81060011F2FB /* EncryptedOffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F13B2672281D81060011F2FB /* EncryptedOffer.swift */; };
 		F14D29C727BFD93C00D1CD85 /* ButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = F14D29C627BFD93C00D1CD85 /* ButtonStyle.swift */; };
 		F14D29C927BFEA1400D1CD85 /* OnboardingView+Presentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F14D29C827BFEA1400D1CD85 /* OnboardingView+Presentation.swift */; };
 		F151A29027C80708000D7242 /* RegisterPhoneView+PhoneInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = F151A28F27C80708000D7242 /* RegisterPhoneView+PhoneInput.swift */; };
@@ -323,6 +324,7 @@
 		F13B266C281C8FC80011F2FB /* EncryptionError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptionError.swift; sourceTree = "<group>"; };
 		F13B266E281D4A510011F2FB /* Paged.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Paged.swift; sourceTree = "<group>"; };
 		F13B2670281D4AB00011F2FB /* ContactKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactKey.swift; sourceTree = "<group>"; };
+		F13B2672281D81060011F2FB /* EncryptedOffer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptedOffer.swift; sourceTree = "<group>"; };
 		F14D29C627BFD93C00D1CD85 /* ButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonStyle.swift; sourceTree = "<group>"; };
 		F14D29C827BFEA1400D1CD85 /* OnboardingView+Presentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OnboardingView+Presentation.swift"; sourceTree = "<group>"; };
 		F151A28F27C80708000D7242 /* RegisterPhoneView+PhoneInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RegisterPhoneView+PhoneInput.swift"; sourceTree = "<group>"; };
@@ -933,6 +935,7 @@
 			isa = PBXGroup;
 			children = (
 				F13B266428192BBF0011F2FB /* OfferInitialData.swift */,
+				F13B2672281D81060011F2FB /* EncryptedOffer.swift */,
 			);
 			path = Offers;
 			sourceTree = "<group>";
@@ -1619,6 +1622,7 @@
 				F175AB9D27F147B5000DAB15 /* ContactsManager.swift in Sources */,
 				B08F392027AE7112008B344F /* UserDefaultsConfig.swift in Sources */,
 				B08F397627AE7112008B344F /* Error+.swift in Sources */,
+				F13B2673281D81060011F2FB /* EncryptedOffer.swift in Sources */,
 				F188627928169A7400659786 /* MarketplaceView.swift in Sources */,
 				B08F397C27AE7112008B344F /* SwipeNavigationController.swift in Sources */,
 				F13B265728183AA90011F2FB /* MultipleOptionPickerView.swift in Sources */,
