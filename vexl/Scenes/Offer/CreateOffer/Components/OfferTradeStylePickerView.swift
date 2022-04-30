@@ -26,9 +26,9 @@ struct OfferTradeStylePickerView: View {
 }
 
 extension OfferTradeStylePickerView {
-    enum Option {
-        case online
-        case personal
+    enum Option: String {
+        case online = "ONLINE_OK"
+        case personal = "ONLY_IN_PERSON"
 
         var title: String {
             switch self {

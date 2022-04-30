@@ -14,6 +14,7 @@ import FBSDKLoginKit
 protocol ContactsManagerType {
     var availablePhoneContacts: [ContactInformation] { get }
     var availableFacebookContacts: [ContactInformation] { get }
+    var encryptedContacts: [String] { get }
 
     func fetchPhoneContacts() -> [ContactInformation]
     func getActivePhoneContacts(_ contacts: [String]) -> AnyPublisher<[ContactInformation], Error>
@@ -33,6 +34,8 @@ final class ContactsManager: ContactsManagerType {
 
     private var userFacebookContacts: [ContactInformation] = []
     private(set) var availableFacebookContacts: [ContactInformation] = []
+
+    private(set) var encryptedContacts: [String] = []
 
     func fetchPhoneContacts() -> [ContactInformation] {
         var contacts = [ContactInformation]()
@@ -105,6 +108,26 @@ final class ContactsManager: ContactsManagerType {
                 owner.availableFacebookContacts = owner.userFacebookContacts.filter { friends.contains($0.sourceIdentifier) }
             })
             .map(\.0.availableFacebookContacts)
+            .eraseToAnyPublisher()
+    }
+
+    func fetchAllContactsKeys() -> AnyPublisher<[String], Error> {
+        let phoneContacts = contactsService
+            .getContacts(fromFacebook: false)
+            .withUnretained(self)
+            .handleEvents(receiveOutput: { owner, response in
+                owner.encryptedContacts.append(contentsOf: response)
+            })
+
+        return phoneContacts
+            .flatMap { owner, _ in
+                owner.contactsService.getContacts(fromFacebook: true)
+            }
+            .withUnretained(self)
+            .handleEvents(receiveOutput: { owner, response in
+                owner.encryptedContacts.append(contentsOf: response)
+            })
+            .map(\.0.encryptedContacts)
             .eraseToAnyPublisher()
     }
 }

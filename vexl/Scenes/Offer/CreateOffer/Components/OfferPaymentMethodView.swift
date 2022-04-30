@@ -38,10 +38,10 @@ struct OfferPaymentMethodView: View {
 }
 
 extension OfferPaymentMethodView {
-    enum Option {
-        case cash
-        case revolut
-        case bank
+    enum Option: String {
+        case cash = "CASH"
+        case revolut = "REVOLUT"
+        case bank = "BANK"
 
         var title: String {
             switch self {

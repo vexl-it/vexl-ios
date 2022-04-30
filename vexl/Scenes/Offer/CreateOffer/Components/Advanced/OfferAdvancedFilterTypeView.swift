@@ -37,8 +37,9 @@ struct OfferAdvancedFilterTypeView: View {
 }
 
 extension OfferAdvancedFilterTypeView {
-    enum Option {
-        case lightning, onChain
+    enum Option: String {
+        case lightning = "LIGHTING"
+        case onChain = "ON_CHAIN"
 
         var title: String {
             switch self {
