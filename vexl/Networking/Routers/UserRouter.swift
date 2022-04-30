@@ -17,14 +17,12 @@ enum UserRouter: ApiRouter {
     case validateChallenge(signature: String, key: String)
     case facebookSignature(id: String)
     case validateUsername(username: String)
-    case temporalGenerateKeys // TODO: - Remove this endpoint after the C library is implemented.
-    case temporalSignature(challenge: String, privateKey: String) // TODO: - Remove this endpoint after the C library is implemented.
 
     var method: HTTPMethod {
         switch self {
-        case .me, .temporalGenerateKeys, .facebookSignature:
+        case .me, .facebookSignature:
             return .get
-        case .createUser, .confirmPhone, .validateCode, .temporalSignature, .validateChallenge, .validateUsername:
+        case .createUser, .confirmPhone, .validateCode, .validateChallenge, .validateUsername:
             return .post
         }
     }
@@ -54,20 +52,13 @@ enum UserRouter: ApiRouter {
             return "user/confirmation/challenge"
         case let .facebookSignature(id):
             return "user/signature/\(id)"
-        case .temporalGenerateKeys:
-            return "temp/key-pairs"
-        case .temporalSignature:
-            return "temp/signature"
         }
     }
 
     var parameters: Parameters {
         switch self {
-        case .me, .facebookSignature, .temporalGenerateKeys:
+        case .me, .facebookSignature:
             return [:]
-        case let .temporalSignature(challenge, privateKey):
-            return ["challenge": challenge,
-                    "privateKey": privateKey]
         case let .createUser(username, avatar, imageExtension):
             guard let avatar = avatar else {
                 return ["username": username]
