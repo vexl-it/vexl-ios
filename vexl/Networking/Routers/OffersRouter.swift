@@ -10,9 +10,12 @@ import Alamofire
 
 enum OffersRouter: ApiRouter {
     case createOffer(offer: [EncryptedOffer])
+    case getOffers
 
     var method: HTTPMethod {
         switch self {
+        case .getOffers:
+            return .get
         case .createOffer:
             return .post
         }
@@ -24,6 +27,8 @@ enum OffersRouter: ApiRouter {
 
     var path: String {
         switch self {
+        case .getOffers:
+            return "offers/me"
         case .createOffer:
             return "offers"
         }
@@ -31,6 +36,8 @@ enum OffersRouter: ApiRouter {
 
     var parameters: Parameters {
         switch self {
+        case .getOffers:
+            return [:]
         case let .createOffer(offer):
             let offers = offer.map { $0.asJson }
             return ["offerPrivateList": offers]

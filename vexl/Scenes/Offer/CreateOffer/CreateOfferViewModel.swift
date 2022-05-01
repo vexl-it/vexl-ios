@@ -185,8 +185,8 @@ final class CreateOfferViewModel: ViewModelType, ObservableObject {
             .store(in: cancelBag)
     }
 
+    // swiftlint: disable function_body_length
     private func setupCreateOfferBinding() {
-
         let fetchContacts = action
             .share()
             .filter { $0 == .createOffer }
@@ -241,7 +241,7 @@ final class CreateOfferViewModel: ViewModelType, ObservableObject {
             .withUnretained(self)
             .flatMap { owner, response in
                 owner.offerService
-                    .storeOfferKey(key: owner.offerKey, withId: response.id)
+                    .storeOfferKey(key: owner.offerKey, withId: response.offerId)
                     .track(activity: owner.primaryActivity)
                     .materialize()
                     .compactMap(\.value)

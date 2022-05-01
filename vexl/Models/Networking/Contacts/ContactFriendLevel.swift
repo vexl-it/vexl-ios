@@ -8,7 +8,7 @@
 import Foundation
 
 enum ContactFriendLevel: String {
-    case first = "first"
-    case second = "second"
-    case all = "all"
+    case first
+    case second
+    case all
 }

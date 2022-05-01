@@ -7,12 +7,6 @@
 
 import Foundation
 
-struct CreatedOffer: Codable {
-    let id: String
-    let createdAt: Date
-    let modifiedAt: Date
-}
-
 struct EncryptedOfferList: Codable {
     let offerPrivateList: [EncryptedOffer]
 
