@@ -37,7 +37,7 @@ struct EncryptedOffer: Codable {
     let offerType: String
 
     init(userPublicKey: String,
-         location: [String] = [],
+         location: [String],
          offerPublicKey: String,
          offerDescription: String,
          amountTopLimit: String,
@@ -62,5 +62,23 @@ struct EncryptedOffer: Codable {
         self.btcNetwork = btcNetwork
         self.friendLevel = friendLevel
         self.offerType = offerType
+    }
+
+    var asJson: [String: Any] {
+        [
+            "userPublicKey": userPublicKey,
+            "location": location,
+            "offerPublicKey": offerPublicKey,
+            "offerDescription": offerDescription,
+            "amountTopLimit": amountTopLimit,
+            "amountBottomLimit": amountBottomLimit,
+            "feeState": feeState,
+            "feeAmount": feeAmount,
+            "locationState": locationState,
+            "paymentMethod": paymentMethod,
+            "btcNetwork": btcNetwork,
+            "friendLevel": friendLevel,
+            "offerType": offerType
+        ]
     }
 }

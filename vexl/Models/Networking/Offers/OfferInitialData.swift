@@ -18,9 +18,9 @@ struct OfferInitialData {
 
     static var defaultValues: OfferInitialData {
         OfferInitialData(minOffer: 0,
-                  maxOffer: 100_000,
-                  minFee: 1,
-                  maxFee: 25,
-                  currencySymbol: "$")
+                         maxOffer: 100_000,
+                         minFee: 1,
+                         maxFee: 25,
+                         currencySymbol: "$")
     }
 }

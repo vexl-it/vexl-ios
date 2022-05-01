@@ -36,7 +36,7 @@ protocol OfferServiceType {
     func getInitialOfferData() -> AnyPublisher<OfferInitialData, Error>
     func generateOfferKeyPair() -> AnyPublisher<ECCKeys, Never>
     func encryptOffer(withContactKey publicKeys: [String], offerKey: ECCKeys, offer: Offer) -> AnyPublisher<[EncryptedOffer], Error>
-    func encryptOffer(withContactKey publicKeys: [String], offerKey: ECCKeys, offer: Offer) -> [EncryptedOffer]
+//    func encryptOffer(withContactKey publicKeys: [String], offerKey: ECCKeys, offer: Offer) -> [EncryptedOffer]
     func createOffer(encryptedOffers: [EncryptedOffer]) -> AnyPublisher<CreatedOffer, Error>
 }
 
@@ -111,7 +111,7 @@ final class OfferService: BaseService, OfferServiceType {
             return []
         }
     }
-    
+
     func encryptOffer(withContactKey publicKeys: [String],
                       offerKey: ECCKeys,
                       offer: Offer) -> AnyPublisher<[EncryptedOffer], Error> {

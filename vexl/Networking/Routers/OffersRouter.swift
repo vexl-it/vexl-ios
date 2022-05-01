@@ -32,7 +32,8 @@ enum OffersRouter: ApiRouter {
     var parameters: Parameters {
         switch self {
         case let .createOffer(offer):
-            return ["offerPrivateList": offer]
+            let offers = offer.map { $0.asJson }
+            return ["offerPrivateList": offers]
         }
     }
 

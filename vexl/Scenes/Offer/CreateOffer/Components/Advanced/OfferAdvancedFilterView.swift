@@ -11,7 +11,7 @@ struct OfferAdvancedFilterView: View {
 
     @Binding var selectedTypeOptions: [OfferAdvancedTypeOption]
     @Binding var selectedFriendDegreeOption: OfferAdvancedFriendDegreeOption
-    @State private var isExpanded = false
+    @State private var isExpanded = true
 
     var body: some View {
         VStack {
