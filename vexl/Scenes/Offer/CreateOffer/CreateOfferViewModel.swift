@@ -227,6 +227,7 @@ final class CreateOfferViewModel: ViewModelType, ObservableObject {
                 contacts.append(ContactKey(publicKey: owner.userSecurity.userKeys.publicKey))
                 return OfferData(offer: offer, contacts: contacts)
             }
+            .subscribe(on: DispatchQueue.global(qos: .background))
             .withUnretained(self)
             .flatMap { owner, offerData in
                 owner.offerService
@@ -257,6 +258,7 @@ final class CreateOfferViewModel: ViewModelType, ObservableObject {
                     .materialize()
                     .compactMap(\.value)
             }
+            .subscribe(on: RunLoop.main)
             .sink { _ in }
             .store(in: cancelBag)
     }
