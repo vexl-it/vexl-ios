@@ -26,8 +26,11 @@ final class CreateOfferCoordinator: BaseCoordinator<RouterResult<Void>> {
             .assign(to: &viewController.$error)
 
         viewModel
-            .$isLoading
-            .assign(to: &viewController.$isLoading)
+            .$state
+            .sink { state in
+                viewController.isLoading = state != .loaded
+            }
+            .store(in: cancelBag)
 
         router.present(viewController, animated: true)
 

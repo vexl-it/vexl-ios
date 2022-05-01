@@ -19,7 +19,7 @@ struct CreateOfferView: View {
             }
 
             ScrollView(showsIndicators: false) {
-                if !viewModel.isLoadingData {
+                if viewModel.state != .initial {
 
                     OfferStatusView(pauseAction: {
                         viewModel.action.send(.pause)

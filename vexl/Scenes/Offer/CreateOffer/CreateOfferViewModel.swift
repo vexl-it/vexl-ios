@@ -13,13 +13,6 @@ final class CreateOfferViewModel: ViewModelType, ObservableObject {
 
     typealias OfferData = (offer: Offer, contacts: [ContactKey])
 
-    @Inject var userSecurity: UserSecurityType
-    @Inject var offerService: OfferServiceType
-    @Inject var contactsMananger: ContactsManagerType
-    @Inject var contactsService: ContactsServiceType
-
-    // MARK: - Action Binding
-
     enum UserAction: Equatable {
         case pause
         case delete
@@ -28,6 +21,19 @@ final class CreateOfferViewModel: ViewModelType, ObservableObject {
         case dismissTap
         case createOffer
     }
+    
+    enum State {
+        case initial
+        case loaded
+        case loading
+    }
+
+    @Inject var userSecurity: UserSecurityType
+    @Inject var offerService: OfferServiceType
+    @Inject var contactsMananger: ContactsManagerType
+    @Inject var contactsService: ContactsServiceType
+
+    // MARK: - Action Binding
 
     let action: ActionSubject<UserAction> = .init()
 
@@ -58,8 +64,7 @@ final class CreateOfferViewModel: ViewModelType, ObservableObject {
     @Published var selectedFriendDegreeOption: OfferAdvancedFriendDegreeOption = .firstDegree
     @Published var selectedTypeOption: [OfferAdvancedTypeOption] = []
 
-    @Published var isLoadingData = false
-    @Published var isLoading = false
+    @Published var state: State = .initial
     @Published var error: Error?
 
     // MARK: - Coordinator Bindings
@@ -105,7 +110,14 @@ final class CreateOfferViewModel: ViewModelType, ObservableObject {
     private func setupActivity() {
         activityIndicator
             .loading
-            .assign(to: &$isLoading)
+            .withUnretained(self)
+            .sink { owner, isLoading in
+                guard owner.state != .initial else {
+                    return
+                }
+                owner.state = isLoading ? .loading : .loaded
+            }
+            .store(in: cancelBag)
 
         errorIndicator
             .errors
@@ -116,7 +128,6 @@ final class CreateOfferViewModel: ViewModelType, ObservableObject {
     // MARK: - Bindings
 
     private func setupDataBindings() {
-        isLoadingData = true
         offerService
             .getInitialOfferData()
             .track(activity: primaryActivity)
@@ -124,7 +135,7 @@ final class CreateOfferViewModel: ViewModelType, ObservableObject {
             .compactMap(\.value)
             .withUnretained(self)
             .sink { owner, data in
-                owner.isLoadingData = false
+                owner.state = .loaded
                 owner.amountRange = data.minOffer...data.maxOffer
                 owner.currentAmountRange = data.minOffer...data.maxOffer
                 owner.minFee = data.minFee
