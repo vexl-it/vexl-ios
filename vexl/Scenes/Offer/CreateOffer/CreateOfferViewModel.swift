@@ -11,6 +11,9 @@ import SwiftUI
 
 final class CreateOfferViewModel: ViewModelType, ObservableObject {
 
+    typealias OfferData = (offer: Offer, contacts: [ContactKey])
+
+    @Inject var userSecurity: UserSecurityType
     @Inject var offerService: OfferServiceType
     @Inject var contactsMananger: ContactsManagerType
     @Inject var contactsService: ContactsServiceType
@@ -69,7 +72,6 @@ final class CreateOfferViewModel: ViewModelType, ObservableObject {
 
     // MARK: - Variables
 
-    private var contactsPublicKeys: [ContactKey] = []
     private let cancelBag: CancelBag = .init()
 
     var minFee: Double = 0
@@ -78,7 +80,16 @@ final class CreateOfferViewModel: ViewModelType, ObservableObject {
         guard selectedFeeOption == .withFee else {
             return nil
         }
-        return Int((maxFee - minFee) * feeAmount)
+        return Int(((maxFee - minFee) * feeAmount) + minFee)
+    }
+
+    private var friendLevel: ContactFriendLevel {
+        switch selectedFriendDegreeOption {
+        case .firstDegree:
+            return .first
+        case .secondDegree:
+            return .second
+        }
     }
 
     var currencySymbol = ""
@@ -119,17 +130,6 @@ final class CreateOfferViewModel: ViewModelType, ObservableObject {
                 owner.minFee = data.minFee
                 owner.maxFee = data.maxFee
                 owner.currencySymbol = data.currencySymbol
-            }
-            .store(in: cancelBag)
-
-        contactsService
-            .getContacts(fromFacebook: false)
-            .track(activity: primaryActivity)
-            .materialize()
-            .compactMap(\.value)
-            .withUnretained(self)
-            .sink { owner, response in
-                owner.contactsPublicKeys.append(contentsOf: response.items)
             }
             .store(in: cancelBag)
     }
@@ -186,31 +186,48 @@ final class CreateOfferViewModel: ViewModelType, ObservableObject {
     }
 
     private func setupCreateOfferBinding() {
-        action
+
+        let fetchContacts = action
             .share()
             .filter { $0 == .createOffer }
             .withUnretained(self)
-            .map { owner, _ in
-                Offer(minAmount: owner.currentAmountRange.lowerBound,
-                      maxAmount: owner.currentAmountRange.upperBound,
-                      description: owner.description,
-                      feeState: owner.selectedFeeOption.rawValue,
-                      feeAmount: owner.feeAmount,
-                      locationState: owner.selectedTradeStyleOption.rawValue,
-                      paymentMethods: owner.selectedPaymentMethodOptions.map(\.rawValue),
-                      btcNetwork: owner.selectedTypeOption.map(\.rawValue),
-                      friendLevel: owner.selectedFriendDegreeOption.rawValue)
-            }
-            .withUnretained(self)
-            .flatMap { owner, offer in
-                owner.offerService
-                    .encryptOffer(withContactKey: owner.contactsPublicKeys.map(\.publicKey),
-                                  offerKey: owner.offerKey,
-                                  offer: offer)
+            .flatMap { owner, _ in
+                owner.contactsService
+                    .getContacts(fromFacebook: false, friendLevel: owner.friendLevel)
                     .track(activity: owner.primaryActivity)
                     .materialize()
                     .compactMap(\.value)
             }
+
+        let encryptOffer = fetchContacts
+            .withUnretained(self)
+            .map { owner, contacts -> OfferData in
+                let offer = Offer(minAmount: owner.currentAmountRange.lowerBound,
+                                  maxAmount: owner.currentAmountRange.upperBound,
+                                  description: owner.description,
+                                  feeState: owner.selectedFeeOption.rawValue,
+                                  feeAmount: owner.feeAmount,
+                                  locationState: owner.selectedTradeStyleOption.rawValue,
+                                  paymentMethods: owner.selectedPaymentMethodOptions.map(\.rawValue),
+                                  btcNetwork: owner.selectedTypeOption.map(\.rawValue),
+                                  friendLevel: owner.selectedFriendDegreeOption.rawValue,
+                                  type: .sell)
+                var contacts = contacts.items
+                contacts.append(ContactKey(publicKey: owner.userSecurity.userKeys.publicKey))
+                return OfferData(offer: offer, contacts: contacts)
+            }
+            .withUnretained(self)
+            .flatMap { owner, offerData in
+                owner.offerService
+                    .encryptOffer(withContactKey: offerData.contacts.map(\.publicKey),
+                                  offerKey: owner.offerKey,
+                                  offer: offerData.offer)
+                    .track(activity: owner.primaryActivity)
+                    .materialize()
+                    .compactMap(\.value)
+            }
+
+        let createOffer = encryptOffer
             .withUnretained(self)
             .flatMap { owner, encryptedOffer in
                 owner.offerService
@@ -219,9 +236,17 @@ final class CreateOfferViewModel: ViewModelType, ObservableObject {
                     .materialize()
                     .compactMap(\.value)
             }
-            .sink { response in
-                print(response)
+
+        createOffer
+            .withUnretained(self)
+            .flatMap { owner, response in
+                owner.offerService
+                    .storeOfferKey(key: owner.offerKey, withId: response.id)
+                    .track(activity: owner.primaryActivity)
+                    .materialize()
+                    .compactMap(\.value)
             }
+            .sink { _ in }
             .store(in: cancelBag)
     }
 }

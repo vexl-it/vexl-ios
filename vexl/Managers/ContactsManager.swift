@@ -111,10 +111,10 @@ final class ContactsManager: ContactsManagerType {
 
     func fetchAllContactsKeys() -> AnyPublisher<[ContactKey], Error> {
         contactsService
-            .getContacts(fromFacebook: false)
+            .getContacts(fromFacebook: false, friendLevel: .all)
             .withUnretained(self)
             .flatMap { owner, _ in
-                owner.contactsService.getContacts(fromFacebook: true)
+                owner.contactsService.getContacts(fromFacebook: true, friendLevel: .all)
             }
             .withUnretained(self)
             .map { _ in [] }

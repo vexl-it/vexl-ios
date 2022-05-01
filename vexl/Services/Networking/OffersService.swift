@@ -9,6 +9,12 @@ import Foundation
 import Combine
 
 struct Offer {
+    
+    enum `Type`: String {
+        case sell = "SELL"
+        case buy = "BUY"
+    }
+    
     let minAmount: Int
     let maxAmount: Int
     let description: String
@@ -18,6 +24,7 @@ struct Offer {
     let paymentMethods: [String]
     let btcNetwork: [String]
     let friendLevel: String
+    let type: `Type`
 
     var minAmountString: String {
         "\(minAmount)"
@@ -38,6 +45,7 @@ protocol OfferServiceType {
     func encryptOffer(withContactKey publicKeys: [String], offerKey: ECCKeys, offer: Offer) -> AnyPublisher<[EncryptedOffer], Error>
 //    func encryptOffer(withContactKey publicKeys: [String], offerKey: ECCKeys, offer: Offer) -> [EncryptedOffer]
     func createOffer(encryptedOffers: [EncryptedOffer]) -> AnyPublisher<CreatedOffer, Error>
+    func storeOfferKey(key: ECCKeys, withId id: String) -> AnyPublisher<Void, Error>
 }
 
 final class OfferService: BaseService, OfferServiceType {
@@ -129,7 +137,7 @@ final class OfferService: BaseService, OfferServiceType {
                     var paymentMethods: [String] = []
                     var btcNetwork: [String] = []
                     let friendLevel = try offer.friendLevel.ecc.encrypt(publicKey: contactPublicKey)
-                    let offerType = try "SELL".ecc.encrypt(publicKey: contactPublicKey)
+                    let offerType = try offer.type.rawValue.ecc.encrypt(publicKey: contactPublicKey)
 
                     offer.paymentMethods.forEach { method in
                         if let encrypted = try? method.ecc.encrypt(publicKey: contactPublicKey) {
@@ -173,5 +181,12 @@ final class OfferService: BaseService, OfferServiceType {
     func createOffer(encryptedOffers: [EncryptedOffer]) -> AnyPublisher<CreatedOffer, Error> {
         request(type: CreatedOffer.self, endpoint: OffersRouter.createOffer(offer: encryptedOffers))
             .eraseToAnyPublisher()
+    }
+
+    func storeOfferKey(key: ECCKeys, withId id: String) -> AnyPublisher<Void, Error> {
+        Future { promise in
+            promise(.success(()))
+        }
+        .eraseToAnyPublisher()
     }
 }
