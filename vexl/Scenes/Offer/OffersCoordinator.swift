@@ -43,7 +43,14 @@ final class OffersCoordinator: BaseCoordinator<RouterResult<Void>> {
                 let modalRouter = ModalRouter(parentViewController: viewController, presentationStyle: .fullScreen)
                 return owner.showCreateOffer(router: modalRouter)
             }
-            .sink { _ in }
+            .sink { result in
+                switch result {
+                case .finished:
+                    viewModel.refreshOffers()
+                default:
+                    break
+                }
+            }
             .store(in: cancelBag)
 
         let dismiss = viewModel

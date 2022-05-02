@@ -71,6 +71,7 @@ final class CreateOfferViewModel: ViewModelType, ObservableObject {
 
     enum Route: Equatable {
         case dismissTapped
+        case offerCreated
     }
 
     var route: CoordinatingSubject<Route> = .init()
@@ -262,8 +263,9 @@ final class CreateOfferViewModel: ViewModelType, ObservableObject {
                     .compactMap(\.value)
             }
             .subscribe(on: RunLoop.main)
-            .sink { _ in
-                // TODO: - Return to previous Scene and request a refresh
+            .withUnretained(self)
+            .sink { owner, _ in
+                owner.route.send(.offerCreated)
             }
             .store(in: cancelBag)
     }

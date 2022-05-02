@@ -32,6 +32,11 @@ final class CreateOfferCoordinator: BaseCoordinator<RouterResult<Void>> {
             }
             .store(in: cancelBag)
 
+        let finished = viewModel
+            .route
+            .filter { $0 == .offerCreated }
+            .map { _ -> RouterResult<Void> in .finished(()) }
+
         router.present(viewController, animated: true)
 
         let dismiss = viewModel
@@ -42,7 +47,7 @@ final class CreateOfferCoordinator: BaseCoordinator<RouterResult<Void>> {
         let dismissByRouter = viewController.dismissPublisher
             .map { _ in RouterResult<Void>.dismissedByRouter }
 
-        return Publishers.Merge(dismiss, dismissByRouter)
+        return Publishers.Merge3(dismiss, dismissByRouter, finished)
             .receive(on: RunLoop.main)
             .eraseToAnyPublisher()
     }

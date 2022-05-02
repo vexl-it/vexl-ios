@@ -79,6 +79,28 @@ final class OffersViewModel: ViewModelType, ObservableObject {
     }
 
     private func setupDataBindings() {
+        fetchOffers()
+    }
+
+    private func setupActionBindings() {
+        action
+            .filter { $0 == .createOfferTap }
+            .withUnretained(self)
+            .sink { owner, _ in
+                owner.route.send(.createOfferTapped)
+            }
+            .store(in: cancelBag)
+
+        action
+            .filter { $0 == .dismissTap }
+            .withUnretained(self)
+            .sink { owner, _ in
+                owner.route.send(.dismissTapped)
+            }
+            .store(in: cancelBag)
+    }
+
+    private func fetchOffers() {
         offerService
             .getOffer()
             .track(activity: primaryActivity)
@@ -98,22 +120,8 @@ final class OffersViewModel: ViewModelType, ObservableObject {
             }
             .store(in: cancelBag)
     }
-
-    private func setupActionBindings() {
-        action
-            .filter { $0 == .createOfferTap }
-            .withUnretained(self)
-            .sink { owner, _ in
-                owner.route.send(.createOfferTapped)
-            }
-            .store(in: cancelBag)
-
-        action
-            .filter { $0 == .dismissTap }
-            .withUnretained(self)
-            .sink { owner, _ in
-                owner.route.send(.dismissTapped)
-            }
-            .store(in: cancelBag)
+    
+    func refreshOffers() {
+        fetchOffers()
     }
 }

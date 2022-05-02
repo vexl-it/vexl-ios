@@ -67,7 +67,7 @@ struct SellOfferItemView: View {
 
                 Divider()
 
-                Text("No Location")
+                Text(L.offerSellNoLocation())
                     .multilineTextAlignment(.center)
                     .textStyle(.description)
                     .foregroundColor(Appearance.Colors.gray2)
