@@ -26,6 +26,13 @@ struct OffersView: View {
             })
 
             Spacer()
+
+            ScrollView(showsIndicators: false) {
+                ForEach(viewModel.offerItems, id: \.self) { offerData in
+                    SellOfferItemView(data: offerData)
+                        .padding(.horizontal, Appearance.GridGuide.point)
+                }
+            }
         }
         .background(Color.black.edgesIgnoringSafeArea(.all))
     }

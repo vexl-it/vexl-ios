@@ -24,6 +24,8 @@ final class OffersViewModel: ViewModelType, ObservableObject {
 
     // MARK: - View Bindings
 
+    @Published var userOffers: [Offer] = []
+
     @Published var primaryActivity: Activity = .init()
     var errorIndicator: ErrorIndicator {
         primaryActivity.error
@@ -48,6 +50,15 @@ final class OffersViewModel: ViewModelType, ObservableObject {
 
     private let cancelBag: CancelBag = .init()
     private let userOfferKeys: UserOfferKeys?
+    var offerItems: [SellOfferViewData] {
+        userOffers.map { offer in
+            SellOfferViewData(id: offer.offerId,
+                              description: offer.description,
+                              minAmount: offer.minAmount,
+                              maxAmount: offer.maxAmount,
+                              paymentMethods: offer.paymentMethods.map(\.title))
+        }
+    }
 
     init() {
         self.userOfferKeys = UserDefaults.standard.codable(forKey: .storedOfferKeys)
@@ -76,19 +87,14 @@ final class OffersViewModel: ViewModelType, ObservableObject {
             .map(\.items)
             .withUnretained(self)
             .sink { owner, items in
-                guard let userOfferKeys = owner.userOfferKeys else {
-                    return
-                }
-
+                var offers: [Offer] = []
                 for item in items {
-                    let id = item.offerId
-
-                    if let keys = userOfferKeys.keys.first(where: { $0.id == id }) {
-                        let offer = try? Offer(encryptedOffer: item,
-                                               offerKey: owner.userSecurity.userKeys)
-                        print(offer)
+                    if let offer = try? Offer(encryptedOffer: item,
+                                              offerKey: owner.userSecurity.userKeys) {
+                        offers.append(offer)
                     }
                 }
+                owner.userOffers = offers
             }
             .store(in: cancelBag)
     }

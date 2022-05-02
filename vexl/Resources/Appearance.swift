@@ -25,6 +25,7 @@ struct Appearance {
         static let gray3 = Color(R.color.gray3.name)
         static let gray4 = Color(R.color.gray4.name)
         static let gray5 = Color(R.color.gray5.name)
+        static let gray6 = Color(R.color.gray6.name)
         static let green1 = Color(R.color.green1.name)
         static let green4 = Color(R.color.green4.name)
         static let green5 = Color(R.color.green5.name)

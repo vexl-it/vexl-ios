@@ -17,6 +17,7 @@ struct Offer {
     // TODO: - add offer key
 
     let offerId: String
+    let offerPublicKey: String
 
     let minAmount: Int
     let maxAmount: Int
@@ -55,6 +56,7 @@ struct Offer {
         self.offerId = ""
         self.createdAt = ""
         self.modifiedAt = ""
+        self.offerPublicKey = ""
     }
 
     // swiftlint: disable function_body_length
@@ -68,6 +70,7 @@ struct Offer {
             let locationStateString = try encryptedOffer.locationState.ecc.decrypt(keys: offerKey)
             let friendLevelString = try encryptedOffer.friendLevel.ecc.decrypt(keys: offerKey)
             let offerTypeString = try encryptedOffer.offerType.ecc.decrypt(keys: offerKey)
+            let offerPublicKey = try encryptedOffer.offerPublicKey.ecc.decrypt(keys: offerKey)
 
             var paymentMethodList: [String] = []
             var btcNetworkList: [String] = []
@@ -127,6 +130,7 @@ struct Offer {
             self.minAmount = minAmount
             self.maxAmount = maxAmount
             self.feeAmount = feeAmount
+            self.offerPublicKey = offerPublicKey
             self.description = try encryptedOffer.offerDescription.ecc.decrypt(keys: offerKey)
 
             self.feeState = feeState

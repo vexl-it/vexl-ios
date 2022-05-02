@@ -81,6 +81,7 @@
 "offer.requested" = "Requested";
 "offer.sell.title" = "My Sell Offers";
 "offer.sell.new.offer" = "New Sell Offers";
+"offer.sell.amount.toSell" = "to sell";
 "offer.create.fee.none" = "Without fee";
 "offer.create.fee.ok" = "Fee OK";
 "offer.create.trade.style.online" = "Online OK";
