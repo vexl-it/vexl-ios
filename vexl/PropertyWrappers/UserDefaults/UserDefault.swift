@@ -24,6 +24,8 @@ struct UserDefault<T> {
     }
 }
 
+// TODO: - Rework this or remove once we implement proper storage in the app
+
 extension UserDefaults {
 
     func set<Element: Codable>(value: Element, forKey key: UserDefaultKey) {

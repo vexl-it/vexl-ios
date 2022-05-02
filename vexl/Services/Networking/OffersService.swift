@@ -98,6 +98,10 @@ final class OfferService: BaseService, OfferServiceType {
 
     func storeOfferKey(key: ECCKeys, withId id: String) -> AnyPublisher<Void, Error> {
         Future { promise in
+            let storedOfferKeys: UserOfferKeys? = UserDefaults.standard.codable(forKey: .storedOfferKeys)
+            var currentOfferKeys = storedOfferKeys ?? .init(keys: [])
+            currentOfferKeys.keys.append(.init(id: id, privateKey: key.privateKey, publicKey: key.publicKey))
+            UserDefaults.standard.set(value: currentOfferKeys, forKey: .storedOfferKeys)
             promise(.success(()))
         }
         .eraseToAnyPublisher()
