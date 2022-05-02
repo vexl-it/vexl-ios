@@ -14,8 +14,6 @@ enum OfferType: String {
 
 struct Offer {
 
-    // TODO: - add offer key
-
     let offerId: String
     let offerPublicKey: String
 
