@@ -57,12 +57,12 @@ final class CreateOfferViewModel: ViewModelType, ObservableObject {
 
     @Published var locations: [OfferLocationItemData] = []
 
-    @Published var selectedTradeStyleOption: OfferTradeStyleOption = .online
+    @Published var selectedTradeStyleOption: OfferTradeLocationOption = .online
 
     @Published var selectedPaymentMethodOptions: [OfferPaymentMethodOption] = []
 
     @Published var selectedFriendDegreeOption: OfferAdvancedFriendDegreeOption = .firstDegree
-    @Published var selectedTypeOption: [OfferAdvancedTypeOption] = []
+    @Published var selectedTypeOption: [OfferAdvancedBTCOption] = []
 
     @Published var state: State = .initial
     @Published var error: Error?
@@ -216,12 +216,12 @@ final class CreateOfferViewModel: ViewModelType, ObservableObject {
                 let offer = Offer(minAmount: owner.currentAmountRange.lowerBound,
                                   maxAmount: owner.currentAmountRange.upperBound,
                                   description: owner.description,
-                                  feeState: owner.selectedFeeOption.rawValue,
+                                  feeState: owner.selectedFeeOption,
                                   feeAmount: owner.feeAmount,
-                                  locationState: owner.selectedTradeStyleOption.rawValue,
-                                  paymentMethods: owner.selectedPaymentMethodOptions.map(\.rawValue),
-                                  btcNetwork: owner.selectedTypeOption.map(\.rawValue),
-                                  friendLevel: owner.selectedFriendDegreeOption.rawValue,
+                                  locationState: owner.selectedTradeStyleOption,
+                                  paymentMethods: owner.selectedPaymentMethodOptions,
+                                  btcNetwork: owner.selectedTypeOption,
+                                  friendLevel: owner.selectedFriendDegreeOption,
                                   type: .sell)
                 var contacts = contacts.items
                 contacts.append(ContactKey(publicKey: owner.userSecurity.userKeys.publicKey))

@@ -12,20 +12,20 @@ enum OfferType: String {
     case buy = "BUY"
 }
 
-struct Offer: Codable {
+struct Offer {
 
     let offerId: String
 
     let minAmount: Int
     let maxAmount: Int
     let description: String
-    let feeState: String
+    let feeState: OfferFeeOption
     let feeAmount: Double
-    let locationState: String
-    let paymentMethods: [String]
-    let btcNetwork: [String]
-    let friendLevel: String
-    let type: String
+    let locationState: OfferTradeLocationOption
+    let paymentMethods: [OfferPaymentMethodOption]
+    let btcNetwork: [OfferAdvancedBTCOption]
+    let friendLevel: OfferAdvancedFriendDegreeOption
+    let type: OfferType
 
     var createdAt: String
     var modifiedAt: String
@@ -33,12 +33,12 @@ struct Offer: Codable {
     init(minAmount: Int,
          maxAmount: Int,
          description: String,
-         feeState: String,
+         feeState: OfferFeeOption,
          feeAmount: Double,
-         locationState: String,
-         paymentMethods: [String],
-         btcNetwork: [String],
-         friendLevel: String,
+         locationState: OfferTradeLocationOption,
+         paymentMethods: [OfferPaymentMethodOption],
+         btcNetwork: [OfferAdvancedBTCOption],
+         friendLevel: OfferAdvancedFriendDegreeOption,
          type: OfferType) {
         self.minAmount = minAmount
         self.maxAmount = maxAmount
@@ -49,11 +49,13 @@ struct Offer: Codable {
         self.paymentMethods = paymentMethods
         self.btcNetwork = btcNetwork
         self.friendLevel = friendLevel
-        self.type = type.rawValue
+        self.type = type
         self.offerId = ""
         self.createdAt = ""
         self.modifiedAt = ""
     }
+
+    // TODO: - Implement initializer that receives EncryptedOffer -> Creates readable Offer
 
     var minAmountString: String {
         "\(minAmount)"
@@ -67,8 +69,28 @@ struct Offer: Codable {
         "\(feeAmount)"
     }
 
-    var offerTypeValue: OfferType {
-        OfferType(rawValue: type) ?? .sell
+    var feeStateString: String {
+        feeState.rawValue
+    }
+
+    var locationStateString: String {
+        locationState.rawValue
+    }
+
+    var paymentMethodsList: [String] {
+        paymentMethods.map(\.rawValue)
+    }
+
+    var btcNetworkList: [String] {
+        btcNetwork.map(\.rawValue)
+    }
+
+    var friendLevelString: String {
+        friendLevel.rawValue
+    }
+
+    var offerTypeString: String {
+        type.rawValue
     }
 
     var createdDate: Date? {

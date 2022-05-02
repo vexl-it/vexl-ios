@@ -7,9 +7,9 @@
 
 import SwiftUI
 
-typealias OfferTradeStyleOption = OfferTradeStylePickerView.Option
+typealias OfferTradeLocationOption = OfferTradeLocationPickerView.Option
 
-struct OfferTradeStylePickerView: View {
+struct OfferTradeLocationPickerView: View {
 
     @Binding var selectedOption: Option
     private let options = [Option.online, .personal]
@@ -25,7 +25,7 @@ struct OfferTradeStylePickerView: View {
     }
 }
 
-extension OfferTradeStylePickerView {
+extension OfferTradeLocationPickerView {
     enum Option: String {
         case online = "ONLINE_OK"
         case personal = "ONLY_IN_PERSON"
@@ -44,7 +44,7 @@ extension OfferTradeStylePickerView {
 #if DEBUG || DEVEL
 struct OfferTradeStylePickerViewPreview: PreviewProvider {
     static var previews: some View {
-        OfferTradeStylePickerView(selectedOption: .constant(.online))
+        OfferTradeLocationPickerView(selectedOption: .constant(.online))
             .previewDevice("iPhone 11")
             .background(Color.black)
             .frame(height: 150)

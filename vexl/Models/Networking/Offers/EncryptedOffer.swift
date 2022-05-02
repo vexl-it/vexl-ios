@@ -69,7 +69,7 @@ struct EncryptedOffer: Codable {
                                          longitude: 50.073658,
                                          radius: 1)
         let locationString = fakeLocation.asString ?? ""
-        let encryptedString = try? locationString.ecc.encrypt(publicKey: userPublicKey) ?? ""
+        let encryptedString = try? locationString.ecc.encrypt(publicKey: userPublicKey) 
         return [
             "userPublicKey": userPublicKey,
             "location": [encryptedString],
