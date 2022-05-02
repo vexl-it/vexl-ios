@@ -9,7 +9,7 @@ import SwiftUI
 
 struct OfferAdvancedFilterView: View {
 
-    @Binding var selectedTypeOptions: [OfferAdvancedTypeOption]
+    @Binding var selectedTypeOptions: [OfferAdvancedBTCOption]
     @Binding var selectedFriendDegreeOption: OfferAdvancedFriendDegreeOption
     @State private var isExpanded = true
 
@@ -34,7 +34,7 @@ struct OfferAdvancedFilterView: View {
             }
 
             if isExpanded {
-                OfferAdvancedFilterTypeView(selectedOptions: $selectedTypeOptions)
+                OfferAdvancedFilterBTCNetworkView(selectedOptions: $selectedTypeOptions)
                     .padding(.top, Appearance.GridGuide.mediumPadding2)
 
                 OfferAdvanceFilterFriendDegreeView(selectedOption: $selectedFriendDegreeOption)

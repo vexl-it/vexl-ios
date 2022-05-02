@@ -12,8 +12,8 @@ protocol OfferServiceType {
     func getInitialOfferData() -> AnyPublisher<OfferInitialData, Error>
     func encryptOffer(withContactKey publicKeys: [String], offerKey: ECCKeys, offer: Offer) -> AnyPublisher<[EncryptedOffer], Error>
 
-    func getOffer() -> AnyPublisher<Paged<Offer>, Error>
-    func createOffer(encryptedOffers: [EncryptedOffer]) -> AnyPublisher<Offer, Error>
+    func getOffer() -> AnyPublisher<Paged<EncryptedOffer>, Error>
+    func createOffer(encryptedOffers: [EncryptedOffer]) -> AnyPublisher<EncryptedOffer, Error>
     func storeOfferKey(key: ECCKeys, withId id: String) -> AnyPublisher<Void, Error>
 }
 
@@ -39,21 +39,21 @@ final class OfferService: BaseService, OfferServiceType {
                     let maxAmount = try offer.maxAmountString.ecc.encrypt(publicKey: contactPublicKey)
                     let offerPublicKey = try offerKey.publicKey.ecc.encrypt(publicKey: contactPublicKey)
                     let description = try offer.description.ecc.encrypt(publicKey: contactPublicKey)
-                    let feeState = try offer.feeState.ecc.encrypt(publicKey: contactPublicKey)
+                    let feeState = try offer.feeStateString.ecc.encrypt(publicKey: contactPublicKey)
                     let feeAmount = try offer.feeAmountString.ecc.encrypt(publicKey: contactPublicKey)
-                    let locationState = try offer.locationState.ecc.encrypt(publicKey: contactPublicKey)
+                    let locationState = try offer.locationStateString.ecc.encrypt(publicKey: contactPublicKey)
                     var paymentMethods: [String] = []
                     var btcNetwork: [String] = []
-                    let friendLevel = try offer.friendLevel.ecc.encrypt(publicKey: contactPublicKey)
-                    let offerType = try offer.offerTypeValue.rawValue.ecc.encrypt(publicKey: contactPublicKey)
+                    let friendLevel = try offer.friendLevelString.ecc.encrypt(publicKey: contactPublicKey)
+                    let offerType = try offer.offerTypeString.ecc.encrypt(publicKey: contactPublicKey)
 
-                    offer.paymentMethods.forEach { method in
+                    offer.paymentMethodsList.forEach { method in
                         if let encrypted = try? method.ecc.encrypt(publicKey: contactPublicKey) {
                             paymentMethods.append(encrypted)
                         }
                     }
 
-                    offer.btcNetwork.forEach { network in
+                    offer.btcNetworkList.forEach { network in
                         if let encrypted = try? network.ecc.encrypt(publicKey: contactPublicKey) {
                             btcNetwork.append(encrypted)
                         }
@@ -92,13 +92,13 @@ final class OfferService: BaseService, OfferServiceType {
         .eraseToAnyPublisher()
     }
 
-    func getOffer() -> AnyPublisher<Paged<Offer>, Error> {
-        request(type: Paged<Offer>.self, endpoint: OffersRouter.getOffers)
+    func getOffer() -> AnyPublisher<Paged<EncryptedOffer>, Error> {
+        request(type: Paged<EncryptedOffer>.self, endpoint: OffersRouter.getOffers)
             .eraseToAnyPublisher()
     }
 
-    func createOffer(encryptedOffers: [EncryptedOffer]) -> AnyPublisher<Offer, Error> {
-        request(type: Offer.self, endpoint: OffersRouter.createOffer(offer: encryptedOffers))
+    func createOffer(encryptedOffers: [EncryptedOffer]) -> AnyPublisher<EncryptedOffer, Error> {
+        request(type: EncryptedOffer.self, endpoint: OffersRouter.createOffer(offer: encryptedOffers))
             .eraseToAnyPublisher()
     }
 

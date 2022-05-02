@@ -7,9 +7,9 @@
 
 import SwiftUI
 
-typealias OfferAdvancedTypeOption = OfferAdvancedFilterTypeView.Option
+typealias OfferAdvancedBTCOption = OfferAdvancedFilterBTCNetworkView.Option
 
-struct OfferAdvancedFilterTypeView: View {
+struct OfferAdvancedFilterBTCNetworkView: View {
 
     @Binding var selectedOptions: [Option]
     let options: [Option] = [.lightning, .onChain]
@@ -36,7 +36,7 @@ struct OfferAdvancedFilterTypeView: View {
     }
 }
 
-extension OfferAdvancedFilterTypeView {
+extension OfferAdvancedFilterBTCNetworkView {
     enum Option: String {
         case lightning = "LIGHTING"
         case onChain = "ON_CHAIN"

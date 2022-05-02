@@ -53,7 +53,7 @@ struct CreateOfferView: View {
                         .padding(.top, Appearance.GridGuide.largePadding1)
                         .padding(.horizontal, Appearance.GridGuide.point)
 
-                    OfferTradeStylePickerView(selectedOption: $viewModel.selectedTradeStyleOption)
+                    OfferTradeLocationPickerView(selectedOption: $viewModel.selectedTradeStyleOption)
                         .padding(.horizontal, Appearance.GridGuide.point)
 
                     OfferPaymentMethodView(selectedOptions: $viewModel.selectedPaymentMethodOptions)
