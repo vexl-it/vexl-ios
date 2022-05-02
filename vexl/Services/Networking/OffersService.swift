@@ -59,10 +59,16 @@ final class OfferService: BaseService, OfferServiceType {
                         }
                     }
 
-                    // TODO: - convert locations to JSON and then to string.
+                    // TODO: - convert locations to JSON and then to string and set real Location
+
+                    let fakeLocation = OfferLocation(latitude: 14.418_540,
+                                                     longitude: 50.073_658,
+                                                     radius: 1)
+                    let locationString = fakeLocation.asString ?? ""
+                    let encryptedString = try? locationString.ecc.encrypt(publicKey: contactPublicKey)
 
                     let encryptedOffer = EncryptedOffer(userPublicKey: contactPublicKey,
-                                                        location: [],
+                                                        location: [encryptedString ?? ""],
                                                         offerPublicKey: offerPublicKey,
                                                         offerDescription: description,
                                                         amountTopLimit: maxAmount,

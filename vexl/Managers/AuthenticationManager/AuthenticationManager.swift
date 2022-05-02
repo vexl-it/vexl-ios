@@ -93,7 +93,8 @@ final class AuthenticationManager: AuthenticationManagerType, TokenHandlerType {
         saveUser()
     }
 
-    // TODO: - Storing this in the UserDefaults is just a temporal solution for the PoC, later we should discuss how to store the data in the device: CoreData, Encrypted Files, not Realm, etc.
+    // TODO: - Storing this in the UserDefaults is just a temporal solution for the PoC, later we should
+    // discuss how to store the data in the device: CoreData, Encrypted Files, not Realm, etc.
 
     func saveUser() {
         UserDefaults.standard.set(value: currentUser, forKey: .storedUser)

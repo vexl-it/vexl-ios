@@ -21,7 +21,7 @@ final class CreateOfferViewModel: ViewModelType, ObservableObject {
         case dismissTap
         case createOffer
     }
-    
+
     enum State {
         case initial
         case loaded
@@ -223,6 +223,9 @@ final class CreateOfferViewModel: ViewModelType, ObservableObject {
                                   btcNetwork: owner.selectedTypeOption.map(\.rawValue),
                                   friendLevel: owner.selectedFriendDegreeOption.rawValue,
                                   type: .sell)
+
+                // Adding owner publicKey to the list so that it can be decrypted, displayed and modified
+
                 var contacts = contacts.items
                 contacts.append(ContactKey(publicKey: owner.userSecurity.userKeys.publicKey))
                 return OfferData(offer: offer, contacts: contacts)
@@ -259,7 +262,9 @@ final class CreateOfferViewModel: ViewModelType, ObservableObject {
                     .compactMap(\.value)
             }
             .subscribe(on: RunLoop.main)
-            .sink { _ in }
+            .sink { _ in
+                // TODO: - Return to previous Scene and request a refresh
+            }
             .store(in: cancelBag)
     }
 }
