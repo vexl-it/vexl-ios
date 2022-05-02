@@ -9,4 +9,5 @@ import Foundation
 
 enum EncryptionError: Error {
     case dataEncryption
+    case offerDecryption
 }

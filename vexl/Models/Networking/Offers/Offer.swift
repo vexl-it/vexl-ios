@@ -55,7 +55,89 @@ struct Offer {
         self.modifiedAt = ""
     }
 
-    // TODO: - Implement initializer that receives EncryptedOffer -> Creates readable Offer
+    // swiftlint: disable function_body_length
+    init?(encryptedOffer: EncryptedOffer, offerKey: ECCKeys) throws {
+        do {
+            let minAmountString = try encryptedOffer.amountBottomLimit.ecc.decrypt(keys: offerKey)
+            let maxAmountString = try encryptedOffer.amountTopLimit.ecc.decrypt(keys: offerKey)
+            let feeAmountString = try encryptedOffer.feeAmount.ecc.decrypt(keys: offerKey)
+
+            let feeStateString = try encryptedOffer.feeState.ecc.decrypt(keys: offerKey)
+            let locationStateString = try encryptedOffer.locationState.ecc.decrypt(keys: offerKey)
+            let friendLevelString = try encryptedOffer.friendLevel.ecc.decrypt(keys: offerKey)
+            let offerTypeString = try encryptedOffer.offerType.ecc.decrypt(keys: offerKey)
+
+            var paymentMethodList: [String] = []
+            var btcNetworkList: [String] = []
+
+            let numberOfPaymentMethods = encryptedOffer.paymentMethod.count
+            let numberOfBTCNetwork = encryptedOffer.btcNetwork.count
+
+            encryptedOffer.paymentMethod.forEach { method in
+                if let decryptedMethod = try? method.ecc.decrypt(keys: offerKey) {
+                    paymentMethodList.append(decryptedMethod)
+                }
+            }
+
+            encryptedOffer.btcNetwork.forEach { network in
+                if let decryptedNetwork = try? network.ecc.decrypt(keys: offerKey) {
+                    btcNetworkList.append(decryptedNetwork)
+                }
+            }
+
+            guard let minAmount = Int(minAmountString),
+                  let maxAmount = Int(maxAmountString),
+                  let feeAmount = Double(feeAmountString) else {
+                      return nil
+                  }
+
+            guard let feeState = OfferFeeOption(rawValue: feeStateString),
+                  let locationState = OfferTradeLocationOption(rawValue: locationStateString),
+                  let friendLevel = OfferAdvancedFriendDegreeOption(rawValue: friendLevelString),
+                  let offerType = OfferType(rawValue: offerTypeString) else {
+                      return nil
+                  }
+
+            var paymentMethods: [OfferPaymentMethodOption] = []
+            var btcNetworks: [OfferAdvancedBTCOption] = []
+
+            paymentMethodList.forEach { method in
+                if let paymentMethod = OfferPaymentMethodOption(rawValue: method) {
+                    paymentMethods.append(paymentMethod)
+                }
+            }
+
+            btcNetworkList.forEach { network in
+                if let btcNetwork = OfferAdvancedBTCOption(rawValue: network) {
+                    btcNetworks.append(btcNetwork)
+                }
+            }
+
+            guard btcNetworkList.count == numberOfBTCNetwork
+                    && paymentMethods.count == numberOfPaymentMethods else {
+                return nil
+            }
+
+            self.offerId = encryptedOffer.offerId
+            self.createdAt = encryptedOffer.createdAt
+            self.modifiedAt = encryptedOffer.modifiedAt
+
+            self.minAmount = minAmount
+            self.maxAmount = maxAmount
+            self.feeAmount = feeAmount
+            self.description = try encryptedOffer.offerDescription.ecc.decrypt(keys: offerKey)
+
+            self.feeState = feeState
+            self.locationState = locationState
+            self.friendLevel = friendLevel
+            self.type = offerType
+
+            self.paymentMethods = paymentMethods
+            self.btcNetwork = btcNetworks
+        } catch {
+            throw EncryptionError.offerDecryption
+        }
+    }
 
     var minAmountString: String {
         "\(minAmount)"

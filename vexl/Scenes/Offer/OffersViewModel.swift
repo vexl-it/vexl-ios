@@ -11,6 +11,7 @@ import Cleevio
 final class OffersViewModel: ViewModelType, ObservableObject {
 
     @Inject var offerService: OfferServiceType
+    @Inject var userSecurity: UserSecurityType
 
     // MARK: - Action Binding
 
@@ -46,8 +47,10 @@ final class OffersViewModel: ViewModelType, ObservableObject {
     // MARK: - Variables
 
     private let cancelBag: CancelBag = .init()
+    private let userOfferKeys: UserOfferKeys?
 
     init() {
+        self.userOfferKeys = UserDefaults.standard.codable(forKey: .storedOfferKeys)
         setupActivity()
         setupDataBindings()
         setupActionBindings()
@@ -70,9 +73,22 @@ final class OffersViewModel: ViewModelType, ObservableObject {
             .track(activity: primaryActivity)
             .materialize()
             .compactMap(\.value)
+            .map(\.items)
             .withUnretained(self)
-            .sink { _, paged in
-                print(paged.items)
+            .sink { owner, items in
+                guard let userOfferKeys = owner.userOfferKeys else {
+                    return
+                }
+
+                for item in items {
+                    let id = item.offerId
+
+                    if let keys = userOfferKeys.keys.first(where: { $0.id == id }) {
+                        let offer = try? Offer(encryptedOffer: item,
+                                               offerKey: owner.userSecurity.userKeys)
+                        print(offer)
+                    }
+                }
             }
             .store(in: cancelBag)
     }
