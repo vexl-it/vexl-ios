@@ -65,9 +65,14 @@ struct EncryptedOffer: Codable {
     }
 
     var asJson: [String: Any] {
-        [
+        let fakeLocation = OfferLocation(latitude: 14.418540,
+                                         longitude: 50.073658,
+                                         radius: 1)
+        let locationString = fakeLocation.asString ?? ""
+        let encryptedString = try? locationString.ecc.encrypt(publicKey: userPublicKey) ?? ""
+        return [
             "userPublicKey": userPublicKey,
-            "location": location,
+            "location": [encryptedString],
             "offerPublicKey": offerPublicKey,
             "offerDescription": offerDescription,
             "amountTopLimit": amountTopLimit,
