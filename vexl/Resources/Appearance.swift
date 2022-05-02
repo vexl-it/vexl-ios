@@ -45,8 +45,9 @@ struct Appearance {
 
         // MARK: Margins
 
-        static let smallPadding: CGFloat = 4
+        static let tinyPadding: CGFloat = 4
         static let point: CGFloat = 8
+        static let smallPadding: CGFloat = 12
         static let padding: CGFloat = 16
         static let mediumPadding1: CGFloat = 24
         static let mediumPadding2: CGFloat = 32
@@ -64,14 +65,42 @@ struct Appearance {
         static let smallIconSize = CGSize(width: 12, height: 12)
         static let iconSize = CGSize(width: 24, height: 24)
         static let mediumIconSize = CGSize(width: 48, height: 48)
+        static let thumbSize = CGSize(width: 38, height: 38)
 
         // MARK: Other
+
         static let feedItemHeight: CGFloat = 52
     }
 
     // MARK: - Global
 
     static func setGlobalAppearance() {
+        setDefaultNavBarStyle()
+    }
+    
+    static func navigationBarDefaultAppearance(withColor color: UIColor = .clear) -> UINavigationBarAppearance {
+        let appearance = UINavigationBarAppearance().tap {
+            $0.configureWithOpaqueBackground()
+            $0.backgroundImage = UIImage()
+            $0.shadowColor = .clear
+            $0.backgroundColor = color
+        }
+
+        return appearance
+    }
+    
+    static private func setDefaultNavBarStyle() {
+        let appearance = navigationBarDefaultAppearance()
+
+        UINavigationBar.appearance().tap {
+            $0.prefersLargeTitles = false
+            $0.standardAppearance = appearance
+            $0.compactAppearance = appearance
+            $0.scrollEdgeAppearance = appearance
+            $0.isTranslucent = true
+            $0.shadowImage = UIImage()
+            $0.setBackgroundImage(UIImage(), for: .default)
+        }
     }
 
     // MARK: - Fonts
@@ -82,6 +111,7 @@ struct Appearance {
         case h3
         case paragraph
         case paragraphBold
+        case paragraphMedium
         case description
         case descriptionSemibold
         case micro
@@ -98,6 +128,8 @@ struct Appearance {
                 return UIFont.preferredFont(forTextStyle: .body, weight: .regular)
             case .paragraphBold:
                 return UIFont.preferredFont(forTextStyle: .body, weight: .bold)
+            case .paragraphMedium:
+                return UIFont.preferredFont(forTextStyle: .body, weight: .medium)
             case .description:
                 return UIFont.preferredFont(forTextStyle: .footnote, weight: .regular)
             case .descriptionSemibold:

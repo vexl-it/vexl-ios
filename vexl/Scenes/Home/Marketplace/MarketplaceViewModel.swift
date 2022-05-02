@@ -18,6 +18,7 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
     // MARK: - Actions Bindings
 
     enum UserAction: Equatable {
+        case showOffer
         case continueTap
     }
 
@@ -94,4 +95,18 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
     ]
 
     private let cancelBag: CancelBag = .init()
+
+    init() {
+        setupBindings()
+    }
+
+    private func setupBindings() {
+        action
+            .filter { $0 == .showOffer }
+            .withUnretained(self)
+            .sink { owner, _ in
+                owner.route.send(.showOffer)
+            }
+            .store(in: cancelBag)
+    }
 }

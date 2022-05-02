@@ -12,6 +12,7 @@ import Cleevio
 final class HomeRouter {
 
     private let homeViewController: HomeViewController
+    private var isPresesentingFullscreen = false
 
     init(homeViewController: HomeViewController) {
         self.homeViewController = homeViewController
@@ -25,14 +26,22 @@ final class HomeRouter {
 extension HomeRouter: Router {
 
     func dismiss(animated: Bool, completion: (() -> Void)?) {
-        homeViewController.dismiss()
+        homeViewController.dismiss(isFullscreenPresentation: isPresesentingFullscreen,
+                                   completion: completion)
     }
 
     func present(_ viewController: UIViewController, animated: Bool) {
+        isPresesentingFullscreen = false
         if homeViewController.bottomViewController == nil {
             homeViewController.set(bottomViewController: viewController)
         } else {
             homeViewController.present(childViewController: viewController)
         }
+    }
+
+    func presentFullscreen(_ viewController: UIViewController, animated: Bool) {
+        isPresesentingFullscreen = true
+        viewController.modalPresentationStyle = .fullScreen
+        homeViewController.present(viewController, animated: animated)
     }
 }

@@ -90,21 +90,26 @@ final class HomeViewController: UIViewController {
         }
     }
 
-    func dismiss() {
-        guard let currentViewController = currentViewController else {
-            return
-        }
+    func dismiss(isFullscreenPresentation: Bool, completion: (() -> Void)?) {
+        if isFullscreenPresentation {
+            dismiss(animated: true, completion: completion)
+        } else {
+            guard let currentViewController = currentViewController else {
+                return
+            }
 
-        let childView = currentViewController.view!
+            let childView = currentViewController.view!
 
-        UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 0.95, initialSpringVelocity: 0.75, options: .curveEaseInOut) {
-            childView.transform = CGAffineTransform(translationX: 0, y: childView.bounds.height)
-            childView.alpha = 0.25
-        } completion: { [weak self] _ in
-            currentViewController.removeFromParent()
-            childView.removeFromSuperview()
-            currentViewController.didMove(toParent: nil)
-            self?.currentViewController = nil
+            UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 0.95, initialSpringVelocity: 0.75, options: .curveEaseInOut) {
+                childView.transform = CGAffineTransform(translationX: 0, y: childView.bounds.height)
+                childView.alpha = 0.25
+            } completion: { [weak self] _ in
+                currentViewController.removeFromParent()
+                childView.removeFromSuperview()
+                currentViewController.didMove(toParent: nil)
+                self?.currentViewController = nil
+                completion?()
+            }
         }
     }
 }

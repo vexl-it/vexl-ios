@@ -7,6 +7,7 @@
 
 import Cleevio
 import Foundation
+import Combine
 
 final class MarketplaceCoordinator: BaseCoordinator<RouterResult<Void>> {
 
@@ -24,11 +25,36 @@ final class MarketplaceCoordinator: BaseCoordinator<RouterResult<Void>> {
 
         router.present(viewController, animated: true)
 
+        viewModel
+            .route
+            .receive(on: RunLoop.main)
+            .filter { $0 == .showOffer }
+            .withUnretained(self)
+            .flatMap { owner, _ in
+                owner.showOffers(router: owner.router)
+            }
+            .sink { _ in }
+            .store(in: cancelBag)
+
         let dismissByRouter = viewController.dismissPublisher
             .map { _ in RouterResult<Void>.dismissedByRouter }
 
         return dismissByRouter
             .receive(on: RunLoop.main)
             .eraseToAnyPublisher()
+    }
+}
+
+extension MarketplaceCoordinator {
+    private func showOffers(router: Router) -> CoordinatingResult<RouterResult<Void>> {
+        coordinate(to: OffersCoordinator(router: router))
+        .flatMap { result -> CoordinatingResult<RouterResult<Void>> in
+            guard result != .dismissedByRouter else {
+                return Just(result).eraseToAnyPublisher()
+            }
+            return router.dismiss(animated: true, returning: result)
+        }
+        .prefix(1)
+        .eraseToAnyPublisher()
     }
 }

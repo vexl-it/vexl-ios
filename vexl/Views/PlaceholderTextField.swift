@@ -11,6 +11,7 @@ import SwiftUI
 struct PlaceholderTextField: View {
 
     var placeholder: String
+    var textColor: Color = Appearance.Colors.primaryText
     @Binding var text: String
 
     var body: some View {
@@ -21,7 +22,7 @@ struct PlaceholderTextField: View {
             }
 
             TextField("", text: $text)
-                .foregroundColor(Appearance.Colors.primaryText)
+                .foregroundColor(textColor)
         }
     }
 }

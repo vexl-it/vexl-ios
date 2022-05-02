@@ -64,7 +64,7 @@ struct MarketplaceView: View {
                 print("filter from \(index) has been tapped")
             },
                                      action: {
-                viewModel.route.send(.showOffer)
+                viewModel.action.send(.showOffer)
             })
         }
     }
