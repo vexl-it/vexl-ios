@@ -62,7 +62,7 @@ final class CreateOfferViewModel: ViewModelType, ObservableObject {
     @Published var selectedPaymentMethodOptions: [OfferPaymentMethodOption] = []
 
     @Published var selectedFriendDegreeOption: OfferAdvancedFriendDegreeOption = .firstDegree
-    @Published var selectedTypeOption: [OfferAdvancedBTCOption] = []
+    @Published var selectedBTCOption: [OfferAdvancedBTCOption] = []
 
     @Published var state: State = .initial
     @Published var error: Error?
@@ -96,6 +96,18 @@ final class CreateOfferViewModel: ViewModelType, ObservableObject {
         case .secondDegree:
             return .second
         }
+    }
+
+    var isCreateEnabled: Bool {
+        guard (selectedFeeOption == .withFee && feeAmount > 0) || (selectedFeeOption == .withoutFee) else {
+            return false
+        }
+
+        guard !selectedPaymentMethodOptions.isEmpty && !selectedBTCOption.isEmpty else {
+            return false
+        }
+
+        return !description.isEmpty
     }
 
     var currencySymbol = ""
@@ -221,7 +233,7 @@ final class CreateOfferViewModel: ViewModelType, ObservableObject {
                                   feeAmount: owner.feeAmount,
                                   locationState: owner.selectedTradeStyleOption,
                                   paymentMethods: owner.selectedPaymentMethodOptions,
-                                  btcNetwork: owner.selectedTypeOption,
+                                  btcNetwork: owner.selectedBTCOption,
                                   friendLevel: owner.selectedFriendDegreeOption,
                                   type: .sell)
 
