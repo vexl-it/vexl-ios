@@ -16,6 +16,7 @@ struct EncryptedOfferList: Codable {
 }
 
 struct EncryptedOffer: Codable {
+    let offerId: String
     let userPublicKey: String
     let location: [String]
     let offerPublicKey: String
@@ -29,6 +30,8 @@ struct EncryptedOffer: Codable {
     let btcNetwork: [String]
     let friendLevel: String
     let offerType: String
+    let createdAt: String
+    let modifiedAt: String
 
     init(userPublicKey: String,
          location: [String],
@@ -56,6 +59,9 @@ struct EncryptedOffer: Codable {
         self.btcNetwork = btcNetwork
         self.friendLevel = friendLevel
         self.offerType = offerType
+        self.offerId = ""
+        self.createdAt = ""
+        self.modifiedAt = ""
     }
 
     var asJson: [String: Any] {
