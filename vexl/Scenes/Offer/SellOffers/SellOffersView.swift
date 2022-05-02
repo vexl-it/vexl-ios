@@ -7,9 +7,9 @@
 
 import SwiftUI
 
-struct OffersView: View {
+struct SellOffersView: View {
 
-    @ObservedObject var viewModel: OffersViewModel
+    @ObservedObject var viewModel: SellOffersViewModel
 
     var body: some View {
         VStack {
@@ -53,7 +53,7 @@ struct OffersView: View {
 #if DEBUG || DEVEL
 struct OffersViewPreview: PreviewProvider {
     static var previews: some View {
-        OffersView(viewModel: .init())
+        SellOffersView(viewModel: .init())
             .previewDevice("iPhone 11")
     }
 }

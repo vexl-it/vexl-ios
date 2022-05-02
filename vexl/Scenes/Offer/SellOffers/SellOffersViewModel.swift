@@ -8,7 +8,7 @@
 import Foundation
 import Cleevio
 
-final class OffersViewModel: ViewModelType, ObservableObject {
+final class SellOffersViewModel: ViewModelType, ObservableObject {
 
     @Inject var offerService: OfferServiceType
     @Inject var userSecurity: UserSecurityType
