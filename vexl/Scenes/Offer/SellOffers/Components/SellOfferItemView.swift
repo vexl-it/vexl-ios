@@ -75,7 +75,7 @@ struct SellOfferItemView: View {
             }
             .padding(.top, Appearance.GridGuide.padding)
         }
-        .padding(Appearance.GridGuide.mediumPadding1)
+        .padding(Appearance.GridGuide.padding)
         .background(Appearance.Colors.whiteText)
         .cornerRadius(Appearance.GridGuide.buttonCorner)
     }
