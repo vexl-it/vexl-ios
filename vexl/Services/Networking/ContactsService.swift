@@ -44,8 +44,11 @@ final class ContactsService: BaseService, ContactsServiceType {
             .eraseToAnyPublisher()
     }
 
-    func getContacts(fromFacebook: Bool, friendLevel: ContactFriendLevel = .all, pageLimit: Int?) -> AnyPublisher<Paged<ContactKey>, Error> {
-        request(type: Paged<ContactKey>.self, endpoint: ContactsRouter.getContacts(useFacebookHeader: fromFacebook, friendLevel: friendLevel, pageLimit: pageLimit))
+    func getContacts(fromFacebook: Bool, friendLevel: ContactFriendLevel, pageLimit: Int?) -> AnyPublisher<Paged<ContactKey>, Error> {
+        request(type: Paged<ContactKey>.self,
+                endpoint: ContactsRouter.getContacts(useFacebookHeader: fromFacebook,
+                                                     friendLevel: friendLevel,
+                                                     pageLimit: pageLimit))
             .eraseToAnyPublisher()
     }
 }
