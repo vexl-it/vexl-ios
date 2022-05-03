@@ -42,6 +42,7 @@ protocol UserSecurityType {
     func setUserKeys(_ userKeys: ECCKeys)
     func setHash(_ challengeValidation: ChallengeValidation)
     func setFacebookSignature(_ facebookSignature: ChallengeValidation)
+    func generateUserKey()
 }
 
 final class AuthenticationManager: AuthenticationManagerType, TokenHandlerType {
@@ -195,6 +196,11 @@ extension AuthenticationManager: UserSecurityType {
         self.userSecurity.hash = nil
         self.userSecurity.signature = nil
         self.userSecurity.keys = nil
+    }
+
+    func generateUserKey() {
+        let newKeys = ECCKeys()
+        setUserKeys(newKeys)
     }
 }
 
