@@ -108,11 +108,8 @@ final class SellOffersViewModel: ViewModelType, ObservableObject {
             .compactMap(\.value)
             .map(\.items)
             .withUnretained(self)
-            .handleEvents(receiveOutput: { owner, _ in
-                owner.userOfferKeys = UserDefaults.standard.codable(forKey: .storedOfferKeys)
-            })
             .sink { owner, items in
-
+                owner.userOfferKeys = UserDefaults.standard.codable(forKey: .storedOfferKeys)
                 let offerKeys = owner.userOfferKeys?.keys ?? []
                 var offers: [Offer] = []
                 for item in items {
