@@ -115,6 +115,15 @@ final class CreateOfferViewModel: ViewModelType, ObservableObject {
         }
     }
 
+    var actionTitle: String {
+        switch offerType {
+        case .sell:
+            return L.offerCreateActionTitle()
+        case .buy:
+            return L.offerCreateBuyActionTitle()
+        }
+    }
+
     var minFee: Double = 0
     var maxFee: Double = 0
     var currencySymbol = ""
