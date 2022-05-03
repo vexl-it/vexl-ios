@@ -116,7 +116,8 @@ final class SellOffersViewModel: ViewModelType, ObservableObject {
                         offers.append(offer)
                     }
                 }
-                owner.userOffers = offers
+                let sellOffers = offers.filter { $0.type == .sell }
+                owner.userOffers = sellOffers
             }
             .store(in: cancelBag)
     }
