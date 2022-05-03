@@ -35,9 +35,10 @@ struct MarketplaceView: View {
                     MarketplaceFeedView(title: item.description,
                                         isRequested: false,
                                         location: L.offerSellNoLocation(),
-                                        maxAmount: "\(item.minAmount) - \(item.maxAmount)",
-                                        paymentMethod: "item.paymentMethod",
-                                        fee: "item.fee")
+                                        maxAmount: "$\(item.minAmount) - $\(item.maxAmount)",
+                                        paymentMethod: item.paymentMethodsDisplayValue,
+                                        fee: item.feeAmount > 0 ? "\(item.feeAmount)%" : nil,
+                                        displayFooter: false)
                         .padding(.horizontal, Appearance.GridGuide.point)
                 }
             }

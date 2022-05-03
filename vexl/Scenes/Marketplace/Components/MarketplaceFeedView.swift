@@ -19,6 +19,8 @@ struct MarketplaceFeedView: View {
     let paymentMethod: String
     let fee: String?
 
+    let displayFooter: Bool
+
     var body: some View {
         VStack(spacing: Appearance.GridGuide.padding) {
             Text(title)
@@ -29,15 +31,18 @@ struct MarketplaceFeedView: View {
             MarketplaceFeedDetailView(maxAmount: maxAmount,
                                       paymentMethod: paymentMethod,
                                       fee: fee)
-                .padding(.horizontal, Appearance.GridGuide.padding)
+                .padding(displayFooter ? [.horizontal] : [.horizontal, .bottom],
+                         Appearance.GridGuide.padding)
 
-            // TODO: - set contact type from viewmodel + real action
-            MarketplaceFeedFooterView(contactType: .facebook,
-                                      isRequested: isRequested,
-                                      location: location) {
-                print("facebook")
+            if displayFooter {
+                // TODO: - set contact type from viewmodel + real action
+                MarketplaceFeedFooterView(contactType: .phone,
+                                          isRequested: isRequested,
+                                          location: location) {
+                    print("facebook")
+                }
+                .padding([.horizontal, .bottom], Appearance.GridGuide.padding)
             }
-            .padding([.horizontal, .bottom], Appearance.GridGuide.padding)
         }
         .background(Appearance.Colors.whiteText)
         .cornerRadius(Appearance.GridGuide.buttonCorner)
@@ -66,7 +71,8 @@ struct MarketplaceFeedViewViewPreview: PreviewProvider {
                             location: "Prague",
                             maxAmount: "up to $10K",
                             paymentMethod: "Revolut",
-                            fee: nil)
+                            fee: nil,
+                            displayFooter: false)
             .previewDevice("iPhone 11")
             .frame(maxWidth: .infinity,
                    maxHeight: .infinity)

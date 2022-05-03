@@ -190,4 +190,11 @@ struct Offer: Identifiable {
     var modifiedDate: Date? {
         Formatters.dateApiFormatter.date(from: modifiedAt)
     }
+
+    // MARK: - Display properties
+
+    var paymentMethodsDisplayValue: String {
+        let titles = paymentMethods.map(\.title)
+        return titles.joined(separator: "\n")
+    }
 }
