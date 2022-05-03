@@ -81,9 +81,9 @@ final class CreateOfferViewModel: ViewModelType, ObservableObject {
 
     var minFee: Double = 0
     var maxFee: Double = 0
-    var feeValue: Int? {
+    var feeValue: Int {
         guard selectedFeeOption == .withFee else {
-            return nil
+            return 0
         }
         return Int(((maxFee - minFee) * feeAmount) + minFee)
     }
@@ -217,7 +217,7 @@ final class CreateOfferViewModel: ViewModelType, ObservableObject {
                                   maxAmount: owner.currentAmountRange.upperBound,
                                   description: owner.description,
                                   feeState: owner.selectedFeeOption,
-                                  feeAmount: owner.feeAmount,
+                                  feeAmount: Double(owner.feeValue),
                                   locationState: owner.selectedTradeStyleOption,
                                   paymentMethods: owner.selectedPaymentMethodOptions,
                                   btcNetwork: owner.selectedTypeOption,
