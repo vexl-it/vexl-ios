@@ -66,8 +66,16 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
         ]
     }
 
-    var filteredOffers: [Offer] {
-        offerItems.filter { $0.type == selectedOption }
+    private var buyFeedItems: [MarketplaceFeedViewData] = []
+    private var sellFeedItems: [MarketplaceFeedViewData] = []
+
+    var marketplaceFeedItems: [MarketplaceFeedViewData] {
+        switch selectedOption {
+        case .sell:
+            return sellFeedItems
+        case .buy:
+            return buyFeedItems
+        }
     }
 
     private let cancelBag: CancelBag = .init()
@@ -96,6 +104,19 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
                 owner.offerItems = offers
             }
             .store(in: cancelBag)
+
+        $offerItems
+            .withUnretained(self)
+            .sink { owner, items in
+                owner.buyFeedItems = items
+                    .filter { $0.type == .buy }
+                    .map { Self.map(offer: $0) }
+
+                owner.sellFeedItems = items
+                    .filter { $0.type == .sell }
+                    .map { Self.map(offer: $0) }
+            }
+            .store(in: cancelBag)
     }
 
     private func setupActionBindings() {
@@ -116,5 +137,16 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
                 owner.route.send(.createBuyOfferTapped)
             }
             .store(in: cancelBag)
+    }
+    
+    private static func map(offer: Offer) -> MarketplaceFeedViewData {
+        let currencySymbol = Constants.currencySymbol
+        return MarketplaceFeedViewData(id: offer.offerId,
+                                       title: offer.description,
+                                       isRequested: false,
+                                       location: L.offerSellNoLocation(),
+                                       amount: "\(currencySymbol)\(offer.minAmount) - \(currencySymbol)\(offer.maxAmount)",
+                                       paymentMethods: offer.paymentMethods.map(\.title),
+                                       fee: offer.feeAmount > 0 ? "\(offer.feeAmount)%" : nil)
     }
 }

@@ -31,13 +31,8 @@ struct MarketplaceView: View {
             filter
 
             ScrollView {
-                ForEach(viewModel.filteredOffers) { item in
-                    MarketplaceFeedView(title: item.description,
-                                        isRequested: false,
-                                        location: L.offerSellNoLocation(),
-                                        maxAmount: "$\(item.minAmount) - $\(item.maxAmount)",
-                                        paymentMethod: item.paymentMethodsDisplayValue,
-                                        fee: item.feeAmount > 0 ? "\(item.feeAmount)%" : nil,
+                ForEach(viewModel.marketplaceFeedItems) { item in
+                    MarketplaceFeedView(data: item,
                                         displayFooter: false)
                         .padding(.horizontal, Appearance.GridGuide.point)
                 }
