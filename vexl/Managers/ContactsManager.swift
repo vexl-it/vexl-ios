@@ -20,7 +20,6 @@ protocol ContactsManagerType {
 
     func fetchFacebookContacts(id: String, accessToken: String) -> AnyPublisher<[ContactInformation], Error>
     func getActiveFacebookContacts(_ contacts: [String], withId id: String, token: String) -> AnyPublisher<[ContactInformation], Error>
-    func fetchAllContactsKeys() -> AnyPublisher<[ContactKey], Error>
 }
 
 final class ContactsManager: ContactsManagerType {
@@ -106,18 +105,6 @@ final class ContactsManager: ContactsManagerType {
                 owner.availableFacebookContacts = owner.userFacebookContacts.filter { friends.contains($0.sourceIdentifier) }
             })
             .map(\.0.availableFacebookContacts)
-            .eraseToAnyPublisher()
-    }
-
-    func fetchAllContactsKeys() -> AnyPublisher<[ContactKey], Error> {
-        contactsService
-            .getContacts(fromFacebook: false, friendLevel: .all)
-            .withUnretained(self)
-            .flatMap { owner, _ in
-                owner.contactsService.getContacts(fromFacebook: true, friendLevel: .all)
-            }
-            .withUnretained(self)
-            .map { _ in [] }
             .eraseToAnyPublisher()
     }
 }

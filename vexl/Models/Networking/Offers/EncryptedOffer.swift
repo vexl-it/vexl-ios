@@ -16,7 +16,6 @@ struct EncryptedOfferList: Codable {
 }
 
 struct EncryptedOffer: Codable {
-    let offerId: String
     let userPublicKey: String
     let location: [String]
     let offerPublicKey: String
@@ -30,39 +29,10 @@ struct EncryptedOffer: Codable {
     let btcNetwork: [String]
     let friendLevel: String
     let offerType: String
-    let createdAt: String
-    let modifiedAt: String
 
-    init(userPublicKey: String,
-         location: [String],
-         offerPublicKey: String,
-         offerDescription: String,
-         amountTopLimit: String,
-         amountBottomLimit: String,
-         feeState: String,
-         feeAmount: String,
-         locationState: String,
-         paymentMethod: [String],
-         btcNetwork: [String],
-         friendLevel: String,
-         offerType: String) {
-        self.userPublicKey = userPublicKey
-        self.location = location
-        self.offerPublicKey = offerPublicKey
-        self.offerDescription = offerDescription
-        self.amountTopLimit = amountTopLimit
-        self.amountBottomLimit = amountBottomLimit
-        self.feeState = feeState
-        self.feeAmount = feeAmount
-        self.locationState = locationState
-        self.paymentMethod = paymentMethod
-        self.btcNetwork = btcNetwork
-        self.friendLevel = friendLevel
-        self.offerType = offerType
-        self.offerId = ""
-        self.createdAt = ""
-        self.modifiedAt = ""
-    }
+    var offerId: String = ""
+    var createdAt: String = ""
+    var modifiedAt: String = ""
 
     var asJson: [String: Any] {
         [

@@ -13,10 +13,6 @@ enum OfferType: String {
 }
 
 struct Offer {
-
-    let offerId: String
-    let offerPublicKey: String
-
     let minAmount: Int
     let maxAmount: Int
     let description: String
@@ -28,8 +24,10 @@ struct Offer {
     let friendLevel: OfferAdvancedFriendDegreeOption
     let type: OfferType
 
-    var createdAt: String
-    var modifiedAt: String
+    var offerId: String = ""
+    var offerPublicKey: String = ""
+    var createdAt: String = ""
+    var modifiedAt: String = ""
 
     init(minAmount: Int,
          maxAmount: Int,

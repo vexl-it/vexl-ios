@@ -31,65 +31,73 @@ final class OfferService: BaseService, OfferServiceType {
     func encryptOffer(withContactKey publicKeys: [String],
                       offerKey: ECCKeys,
                       offer: Offer) -> AnyPublisher<[EncryptedOffer], Error> {
-        Future { promise in
-            do {
-                var offerList: [EncryptedOffer] = []
-                for contactPublicKey in publicKeys {
-                    let minAmount = try offer.minAmountString.ecc.encrypt(publicKey: contactPublicKey)
-                    let maxAmount = try offer.maxAmountString.ecc.encrypt(publicKey: contactPublicKey)
-                    let offerPublicKey = try offerKey.publicKey.ecc.encrypt(publicKey: contactPublicKey)
-                    let description = try offer.description.ecc.encrypt(publicKey: contactPublicKey)
-                    let feeState = try offer.feeStateString.ecc.encrypt(publicKey: contactPublicKey)
-                    let feeAmount = try offer.feeAmountString.ecc.encrypt(publicKey: contactPublicKey)
-                    let locationState = try offer.locationStateString.ecc.encrypt(publicKey: contactPublicKey)
-                    var paymentMethods: [String] = []
-                    var btcNetwork: [String] = []
-                    let friendLevel = try offer.friendLevelString.ecc.encrypt(publicKey: contactPublicKey)
-                    let offerType = try offer.offerTypeString.ecc.encrypt(publicKey: contactPublicKey)
+        Future { [weak self] promise in
+            if let owner = self {
+                do {
+                    var offerList: [EncryptedOffer] = []
 
-                    offer.paymentMethodsList.forEach { method in
-                        if let encrypted = try? method.ecc.encrypt(publicKey: contactPublicKey) {
-                            paymentMethods.append(encrypted)
-                        }
+                    for contactPublicKey in publicKeys {
+                        let encryptedOffer = try owner.encrypt(offer: offer, withOfferKey: offerKey, publicKey: contactPublicKey)
+                        offerList.append(encryptedOffer)
                     }
 
-                    offer.btcNetworkList.forEach { network in
-                        if let encrypted = try? network.ecc.encrypt(publicKey: contactPublicKey) {
-                            btcNetwork.append(encrypted)
-                        }
-                    }
-
-                    // TODO: - convert locations to JSON and then to string and set real Location
-
-                    let fakeLocation = OfferLocation(latitude: 14.418_540,
-                                                     longitude: 50.073_658,
-                                                     radius: 1)
-                    let locationString = fakeLocation.asString ?? ""
-                    let encryptedString = try? locationString.ecc.encrypt(publicKey: contactPublicKey)
-
-                    let encryptedOffer = EncryptedOffer(userPublicKey: contactPublicKey,
-                                                        location: [encryptedString ?? ""],
-                                                        offerPublicKey: offerPublicKey,
-                                                        offerDescription: description,
-                                                        amountTopLimit: maxAmount,
-                                                        amountBottomLimit: minAmount,
-                                                        feeState: feeState,
-                                                        feeAmount: feeAmount,
-                                                        locationState: locationState,
-                                                        paymentMethod: paymentMethods,
-                                                        btcNetwork: btcNetwork,
-                                                        friendLevel: friendLevel,
-                                                        offerType: offerType)
-
-                    offerList.append(encryptedOffer)
+                    promise(.success(offerList))
+                } catch {
+                    promise(.failure(EncryptionError.dataEncryption))
                 }
-
-                promise(.success(offerList))
-            } catch {
-                promise(.failure(EncryptionError.dataEncryption))
+            } else {
+                promise(.failure(EncryptionError.noOfferService))
             }
         }
         .eraseToAnyPublisher()
+    }
+
+    private func encrypt(offer: Offer, withOfferKey offerKey: ECCKeys, publicKey contactPublicKey: String) throws -> EncryptedOffer {
+        let minAmount = try offer.minAmountString.ecc.encrypt(publicKey: contactPublicKey)
+        let maxAmount = try offer.maxAmountString.ecc.encrypt(publicKey: contactPublicKey)
+        let offerPublicKey = try offerKey.publicKey.ecc.encrypt(publicKey: contactPublicKey)
+        let description = try offer.description.ecc.encrypt(publicKey: contactPublicKey)
+        let feeState = try offer.feeStateString.ecc.encrypt(publicKey: contactPublicKey)
+        let feeAmount = try offer.feeAmountString.ecc.encrypt(publicKey: contactPublicKey)
+        let locationState = try offer.locationStateString.ecc.encrypt(publicKey: contactPublicKey)
+        var paymentMethods: [String] = []
+        var btcNetwork: [String] = []
+        let friendLevel = try offer.friendLevelString.ecc.encrypt(publicKey: contactPublicKey)
+        let offerType = try offer.offerTypeString.ecc.encrypt(publicKey: contactPublicKey)
+
+        offer.paymentMethodsList.forEach { method in
+            if let encrypted = try? method.ecc.encrypt(publicKey: contactPublicKey) {
+                paymentMethods.append(encrypted)
+            }
+        }
+
+        offer.btcNetworkList.forEach { network in
+            if let encrypted = try? network.ecc.encrypt(publicKey: contactPublicKey) {
+                btcNetwork.append(encrypted)
+            }
+        }
+
+        // TODO: - convert locations to JSON and then to string and set real Location
+
+        let fakeLocation = OfferLocation(latitude: 14.418_540,
+                                         longitude: 50.073_658,
+                                         radius: 1)
+        let locationString = fakeLocation.asString ?? ""
+        let encryptedString = try? locationString.ecc.encrypt(publicKey: contactPublicKey)
+
+        return EncryptedOffer(userPublicKey: contactPublicKey,
+                              location: [encryptedString ?? ""],
+                              offerPublicKey: offerPublicKey,
+                              offerDescription: description,
+                              amountTopLimit: maxAmount,
+                              amountBottomLimit: minAmount,
+                              feeState: feeState,
+                              feeAmount: feeAmount,
+                              locationState: locationState,
+                              paymentMethod: paymentMethods,
+                              btcNetwork: btcNetwork,
+                              friendLevel: friendLevel,
+                              offerType: offerType)
     }
 
     func getOffer() -> AnyPublisher<Paged<EncryptedOffer>, Error> {
