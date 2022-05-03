@@ -12,15 +12,13 @@ enum OfferType: String {
     case buy = "BUY"
 }
 
-struct Offer: Identifiable {
+struct Offer {
 
-    var id: String {
-        offerId
-    }
-
-    let offerId: String
-    let offerPublicKey: String
-    let userPublickKey: String
+    var offerId: String = ""
+    var offerPublicKey: String = ""
+    var userPublicKey: String = ""
+    var createdAt: String = ""
+    var modifiedAt: String = ""
 
     let minAmount: Int
     let maxAmount: Int
@@ -32,9 +30,6 @@ struct Offer: Identifiable {
     let btcNetwork: [OfferAdvancedBTCOption]
     let friendLevel: OfferAdvancedFriendDegreeOption
     let type: OfferType
-
-    var createdAt: String
-    var modifiedAt: String
 
     init(minAmount: Int,
          maxAmount: Int,
@@ -56,11 +51,6 @@ struct Offer: Identifiable {
         self.btcNetwork = btcNetwork
         self.friendLevel = friendLevel
         self.type = type
-        self.offerId = ""
-        self.createdAt = ""
-        self.modifiedAt = ""
-        self.offerPublicKey = ""
-        self.userPublickKey = ""
     }
 
     // swiftlint: disable function_body_length
@@ -130,8 +120,8 @@ struct Offer: Identifiable {
             self.offerId = encryptedOffer.offerId
             self.createdAt = encryptedOffer.createdAt
             self.modifiedAt = encryptedOffer.modifiedAt
-            self.userPublickKey = encryptedOffer.userPublicKey
-            
+            self.userPublicKey = encryptedOffer.userPublicKey
+
             self.minAmount = minAmount
             self.maxAmount = maxAmount
             self.feeAmount = feeAmount
@@ -192,12 +182,5 @@ struct Offer: Identifiable {
 
     var modifiedDate: Date? {
         Formatters.dateApiFormatter.date(from: modifiedAt)
-    }
-
-    // MARK: - Display properties
-
-    var paymentMethodsDisplayValue: String {
-        let titles = paymentMethods.map(\.title)
-        return titles.joined(separator: "\n")
     }
 }
