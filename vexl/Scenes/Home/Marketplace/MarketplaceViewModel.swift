@@ -42,13 +42,6 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
 
     // TODO: - Update to real data when services are ready
 
-//    var currencySymbol: String {
-//        "$"
-//    }
-//    var amount: String {
-//        "1234.4"
-//    }
-
     var buyFilters: [MarketplaceFilterData] {
         [
             .init(id: 1, title: "Revolut"),
