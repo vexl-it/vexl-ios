@@ -13,7 +13,7 @@ struct MarketplaceSegmentView: View {
     private let selectorHeight: CGFloat = 3
     private let lineWidth: CGFloat = 2
 
-    @Binding var selectedOption: MarketplaceViewModel.Option
+    @Binding var selectedOption: OfferType
     @State private var viewWidth: CGFloat = 0
 
     var body: some View {

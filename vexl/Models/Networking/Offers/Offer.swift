@@ -12,7 +12,11 @@ enum OfferType: String {
     case buy = "BUY"
 }
 
-struct Offer {
+struct Offer: Identifiable {
+
+    var id: String {
+        offerId
+    }
 
     let offerId: String
     let offerPublicKey: String

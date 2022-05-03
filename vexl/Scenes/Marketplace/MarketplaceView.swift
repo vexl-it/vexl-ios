@@ -31,15 +31,18 @@ struct MarketplaceView: View {
             filter
 
             ScrollView {
-                ForEach(viewModel.feedItems) { item in
-                    MarketplaceFeedView(title: item.title,
-                                        isRequested: item.isRequested,
-                                        location: item.location,
-                                        maxAmount: item.maxAmount,
-                                        paymentMethod: item.paymentMethod,
-                                        fee: item.fee)
+                ForEach(viewModel.filteredOffers) { item in
+                    MarketplaceFeedView(title: item.description,
+                                        isRequested: false,
+                                        location: L.offerSellNoLocation(),
+                                        maxAmount: "\(item.minAmount) - \(item.maxAmount)",
+                                        paymentMethod: "item.paymentMethod",
+                                        fee: "item.fee")
                         .padding(.horizontal, Appearance.GridGuide.point)
                 }
+            }
+            .transaction { transaction in
+                transaction.animation = nil
             }
         }
         .frame(maxHeight: .infinity, alignment: .top)

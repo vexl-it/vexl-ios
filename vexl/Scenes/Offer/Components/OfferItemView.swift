@@ -7,9 +7,9 @@
 
 import SwiftUI
 
-typealias SellOfferViewData = SellOfferItemView.ViewData
+typealias OfferItemViewData = OfferItemView.ViewData
 
-struct SellOfferItemView: View {
+struct OfferItemView: View {
 
     let data: ViewData
 
@@ -81,7 +81,7 @@ struct SellOfferItemView: View {
     }
 }
 
-extension SellOfferItemView {
+extension OfferItemView {
     struct ViewData: Identifiable, Hashable {
         let id: String
         let description: String
@@ -96,7 +96,7 @@ extension SellOfferItemView {
 struct SellOfferItemViewPreview: PreviewProvider {
     static var previews: some View {
         VStack {
-            SellOfferItemView(data: .init(id: "123",
+            OfferItemView(data: .init(id: "123",
                                           description: "Hello World 1234 1234",
                                           minAmount: 10_000,
                                           maxAmount: 40_000,

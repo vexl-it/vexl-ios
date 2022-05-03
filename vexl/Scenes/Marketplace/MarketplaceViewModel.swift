@@ -11,9 +11,8 @@ import Combine
 
 final class MarketplaceViewModel: ViewModelType, ObservableObject {
 
-    enum Option {
-        case buy, sell
-    }
+    @Inject var offerService: OfferServiceType
+    @Inject var userSecurity: UserSecurityType
 
     // MARK: - Actions Bindings
 
@@ -27,7 +26,9 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
     // MARK: - View Bindings
 
     @Published var primaryActivity: Activity = .init()
-    @Published var selectedOption: Option = .buy
+    @Published var selectedOption: OfferType = .buy
+
+    @Published var offerItems: [Offer] = []
 
     // MARK: - Coordinator Bindings
 
@@ -63,44 +64,39 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
         ]
     }
 
-    var feedItems: [MarketplaceFeedViewData] = [
-        MarketplaceFeedViewData(id: 1,
-                                title: "I’ll be wearing a red hat, Don’t text me before 9am — I love to sleep...",
-                                isRequested: false,
-                                location: "Prague",
-                                maxAmount: "up to $10k",
-                                paymentMethod: "Revolut",
-                                fee: nil),
-        MarketplaceFeedViewData(id: 2,
-                                title: "I’ll be wearing a red hat, Don’t text me before 9am — I love to sleep...",
-                                isRequested: true,
-                                location: "Prague",
-                                maxAmount: "up to $10k",
-                                paymentMethod: "Revolut",
-                                fee: "Wants $30 fee per transaction"),
-        MarketplaceFeedViewData(id: 3,
-                                title: "I’ll be wearing a red hat, Don’t text me before 9am — I love to sleep...",
-                                isRequested: true,
-                                location: "Prague",
-                                maxAmount: "up to $10k",
-                                paymentMethod: "Revolut",
-                                fee: nil),
-        MarketplaceFeedViewData(id: 4,
-                                title: "I’ll be wearing a red hat, Don’t text me before 9am — I love to sleep...",
-                                isRequested: false,
-                                location: "Prague",
-                                maxAmount: "up to $10k",
-                                paymentMethod: "Revolut",
-                                fee: "Wants $30 fee per transaction")
-    ]
+    var filteredOffers: [Offer] {
+        offerItems.filter { $0.type == selectedOption }
+    }
 
     private let cancelBag: CancelBag = .init()
 
     init() {
-        setupBindings()
+        setupDataBindings()
+        setupActionBindings()
     }
 
-    private func setupBindings() {
+    private func setupDataBindings() {
+        offerService
+            .getOffer()
+            .track(activity: primaryActivity)
+            .materialize()
+            .compactMap(\.value)
+            .map(\.items)
+            .withUnretained(self)
+            .sink { owner, items in
+                var offers: [Offer] = []
+                for item in items {
+                    if let offer = try? Offer(encryptedOffer: item,
+                                              offerKey: owner.userSecurity.userKeys) {
+                        offers.append(offer)
+                    }
+                }
+                owner.offerItems = offers
+            }
+            .store(in: cancelBag)
+    }
+
+    private func setupActionBindings() {
         action
             .filter { $0 == .showOffer }
             .withUnretained(self)

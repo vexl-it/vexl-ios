@@ -50,9 +50,9 @@ final class SellOffersViewModel: ViewModelType, ObservableObject {
 
     private let cancelBag: CancelBag = .init()
     private let userOfferKeys: UserOfferKeys?
-    var offerItems: [SellOfferViewData] {
+    var offerItems: [OfferItemViewData] {
         userOffers.map { offer in
-            SellOfferViewData(id: offer.offerId,
+            OfferItemViewData(id: offer.offerId,
                               description: offer.description,
                               minAmount: offer.minAmount,
                               maxAmount: offer.maxAmount,
@@ -120,7 +120,7 @@ final class SellOffersViewModel: ViewModelType, ObservableObject {
             }
             .store(in: cancelBag)
     }
-    
+
     func refreshOffers() {
         fetchOffers()
     }

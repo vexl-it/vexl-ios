@@ -29,7 +29,7 @@ struct SellOffersView: View {
 
             ScrollView(showsIndicators: false) {
                 ForEach(viewModel.offerItems, id: \.self) { offerData in
-                    SellOfferItemView(data: offerData)
+                    OfferItemView(data: offerData)
                         .padding(.horizontal, Appearance.GridGuide.point)
                 }
             }
