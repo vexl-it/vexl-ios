@@ -43,7 +43,7 @@ final class HomeCoinValueView: UIView {
 
     private func setupViews() {
         minigraphView.image = R.image.profile.graph()
-        valueLabel.text = "$ 1234"
+        valueLabel.text = "$ N/A"
         valueLabel.font = Appearance.TextStyle.h2.font
         valueLabel.textColor = R.color.green5()
         backgroundColor = R.color.green1()

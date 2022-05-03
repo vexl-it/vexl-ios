@@ -48,9 +48,6 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
     var currencySymbol: String {
         Constants.currencySymbol
     }
-    var amount: String {
-        "N/A"
-    }
 
     var buyFilters: [MarketplaceFilterData] {
         []
