@@ -13,7 +13,7 @@ struct SellOffersView: View {
 
     var body: some View {
         VStack {
-            OfferHeaderView {
+            OfferHeaderView(title: L.offerSellTitle()) {
                 viewModel.action.send(.dismissTap)
             }
 

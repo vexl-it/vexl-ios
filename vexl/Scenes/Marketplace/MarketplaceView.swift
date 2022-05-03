@@ -58,7 +58,7 @@ struct MarketplaceView: View {
                 print("filter from \(index) has been tapped")
             },
                                      action: {
-                print("+ is pressed")
+                viewModel.action.send(.createBuyOffer)
             })
         case .sell:
             return MarketplaceFilterView(items: viewModel.sellFilters,

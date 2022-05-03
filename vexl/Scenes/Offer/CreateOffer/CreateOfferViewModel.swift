@@ -78,10 +78,6 @@ final class CreateOfferViewModel: ViewModelType, ObservableObject {
 
     // MARK: - Variables
 
-    private let cancelBag: CancelBag = .init()
-
-    var minFee: Double = 0
-    var maxFee: Double = 0
     var feeValue: Int? {
         guard selectedFeeOption == .withFee else {
             return nil
@@ -110,10 +106,25 @@ final class CreateOfferViewModel: ViewModelType, ObservableObject {
         return !description.isEmpty
     }
 
+    var headerTitle: String {
+        switch offerType {
+        case .sell:
+            return L.offerSellCreateTitle()
+        case .buy:
+            return L.offerBuyCreateTitle()
+        }
+    }
+
+    var minFee: Double = 0
+    var maxFee: Double = 0
     var currencySymbol = ""
     let offerKey = ECCKeys()
+    let offerType: OfferType
 
-    init() {
+    private let cancelBag: CancelBag = .init()
+
+    init(offerType: OfferType) {
+        self.offerType = offerType
         setupActivity()
         setupDataBindings()
         setupBindings()
@@ -235,7 +246,7 @@ final class CreateOfferViewModel: ViewModelType, ObservableObject {
                                   paymentMethods: owner.selectedPaymentMethodOptions,
                                   btcNetwork: owner.selectedBTCOption,
                                   friendLevel: owner.selectedFriendDegreeOption,
-                                  type: .sell)
+                                  type: owner.offerType)
 
                 // Adding owner publicKey to the list so that it can be decrypted, displayed and modified
 

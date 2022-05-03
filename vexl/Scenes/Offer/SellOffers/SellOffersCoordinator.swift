@@ -69,7 +69,7 @@ final class SellOffersCoordinator: BaseCoordinator<RouterResult<Void>> {
 
 extension SellOffersCoordinator {
     private func showCreateOffer(router: Router) -> CoordinatingResult<RouterResult<Void>> {
-        coordinate(to: CreateOfferCoordinator(router: router))
+        coordinate(to: CreateOfferCoordinator(router: router, offerType: .sell))
             .flatMap { result -> CoordinatingResult<RouterResult<Void>> in
                 guard result != .dismissedByRouter else {
                     return Just(result).eraseToAnyPublisher()

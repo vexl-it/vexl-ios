@@ -14,7 +14,7 @@ struct CreateOfferView: View {
 
     var body: some View {
         VStack {
-            OfferHeaderView {
+            OfferHeaderView(title: viewModel.headerTitle) {
                 viewModel.action.send(.dismissTap)
             }
 
@@ -88,7 +88,10 @@ struct CreateOfferView: View {
 #if DEBUG || DEVEL
 struct CreateOfferViewPreview: PreviewProvider {
     static var previews: some View {
-        CreateOfferView(viewModel: .init())
+        CreateOfferView(viewModel: .init(offerType: .sell))
+            .previewDevice("iPhone 11")
+        
+        CreateOfferView(viewModel: .init(offerType: .buy))
             .previewDevice("iPhone 11")
     }
 }

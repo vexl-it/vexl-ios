@@ -19,6 +19,7 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
     enum UserAction: Equatable {
         case showOffer
         case continueTap
+        case createBuyOffer
     }
 
     let action: ActionSubject<UserAction> = .init()
@@ -33,8 +34,9 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
     // MARK: - Coordinator Bindings
 
     enum Route: Equatable {
-        case showOffer
+        case showOfferTapped
         case continueTapped
+        case createBuyOfferTapped
     }
 
     var route: CoordinatingSubject<Route> = .init()
@@ -98,10 +100,20 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
 
     private func setupActionBindings() {
         action
+            .share()
             .filter { $0 == .showOffer }
             .withUnretained(self)
             .sink { owner, _ in
-                owner.route.send(.showOffer)
+                owner.route.send(.showOfferTapped)
+            }
+            .store(in: cancelBag)
+
+        action
+            .share()
+            .filter { $0 == .createBuyOffer }
+            .withUnretained(self)
+            .sink { owner, _ in
+                owner.route.send(.createBuyOfferTapped)
             }
             .store(in: cancelBag)
     }

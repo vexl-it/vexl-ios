@@ -28,10 +28,22 @@ final class MarketplaceCoordinator: BaseCoordinator<RouterResult<Void>> {
         viewModel
             .route
             .receive(on: RunLoop.main)
-            .filter { $0 == .showOffer }
+            .filter { $0 == .showOfferTapped }
             .withUnretained(self)
             .flatMap { owner, _ in
                 owner.showOffers(router: owner.router)
+            }
+            .sink { _ in }
+            .store(in: cancelBag)
+
+        viewModel
+            .route
+            .receive(on: RunLoop.main)
+            .filter { $0 == .createBuyOfferTapped }
+            .withUnretained(self)
+            .flatMap { owner, _ -> CoordinatingResult<RouterResult<Void>> in
+                let modalRouter = ModalRouter(parentViewController: viewController, presentationStyle: .fullScreen)
+                return owner.showCreateOffer(router: modalRouter)
             }
             .sink { _ in }
             .store(in: cancelBag)
@@ -56,5 +68,17 @@ extension MarketplaceCoordinator {
         }
         .prefix(1)
         .eraseToAnyPublisher()
+    }
+
+    private func showCreateOffer(router: Router) -> CoordinatingResult<RouterResult<Void>> {
+        coordinate(to: CreateOfferCoordinator(router: router, offerType: .buy))
+            .flatMap { result -> CoordinatingResult<RouterResult<Void>> in
+                guard result != .dismissedByRouter else {
+                    return Just(result).eraseToAnyPublisher()
+                }
+                return router.dismiss(animated: true, returning: result)
+            }
+            .prefix(1)
+            .eraseToAnyPublisher()
     }
 }
