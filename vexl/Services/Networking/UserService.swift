@@ -17,6 +17,7 @@ protocol UserServiceType {
     func validateUsername(username: String) -> AnyPublisher<UserAvailable, Error>
     func createUser(username: String, avatar: String?) -> AnyPublisher<User, Error>
     func facebookSignature(id: String) -> AnyPublisher<ChallengeValidation, Error>
+    func getBitcoinData() -> AnyPublisher<BitcoinData, Error>
 }
 
 final class UserService: BaseService, UserServiceType {
@@ -76,6 +77,11 @@ final class UserService: BaseService, UserServiceType {
                 owner.authenticationManager.setFacebookSignature(response)
             })
             .map { $0.1 }
+            .eraseToAnyPublisher()
+    }
+
+    func getBitcoinData() -> AnyPublisher<BitcoinData, Error> {
+        request(type: BitcoinData.self, endpoint: UserRouter.bitcoin)
             .eraseToAnyPublisher()
     }
 }

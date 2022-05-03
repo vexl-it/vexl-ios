@@ -17,4 +17,13 @@ struct Formatters {
         formatter.locale = Locale(identifier: "en_US_POSIX")
         return formatter
     }()
+
+    static let numberFormatter: NumberFormatter = {
+        let formatter = NumberFormatter()
+        formatter.maximumFractionDigits = 2
+        formatter.minimumFractionDigits = 0
+        formatter.currencyCode = "USD"
+        formatter.numberStyle = .currency
+        return formatter
+    }()
 }
