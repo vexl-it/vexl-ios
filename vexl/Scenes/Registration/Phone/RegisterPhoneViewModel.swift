@@ -256,9 +256,17 @@ final class RegisterPhoneViewModel: ViewModelType {
 
     private func setupStateBindings() {
         $phoneNumber
+            .removeDuplicates()
             .withUnretained(self)
-            .map { $0.validatePhoneNumber($1) && $0.currentState == .phoneInput }
-            .assign(to: &$isActionEnabled)
+            .sink { owner, phoneNumber in
+                owner.isActionEnabled = owner.validatePhoneNumber(phoneNumber) && owner.currentState == .phoneInput
+                let formattedPhoneNumber = Formatters.phoneNumberPartialFormatter.formatPartial(phoneNumber)
+                owner.phoneNumber = formattedPhoneNumber
+                
+                print(phoneNumber)
+            }
+            .store(in: cancelBag)
+            //.assign(to: &$isActionEnabled)
 
         $validationCode
             .withUnretained(self)
@@ -294,7 +302,8 @@ final class RegisterPhoneViewModel: ViewModelType {
     // MARK: - Helper methods
 
     private func validatePhoneNumber(_ phoneNumber: String) -> Bool {
-        !phoneNumber.isEmpty
+        let parsedPhoneNumber = try? Formatters.phoneNumberFormatter.parse(phoneNumber)
+        return !phoneNumber.isEmpty && parsedPhoneNumber != nil
     }
 
     private func validateCode(_ code: String) -> Bool {

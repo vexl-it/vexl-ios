@@ -24,7 +24,7 @@ extension RegisterPhoneView {
 
         private var phoneInputView: some View {
             HStack {
-                TextField("", text: $phoneNumber)
+                PhoneNumberTextFieldView(placeholder: "", text: $phoneNumber)
                     .textStyle(.h3)
                     .foregroundColor(Appearance.Colors.primaryText)
                     .keyboardType(.phonePad)
