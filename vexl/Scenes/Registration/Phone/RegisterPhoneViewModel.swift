@@ -111,6 +111,7 @@ final class RegisterPhoneViewModel: ViewModelType {
     private let cancelBag: CancelBag = .init()
 
     init() {
+        userSecurity.generateUserKey()
         setupActivity()
         setupPhoneInputActionBindings()
         setupValidationActionBindings()
