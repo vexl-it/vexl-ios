@@ -49,7 +49,7 @@ final class SellOffersViewModel: ViewModelType, ObservableObject {
     // MARK: - Variables
 
     private let cancelBag: CancelBag = .init()
-    private let userOfferKeys: UserOfferKeys?
+    private var userOfferKeys: UserOfferKeys?
     var offerItems: [OfferItemViewData] {
         userOffers.map { offer in
             OfferItemViewData(id: offer.offerId,
@@ -102,13 +102,18 @@ final class SellOffersViewModel: ViewModelType, ObservableObject {
 
     private func fetchOffers() {
         offerService
-            .getOffer()
+            .getOffer(pageLimit: Constants.pageMaxLimit)
             .track(activity: primaryActivity)
             .materialize()
             .compactMap(\.value)
             .map(\.items)
             .withUnretained(self)
+            .handleEvents(receiveOutput: { owner, _ in
+                owner.userOfferKeys = UserDefaults.standard.codable(forKey: .storedOfferKeys)
+            })
             .sink { owner, items in
+
+                let offerKeys = owner.userOfferKeys?.keys ?? []
                 var offers: [Offer] = []
                 for item in items {
                     if let offer = try? Offer(encryptedOffer: item,
@@ -116,8 +121,11 @@ final class SellOffersViewModel: ViewModelType, ObservableObject {
                         offers.append(offer)
                     }
                 }
-                let sellOffers = offers.filter { $0.type == .sell }
-                owner.userOffers = sellOffers
+
+                let mySellOffers = offers.filter { offer in
+                    offer.type == .sell && offerKeys.contains(where: { $0.publicKey == offer.offerPublicKey })
+                }
+                owner.userOffers = mySellOffers
             }
             .store(in: cancelBag)
     }

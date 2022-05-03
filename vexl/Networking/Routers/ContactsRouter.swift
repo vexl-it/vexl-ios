@@ -14,7 +14,7 @@ enum ContactsRouter: ApiRouter {
     case getFacebookContacts(id: String, accessToken: String)
     case getAvailableFacebookContacts(id: String, accessToken: String)
     case createUser(useFacebookHeader: Bool)
-    case getContacts(useFacebookHeader: Bool, friendLevel: ContactFriendLevel)
+    case getContacts(useFacebookHeader: Bool, friendLevel: ContactFriendLevel, pageLimit: Int?)
 
     var method: HTTPMethod {
         switch self {
@@ -33,7 +33,7 @@ enum ContactsRouter: ApiRouter {
             return securityHeader
         case let .createUser(useFacebookHeader):
             return useFacebookHeader ? facebookSecurityHeader : securityHeader
-        case let .getContacts(useFacebookHeader, _):
+        case let .getContacts(useFacebookHeader, _, _):
             return useFacebookHeader ? facebookSecurityHeader : securityHeader
         }
     }
@@ -65,8 +65,12 @@ enum ContactsRouter: ApiRouter {
             return ["contacts": contacts]
         case let .importContacts(contacts):
             return ["contacts": contacts]
-        case let .getContacts(_, friendLevel):
-            return ["level": friendLevel.rawValue]
+        case let .getContacts(_, friendLevel, pageLimit):
+            guard let pageLimit = pageLimit else {
+                return ["level": friendLevel.rawValue]
+            }
+            return ["level": friendLevel.rawValue,
+                    "limit": pageLimit]
         }
     }
 

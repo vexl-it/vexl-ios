@@ -228,7 +228,7 @@ final class CreateOfferViewModel: ViewModelType, ObservableObject {
             .withUnretained(self)
             .flatMap { owner, _ in
                 owner.contactsService
-                    .getContacts(fromFacebook: false, friendLevel: owner.friendLevel)
+                    .getContacts(fromFacebook: false, friendLevel: owner.friendLevel, pageLimit: Constants.pageMaxLimit)
                     .track(activity: owner.primaryActivity)
                     .materialize()
                     .compactMap(\.value)

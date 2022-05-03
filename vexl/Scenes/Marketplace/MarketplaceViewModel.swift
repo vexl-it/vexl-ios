@@ -46,24 +46,18 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
     // TODO: - Update to real data when services are ready
 
     var currencySymbol: String {
-        "$"
+        Constants.currencySymbol
     }
     var amount: String {
-        "1234.4"
+        "N/A"
     }
 
     var buyFilters: [MarketplaceFilterData] {
-        [
-            .init(id: 1, title: "Revolut"),
-            .init(id: 2, title: "up to 10K"),
-            .init(id: 3, title: "▽")
-        ]
+        []
     }
 
     var sellFilters: [MarketplaceFilterData] {
-        [
-            .init(id: 4, title: "Filter offers ▽")
-        ]
+        []
     }
 
     private var buyFeedItems: [MarketplaceFeedViewData] = []
@@ -78,16 +72,18 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
         }
     }
 
+    private let userOfferKeys: UserOfferKeys?
     private let cancelBag: CancelBag = .init()
 
     init() {
+        self.userOfferKeys = UserDefaults.standard.codable(forKey: .storedOfferKeys)
         setupDataBindings()
         setupActionBindings()
     }
 
     private func setupDataBindings() {
         offerService
-            .getOffer()
+            .getOffer(pageLimit: Constants.pageMaxLimit)
             .track(activity: primaryActivity)
             .materialize()
             .compactMap(\.value)
@@ -108,12 +104,18 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
         $offerItems
             .withUnretained(self)
             .sink { owner, items in
+                let offerKeys = owner.userOfferKeys?.keys ?? []
+
                 owner.buyFeedItems = items
-                    .filter { $0.type == .buy }
+                    .filter { offer in
+                        offer.type == .buy && !offerKeys.contains(where: { $0.publicKey == offer.offerPublicKey })
+                    }
                     .map { Self.map(offer: $0) }
 
                 owner.sellFeedItems = items
-                    .filter { $0.type == .sell }
+                    .filter { offer in
+                        offer.type == .sell && !offerKeys.contains(where: { $0.publicKey == offer.offerPublicKey })
+                    }
                     .map { Self.map(offer: $0) }
             }
             .store(in: cancelBag)
@@ -138,7 +140,7 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
             }
             .store(in: cancelBag)
     }
-    
+
     private static func map(offer: Offer) -> MarketplaceFeedViewData {
         let currencySymbol = Constants.currencySymbol
         return MarketplaceFeedViewData(id: offer.offerId,

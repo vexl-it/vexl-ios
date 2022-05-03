@@ -12,7 +12,7 @@ protocol OfferServiceType {
     func getInitialOfferData() -> AnyPublisher<OfferInitialData, Error>
     func encryptOffer(withContactKey publicKeys: [String], offerKey: ECCKeys, offer: Offer) -> AnyPublisher<[EncryptedOffer], Error>
 
-    func getOffer() -> AnyPublisher<Paged<EncryptedOffer>, Error>
+    func getOffer(pageLimit: Int?) -> AnyPublisher<Paged<EncryptedOffer>, Error>
     func createOffer(encryptedOffers: [EncryptedOffer]) -> AnyPublisher<EncryptedOffer, Error>
     func storeOfferKey(key: ECCKeys, withId id: String) -> AnyPublisher<Void, Error>
 }
@@ -92,8 +92,8 @@ final class OfferService: BaseService, OfferServiceType {
         .eraseToAnyPublisher()
     }
 
-    func getOffer() -> AnyPublisher<Paged<EncryptedOffer>, Error> {
-        request(type: Paged<EncryptedOffer>.self, endpoint: OffersRouter.getOffers)
+    func getOffer(pageLimit: Int?) -> AnyPublisher<Paged<EncryptedOffer>, Error> {
+        request(type: Paged<EncryptedOffer>.self, endpoint: OffersRouter.getOffers(pageLimit: pageLimit))
             .eraseToAnyPublisher()
     }
 

@@ -20,6 +20,7 @@ struct Offer: Identifiable {
 
     let offerId: String
     let offerPublicKey: String
+    let userPublickKey: String
 
     let minAmount: Int
     let maxAmount: Int
@@ -59,6 +60,7 @@ struct Offer: Identifiable {
         self.createdAt = ""
         self.modifiedAt = ""
         self.offerPublicKey = ""
+        self.userPublickKey = ""
     }
 
     // swiftlint: disable function_body_length
@@ -128,7 +130,8 @@ struct Offer: Identifiable {
             self.offerId = encryptedOffer.offerId
             self.createdAt = encryptedOffer.createdAt
             self.modifiedAt = encryptedOffer.modifiedAt
-
+            self.userPublickKey = encryptedOffer.userPublicKey
+            
             self.minAmount = minAmount
             self.maxAmount = maxAmount
             self.feeAmount = feeAmount
