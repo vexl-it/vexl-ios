@@ -28,6 +28,31 @@ struct Offer {
     var createdAt: String = ""
     var modifiedAt: String = ""
 
+    init(minAmount: Int,
+         maxAmount: Int,
+         description: String,
+         feeState: OfferFeeOption,
+         feeAmount: Double,
+         locationState: OfferTradeLocationOption,
+         paymentMethods: [OfferPaymentMethodOption],
+         btcNetwork: [OfferAdvancedBTCOption],
+         friendLevel: OfferAdvancedFriendDegreeOption,
+         type: OfferType) {
+        self.minAmount = minAmount
+        self.maxAmount = maxAmount
+        self.description = description
+        self.feeState = feeState
+        self.feeAmount = feeAmount
+        self.locationState = locationState
+        self.paymentMethods = paymentMethods
+        self.btcNetwork = btcNetwork
+        self.friendLevel = friendLevel
+        self.type = type
+        self.offerId = ""
+        self.createdAt = ""
+        self.modifiedAt = ""
+    }
+
     // TODO: - Implement initializer that receives EncryptedOffer -> Creates readable Offer
 
     var minAmountString: String {
