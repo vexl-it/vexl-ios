@@ -67,6 +67,7 @@ final class RegisterPhoneViewModel: ViewModelType {
 
     enum Route: Equatable {
         case continueTapped
+        case backTapped
     }
 
     var route: CoordinatingSubject<Route> = .init()
@@ -333,5 +334,16 @@ final class RegisterPhoneViewModel: ViewModelType {
         currentState = .phoneInput
         phoneVerificationId = nil
         timer?.connect().cancel()
+    }
+
+    func updateToPreviousState() {
+        switch currentState {
+        case .phoneInput:
+            route.send(.backTapped)
+        case .codeInput:
+            clearState()
+        case .codeInputValidation, .codeInputSuccess:
+            break
+        }
     }
 }
