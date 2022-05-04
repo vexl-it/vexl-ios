@@ -40,10 +40,10 @@ final class OnboardingCoordinator: BaseCoordinator<RouterResult<Void>> {
 
         // MARK: Dismiss
 
-        let dismiss = viewController.dismissPublisher
-            .map { _ in RouterResult<Void>.dismissedByRouter }
+        let dismissByRouter = dismissObservable(with: viewController, dismissHandler: router)
+            .dismissedByRouter(type: Void.self)
 
-        return Publishers.Merge(dismiss, finished)
+        return Publishers.Merge(dismissByRouter, finished)
             .receive(on: RunLoop.main)
             .prefix(1)
             .eraseToAnyPublisher()
