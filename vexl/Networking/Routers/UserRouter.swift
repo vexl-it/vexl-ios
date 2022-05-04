@@ -17,10 +17,11 @@ enum UserRouter: ApiRouter {
     case validateChallenge(signature: String, key: String)
     case facebookSignature(id: String)
     case validateUsername(username: String)
+    case bitcoin
 
     var method: HTTPMethod {
         switch self {
-        case .me, .facebookSignature:
+        case .me, .facebookSignature, .bitcoin:
             return .get
         case .createUser, .confirmPhone, .validateCode, .validateChallenge, .validateUsername:
             return .post
@@ -29,7 +30,7 @@ enum UserRouter: ApiRouter {
 
     var additionalHeaders: [Header] {
         switch self {
-        case .createUser, .validateUsername, .facebookSignature:
+        case .createUser, .validateUsername, .facebookSignature, .bitcoin:
             return securityHeader
         default:
             return []
@@ -52,12 +53,14 @@ enum UserRouter: ApiRouter {
             return "user/confirmation/challenge"
         case let .facebookSignature(id):
             return "user/signature/\(id)"
+        case .bitcoin:
+            return "cryptocurrencies/bitcoin/"
         }
     }
 
     var parameters: Parameters {
         switch self {
-        case .me, .facebookSignature:
+        case .me, .facebookSignature, .bitcoin:
             return [:]
         case let .createUser(username, avatar, imageExtension):
             guard let avatar = avatar else {

@@ -12,18 +12,28 @@ import Cleevio
 final class HomeViewController: UIViewController {
 
     let dismissPublisher: ActionSubject<Void> = .init()
-
-    var headerView = HomeHeaderView()
-
     var bottomViewController: UIViewController?
-    var currentViewController: UIViewController?
 
-    var isExpanded = false
+    private let viewModel: HomeViewModel
+    private let headerView = HomeHeaderView()
+    private let cancelBag: CancelBag = .init()
+    private var currentViewController: UIViewController?
+    private var isExpanded = false
+
+    init(viewModel: HomeViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .black
         setupHeader()
+        setupBindings()
     }
 
     private func setupHeader() {
@@ -111,5 +121,15 @@ final class HomeViewController: UIViewController {
                 completion?()
             }
         }
+    }
+
+    private func setupBindings() {
+        viewModel.isLoading
+            .assign(to: \.isLoading, on: headerView)
+            .store(in: cancelBag)
+
+        viewModel.$bitcoinValue
+            .assign(to: \.bitcoinValue, on: headerView)
+            .store(in: cancelBag)
     }
 }
