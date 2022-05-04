@@ -88,7 +88,7 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
                 var offers: [Offer] = []
                 for item in items {
                     if let offer = try? Offer(encryptedOffer: item,
-                                              offerKey: owner.userSecurity.userKeys) {
+                                              keys: owner.userSecurity.userKeys) {
                         offers.append(offer)
                     }
                 }
