@@ -8,7 +8,7 @@
 import Foundation
 import Cleevio
 
-final class SellOffersViewModel: ViewModelType, ObservableObject {
+final class UserOffersViewModel: ViewModelType, ObservableObject {
 
     @Inject var offerService: OfferServiceType
     @Inject var userSecurity: UserSecurityType
@@ -48,19 +48,41 @@ final class SellOffersViewModel: ViewModelType, ObservableObject {
 
     // MARK: - Variables
 
+    private let offerType: OfferType
     private let cancelBag: CancelBag = .init()
     private var userOfferKeys: UserOfferKeys?
+
+    var offerTitle: String {
+        switch offerType {
+        case .sell:
+            return L.offerSellTitle()
+        case .buy:
+            return L.offerBuyTitle()
+        }
+    }
+
+    var createOfferTitle: String {
+        switch offerType {
+        case .sell:
+            return L.offerSellTitle()
+        case .buy:
+            return L.offerBuyTitle()
+        }
+    }
+
     var offerItems: [OfferItemViewData] {
         userOffers.map { offer in
             OfferItemViewData(id: offer.offerId,
                               description: offer.description,
                               minAmount: offer.minAmount,
                               maxAmount: offer.maxAmount,
-                              paymentMethods: offer.paymentMethods.map(\.title))
+                              paymentMethods: offer.paymentMethods.map(\.title),
+                              offerType: offer.type)
         }
     }
 
-    init() {
+    init(offerType: OfferType) {
+        self.offerType = offerType
         self.userOfferKeys = UserDefaults.standard.codable(forKey: .storedOfferKeys)
         setupActivity()
         setupDataBindings()
@@ -120,7 +142,7 @@ final class SellOffersViewModel: ViewModelType, ObservableObject {
                 }
 
                 let mySellOffers = offers.filter { offer in
-                    offer.type == .sell && offerKeys.contains(where: { $0.publicKey == offer.offerPublicKey })
+                    offer.type == owner.offerType && offerKeys.contains(where: { $0.publicKey == offer.offerPublicKey })
                 }
                 owner.userOffers = mySellOffers
             }

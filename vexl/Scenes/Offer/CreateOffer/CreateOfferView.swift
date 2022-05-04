@@ -90,7 +90,7 @@ struct CreateOfferViewPreview: PreviewProvider {
     static var previews: some View {
         CreateOfferView(viewModel: .init(offerType: .sell))
             .previewDevice("iPhone 11")
-        
+
         CreateOfferView(viewModel: .init(offerType: .buy))
             .previewDevice("iPhone 11")
     }

@@ -46,7 +46,7 @@ struct OfferItemView: View {
                         .foregroundColor(Appearance.Colors.gray2)
                         .frame(maxWidth: .infinity)
 
-                    Text(L.offerSellAmountToSell())
+                    Text(data.offerType == .sell ? L.offerSellAmountToSell() : L.offerBuyAmountToBuy())
                         .multilineTextAlignment(.center)
                         .textStyle(.description)
                         .foregroundColor(Appearance.Colors.gray2)
@@ -88,6 +88,7 @@ extension OfferItemView {
         let minAmount: Int
         let maxAmount: Int
         let paymentMethods: [String]
+        let offerType: OfferType
         let currency = "$"
     }
 }
@@ -97,10 +98,11 @@ struct SellOfferItemViewPreview: PreviewProvider {
     static var previews: some View {
         VStack {
             OfferItemView(data: .init(id: "123",
-                                          description: "Hello World 1234 1234",
-                                          minAmount: 10_000,
-                                          maxAmount: 40_000,
-                                          paymentMethods: ["Bank", "Revolut"]))
+                                      description: "Hello World 1234 1234",
+                                      minAmount: 10_000,
+                                      maxAmount: 40_000,
+                                      paymentMethods: ["Bank", "Revolut"],
+                                      offerType: .sell))
         }
         .frame(maxHeight: .infinity)
         .previewDevice("iPhone 11")

@@ -14,6 +14,8 @@ final class HomeRouter {
     private let homeViewController: HomeViewController
     private var isPresesentingFullscreen = false
 
+    public let dismissPublisher: ActionSubject<Void> = .init()
+
     init(homeViewController: HomeViewController) {
         self.homeViewController = homeViewController
     }

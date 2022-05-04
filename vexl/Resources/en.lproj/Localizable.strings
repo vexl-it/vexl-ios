@@ -80,10 +80,13 @@
 "offer.request" = "Request";
 "offer.requested" = "Requested";
 "offer.sell.title" = "My Sell Offers";
+"offer.buy.title" = "My Buy Offers";
 "offer.buy.create.title" = "My Buy\nOffer";
 "offer.sell.create.title" = "My Sell\nOffer";
-"offer.sell.new.offer" = "New Sell Offers";
+"offer.sell.new.offer" = "New Sell Offer";
+"offer.buy.new.offer" = "New Buy Offer";
 "offer.sell.amount.toSell" = "to sell";
+"offer.buy.amount.toBuy" = "to buy";
 "offer.sell.noLocation" = "No Location";
 "offer.create.fee.none" = "Without fee";
 "offer.create.fee.ok" = "Fee OK";
