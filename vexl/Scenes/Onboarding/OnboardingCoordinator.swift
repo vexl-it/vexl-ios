@@ -41,7 +41,7 @@ final class OnboardingCoordinator: BaseCoordinator<RouterResult<Void>> {
 
         // MARK: Dismiss
 
-        return finished//Publishers.Merge(dismiss, finished)
+        return finished
             .receive(on: RunLoop.main)
             .eraseToAnyPublisher()
     }

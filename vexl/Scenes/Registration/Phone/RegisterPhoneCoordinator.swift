@@ -57,10 +57,6 @@ class RegisterPhoneCoordinator: BaseCoordinator<RouterResult<Void>> {
             .receive(on: RunLoop.main)
             .map { _ in RouterResult<Void>.dismiss }
 
-        let dismissByRouter = viewController
-            .dismissPublisher
-            .map { _ in RouterResult<Void>.dismissedByRouter }
-
         return Publishers.Merge(finished, back)
             .receive(on: RunLoop.main)
             .eraseToAnyPublisher()

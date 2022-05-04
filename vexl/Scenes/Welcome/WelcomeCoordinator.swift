@@ -46,7 +46,7 @@ final class WelcomeCoordinator: BaseCoordinator<RouterResult<Void>> {
 
         // MARK: Dismiss
 
-        return finished//Publishers.Merge(dismissByRouter, finished)
+        return finished
             .receive(on: RunLoop.main)
             .eraseToAnyPublisher()
     }

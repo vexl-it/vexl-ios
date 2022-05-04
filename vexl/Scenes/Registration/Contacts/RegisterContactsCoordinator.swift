@@ -48,10 +48,6 @@ final class RegisterContactsCoordinator: BaseCoordinator<RouterResult<Void>> {
             .$loading
             .assign(to: &viewController.$isLoading)
 
-        let dismissByRouter = viewController
-            .dismissPublisher
-            .map { _ in RouterResult<Void>.dismissedByRouter }
-
         let skipTap = viewModel
             .route
             .filter { $0 == .skipTapped }
