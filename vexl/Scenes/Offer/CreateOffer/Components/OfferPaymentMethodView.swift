@@ -29,19 +29,17 @@ struct OfferPaymentMethodView: View {
                                      content: { option in
                 Text(option.title)
             },
-                                     action: { option, _ in
-                print(option.title)
-            })
+                                     action: nil)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
     }
 }
 
 extension OfferPaymentMethodView {
-    enum Option {
-        case cash
-        case revolut
-        case bank
+    enum Option: String {
+        case cash = "CASH"
+        case revolut = "REVOLUT"
+        case bank = "BANK"
 
         var title: String {
             switch self {

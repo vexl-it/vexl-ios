@@ -39,7 +39,7 @@ final class HomeCoinValueView: UIView {
         ])
     }
 
-    //TODO: - set real information when using services
+    // TODO: - set real information when using services
 
     private func setupViews() {
         minigraphView.image = R.image.profile.graph()
