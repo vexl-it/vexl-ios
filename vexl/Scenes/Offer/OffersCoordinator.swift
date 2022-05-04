@@ -28,6 +28,14 @@ final class OffersCoordinator: BaseCoordinator<RouterResult<Void>> {
         }
 
         viewModel
+            .$error
+            .assign(to: &viewController.$error)
+
+        viewModel
+            .$isLoading
+            .assign(to: &viewController.$isLoading)
+
+        viewModel
             .route
             .filter { $0 == .createOfferTapped }
             .withUnretained(self)

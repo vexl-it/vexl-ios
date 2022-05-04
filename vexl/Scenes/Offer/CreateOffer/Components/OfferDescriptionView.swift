@@ -17,7 +17,7 @@ struct OfferDescriptionView: View {
                 .textStyle(.h3)
                 .foregroundColor(Appearance.Colors.whiteText)
 
-            PlaceholderTextField(placeholder: "Enter Description",
+            PlaceholderTextField(placeholder: L.offerCreateDescriptionPlaceholder(),
                                  textColor: Appearance.Colors.whiteText,
                                  text: $text)
         }

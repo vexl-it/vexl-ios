@@ -11,9 +11,7 @@ import SwiftUI
 
 final class CreateOfferViewModel: ViewModelType, ObservableObject {
 
-    @Inject var offerService: OfferServiceType
-
-    // MARK: - Action Binding
+    typealias OfferData = (offer: Offer, contacts: [ContactKey])
 
     enum UserAction: Equatable {
         case pause
@@ -23,6 +21,19 @@ final class CreateOfferViewModel: ViewModelType, ObservableObject {
         case dismissTap
         case createOffer
     }
+
+    enum State {
+        case initial
+        case loaded
+        case loading
+    }
+
+    @Inject var userSecurity: UserSecurityType
+    @Inject var offerService: OfferServiceType
+    @Inject var contactsMananger: ContactsManagerType
+    @Inject var contactsService: ContactsServiceType
+
+    // MARK: - Action Binding
 
     let action: ActionSubject<UserAction> = .init()
 
@@ -46,15 +57,14 @@ final class CreateOfferViewModel: ViewModelType, ObservableObject {
 
     @Published var locations: [OfferLocationItemData] = []
 
-    @Published var selectedTradeStyleOption: OfferTradeStyleOption = .online
+    @Published var selectedTradeStyleOption: OfferTradeLocationOption = .online
 
     @Published var selectedPaymentMethodOptions: [OfferPaymentMethodOption] = []
 
     @Published var selectedFriendDegreeOption: OfferAdvancedFriendDegreeOption = .firstDegree
-    @Published var selectedTypeOption: [OfferAdvancedTypeOption] = []
+    @Published var selectedTypeOption: [OfferAdvancedBTCOption] = []
 
-    @Published var isLoadingData = false
-    @Published var isLoading = false
+    @Published var state: State = .initial
     @Published var error: Error?
 
     // MARK: - Coordinator Bindings
@@ -71,25 +81,43 @@ final class CreateOfferViewModel: ViewModelType, ObservableObject {
 
     var minFee: Double = 0
     var maxFee: Double = 0
-    var feeValue: Int? {
+    var feeValue: Int {
         guard selectedFeeOption == .withFee else {
-            return nil
+            return 0
         }
-        return Int((maxFee - minFee) * feeAmount)
+        return Int(((maxFee - minFee) * feeAmount) + minFee)
+    }
+
+    private var friendLevel: ContactFriendLevel {
+        switch selectedFriendDegreeOption {
+        case .firstDegree:
+            return .first
+        case .secondDegree:
+            return .second
+        }
     }
 
     var currencySymbol = ""
+    let offerKey = ECCKeys()
 
     init() {
         setupActivity()
         setupDataBindings()
         setupBindings()
+        setupCreateOfferBinding()
     }
 
     private func setupActivity() {
         activityIndicator
             .loading
-            .assign(to: &$isLoading)
+            .withUnretained(self)
+            .sink { owner, isLoading in
+                guard owner.state != .initial else {
+                    return
+                }
+                owner.state = isLoading ? .loading : .loaded
+            }
+            .store(in: cancelBag)
 
         errorIndicator
             .errors
@@ -100,7 +128,6 @@ final class CreateOfferViewModel: ViewModelType, ObservableObject {
     // MARK: - Bindings
 
     private func setupDataBindings() {
-        isLoadingData = true
         offerService
             .getInitialOfferData()
             .track(activity: primaryActivity)
@@ -108,7 +135,7 @@ final class CreateOfferViewModel: ViewModelType, ObservableObject {
             .compactMap(\.value)
             .withUnretained(self)
             .sink { owner, data in
-                owner.isLoadingData = false
+                owner.state = .loaded
                 owner.amountRange = data.minOffer...data.maxOffer
                 owner.currentAmountRange = data.minOffer...data.maxOffer
                 owner.minFee = data.minFee
@@ -167,19 +194,76 @@ final class CreateOfferViewModel: ViewModelType, ObservableObject {
                 owner.locations = newLocations
             }
             .store(in: cancelBag)
+    }
 
-        action
+    // swiftlint: disable function_body_length
+    private func setupCreateOfferBinding() {
+        let fetchContacts = action
             .share()
             .filter { $0 == .createOffer }
             .withUnretained(self)
-            .sink { owner, _ in
-                print("description: \(owner.description)")
-                print("amount: \(owner.currentAmountRange)")
-                print("fee: \(owner.feeValue ?? 0)")
-                print("location: \(owner.locations)")
-                print("trade style: \(owner.selectedTradeStyleOption)")
-                print("payment type: \(owner.selectedPaymentMethodOptions)")
-                print("friends: \(owner.selectedFriendDegreeOption)")
+            .flatMap { owner, _ in
+                owner.contactsService
+                    .getContacts(fromFacebook: false, friendLevel: owner.friendLevel)
+                    .track(activity: owner.primaryActivity)
+                    .materialize()
+                    .compactMap(\.value)
+            }
+
+        let encryptOffer = fetchContacts
+            .withUnretained(self)
+            .map { owner, contacts -> OfferData in
+                let offer = Offer(minAmount: owner.currentAmountRange.lowerBound,
+                                  maxAmount: owner.currentAmountRange.upperBound,
+                                  description: owner.description,
+                                  feeState: owner.selectedFeeOption,
+                                  feeAmount: Double(owner.feeValue),
+                                  locationState: owner.selectedTradeStyleOption,
+                                  paymentMethods: owner.selectedPaymentMethodOptions,
+                                  btcNetwork: owner.selectedTypeOption,
+                                  friendLevel: owner.selectedFriendDegreeOption,
+                                  type: .sell)
+
+                // Adding owner publicKey to the list so that it can be decrypted, displayed and modified
+
+                var contacts = contacts.items
+                contacts.append(ContactKey(publicKey: owner.userSecurity.userKeys.publicKey))
+                return OfferData(offer: offer, contacts: contacts)
+            }
+            .subscribe(on: DispatchQueue.global(qos: .background))
+            .withUnretained(self)
+            .flatMap { owner, offerData in
+                owner.offerService
+                    .encryptOffer(withContactKey: offerData.contacts.map(\.publicKey),
+                                  offerKey: owner.offerKey,
+                                  offer: offerData.offer)
+                    .track(activity: owner.primaryActivity)
+                    .materialize()
+                    .compactMap(\.value)
+            }
+
+        let createOffer = encryptOffer
+            .withUnretained(self)
+            .flatMap { owner, encryptedOffer in
+                owner.offerService
+                    .createOffer(encryptedOffers: encryptedOffer)
+                    .track(activity: owner.primaryActivity)
+                    .materialize()
+                    .compactMap(\.value)
+            }
+
+        createOffer
+            .withUnretained(self)
+            .flatMap { owner, response in
+                owner.offerService
+                    .storeOfferKey(key: owner.offerKey, withId: response.offerId)
+                    .track(activity: owner.primaryActivity)
+                    .materialize()
+                    .compactMap(\.value)
+            }
+            .subscribe(on: RunLoop.main)
+            .sink { _ in
+                // TODO: - Return to previous Scene and request a refresh
             }
             .store(in: cancelBag)
     }

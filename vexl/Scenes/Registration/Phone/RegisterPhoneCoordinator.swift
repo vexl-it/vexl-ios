@@ -24,6 +24,15 @@ class RegisterPhoneCoordinator: BaseCoordinator<RouterResult<Void>> {
         let viewController = RegisterViewController(currentPage: 0, numberOfPages: 3, rootView: RegisterPhoneView(viewModel: viewModel))
         router.present(viewController, animated: animated)
 
+        viewController
+            .onBack
+            .sink { _ in
+                viewModel.updateState()
+            }
+            .store(in: cancelBag)
+
+        // MARK: - ViewModel bindings
+
         viewModel
             .$error
             .assign(to: &viewController.$error)
@@ -42,12 +51,17 @@ class RegisterPhoneCoordinator: BaseCoordinator<RouterResult<Void>> {
             }
             .filter { if case .finished = $0 { return true } else { return false } }
 
+        let back = viewModel
+            .route
+            .filter { $0 == .backTapped }
+            .receive(on: RunLoop.main)
+            .map { _ in RouterResult<Void>.dismiss }
+
         let dismissByRouter = viewController
             .dismissPublisher
-            .print("HEY")
             .map { _ in RouterResult<Void>.dismissedByRouter }
 
-        return Publishers.Merge(finished, dismissByRouter)
+        return Publishers.Merge3(finished, dismissByRouter, back)
             .receive(on: RunLoop.main)
             .prefix(1)
             .eraseToAnyPublisher()

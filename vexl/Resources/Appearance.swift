@@ -77,7 +77,7 @@ struct Appearance {
     static func setGlobalAppearance() {
         setDefaultNavBarStyle()
     }
-    
+
     static func navigationBarDefaultAppearance(withColor color: UIColor = .clear) -> UINavigationBarAppearance {
         let appearance = UINavigationBarAppearance().tap {
             $0.configureWithOpaqueBackground()
@@ -88,7 +88,7 @@ struct Appearance {
 
         return appearance
     }
-    
+
     static private func setDefaultNavBarStyle() {
         let appearance = navigationBarDefaultAppearance()
 

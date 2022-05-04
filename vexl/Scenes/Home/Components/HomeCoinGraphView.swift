@@ -12,7 +12,7 @@ final class HomeCoinGraphView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
 
-        //TODO: - set real information when using services
+        // TODO: - set real information when using services
 
         translatesAutoresizingMaskIntoConstraints = false
         heightAnchor.constraint(equalToConstant: 150).isActive = true
