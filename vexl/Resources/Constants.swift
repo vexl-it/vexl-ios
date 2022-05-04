@@ -18,9 +18,11 @@ struct Constants {
         #if APPSTORE
         private static let userApiHostname = "https://user.vexl.devel.cleevio.io"
         private static let contactsApiHostname = "https://contact.vexl.devel.cleevio.io"
+        private static let offersApiHostname = "https://offer.vexl.devel.cleevio.io"
         #else
         private static let userApiHostname = "https://user.vexl.devel.cleevio.io"
         private static let contactsApiHostname = "https://contact.vexl.devel.cleevio.io"
+        private static let offersApiHostname = "https://offer.vexl.devel.cleevio.io"
         #endif
 
         private static let apiVersion = "v1/"
@@ -28,6 +30,7 @@ struct Constants {
         static let baseURLString = ""
         static let userBaseURLString = "\(userApiHostname)/api/\(apiVersion)"
         static let contactsBaseURLString = "\(contactsApiHostname)/api/\(apiVersion)"
+        static let offersBaseURLString = "\(offersApiHostname)/api/\(apiVersion)"
     }
 
     // MARK: - Keychain keys

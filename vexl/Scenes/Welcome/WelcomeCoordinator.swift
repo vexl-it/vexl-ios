@@ -45,8 +45,8 @@ final class WelcomeCoordinator: BaseCoordinator<RouterResult<Void>> {
 
         // MARK: Dismiss
 
-        let dismissByRouter = viewController.dismissPublisher
-            .map { _ in RouterResult<Void>.dismissedByRouter }
+        let dismissByRouter = dismissObservable(with: viewController, dismissHandler: router)
+            .dismissedByRouter(type: Void.self)
 
         return Publishers.Merge(dismissByRouter, finished)
             .receive(on: RunLoop.main)

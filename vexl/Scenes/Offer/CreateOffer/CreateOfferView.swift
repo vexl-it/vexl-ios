@@ -19,7 +19,7 @@ struct CreateOfferView: View {
             }
 
             ScrollView(showsIndicators: false) {
-                if !viewModel.isLoadingData {
+                if viewModel.state != .initial {
 
                     OfferStatusView(pauseAction: {
                         viewModel.action.send(.pause)
@@ -38,7 +38,7 @@ struct CreateOfferView: View {
                                          sliderBounds: viewModel.amountRange)
                         .padding(.horizontal, Appearance.GridGuide.point)
 
-                    OfferFeePickerView(feeLabel: "\(viewModel.feeValue ?? 0)%",
+                    OfferFeePickerView(feeLabel: "\(viewModel.feeValue)%",
                                        selectedOption: $viewModel.selectedFeeOption,
                                        feeValue: $viewModel.feeAmount)
                         .padding(.horizontal, Appearance.GridGuide.point)
@@ -53,7 +53,7 @@ struct CreateOfferView: View {
                         .padding(.top, Appearance.GridGuide.largePadding1)
                         .padding(.horizontal, Appearance.GridGuide.point)
 
-                    OfferTradeStylePickerView(selectedOption: $viewModel.selectedTradeStyleOption)
+                    OfferTradeLocationPickerView(selectedOption: $viewModel.selectedTradeStyleOption)
                         .padding(.horizontal, Appearance.GridGuide.point)
 
                     OfferPaymentMethodView(selectedOptions: $viewModel.selectedPaymentMethodOptions)

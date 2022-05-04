@@ -26,8 +26,11 @@ final class CreateOfferCoordinator: BaseCoordinator<RouterResult<Void>> {
             .assign(to: &viewController.$error)
 
         viewModel
-            .$isLoading
-            .assign(to: &viewController.$isLoading)
+            .$state
+            .sink { state in
+                viewController.isLoading = state != .loaded
+            }
+            .store(in: cancelBag)
 
         router.present(viewController, animated: true)
 
@@ -36,8 +39,8 @@ final class CreateOfferCoordinator: BaseCoordinator<RouterResult<Void>> {
             .filter { $0 == .dismissTapped }
             .map { _ -> RouterResult<Void> in .dismiss }
 
-        let dismissByRouter = viewController.dismissPublisher
-            .map { _ in RouterResult<Void>.dismissedByRouter }
+        let dismissByRouter = dismissObservable(with: viewController, dismissHandler: router)
+            .dismissedByRouter(type: Void.self)
 
         return Publishers.Merge(dismiss, dismissByRouter)
             .receive(on: RunLoop.main)

@@ -11,6 +11,7 @@ import Cleevio
 
 final class HomeRouter {
 
+    let dismissPublisher = ActionSubject<Void>()
     private let homeViewController: HomeViewController
     private var isPresesentingFullscreen = false
 
@@ -26,6 +27,7 @@ final class HomeRouter {
 extension HomeRouter: Router {
 
     func dismiss(animated: Bool, completion: (() -> Void)?) {
+        dismissPublisher.send()
         homeViewController.dismiss(isFullscreenPresentation: isPresesentingFullscreen,
                                    completion: completion)
     }

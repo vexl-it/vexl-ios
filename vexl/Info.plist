@@ -33,7 +33,7 @@
 		<string>fb-messenger-share-api</string>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>35</string>
+	<string>36</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
@@ -43,6 +43,8 @@
 	</dict>
 	<key>NSContactsUsageDescription</key>
 	<string>Vexl wants to access your contacts in order to work.</string>
+    <key>NSCameraUsageDescription</key>
+    <string>Vexl wants to access your camera in order to select a photo for your avatar.</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
