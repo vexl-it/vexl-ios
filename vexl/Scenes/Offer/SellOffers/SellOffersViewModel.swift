@@ -110,9 +110,12 @@ final class SellOffersViewModel: ViewModelType, ObservableObject {
             .withUnretained(self)
             .sink { owner, items in
                 var offers: [Offer] = []
+
+                // TODO: - Optimize the decryption using multi-threading
+
                 for item in items {
                     if let offer = try? Offer(encryptedOffer: item,
-                                              offerKey: owner.userSecurity.userKeys) {
+                                              keys: owner.userSecurity.userKeys) {
                         offers.append(offer)
                     }
                 }
@@ -120,7 +123,7 @@ final class SellOffersViewModel: ViewModelType, ObservableObject {
             }
             .store(in: cancelBag)
     }
-    
+
     func refreshOffers() {
         fetchOffers()
     }
