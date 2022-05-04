@@ -19,7 +19,6 @@ final class HomeCoinGraphView: UIView {
 
         let label = UILabel()
         label.textColor = .white
-        label.text = "Graph will go here"
         label.translatesAutoresizingMaskIntoConstraints = false
         addSubview(label)
 
