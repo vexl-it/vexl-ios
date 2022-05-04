@@ -42,6 +42,7 @@ final class WelcomeCoordinator: BaseCoordinator<RouterResult<Void>> {
             .flatMap { owner, _ -> CoordinatingResult<RouterResult<Void>> in
                 owner.showRegisterPhone(router: owner.router)
             }
+            .filter { if case .finished = $0 { return true } else { return false } }
 
         // MARK: Dismiss
 

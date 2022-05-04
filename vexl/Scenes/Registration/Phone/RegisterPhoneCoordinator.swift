@@ -40,9 +40,11 @@ class RegisterPhoneCoordinator: BaseCoordinator<RouterResult<Void>> {
             .flatMap { owner, _ -> CoordinatingResult<RouterResult<Void>> in
                 owner.showRegisterNameAvatar(router: owner.router)
             }
+            .filter { if case .finished = $0 { return true } else { return false } }
 
         let dismissByRouter = viewController
             .dismissPublisher
+            .print("HEY")
             .map { _ in RouterResult<Void>.dismissedByRouter }
 
         return Publishers.Merge(finished, dismissByRouter)

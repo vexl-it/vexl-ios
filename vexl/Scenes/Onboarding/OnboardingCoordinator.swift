@@ -37,6 +37,7 @@ final class OnboardingCoordinator: BaseCoordinator<RouterResult<Void>> {
             .flatMap { owner, _ -> CoordinatingResult<RouterResult<Void>> in
                 owner.showLoginFlow(router: owner.router)
             }
+            .filter { if case .finished = $0 { return true } else { return false } }
 
         // MARK: Dismiss
 

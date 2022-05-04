@@ -40,6 +40,7 @@ class RegisterNameAvatarCoordinator: BaseCoordinator<RouterResult<Void>> {
             .flatMap { owner, _ -> CoordinatingResult<RouterResult<Void>> in
                 owner.showRegisterPhoneContacts(router: owner.router)
             }
+            .filter { if case .finished = $0 { return true } else { return false } }
 
         let dismissByRouter = viewController
             .dismissPublisher
