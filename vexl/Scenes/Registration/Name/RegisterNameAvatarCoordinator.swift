@@ -65,7 +65,6 @@ class RegisterNameAvatarCoordinator: BaseCoordinator<RouterResult<Void>> {
 
         return finished//Publishers.Merge(finished, dismissByRouter)
             .receive(on: RunLoop.main)
-            .prefix(1)
             .eraseToAnyPublisher()
     }
 }
@@ -73,12 +72,12 @@ class RegisterNameAvatarCoordinator: BaseCoordinator<RouterResult<Void>> {
 extension RegisterNameAvatarCoordinator {
     private func showRegisterPhoneContacts(router: Router) -> CoordinatingResult<RouterResult<Void>> {
         coordinate(to: RegisterContactsCoordinator(router: router, animated: true))
-            .flatMap { result -> CoordinatingResult<RouterResult<Void>> in
-                guard result != .dismissedByRouter else {
-                    return Just(result).eraseToAnyPublisher()
-                }
-                return router.dismiss(animated: true, returning: result)
-            }
+//            .flatMap { result -> CoordinatingResult<RouterResult<Void>> in
+//                guard result != .dismissedByRouter else {
+//                    return Just(result).eraseToAnyPublisher()
+//                }
+//                return router.dismiss(animated: true, returning: result)
+//            }
             .prefix(1)
             .eraseToAnyPublisher()
     }

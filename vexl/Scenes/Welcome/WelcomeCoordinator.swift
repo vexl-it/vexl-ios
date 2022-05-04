@@ -51,7 +51,6 @@ final class WelcomeCoordinator: BaseCoordinator<RouterResult<Void>> {
 
         return finished//Publishers.Merge(dismissByRouter, finished)
             .receive(on: RunLoop.main)
-            .prefix(1)
             .eraseToAnyPublisher()
     }
 }
@@ -60,11 +59,14 @@ private extension WelcomeCoordinator {
     func showRegisterPhone(router: Router) -> CoordinatingResult<RouterResult<Void>> {
         coordinate(to: RegisterPhoneCoordinator(router: router, animated: true))
             .flatMap { result -> CoordinatingResult<RouterResult<Void>> in
-                guard result != .dismissedByRouter else {
+                switch result {
+                case .dismiss:
+                    return router.dismiss(animated: true, returning: result)
+                case .finished, .dismissedByRouter:
                     return Just(result).eraseToAnyPublisher()
                 }
-                return router.dismiss(animated: true, returning: result)
             }
+            .prefix(1)
             .eraseToAnyPublisher()
     }
 }
