@@ -134,9 +134,12 @@ final class UserOffersViewModel: ViewModelType, ObservableObject {
                 owner.userOfferKeys = UserDefaults.standard.codable(forKey: .storedOfferKeys)
                 let offerKeys = owner.userOfferKeys?.keys ?? []
                 var offers: [Offer] = []
+
+                // TODO: - Optimize the decryption using multi-threading
+
                 for item in items {
                     if let offer = try? Offer(encryptedOffer: item,
-                                              offerKey: owner.userSecurity.userKeys) {
+                                              keys: owner.userSecurity.userKeys) {
                         offers.append(offer)
                     }
                 }

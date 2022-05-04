@@ -52,6 +52,8 @@ final class OfferService: BaseService, OfferServiceType {
         .eraseToAnyPublisher()
     }
 
+    // TODO: - add some optimizations so that the encryption is done in multiple threads
+    
     private func encrypt(offer: Offer, withOfferKey offerKey: ECCKeys, publicKey contactPublicKey: String) throws -> EncryptedOffer {
         let minAmount = try offer.minAmountString.ecc.encrypt(publicKey: contactPublicKey)
         let maxAmount = try offer.maxAmountString.ecc.encrypt(publicKey: contactPublicKey)
