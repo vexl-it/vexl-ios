@@ -49,7 +49,7 @@ final class WelcomeCoordinator: BaseCoordinator<RouterResult<Void>> {
         let dismissByRouter = viewController.dismissPublisher
             .map { _ in RouterResult<Void>.dismissedByRouter }
 
-        return Publishers.Merge(dismissByRouter, finished)
+        return finished//Publishers.Merge(dismissByRouter, finished)
             .receive(on: RunLoop.main)
             .prefix(1)
             .eraseToAnyPublisher()

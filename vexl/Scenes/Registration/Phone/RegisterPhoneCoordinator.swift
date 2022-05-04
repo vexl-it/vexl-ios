@@ -61,7 +61,7 @@ class RegisterPhoneCoordinator: BaseCoordinator<RouterResult<Void>> {
             .dismissPublisher
             .map { _ in RouterResult<Void>.dismissedByRouter }
 
-        return Publishers.Merge3(finished, dismissByRouter, back)
+        return Publishers.Merge(finished, back)
             .receive(on: RunLoop.main)
             .prefix(1)
             .eraseToAnyPublisher()

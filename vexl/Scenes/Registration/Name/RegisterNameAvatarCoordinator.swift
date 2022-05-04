@@ -63,7 +63,7 @@ class RegisterNameAvatarCoordinator: BaseCoordinator<RouterResult<Void>> {
             .dismissPublisher
             .map { _ in RouterResult<Void>.dismissedByRouter }
 
-        return Publishers.Merge(finished, dismissByRouter)
+        return finished//Publishers.Merge(finished, dismissByRouter)
             .receive(on: RunLoop.main)
             .prefix(1)
             .eraseToAnyPublisher()

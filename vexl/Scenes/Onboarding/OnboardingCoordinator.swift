@@ -44,7 +44,7 @@ final class OnboardingCoordinator: BaseCoordinator<RouterResult<Void>> {
         let dismiss = viewController.dismissPublisher
             .map { _ in RouterResult<Void>.dismissedByRouter }
 
-        return Publishers.Merge(dismiss, finished)
+        return finished//Publishers.Merge(dismiss, finished)
             .receive(on: RunLoop.main)
             .prefix(1)
             .eraseToAnyPublisher()

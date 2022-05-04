@@ -176,4 +176,17 @@ final class RegisterContactsViewModel: ViewModelType {
             }
             .store(in: cancelBag)
     }
+
+    func updateToPreviousState() {
+        switch currentState {
+        case .importPhoneContacts:
+            phoneViewModel.currentState = .initial
+            currentState = .phone
+        case .importFacebookContacts:
+            facebookViewModel.currentState = .initial
+            currentState = .facebook
+        case .phone, .facebook:
+            break
+        }
+    }
 }
