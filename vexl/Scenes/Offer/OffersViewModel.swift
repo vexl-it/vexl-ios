@@ -10,6 +10,8 @@ import Cleevio
 
 final class OffersViewModel: ViewModelType, ObservableObject {
 
+    @Inject var offerService: OfferServiceType
+
     // MARK: - Action Binding
 
     enum UserAction: Equatable {
@@ -22,6 +24,15 @@ final class OffersViewModel: ViewModelType, ObservableObject {
     // MARK: - View Bindings
 
     @Published var primaryActivity: Activity = .init()
+    var errorIndicator: ErrorIndicator {
+        primaryActivity.error
+    }
+    var activityIndicator: ActivityIndicator {
+        primaryActivity.indicator
+    }
+
+    @Published var isLoading = false
+    @Published var error: Error?
 
     // MARK: - Coordinator Bindings
 
@@ -37,10 +48,36 @@ final class OffersViewModel: ViewModelType, ObservableObject {
     private let cancelBag: CancelBag = .init()
 
     init() {
-        setupBindings()
+        setupActivity()
+        setupDataBindings()
+        setupActionBindings()
     }
 
-    private func setupBindings() {
+    private func setupActivity() {
+        activityIndicator
+            .loading
+            .assign(to: &$isLoading)
+
+        errorIndicator
+            .errors
+            .asOptional()
+            .assign(to: &$error)
+    }
+
+    private func setupDataBindings() {
+        offerService
+            .getOffer()
+            .track(activity: primaryActivity)
+            .materialize()
+            .compactMap(\.value)
+            .withUnretained(self)
+            .sink { _, paged in
+                print(paged.items)
+            }
+            .store(in: cancelBag)
+    }
+
+    private func setupActionBindings() {
         action
             .filter { $0 == .createOfferTap }
             .withUnretained(self)

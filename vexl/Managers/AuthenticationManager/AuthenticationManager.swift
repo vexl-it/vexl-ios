@@ -42,6 +42,7 @@ protocol UserSecurityType {
     func setUserKeys(_ userKeys: ECCKeys)
     func setHash(_ challengeValidation: ChallengeValidation)
     func setFacebookSignature(_ facebookSignature: ChallengeValidation)
+    func generateUserKey()
 }
 
 final class AuthenticationManager: AuthenticationManagerType, TokenHandlerType {
@@ -62,7 +63,6 @@ final class AuthenticationManager: AuthenticationManagerType, TokenHandlerType {
     // MARK: - Variables for user registration
 
     var userSecurity: UserSecurity {
-        set { Keychain.standard[codable: .userSecurity] = newValue }
         get {
             guard let userSecurity: UserSecurity = Keychain.standard[codable: .userSecurity] else {
                 let newUserSecurity: UserSecurity = .init()
@@ -70,10 +70,10 @@ final class AuthenticationManager: AuthenticationManagerType, TokenHandlerType {
                 return newUserSecurity
             }
             return userSecurity
-
         }
+        set { Keychain.standard[codable: .userSecurity] = newValue }
     }
-    
+
     private(set) var currentUser: User?
 
     // MARK: - Initialization
@@ -94,7 +94,8 @@ final class AuthenticationManager: AuthenticationManagerType, TokenHandlerType {
         saveUser()
     }
 
-    // TODO: - Storing this in the UserDefaults is just a temporal solution for the PoC, later we should discuss how to store the data in the device: CoreData, Encrypted Files, not Realm, etc.
+    // TODO: - Storing this in the UserDefaults is just a temporal solution for the PoC, later we should
+    // discuss how to store the data in the device: CoreData, Encrypted Files, not Realm, etc.
 
     func saveUser() {
         UserDefaults.standard.set(value: currentUser, forKey: .storedUser)
@@ -195,6 +196,11 @@ extension AuthenticationManager: UserSecurityType {
         self.userSecurity.hash = nil
         self.userSecurity.signature = nil
         self.userSecurity.keys = nil
+    }
+
+    func generateUserKey() {
+        let newKeys = ECCKeys()
+        setUserKeys(newKeys)
     }
 }
 

@@ -38,9 +38,9 @@ struct OfferAdvanceFilterFriendDegreeView: View {
 }
 
 extension OfferAdvanceFilterFriendDegreeView {
-    enum Option {
-        case firstDegree
-        case secondDegree
+    enum Option: String {
+        case firstDegree = "FIRST_DEGREE"
+        case secondDegree = "SECOND_DEGREE"
 
         var degree: Int {
             switch self {

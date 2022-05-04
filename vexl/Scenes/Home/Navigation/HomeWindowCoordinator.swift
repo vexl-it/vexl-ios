@@ -13,17 +13,18 @@ import Combine
 final class HomeCoordinator: BaseCoordinator<Void> {
 
     private let homeViewController: HomeViewController
+    private let homeViewModel: HomeViewModel
     private let homeRouter: HomeRouter
     private let window: UIWindow
 
     init(window: UIWindow) {
-        self.homeViewController = HomeViewController()
+        self.homeViewModel = HomeViewModel()
+        self.homeViewController = HomeViewController(viewModel: homeViewModel)
         self.homeRouter = HomeRouter(homeViewController: homeViewController)
         self.window = window
     }
 
     override func start() -> CoordinatingResult<Void> {
-
         window.tap {
             $0.rootViewController = homeViewController
             $0.makeKeyAndVisible()
@@ -47,12 +48,7 @@ final class HomeCoordinator: BaseCoordinator<Void> {
             completion: nil
         )
 
-        let dismissViewController = homeViewController.dismissPublisher
-            .map { _ in RouterResult<Void>.dismissedByRouter }
-
-        return dismissViewController
-            .receive(on: RunLoop.main)
-            .asVoid()
+        return Empty(completeImmediately: false)
             .eraseToAnyPublisher()
     }
 }

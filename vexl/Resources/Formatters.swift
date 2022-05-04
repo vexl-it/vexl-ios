@@ -21,4 +21,13 @@ struct Formatters {
 
     static let phoneNumberFormatter = PhoneNumberKit()
     static let phoneNumberPartialFormatter = PartialFormatter()
+
+    static let numberFormatter: NumberFormatter = {
+        let formatter = NumberFormatter()
+        formatter.maximumFractionDigits = 2
+        formatter.minimumFractionDigits = 0
+        formatter.currencyCode = "USD"
+        formatter.numberStyle = .currency
+        return formatter
+    }()
 }
