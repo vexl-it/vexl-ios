@@ -12,6 +12,7 @@ import PhoneNumberKit
 struct PhoneNumberTextFieldView: UIViewRepresentable {
 
     let placeholder: String
+    let font: UIFont
     @Binding var text: String
 
     func updateUIView(_ uiView: PhoneNumberTextField, context: Context) {
@@ -24,6 +25,8 @@ struct PhoneNumberTextFieldView: UIViewRepresentable {
     func makeUIView(context: Context) -> PhoneNumberTextField {
         let phoneNumberTextField = PhoneNumberTextField()
         phoneNumberTextField.placeholder = placeholder
+        phoneNumberTextField.font = font
+        phoneNumberTextField.withFlag = true
         return phoneNumberTextField
     }
 }

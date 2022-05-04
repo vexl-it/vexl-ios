@@ -263,11 +263,8 @@ final class RegisterPhoneViewModel: ViewModelType {
                 owner.isActionEnabled = owner.validatePhoneNumber(phoneNumber) && owner.currentState == .phoneInput
                 let formattedPhoneNumber = Formatters.phoneNumberPartialFormatter.formatPartial(phoneNumber)
                 owner.phoneNumber = formattedPhoneNumber
-                
-                print(phoneNumber)
             }
             .store(in: cancelBag)
-            //.assign(to: &$isActionEnabled)
 
         $validationCode
             .withUnretained(self)
