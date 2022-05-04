@@ -25,7 +25,6 @@ final class HomeCoordinator: BaseCoordinator<Void> {
     }
 
     override func start() -> CoordinatingResult<Void> {
-
         window.tap {
             $0.rootViewController = homeViewController
             $0.makeKeyAndVisible()
@@ -49,12 +48,7 @@ final class HomeCoordinator: BaseCoordinator<Void> {
             completion: nil
         )
 
-        let dismissViewController = homeViewController.dismissPublisher
-            .map { _ in RouterResult<Void>.dismissedByRouter }
-
-        return dismissViewController
-            .receive(on: RunLoop.main)
-            .asVoid()
+        return Empty(completeImmediately: false)
             .eraseToAnyPublisher()
     }
 }
