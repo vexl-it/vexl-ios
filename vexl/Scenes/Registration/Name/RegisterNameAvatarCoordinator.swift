@@ -21,8 +21,20 @@ class RegisterNameAvatarCoordinator: BaseCoordinator<RouterResult<Void>> {
 
     override func start() -> CoordinatingResult<CoordinationResult> {
         let viewModel = RegisterNameAvatarViewModel()
-        let viewController = RegisterViewController(currentPage: 1, numberOfPages: 3, rootView: RegisterNameAvatarView(viewModel: viewModel))
+        let viewController = RegisterViewController(currentPage: 1,
+                                                    numberOfPages: 3,
+                                                    rootView: RegisterNameAvatarView(viewModel: viewModel),
+                                                    showBackButton: false)
         router.present(viewController, animated: animated)
+
+        viewController
+            .onBack
+            .sink { _ in
+                viewModel.updateToPreviousState()
+            }
+            .store(in: cancelBag)
+
+        // MARK: - ViewModel Bindings
 
         viewModel
             .$error
@@ -31,6 +43,11 @@ class RegisterNameAvatarCoordinator: BaseCoordinator<RouterResult<Void>> {
         viewModel
             .$loading
             .assign(to: &viewController.$isLoading)
+
+        viewModel
+            .$currentState
+            .map { $0 == .avatarInput }
+            .assign(to: &viewController.$showBackButton)
 
         let finished = viewModel
             .route

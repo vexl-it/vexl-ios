@@ -336,14 +336,12 @@ final class RegisterPhoneViewModel: ViewModelType {
         timer?.connect().cancel()
     }
 
-    func updateState() {
+    func updateToPreviousState() {
         switch currentState {
         case .phoneInput:
             route.send(.backTapped)
         case .codeInput:
-            phoneNumber = ""
-            validationCode = ""
-            currentState = .phoneInput
+            clearState()
         case .codeInputValidation, .codeInputSuccess:
             break
         }

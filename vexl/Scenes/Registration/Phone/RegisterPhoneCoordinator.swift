@@ -27,7 +27,7 @@ class RegisterPhoneCoordinator: BaseCoordinator<RouterResult<Void>> {
         viewController
             .onBack
             .sink { _ in
-                viewModel.updateState()
+                viewModel.updateToPreviousState()
             }
             .store(in: cancelBag)
 

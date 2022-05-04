@@ -26,11 +26,13 @@ final class RegisterViewController<T: View>: BaseViewController<T> {
                         action: #selector(onBackAction))
     }()
 
+    @Published var showBackButton: Bool
     var onBack: ActionSubject<Void> = .init()
 
-    init(currentPage: Int, numberOfPages: Int, rootView: T) {
+    init(currentPage: Int, numberOfPages: Int, rootView: T, showBackButton: Bool = true) {
         self.currentPage = currentPage
         self.numberOfPages = numberOfPages
+        self.showBackButton = showBackButton
         super.init(rootView: rootView)
     }
 
@@ -41,18 +43,23 @@ final class RegisterViewController<T: View>: BaseViewController<T> {
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.hidesBackButton = true
+        $showBackButton
+            .withUnretained(self)
+            .sink { owner, show in
+                owner.navigationItem.setLeftBarButton(show ? owner.backButton : nil,
+                                                      animated: true)
+            }
+            .store(in: cancelBag)
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: pageView)
-        navigationItem.leftBarButtonItem = backButton
     }
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: pageView)
-        navigationItem.leftBarButtonItem = backButton
     }
 
     @objc
