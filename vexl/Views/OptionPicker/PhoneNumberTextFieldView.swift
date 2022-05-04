@@ -16,8 +16,8 @@ struct PhoneNumberTextFieldView: UIViewRepresentable {
 
     func updateUIView(_ uiView: PhoneNumberTextField, context: Context) {
         DispatchQueue.main.async {
-            guard let text = uiView.text else { return }
-            self.text = text
+            guard let newText = uiView.text, newText != text else { return }
+            text = newText
         }
     }
 
