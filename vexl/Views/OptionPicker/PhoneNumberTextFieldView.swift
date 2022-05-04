@@ -14,33 +14,16 @@ struct PhoneNumberTextFieldView: UIViewRepresentable {
     let placeholder: String
     @Binding var text: String
 
-    func updateUIView(_ uiView: CallbackPhoneNumberTextField, context: Context) {
-        uiView.text = context.coordinator.text
+    func updateUIView(_ uiView: PhoneNumberTextField, context: Context) {
+        DispatchQueue.main.async {
+            guard let newText = uiView.text, newText != text else { return }
+            text = newText
+        }
     }
 
-    func makeUIView(context: Context) -> CallbackPhoneNumberTextField {
-        let phoneNumberTextField = CallbackPhoneNumberTextField()
+    func makeUIView(context: Context) -> PhoneNumberTextField {
+        let phoneNumberTextField = PhoneNumberTextField()
         phoneNumberTextField.placeholder = placeholder
         return phoneNumberTextField
-    }
-
-    func makeCoordinator() -> Coordinator {
-        Coordinator(text: self.$text)
-    }
-
-    class Coordinator: NSObject {
-        @Binding var text: String
-
-        init(text: Binding<String>) {
-            self._text = text
-            super.init()
-        }
-    }
-
-    class CallbackPhoneNumberTextField: PhoneNumberTextField {
-        override func shouldChangeText(in range: UITextRange, replacementText text: String) -> Bool {
-            print(text)
-            return super.shouldChangeText(in: range, replacementText: text)
-        }
     }
 }
