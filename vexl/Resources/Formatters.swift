@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import PhoneNumberKit
 
 struct Formatters {
     // MARK: - Date API
@@ -17,6 +18,8 @@ struct Formatters {
         formatter.locale = Locale(identifier: "en_US_POSIX")
         return formatter
     }()
+
+    static let phoneNumberFormatter = PhoneNumberKit()
 
     static let numberFormatter: NumberFormatter = {
         let formatter = NumberFormatter()

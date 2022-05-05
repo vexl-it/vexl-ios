@@ -57,8 +57,8 @@ final class RequestAccessPhoneContactsViewModel: RequestAccessContactsViewModel 
         completed
             .withUnretained(self)
             .sink { owner, _ in
-                owner.contactsImported.send(())
                 owner.currentState = .initial
+                owner.contactsImported.send(())
             }
             .store(in: cancelBag)
     }
