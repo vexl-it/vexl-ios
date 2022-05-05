@@ -35,30 +35,22 @@ final class OnboardingCoordinator: BaseCoordinator<RouterResult<Void>> {
             .receive(on: RunLoop.main)
             .withUnretained(self)
             .flatMap { owner, _ -> CoordinatingResult<RouterResult<Void>> in
-                owner.showLoginFlow(router: owner.router)
+                owner.showWelcome(router: owner.router)
             }
+            .filter { if case .finished = $0 { return true } else { return false } }
 
         // MARK: Dismiss
 
-        let dismissByRouter = dismissObservable(with: viewController, dismissHandler: router)
-            .dismissedByRouter(type: Void.self)
-
-        return Publishers.Merge(dismissByRouter, finished)
+        return finished
             .receive(on: RunLoop.main)
-            .prefix(1)
             .eraseToAnyPublisher()
     }
 }
 
 private extension OnboardingCoordinator {
-    func showLoginFlow(router: Router) -> CoordinatingResult<RouterResult<Void>> {
+    func showWelcome(router: Router) -> CoordinatingResult<RouterResult<Void>> {
         coordinate(to: WelcomeCoordinator(router: router, animated: true))
-            .flatMap { result -> CoordinatingResult<RouterResult<Void>> in
-                guard result != .dismissedByRouter else {
-                    return Just(result).eraseToAnyPublisher()
-                }
-                return router.dismiss(animated: true, returning: result)
-            }
+            .prefix(1)
             .eraseToAnyPublisher()
     }
 }

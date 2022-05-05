@@ -21,8 +21,20 @@ class RegisterNameAvatarCoordinator: BaseCoordinator<RouterResult<Void>> {
 
     override func start() -> CoordinatingResult<CoordinationResult> {
         let viewModel = RegisterNameAvatarViewModel()
-        let viewController = RegisterViewController(currentPage: 1, numberOfPages: 3, rootView: RegisterNameAvatarView(viewModel: viewModel))
+        let viewController = RegisterViewController(currentPage: 1,
+                                                    numberOfPages: 3,
+                                                    rootView: RegisterNameAvatarView(viewModel: viewModel),
+                                                    showBackButton: false)
         router.present(viewController, animated: animated)
+
+        viewController
+            .onBack
+            .sink { _ in
+                viewModel.updateToPreviousState()
+            }
+            .store(in: cancelBag)
+
+        // MARK: - ViewModel Bindings
 
         viewModel
             .$error
@@ -32,6 +44,11 @@ class RegisterNameAvatarCoordinator: BaseCoordinator<RouterResult<Void>> {
             .$loading
             .assign(to: &viewController.$isLoading)
 
+        viewModel
+            .$currentState
+            .map { $0 == .avatarInput }
+            .assign(to: &viewController.$showBackButton)
+
         let finished = viewModel
             .route
             .receive(on: RunLoop.main)
@@ -40,14 +57,10 @@ class RegisterNameAvatarCoordinator: BaseCoordinator<RouterResult<Void>> {
             .flatMap { owner, _ -> CoordinatingResult<RouterResult<Void>> in
                 owner.showRegisterPhoneContacts(router: owner.router)
             }
+            .filter { if case .finished = $0 { return true } else { return false } }
 
-        let dismissByRouter = viewController
-            .dismissPublisher
-            .map { _ in RouterResult<Void>.dismissedByRouter }
-
-        return Publishers.Merge(finished, dismissByRouter)
+        return finished
             .receive(on: RunLoop.main)
-            .prefix(1)
             .eraseToAnyPublisher()
     }
 }
@@ -55,12 +68,6 @@ class RegisterNameAvatarCoordinator: BaseCoordinator<RouterResult<Void>> {
 extension RegisterNameAvatarCoordinator {
     private func showRegisterPhoneContacts(router: Router) -> CoordinatingResult<RouterResult<Void>> {
         coordinate(to: RegisterContactsCoordinator(router: router, animated: true))
-            .flatMap { result -> CoordinatingResult<RouterResult<Void>> in
-                guard result != .dismissedByRouter else {
-                    return Just(result).eraseToAnyPublisher()
-                }
-                return router.dismiss(animated: true, returning: result)
-            }
             .prefix(1)
             .eraseToAnyPublisher()
     }

@@ -67,6 +67,7 @@ extension AppCoordinator {
             }
         )
             .asVoid()
+            .prefix(1)
             .eraseToAnyPublisher()
     }
 

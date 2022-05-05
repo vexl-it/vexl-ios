@@ -75,6 +75,16 @@ final class RegisterNameAvatarViewModel: ViewModelType {
         setupActionBindings()
     }
 
+    func updateToPreviousState() {
+        switch currentState {
+        case .avatarInput:
+            clearState()
+            currentState = .usernameInput
+        case .phoneVerified, .usernameInput:
+            break
+        }
+    }
+
     private func setupActivity() {
         activityIndicator
             .loading
@@ -120,7 +130,6 @@ final class RegisterNameAvatarViewModel: ViewModelType {
     }
 
     private func setupActionBindings() {
-
         action
             .filter { $0 == .createUser }
             .withUnretained(self)
@@ -185,5 +194,10 @@ final class RegisterNameAvatarViewModel: ViewModelType {
 
     private func validateUsername(_ username: String) -> Bool {
         !username.isEmpty
+    }
+
+    private func clearState() {
+        username = ""
+        avatar = nil
     }
 }

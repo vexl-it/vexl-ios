@@ -24,9 +24,14 @@ final class RegisterContactsCoordinator: BaseCoordinator<RouterResult<Void>> {
     override func start() -> CoordinatingResult<RouterResult<Void>> {
         let viewModel = RegisterContactsViewModel(username: authenticationManager.currentUser?.username ?? "",
                                                   avatar: authenticationManager.currentUser?.avatarImage)
-        let viewController = RegisterViewController(currentPage: 2, numberOfPages: 3, rootView: RegisterContactsView(viewModel: viewModel))
+        let viewController = RegisterViewController(currentPage: 2,
+                                                    numberOfPages: 3,
+                                                    rootView: RegisterContactsView(viewModel: viewModel),
+                                                    showBackButton: false)
 
         router.present(viewController, animated: animated)
+
+        // MARK: - ViewModel Bindings
 
         viewModel
             .$error
@@ -36,21 +41,17 @@ final class RegisterContactsCoordinator: BaseCoordinator<RouterResult<Void>> {
             .$loading
             .assign(to: &viewController.$isLoading)
 
-        let dismissByRouter = viewController
-            .dismissPublisher
-            .map { _ in RouterResult<Void>.dismissedByRouter }
-
         let skipTap = viewModel
             .route
             .filter { $0 == .skipTapped }
-            .map { _ in RouterResult<Void>.dismissedByRouter }
+            .map { _ in RouterResult<Void>.finished(()) }
 
         let continueTap = viewModel
             .route
             .filter { $0 == .continueTapped }
-            .map { _ in RouterResult<Void>.dismissedByRouter }
+            .map { _ in RouterResult<Void>.finished(()) }
 
-        return Publishers.Merge3(skipTap, continueTap, dismissByRouter)
+        return Publishers.Merge(skipTap, continueTap)
             .receive(on: RunLoop.main)
             .eraseToAnyPublisher()
     }

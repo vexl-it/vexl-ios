@@ -42,15 +42,12 @@ final class WelcomeCoordinator: BaseCoordinator<RouterResult<Void>> {
             .flatMap { owner, _ -> CoordinatingResult<RouterResult<Void>> in
                 owner.showRegisterPhone(router: owner.router)
             }
+            .filter { if case .finished = $0 { return true } else { return false } }
 
         // MARK: Dismiss
 
-        let dismissByRouter = dismissObservable(with: viewController, dismissHandler: router)
-            .dismissedByRouter(type: Void.self)
-
-        return Publishers.Merge(dismissByRouter, finished)
+        return finished
             .receive(on: RunLoop.main)
-            .prefix(1)
             .eraseToAnyPublisher()
     }
 }
@@ -59,11 +56,14 @@ private extension WelcomeCoordinator {
     func showRegisterPhone(router: Router) -> CoordinatingResult<RouterResult<Void>> {
         coordinate(to: RegisterPhoneCoordinator(router: router, animated: true))
             .flatMap { result -> CoordinatingResult<RouterResult<Void>> in
-                guard result != .dismissedByRouter else {
+                switch result {
+                case .dismiss:
+                    return router.dismiss(animated: true, returning: result)
+                case .finished, .dismissedByRouter:
                     return Just(result).eraseToAnyPublisher()
                 }
-                return router.dismiss(animated: true, returning: result)
             }
+            .prefix(1)
             .eraseToAnyPublisher()
     }
 }
