@@ -295,7 +295,8 @@ final class RegisterPhoneViewModel: ViewModelType {
     // MARK: - Helper methods
 
     private func validatePhoneNumber(_ phoneNumber: String) -> Bool {
-        !phoneNumber.isEmpty
+        let parsedPhoneNumber = try? Formatters.phoneNumberFormatter.parse(phoneNumber)
+        return !phoneNumber.isEmpty && parsedPhoneNumber != nil
     }
 
     private func validateCode(_ code: String) -> Bool {
