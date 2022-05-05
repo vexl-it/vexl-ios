@@ -75,6 +75,16 @@ final class RegisterNameAvatarViewModel: ViewModelType {
         setupActionBindings()
     }
 
+    func updateToPreviousState() {
+        switch currentState {
+        case .avatarInput:
+            clearState()
+            currentState = .usernameInput
+        case .phoneVerified, .usernameInput:
+            break
+        }
+    }
+
     private func setupActivity() {
         activityIndicator
             .loading
@@ -189,15 +199,5 @@ final class RegisterNameAvatarViewModel: ViewModelType {
     private func clearState() {
         username = ""
         avatar = nil
-    }
-
-    func updateToPreviousState() {
-        switch currentState {
-        case .avatarInput:
-            clearState()
-            currentState = .usernameInput
-        case .phoneVerified, .usernameInput:
-            break
-        }
     }
 }

@@ -121,6 +121,17 @@ final class RegisterPhoneViewModel: ViewModelType {
         timerBindings()
     }
 
+    func updateToPreviousState() {
+        switch currentState {
+        case .phoneInput:
+            route.send(.backTapped)
+        case .codeInput:
+            clearState()
+        case .codeInputValidation, .codeInputSuccess:
+            break
+        }
+    }
+
     private func setupActivity() {
         activityIndicator
             .loading
@@ -335,16 +346,5 @@ final class RegisterPhoneViewModel: ViewModelType {
         currentState = .phoneInput
         phoneVerificationId = nil
         timer?.connect().cancel()
-    }
-
-    func updateToPreviousState() {
-        switch currentState {
-        case .phoneInput:
-            route.send(.backTapped)
-        case .codeInput:
-            clearState()
-        case .codeInputValidation, .codeInputSuccess:
-            break
-        }
     }
 }
