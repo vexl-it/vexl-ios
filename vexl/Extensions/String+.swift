@@ -53,10 +53,6 @@ extension String {
 
         return attributedString
     }
-
-    var withoutSpaces: String {
-        replacingOccurrences(of: " ", with: "")
-    }
 }
 
 extension NSMutableAttributedString {
