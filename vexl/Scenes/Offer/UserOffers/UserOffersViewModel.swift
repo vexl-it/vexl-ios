@@ -124,30 +124,27 @@ final class UserOffersViewModel: ViewModelType, ObservableObject {
 
     private func fetchOffers() {
         offerService
-            .getOffer(pageLimit: Constants.pageMaxLimit)
-            .track(activity: primaryActivity)
-            .materialize()
-            .compactMap(\.value)
-            .map(\.items)
+            .getStoredOfferIds(forType: offerType)
+            .filter { !$0.isEmpty }
             .withUnretained(self)
-            .sink { owner, items in
-                owner.userOfferKeys = UserDefaults.standard.codable(forKey: .storedOfferKeys)
-                let offerKeys = owner.userOfferKeys?.keys ?? []
+            .flatMap { owner, ids in
+                owner.offerService
+                    .getUserOffers(offerIds: ids)
+                    .track(activity: owner.primaryActivity)
+                    .materialize()
+                    .compactMap(\.value)
+            }
+            .withUnretained(self)
+            .sink { owner, encryptedOffers in
                 var offers: [Offer] = []
-
                 // TODO: - Optimize the decryption using multi-threading
-
-                for item in items {
-                    if let offer = try? Offer(encryptedOffer: item,
+                for encryptedOffer in encryptedOffers {
+                    if let offer = try? Offer(encryptedOffer: encryptedOffer,
                                               keys: owner.userSecurity.userKeys) {
                         offers.append(offer)
                     }
                 }
-
-                let mySellOffers = offers.filter { offer in
-                    offer.type == owner.offerType && offerKeys.contains(where: { $0.publicKey == offer.offerPublicKey })
-                }
-                owner.userOffers = mySellOffers
+                owner.userOffers = offers
             }
             .store(in: cancelBag)
     }

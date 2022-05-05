@@ -18,5 +18,9 @@ struct UserOfferKeys: Codable {
         let privateKey: String?
         let publicKey: String
         let type: String
+
+        var offerType: OfferType? {
+            OfferType(rawValue: type)
+        }
     }
 }

@@ -16,6 +16,7 @@ protocol OfferServiceType {
     func getOffer(pageLimit: Int?) -> AnyPublisher<Paged<EncryptedOffer>, Error>
     func createOffer(encryptedOffers: [EncryptedOffer]) -> AnyPublisher<EncryptedOffer, Error>
     func storeOfferKey(key: ECCKeys, withId id: String, offerType: OfferType) -> AnyPublisher<Void, Error>
+    func getStoredOfferIds(forType offerType: OfferType) -> AnyPublisher<[String], Never>
 }
 
 final class OfferService: BaseService, OfferServiceType {
@@ -128,6 +129,17 @@ final class OfferService: BaseService, OfferServiceType {
                                                type: offerType.rawValue))
             UserDefaults.standard.set(value: currentOfferKeys, forKey: .storedOfferKeys)
             promise(.success(()))
+        }
+        .eraseToAnyPublisher()
+    }
+
+    func getStoredOfferIds(forType offerType: OfferType) -> AnyPublisher<[String], Never> {
+        Future { promise in
+            let storedOfferKeys: UserOfferKeys? = UserDefaults.standard.codable(forKey: .storedOfferKeys)
+            let ids = storedOfferKeys?.keys
+                .filter { $0.offerType == offerType }
+                .map { $0.id }
+            promise(.success(ids ?? []))
         }
         .eraseToAnyPublisher()
     }

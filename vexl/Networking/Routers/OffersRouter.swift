@@ -43,7 +43,7 @@ enum OffersRouter: ApiRouter {
             }
             return ["limit": pageLimit]
         case let .getUserOffers(offerIds):
-            return ["offerIds": offerIds]
+            return ["offerIds": offerIds.joined(separator: ",")]
         case let .createOffer(offer):
             let offers = offer.map { $0.asJson }
             return ["offerPrivateList": offers]
