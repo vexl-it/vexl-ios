@@ -23,15 +23,15 @@ extension RegisterPhoneView {
         }
 
         private var phoneInputView: some View {
-            HStack {
-                TextField("", text: $phoneNumber)
-                    .textStyle(.h3)
-                    .foregroundColor(Appearance.Colors.primaryText)
-                    .keyboardType(.phonePad)
-            }
-            .padding()
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .makeCorneredBorder(color: Appearance.Colors.gray3, borderWidth: 1)
+            PhoneNumberTextFieldView(placeholder: "",
+                                     font: Appearance.TextStyle.h3.font,
+                                     text: $phoneNumber)
+                .foregroundColor(Appearance.Colors.primaryText)
+                .keyboardType(.phonePad)
+                .padding()
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .frame(height: Appearance.GridGuide.largeButtonHeight)
+                .makeCorneredBorder(color: Appearance.Colors.gray3, borderWidth: 1)
         }
     }
 }

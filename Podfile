@@ -43,6 +43,7 @@ target 'vexl' do
 
     # UI
     pod 'SnapKit'
+    pod 'PhoneNumberKit', '~> 3.3'
 
     # Facebook
     pod 'FBSDKCoreKit', '~> 13.1'
