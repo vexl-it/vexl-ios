@@ -11,10 +11,11 @@ import Alamofire
 enum OffersRouter: ApiRouter {
     case createOffer(offer: [EncryptedOffer])
     case getOffers(pageLimit: Int?)
+    case getUserOffers(offerIds: [String])
 
     var method: HTTPMethod {
         switch self {
-        case .getOffers:
+        case .getOffers, .getUserOffers:
             return .get
         case .createOffer:
             return .post
@@ -29,7 +30,7 @@ enum OffersRouter: ApiRouter {
         switch self {
         case .getOffers:
             return "offers/me"
-        case .createOffer:
+        case .createOffer, .getUserOffers:
             return "offers"
         }
     }
@@ -41,6 +42,8 @@ enum OffersRouter: ApiRouter {
                 return [:]
             }
             return ["limit": pageLimit]
+        case let .getUserOffers(offerIds):
+            return ["offerIds": offerIds]
         case let .createOffer(offer):
             let offers = offer.map { $0.asJson }
             return ["offerPrivateList": offers]

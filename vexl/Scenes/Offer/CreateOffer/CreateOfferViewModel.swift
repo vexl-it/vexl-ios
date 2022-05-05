@@ -289,7 +289,7 @@ final class CreateOfferViewModel: ViewModelType, ObservableObject {
             .withUnretained(self)
             .flatMap { owner, response in
                 owner.offerService
-                    .storeOfferKey(key: owner.offerKey, withId: response.offerId)
+                    .storeOfferKey(key: owner.offerKey, withId: response.offerId, offerType: owner.offerType)
                     .track(activity: owner.primaryActivity)
                     .materialize()
                     .compactMap(\.value)
