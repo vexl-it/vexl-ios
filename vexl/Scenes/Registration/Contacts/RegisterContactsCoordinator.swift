@@ -31,13 +31,6 @@ final class RegisterContactsCoordinator: BaseCoordinator<RouterResult<Void>> {
 
         router.present(viewController, animated: animated)
 
-        viewController
-            .onBack
-            .sink { _ in
-                viewModel.updateToPreviousState()
-            }
-            .store(in: cancelBag)
-
         // MARK: - ViewModel Bindings
 
         viewModel
