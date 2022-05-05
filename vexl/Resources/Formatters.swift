@@ -20,7 +20,6 @@ struct Formatters {
     }()
 
     static let phoneNumberFormatter = PhoneNumberKit()
-    static let phoneNumberPartialFormatter = PartialFormatter()
 
     static let numberFormatter: NumberFormatter = {
         let formatter = NumberFormatter()
