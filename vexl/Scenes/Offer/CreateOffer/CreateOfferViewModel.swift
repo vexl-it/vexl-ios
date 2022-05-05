@@ -237,7 +237,9 @@ final class CreateOfferViewModel: ViewModelType, ObservableObject {
             .withUnretained(self)
             .flatMap { owner, _ in
                 owner.contactsService
-                    .getContacts(fromFacebook: false, friendLevel: owner.friendLevel, pageLimit: Constants.pageMaxLimit)
+                    .getAllContacts(friendLevel: owner.friendLevel,
+                                    hasFacebookAccount: owner.userSecurity.facebookSecurityHeader != nil,
+                                    pageLimit: Constants.pageMaxLimit)
                     .track(activity: owner.primaryActivity)
                     .materialize()
                     .compactMap(\.value)
@@ -259,7 +261,7 @@ final class CreateOfferViewModel: ViewModelType, ObservableObject {
 
                 // Adding owner publicKey to the list so that it can be decrypted, displayed and modified
 
-                var contacts = contacts.items
+                var contacts = contacts.phone.items + contacts.facebook.items
                 contacts.append(ContactKey(publicKey: owner.userSecurity.userKeys.publicKey))
                 return OfferData(offer: offer, contacts: contacts)
             }
