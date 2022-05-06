@@ -67,6 +67,7 @@ final class RegisterPhoneViewModel: ViewModelType {
 
     enum Route: Equatable {
         case continueTapped
+        case backTapped
     }
 
     var route: CoordinatingSubject<Route> = .init()
@@ -118,6 +119,17 @@ final class RegisterPhoneViewModel: ViewModelType {
         setupChallengeActionBindings()
         setupStateBindings()
         timerBindings()
+    }
+
+    func updateToPreviousState() {
+        switch currentState {
+        case .phoneInput:
+            route.send(.backTapped)
+        case .codeInput:
+            clearState()
+        case .codeInputValidation, .codeInputSuccess:
+            break
+        }
     }
 
     private func setupActivity() {
@@ -295,7 +307,8 @@ final class RegisterPhoneViewModel: ViewModelType {
     // MARK: - Helper methods
 
     private func validatePhoneNumber(_ phoneNumber: String) -> Bool {
-        !phoneNumber.isEmpty
+        let parsedPhoneNumber = try? Formatters.phoneNumberFormatter.parse(phoneNumber)
+        return !phoneNumber.isEmpty && parsedPhoneNumber != nil
     }
 
     private func validateCode(_ code: String) -> Bool {

@@ -97,8 +97,8 @@ final class RequestAccessFacebookContactsViewModel: RequestAccessContactsViewMod
         completed
             .withUnretained(self)
             .sink { owner, _ in
-                owner.contactsImported.send(.success(()))
                 owner.currentState = .initial
+                owner.contactsImported.send(.success(()))
             }
             .store(in: cancelBag)
     }
