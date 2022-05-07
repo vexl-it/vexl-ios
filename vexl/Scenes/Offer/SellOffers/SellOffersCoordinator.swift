@@ -9,7 +9,7 @@ import Foundation
 import Cleevio
 import Combine
 
-final class OffersCoordinator: BaseCoordinator<RouterResult<Void>> {
+final class SellOffersCoordinator: BaseCoordinator<RouterResult<Void>> {
 
     private let router: Router
 
@@ -18,8 +18,8 @@ final class OffersCoordinator: BaseCoordinator<RouterResult<Void>> {
     }
 
     override func start() -> CoordinatingResult<RouterResult<Void>> {
-        let viewModel = OffersViewModel()
-        let viewController = BaseViewController(rootView: OffersView(viewModel: viewModel))
+        let viewModel = SellOffersViewModel()
+        let viewController = BaseViewController(rootView: SellOffersView(viewModel: viewModel))
 
         if let homeRouter = router as? HomeRouter {
             homeRouter.presentFullscreen(viewController, animated: true)
@@ -43,7 +43,14 @@ final class OffersCoordinator: BaseCoordinator<RouterResult<Void>> {
                 let modalRouter = ModalRouter(parentViewController: viewController, presentationStyle: .fullScreen)
                 return owner.showCreateOffer(router: modalRouter)
             }
-            .sink { _ in }
+            .sink { result in
+                switch result {
+                case .finished:
+                    viewModel.refreshOffers()
+                default:
+                    break
+                }
+            }
             .store(in: cancelBag)
 
         let dismiss = viewModel
@@ -60,7 +67,7 @@ final class OffersCoordinator: BaseCoordinator<RouterResult<Void>> {
     }
 }
 
-extension OffersCoordinator {
+extension SellOffersCoordinator {
     private func showCreateOffer(router: Router) -> CoordinatingResult<RouterResult<Void>> {
         coordinate(to: CreateOfferCoordinator(router: router))
             .flatMap { result -> CoordinatingResult<RouterResult<Void>> in

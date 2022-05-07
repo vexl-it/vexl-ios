@@ -47,7 +47,7 @@ final class MarketplaceCoordinator: BaseCoordinator<RouterResult<Void>> {
 
 extension MarketplaceCoordinator {
     private func showOffers(router: Router) -> CoordinatingResult<RouterResult<Void>> {
-        coordinate(to: OffersCoordinator(router: router))
+        coordinate(to: SellOffersCoordinator(router: router))
         .flatMap { result -> CoordinatingResult<RouterResult<Void>> in
             guard result != .dismissedByRouter else {
                 return Just(result).eraseToAnyPublisher()
