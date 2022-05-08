@@ -71,6 +71,7 @@ struct Appearance {
         // MARK: Other
 
         static let feedItemHeight: CGFloat = 52
+        static let homeTabBarHeight: CGFloat = 72
     }
 
     // MARK: - Global

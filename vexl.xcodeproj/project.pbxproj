@@ -205,6 +205,7 @@
 		F1C6D0A027BDECB0009BD506 /* WelcomeView+LogoImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1C6D09F27BDECB0009BD506 /* WelcomeView+LogoImageView.swift */; };
 		F1C6D0A227BE9157009BD506 /* LinkTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1C6D0A127BE9157009BD506 /* LinkTextView.swift */; };
 		F1CFF3B827F6015B007D9FE1 /* UserSecurity.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1CFF3B727F6015B007D9FE1 /* UserSecurity.swift */; };
+		F1D200A628252C44006DF4AB /* HomeTabbarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D200A528252C44006DF4AB /* HomeTabbarViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -434,6 +435,7 @@
 		F1C6D09F27BDECB0009BD506 /* WelcomeView+LogoImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WelcomeView+LogoImageView.swift"; sourceTree = "<group>"; };
 		F1C6D0A127BE9157009BD506 /* LinkTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkTextView.swift; sourceTree = "<group>"; };
 		F1CFF3B727F6015B007D9FE1 /* UserSecurity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSecurity.swift; sourceTree = "<group>"; };
+		F1D200A528252C44006DF4AB /* HomeTabbarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTabbarViewController.swift; sourceTree = "<group>"; };
 		F2FD3623B1DD9C04AD13743C /* Pods-vexl.devel.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-vexl.devel.xcconfig"; path = "Target Support Files/Pods-vexl/Pods-vexl.devel.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1034,6 +1036,7 @@
 		F18861FF280824A500659786 /* Home */ = {
 			isa = PBXGroup;
 			children = (
+				F1D200A428251C4E006DF4AB /* Tabbar */,
 				F1886216281005B000659786 /* Components */,
 				F1886204280835D600659786 /* Navigation */,
 				F1886200280824D600659786 /* HomeViewController.swift */,
@@ -1045,7 +1048,6 @@
 			isa = PBXGroup;
 			children = (
 				F188620528083A5400659786 /* HomeWindowCoordinator.swift */,
-				F1886200280824D600659786 /* HomeViewController.swift */,
 				4FD8E3DD2821B303003B165E /* HomeViewModel.swift */,
 				F18862022808318E00659786 /* HomeRouter.swift */,
 			);
@@ -1256,6 +1258,14 @@
 				F14D29C627BFD93C00D1CD85 /* ButtonStyle.swift */,
 			);
 			path = UI;
+			sourceTree = "<group>";
+		};
+		F1D200A428251C4E006DF4AB /* Tabbar */ = {
+			isa = PBXGroup;
+			children = (
+				F1D200A528252C44006DF4AB /* HomeTabbarViewController.swift */,
+			);
+			path = Tabbar;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1648,6 +1658,7 @@
 				F188627028169A3700659786 /* MarketplaceCoordinator.swift in Sources */,
 				B08F391927AE7112008B344F /* User.swift in Sources */,
 				F13B265528183A840011F2FB /* OptionPickerItemView.swift in Sources */,
+				F1D200A628252C44006DF4AB /* HomeTabbarViewController.swift in Sources */,
 				F1886218281005BD00659786 /* HomeHeaderView.swift in Sources */,
 				F175AB9927F0D2D8000DAB15 /* ContactsService.swift in Sources */,
 				B08F399C27AE7D8D008B344F /* OnboardingViewModel.swift in Sources */,
