@@ -18,12 +18,17 @@ struct HomeTabBarItem {
 
     static var marketplace: HomeTabBarItem {
         HomeTabBarItem(selectedIcon: R.image.tabbar.marketplaceSelected()!,
-                    unselectedIcon: R.image.tabbar.marketplaceUnselected()!)
+                       unselectedIcon: R.image.tabbar.marketplaceUnselected()!)
+    }
+
+    static var chat: HomeTabBarItem {
+        HomeTabBarItem(selectedIcon: R.image.tabbar.chatSelected()!,
+                       unselectedIcon: R.image.tabbar.chatUnselected()!)
     }
 
     static var profile: HomeTabBarItem {
         HomeTabBarItem(selectedIcon: R.image.tabbar.profileSelected()!,
-                    unselectedIcon: R.image.tabbar.profileUnselected()!)
+                       unselectedIcon: R.image.tabbar.profileUnselected()!)
     }
 }
 

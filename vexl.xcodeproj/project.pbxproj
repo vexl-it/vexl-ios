@@ -208,6 +208,9 @@
 		F1D2011A28292868006DF4AB /* HomeTabBarCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D2011928292868006DF4AB /* HomeTabBarCoordinator.swift */; };
 		F1D2011D282960B9006DF4AB /* HomeTabBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D2011C282960B9006DF4AB /* HomeTabBarItem.swift */; };
 		F1D2011F282960DC006DF4AB /* HomeTabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D2011E282960DC006DF4AB /* HomeTabBarView.swift */; };
+		F1D2012228296F0F006DF4AB /* ChatCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D2012128296F0F006DF4AB /* ChatCoordinator.swift */; };
+		F1D2012428296F19006DF4AB /* ChatViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D2012328296F19006DF4AB /* ChatViewModel.swift */; };
+		F1D2012628296F1F006DF4AB /* ChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D2012528296F1F006DF4AB /* ChatView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -440,6 +443,9 @@
 		F1D2011928292868006DF4AB /* HomeTabBarCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTabBarCoordinator.swift; sourceTree = "<group>"; };
 		F1D2011C282960B9006DF4AB /* HomeTabBarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTabBarItem.swift; sourceTree = "<group>"; };
 		F1D2011E282960DC006DF4AB /* HomeTabBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTabBarView.swift; sourceTree = "<group>"; };
+		F1D2012128296F0F006DF4AB /* ChatCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatCoordinator.swift; sourceTree = "<group>"; };
+		F1D2012328296F19006DF4AB /* ChatViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewModel.swift; sourceTree = "<group>"; };
+		F1D2012528296F1F006DF4AB /* ChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatView.swift; sourceTree = "<group>"; };
 		F2FD3623B1DD9C04AD13743C /* Pods-vexl.devel.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-vexl.devel.xcconfig"; path = "Target Support Files/Pods-vexl/Pods-vexl.devel.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1286,6 +1292,9 @@
 		F1D2012028296EF7006DF4AB /* Chat */ = {
 			isa = PBXGroup;
 			children = (
+				F1D2012128296F0F006DF4AB /* ChatCoordinator.swift */,
+				F1D2012328296F19006DF4AB /* ChatViewModel.swift */,
+				F1D2012528296F1F006DF4AB /* ChatView.swift */,
 			);
 			path = Chat;
 			sourceTree = "<group>";
@@ -1589,6 +1598,7 @@
 				F188627228169A3700659786 /* MarketplaceFeedDetailView.swift in Sources */,
 				F12A14EB27D6B1CF0096543E /* RequestAccessPortraitView.swift in Sources */,
 				F1CFF3B827F6015B007D9FE1 /* UserSecurity.swift in Sources */,
+				F1D2012428296F19006DF4AB /* ChatViewModel.swift in Sources */,
 				F188626328129F1E00659786 /* SingleOptionPickerView.swift in Sources */,
 				F188621F28105A0A00659786 /* UserOffersCoordinator.swift in Sources */,
 				F188627128169A3700659786 /* MarketplaceFilterView.swift in Sources */,
@@ -1635,6 +1645,7 @@
 				F175ABAC27F4FF30000DAB15 /* ImportFacebookContactsViewModel.swift in Sources */,
 				F151A2A427C87074000D7242 /* BorderedTextField.swift in Sources */,
 				B08F392A27AE7112008B344F /* ServiceAssembly.swift in Sources */,
+				F1D2012628296F1F006DF4AB /* ChatView.swift in Sources */,
 				F12A14F727D9768E0096543E /* ImportContactListView.swift in Sources */,
 				B08F38DF27AE7110008B344F /* DIContainer.swift in Sources */,
 				B08F391E27AE7112008B344F /* AppDelegate.swift in Sources */,
@@ -1760,6 +1771,7 @@
 				B08F397027AE7112008B344F /* UserRouter.swift in Sources */,
 				F1886211280EC49B00659786 /* Image+Base64.swift in Sources */,
 				F188622128105A1200659786 /* UserOffersViewModel.swift in Sources */,
+				F1D2012228296F0F006DF4AB /* ChatCoordinator.swift in Sources */,
 				B08F394327AE7112008B344F /* Keychain+.swift in Sources */,
 				F13B2677281F43A10011F2FB /* Offer.swift in Sources */,
 				F188625B2811D84000659786 /* SegmentedPickerView.swift in Sources */,

@@ -13,7 +13,7 @@ final class HomeTabBarCoordinator: BaseCoordinator<Void> {
 
     private let tabBarController: HomeTabBarController
     private let window: UIWindow
-    private let tabs: [HomeTab] = [.marketplace, .profile]
+    private let tabs: [HomeTab] = [.marketplace, .chat, .profile]
 
     init(window: UIWindow) {
         self.tabBarController = HomeTabBarController()
@@ -58,6 +58,10 @@ final class HomeTabBarCoordinator: BaseCoordinator<Void> {
                     let router = CoinValueRouter(homeViewController: viewController)
                     return coordinate(to: MarketplaceCoordinator(router: router,
                                                                  animated: false))
+                case .chat:
+                    let router = CoinValueRouter(homeViewController: viewController)
+                    return coordinate(to: ChatCoordinator(router: router,
+                                                          animated: false))
                 case .profile:
                     let router = CoinValueRouter(homeViewController: viewController)
                     return coordinate(to: UserProfileCoordinator(router: router,

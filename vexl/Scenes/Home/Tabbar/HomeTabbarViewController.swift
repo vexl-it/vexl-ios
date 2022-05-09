@@ -10,12 +10,15 @@ import Cleevio
 
 enum HomeTab {
     case marketplace
+    case chat
     case profile
 
     var tabBarItem: HomeTabBarItem {
         switch self {
         case .marketplace:
             return .marketplace
+        case .chat:
+            return .chat
         case .profile:
             return .profile
         }
