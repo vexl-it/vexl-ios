@@ -10,7 +10,7 @@ import Cleevio
 import SwiftUI
 import Combine
 
-final class HomeCoordinator: BaseCoordinator<Void> {
+final class HomeWindowCoordinator: BaseCoordinator<Void> {
 
     private let homeViewController: HomeViewController
     private let homeViewModel: HomeViewModel
@@ -53,7 +53,7 @@ final class HomeCoordinator: BaseCoordinator<Void> {
     }
 }
 
-extension HomeCoordinator {
+extension HomeWindowCoordinator {
     private func showMarketplaceAsRoot(router: Router) -> CoordinatingResult<RouterResult<Void>> {
         coordinate(to: MarketplaceCoordinator(router: router, animated: true))
             .flatMap { result -> CoordinatingResult<RouterResult<Void>> in

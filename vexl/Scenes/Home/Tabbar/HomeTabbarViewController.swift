@@ -9,7 +9,31 @@ import UIKit
 import Cleevio
 
 protocol HomeBarItemType {
-    var itemIcon: UIImage { get }
+    var selectedIcon: UIImage { get }
+    var unselectedIcon: UIImage { get }
+}
+
+class HomeTabBarButton: UIButton {
+
+    override var isSelected: Bool {
+        didSet {
+            setImage(isSelected ? selectedIcon : unselectedIcon, for: .selected)
+            backgroundColor = isSelected ? R.color.purple1() : .clear
+        }
+    }
+
+    private let selectedIcon: UIImage
+    private let unselectedIcon: UIImage
+
+    init(item: HomeBarItemType) {
+        self.selectedIcon = item.selectedIcon
+        self.unselectedIcon = item.unselectedIcon
+        super.init(frame: .zero)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 }
 
 class HomeTabBarView: UIView {
@@ -25,7 +49,11 @@ class HomeTabBarView: UIView {
         return stackView
     }()
 
-    private var itemButtons: [UIButton] = []
+    var selectedButton: HomeTabBarButton? {
+        itemButtons.first(where: { $0.isSelected })
+    }
+
+    private var itemButtons: [HomeTabBarButton] = []
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -42,7 +70,7 @@ class HomeTabBarView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func add(items: [HomeBarItemType]) {
+    func add(items: [HomeBarItemType], withSelectedIndex selectedIndex: Int = 0) {
         for button in itemButtons {
             stackView.removeArrangedSubview(button)
         }
@@ -50,17 +78,20 @@ class HomeTabBarView: UIView {
         itemButtons.removeAll()
 
         for item in items {
-            let button = UIButton()
-            button.setImage(item.itemIcon, for: [.normal, .highlighted, .selected])
+            let button = HomeTabBarButton(item: item)
             button.addTarget(self, action: #selector(itemTap(sender:)), for: .touchUpInside)
             itemButtons.append(button)
             stackView.addArrangedSubview(button)
         }
+
+        itemButtons[selectedIndex].isSelected = true
     }
 
     @objc
-    private func itemTap(sender: UIButton) {
+    private func itemTap(sender: HomeTabBarButton) {
         guard let index = itemButtons.firstIndex(of: sender) else { return }
+        selectedButton?.isSelected = false
+        itemButtons[index].isSelected = true
         selectedItem.send(index)
     }
 }
