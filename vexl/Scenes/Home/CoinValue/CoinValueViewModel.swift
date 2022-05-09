@@ -9,7 +9,7 @@ import Foundation
 import Cleevio
 import Combine
 
-final class HomeViewModel: ViewModelType {
+final class CoinValueViewModel: ViewModelType {
 
     // MARK: - Actions Bindings
 

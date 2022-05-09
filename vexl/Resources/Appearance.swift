@@ -43,6 +43,7 @@ struct Appearance {
         // MARK: Corner Radius
 
         static let buttonCorner: CGFloat = 12
+        static let tabBarCorner: CGFloat = 16
 
         // MARK: Margins
 

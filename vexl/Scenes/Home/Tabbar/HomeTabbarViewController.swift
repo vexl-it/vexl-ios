@@ -8,27 +8,44 @@
 import UIKit
 import Cleevio
 
-protocol HomeBarItemType {
-    var selectedIcon: UIImage { get }
-    var unselectedIcon: UIImage { get }
+struct HomeBarItem {
+    let selectedIcon: UIImage
+    let unselectedIcon: UIImage
+
+    static var marketplace: HomeBarItem {
+        HomeBarItem(selectedIcon: R.image.tabbar.marketplaceSelected()!,
+                    unselectedIcon: R.image.tabbar.marketplaceUnselected()!)
+    }
+
+    static var profile: HomeBarItem {
+        HomeBarItem(selectedIcon: R.image.tabbar.profileSelected()!,
+                    unselectedIcon: R.image.tabbar.profileUnselected()!)
+    }
+}
+
+protocol HomeTabBarItemContainerType {
+    var homeBarItem: HomeBarItem { get }
+}
+
+enum HomeTab {
+    case marketplace
+    case profile
 }
 
 class HomeTabBarButton: UIButton {
 
     override var isSelected: Bool {
         didSet {
-            setImage(isSelected ? selectedIcon : unselectedIcon, for: .selected)
             backgroundColor = isSelected ? R.color.purple1() : .clear
         }
     }
 
-    private let selectedIcon: UIImage
-    private let unselectedIcon: UIImage
-
-    init(item: HomeBarItemType) {
-        self.selectedIcon = item.selectedIcon
-        self.unselectedIcon = item.unselectedIcon
+    init(item: HomeBarItem) {
         super.init(frame: .zero)
+        setImage(item.selectedIcon, for: .selected)
+        setImage(item.unselectedIcon, for: .normal)
+        heightAnchor.constraint(equalToConstant: Appearance.GridGuide.homeTabBarHeight).isActive = true
+        layer.cornerRadius = Appearance.GridGuide.tabBarCorner
     }
 
     required init?(coder: NSCoder) {
@@ -64,21 +81,23 @@ class HomeTabBarView: UIView {
             stackView.trailingAnchor.constraint(equalTo: trailingAnchor),
             stackView.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
+        backgroundColor = .black
+        layer.cornerRadius = Appearance.GridGuide.tabBarCorner
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func add(items: [HomeBarItemType], withSelectedIndex selectedIndex: Int = 0) {
+    func add(itemContainers: [HomeTabBarItemContainerType], withSelectedIndex selectedIndex: Int = 0) {
         for button in itemButtons {
             stackView.removeArrangedSubview(button)
         }
 
         itemButtons.removeAll()
 
-        for item in items {
-            let button = HomeTabBarButton(item: item)
+        for container in itemContainers {
+            let button = HomeTabBarButton(item: container.homeBarItem)
             button.addTarget(self, action: #selector(itemTap(sender:)), for: .touchUpInside)
             itemButtons.append(button)
             stackView.addArrangedSubview(button)
@@ -104,6 +123,7 @@ class HomeTabBarController: UITabBarController {
         return tabBar
     }()
 
+    private var _storedViewController: [UIViewController & HomeTabBarItemContainerType] = []
     private let cancelBag: CancelBag = .init()
 
     override func viewDidLoad() {
@@ -112,6 +132,15 @@ class HomeTabBarController: UITabBarController {
         arrangeSubviews()
         layout()
         setupBindings()
+        view.backgroundColor = .black
+    }
+
+    func appendViewController(_ viewController: UIViewController & HomeTabBarItemContainerType) {
+        _storedViewController.append(viewController)
+    }
+
+    func setViewControllers(animated: Bool) {
+        setViewControllers(_storedViewController, animated: animated)
     }
 
     override func setViewControllers(_ viewControllers: [UIViewController]?, animated: Bool) {
@@ -120,11 +149,12 @@ class HomeTabBarController: UITabBarController {
             return
         }
 
-        let items = viewControllers
-            .compactMap { $0 as? HomeBarItemType & UIViewController }
+        let itemContainers = viewControllers
+            .compactMap { $0 as? HomeTabBarItemContainerType & UIViewController }
 
-        super.setViewControllers(items, animated: animated)
-        homeTabBar.add(items: items)
+        super.setViewControllers(itemContainers, animated: animated)
+        homeTabBar.add(itemContainers: itemContainers)
+        _storedViewController = []
     }
 
     private func arrangeSubviews() {
@@ -136,9 +166,9 @@ class HomeTabBarController: UITabBarController {
             homeTabBar.leadingAnchor.constraint(equalTo: view.leadingAnchor,
                                                 constant: Appearance.GridGuide.mediumPadding1),
             homeTabBar.trailingAnchor.constraint(equalTo: view.trailingAnchor,
-                                                 constant: Appearance.GridGuide.mediumPadding1),
-            homeTabBar.bottomAnchor.constraint(equalTo: view.bottomAnchor,
-                                               constant: Appearance.GridGuide.mediumPadding1),
+                                                 constant: -Appearance.GridGuide.mediumPadding1),
+            homeTabBar.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor,
+                                               constant: -Appearance.GridGuide.mediumPadding1),
             homeTabBar.heightAnchor.constraint(equalToConstant: Appearance.GridGuide.homeTabBarHeight)
         ])
     }

@@ -7,8 +7,9 @@
 
 import Foundation
 import Cleevio
+import Combine
 
-final class UserProfileCoordinator: BaseCoordinator<RouterResult<Void>> {
+final class UserProfileCoordinator: BaseCoordinator<Void> {
 
     private let router: Router
     private let animated: Bool
@@ -18,17 +19,12 @@ final class UserProfileCoordinator: BaseCoordinator<RouterResult<Void>> {
         self.animated = animated
     }
 
-    override func start() -> CoordinatingResult<RouterResult<Void>> {
+    override func start() -> CoordinatingResult<Void> {
         let viewModel = UserProfileViewModel()
         let viewController = BaseViewController(rootView: UserProfileView(viewModel: viewModel))
         router.present(viewController, animated: animated)
 
-        let dismiss = viewModel.route
-            .filter { $0 == .dismissTapped }
-            .map { _ -> RouterResult<Void> in .dismiss }
-
-        return dismiss
-            .receive(on: RunLoop.main)
+        return Empty(completeImmediately: false)
             .eraseToAnyPublisher()
     }
 }

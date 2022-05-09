@@ -9,19 +9,21 @@ import Foundation
 import UIKit
 import Cleevio
 
-final class HomeViewController: UIViewController {
+final class CoinValueViewController: UIViewController, HomeTabBarItemContainerType {
 
     let dismissPublisher: ActionSubject<Void> = .init()
+    let homeBarItem: HomeBarItem
     var bottomViewController: UIViewController?
 
-    private let viewModel: HomeViewModel
-    private let headerView = HomeHeaderView()
+    private let viewModel: CoinValueViewModel
+    private let headerView = CoinValueHeaderView()
     private let cancelBag: CancelBag = .init()
     private var currentViewController: UIViewController?
     private var isExpanded = false
 
-    init(viewModel: HomeViewModel) {
+    init(viewModel: CoinValueViewModel, homeBarItem: HomeBarItem) {
         self.viewModel = viewModel
+        self.homeBarItem = homeBarItem
         super.init(nibName: nil, bundle: nil)
     }
 
