@@ -15,13 +15,6 @@ struct UserProfileView: View {
 
     var body: some View {
         VStack {
-            content
-        }
-        .background(Appearance.Colors.green1.edgesIgnoringSafeArea(.all))
-    }
-
-    private var content: some View {
-        VStack {
             HStack(spacing: Appearance.GridGuide.padding) {
                 avatarImage
 

@@ -12,6 +12,8 @@ import Combine
 
 final class UserProfileViewModel: ViewModelType, ObservableObject {
 
+    @Inject var authenticationManager: AuthenticationManagerType
+
     // MARK: - Action Binding
 
     enum UserAction: Equatable {
@@ -37,19 +39,18 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
 
     private let cancelBag: CancelBag = .init()
     // TODO: - Remove hardcoded values
-    let username: String = "Diego"
+    var username: String {
+        authenticationManager.currentUser?.username ?? ""
+    }
+
     var contacts: String {
         "34"
     }
-    var currencySymbol: String {
-        "$"
-    }
-    var amount: String {
-        "1234"
-    }
+
     var avatar: Data? {
-        R.image.onboarding.emptyAvatar()?.jpegData(compressionQuality: 1)
+        authenticationManager.currentUser?.avatarImage ?? R.image.onboarding.emptyAvatar()?.jpegData(compressionQuality: 1)
     }
+
     var options: [OptionGroup] {
         Option.groupedOptions
     }

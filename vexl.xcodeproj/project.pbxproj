@@ -683,6 +683,7 @@
 		B08F38FB27AE7110008B344F /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
+				F1D2012028296EF7006DF4AB /* Chat */,
 				F188626628169A3700659786 /* Marketplace */,
 				F188621D2810587100659786 /* Offer */,
 				F18861FF280824A500659786 /* Home */,
@@ -1280,6 +1281,13 @@
 				F1D2011E282960DC006DF4AB /* HomeTabBarView.swift */,
 			);
 			path = Components;
+			sourceTree = "<group>";
+		};
+		F1D2012028296EF7006DF4AB /* Chat */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Chat;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
