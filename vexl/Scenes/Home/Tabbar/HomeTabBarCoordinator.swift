@@ -22,12 +22,9 @@ final class HomeTabBarCoordinator: BaseCoordinator<Void> {
 
     override func start() -> CoordinatingResult<Void> {
 
-        Publishers.Merge(setupMarketplace(tabBar: tabBarController),
-                         setupProfile(tabBar: tabBarController))
+        Publishers.MergeMany(configure(tabBar: tabBarController, tabs: tabs))
             .sink(receiveValue: { _ in })
             .store(in: cancelBag)
-
-        tabBarController.setViewControllers(animated: false)
 
         window.tap {
             $0.rootViewController = self.tabBarController
@@ -46,21 +43,26 @@ final class HomeTabBarCoordinator: BaseCoordinator<Void> {
             .eraseToAnyPublisher()
     }
 
-    private func setupMarketplace(tabBar: HomeTabBarController) -> CoordinatingResult<Void> {
-        let viewController = CoinValueViewController(viewModel: CoinValueViewModel(),
-                                                     homeBarItem: .marketplace)
-        let router = CoinValueRouter(homeViewController: viewController)
-        tabBar.appendViewController(viewController)
-        return coordinate(to: MarketplaceCoordinator(router: router,
-                                                     animated: false))
-    }
+    private func configure(tabBar: HomeTabBarController, tabs: [HomeTab]) -> [CoordinatingResult<Void>] {
+        let viewControllers = tabs.map { tab in
+            CoinValueViewController(viewModel: CoinValueViewModel(),
+                                    homeBarItem: tab.tabBarItem)
+        }
 
-    private func setupProfile(tabBar: HomeTabBarController) -> CoordinatingResult<Void> {
-        let viewController = CoinValueViewController(viewModel: CoinValueViewModel(),
-                                                     homeBarItem: .profile)
-        let router = CoinValueRouter(homeViewController: viewController)
-        tabBar.appendViewController(viewController)
-        return coordinate(to: UserProfileCoordinator(router: router,
-                                                     animated: false))
+        tabBarController.setViewControllers(viewControllers, animated: false)
+
+        return zip(viewControllers, tabs)
+            .map { viewController, tab in
+                switch tab {
+                case .marketplace:
+                    let router = CoinValueRouter(homeViewController: viewController)
+                    return coordinate(to: MarketplaceCoordinator(router: router,
+                                                                 animated: false))
+                case .profile:
+                    let router = CoinValueRouter(homeViewController: viewController)
+                    return coordinate(to: UserProfileCoordinator(router: router,
+                                                                 animated: false))
+                }
+            }
     }
 }

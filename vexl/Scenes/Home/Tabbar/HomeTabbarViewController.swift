@@ -11,6 +11,15 @@ import Cleevio
 enum HomeTab {
     case marketplace
     case profile
+
+    var tabBarItem: HomeTabBarItem {
+        switch self {
+        case .marketplace:
+            return .marketplace
+        case .profile:
+            return .profile
+        }
+    }
 }
 
 class HomeTabBarController: UITabBarController {
@@ -31,19 +40,6 @@ class HomeTabBarController: UITabBarController {
         layout()
         setupBindings()
         view.backgroundColor = .black
-    }
-
-    /// Use this method to store temporary the view controllers without setting them as child UIViewControllers
-    /// from the HomeTabBarController. Once all the needed UIViewControllers have been stored, call the method `setViewController(animated:)` to set them as tabs from the HomeTabBarController.
-
-    func appendViewController(_ viewController: UIViewController & HomeTabBarItemType) {
-        _storedViewController.append(viewController)
-    }
-
-    /// Use this method to set as tabs all the previously stored UIViewControllers via `appendViewControllers()`
-    
-    func setViewControllers(animated: Bool) {
-        setViewControllers(_storedViewController, animated: animated)
     }
 
     override func setViewControllers(_ viewControllers: [UIViewController]?, animated: Bool) {
@@ -67,11 +63,11 @@ class HomeTabBarController: UITabBarController {
     private func layout() {
         NSLayoutConstraint.activate([
             homeTabBarView.leadingAnchor.constraint(equalTo: view.leadingAnchor,
-                                                constant: Appearance.GridGuide.mediumPadding1),
+                                                    constant: Appearance.GridGuide.mediumPadding1),
             homeTabBarView.trailingAnchor.constraint(equalTo: view.trailingAnchor,
-                                                 constant: -Appearance.GridGuide.mediumPadding1),
+                                                     constant: -Appearance.GridGuide.mediumPadding1),
             homeTabBarView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor,
-                                               constant: -Appearance.GridGuide.mediumPadding1),
+                                                   constant: -Appearance.GridGuide.mediumPadding1),
             homeTabBarView.heightAnchor.constraint(equalToConstant: Appearance.GridGuide.homeTabBarHeight)
         ])
     }
