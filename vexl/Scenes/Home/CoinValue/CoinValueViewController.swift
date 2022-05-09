@@ -9,10 +9,10 @@ import Foundation
 import UIKit
 import Cleevio
 
-final class CoinValueViewController: UIViewController, HomeTabBarItemContainerType {
+final class CoinValueViewController: UIViewController, HomeTabBarItemType {
 
     let dismissPublisher: ActionSubject<Void> = .init()
-    let homeBarItem: HomeBarItem
+    let homeTabBarItem: HomeTabBarItem
     var bottomViewController: UIViewController?
 
     private let viewModel: CoinValueViewModel
@@ -21,9 +21,9 @@ final class CoinValueViewController: UIViewController, HomeTabBarItemContainerTy
     private var currentViewController: UIViewController?
     private var isExpanded = false
 
-    init(viewModel: CoinValueViewModel, homeBarItem: HomeBarItem) {
+    init(viewModel: CoinValueViewModel, homeBarItem: HomeTabBarItem) {
         self.viewModel = viewModel
-        self.homeBarItem = homeBarItem
+        self.homeTabBarItem = homeBarItem
         super.init(nibName: nil, bundle: nil)
     }
 
