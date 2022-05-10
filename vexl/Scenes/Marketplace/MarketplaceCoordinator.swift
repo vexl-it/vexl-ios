@@ -77,16 +77,4 @@ extension MarketplaceCoordinator {
         .prefix(1)
         .eraseToAnyPublisher()
     }
-
-    private func showCreateOffer(router: Router) -> CoordinatingResult<RouterResult<Void>> {
-        coordinate(to: CreateOfferCoordinator(router: router, offerType: .buy))
-            .flatMap { result -> CoordinatingResult<RouterResult<Void>> in
-                guard result != .dismissedByRouter else {
-                    return Just(result).eraseToAnyPublisher()
-                }
-                return router.dismiss(animated: true, returning: result)
-            }
-            .prefix(1)
-            .eraseToAnyPublisher()
-    }
 }

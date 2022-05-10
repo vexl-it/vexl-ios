@@ -60,8 +60,6 @@ struct Constants {
 
     static let elipticCurve: Curve = .init(rawValue: UInt32(10))
 
-    static let paginationMaxValue = 1_000
-
     static let currencySymbol = "$"
 
     static let pageMaxLimit = 1_000
