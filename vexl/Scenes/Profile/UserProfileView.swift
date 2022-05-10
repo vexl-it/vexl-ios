@@ -59,6 +59,7 @@ struct UserProfileView: View {
         .listStyle(.insetGrouped)
         .onAppear {
             UITableView.appearance().backgroundColor = UIColor.clear
+            UITableView.appearance().contentInset = Appearance.GridGuide.scrollContentInset
         }
         .padding(.horizontal, -Appearance.GridGuide.point)
     }

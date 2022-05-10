@@ -79,8 +79,7 @@ class HomeTabBarController: UITabBarController {
                                                     constant: Appearance.GridGuide.mediumPadding1),
             homeTabBarView.trailingAnchor.constraint(equalTo: view.trailingAnchor,
                                                      constant: -Appearance.GridGuide.mediumPadding1),
-            homeTabBarView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor,
-                                                   constant: -Appearance.GridGuide.mediumPadding1),
+            homeTabBarView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             homeTabBarView.heightAnchor.constraint(equalToConstant: Appearance.GridGuide.homeTabBarHeight)
         ])
     }
