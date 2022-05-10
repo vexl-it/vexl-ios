@@ -53,7 +53,6 @@ struct Offer {
         self.type = type
     }
 
-    // swiftlint: disable function_body_length
     init?(encryptedOffer: EncryptedOffer, keys: ECCKeys) throws {
         do {
             let minAmountString = try encryptedOffer.amountBottomLimit.ecc.decrypt(keys: keys)
@@ -66,54 +65,21 @@ struct Offer {
             let offerTypeString = try encryptedOffer.offerType.ecc.decrypt(keys: keys)
             let offerPublicKey = try encryptedOffer.offerPublicKey.ecc.decrypt(keys: keys)
 
-            var paymentMethodList: [String] = []
-            var btcNetworkList: [String] = []
-
-            let numberOfPaymentMethods = encryptedOffer.paymentMethod.count
-            let numberOfBTCNetwork = encryptedOffer.btcNetwork.count
-
-            encryptedOffer.paymentMethod.forEach { method in
-                if let decryptedMethod = try? method.ecc.decrypt(keys: keys) {
-                    paymentMethodList.append(decryptedMethod)
-                }
-            }
-
-            encryptedOffer.btcNetwork.forEach { network in
-                if let decryptedNetwork = try? network.ecc.decrypt(keys: keys) {
-                    btcNetworkList.append(decryptedNetwork)
-                }
-            }
+            let paymentMethods = Self.getPaymentMethods(encryptedOffer.paymentMethod, withKeys: keys)
+            let btcNetworks = Self.getBTCNetwork(encryptedOffer.btcNetwork, withKeys: keys)
 
             guard let minAmount = Int(minAmountString),
                   let maxAmount = Int(maxAmountString),
-                  let feeAmount = Double(feeAmountString) else {
-                      return nil
-                  }
-
-            guard let feeState = OfferFeeOption(rawValue: feeStateString),
+                  let feeAmount = Double(feeAmountString),
+                  let feeState = OfferFeeOption(rawValue: feeStateString),
                   let locationState = OfferTradeLocationOption(rawValue: locationStateString),
                   let friendLevel = OfferAdvancedFriendDegreeOption(rawValue: friendLevelString),
                   let offerType = OfferType(rawValue: offerTypeString) else {
                       return nil
                   }
 
-            var paymentMethods: [OfferPaymentMethodOption] = []
-            var btcNetworks: [OfferAdvancedBTCOption] = []
-
-            paymentMethodList.forEach { method in
-                if let paymentMethod = OfferPaymentMethodOption(rawValue: method) {
-                    paymentMethods.append(paymentMethod)
-                }
-            }
-
-            btcNetworkList.forEach { network in
-                if let btcNetwork = OfferAdvancedBTCOption(rawValue: network) {
-                    btcNetworks.append(btcNetwork)
-                }
-            }
-
-            guard btcNetworkList.count == numberOfBTCNetwork
-                    && paymentMethods.count == numberOfPaymentMethods else {
+            guard btcNetworks.count == encryptedOffer.btcNetwork.count
+                    && paymentMethods.count == encryptedOffer.paymentMethod.count else {
                 return nil
             }
 
@@ -182,5 +148,67 @@ struct Offer {
 
     var modifiedDate: Date? {
         Formatters.dateApiFormatter.date(from: modifiedAt)
+    }
+
+    // MARK: - Helper methods for array generation
+
+    private static func getPaymentMethods(_ paymentMethods: [String], withKeys keys: ECCKeys) -> [OfferPaymentMethodOption] {
+        let decryptedPaymentMethods = Self.decryptPaymentMethods(paymentMethods, keys: keys)
+        return Self.generatePaymentMethods(decryptedPaymentMethods)
+    }
+
+    private static func getBTCNetwork(_ btcNetwork: [String], withKeys keys: ECCKeys) -> [OfferAdvancedBTCOption] {
+        let decryptedBTCNetwork = Self.decryptBTCNetwork(btcNetwork, keys: keys)
+        return Self.generateBTCNetwork(decryptedBTCNetwork)
+    }
+
+    private static func generatePaymentMethods(_ paymentMethodList: [String]) -> [OfferPaymentMethodOption] {
+        var paymentMethods: [OfferPaymentMethodOption] = []
+
+        paymentMethodList.forEach { method in
+            if let paymentMethod = OfferPaymentMethodOption(rawValue: method) {
+                paymentMethods.append(paymentMethod)
+            }
+        }
+
+        return paymentMethods
+    }
+
+    private static func generateBTCNetwork(_ btcNetworkList: [String]) -> [OfferAdvancedBTCOption] {
+        var btcNetworks: [OfferAdvancedBTCOption] = []
+
+        btcNetworkList.forEach { network in
+            if let btcNetwork = OfferAdvancedBTCOption(rawValue: network) {
+                btcNetworks.append(btcNetwork)
+            }
+        }
+
+        return btcNetworks
+    }
+
+    private static func decryptPaymentMethods(_ paymentMethod: [String],
+                                              keys: ECCKeys) -> [String] {
+        var paymentMethodList: [String] = []
+
+        paymentMethod.forEach { method in
+            if let decryptedMethod = try? method.ecc.decrypt(keys: keys) {
+                paymentMethodList.append(decryptedMethod)
+            }
+        }
+
+        return paymentMethodList
+    }
+
+    private static func decryptBTCNetwork(_ btcNetwork: [String],
+                                          keys: ECCKeys) -> [String] {
+        var btcNetworkList: [String] = []
+
+        btcNetwork.forEach { network in
+            if let decryptedNetwork = try? network.ecc.decrypt(keys: keys) {
+                btcNetworkList.append(decryptedNetwork)
+            }
+        }
+
+        return btcNetworkList
     }
 }
