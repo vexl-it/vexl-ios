@@ -41,5 +41,10 @@ class ManagerAssembly: Assembly {
             CryptoService()
         }
         .inObjectScope(.container)
+
+        container.register(CryptocurrencyValueManagerType.self) { _ in
+            CryptocurrencyValueManager()
+        }
+        .inObjectScope(.container)
     }
 }

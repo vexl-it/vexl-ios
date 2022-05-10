@@ -34,7 +34,17 @@ class HomeTabBarController: UITabBarController {
     }()
 
     private var _storedViewController: [UIViewController & HomeTabBarItemType] = []
+    private let viewModel: HomeTabBarViewModel
     private let cancelBag: CancelBag = .init()
+
+    init(viewModel: HomeTabBarViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()

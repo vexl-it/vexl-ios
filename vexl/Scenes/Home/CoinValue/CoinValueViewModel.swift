@@ -11,6 +11,8 @@ import Combine
 
 final class CoinValueViewModel: ViewModelType {
 
+    @Inject var cryptocurrencyManager: CryptocurrencyValueManagerType
+
     // MARK: - Actions Bindings
 
     enum UserAction: Equatable {
@@ -20,10 +22,7 @@ final class CoinValueViewModel: ViewModelType {
 
     // MARK: - View Bindings
 
-    var isLoading: AnyPublisher<Bool, Never> {
-        primaryActivity.indicator.loading
-    }
-
+    @Published var isLoading: Bool
     @Published var primaryActivity: Activity = .init()
     @Published var bitcoinValue: Decimal?
 
@@ -39,16 +38,24 @@ final class CoinValueViewModel: ViewModelType {
     @Inject private var userService: UserServiceType
     private let cancelBag: CancelBag = .init()
 
-    init() {
+    init(startsLoading: Bool) {
+        self.isLoading = startsLoading
         setupBindings()
     }
 
     private func setupBindings() {
-        userService
-            .getBitcoinData()
-            .track(activity: primaryActivity)
+        cryptocurrencyManager
+            .currentValue
             .map(\.priceUsd)
             .asOptional()
             .assign(to: &$bitcoinValue)
+
+        cryptocurrencyManager
+            .isFetching
+            .withUnretained(self)
+            .sink { owner, isFetching in
+                owner.isLoading = isFetching
+            }
+            .store(in: cancelBag)
     }
 }

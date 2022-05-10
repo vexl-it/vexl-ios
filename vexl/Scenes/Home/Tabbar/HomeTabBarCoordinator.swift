@@ -16,7 +16,8 @@ final class HomeTabBarCoordinator: BaseCoordinator<Void> {
     private let tabs: [HomeTab] = [.marketplace, .chat, .profile]
 
     init(window: UIWindow) {
-        self.tabBarController = HomeTabBarController()
+        let viewModel = HomeTabBarViewModel()
+        self.tabBarController = HomeTabBarController(viewModel: viewModel)
         self.window = window
     }
 
@@ -45,7 +46,7 @@ final class HomeTabBarCoordinator: BaseCoordinator<Void> {
 
     private func configure(tabBar: HomeTabBarController, tabs: [HomeTab]) -> [CoordinatingResult<Void>] {
         let viewControllers = tabs.map { tab in
-            CoinValueViewController(viewModel: CoinValueViewModel(),
+            CoinValueViewController(viewModel: CoinValueViewModel(startsLoading: true),
                                     homeBarItem: tab.tabBarItem)
         }
 

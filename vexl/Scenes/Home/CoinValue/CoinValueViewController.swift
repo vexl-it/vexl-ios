@@ -126,8 +126,12 @@ final class CoinValueViewController: UIViewController, HomeTabBarItemType {
     }
 
     private func setupBindings() {
-        viewModel.isLoading
-            .assign(to: \.isLoading, on: headerView)
+        viewModel
+            .$isLoading
+            .withUnretained(self)
+            .sink { owner, isLoading in
+                owner.headerView.isLoading = isLoading
+            }
             .store(in: cancelBag)
 
         viewModel.$bitcoinValue

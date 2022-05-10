@@ -211,6 +211,8 @@
 		F1D2012228296F0F006DF4AB /* ChatCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D2012128296F0F006DF4AB /* ChatCoordinator.swift */; };
 		F1D2012428296F19006DF4AB /* ChatViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D2012328296F19006DF4AB /* ChatViewModel.swift */; };
 		F1D2012628296F1F006DF4AB /* ChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D2012528296F1F006DF4AB /* ChatView.swift */; };
+		F1D20128282AB6EF006DF4AB /* CryptocurrencyValueManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D20127282AB6EF006DF4AB /* CryptocurrencyValueManager.swift */; };
+		F1D2012A282ABB1F006DF4AB /* HomeTabBarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D20129282ABB1F006DF4AB /* HomeTabBarViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -446,6 +448,8 @@
 		F1D2012128296F0F006DF4AB /* ChatCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatCoordinator.swift; sourceTree = "<group>"; };
 		F1D2012328296F19006DF4AB /* ChatViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewModel.swift; sourceTree = "<group>"; };
 		F1D2012528296F1F006DF4AB /* ChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatView.swift; sourceTree = "<group>"; };
+		F1D20127282AB6EF006DF4AB /* CryptocurrencyValueManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptocurrencyValueManager.swift; sourceTree = "<group>"; };
+		F1D20129282ABB1F006DF4AB /* HomeTabBarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTabBarViewModel.swift; sourceTree = "<group>"; };
 		F2FD3623B1DD9C04AD13743C /* Pods-vexl.devel.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-vexl.devel.xcconfig"; path = "Target Support Files/Pods-vexl/Pods-vexl.devel.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -648,10 +652,10 @@
 		B08F38F227AE7110008B344F /* Managers */ = {
 			isa = PBXGroup;
 			children = (
-				F1A9453827F73F5E009B5AE3 /* AuthenticationManager */,
-				B0FE523E280E822400A77EC3 /* CryptoService.swift */,
+				B08F391627AE7112008B344F /* AuthenticationManager.swift */,
 				B0F206F027AE94C400A44E72 /* InitialScreenManager.swift */,
 				F175AB9C27F147B5000DAB15 /* ContactsManager.swift */,
+				F1D20127282AB6EF006DF4AB /* CryptocurrencyValueManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -659,6 +663,7 @@
 		B08F38F527AE7110008B344F /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				B0FE523E280E822400A77EC3 /* CryptoService.swift */,
 				B08F391A27AE7112008B344F /* Networking */,
 			);
 			path = Services;
@@ -1172,14 +1177,6 @@
 			path = Security;
 			sourceTree = "<group>";
 		};
-		F1A9453827F73F5E009B5AE3 /* AuthenticationManager */ = {
-			isa = PBXGroup;
-			children = (
-				B08F391627AE7112008B344F /* AuthenticationManager.swift */,
-			);
-			path = AuthenticationManager;
-			sourceTree = "<group>";
-		};
 		F1A9453E27F811CA009B5AE3 /* Contacts */ = {
 			isa = PBXGroup;
 			children = (
@@ -1276,6 +1273,7 @@
 				F1D2011B28296099006DF4AB /* Components */,
 				F1D200A528252C44006DF4AB /* HomeTabbarViewController.swift */,
 				F1D2011928292868006DF4AB /* HomeTabBarCoordinator.swift */,
+				F1D20129282ABB1F006DF4AB /* HomeTabBarViewModel.swift */,
 			);
 			path = Tabbar;
 			sourceTree = "<group>";
@@ -1626,6 +1624,7 @@
 				F13B2675281EB23A0011F2FB /* ContactFriendLevel.swift in Sources */,
 				B0E9BB302815C7310012BF1D /* SHA.swift in Sources */,
 				B08F390727AE7110008B344F /* UserDefault.swift in Sources */,
+				F1D2012A282ABB1F006DF4AB /* HomeTabBarViewModel.swift in Sources */,
 				B08F391727AE7112008B344F /* AuthenticationManager.swift in Sources */,
 				F1886257281193CA00659786 /* OfferLocationPickerView.swift in Sources */,
 				B08F394B27AE7112008B344F /* ServerError.swift in Sources */,
@@ -1718,6 +1717,7 @@
 				F1BFA9712804321900F4E745 /* LineDivider.swift in Sources */,
 				B08F394D27AE7112008B344F /* AppCoordinator.swift in Sources */,
 				F13B2671281D4AB00011F2FB /* ContactKey.swift in Sources */,
+				F1D20128282AB6EF006DF4AB /* CryptocurrencyValueManager.swift in Sources */,
 				F175ABA227F4A8F8000DAB15 /* UserAvailable.swift in Sources */,
 				B0E9BB322815D2B60012BF1D /* CryptographicError.swift in Sources */,
 				B0F206FE27AEBDD500A44E72 /* AuthRouter.swift in Sources */,
