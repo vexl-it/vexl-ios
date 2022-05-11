@@ -14,7 +14,7 @@ struct CreateOfferView: View {
 
     var body: some View {
         VStack {
-            OfferHeaderView {
+            OfferHeaderView(title: viewModel.headerTitle) {
                 viewModel.action.send(.dismissTap)
             }
 
@@ -65,7 +65,7 @@ struct CreateOfferView: View {
                         .padding(.top, Appearance.GridGuide.largePadding1)
                         .padding(.horizontal, Appearance.GridGuide.point)
 
-                    SolidButton(Text(L.offerCreateActionTitle())
+                    SolidButton(Text(viewModel.actionTitle)
                                     .padding(.horizontal,
                                              Appearance.GridGuide.mediumPadding1),
                                 isEnabled: .constant(viewModel.isCreateEnabled),
@@ -88,7 +88,10 @@ struct CreateOfferView: View {
 #if DEBUG || DEVEL
 struct CreateOfferViewPreview: PreviewProvider {
     static var previews: some View {
-        CreateOfferView(viewModel: .init())
+        CreateOfferView(viewModel: .init(offerType: .sell))
+            .previewDevice("iPhone 11")
+
+        CreateOfferView(viewModel: .init(offerType: .buy))
             .previewDevice("iPhone 11")
     }
 }

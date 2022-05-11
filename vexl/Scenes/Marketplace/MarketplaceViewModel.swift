@@ -11,15 +11,14 @@ import Combine
 
 final class MarketplaceViewModel: ViewModelType, ObservableObject {
 
-    enum Option {
-        case buy, sell
-    }
+    @Inject var offerService: OfferServiceType
+    @Inject var userSecurity: UserSecurityType
 
     // MARK: - Actions Bindings
 
     enum UserAction: Equatable {
-        case showOffer
-        case continueTap
+        case showSellOffer
+        case showBuyOffer
     }
 
     let action: ActionSubject<UserAction> = .init()
@@ -27,13 +26,15 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
     // MARK: - View Bindings
 
     @Published var primaryActivity: Activity = .init()
-    @Published var selectedOption: Option = .buy
+    @Published var selectedOption: OfferType = .buy
+
+    @Published var offerItems: [Offer] = []
 
     // MARK: - Coordinator Bindings
 
     enum Route: Equatable {
-        case showOffer
-        case continueTapped
+        case showSellOfferTapped
+        case showBuyOfferTapped
     }
 
     var route: CoordinatingSubject<Route> = .init()
@@ -42,64 +43,106 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
 
     // TODO: - Update to real data when services are ready
 
+    var currencySymbol: String {
+        Constants.currencySymbol
+    }
+
     var buyFilters: [MarketplaceFilterData] {
-        [
-            .init(id: 1, title: "Revolut"),
-            .init(id: 2, title: "up to 10K"),
-            .init(id: 3, title: "▽")
-        ]
+        []
     }
 
     var sellFilters: [MarketplaceFilterData] {
-        [
-            .init(id: 4, title: "Filter offers ▽")
-        ]
+        []
     }
 
-    var feedItems: [MarketplaceFeedViewData] = [
-        MarketplaceFeedViewData(id: 1,
-                                title: "I’ll be wearing a red hat, Don’t text me before 9am — I love to sleep...",
-                                isRequested: false,
-                                location: "Prague",
-                                maxAmount: "up to $10k",
-                                paymentMethod: "Revolut",
-                                fee: nil),
-        MarketplaceFeedViewData(id: 2,
-                                title: "I’ll be wearing a red hat, Don’t text me before 9am — I love to sleep...",
-                                isRequested: true,
-                                location: "Prague",
-                                maxAmount: "up to $10k",
-                                paymentMethod: "Revolut",
-                                fee: "Wants $30 fee per transaction"),
-        MarketplaceFeedViewData(id: 3,
-                                title: "I’ll be wearing a red hat, Don’t text me before 9am — I love to sleep...",
-                                isRequested: true,
-                                location: "Prague",
-                                maxAmount: "up to $10k",
-                                paymentMethod: "Revolut",
-                                fee: nil),
-        MarketplaceFeedViewData(id: 4,
-                                title: "I’ll be wearing a red hat, Don’t text me before 9am — I love to sleep...",
-                                isRequested: false,
-                                location: "Prague",
-                                maxAmount: "up to $10k",
-                                paymentMethod: "Revolut",
-                                fee: "Wants $30 fee per transaction")
-    ]
+    private var buyFeedItems: [MarketplaceFeedViewData] = []
+    private var sellFeedItems: [MarketplaceFeedViewData] = []
 
+    var marketplaceFeedItems: [MarketplaceFeedViewData] {
+        switch selectedOption {
+        case .sell:
+            return sellFeedItems
+        case .buy:
+            return buyFeedItems
+        }
+    }
+
+    private let userOfferKeys: UserOfferKeys?
     private let cancelBag: CancelBag = .init()
 
     init() {
-        setupBindings()
+        self.userOfferKeys = UserDefaults.standard.codable(forKey: .storedOfferKeys)
+        setupDataBindings()
+        setupActionBindings()
     }
 
-    private func setupBindings() {
-        action
-            .filter { $0 == .showOffer }
+    private func setupDataBindings() {
+        offerService
+            .getOffer(pageLimit: Constants.pageMaxLimit)
+            .track(activity: primaryActivity)
+            .materialize()
+            .compactMap(\.value)
+            .map(\.items)
             .withUnretained(self)
-            .sink { owner, _ in
-                owner.route.send(.showOffer)
+            .sink { owner, items in
+                owner.offerItems = items.compactMap {
+                    try? Offer(encryptedOffer: $0, keys: owner.userSecurity.userKeys)
+                }
             }
             .store(in: cancelBag)
+
+        $offerItems
+            .withUnretained(self)
+            .sink { owner, offers in
+                let offerKeys = owner.userOfferKeys?.keys ?? []
+
+                for offer in offers {
+                    guard !offerKeys.contains(where: { $0.publicKey == offer.offerPublicKey }) else {
+                        continue
+                    }
+
+                    let marketplaceItem = Self.mapToMarketplaceFeed(usingOffer: offer)
+                    switch offer.type {
+                    case .buy:
+                        owner.buyFeedItems.append(marketplaceItem)
+                    case .sell:
+                        owner.sellFeedItems.append(marketplaceItem)
+                    }
+                }
+            }
+            .store(in: cancelBag)
+    }
+
+    private func setupActionBindings() {
+
+        let userAction = action
+            .share()
+
+        userAction
+            .filter { $0 == .showSellOffer }
+            .withUnretained(self)
+            .sink { owner, _ in
+                owner.route.send(.showSellOfferTapped)
+            }
+            .store(in: cancelBag)
+
+        userAction
+            .filter { $0 == .showBuyOffer }
+            .withUnretained(self)
+            .sink { owner, _ in
+                owner.route.send(.showBuyOfferTapped)
+            }
+            .store(in: cancelBag)
+    }
+
+    private static func mapToMarketplaceFeed(usingOffer offer: Offer) -> MarketplaceFeedViewData {
+        let currencySymbol = Constants.currencySymbol
+        return MarketplaceFeedViewData(id: offer.offerId,
+                                       title: offer.description,
+                                       isRequested: false,
+                                       location: L.offerSellNoLocation(),
+                                       amount: "\(currencySymbol)\(offer.minAmount) - \(currencySymbol)\(offer.maxAmount)",
+                                       paymentMethods: offer.paymentMethods.map(\.title),
+                                       fee: offer.feeAmount > 0 ? "\(offer.feeAmount)%" : nil)
     }
 }

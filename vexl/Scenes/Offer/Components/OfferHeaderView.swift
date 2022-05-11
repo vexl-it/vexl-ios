@@ -9,12 +9,13 @@ import SwiftUI
 
 struct OfferHeaderView: View {
 
+    let title: String
     let dismissAction: () -> Void
 
     var body: some View {
         VStack {
             HStack(alignment: .bottom) {
-                Text(L.offerSellTitle())
+                Text(title)
                     .textStyle(.h1)
                     .foregroundColor(Appearance.Colors.whiteText)
 

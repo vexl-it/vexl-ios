@@ -8,7 +8,7 @@
 import Foundation
 import Cleevio
 
-final class SellOffersViewModel: ViewModelType, ObservableObject {
+final class UserOffersViewModel: ViewModelType, ObservableObject {
 
     @Inject var offerService: OfferServiceType
     @Inject var userSecurity: UserSecurityType
@@ -48,19 +48,41 @@ final class SellOffersViewModel: ViewModelType, ObservableObject {
 
     // MARK: - Variables
 
+    private let offerType: OfferType
     private let cancelBag: CancelBag = .init()
-    private let userOfferKeys: UserOfferKeys?
-    var offerItems: [SellOfferViewData] {
-        userOffers.map { offer in
-            SellOfferViewData(id: offer.offerId,
-                              description: offer.description,
-                              minAmount: offer.minAmount,
-                              maxAmount: offer.maxAmount,
-                              paymentMethods: offer.paymentMethods.map(\.title))
+    private var userOfferKeys: UserOfferKeys?
+
+    var offerTitle: String {
+        switch offerType {
+        case .sell:
+            return L.offerSellTitle()
+        case .buy:
+            return L.offerBuyTitle()
         }
     }
 
-    init() {
+    var createOfferTitle: String {
+        switch offerType {
+        case .sell:
+            return L.offerSellTitle()
+        case .buy:
+            return L.offerBuyTitle()
+        }
+    }
+
+    var offerItems: [OfferItemViewData] {
+        userOffers.map { offer in
+            OfferItemViewData(id: offer.offerId,
+                              description: offer.description,
+                              minAmount: offer.minAmount,
+                              maxAmount: offer.maxAmount,
+                              paymentMethods: offer.paymentMethods.map(\.title),
+                              offerType: offer.type)
+        }
+    }
+
+    init(offerType: OfferType) {
+        self.offerType = offerType
         self.userOfferKeys = UserDefaults.standard.codable(forKey: .storedOfferKeys)
         setupActivity()
         setupDataBindings()
@@ -102,24 +124,21 @@ final class SellOffersViewModel: ViewModelType, ObservableObject {
 
     private func fetchOffers() {
         offerService
-            .getOffer()
-            .track(activity: primaryActivity)
-            .materialize()
-            .compactMap(\.value)
-            .map(\.items)
+            .getStoredOfferIds(forType: offerType)
+            .filter { !$0.isEmpty }
             .withUnretained(self)
-            .sink { owner, items in
-                var offers: [Offer] = []
-
-                // TODO: - Optimize the decryption using multi-threading
-
-                for item in items {
-                    if let offer = try? Offer(encryptedOffer: item,
-                                              keys: owner.userSecurity.userKeys) {
-                        offers.append(offer)
-                    }
+            .flatMap { owner, ids in
+                owner.offerService
+                    .getUserOffers(offerIds: ids)
+                    .track(activity: owner.primaryActivity)
+                    .materialize()
+                    .compactMap(\.value)
+            }
+            .withUnretained(self)
+            .sink { owner, encryptedOffers in
+                owner.userOffers = encryptedOffers.compactMap {
+                    try? Offer(encryptedOffer: $0, keys: owner.userSecurity.userKeys)
                 }
-                owner.userOffers = offers
             }
             .store(in: cancelBag)
     }

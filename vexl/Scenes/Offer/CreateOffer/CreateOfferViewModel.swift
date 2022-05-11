@@ -78,10 +78,6 @@ final class CreateOfferViewModel: ViewModelType, ObservableObject {
 
     // MARK: - Variables
 
-    private let cancelBag: CancelBag = .init()
-
-    var minFee: Double = 0
-    var maxFee: Double = 0
     var feeValue: Int {
         guard selectedFeeOption == .withFee else {
             return 0
@@ -110,10 +106,34 @@ final class CreateOfferViewModel: ViewModelType, ObservableObject {
         return !description.isEmpty
     }
 
+    var headerTitle: String {
+        switch offerType {
+        case .sell:
+            return L.offerSellCreateTitle()
+        case .buy:
+            return L.offerBuyCreateTitle()
+        }
+    }
+
+    var actionTitle: String {
+        switch offerType {
+        case .sell:
+            return L.offerCreateActionTitle()
+        case .buy:
+            return L.offerCreateBuyActionTitle()
+        }
+    }
+
+    var minFee: Double = 0
+    var maxFee: Double = 0
     var currencySymbol = ""
     let offerKey = ECCKeys()
+    let offerType: OfferType
 
-    init() {
+    private let cancelBag: CancelBag = .init()
+
+    init(offerType: OfferType) {
+        self.offerType = offerType
         setupActivity()
         setupDataBindings()
         setupBindings()
@@ -217,7 +237,9 @@ final class CreateOfferViewModel: ViewModelType, ObservableObject {
             .withUnretained(self)
             .flatMap { owner, _ in
                 owner.contactsService
-                    .getContacts(fromFacebook: false, friendLevel: owner.friendLevel)
+                    .getAllContacts(friendLevel: owner.friendLevel,
+                                    hasFacebookAccount: owner.userSecurity.facebookSecurityHeader != nil,
+                                    pageLimit: Constants.pageMaxLimit)
                     .track(activity: owner.primaryActivity)
                     .materialize()
                     .compactMap(\.value)
@@ -235,11 +257,11 @@ final class CreateOfferViewModel: ViewModelType, ObservableObject {
                                   paymentMethods: owner.selectedPaymentMethodOptions,
                                   btcNetwork: owner.selectedBTCOption,
                                   friendLevel: owner.selectedFriendDegreeOption,
-                                  type: .sell)
+                                  type: owner.offerType)
 
                 // Adding owner publicKey to the list so that it can be decrypted, displayed and modified
 
-                var contacts = contacts.items
+                var contacts = contacts.phone.items + contacts.facebook.items
                 contacts.append(ContactKey(publicKey: owner.userSecurity.userKeys.publicKey))
                 return OfferData(offer: offer, contacts: contacts)
             }
@@ -269,7 +291,7 @@ final class CreateOfferViewModel: ViewModelType, ObservableObject {
             .withUnretained(self)
             .flatMap { owner, response in
                 owner.offerService
-                    .storeOfferKey(key: owner.offerKey, withId: response.offerId)
+                    .storeOfferKey(key: owner.offerKey, withId: response.offerId, offerType: owner.offerType)
                     .track(activity: owner.primaryActivity)
                     .materialize()
                     .compactMap(\.value)

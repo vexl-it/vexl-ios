@@ -9,17 +9,19 @@ import Foundation
 import Cleevio
 import Combine
 
-final class SellOffersCoordinator: BaseCoordinator<RouterResult<Void>> {
+final class UserOffersCoordinator: BaseCoordinator<RouterResult<Void>> {
 
     private let router: Router
+    private let offerType: OfferType
 
-    init(router: Router) {
+    init(router: Router, offerType: OfferType) {
         self.router = router
+        self.offerType = offerType
     }
 
     override func start() -> CoordinatingResult<RouterResult<Void>> {
-        let viewModel = SellOffersViewModel()
-        let viewController = BaseViewController(rootView: SellOffersView(viewModel: viewModel))
+        let viewModel = UserOffersViewModel(offerType: offerType)
+        let viewController = BaseViewController(rootView: UserOffersView(viewModel: viewModel))
 
         if let homeRouter = router as? HomeRouter {
             homeRouter.presentFullscreen(viewController, animated: true)
@@ -41,7 +43,7 @@ final class SellOffersCoordinator: BaseCoordinator<RouterResult<Void>> {
             .withUnretained(self)
             .flatMap { owner, _ -> CoordinatingResult<RouterResult<Void>> in
                 let modalRouter = ModalRouter(parentViewController: viewController, presentationStyle: .fullScreen)
-                return owner.showCreateOffer(router: modalRouter)
+                return owner.showCreateOffer(router: modalRouter, offerType: owner.offerType)
             }
             .sink { result in
                 switch result {
@@ -67,9 +69,9 @@ final class SellOffersCoordinator: BaseCoordinator<RouterResult<Void>> {
     }
 }
 
-extension SellOffersCoordinator {
-    private func showCreateOffer(router: Router) -> CoordinatingResult<RouterResult<Void>> {
-        coordinate(to: CreateOfferCoordinator(router: router))
+extension UserOffersCoordinator {
+    private func showCreateOffer(router: Router, offerType: OfferType) -> CoordinatingResult<RouterResult<Void>> {
+        coordinate(to: CreateOfferCoordinator(router: router, offerType: offerType))
             .flatMap { result -> CoordinatingResult<RouterResult<Void>> in
                 guard result != .dismissedByRouter else {
                     return Just(result).eraseToAnyPublisher()

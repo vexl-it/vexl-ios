@@ -12,9 +12,11 @@ protocol OfferServiceType {
     func getInitialOfferData() -> AnyPublisher<OfferInitialData, Error>
     func encryptOffer(withContactKey publicKeys: [String], offerKey: ECCKeys, offer: Offer) -> AnyPublisher<[EncryptedOffer], Error>
 
-    func getOffer() -> AnyPublisher<Paged<EncryptedOffer>, Error>
+    func getUserOffers(offerIds: [String]) -> AnyPublisher<[EncryptedOffer], Error>
+    func getOffer(pageLimit: Int?) -> AnyPublisher<Paged<EncryptedOffer>, Error>
     func createOffer(encryptedOffers: [EncryptedOffer]) -> AnyPublisher<EncryptedOffer, Error>
-    func storeOfferKey(key: ECCKeys, withId id: String) -> AnyPublisher<Void, Error>
+    func storeOfferKey(key: ECCKeys, withId id: String, offerType: OfferType) -> AnyPublisher<Void, Error>
+    func getStoredOfferIds(forType offerType: OfferType) -> AnyPublisher<[String], Never>
 }
 
 final class OfferService: BaseService, OfferServiceType {
@@ -53,7 +55,7 @@ final class OfferService: BaseService, OfferServiceType {
     }
 
     // TODO: - add some optimizations so that the encryption is done in multiple threads
-    
+
     private func encrypt(offer: Offer, withOfferKey offerKey: ECCKeys, publicKey contactPublicKey: String) throws -> EncryptedOffer {
         let minAmount = try offer.minAmountString.ecc.encrypt(publicKey: contactPublicKey)
         let maxAmount = try offer.maxAmountString.ecc.encrypt(publicKey: contactPublicKey)
@@ -102,8 +104,13 @@ final class OfferService: BaseService, OfferServiceType {
                               offerType: offerType)
     }
 
-    func getOffer() -> AnyPublisher<Paged<EncryptedOffer>, Error> {
-        request(type: Paged<EncryptedOffer>.self, endpoint: OffersRouter.getOffers)
+    func getUserOffers(offerIds: [String]) -> AnyPublisher<[EncryptedOffer], Error> {
+        request(type: [EncryptedOffer].self, endpoint: OffersRouter.getUserOffers(offerIds: offerIds))
+            .eraseToAnyPublisher()
+    }
+
+    func getOffer(pageLimit: Int?) -> AnyPublisher<Paged<EncryptedOffer>, Error> {
+        request(type: Paged<EncryptedOffer>.self, endpoint: OffersRouter.getOffers(pageLimit: pageLimit))
             .eraseToAnyPublisher()
     }
 
@@ -112,13 +119,27 @@ final class OfferService: BaseService, OfferServiceType {
             .eraseToAnyPublisher()
     }
 
-    func storeOfferKey(key: ECCKeys, withId id: String) -> AnyPublisher<Void, Error> {
+    func storeOfferKey(key: ECCKeys, withId id: String, offerType: OfferType) -> AnyPublisher<Void, Error> {
         Future { promise in
             let storedOfferKeys: UserOfferKeys? = UserDefaults.standard.codable(forKey: .storedOfferKeys)
             var currentOfferKeys = storedOfferKeys ?? .init(keys: [])
-            currentOfferKeys.keys.append(.init(id: id, privateKey: key.privateKey, publicKey: key.publicKey))
+            currentOfferKeys.keys.append(.init(id: id,
+                                               privateKey: key.privateKey,
+                                               publicKey: key.publicKey,
+                                               type: offerType.rawValue))
             UserDefaults.standard.set(value: currentOfferKeys, forKey: .storedOfferKeys)
             promise(.success(()))
+        }
+        .eraseToAnyPublisher()
+    }
+
+    func getStoredOfferIds(forType offerType: OfferType) -> AnyPublisher<[String], Never> {
+        Future { promise in
+            let storedOfferKeys: UserOfferKeys? = UserDefaults.standard.codable(forKey: .storedOfferKeys)
+            let ids = storedOfferKeys?.keys
+                .filter { $0.offerType == offerType }
+                .map { $0.id }
+            promise(.success(ids ?? []))
         }
         .eraseToAnyPublisher()
     }

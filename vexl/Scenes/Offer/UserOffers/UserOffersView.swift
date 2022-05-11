@@ -7,13 +7,13 @@
 
 import SwiftUI
 
-struct SellOffersView: View {
+struct UserOffersView: View {
 
-    @ObservedObject var viewModel: SellOffersViewModel
+    @ObservedObject var viewModel: UserOffersViewModel
 
     var body: some View {
         VStack {
-            OfferHeaderView {
+            OfferHeaderView(title: viewModel.offerTitle) {
                 viewModel.action.send(.dismissTap)
             }
 
@@ -29,7 +29,7 @@ struct SellOffersView: View {
 
             ScrollView(showsIndicators: false) {
                 ForEach(viewModel.offerItems, id: \.self) { offerData in
-                    SellOfferItemView(data: offerData)
+                    OfferItemView(data: offerData)
                         .padding(.horizontal, Appearance.GridGuide.point)
                 }
             }
@@ -41,7 +41,7 @@ struct SellOffersView: View {
         HStack {
             Image(systemName: "plus")
 
-            Text(L.offerSellNewOffer())
+            Text(viewModel.createOfferTitle)
                 .textStyle(.descriptionSemibold)
         }
         .foregroundColor(Appearance.Colors.green5)
@@ -53,7 +53,7 @@ struct SellOffersView: View {
 #if DEBUG || DEVEL
 struct OffersViewPreview: PreviewProvider {
     static var previews: some View {
-        SellOffersView(viewModel: .init())
+        UserOffersView(viewModel: .init(offerType: .sell))
             .previewDevice("iPhone 11")
     }
 }

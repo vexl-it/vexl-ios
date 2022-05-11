@@ -31,15 +31,14 @@ struct MarketplaceView: View {
             filter
 
             ScrollView {
-                ForEach(viewModel.feedItems) { item in
-                    MarketplaceFeedView(title: item.title,
-                                        isRequested: item.isRequested,
-                                        location: item.location,
-                                        maxAmount: item.maxAmount,
-                                        paymentMethod: item.paymentMethod,
-                                        fee: item.fee)
+                ForEach(viewModel.marketplaceFeedItems) { item in
+                    MarketplaceFeedView(data: item,
+                                        displayFooter: false)
                         .padding(.horizontal, Appearance.GridGuide.point)
                 }
+            }
+            .transaction { transaction in
+                transaction.animation = nil
             }
         }
         .frame(maxHeight: .infinity, alignment: .top)
@@ -50,12 +49,12 @@ struct MarketplaceView: View {
         switch viewModel.selectedOption {
         case .buy:
             return MarketplaceFilterView(items: viewModel.buyFilters,
-                                         actionTitle: L.marketplaceBuyAdd(),
+                                         actionTitle: L.marketplaceSellOffer(),
                                          filterAction: { index in
                 print("filter from \(index) has been tapped")
             },
                                      action: {
-                print("+ is pressed")
+                viewModel.action.send(.showBuyOffer)
             })
         case .sell:
             return MarketplaceFilterView(items: viewModel.sellFilters,
@@ -64,7 +63,7 @@ struct MarketplaceView: View {
                 print("filter from \(index) has been tapped")
             },
                                      action: {
-                viewModel.action.send(.showOffer)
+                viewModel.action.send(.showSellOffer)
             })
         }
     }

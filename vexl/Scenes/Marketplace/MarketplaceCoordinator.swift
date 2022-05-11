@@ -28,12 +28,24 @@ final class MarketplaceCoordinator: BaseCoordinator<RouterResult<Void>> {
         viewModel
             .route
             .receive(on: RunLoop.main)
-            .filter { $0 == .showOffer }
+            .filter { $0 == .showSellOfferTapped }
             .withUnretained(self)
             .flatMap { owner, _ in
-                owner.showOffers(router: owner.router)
+                owner.showSellOffers(router: owner.router)
             }
-            .sink { _ in }
+            .sink()
+            .store(in: cancelBag)
+
+        viewModel
+            .route
+            .receive(on: RunLoop.main)
+            .filter { $0 == .showBuyOfferTapped }
+            .withUnretained(self)
+            .flatMap { owner, _ -> CoordinatingResult<RouterResult<Void>> in
+                let modalRouter = ModalRouter(parentViewController: viewController, presentationStyle: .fullScreen)
+                return owner.showBuyOffers(router: modalRouter)
+            }
+            .sink()
             .store(in: cancelBag)
 
         let dismissByRouter = viewController.dismissPublisher
@@ -46,8 +58,20 @@ final class MarketplaceCoordinator: BaseCoordinator<RouterResult<Void>> {
 }
 
 extension MarketplaceCoordinator {
-    private func showOffers(router: Router) -> CoordinatingResult<RouterResult<Void>> {
-        coordinate(to: SellOffersCoordinator(router: router))
+    private func showSellOffers(router: Router) -> CoordinatingResult<RouterResult<Void>> {
+        coordinate(to: UserOffersCoordinator(router: router, offerType: .sell))
+        .flatMap { result -> CoordinatingResult<RouterResult<Void>> in
+            guard result != .dismissedByRouter else {
+                return Just(result).eraseToAnyPublisher()
+            }
+            return router.dismiss(animated: true, returning: result)
+        }
+        .prefix(1)
+        .eraseToAnyPublisher()
+    }
+
+    private func showBuyOffers(router: Router) -> CoordinatingResult<RouterResult<Void>> {
+        coordinate(to: UserOffersCoordinator(router: router, offerType: .buy))
         .flatMap { result -> CoordinatingResult<RouterResult<Void>> in
             guard result != .dismissedByRouter else {
                 return Just(result).eraseToAnyPublisher()
