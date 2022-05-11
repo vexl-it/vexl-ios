@@ -228,10 +228,9 @@ extension AuthenticationManager {
         refreshToken = nil
         currentUser = nil
         clearSecurity()
-        let userDefaults = UserDefaults.standard
 
+        let userDefaults = UserDefaults.standard
         userDefaults.dictionaryRepresentation().keys.forEach(userDefaults.removeObject)
-        userDefaults.synchronize()
     }
 
     func logoutUser() {
