@@ -85,33 +85,42 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
             .map(\.items)
             .withUnretained(self)
             .sink { owner, items in
-                var offers: [Offer] = []
-                for item in items {
-                    if let offer = try? Offer(encryptedOffer: item,
-                                              keys: owner.userSecurity.userKeys) {
-                        offers.append(offer)
-                    }
+                owner.offerItems = items.compactMap {
+                    try? Offer(encryptedOffer: $0, keys: owner.userSecurity.userKeys)
                 }
-                owner.offerItems = offers
             }
             .store(in: cancelBag)
 
         $offerItems
             .withUnretained(self)
-            .sink { owner, items in
+            .sink { owner, offers in
                 let offerKeys = owner.userOfferKeys?.keys ?? []
 
-                owner.buyFeedItems = items
-                    .filter { offer in
-                        offer.type == .buy && !offerKeys.contains(where: { $0.publicKey == offer.offerPublicKey })
+                for offer in offers {
+                    guard !offerKeys.contains(where: { $0.publicKey == offer.offerPublicKey }) else {
+                        continue
                     }
-                    .map { Self.map(offer: $0) }
 
-                owner.sellFeedItems = items
-                    .filter { offer in
-                        offer.type == .sell && !offerKeys.contains(where: { $0.publicKey == offer.offerPublicKey })
+                    let marketplaceItem = Self.mapToMarketplaceFeed(usingOffer: offer)
+                    switch offer.type {
+                    case .buy:
+                        owner.buyFeedItems.append(marketplaceItem)
+                    case .sell:
+                        owner.sellFeedItems.append(marketplaceItem)
                     }
-                    .map { Self.map(offer: $0) }
+                }
+//
+//                owner.buyFeedItems = items
+//                    .filter { offer in
+//                        offer.type == .buy && !offerKeys.contains(where: { $0.publicKey == offer.offerPublicKey })
+//                    }
+//                    .map { Self.mapToMarketplaceFeed(usingOffer: $0) }
+//
+//                owner.sellFeedItems = items
+//                    .filter { offer in
+//                        offer.type == .sell && !offerKeys.contains(where: { $0.publicKey == offer.offerPublicKey })
+//                    }
+//                    .map { Self.mapToMarketplaceFeed(usingOffer: $0) }
             }
             .store(in: cancelBag)
     }
@@ -136,7 +145,7 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
             .store(in: cancelBag)
     }
 
-    private static func map(offer: Offer) -> MarketplaceFeedViewData {
+    private static func mapToMarketplaceFeed(usingOffer offer: Offer) -> MarketplaceFeedViewData {
         let currencySymbol = Constants.currencySymbol
         return MarketplaceFeedViewData(id: offer.offerId,
                                        title: offer.description,
