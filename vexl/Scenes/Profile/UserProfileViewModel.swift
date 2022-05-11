@@ -74,6 +74,7 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
             .compactMap { action -> Option? in
                 if case let .itemTap(option) = action { return option } else { return nil }
             }
+            .filter { $0 == .logout }
             .withUnretained(self)
             .sink { owner, _ in
                 owner.authenticationManager.logoutUser()
