@@ -22,6 +22,10 @@ public extension Publisher {
     func asOptional() -> Publishers.Map<Self, Self.Output?> {
         self.map { $0 }
     }
+
+    func sink() -> AnyCancellable {
+        sink(receiveCompletion: { _ in }, receiveValue: { _ in })
+    }
 }
 
 public extension Publisher where Output == Void {

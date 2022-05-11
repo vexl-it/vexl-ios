@@ -109,25 +109,16 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
                         owner.sellFeedItems.append(marketplaceItem)
                     }
                 }
-//
-//                owner.buyFeedItems = items
-//                    .filter { offer in
-//                        offer.type == .buy && !offerKeys.contains(where: { $0.publicKey == offer.offerPublicKey })
-//                    }
-//                    .map { Self.mapToMarketplaceFeed(usingOffer: $0) }
-//
-//                owner.sellFeedItems = items
-//                    .filter { offer in
-//                        offer.type == .sell && !offerKeys.contains(where: { $0.publicKey == offer.offerPublicKey })
-//                    }
-//                    .map { Self.mapToMarketplaceFeed(usingOffer: $0) }
             }
             .store(in: cancelBag)
     }
 
     private func setupActionBindings() {
-        action
+
+        let userAction = action
             .share()
+
+        userAction
             .filter { $0 == .showSellOffer }
             .withUnretained(self)
             .sink { owner, _ in
@@ -135,8 +126,7 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
             }
             .store(in: cancelBag)
 
-        action
-            .share()
+        userAction
             .filter { $0 == .showBuyOffer }
             .withUnretained(self)
             .sink { owner, _ in

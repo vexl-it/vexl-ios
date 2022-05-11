@@ -33,7 +33,7 @@ final class MarketplaceCoordinator: BaseCoordinator<RouterResult<Void>> {
             .flatMap { owner, _ in
                 owner.showSellOffers(router: owner.router)
             }
-            .sink { _ in }
+            .sink()
             .store(in: cancelBag)
 
         viewModel
@@ -45,7 +45,7 @@ final class MarketplaceCoordinator: BaseCoordinator<RouterResult<Void>> {
                 let modalRouter = ModalRouter(parentViewController: viewController, presentationStyle: .fullScreen)
                 return owner.showBuyOffers(router: modalRouter)
             }
-            .sink { _ in }
+            .sink()
             .store(in: cancelBag)
 
         let dismissByRouter = viewController.dismissPublisher
