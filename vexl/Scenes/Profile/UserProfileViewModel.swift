@@ -19,6 +19,7 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
     enum UserAction: Equatable {
         case dismissTap
         case continueTap
+        case logoutTap
     }
 
     let action: ActionSubject<UserAction> = .init()
@@ -62,5 +63,21 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
         default:
             return nil
         }
+    }
+
+    init() {
+        setupBindings()
+    }
+
+    private func setupBindings() {
+        let userAction = action
+
+        userAction
+            .filter { $0 == .logoutTap }
+            .withUnretained(self)
+            .sink { owner, _ in
+                owner.authenticationManager.logoutUser()
+            }
+            .store(in: cancelBag)
     }
 }

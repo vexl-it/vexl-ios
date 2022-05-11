@@ -52,6 +52,11 @@ struct UserProfileView: View {
                         Item(title: item.title,
                              subtitle: viewModel.subtitle(for: item),
                              icon: item.iconName)
+                            .onTapGesture {
+                                if item == .logout {
+                                    viewModel.send(action: .logoutTap)
+                                }
+                            }
                     }
                 }
             }

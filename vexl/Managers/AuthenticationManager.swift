@@ -22,6 +22,7 @@ protocol TokenHandlerType {
 
 protocol AuthenticationManagerType {
     var currentUser: User? { get }
+    var statePublisher: Published<AuthenticationManager.AuthenticationState>.Publisher { get }
 
     func setUser(_ user: User, withAvatar avatar: Data?)
     func setFacebookUser(id: String?, token: String?)
@@ -57,6 +58,10 @@ final class AuthenticationManager: AuthenticationManagerType, TokenHandlerType {
 
     @Published private(set) var accessToken: String?
     @Published private(set) var refreshToken: String?
+
+    var statePublisher: Published<AuthenticationState>.Publisher {
+        $authenticationState
+    }
 
     private let cancelBag: CancelBag = .init()
 

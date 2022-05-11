@@ -18,7 +18,7 @@ extension InitialScreenManager {
 }
 
 final class InitialScreenManager {
-    @Inject var authenticationManager: AuthenticationManager
+    @Inject var authenticationManager: AuthenticationManagerType
 
     @Published private(set) var state: State = .splashScreen
 
@@ -31,7 +31,7 @@ final class InitialScreenManager {
     }
 
     func setupSubscriptions() {
-        Publishers.CombineLatest($initialLoadingInProgress, authenticationManager.$authenticationState)
+        Publishers.CombineLatest($initialLoadingInProgress, authenticationManager.statePublisher)
             .map { initialLoading, authState -> State in
                 switch (initialLoading, authState) {
                 case (true, _):
@@ -42,6 +42,7 @@ final class InitialScreenManager {
                     return .home
                 }
             }
+            .print("hello there 1")
             .assign(to: &$state)
     }
 
