@@ -136,15 +136,9 @@ final class UserOffersViewModel: ViewModelType, ObservableObject {
             }
             .withUnretained(self)
             .sink { owner, encryptedOffers in
-                var offers: [Offer] = []
-                // TODO: - Optimize the decryption using multi-threading
-                for encryptedOffer in encryptedOffers {
-                    if let offer = try? Offer(encryptedOffer: encryptedOffer,
-                                              keys: owner.userSecurity.userKeys) {
-                        offers.append(offer)
-                    }
+                owner.userOffers = encryptedOffers.compactMap {
+                    try? Offer(encryptedOffer: $0, keys: owner.userSecurity.userKeys)
                 }
-                owner.userOffers = offers
             }
             .store(in: cancelBag)
     }
