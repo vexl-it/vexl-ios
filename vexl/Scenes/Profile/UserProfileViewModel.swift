@@ -19,7 +19,7 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
     enum UserAction: Equatable {
         case dismissTap
         case continueTap
-        case logoutTap
+        case itemTap(option: Option)
     }
 
     let action: ActionSubject<UserAction> = .init()
@@ -70,10 +70,10 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
     }
 
     private func setupBindings() {
-        let userAction = action
-
-        userAction
-            .filter { $0 == .logoutTap }
+        action
+            .compactMap { action -> Option? in
+                if case let .itemTap(option) = action { return option } else { return nil }
+            }
             .withUnretained(self)
             .sink { owner, _ in
                 owner.authenticationManager.logoutUser()
