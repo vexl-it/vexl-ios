@@ -213,6 +213,7 @@
 		F1D2012628296F1F006DF4AB /* ChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D2012528296F1F006DF4AB /* ChatView.swift */; };
 		F1D20128282AB6EF006DF4AB /* CryptocurrencyValueManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D20127282AB6EF006DF4AB /* CryptocurrencyValueManager.swift */; };
 		F1D2012A282ABB1F006DF4AB /* HomeTabBarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D20129282ABB1F006DF4AB /* HomeTabBarViewModel.swift */; };
+		F1D2012C282D4CD5006DF4AB /* DidSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D2012B282D4CD5006DF4AB /* DidSet.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -450,6 +451,7 @@
 		F1D2012528296F1F006DF4AB /* ChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatView.swift; sourceTree = "<group>"; };
 		F1D20127282AB6EF006DF4AB /* CryptocurrencyValueManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptocurrencyValueManager.swift; sourceTree = "<group>"; };
 		F1D20129282ABB1F006DF4AB /* HomeTabBarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTabBarViewModel.swift; sourceTree = "<group>"; };
+		F1D2012B282D4CD5006DF4AB /* DidSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DidSet.swift; sourceTree = "<group>"; };
 		F2FD3623B1DD9C04AD13743C /* Pods-vexl.devel.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-vexl.devel.xcconfig"; path = "Target Support Files/Pods-vexl/Pods-vexl.devel.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -728,6 +730,7 @@
 		B08F390427AE7110008B344F /* PropertyWrappers */ = {
 			isa = PBXGroup;
 			children = (
+				F1D2012B282D4CD5006DF4AB /* DidSet.swift */,
 				B08F38E127AE7110008B344F /* Inject.swift */,
 				B08F390527AE7110008B344F /* UserDefaults */,
 			);
@@ -1742,6 +1745,7 @@
 				B0F206F327AEA4C800A44E72 /* WindowCoordinator.swift in Sources */,
 				F18862032808318E00659786 /* CoinValueRouter.swift in Sources */,
 				B0E9BB2A2815C7190012BF1D /* AES.swift in Sources */,
+				F1D2012C282D4CD5006DF4AB /* DidSet.swift in Sources */,
 				F175AB9527EA6A8E000DAB15 /* PlaceholderTextField.swift in Sources */,
 				F13B2679281FC5A90011F2FB /* OfferLocation.swift in Sources */,
 				B0EEE11627B14D320097031E /* WelcomeCoordinator.swift in Sources */,

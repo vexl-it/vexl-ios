@@ -26,24 +26,15 @@ final class InitialScreenManager {
 
     private var cancellables: Cancellables = .init()
 
-    init() {
-        setupSubscriptions()
-    }
-
-    func setupSubscriptions() {
-        Publishers.CombineLatest($initialLoadingInProgress, authenticationManager.statePublisher)
-            .map { initialLoading, authState -> State in
-                switch (initialLoading, authState) {
-                case (true, _):
-                    return .splashScreen
-                case (_, .signedOut):
-                    return .onboarding
-                case (_, .signedIn):
-                    return .home
-                }
-            }
-            .print("hello there 1")
-            .assign(to: &$state)
+    func getCurrentScreenState() -> State {
+        switch (initialLoadingInProgress, authenticationManager.currentAuthenticationState) {
+        case (true, _):
+            return .splashScreen
+        case (_, .signedOut):
+            return .onboarding
+        case (_, .signedIn):
+            return .home
+        }
     }
 
     func update(state: State) {

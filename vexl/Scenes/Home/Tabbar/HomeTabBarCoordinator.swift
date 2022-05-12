@@ -42,10 +42,9 @@ final class HomeTabBarCoordinator: BaseCoordinator<Void> {
             completion: nil
         )
 
-        let logout = authenticationManager.statePublisher
+        let logout = authenticationManager.authenticationStatePublisher
             .removeDuplicates()
             .filter { $0 == .signedOut }
-            .print("hello there 2")
             .asVoid()
 
         return logout
