@@ -49,7 +49,6 @@ final class HomeTabBarCoordinator: BaseCoordinator<Void> {
             .asVoid()
 
         return logout
-            .receive(on: RunLoop.main)
             .eraseToAnyPublisher()
     }
 
