@@ -234,7 +234,7 @@ extension AuthenticationManager {
     }
 
     func logoutUser() {
-        //clearUser()
+        clearUser()
         authenticationState = .signedOut
     }
 }
