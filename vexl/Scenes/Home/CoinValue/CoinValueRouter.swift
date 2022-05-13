@@ -9,13 +9,13 @@ import UIKit
 import Combine
 import Cleevio
 
-final class HomeRouter {
+final class CoinValueRouter {
 
     let dismissPublisher = ActionSubject<Void>()
-    private let homeViewController: HomeViewController
+    private let homeViewController: CoinValueViewController
     private var isPresesentingFullscreen = false
 
-    init(homeViewController: HomeViewController) {
+    init(homeViewController: CoinValueViewController) {
         self.homeViewController = homeViewController
     }
 
@@ -24,7 +24,7 @@ final class HomeRouter {
     }
 }
 
-extension HomeRouter: Router {
+extension CoinValueRouter: Router {
 
     func dismiss(animated: Bool, completion: (() -> Void)?) {
         dismissPublisher.send()

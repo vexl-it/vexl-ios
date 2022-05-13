@@ -9,7 +9,7 @@ import Cleevio
 import Foundation
 import Combine
 
-final class MarketplaceCoordinator: BaseCoordinator<RouterResult<Void>> {
+final class MarketplaceCoordinator: BaseCoordinator<Void> {
 
     private let router: Router
     private let animated: Bool
@@ -19,7 +19,7 @@ final class MarketplaceCoordinator: BaseCoordinator<RouterResult<Void>> {
         self.animated = animated
     }
 
-    override func start() -> CoordinatingResult<RouterResult<Void>> {
+    override func start() -> CoordinatingResult<Void> {
         let viewModel = MarketplaceViewModel()
         let viewController = BaseViewController(rootView: MarketplaceView(viewModel: viewModel))
 
@@ -48,11 +48,7 @@ final class MarketplaceCoordinator: BaseCoordinator<RouterResult<Void>> {
             .sink()
             .store(in: cancelBag)
 
-        let dismissByRouter = viewController.dismissPublisher
-            .map { _ in RouterResult<Void>.dismissedByRouter }
-
-        return dismissByRouter
-            .receive(on: RunLoop.main)
+        return Empty(completeImmediately: false)
             .eraseToAnyPublisher()
     }
 }

@@ -15,13 +15,6 @@ struct UserProfileView: View {
 
     var body: some View {
         VStack {
-            content
-        }
-        .background(Appearance.Colors.green1.edgesIgnoringSafeArea(.all))
-    }
-
-    private var content: some View {
-        VStack {
             HStack(spacing: Appearance.GridGuide.padding) {
                 avatarImage
 
@@ -66,6 +59,7 @@ struct UserProfileView: View {
         .listStyle(.insetGrouped)
         .onAppear {
             UITableView.appearance().backgroundColor = UIColor.clear
+            UITableView.appearance().contentInset = Appearance.GridGuide.scrollContentInset
         }
         .padding(.horizontal, -Appearance.GridGuide.point)
     }

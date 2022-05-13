@@ -23,7 +23,7 @@ final class UserOffersCoordinator: BaseCoordinator<RouterResult<Void>> {
         let viewModel = UserOffersViewModel(offerType: offerType)
         let viewController = BaseViewController(rootView: UserOffersView(viewModel: viewModel))
 
-        if let homeRouter = router as? HomeRouter {
+        if let homeRouter = router as? CoinValueRouter {
             homeRouter.presentFullscreen(viewController, animated: true)
         } else {
             router.present(viewController, animated: true)

@@ -8,12 +8,12 @@
 import UIKit
 import Cleevio
 
-final class HomeHeaderView: UIControl {
+final class CoinValueHeaderView: UIControl {
 
     @Published var isLoading = false
     @Published var bitcoinValue: Decimal?
-    private let displayValue = HomeCoinValueView()
-    private let graphView = HomeCoinGraphView()
+    private let displayValue = CoinValueContainerView()
+    private let graphView = CoinValueGraphView()
     private let stackView = UIStackView()
     private let cancelBag: CancelBag = .init()
 

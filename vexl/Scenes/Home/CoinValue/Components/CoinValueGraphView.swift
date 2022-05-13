@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class HomeCoinGraphView: UIView {
+final class CoinValueGraphView: UIView {
 
     override init(frame: CGRect) {
         super.init(frame: frame)

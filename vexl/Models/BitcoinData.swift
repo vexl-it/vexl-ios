@@ -9,4 +9,8 @@ import Foundation
 
 struct BitcoinData: Decodable {
     let priceUsd: Decimal
+
+    static var noValue: BitcoinData {
+        BitcoinData(priceUsd: 0)
+    }
 }

@@ -8,7 +8,7 @@
 import UIKit
 import Cleevio
 
-final class HomeCoinValueView: UIView {
+final class CoinValueContainerView: UIView {
 
     @Published var isLoading = false
     @Published var bitcoinValue: Decimal?

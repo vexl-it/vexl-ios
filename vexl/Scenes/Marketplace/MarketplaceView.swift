@@ -31,11 +31,14 @@ struct MarketplaceView: View {
             filter
 
             ScrollView {
-                ForEach(viewModel.marketplaceFeedItems) { item in
-                    MarketplaceFeedView(data: item,
-                                        displayFooter: false)
-                        .padding(.horizontal, Appearance.GridGuide.point)
+                Group {
+                    ForEach(viewModel.marketplaceFeedItems) { item in
+                        MarketplaceFeedView(data: item,
+                                            displayFooter: false)
+                            .padding(.horizontal, Appearance.GridGuide.point)
+                    }
                 }
+                .padding(.bottom, Appearance.GridGuide.homeTabBarHeight)
             }
             .transaction { transaction in
                 transaction.animation = nil

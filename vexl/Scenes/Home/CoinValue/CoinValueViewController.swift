@@ -9,19 +9,21 @@ import Foundation
 import UIKit
 import Cleevio
 
-final class HomeViewController: UIViewController {
+final class CoinValueViewController: UIViewController, HomeTabBarItemType {
 
     let dismissPublisher: ActionSubject<Void> = .init()
+    let homeTabBarItem: HomeTabBarItem
     var bottomViewController: UIViewController?
 
-    private let viewModel: HomeViewModel
-    private let headerView = HomeHeaderView()
+    private let viewModel: CoinValueViewModel
+    private let headerView = CoinValueHeaderView()
     private let cancelBag: CancelBag = .init()
     private var currentViewController: UIViewController?
     private var isExpanded = false
 
-    init(viewModel: HomeViewModel) {
+    init(viewModel: CoinValueViewModel, homeBarItem: HomeTabBarItem) {
         self.viewModel = viewModel
+        self.homeTabBarItem = homeBarItem
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -124,8 +126,12 @@ final class HomeViewController: UIViewController {
     }
 
     private func setupBindings() {
-        viewModel.isLoading
-            .assign(to: \.isLoading, on: headerView)
+        viewModel
+            .$isLoading
+            .withUnretained(self)
+            .sink { owner, isLoading in
+                owner.headerView.isLoading = isLoading
+            }
             .store(in: cancelBag)
 
         viewModel.$bitcoinValue
