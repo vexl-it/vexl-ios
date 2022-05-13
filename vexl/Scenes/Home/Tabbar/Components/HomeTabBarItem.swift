@@ -32,7 +32,7 @@ struct HomeTabBarItem {
     }
 }
 
-class HomeTabBarButton: UIButton {
+final class HomeTabBarButton: UIButton {
 
     override var isSelected: Bool {
         didSet {
