@@ -19,7 +19,8 @@ class DIContainer {
     private init() { }
 
     func getDependency<Dependency>(type: Dependency.Type) -> Dependency {
-        guard let dependency = DIContainer.shared.assembler.resolver.resolve(Dependency.self) else {
+        let syncedResolver = (DIContainer.shared.assembler.resolver as? Container)?.synchronize()
+        guard let dependency = syncedResolver?.resolve(Dependency.self) else {
             fatalError("Dependency \(type) wasn't setup")
         }
         return dependency
@@ -27,12 +28,13 @@ class DIContainer {
 
     func getDependency<Dependency>(type: Dependency.Type, args: Any...) -> Dependency {
         var dependency: Dependency?
+        let syncedResolver = (DIContainer.shared.assembler.resolver as? Container)?.synchronize()
 
         switch args.count {
         case 1:
-            dependency = DIContainer.shared.assembler.resolver.resolve(Dependency.self, argument: args[0])
+            dependency = syncedResolver?.resolve(Dependency.self, argument: args[0])
         case 2:
-            dependency = DIContainer.shared.assembler.resolver.resolve(Dependency.self, arguments: args[0], args[1])
+            dependency = syncedResolver?.resolve(Dependency.self, arguments: args[0], args[1])
         default:
             fatalError("Use the correct method from resolver to instantiate the Dependency with N arguments.")
         }
