@@ -72,9 +72,9 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
     private func setupBindings() {
         action
             .compactMap { action -> Option? in
-                if case let .itemTap(option) = action { return option } else { return nil }
+                if case let .itemTap(option) = action, option == .logout { return option }
+                return nil
             }
-            .filter { $0 == .logout }
             .withUnretained(self)
             .sink { owner, _ in
                 owner.authenticationManager.logoutUser()
