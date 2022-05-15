@@ -10,7 +10,6 @@
 		0AA456AF4C162D9C8AF6AB30 /* Pods_vexl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57B3CAA27CF4369A28B748A7 /* Pods_vexl.framework */; };
 		4FD8E3DE2821B303003B165E /* CoinValueViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FD8E3DD2821B303003B165E /* CoinValueViewModel.swift */; };
 		4FD8E3E02821B922003B165E /* BitcoinData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FD8E3DF2821B922003B165E /* BitcoinData.swift */; };
-		B05A221128114E8B00BF8D58 /* vexl-crypto.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = B05A221028114E8B00BF8D58 /* vexl-crypto.xcframework */; };
 		B05A22132812BF2700BF8D58 /* Publisher+Crypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = B05A22122812BF2700BF8D58 /* Publisher+Crypto.swift */; };
 		B08F38DF27AE7110008B344F /* DIContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B08F38DE27AE7110008B344F /* DIContainer.swift */; };
 		B08F38E227AE7110008B344F /* Inject.swift in Sources */ = {isa = PBXBuildFile; fileRef = B08F38E127AE7110008B344F /* Inject.swift */; };
@@ -59,6 +58,7 @@
 		B08F399A27AE7D87008B344F /* OnboardingCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B08F399927AE7D87008B344F /* OnboardingCoordinator.swift */; };
 		B08F399C27AE7D8D008B344F /* OnboardingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B08F399B27AE7D8D008B344F /* OnboardingViewModel.swift */; };
 		B08F399E27AE7D92008B344F /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B08F399D27AE7D92008B344F /* OnboardingView.swift */; };
+		B0ACC96B2831551100DFCBC3 /* vexl-crypto.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = B0ACC96A2831551100DFCBC3 /* vexl-crypto.xcframework */; };
 		B0E9BB272815C5750012BF1D /* String+Crypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E9BB262815C5750012BF1D /* String+Crypto.swift */; };
 		B0E9BB2A2815C7190012BF1D /* AES.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E9BB292815C7190012BF1D /* AES.swift */; };
 		B0E9BB2C2815C71E0012BF1D /* ECC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E9BB2B2815C71E0012BF1D /* ECC.swift */; };
@@ -240,7 +240,6 @@
 		B021E2F527FF5AD100D186EC /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		B021E2F727FF5B0B00D186EC /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		B021E2F927FF5B5100D186EC /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		B05A221028114E8B00BF8D58 /* vexl-crypto.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = "vexl-crypto.xcframework"; sourceTree = "<group>"; };
 		B05A22122812BF2700BF8D58 /* Publisher+Crypto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Publisher+Crypto.swift"; sourceTree = "<group>"; };
 		B08F38BD27AE7110008B344F /* vexl.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = vexl.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B08F38C027AE7110008B344F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -293,6 +292,7 @@
 		B08F399927AE7D87008B344F /* OnboardingCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingCoordinator.swift; sourceTree = "<group>"; };
 		B08F399B27AE7D8D008B344F /* OnboardingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewModel.swift; sourceTree = "<group>"; };
 		B08F399D27AE7D92008B344F /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		B0ACC96A2831551100DFCBC3 /* vexl-crypto.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = "vexl-crypto.xcframework"; sourceTree = "<group>"; };
 		B0E9BB262815C5750012BF1D /* String+Crypto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Crypto.swift"; sourceTree = "<group>"; };
 		B0E9BB292815C7190012BF1D /* AES.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AES.swift; sourceTree = "<group>"; };
 		B0E9BB2B2815C71E0012BF1D /* ECC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ECC.swift; sourceTree = "<group>"; };
@@ -459,7 +459,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0AA456AF4C162D9C8AF6AB30 /* Pods_vexl.framework in Frameworks */,
-				B05A221128114E8B00BF8D58 /* vexl-crypto.xcframework in Frameworks */,
+				B0ACC96B2831551100DFCBC3 /* vexl-crypto.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -711,7 +711,7 @@
 		B08F38FE27AE7110008B344F /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				B05A221028114E8B00BF8D58 /* vexl-crypto.xcframework */,
+				B0ACC96A2831551100DFCBC3 /* vexl-crypto.xcframework */,
 				F1B5FCC427C6C0720018729B /* Generic.strings */,
 				F1B5FCC127C6BC330018729B /* Localizable.strings */,
 				B08F395A27AE7112008B344F /* Appearance.swift */,
@@ -2184,7 +2184,7 @@
 				CURRENT_PROJECT_VERSION = 39;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = SHD6TUKSPH;
-				ENABLE_BITCODE = NO;
+				ENABLE_BITCODE = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = vexl/Info.plist;
