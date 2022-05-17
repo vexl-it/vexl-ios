@@ -25,6 +25,7 @@ final class UserOffersViewModel: ViewModelType, ObservableObject {
     // MARK: - View Bindings
 
     @Published var userOffers: [Offer] = []
+    @Published var offerSortingOption: OfferSortOption = .newest
 
     @Published var primaryActivity: Activity = .init()
     var errorIndicator: ErrorIndicator {
@@ -85,6 +86,7 @@ final class UserOffersViewModel: ViewModelType, ObservableObject {
         self.offerType = offerType
         self.userOfferKeys = UserDefaults.standard.codable(forKey: .storedOfferKeys)
         setupActivity()
+        setupBindings()
         setupDataBindings()
         setupActionBindings()
     }
@@ -98,6 +100,15 @@ final class UserOffersViewModel: ViewModelType, ObservableObject {
             .errors
             .asOptional()
             .assign(to: &$error)
+    }
+
+    private func setupBindings() {
+        $offerSortingOption
+            .withUnretained(self)
+            .sink { owner, option in
+                owner.sortOffers(withOption: option)
+            }
+            .store(in: cancelBag)
     }
 
     private func setupDataBindings() {
@@ -139,8 +150,20 @@ final class UserOffersViewModel: ViewModelType, ObservableObject {
                 owner.userOffers = encryptedOffers.compactMap {
                     try? Offer(encryptedOffer: $0, keys: owner.userSecurity.userKeys)
                 }
+                owner.sortOffers(withOption: owner.offerSortingOption)
             }
             .store(in: cancelBag)
+    }
+
+    private func sortOffers(withOption option: OfferSortOption) {
+        userOffers = userOffers.sorted { first, second in
+            switch option {
+            case .newest:
+                return first.createdDate.compare(second.createdDate) == .orderedDescending
+            case .oldest:
+                return first.createdDate.compare(second.createdDate) == .orderedAscending
+            }
+        }
     }
 
     func refreshOffers() {
