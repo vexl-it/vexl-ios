@@ -22,11 +22,8 @@ protocol UserServiceType {
 
 final class UserService: BaseService, UserServiceType {
 
-    var authenticationManager: AuthenticationManager
-
-    init(authenticationManager: AuthenticationManager) {
-        self.authenticationManager = authenticationManager
-    }
+    @Inject var userSecurity: UserSecurityType
+    @Inject var authenticationManager: AuthenticationManagerType
 
     func me() -> AnyPublisher<User, Error> {
         request(type: User.self, endpoint: UserRouter.me)
@@ -46,7 +43,7 @@ final class UserService: BaseService, UserServiceType {
         request(type: ChallengeValidation.self, endpoint: UserRouter.validateChallenge(signature: signature, key: key))
             .withUnretained(self)
             .handleEvents(receiveOutput: { owner, response in
-                owner.authenticationManager.setHash(response)
+                owner.userSecurity.setHash(response)
             })
             .map { $0.1 }
             .eraseToAnyPublisher()
@@ -74,7 +71,7 @@ final class UserService: BaseService, UserServiceType {
         request(type: ChallengeValidation.self, endpoint: UserRouter.facebookSignature(id: id))
             .withUnretained(self)
             .handleEvents(receiveOutput: { owner, response in
-                owner.authenticationManager.setFacebookSignature(response)
+                owner.userSecurity.setFacebookSignature(response)
             })
             .map { $0.1 }
             .eraseToAnyPublisher()
