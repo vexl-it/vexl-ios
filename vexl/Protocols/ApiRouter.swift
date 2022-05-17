@@ -40,7 +40,7 @@ extension ApiRouter {
     }
 
     var securityHeader: [Header] {
-        let authManager = DIContainer.shared.getDependency(type: AuthenticationManager.self)
+        let authManager = DIContainer.shared.getDependency(type: UserSecurityType.self)
         return authManager.securityHeader?.header ?? []
     }
 

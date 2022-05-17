@@ -28,6 +28,9 @@ protocol ApiServiceType: AnyObject {
 // MARK: - ApiService
 
 final class ApiService: ApiServiceType {
+
+    @Inject var authenticationManager: TokenHandlerType
+    
     struct StatusCode {
         static let ok = 200
         static let created = 201
@@ -45,12 +48,10 @@ final class ApiService: ApiServiceType {
     static let jsonContentType = "application/json"
 
     let sessionManager: Session
-    let authenticationManager: TokenHandlerType
 
     private var cancellables: Cancellables = .init()
 
-    init(authenticationManager: TokenHandlerType) {
-        self.authenticationManager = authenticationManager
+    init() {
 
         let configuration = URLSessionConfiguration.default
         configuration.timeoutIntervalForRequest = 10

@@ -16,10 +16,14 @@ class DIContainer {
         ServiceAssembly()
     ])
 
+    private lazy var resolver: Resolver? = {
+        (DIContainer.shared.assembler.resolver as? Container)?.synchronize()
+    }()
+
     private init() { }
 
     func getDependency<Dependency>(type: Dependency.Type) -> Dependency {
-        guard let dependency = DIContainer.shared.assembler.resolver.resolve(Dependency.self) else {
+        guard let dependency = resolver?.resolve(Dependency.self) else {
             fatalError("Dependency \(type) wasn't setup")
         }
         return dependency
@@ -30,9 +34,9 @@ class DIContainer {
 
         switch args.count {
         case 1:
-            dependency = DIContainer.shared.assembler.resolver.resolve(Dependency.self, argument: args[0])
+            dependency = resolver?.resolve(Dependency.self, argument: args[0])
         case 2:
-            dependency = DIContainer.shared.assembler.resolver.resolve(Dependency.self, arguments: args[0], args[1])
+            dependency = resolver?.resolve(Dependency.self, arguments: args[0], args[1])
         default:
             fatalError("Use the correct method from resolver to instantiate the Dependency with N arguments.")
         }
