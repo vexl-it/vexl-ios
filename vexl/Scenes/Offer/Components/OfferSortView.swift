@@ -29,9 +29,14 @@ struct OfferSortView: View {
                     }
                 }
             } label: {
-                Text(sortingOption.title)
-                    .foregroundColor(Appearance.Colors.gray3)
-                    .textStyle(.paragraphMedium)
+                HStack {
+                    Text(sortingOption.title)
+                        .foregroundColor(Appearance.Colors.gray3)
+                        .textStyle(.paragraphMedium)
+
+                    Image(systemName: "chevron.down")
+                        .foregroundColor(Appearance.Colors.gray3)
+                }
             }
             .padding(.vertical, Appearance.GridGuide.point)
             .padding(.horizontal, Appearance.GridGuide.padding)
