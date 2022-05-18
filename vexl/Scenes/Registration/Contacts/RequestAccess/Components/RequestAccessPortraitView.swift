@@ -67,11 +67,11 @@ private struct SinglePortraitView: View {
         if let image = image {
             Image(data: image, placeholder: R.image.onboarding.emptyAvatar.name)
                 .resizable()
-                .scaledToFit()
+                .clipShape(Circle())
         } else {
             Image(R.image.onboarding.emptyAvatar.name)
                 .resizable()
-                .scaledToFit()
+                .clipShape(Circle())
                 .frame(width: avatarSize.width, height: avatarSize.height, alignment: .center)
         }
     }
