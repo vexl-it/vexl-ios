@@ -148,8 +148,15 @@ final class OfferService: BaseService, OfferServiceType {
     func deleteOffers() -> AnyPublisher<Void, Error> {
         Publishers.Merge(getStoredOfferIds(forType: .buy), getStoredOfferIds(forType: .sell))
             .withUnretained(self)
-            .flatMap { owner, offerIds in
-                owner.request(endpoint: OffersRouter.deleteOffers(offerIds: offerIds))
+            .flatMap { owner, offerIds -> AnyPublisher<Void, Error> in
+                if !offerIds.isEmpty {
+                    return owner.request(endpoint: OffersRouter.deleteOffers(offerIds: offerIds))
+                } else {
+                    return Future { promise in
+                        promise(.success(()))
+                    }
+                    .eraseToAnyPublisher()
+                }
             }
             .eraseToAnyPublisher()
     }

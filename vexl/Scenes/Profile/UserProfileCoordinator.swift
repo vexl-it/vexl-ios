@@ -24,6 +24,14 @@ final class UserProfileCoordinator: BaseCoordinator<Void> {
         let viewController = BaseViewController(rootView: UserProfileView(viewModel: viewModel))
         router.present(viewController, animated: animated)
 
+        viewModel
+            .$error
+            .assign(to: &viewController.$error)
+
+        viewModel
+            .$isLoading
+            .assign(to: &viewController.$isLoading)
+
         return Empty(completeImmediately: false)
             .eraseToAnyPublisher()
     }

@@ -13,6 +13,9 @@ import Combine
 final class UserProfileViewModel: ViewModelType, ObservableObject {
 
     @Inject var authenticationManager: AuthenticationManagerType
+    @Inject var userService: UserServiceType
+    @Inject var offerService: OfferServiceType
+    @Inject var contactService: ContactsServiceType
 
     // MARK: - Action Binding
 
@@ -27,6 +30,14 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
     // MARK: - View Bindings
 
     @Published var primaryActivity: Activity = .init()
+    @Published var isLoading = false
+    @Published var error: Error?
+    var errorIndicator: ErrorIndicator {
+        primaryActivity.error
+    }
+    var activityIndicator: ActivityIndicator {
+        primaryActivity.indicator
+    }
 
     // MARK: - Coordinator Bindings
 
@@ -45,7 +56,7 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
     }
 
     var contacts: String {
-        "34"
+        "N/A"
     }
 
     var avatar: Data? {
@@ -66,7 +77,19 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
     }
 
     init() {
+        setupActivity()
         setupBindings()
+    }
+
+    private func setupActivity() {
+        activityIndicator
+            .loading
+            .assign(to: &$isLoading)
+
+        errorIndicator
+            .errors
+            .asOptional()
+            .assign(to: &$error)
     }
 
     private func setupBindings() {
@@ -75,6 +98,42 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
                 if case let .itemTap(option) = action, option == .logout { return option }
                 return nil
             }
+            .withUnretained(self)
+            .sink { owner, _ in
+                owner.logoutUser()
+            }
+            .store(in: cancelBag)
+    }
+
+    private func logoutUser() {
+
+        let deleteUser = userService
+            .deleteUser()
+            .track(activity: primaryActivity)
+            .materialize()
+            .compactMap(\.value)
+
+        let deleteContactUser = deleteUser
+            .withUnretained(self)
+            .flatMap { owner, _ in
+                owner.contactService
+                    .deleteUser()
+                    .track(activity: owner.primaryActivity)
+                    .materialize()
+                    .compactMap(\.value)
+            }
+
+        let deleteOffers = deleteContactUser
+            .withUnretained(self)
+            .flatMap { owner, _ in
+                owner.offerService
+                    .deleteOffers()
+                    .track(activity: owner.primaryActivity)
+                    .materialize()
+                    .compactMap(\.value)
+            }
+
+        deleteOffers
             .withUnretained(self)
             .sink { owner, _ in
                 owner.authenticationManager.logoutUser()

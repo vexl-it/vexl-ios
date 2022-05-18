@@ -48,6 +48,7 @@ protocol UserSecurityType {
 }
 
 final class AuthenticationManager: AuthenticationManagerType, TokenHandlerType {
+
     enum AuthenticationState {
         case signedIn
         case signedOut
