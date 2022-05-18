@@ -20,6 +20,7 @@ protocol ContactsServiceType {
     func getAllContacts(friendLevel: ContactFriendLevel,
                         hasFacebookAccount: Bool,
                         pageLimit: Int?) -> AnyPublisher<UserContacts, Error>
+    func deleteUser() -> AnyPublisher<Void, Error>
 }
 
 final class ContactsService: BaseService, ContactsServiceType {
@@ -76,5 +77,9 @@ final class ContactsService: BaseService, ContactsServiceType {
         return Publishers.Zip(phoneContacts, facebookContacts)
             .map { UserContacts(phone: $0.0, facebook: $0.1) }
             .eraseToAnyPublisher()
+    }
+
+    func deleteUser() -> AnyPublisher<Void, Error> {
+        request(endpoint: ContactsRouter.deleteUser)
     }
 }

@@ -16,6 +16,7 @@ protocol UserServiceType {
     func validateChallenge(key: String, signature: String) -> AnyPublisher<ChallengeValidation, Error>
     func validateUsername(username: String) -> AnyPublisher<UserAvailable, Error>
     func createUser(username: String, avatar: String?) -> AnyPublisher<User, Error>
+    func deleteUser() -> AnyPublisher<Void, Error>
     func facebookSignature(id: String) -> AnyPublisher<ChallengeValidation, Error>
     func getBitcoinData() -> AnyPublisher<BitcoinData, Error>
 }
@@ -65,6 +66,10 @@ final class UserService: BaseService, UserServiceType {
             })
             .map(\.1)
             .eraseToAnyPublisher()
+    }
+
+    func deleteUser() -> AnyPublisher<Void, Error> {
+        request(endpoint: UserRouter.deleteUser)
     }
 
     func facebookSignature(id: String) -> AnyPublisher<ChallengeValidation, Error> {

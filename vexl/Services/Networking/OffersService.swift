@@ -17,6 +17,7 @@ protocol OfferServiceType {
     func createOffer(encryptedOffers: [EncryptedOffer]) -> AnyPublisher<EncryptedOffer, Error>
     func storeOfferKey(key: ECCKeys, withId id: String, offerType: OfferType) -> AnyPublisher<Void, Error>
     func getStoredOfferIds(forType offerType: OfferType) -> AnyPublisher<[String], Never>
+    func deleteOffers() -> AnyPublisher<Void, Error>
 }
 
 final class OfferService: BaseService, OfferServiceType {
@@ -142,5 +143,14 @@ final class OfferService: BaseService, OfferServiceType {
             promise(.success(ids ?? []))
         }
         .eraseToAnyPublisher()
+    }
+
+    func deleteOffers() -> AnyPublisher<Void, Error> {
+        Publishers.Merge(getStoredOfferIds(forType: .buy), getStoredOfferIds(forType: .sell))
+            .withUnretained(self)
+            .flatMap { owner, offerIds in
+                owner.request(endpoint: OffersRouter.deleteOffers(offerIds: offerIds))
+            }
+            .eraseToAnyPublisher()
     }
 }
