@@ -101,11 +101,6 @@ struct RegisterNameAvatarInputViewPreview: PreviewProvider {
                                                avatar: nil,
                                                addAction: {},
                                                deleteAction: {})
-
-        RegisterNameAvatarView.AvatarInputView(name: "Name",
-                                               avatar: UIImage(named: R.image.onboarding.testImage.name),
-                                               addAction: {},
-                                               deleteAction: {})
     }
 }
 

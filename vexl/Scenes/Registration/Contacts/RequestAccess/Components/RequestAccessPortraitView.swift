@@ -102,13 +102,6 @@ struct RegisterContacts_PortraitViewPreview: PreviewProvider {
                                   textColor: Appearance.Colors.green1)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color.black.edgesIgnoringSafeArea(.all))
-
-        RequestAccessPortraitView(name: "Diego",
-                                  avatar: R.image.onboarding.testImage()?.jpegData(compressionQuality: 1),
-                                  color: Appearance.Colors.green5,
-                                  textColor: Appearance.Colors.green1)
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(Color.black.edgesIgnoringSafeArea(.all))
     }
 }
 
