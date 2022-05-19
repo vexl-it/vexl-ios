@@ -9,6 +9,7 @@
 import Foundation
 
 enum UserError: Error {
+    case invalidPhoneNumber
     case invalidEmail
     case unavailableUsername
     case facebookAccess
@@ -19,6 +20,8 @@ enum UserError: Error {
 extension UserError: LocalizedError {
     var errorDescription: String? {
         switch self {
+        case .invalidPhoneNumber:
+            return L.registerPhoneNumberError()
         case .invalidEmail:
             return L.errorRegisterInvalidEmail()
         case .unavailableUsername:

@@ -27,6 +27,7 @@
 "register.phone.code.input.send.code" = "Didn’t receive code? Resend";
 "register.phone.code.input.verifying" = "Verifying...";
 "register.phone.code.input.success" = "Success!";
+"register.phone.number.error" = "The phone number requires to have the country code and the correct format";
 "register.name.avatar.input.title" = "What do your friends call you?";
 "register.name.avatar.input.subtitle" = "Nobody will see your name until you allow it";
 "register.name.avatar.input.placeholder" = "Full name, username";

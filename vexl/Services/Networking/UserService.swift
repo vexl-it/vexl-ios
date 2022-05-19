@@ -31,6 +31,7 @@ final class UserService: BaseService, UserServiceType {
 
     func requestVerificationCode(phoneNumber: String) -> AnyPublisher<PhoneVerification, Error> {
         request(type: PhoneVerification.self, endpoint: UserRouter.confirmPhone(phoneNumber: phoneNumber))
+            .mapError { _ in UserError.invalidPhoneNumber }
             .eraseToAnyPublisher()
     }
 
