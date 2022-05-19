@@ -21,6 +21,7 @@ protocol ContactsServiceType {
                         hasFacebookAccount: Bool,
                         pageLimit: Int?) -> AnyPublisher<UserContacts, Error>
     func deleteUser() -> AnyPublisher<Void, Error>
+    func countPhoneContacts() -> AnyPublisher<Int, Error>
 }
 
 final class ContactsService: BaseService, ContactsServiceType {
@@ -81,5 +82,11 @@ final class ContactsService: BaseService, ContactsServiceType {
 
     func deleteUser() -> AnyPublisher<Void, Error> {
         request(endpoint: ContactsRouter.deleteUser)
+    }
+
+    func countPhoneContacts() -> AnyPublisher<Int, Error> {
+        request(type: ContactsCount.self, endpoint: ContactsRouter.countPhoneContacts)
+            .map(\.count)
+            .eraseToAnyPublisher()
     }
 }

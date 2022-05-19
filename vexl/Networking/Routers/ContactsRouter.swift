@@ -16,10 +16,11 @@ enum ContactsRouter: ApiRouter {
     case createUser(useFacebookHeader: Bool)
     case deleteUser
     case getContacts(useFacebookHeader: Bool, friendLevel: ContactFriendLevel, pageLimit: Int?)
+    case countPhoneContacts
 
     var method: HTTPMethod {
         switch self {
-        case .getFacebookContacts, .getAvailableFacebookContacts, .getContacts:
+        case .getFacebookContacts, .getAvailableFacebookContacts, .getContacts, .countPhoneContacts:
             return .get
         case .createUser, .importContacts, .getAvailableContacts:
             return .post
@@ -32,7 +33,7 @@ enum ContactsRouter: ApiRouter {
         switch self {
         case .getFacebookContacts, .getAvailableFacebookContacts:
             return facebookSecurityHeader
-        case .importContacts, .getAvailableContacts, .deleteUser:
+        case .importContacts, .getAvailableContacts, .deleteUser, .countPhoneContacts:
             return securityHeader
         case let .createUser(useFacebookHeader):
             return useFacebookHeader ? facebookSecurityHeader : securityHeader
@@ -57,12 +58,14 @@ enum ContactsRouter: ApiRouter {
             return "contacts/me"
         case .deleteUser:
             return "users/me"
+        case .countPhoneContacts:
+            return "contacts/count"
         }
     }
 
     var parameters: Parameters {
         switch self {
-        case .getFacebookContacts, .getAvailableFacebookContacts, .deleteUser:
+        case .getFacebookContacts, .getAvailableFacebookContacts, .deleteUser, .countPhoneContacts:
             return [:]
         case .createUser:
             return [:]

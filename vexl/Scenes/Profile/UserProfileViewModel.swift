@@ -29,9 +29,12 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
 
     // MARK: - View Bindings
 
+    @Published var numberOfContacts: Int = 0
+
     @Published var primaryActivity: Activity = .init()
     @Published var isLoading = false
     @Published var error: Error?
+
     var errorIndicator: ErrorIndicator {
         primaryActivity.error
     }
@@ -55,10 +58,6 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
         authenticationManager.currentUser?.username ?? ""
     }
 
-    var contacts: String {
-        "N/A"
-    }
-
     var avatar: Data? {
         authenticationManager.currentUser?.avatarImage ?? R.image.onboarding.emptyAvatar()?.jpegData(compressionQuality: 1)
     }
@@ -70,7 +69,10 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
     func subtitle(for item: UserProfileViewModel.Option) -> String? {
         switch item {
         case .contacts:
-            return item.subtitle(withParam: contacts)
+            guard numberOfContacts > 0 else {
+                return nil
+            }
+            return item.subtitle(withParam: "\(numberOfContacts)")
         default:
             return nil
         }
@@ -78,6 +80,7 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
 
     init() {
         setupActivity()
+        setupDataBindings()
         setupBindings()
     }
 
@@ -90,6 +93,15 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
             .errors
             .asOptional()
             .assign(to: &$error)
+    }
+
+    private func setupDataBindings() {
+        contactService
+            .countPhoneContacts()
+            .track(activity: primaryActivity)
+            .materialize()
+            .compactMap(\.value)
+            .assign(to: &$numberOfContacts)
     }
 
     private func setupBindings() {
