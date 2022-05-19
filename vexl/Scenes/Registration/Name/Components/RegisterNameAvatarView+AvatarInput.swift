@@ -52,9 +52,7 @@ extension RegisterNameAvatarView {
         var addAction: () -> Void
         var deleteAction: () -> Void
 
-        private var defaultImageSize: CGSize {
-            Appearance.GridGuide.avatarSize
-        }
+        private let defaultImageSize: CGSize = Appearance.GridGuide.avatarSize
 
         var body: some View {
             VStack(alignment: .center) {
@@ -66,6 +64,7 @@ extension RegisterNameAvatarView {
                         if let image = image {
                             Image(uiImage: image)
                                 .resizable()
+                                .scaledToFill()
                                 .frame(size: defaultImageSize)
                                 .clipShape(Circle())
                         } else {
@@ -89,12 +88,25 @@ extension RegisterNameAvatarView {
     }
 }
 
+#if DEBUG || DEVEL
+
 struct RegisterNameAvatarInputViewPreview: PreviewProvider {
     static var previews: some View {
-        let avatar = UIImage(named: R.image.onboarding.testAvatar.name)
-        return RegisterNameAvatarView.AvatarInputView(name: "Name",
-                                                      avatar: avatar,
-                                                      addAction: {},
-                                                      deleteAction: {})
+        RegisterNameAvatarView.AvatarInputView(name: "Name",
+                                               avatar: UIImage(named: R.image.onboarding.testAvatar.name),
+                                               addAction: {},
+                                               deleteAction: {})
+
+        RegisterNameAvatarView.AvatarInputView(name: "Name",
+                                               avatar: nil,
+                                               addAction: {},
+                                               deleteAction: {})
+
+        RegisterNameAvatarView.AvatarInputView(name: "Name",
+                                               avatar: UIImage(named: R.image.onboarding.testImage.name),
+                                               addAction: {},
+                                               deleteAction: {})
     }
 }
+
+#endif
