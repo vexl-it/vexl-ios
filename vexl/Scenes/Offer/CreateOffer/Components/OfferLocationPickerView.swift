@@ -89,9 +89,8 @@ extension OfferLocationPickerView {
 
                     Spacer()
 
-                    Rectangle()
-                        .frame(width: 2)
-                        .foregroundColor(Appearance.Colors.gray2)
+                    VLine(color: Appearance.Colors.gray2,
+                          width: 2)
                         .padding(.trailing, Appearance.GridGuide.smallPadding)
 
                     Text(distance)

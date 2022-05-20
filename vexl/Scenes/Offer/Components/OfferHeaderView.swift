@@ -14,7 +14,7 @@ struct OfferHeaderView: View {
 
     var body: some View {
         VStack {
-            HStack(alignment: .bottom) {
+            HStack(alignment: .top) {
                 Text(title)
                     .textStyle(.h1)
                     .foregroundColor(Appearance.Colors.whiteText)
@@ -30,14 +30,31 @@ struct OfferHeaderView: View {
                         .background(Appearance.Colors.gray1)
                         .cornerRadius(Appearance.GridGuide.point)
                 }
-                .padding(.bottom, Appearance.GridGuide.point)
+                .frame(size: Appearance.GridGuide.baseButtonSize)
+                .padding(.top, Appearance.GridGuide.point)
             }
             .padding(.horizontal, Appearance.GridGuide.padding)
 
-            Rectangle()
-                .foregroundColor(Color.white)
-                .frame(height: 3)
-                .padding(.horizontal, Appearance.GridGuide.point)
+            HLine(color: Appearance.Colors.whiteOpaque,
+                  height: 1)
         }
     }
 }
+
+#if DEVEL || DEBUG
+
+struct OfferHeaderViewPreview: PreviewProvider {
+    static var previews: some View {
+        OfferHeaderView(title: L.offerSellTitle(), dismissAction: {})
+            .frame(maxHeight: .infinity)
+            .previewDevice("iPhone 11")
+            .background(Color.black)
+
+        OfferHeaderView(title: L.offerBuyTitle(), dismissAction: {})
+            .frame(maxHeight: .infinity)
+            .previewDevice("iPhone 11")
+            .background(Color.black)
+    }
+}
+
+#endif

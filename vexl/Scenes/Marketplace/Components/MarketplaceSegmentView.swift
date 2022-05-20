@@ -47,8 +47,7 @@ struct MarketplaceSegmentView: View {
 
     @ViewBuilder var selectorView: some View {
         ZStack(alignment: .leading) {
-            HLine()
-                .stroke(style: StrokeStyle(lineWidth: lineWidth, dash: [8]))
+            DashedLine()
                 .foregroundColor(Appearance.Colors.gray1)
 
             Color.white
@@ -56,7 +55,8 @@ struct MarketplaceSegmentView: View {
                 .offset(x: selectedOption == .buy ? viewWidth * 0.05 : viewWidth * 0.5)
                 .animation(.easeIn(duration: 0.15),
                            value: selectedOption)
-        }.frame(height: selectorHeight, alignment: .bottom)
+        }
+        .frame(height: selectorHeight, alignment: .bottom)
     }
 }
 

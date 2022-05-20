@@ -32,7 +32,7 @@ struct OfferSortView: View {
                 HStack {
                     Text(sortingOption.title)
                         .foregroundColor(Appearance.Colors.gray3)
-                        .textStyle(.paragraphMedium)
+                        .textStyle(.paragraphSmall)
 
                     Image(systemName: "chevron.down")
                         .foregroundColor(Appearance.Colors.gray3)

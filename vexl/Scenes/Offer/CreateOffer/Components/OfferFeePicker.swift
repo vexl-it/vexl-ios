@@ -25,9 +25,9 @@ struct OfferFeePickerView: View {
             }
 
             if selectedOption == .withFee {
-                Rectangle()
-                    .frame(height: 1)
-                    .foregroundColor(Appearance.Colors.gray2)
+
+                HLine(color: Appearance.Colors.gray2,
+                      height: 1)
                     .padding(.top, Appearance.GridGuide.padding)
                     .padding(.horizontal, Appearance.GridGuide.point)
 

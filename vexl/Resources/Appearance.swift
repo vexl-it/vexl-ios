@@ -29,6 +29,7 @@ struct Appearance {
         static let green1 = Color(R.color.green1.name)
         static let green4 = Color(R.color.green4.name)
         static let green5 = Color(R.color.green5.name)
+        static let whiteOpaque = Color.white.opacity(0.15)
 
         // MARK: Text
 
@@ -59,6 +60,7 @@ struct Appearance {
         // MARK: Button
 
         static let baseHeight: CGFloat = 40
+        static let baseButtonSize: CGSize = CGSize(width: 40, height: 40)
         static let largeButtonHeight: CGFloat = 64
 
         // MARK: Avatar
@@ -117,6 +119,7 @@ struct Appearance {
         case paragraph
         case paragraphBold
         case paragraphMedium
+        case paragraphSmall
         case description
         case descriptionSemibold
         case micro
@@ -130,10 +133,12 @@ struct Appearance {
             case .h3:
                 return UIFont.preferredFont(forTextStyle: .title2, weight: .semibold)
             case .paragraph:
-                return UIFont.preferredFont(forTextStyle: .callout, weight: .regular)
+                return UIFont.preferredFont(forTextStyle: .body, weight: .regular)
             case .paragraphBold:
-                return UIFont.preferredFont(forTextStyle: .callout, weight: .bold)
+                return UIFont.preferredFont(forTextStyle: .body, weight: .bold)
             case .paragraphMedium:
+                return UIFont.preferredFont(forTextStyle: .body, weight: .medium)
+            case .paragraphSmall:
                 return UIFont.preferredFont(forTextStyle: .callout, weight: .medium)
             case .description:
                 return UIFont.preferredFont(forTextStyle: .footnote, weight: .regular)

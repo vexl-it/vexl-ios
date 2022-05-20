@@ -17,9 +17,8 @@ extension OnboardingView {
         var body: some View {
             HStack {
                 ForEach(0..<numberOfPages) { index in
-                    Rectangle()
-                        .foregroundColor(currentIndex >= index ? Color.white : Color(R.color.gray1.name))
-                        .frame(height: 4)
+                    HLine(color: currentIndex >= index ? Color.white : Color(R.color.gray1.name),
+                          height: 4)
                         .cornerRadius(2)
                         .transition(.opacity)
                 }
@@ -27,3 +26,18 @@ extension OnboardingView {
         }
     }
 }
+
+#if DEBUG || DEVEL
+
+struct OnboardingPageControlPreview: PreviewProvider {
+    static var previews: some View {
+        VStack {
+            OnboardingView.PageControl(numberOfPages: 3,
+                                       currentIndex: .constant(1))
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(Color.black)
+    }
+}
+
+#endif
