@@ -22,6 +22,8 @@ protocol TokenHandlerType {
 
 protocol AuthenticationManagerType {
     var currentUser: User? { get }
+    var currentAuthenticationState: AuthenticationManager.AuthenticationState { get }
+    var authenticationStatePublisher: AnyPublisher<AuthenticationManager.AuthenticationState, Never> { get }
 
     func setUser(_ user: User, withAvatar avatar: Data?)
     func setFacebookUser(id: String?, token: String?)
@@ -46,6 +48,7 @@ protocol UserSecurityType {
 }
 
 final class AuthenticationManager: AuthenticationManagerType, TokenHandlerType {
+
     enum AuthenticationState {
         case signedIn
         case signedOut
@@ -53,12 +56,21 @@ final class AuthenticationManager: AuthenticationManagerType, TokenHandlerType {
 
     // MARK: - Properties
 
-    @Published var authenticationState: AuthenticationState = .signedOut
+    @DidSet var authenticationState: AuthenticationState = .signedOut
 
     @Published private(set) var accessToken: String?
     @Published private(set) var refreshToken: String?
 
+    var currentAuthenticationState: AuthenticationState {
+        authenticationState
+    }
+
+    var authenticationStatePublisher: AnyPublisher<AuthenticationState, Never> {
+        $authenticationState.eraseToAnyPublisher()
+    }
+
     private let cancelBag: CancelBag = .init()
+    private let userDefaults: UserDefaults
 
     // MARK: - Variables for user registration
 
@@ -78,7 +90,8 @@ final class AuthenticationManager: AuthenticationManagerType, TokenHandlerType {
 
     // MARK: - Initialization
 
-    init() {
+    init(userDefaults: UserDefaults = UserDefaults.standard) {
+        self.userDefaults = userDefaults
         authentication()
     }
 
@@ -98,17 +111,17 @@ final class AuthenticationManager: AuthenticationManagerType, TokenHandlerType {
     // discuss how to store the data in the device: CoreData, Encrypted Files, not Realm, etc.
 
     func saveUser() {
-        UserDefaults.standard.set(value: currentUser, forKey: .storedUser)
+        userDefaults.set(value: currentUser, forKey: .storedUser)
         authenticationState = .signedIn
     }
 
     func saveSecurity() {
-        UserDefaults.standard.set(value: userSecurity, forKey: .storedSecurity)
+        userDefaults.set(value: userSecurity, forKey: .storedSecurity)
     }
 
     func authentication() {
-        self.currentUser = UserDefaults.standard.codable(forKey: .storedUser)
-        self.userSecurity = UserDefaults.standard.codable(forKey: .storedSecurity) ?? .init()
+        self.currentUser = userDefaults.codable(forKey: .storedUser)
+        self.userSecurity = userDefaults.codable(forKey: .storedSecurity) ?? .init()
 
         authenticationState = currentUser == nil ? .signedOut : .signedIn
     }
@@ -223,10 +236,8 @@ extension AuthenticationManager {
         refreshToken = nil
         currentUser = nil
         clearSecurity()
-        let userDefaults = UserDefaults.standard
 
         userDefaults.dictionaryRepresentation().keys.forEach(userDefaults.removeObject)
-        userDefaults.synchronize()
     }
 
     func logoutUser() {

@@ -190,6 +190,7 @@
 		F1B5FCD427C703230018729B /* CardModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B5FCD327C703230018729B /* CardModifier.swift */; };
 		F1B5FCD627C703BF0018729B /* View+.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B5FCD527C703BF0018729B /* View+.swift */; };
 		F1B5FCD827C7040C0018729B /* RoundedCorners.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B5FCD727C7040C0018729B /* RoundedCorners.swift */; };
+		F1BBC7052835C2960067F81B /* ContactsCount.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1BBC7042835C2960067F81B /* ContactsCount.swift */; };
 		F1BFA8D027FB31E800F4E745 /* FacebookUserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1BFA8CF27FB31E800F4E745 /* FacebookUserData.swift */; };
 		F1BFA8D727FFB2AC00F4E745 /* ImagePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1BFA8D627FFB2AC00F4E745 /* ImagePickerView.swift */; };
 		F1BFA956280223BD00F4E745 /* UserProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1BFA952280223BD00F4E745 /* UserProfileView.swift */; };
@@ -213,6 +214,7 @@
 		F1D2012628296F1F006DF4AB /* ChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D2012528296F1F006DF4AB /* ChatView.swift */; };
 		F1D20128282AB6EF006DF4AB /* CryptocurrencyValueManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D20127282AB6EF006DF4AB /* CryptocurrencyValueManager.swift */; };
 		F1D2012A282ABB1F006DF4AB /* HomeTabBarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D20129282ABB1F006DF4AB /* HomeTabBarViewModel.swift */; };
+		F1D2012C282D4CD5006DF4AB /* DidSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D2012B282D4CD5006DF4AB /* DidSet.swift */; };
 		F1D2012E283401D7006DF4AB /* OfferSortView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D2012D283401D7006DF4AB /* OfferSortView.swift */; };
 /* End PBXBuildFile section */
 
@@ -428,6 +430,7 @@
 		F1B5FCD327C703230018729B /* CardModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardModifier.swift; sourceTree = "<group>"; };
 		F1B5FCD527C703BF0018729B /* View+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+.swift"; sourceTree = "<group>"; };
 		F1B5FCD727C7040C0018729B /* RoundedCorners.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedCorners.swift; sourceTree = "<group>"; };
+		F1BBC7042835C2960067F81B /* ContactsCount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsCount.swift; sourceTree = "<group>"; };
 		F1BFA8CF27FB31E800F4E745 /* FacebookUserData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookUserData.swift; sourceTree = "<group>"; };
 		F1BFA8D627FFB2AC00F4E745 /* ImagePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerView.swift; sourceTree = "<group>"; };
 		F1BFA952280223BD00F4E745 /* UserProfileView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfileView.swift; sourceTree = "<group>"; };
@@ -451,6 +454,7 @@
 		F1D2012528296F1F006DF4AB /* ChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatView.swift; sourceTree = "<group>"; };
 		F1D20127282AB6EF006DF4AB /* CryptocurrencyValueManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptocurrencyValueManager.swift; sourceTree = "<group>"; };
 		F1D20129282ABB1F006DF4AB /* HomeTabBarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTabBarViewModel.swift; sourceTree = "<group>"; };
+		F1D2012B282D4CD5006DF4AB /* DidSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DidSet.swift; sourceTree = "<group>"; };
 		F1D2012D283401D7006DF4AB /* OfferSortView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferSortView.swift; sourceTree = "<group>"; };
 		F2FD3623B1DD9C04AD13743C /* Pods-vexl.devel.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-vexl.devel.xcconfig"; path = "Target Support Files/Pods-vexl/Pods-vexl.devel.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -730,6 +734,7 @@
 		B08F390427AE7110008B344F /* PropertyWrappers */ = {
 			isa = PBXGroup;
 			children = (
+				F1D2012B282D4CD5006DF4AB /* DidSet.swift */,
 				B08F38E127AE7110008B344F /* Inject.swift */,
 				B08F390527AE7110008B344F /* UserDefaults */,
 			);
@@ -1188,6 +1193,7 @@
 				F1BFA8CF27FB31E800F4E745 /* FacebookUserData.swift */,
 				F13B2670281D4AB00011F2FB /* ContactKey.swift */,
 				F13B2674281EB2390011F2FB /* ContactFriendLevel.swift */,
+				F1BBC7042835C2960067F81B /* ContactsCount.swift */,
 			);
 			path = Contacts;
 			sourceTree = "<group>";
@@ -1713,6 +1719,7 @@
 				F13B265728183AA90011F2FB /* MultipleOptionPickerView.swift in Sources */,
 				F13B265C281897DE0011F2FB /* OfferAdvanceFilterFriendDegreeView.swift in Sources */,
 				B05A22132812BF2700BF8D58 /* Publisher+Crypto.swift in Sources */,
+				F1BBC7052835C2960067F81B /* ContactsCount.swift in Sources */,
 				B08F38E227AE7110008B344F /* Inject.swift in Sources */,
 				B08F395727AE7112008B344F /* ApiRouter.swift in Sources */,
 				F188627428169A3700659786 /* MarketplaceFeedFooterView.swift in Sources */,
@@ -1746,6 +1753,7 @@
 				B0F206F327AEA4C800A44E72 /* WindowCoordinator.swift in Sources */,
 				F18862032808318E00659786 /* CoinValueRouter.swift in Sources */,
 				B0E9BB2A2815C7190012BF1D /* AES.swift in Sources */,
+				F1D2012C282D4CD5006DF4AB /* DidSet.swift in Sources */,
 				F175AB9527EA6A8E000DAB15 /* PlaceholderTextField.swift in Sources */,
 				F13B2679281FC5A90011F2FB /* OfferLocation.swift in Sources */,
 				B0EEE11627B14D320097031E /* WelcomeCoordinator.swift in Sources */,

@@ -31,7 +31,7 @@ final class AppCoordinator: BaseCoordinator<Void> {
     // https://github.com/uptechteam/Coordinator-MVVM-Rx-Example/issues/3
     private func coordinateToRoot() {
         let coordinationResult: CoordinatingResult<Void> = {
-            switch initialScreenManager.state {
+            switch initialScreenManager.getCurrentScreenState() {
             case .splashScreen:
                 return showSplashCoordinator()
             case .onboarding:
@@ -73,5 +73,7 @@ extension AppCoordinator {
 
     private func showHomeCoordinator() -> CoordinatingResult<Void> {
         coordinate(to: HomeTabBarCoordinator(window: window))
+            .prefix(1)
+            .eraseToAnyPublisher()
     }
 }

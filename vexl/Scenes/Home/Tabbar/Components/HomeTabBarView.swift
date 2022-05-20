@@ -8,7 +8,7 @@
 import UIKit
 import Cleevio
 
-class HomeTabBarView: UIView {
+final class HomeTabBarView: UIView {
 
     var selectedItem: ActionSubject<Int> = .init()
 
