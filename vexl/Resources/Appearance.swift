@@ -29,6 +29,9 @@ struct Appearance {
         static let green1 = Color(R.color.green1.name)
         static let green4 = Color(R.color.green4.name)
         static let green5 = Color(R.color.green5.name)
+
+        static let yellow100 = Color(R.color.yellow100.name)
+
         static let whiteOpaque = Color.white.opacity(0.15)
 
         // MARK: Text

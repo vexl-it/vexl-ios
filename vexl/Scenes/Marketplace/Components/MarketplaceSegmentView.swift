@@ -10,14 +10,14 @@ import SwiftUI
 
 struct MarketplaceSegmentView: View {
 
-    private let selectorHeight: CGFloat = 3
+    private let selectorHeight: CGFloat = 2
     private let lineWidth: CGFloat = 2
 
     @Binding var selectedOption: OfferType
     @State private var viewWidth: CGFloat = 0
 
     var body: some View {
-        VStack(spacing: Appearance.GridGuide.mediumPadding2) {
+        VStack(spacing: Appearance.GridGuide.mediumPadding1) {
             HStack {
                 Button {
                     selectedOption = .buy
@@ -47,12 +47,13 @@ struct MarketplaceSegmentView: View {
 
     @ViewBuilder var selectorView: some View {
         ZStack(alignment: .leading) {
-            DashedLine()
-                .foregroundColor(Appearance.Colors.gray1)
+            HLine(color: Appearance.Colors.gray1,
+                  height: 2)
+                .padding(.horizontal, viewWidth * 0.02)
 
-            Color.white
-                .frame(width: viewWidth * 0.45, height: selectorHeight, alignment: .leading)
-                .offset(x: selectedOption == .buy ? viewWidth * 0.05 : viewWidth * 0.5)
+            Appearance.Colors.yellow100
+                .frame(width: viewWidth * 0.48, height: selectorHeight, alignment: .leading)
+                .offset(x: selectedOption == .buy ? viewWidth * 0.02 : viewWidth * 0.5)
                 .animation(.easeIn(duration: 0.15),
                            value: selectedOption)
         }
@@ -64,6 +65,7 @@ struct MarketplaceSegmentView: View {
 struct MarketplaceSegmentViewPreview: PreviewProvider {
     static var previews: some View {
         MarketplaceSegmentView(selectedOption: .constant(.buy))
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color.black)
             .previewDevice("iPhone 11")
     }

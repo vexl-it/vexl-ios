@@ -34,6 +34,7 @@ struct OfferHeaderView: View {
                 .padding(.top, Appearance.GridGuide.point)
             }
             .padding(.horizontal, Appearance.GridGuide.padding)
+            .padding(.bottom, Appearance.GridGuide.point)
 
             HLine(color: Appearance.Colors.whiteOpaque,
                   height: 1)
