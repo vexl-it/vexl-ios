@@ -20,6 +20,7 @@ struct PhoneNumberTextFieldView: UIViewRepresentable {
 
     func makeUIView(context: Context) -> PhoneNumberTextField {
         let phoneNumberTextField = PhoneNumberTextField()
+        phoneNumberTextField.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         phoneNumberTextField.addTarget(context.coordinator, action: #selector(Coordinator.onTextChange), for: .editingChanged)
         phoneNumberTextField.placeholder = placeholder
         phoneNumberTextField.font = font
