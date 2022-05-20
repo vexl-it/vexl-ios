@@ -27,12 +27,15 @@ final class InitialScreenManager {
     private var cancellables: Cancellables = .init()
 
     func getCurrentScreenState() -> State {
-        switch (initialLoadingInProgress, authenticationManager.currentAuthenticationState) {
-        case (true, _):
+
+        guard !initialLoadingInProgress else {
             return .splashScreen
-        case (_, .signedOut):
+        }
+
+        switch authenticationManager.currentAuthenticationState {
+        case .signedOut:
             return .onboarding
-        case (_, .signedIn):
+        case .signedIn:
             return .home
         }
     }

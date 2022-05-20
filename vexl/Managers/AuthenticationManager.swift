@@ -70,6 +70,7 @@ final class AuthenticationManager: AuthenticationManagerType, TokenHandlerType {
     }
 
     private let cancelBag: CancelBag = .init()
+    private let userDefaults: UserDefaults
 
     // MARK: - Variables for user registration
 
@@ -89,7 +90,8 @@ final class AuthenticationManager: AuthenticationManagerType, TokenHandlerType {
 
     // MARK: - Initialization
 
-    init() {
+    init(userDefaults: UserDefaults = UserDefaults.standard) {
+        self.userDefaults = userDefaults
         authentication()
     }
 
@@ -109,17 +111,17 @@ final class AuthenticationManager: AuthenticationManagerType, TokenHandlerType {
     // discuss how to store the data in the device: CoreData, Encrypted Files, not Realm, etc.
 
     func saveUser() {
-        UserDefaults.standard.set(value: currentUser, forKey: .storedUser)
+        userDefaults.set(value: currentUser, forKey: .storedUser)
         authenticationState = .signedIn
     }
 
     func saveSecurity() {
-        UserDefaults.standard.set(value: userSecurity, forKey: .storedSecurity)
+        userDefaults.set(value: userSecurity, forKey: .storedSecurity)
     }
 
     func authentication() {
-        self.currentUser = UserDefaults.standard.codable(forKey: .storedUser)
-        self.userSecurity = UserDefaults.standard.codable(forKey: .storedSecurity) ?? .init()
+        self.currentUser = userDefaults.codable(forKey: .storedUser)
+        self.userSecurity = userDefaults.codable(forKey: .storedSecurity) ?? .init()
 
         authenticationState = currentUser == nil ? .signedOut : .signedIn
     }
@@ -235,7 +237,6 @@ extension AuthenticationManager {
         currentUser = nil
         clearSecurity()
 
-        let userDefaults = UserDefaults.standard
         userDefaults.dictionaryRepresentation().keys.forEach(userDefaults.removeObject)
     }
 
