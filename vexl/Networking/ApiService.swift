@@ -15,7 +15,7 @@ import Cleevio
 
 struct ErrorPayload: Decodable {
     var message: [String]?
-    var code: Int?
+    var code: String?
 }
 
 // MARK: - ApiServiceType
@@ -30,7 +30,7 @@ protocol ApiServiceType: AnyObject {
 final class ApiService: ApiServiceType {
 
     @Inject var authenticationManager: TokenHandlerType
-    
+
     struct StatusCode {
         static let ok = 200
         static let created = 201
@@ -106,8 +106,8 @@ final class ApiService: ApiServiceType {
             let data = response.data,
             let errorPayload = try? JSONDecoder().decode(ErrorPayload.self, from: data),
             let code = errorPayload.code,
-            code != 0 {
-            throw APIError.clientError(.parse(code: code), message: errorPayload.message?.first)
+            let codeNumber = Int(code), codeNumber != 0 {
+            throw APIError.clientError(.parse(code: codeNumber), message: errorPayload.message?.first)
         }
 
         if (ApiService.StatusCode.clientError ~= httpResponse.statusCode) ||
