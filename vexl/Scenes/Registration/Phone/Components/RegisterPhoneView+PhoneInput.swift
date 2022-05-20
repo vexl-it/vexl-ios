@@ -28,10 +28,22 @@ extension RegisterPhoneView {
                                      text: $phoneNumber)
                 .foregroundColor(Appearance.Colors.primaryText)
                 .keyboardType(.phonePad)
-                .padding()
-                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(Appearance.GridGuide.padding)
                 .frame(height: Appearance.GridGuide.largeButtonHeight)
                 .makeCorneredBorder(color: Appearance.Colors.gray3, borderWidth: 1)
         }
     }
 }
+
+#if DEBUG || DEVEL
+
+struct RegisterPhone_PhoneInputViewPreview: PreviewProvider {
+    static var previews: some View {
+        RegisterPhoneView.PhoneInputView(phoneNumber: .constant("123 123 123 123"),
+                                         pickerTap: {})
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background(Color.black)
+    }
+}
+
+#endif
