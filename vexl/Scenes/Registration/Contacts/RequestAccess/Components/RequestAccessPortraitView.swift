@@ -67,15 +67,18 @@ private struct SinglePortraitView: View {
         if let image = image {
             Image(data: image, placeholder: R.image.onboarding.emptyAvatar.name)
                 .resizable()
-                .scaledToFit()
+                .scaledToFill()
+                .clipShape(Circle())
         } else {
             Image(R.image.onboarding.emptyAvatar.name)
                 .resizable()
-                .scaledToFit()
                 .frame(width: avatarSize.width, height: avatarSize.height, alignment: .center)
+                .clipShape(Circle())
         }
     }
 }
+
+#if DEBUG || DEVEL
 
 struct RegisterContacts_PortraitViewPreview: PreviewProvider {
     static var previews: some View {
@@ -101,3 +104,5 @@ struct RegisterContacts_PortraitViewPreview: PreviewProvider {
             .background(Color.black.edgesIgnoringSafeArea(.all))
     }
 }
+
+#endif

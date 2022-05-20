@@ -142,8 +142,8 @@ struct Offer {
         type.rawValue
     }
 
-    var createdDate: Date? {
-        Formatters.dateApiFormatter.date(from: createdAt)
+    var createdDate: Date {
+        Formatters.dateApiFormatter.date(from: createdAt) ?? Date()
     }
 
     var modifiedDate: Date? {

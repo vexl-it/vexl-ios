@@ -130,11 +130,11 @@ struct Appearance {
             case .h3:
                 return UIFont.preferredFont(forTextStyle: .title2, weight: .semibold)
             case .paragraph:
-                return UIFont.preferredFont(forTextStyle: .body, weight: .regular)
+                return UIFont.preferredFont(forTextStyle: .callout, weight: .regular)
             case .paragraphBold:
-                return UIFont.preferredFont(forTextStyle: .body, weight: .bold)
+                return UIFont.preferredFont(forTextStyle: .callout, weight: .bold)
             case .paragraphMedium:
-                return UIFont.preferredFont(forTextStyle: .body, weight: .medium)
+                return UIFont.preferredFont(forTextStyle: .callout, weight: .medium)
             case .description:
                 return UIFont.preferredFont(forTextStyle: .footnote, weight: .regular)
             case .descriptionSemibold:

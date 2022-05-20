@@ -24,12 +24,11 @@ enum ClientAPIError: Error {
 
 extension ClientAPIError: LocalizedError {
     var errorDescription: String? {
-        #warning("Careful with non-localize strings")
         switch self {
         case .userError(let error):
             return error.localizedDescription
         case .unknown:
-            fatalError("This should have been localized")
+            return nil
         }
     }
 }

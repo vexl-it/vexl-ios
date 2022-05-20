@@ -17,6 +17,9 @@ struct UserOffersView: View {
                 viewModel.action.send(.dismissTap)
             }
 
+            OfferSortView(numberOfOffers: viewModel.offerItems.count,
+                          sortingOption: $viewModel.offerSortingOption)
+
             DottedButton(color: Appearance.Colors.green5,
                          content: {
                 offerLabel
