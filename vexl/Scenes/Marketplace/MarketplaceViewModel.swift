@@ -17,6 +17,7 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
     // MARK: - Actions Bindings
 
     enum UserAction: Equatable {
+        case showBuyFilters
         case showSellOffer
         case showBuyOffer
     }
@@ -33,6 +34,7 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
     // MARK: - Coordinator Bindings
 
     enum Route: Equatable {
+        case showBuyFiltersTapped
         case showSellOfferTapped
         case showBuyOfferTapped
     }
@@ -48,7 +50,13 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
     }
 
     var buyFilters: [MarketplaceFilterData] {
-        []
+        let openFilter = MarketplaceFilterData(
+            title: "Aqui",
+            action: { [action] in action.send(.showBuyFilters) }
+        )
+        return [
+            openFilter
+        ]
     }
 
     var sellFilters: [MarketplaceFilterData] {
@@ -114,7 +122,6 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
     }
 
     private func setupActionBindings() {
-
         let userAction = action
             .share()
 
@@ -131,6 +138,14 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
             .withUnretained(self)
             .sink { owner, _ in
                 owner.route.send(.showBuyOfferTapped)
+            }
+            .store(in: cancelBag)
+
+        userAction
+            .filter { $0 == .showBuyFilters }
+            .withUnretained(self)
+            .sink { owner, _ in
+                owner.route.send(.showBuyFiltersTapped)
             }
             .store(in: cancelBag)
     }

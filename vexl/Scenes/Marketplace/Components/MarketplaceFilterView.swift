@@ -14,22 +14,20 @@ struct MarketplaceFilterView: View {
 
     let items: [FilterData]
     let actionTitle: String
-    let filterAction: (Int) -> Void
-    let action: () -> Void
+    let mainAction: () -> Void
 
     var body: some View {
         HStack(spacing: Appearance.GridGuide.tinyPadding) {
-            ForEach(items.indices, id: \.self) { index in
-                let item = items[index]
+            ForEach(items, id: \.self) { item in
                 FilterButton(title: item.title) {
-                    filterAction(index)
+                    item.action?()
                 }
             }
 
             Spacer()
 
             Button(actionTitle) {
-                action()
+                mainAction()
             }
             .textStyle(.paragraphBold)
             .foregroundColor(Appearance.Colors.green5)
@@ -44,9 +42,17 @@ struct MarketplaceFilterView: View {
 
 extension MarketplaceFilterView {
 
-    struct FilterData: Identifiable {
-        let id: Int
+    struct FilterData: Hashable, Equatable {
         let title: String
+        let action: (() -> Void)?
+
+        func hash(into hasher: inout Hasher) {
+            hasher.combine(title)
+        }
+
+        static func == (lhs: MarketplaceFilterView.FilterData, rhs: MarketplaceFilterView.FilterData) -> Bool {
+            lhs.title == rhs.title
+        }
     }
 
     private struct FilterButton: View {
@@ -70,11 +76,10 @@ struct MarketplaceFilterViewPreview: PreviewProvider {
     static var previews: some View {
         MarketplaceFilterView(
             items: [
-                MarketplaceFilterView.FilterData(id: 1, title: "Hello")
+                MarketplaceFilterView.FilterData(title: "Hello", action: nil)
             ],
             actionTitle: "Offer",
-            filterAction: { _ in },
-            action: { }
+            mainAction: { }
         )
             .background(Color.black)
             .previewDevice("iPhone 11")

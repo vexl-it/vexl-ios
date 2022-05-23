@@ -48,6 +48,18 @@ final class MarketplaceCoordinator: BaseCoordinator<Void> {
             .sink()
             .store(in: cancelBag)
 
+        viewModel
+            .route
+            .receive(on: RunLoop.main)
+            .filter { $0 == .showBuyFiltersTapped }
+            .withUnretained(self)
+            .flatMap { owner, _ -> CoordinatingResult<RouterResult<Void>> in
+                let modalRouter = ModalRouter(parentViewController: viewController, presentationStyle: .fullScreen)
+                return owner.showFilters(router: modalRouter)
+            }
+            .sink()
+            .store(in: cancelBag)
+
         return Empty(completeImmediately: false)
             .eraseToAnyPublisher()
     }
@@ -68,6 +80,18 @@ extension MarketplaceCoordinator {
 
     private func showBuyOffers(router: Router) -> CoordinatingResult<RouterResult<Void>> {
         coordinate(to: UserOffersCoordinator(router: router, offerType: .buy))
+        .flatMap { result -> CoordinatingResult<RouterResult<Void>> in
+            guard result != .dismissedByRouter else {
+                return Just(result).eraseToAnyPublisher()
+            }
+            return router.dismiss(animated: true, returning: result)
+        }
+        .prefix(1)
+        .eraseToAnyPublisher()
+    }
+
+    private func showFilters(router: Router) -> CoordinatingResult<RouterResult<Void>> {
+        coordinate(to: FilterCoordinator(router: router))
         .flatMap { result -> CoordinatingResult<RouterResult<Void>> in
             guard result != .dismissedByRouter else {
                 return Just(result).eraseToAnyPublisher()

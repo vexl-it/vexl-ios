@@ -51,23 +51,19 @@ struct MarketplaceView: View {
     private var filter: some View {
         switch viewModel.selectedOption {
         case .buy:
-            return MarketplaceFilterView(items: viewModel.buyFilters,
-                                         actionTitle: L.marketplaceSellOffer(),
-                                         filterAction: { index in
-                print("filter from \(index) has been tapped")
-            },
-                                     action: {
-                viewModel.action.send(.showBuyOffer)
-            })
+            return MarketplaceFilterView(
+                items: viewModel.buyFilters,
+                actionTitle: L.marketplaceSellOffer(),
+                mainAction: {
+                    viewModel.action.send(.showBuyOffer)
+                })
         case .sell:
-            return MarketplaceFilterView(items: viewModel.sellFilters,
-                                         actionTitle: L.marketplaceSellOffer(),
-                                         filterAction: { index in
-                print("filter from \(index) has been tapped")
-            },
-                                     action: {
-                viewModel.action.send(.showSellOffer)
-            })
+            return MarketplaceFilterView(
+                items: viewModel.sellFilters,
+                actionTitle: L.marketplaceSellOffer(),
+                mainAction: {
+                    viewModel.action.send(.showSellOffer)
+                })
         }
     }
 }
