@@ -35,7 +35,7 @@ extension RegisterPhoneView {
                 BorderedTextField(placeholder: "", text: $code)
                     .multilineTextAlignment(.center)
                     .foregroundColor(Appearance.Colors.primaryText)
-                    .textStyle(.h2)
+                    .textStyle(.h3)
                     .keyboardType(.numberPad)
                     .disabled(!isEnabled)
 

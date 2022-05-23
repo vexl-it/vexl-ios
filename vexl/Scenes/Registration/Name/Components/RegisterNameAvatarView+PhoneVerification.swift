@@ -17,7 +17,7 @@ extension RegisterNameAvatarView {
                 Image(R.image.onboarding.phoneVerified.name)
 
                 Text(L.registerNameAvatarPhoneValidated())
-                    .textStyle(.h1)
+                    .textStyle(.h2)
                     .foregroundColor(.white)
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, Appearance.GridGuide.padding)

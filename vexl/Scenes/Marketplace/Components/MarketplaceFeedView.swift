@@ -17,7 +17,7 @@ struct MarketplaceFeedView: View {
     var body: some View {
         VStack(spacing: Appearance.GridGuide.mediumPadding1) {
             Text(data.title)
-                .textStyle(.h3)
+                .textStyle(.paragraph)
                 .multilineTextAlignment(.leading)
                 .foregroundColor(Appearance.Colors.primaryText)
                 .frame(maxWidth: .infinity, alignment: .leading)

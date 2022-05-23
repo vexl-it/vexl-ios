@@ -34,7 +34,7 @@ struct WelcomeView: View {
 
                 SolidButton(Text(L.continue()),
                             isEnabled: $viewModel.hasAgreedTermsAndConditions,
-                            font: Appearance.TextStyle.h2.font.asFont,
+                            font: Appearance.TextStyle.h3.font.asFont,
                             colors: SolidButtonColor.welcome,
                             dimensions: SolidButtonDimension.largeButton) {
                     viewModel.send(action: .continueTap)
@@ -45,7 +45,7 @@ struct WelcomeView: View {
 
     private var title: some View {
         Text(L.welcomeTitle())
-            .textStyle(.h1)
+            .textStyle(.h2)
             .multilineTextAlignment(.center)
             .foregroundColor(.white)
             .lineLimit(2)

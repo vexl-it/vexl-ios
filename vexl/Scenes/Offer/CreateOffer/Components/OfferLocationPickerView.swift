@@ -24,7 +24,7 @@ struct OfferLocationPickerView: View {
                     .frame(size: Appearance.GridGuide.iconSize)
 
                 Text(L.offerCreateLocationTitle())
-                    .textStyle(.h2)
+                    .textStyle(.h3)
             }
             .padding(.vertical, Appearance.GridGuide.point)
             .foregroundColor(Appearance.Colors.whiteText)

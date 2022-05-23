@@ -21,7 +21,7 @@ struct OfferAdvancedFilterView: View {
                     .frame(size: Appearance.GridGuide.iconSize)
 
                 Text(L.offerCreateAdvancedTitle())
-                    .textStyle(.h2)
+                    .textStyle(.h3)
                     .foregroundColor(Appearance.Colors.whiteText)
 
                 Spacer()

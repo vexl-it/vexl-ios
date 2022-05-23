@@ -19,7 +19,7 @@ struct UserProfileView: View {
                 avatarImage
 
                 Text(viewModel.username)
-                    .textStyle(.largeTitle)
+                    .textStyle(.h1)
                     .foregroundColor(.white)
 
                 Spacer()

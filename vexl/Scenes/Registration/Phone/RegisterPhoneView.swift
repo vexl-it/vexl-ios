@@ -37,7 +37,7 @@ struct RegisterPhoneView: View {
 
             SolidButton(Text(viewModel.actionTitle),
                         isEnabled: $viewModel.isActionEnabled,
-                        font: Appearance.TextStyle.h2.font.asFont,
+                        font: Appearance.TextStyle.h3.font.asFont,
                         colors: viewModel.actionColor,
                         dimensions: SolidButtonDimension.largeButton) {
                 viewModel.send(action: viewModel.showCodeInput ? .validateCode : .sendPhoneNumber)
