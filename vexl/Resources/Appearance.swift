@@ -118,6 +118,7 @@ struct Appearance {
         case paragraph
         case paragraphBold
         case paragraphMedium
+        case paragraphSmall
         case description
         case descriptionSemibold
         case micro
@@ -133,10 +134,12 @@ struct Appearance {
             case .h3:
                 return UIFont.preferredFont(forTextStyle: .title3, weight: .semibold)
             case .paragraph:
-                return UIFont.preferredFont(forTextStyle: .callout, weight: .regular)
+                return UIFont.preferredFont(forTextStyle: .body, weight: .regular)
             case .paragraphBold:
-                return UIFont.preferredFont(forTextStyle: .callout, weight: .bold)
+                return UIFont.preferredFont(forTextStyle: .body, weight: .bold)
             case .paragraphMedium:
+                return UIFont.preferredFont(forTextStyle: .body, weight: .medium)
+            case .paragraphSmall:
                 return UIFont.preferredFont(forTextStyle: .callout, weight: .medium)
             case .description:
                 return UIFont.preferredFont(forTextStyle: .footnote, weight: .regular)
