@@ -32,7 +32,7 @@ struct ImportContactItemView: View {
 
                 if !item.phone.isEmpty {
                     Text(item.phone)
-                        .textStyle(.descriptionSemibold)
+                        .textStyle(.descriptionBold)
                         .foregroundColor(Appearance.Colors.gray3)
                 }
             }
