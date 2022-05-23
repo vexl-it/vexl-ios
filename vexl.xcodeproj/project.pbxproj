@@ -190,8 +190,8 @@
 		F1B5FCD427C703230018729B /* CardModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B5FCD327C703230018729B /* CardModifier.swift */; };
 		F1B5FCD627C703BF0018729B /* View+.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B5FCD527C703BF0018729B /* View+.swift */; };
 		F1B5FCD827C7040C0018729B /* RoundedCorners.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B5FCD727C7040C0018729B /* RoundedCorners.swift */; };
-		F1BBC7082837254D0067F81B /* Line.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1BBC7072837254D0067F81B /* Line.swift */; };
 		F1BBC7052835C2960067F81B /* ContactsCount.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1BBC7042835C2960067F81B /* ContactsCount.swift */; };
+		F1BBC7082837254D0067F81B /* Line.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1BBC7072837254D0067F81B /* Line.swift */; };
 		F1BBC70E283BE5570067F81B /* TT Satoshi SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = F1BBC70A283BE5570067F81B /* TT Satoshi SemiBold.otf */; };
 		F1BBC70F283BE5570067F81B /* TT Satoshi Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = F1BBC70B283BE5570067F81B /* TT Satoshi Medium.otf */; };
 		F1BBC710283BE5570067F81B /* TT Satoshi Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = F1BBC70C283BE5570067F81B /* TT Satoshi Regular.otf */; };
@@ -435,8 +435,8 @@
 		F1B5FCD327C703230018729B /* CardModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardModifier.swift; sourceTree = "<group>"; };
 		F1B5FCD527C703BF0018729B /* View+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+.swift"; sourceTree = "<group>"; };
 		F1B5FCD727C7040C0018729B /* RoundedCorners.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedCorners.swift; sourceTree = "<group>"; };
-		F1BBC7072837254D0067F81B /* Line.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Line.swift; sourceTree = "<group>"; };
 		F1BBC7042835C2960067F81B /* ContactsCount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsCount.swift; sourceTree = "<group>"; };
+		F1BBC7072837254D0067F81B /* Line.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Line.swift; sourceTree = "<group>"; };
 		F1BBC70A283BE5570067F81B /* TT Satoshi SemiBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "TT Satoshi SemiBold.otf"; sourceTree = "<group>"; };
 		F1BBC70B283BE5570067F81B /* TT Satoshi Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "TT Satoshi Medium.otf"; sourceTree = "<group>"; };
 		F1BBC70C283BE5570067F81B /* TT Satoshi Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "TT Satoshi Regular.otf"; sourceTree = "<group>"; };
@@ -1255,7 +1255,7 @@
 				F1BBC7072837254D0067F81B /* Line.swift */,
 			);
 			path = Lines;
-						sourceTree = "<group>";
+			sourceTree = "<group>";
 		};
 		F1BBC709283BE5430067F81B /* Fonts */ = {
 			isa = PBXGroup;

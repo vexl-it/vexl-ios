@@ -15,59 +15,91 @@ struct MarketplaceFeedDetailView: View {
     let fee: String?
 
     var body: some View {
-        VStack(spacing: 0) {
-            DoubleDetailItem(firstTitle: maxAmount, secondTitle: paymentMethod)
+        HStack {
 
-            Divider()
-                .background(Appearance.Colors.gray4)
-                .padding(.horizontal, Appearance.GridGuide.point)
+            DetailItem(label: "To sell", content: {
+                Text(L.marketplaceDetailUpTo(maxAmount))
+                    .multilineTextAlignment(.center)
+                    .lineLimit(3)
+            })
+                .frame(maxWidth: .infinity)
 
-            if let fee = fee {
-                SingleDetailItem(title: fee)
-            }
+            VLine(color: Appearance.Colors.gray4, width: 1)
+
+            DetailItem(label: "Payment", content: {
+                PaymentIconView(icons: [R.image.marketplace.revolut.name,
+                                        R.image.marketplace.revolut.name])
+            })
+                .frame(maxWidth: .infinity)
+
+            VLine(color: Appearance.Colors.gray4, width: 1)
+
+            DetailItem(label: "Prague", content: {
+                Image(R.image.marketplace.mapPin.name)
+                    .resizable()
+                    .frame(size: Appearance.GridGuide.feedIconSize)
+            })
+                .frame(maxWidth: .infinity)
         }
-        .makeCorneredBorder(color: Appearance.Colors.gray4,
-                            borderWidth: 1,
-                            cornerRadius: Appearance.GridGuide.buttonCorner)
     }
 }
 
 extension MarketplaceFeedDetailView {
-    
-    private struct SingleDetailItem: View {
-        let title: String
+
+    private struct PaymentIconView: View {
+
+        let icons: [String]
 
         var body: some View {
-            Text(title)
-                .textStyle(.paragraphBold)
-                .foregroundColor(Appearance.Colors.primaryText)
-                .padding(Appearance.GridGuide.point)
-                .frame(height: Appearance.GridGuide.feedItemHeight)
+            if icons.count == 1 || icons.count > 3 {
+                Image(icons[0])
+                    .frame(size: Appearance.GridGuide.feedIconSize)
+            } else if icons.count == 2 {
+                HStack(spacing: .zero) {
+                    Image(icons[0])
+                        .resizable()
+                        .frame(size: Appearance.GridGuide.feedMediumIconSize)
+                    Image(icons[1])
+                        .resizable()
+                        .frame(size: Appearance.GridGuide.feedMediumIconSize)
+                }
+            } else if icons.count == 3 {
+                VStack(spacing: .zero) {
+                    Image(icons[0])
+                        .resizable()
+                        .frame(size: Appearance.GridGuide.feedSmallIconSize)
+                    HStack(spacing: .zero) {
+                        Image(icons[1])
+                            .resizable()
+                            .frame(size: Appearance.GridGuide.feedSmallIconSize)
+                        Image(icons[2])
+                            .resizable()
+                            .frame(size: Appearance.GridGuide.feedSmallIconSize)
+                    }
+                }
+            } else {
+                Text(Constants.notAvailable)
+                    .textStyle(.paragraphBold)
+                    .foregroundColor(Appearance.Colors.gray3)
+            }
         }
     }
 
-    private struct DoubleDetailItem: View {
-        let firstTitle: String
-        let secondTitle: String
+    private struct DetailItem<Content: View>: View {
+
+        let label: String
+        let content: () -> Content
 
         var body: some View {
-            HStack {
-                Text(firstTitle)
-                    .textStyle(.paragraph)
-                    .foregroundColor(Appearance.Colors.gray2)
-                    .frame(maxWidth: .infinity)
+            VStack {
+                content()
+                    .frame(maxHeight: .infinity)
 
-                Divider()
-                    .frame(height: Appearance.GridGuide.mediumPadding2)
-                    .background(Appearance.Colors.gray4)
-
-                Text(secondTitle)
-                    .textStyle(.paragraph)
-                    .foregroundColor(Appearance.Colors.gray2)
-                    .frame(maxWidth: .infinity)
+                Text(label)
+                    .textStyle(.descriptionBold)
+                    .foregroundColor(Appearance.Colors.gray3)
+                    .padding(.top, Appearance.GridGuide.point)
             }
-            .padding(Appearance.GridGuide.point)
-            .frame(height: Appearance.GridGuide.feedItemHeight)
         }
     }
 }
@@ -75,9 +107,10 @@ extension MarketplaceFeedDetailView {
 #if DEBUG || DEVEL
 struct MarketplaceFeedDetailViewPreview: PreviewProvider {
     static var previews: some View {
-        MarketplaceFeedDetailView(maxAmount: "up to $10k",
+        MarketplaceFeedDetailView(maxAmount: "$10k",
                                   paymentMethod: "Revolut",
                                   fee: "Wants $30 fee per transaction")
+            .frame(height: 100)
             .previewDevice("iPhone 11")
     }
 }

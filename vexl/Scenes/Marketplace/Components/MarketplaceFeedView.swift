@@ -22,7 +22,6 @@ struct MarketplaceFeedView: View {
                 .foregroundColor(Appearance.Colors.primaryText)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.top, Appearance.GridGuide.mediumPadding1)
-                
 
             MarketplaceFeedDetailView(maxAmount: data.amount,
                                       paymentMethod: data.paymentMethodDisplayValue,
@@ -39,7 +38,7 @@ struct MarketplaceFeedView: View {
                 .padding(.bottom, Appearance.GridGuide.padding)
             }
         }
-        .padding(.horizontal, Appearance.GridGuide.padding)
+        .padding(.horizontal, Appearance.GridGuide.mediumPadding1)
         .background(Appearance.Colors.whiteText)
         .cornerRadius(Appearance.GridGuide.buttonCorner)
     }
@@ -70,7 +69,7 @@ struct MarketplaceFeedViewViewPreview: PreviewProvider {
                                            title: "I’ll be wearing a red hat, Don’t text me before 9am — I love to sleep...",
                                            isRequested: false,
                                            location: "Prague",
-                                           amount: "$10k - $20k",
+                                           amount: "$10k",
                                            paymentMethods: ["Revolut"],
                                            fee: nil)
         MarketplaceFeedView(data: data,
@@ -79,7 +78,7 @@ struct MarketplaceFeedViewViewPreview: PreviewProvider {
             .frame(maxWidth: .infinity,
                    maxHeight: .infinity)
             .background(Color.black)
-        
+
         MarketplaceFeedView(data: data,
                             displayFooter: true)
             .previewDevice("iPhone 11")

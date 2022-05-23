@@ -73,6 +73,9 @@ struct Appearance {
         static let iconSize = CGSize(width: 24, height: 24)
         static let mediumIconSize = CGSize(width: 48, height: 48)
         static let thumbSize = CGSize(width: 38, height: 38)
+        static let feedIconSize = CGSize(width: 32, height: 32)
+        static let feedMediumIconSize = CGSize(width: 20, height: 20)
+        static let feedSmallIconSize = CGSize(width: 16, height: 16)
 
         // MARK: Other
 

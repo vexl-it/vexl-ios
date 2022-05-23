@@ -97,9 +97,9 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
                 let offerKeys = owner.userOfferKeys?.keys ?? []
 
                 for offer in offers {
-                    guard !offerKeys.contains(where: { $0.publicKey == offer.offerPublicKey }) else {
-                        continue
-                    }
+//                    guard !offerKeys.contains(where: { $0.publicKey == offer.offerPublicKey }) else {
+//                        continue
+//                    }
 
                     let marketplaceItem = Self.mapToMarketplaceFeed(usingOffer: offer)
                     switch offer.type {
@@ -141,7 +141,7 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
                                        title: offer.description,
                                        isRequested: false,
                                        location: L.offerSellNoLocation(),
-                                       amount: "\(currencySymbol)\(offer.minAmount) - \(currencySymbol)\(offer.maxAmount)",
+                                       amount: "\(offer.maxAmount)\(currencySymbol)",
                                        paymentMethods: offer.paymentMethods.map(\.title),
                                        fee: offer.feeAmount > 0 ? "\(offer.feeAmount)%" : nil)
     }
