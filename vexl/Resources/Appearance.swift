@@ -119,36 +119,45 @@ struct Appearance {
         case h1
         case h2
         case h3
+        case title
+        case titleSmall
         case paragraph
         case paragraphBold
         case paragraphMedium
         case paragraphSmall
+        case paragraphSmallBold
         case description
-        case descriptionSemibold
+        case descriptionBold
         case micro
 
         var font: UIFont {
             switch self {
             case .h1:
-                return UIFont.systemFont(ofSize: 54, weight: .bold)
+                return R.font.ppMonumentExtendedBold(size: 40) ?? UIFont.systemFont(ofSize: 40, weight: .bold)
             case .h2:
-                return UIFont.preferredFont(forTextStyle: .largeTitle, weight: .bold)
+                return R.font.ppMonumentExtendedBold(size: 32) ?? UIFont.systemFont(ofSize: 32, weight: .bold)
             case .h3:
-                return UIFont.preferredFont(forTextStyle: .title2, weight: .semibold)
+                return R.font.ppMonumentExtendedBold(size: 24) ?? UIFont.systemFont(ofSize: 24, weight: .bold)
+            case .title:
+                return R.font.ttSatoshiRegular(size: 24) ?? UIFont.systemFont(ofSize: 24, weight: .medium)
+            case .titleSmall:
+                return R.font.ttSatoshiRegular(size: 20) ?? UIFont.systemFont(ofSize: 20, weight: .medium)
             case .paragraph:
-                return UIFont.preferredFont(forTextStyle: .body, weight: .regular)
+                return R.font.ttSatoshiRegular(size: 18) ?? UIFont.systemFont(ofSize: 18, weight: .regular)
             case .paragraphBold:
-                return UIFont.preferredFont(forTextStyle: .body, weight: .bold)
+                return R.font.ttSatoshiBold(size: 18) ?? UIFont.systemFont(ofSize: 18, weight: .bold)
             case .paragraphMedium:
-                return UIFont.preferredFont(forTextStyle: .body, weight: .medium)
+                return R.font.ttSatoshiMedium(size: 18) ?? UIFont.systemFont(ofSize: 18, weight: .medium)
             case .paragraphSmall:
-                return UIFont.preferredFont(forTextStyle: .callout, weight: .medium)
+                return R.font.ttSatoshiMedium(size: 16) ?? UIFont.systemFont(ofSize: 16, weight: .medium)
+            case .paragraphSmallBold:
+                return R.font.ttSatoshiBold(size: 16) ?? UIFont.systemFont(ofSize: 16, weight: .bold)
             case .description:
-                return UIFont.preferredFont(forTextStyle: .footnote, weight: .regular)
-            case .descriptionSemibold:
-                return UIFont.preferredFont(forTextStyle: .footnote, weight: .semibold)
+                return R.font.ttSatoshiRegular(size: 14) ?? UIFont.systemFont(ofSize: 14, weight: .regular)
+            case .descriptionBold:
+                return R.font.ttSatoshiBold(size: 14) ?? UIFont.systemFont(ofSize: 14, weight: .bold)
             case .micro:
-                return UIFont.preferredFont(forTextStyle: .caption1, weight: .regular)
+                return R.font.ttSatoshiRegular(size: 12) ?? UIFont.systemFont(ofSize: 12, weight: .regular)
             }
         }
     }

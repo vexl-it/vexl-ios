@@ -11,6 +11,8 @@ import Combine
 
 final class HomeTabBarCoordinator: BaseCoordinator<Void> {
 
+    @Inject var authenticationManager: AuthenticationManagerType
+
     private let tabBarController: HomeTabBarController
     private let window: UIWindow
     private let tabs: [HomeTab] = [.marketplace, .chat, .profile]
@@ -40,7 +42,12 @@ final class HomeTabBarCoordinator: BaseCoordinator<Void> {
             completion: nil
         )
 
-        return Empty(completeImmediately: false)
+        let logout = authenticationManager.authenticationStatePublisher
+            .removeDuplicates()
+            .filter { $0 == .signedOut }
+            .asVoid()
+
+        return logout
             .eraseToAnyPublisher()
     }
 

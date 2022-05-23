@@ -52,7 +52,7 @@ struct OfferLocationPickerView: View {
             Image(systemName: "plus")
 
             Text(L.offerCreateLocationAdd())
-                .textStyle(.descriptionSemibold)
+                .textStyle(.descriptionBold)
         }
         .foregroundColor(Appearance.Colors.gray3)
         .padding(Appearance.GridGuide.padding)

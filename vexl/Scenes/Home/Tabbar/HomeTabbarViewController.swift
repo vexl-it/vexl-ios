@@ -25,7 +25,7 @@ enum HomeTab {
     }
 }
 
-class HomeTabBarController: UITabBarController {
+final class HomeTabBarController: UITabBarController {
 
     private lazy var homeTabBarView: HomeTabBarView = {
         let tabBar = HomeTabBarView()

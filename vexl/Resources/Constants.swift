@@ -63,4 +63,6 @@ struct Constants {
     static let currencySymbol = "$"
 
     static let pageMaxLimit = 1_000
+    
+    static let notAvailable = "N/A"
 }

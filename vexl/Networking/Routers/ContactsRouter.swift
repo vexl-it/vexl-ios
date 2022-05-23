@@ -14,14 +14,18 @@ enum ContactsRouter: ApiRouter {
     case getFacebookContacts(id: String, accessToken: String)
     case getAvailableFacebookContacts(id: String, accessToken: String)
     case createUser(useFacebookHeader: Bool)
+    case deleteUser
     case getContacts(useFacebookHeader: Bool, friendLevel: ContactFriendLevel, pageLimit: Int?)
+    case countPhoneContacts
 
     var method: HTTPMethod {
         switch self {
-        case .getFacebookContacts, .getAvailableFacebookContacts, .getContacts:
+        case .getFacebookContacts, .getAvailableFacebookContacts, .getContacts, .countPhoneContacts:
             return .get
         case .createUser, .importContacts, .getAvailableContacts:
             return .post
+        case .deleteUser:
+            return .delete
         }
     }
 
@@ -29,7 +33,7 @@ enum ContactsRouter: ApiRouter {
         switch self {
         case .getFacebookContacts, .getAvailableFacebookContacts:
             return facebookSecurityHeader
-        case .importContacts, .getAvailableContacts:
+        case .importContacts, .getAvailableContacts, .deleteUser, .countPhoneContacts:
             return securityHeader
         case let .createUser(useFacebookHeader):
             return useFacebookHeader ? facebookSecurityHeader : securityHeader
@@ -52,12 +56,16 @@ enum ContactsRouter: ApiRouter {
             return "facebook/\(id)/token/\(accessToken)/not-imported"
         case .getContacts:
             return "contacts/me"
+        case .deleteUser:
+            return "users/me"
+        case .countPhoneContacts:
+            return "contacts/count"
         }
     }
 
     var parameters: Parameters {
         switch self {
-        case .getFacebookContacts, .getAvailableFacebookContacts:
+        case .getFacebookContacts, .getAvailableFacebookContacts, .deleteUser, .countPhoneContacts:
             return [:]
         case .createUser:
             return [:]
