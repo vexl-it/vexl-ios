@@ -1,5 +1,5 @@
 //
-//  OfferRangePickerView.swift
+//  RangePickerView.swift
 //  vexl
 //
 //  Created by Diego Espinoza on 21/04/22.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct OfferRangePickerView: View {
+struct RangePickerView: View {
 
     let currencySymbol: String
     let currentValue: Binding<ClosedRange<Int>>
@@ -152,11 +152,11 @@ struct OfferRangePickerView: View {
 }
 
 #if DEBUG || DEVEL
-struct OfferRangePickerViewPreview: PreviewProvider {
+struct RangePickerViewPreview: PreviewProvider {
     static var previews: some View {
-        OfferRangePickerView(currencySymbol: "$",
-                             currentValue: .constant(3...8),
-                             sliderBounds: 1...10)
+        RangePickerView(currencySymbol: "$",
+                        currentValue: .constant(3...8),
+                        sliderBounds: 1...10)
             .frame(height: 200)
             .previewDevice("iPhone 11")
             .background(Color.black)

@@ -33,9 +33,9 @@ struct CreateOfferView: View {
                         .padding(.horizontal, Appearance.GridGuide.point)
                         .padding(.bottom, Appearance.GridGuide.largePadding1)
 
-                    OfferRangePickerView(currencySymbol: viewModel.currencySymbol,
-                                         currentValue: $viewModel.currentAmountRange,
-                                         sliderBounds: viewModel.amountRange)
+                    RangePickerView(currencySymbol: viewModel.currencySymbol,
+                                    currentValue: $viewModel.currentAmountRange,
+                                    sliderBounds: viewModel.amountRange)
                         .padding(.horizontal, Appearance.GridGuide.point)
 
                     OfferFeePickerView(feeLabel: "\(viewModel.feeValue)%",
