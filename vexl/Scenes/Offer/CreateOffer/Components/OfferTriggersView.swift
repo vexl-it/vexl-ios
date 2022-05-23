@@ -38,7 +38,7 @@ struct OfferTriggersView: View {
                 Image(systemName: "clock")
 
                 Text(L.offerCreateTriggerTitle())
-                    .textStyle(.h2)
+                    .textStyle(.h3)
 
                 Spacer()
 
@@ -82,11 +82,11 @@ struct OfferTriggersView: View {
 
                     HStack(spacing: Appearance.GridGuide.tinyPadding) {
                         Text(currency)
-                            .textStyle(.h2)
+                            .textStyle(.h3)
                             .foregroundColor(Appearance.Colors.green5)
 
                         TextField("", text: $amount)
-                            .textStyle(.h2)
+                            .textStyle(.h3)
                             .foregroundColor(Appearance.Colors.green5)
                             .keyboardType(.numberPad)
                     }

@@ -21,7 +21,7 @@ struct RequestAccessContactsView: View {
 
             Text(viewModel.title)
                 .multilineTextAlignment(.center)
-                .textStyle(.h1)
+                .textStyle(.h2)
                 .foregroundColor(.white)
 
             Spacer()
@@ -30,7 +30,7 @@ struct RequestAccessContactsView: View {
                 .padding(.bottom, Appearance.GridGuide.mediumPadding1)
 
             SolidButton(Text(viewModel.importButton),
-                        font: Appearance.TextStyle.h2.font.asFont,
+                        font: Appearance.TextStyle.h3.font.asFont,
                         colors: SolidButtonColor.welcome,
                         dimensions: SolidButtonDimension.largeButton) {
                 viewModel.action.send(.next)
@@ -39,7 +39,7 @@ struct RequestAccessContactsView: View {
 
             if viewModel.displaySkipButton {
                 SolidButton(Text(L.registerContactsSkip()),
-                            font: Appearance.TextStyle.h2.font.asFont,
+                            font: Appearance.TextStyle.h3.font.asFont,
                             colors: SolidButtonColor.skip,
                             dimensions: SolidButtonDimension.largeButton) {
                     viewModel.action.send(.skip)

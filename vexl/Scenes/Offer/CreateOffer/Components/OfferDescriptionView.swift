@@ -14,7 +14,7 @@ struct OfferDescriptionView: View {
     var body: some View {
         VStack(alignment: .leading) {
             Text(L.offerCreateDescription())
-                .textStyle(.h2)
+                .textStyle(.h3)
                 .foregroundColor(Appearance.Colors.whiteText)
 
             PlaceholderTextField(placeholder: L.offerCreateDescriptionPlaceholder(),

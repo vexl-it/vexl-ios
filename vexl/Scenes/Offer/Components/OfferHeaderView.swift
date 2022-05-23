@@ -16,7 +16,7 @@ struct OfferHeaderView: View {
         VStack {
             HStack(alignment: .bottom) {
                 Text(title)
-                    .textStyle(.largeTitle)
+                    .textStyle(.h1)
                     .foregroundColor(Appearance.Colors.whiteText)
 
                 Spacer()

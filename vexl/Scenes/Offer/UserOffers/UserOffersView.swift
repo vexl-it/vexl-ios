@@ -45,7 +45,7 @@ struct UserOffersView: View {
             Image(systemName: "plus")
 
             Text(viewModel.createOfferTitle)
-                .textStyle(.descriptionSemibold)
+                .textStyle(.descriptionBold)
         }
         .foregroundColor(Appearance.Colors.green5)
         .padding(Appearance.GridGuide.padding)

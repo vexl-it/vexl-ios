@@ -19,7 +19,7 @@ struct ImportContactsView: View {
                 .padding(.vertical, Appearance.GridGuide.padding)
 
             SolidButton(Text(viewModel.actionTitle),
-                        font: Appearance.TextStyle.h2.font.asFont,
+                        font: Appearance.TextStyle.h3.font.asFont,
                         colors: viewModel.currentState == .success ? SolidButtonColor.success : SolidButtonColor.welcome,
                         dimensions: SolidButtonDimension.largeButton) {
                 viewModel.action.send(.importContacts)

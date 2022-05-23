@@ -43,8 +43,8 @@
 	</dict>
 	<key>NSContactsUsageDescription</key>
 	<string>Vexl wants to access your contacts in order to work.</string>
-    <key>NSCameraUsageDescription</key>
-    <string>Vexl wants to access your camera in order to select a photo for your avatar.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Vexl wants to access your camera in order to select a photo for your avatar.</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
@@ -81,7 +81,15 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-    <key>UIUserInterfaceStyle</key>
-    <string>Light</string>
+	<key>UIAppFonts</key>
+	<array>
+		<string>PPMonumentExtended-Bold.otf</string>
+		<string>TT Satoshi SemiBold.otf</string>
+		<string>TT Satoshi Medium.otf</string>
+		<string>TT Satoshi Regular.otf</string>
+		<string>TT Satoshi Bold.otf</string>
+	</array>
+	<key>UIUserInterfaceStyle</key>
+	<string>Light</string>
 </dict>
 </plist>

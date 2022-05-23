@@ -191,6 +191,11 @@
 		F1B5FCD627C703BF0018729B /* View+.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B5FCD527C703BF0018729B /* View+.swift */; };
 		F1B5FCD827C7040C0018729B /* RoundedCorners.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B5FCD727C7040C0018729B /* RoundedCorners.swift */; };
 		F1BBC7052835C2960067F81B /* ContactsCount.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1BBC7042835C2960067F81B /* ContactsCount.swift */; };
+		F1BBC70E283BE5570067F81B /* TT Satoshi SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = F1BBC70A283BE5570067F81B /* TT Satoshi SemiBold.otf */; };
+		F1BBC70F283BE5570067F81B /* TT Satoshi Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = F1BBC70B283BE5570067F81B /* TT Satoshi Medium.otf */; };
+		F1BBC710283BE5570067F81B /* TT Satoshi Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = F1BBC70C283BE5570067F81B /* TT Satoshi Regular.otf */; };
+		F1BBC711283BE5570067F81B /* TT Satoshi Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = F1BBC70D283BE5570067F81B /* TT Satoshi Bold.otf */; };
+		F1BBC713283BE55F0067F81B /* PPMonumentExtended-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = F1BBC712283BE55F0067F81B /* PPMonumentExtended-Bold.otf */; };
 		F1BFA8D027FB31E800F4E745 /* FacebookUserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1BFA8CF27FB31E800F4E745 /* FacebookUserData.swift */; };
 		F1BFA8D727FFB2AC00F4E745 /* ImagePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1BFA8D627FFB2AC00F4E745 /* ImagePickerView.swift */; };
 		F1BFA956280223BD00F4E745 /* UserProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1BFA952280223BD00F4E745 /* UserProfileView.swift */; };
@@ -431,6 +436,11 @@
 		F1B5FCD527C703BF0018729B /* View+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+.swift"; sourceTree = "<group>"; };
 		F1B5FCD727C7040C0018729B /* RoundedCorners.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedCorners.swift; sourceTree = "<group>"; };
 		F1BBC7042835C2960067F81B /* ContactsCount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsCount.swift; sourceTree = "<group>"; };
+		F1BBC70A283BE5570067F81B /* TT Satoshi SemiBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "TT Satoshi SemiBold.otf"; sourceTree = "<group>"; };
+		F1BBC70B283BE5570067F81B /* TT Satoshi Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "TT Satoshi Medium.otf"; sourceTree = "<group>"; };
+		F1BBC70C283BE5570067F81B /* TT Satoshi Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "TT Satoshi Regular.otf"; sourceTree = "<group>"; };
+		F1BBC70D283BE5570067F81B /* TT Satoshi Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "TT Satoshi Bold.otf"; sourceTree = "<group>"; };
+		F1BBC712283BE55F0067F81B /* PPMonumentExtended-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "PPMonumentExtended-Bold.otf"; sourceTree = "<group>"; };
 		F1BFA8CF27FB31E800F4E745 /* FacebookUserData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookUserData.swift; sourceTree = "<group>"; };
 		F1BFA8D627FFB2AC00F4E745 /* ImagePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerView.swift; sourceTree = "<group>"; };
 		F1BFA952280223BD00F4E745 /* UserProfileView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfileView.swift; sourceTree = "<group>"; };
@@ -717,6 +727,7 @@
 		B08F38FE27AE7110008B344F /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				F1BBC709283BE5430067F81B /* Fonts */,
 				B0ACC96A2831551100DFCBC3 /* vexl-crypto.xcframework */,
 				F1B5FCC427C6C0720018729B /* Generic.strings */,
 				F1B5FCC127C6BC330018729B /* Localizable.strings */,
@@ -1238,6 +1249,18 @@
 			path = Modifiers;
 			sourceTree = "<group>";
 		};
+		F1BBC709283BE5430067F81B /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				F1BBC712283BE55F0067F81B /* PPMonumentExtended-Bold.otf */,
+				F1BBC70D283BE5570067F81B /* TT Satoshi Bold.otf */,
+				F1BBC70A283BE5570067F81B /* TT Satoshi SemiBold.otf */,
+				F1BBC70B283BE5570067F81B /* TT Satoshi Medium.otf */,
+				F1BBC70C283BE5570067F81B /* TT Satoshi Regular.otf */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
 		F1BFA951280223BD00F4E745 /* Profile */ = {
 			isa = PBXGroup;
 			children = (
@@ -1399,8 +1422,13 @@
 			files = (
 				F1B5FCC527C6C0720018729B /* Generic.strings in Resources */,
 				B08F390327AE7110008B344F /* LaunchScreen.storyboard in Resources */,
+				F1BBC70F283BE5570067F81B /* TT Satoshi Medium.otf in Resources */,
+				F1BBC710283BE5570067F81B /* TT Satoshi Regular.otf in Resources */,
+				F1BBC713283BE55F0067F81B /* PPMonumentExtended-Bold.otf in Resources */,
 				F1B5FCC327C6BC330018729B /* Localizable.strings in Resources */,
 				B08F390F27AE7112008B344F /* Assets.xcassets in Resources */,
+				F1BBC711283BE5570067F81B /* TT Satoshi Bold.otf in Resources */,
+				F1BBC70E283BE5570067F81B /* TT Satoshi SemiBold.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
