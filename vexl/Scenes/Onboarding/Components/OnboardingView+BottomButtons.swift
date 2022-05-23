@@ -22,7 +22,7 @@ extension OnboardingView {
                                 .padding(.horizontal,
                                          Appearance.GridGuide.mediumPadding1),
                             fullWidth: false,
-                            font: Appearance.TextStyle.h3.font.asFont,
+                            font: Appearance.TextStyle.h2.font.asFont,
                             colors: SolidButtonColor.skip,
                             dimensions: SolidButtonDimension.largeButton,
                             action: {
@@ -31,7 +31,7 @@ extension OnboardingView {
 
                 SolidButton(Text(nextTitle),
                             isEnabled: .constant(true),
-                            font: Appearance.TextStyle.h3.font.asFont,
+                            font: Appearance.TextStyle.h2.font.asFont,
                             colors: SolidButtonColor.welcome,
                             dimensions: SolidButtonDimension.largeButton,
                             action: {

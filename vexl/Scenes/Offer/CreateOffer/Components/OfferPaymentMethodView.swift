@@ -20,7 +20,7 @@ struct OfferPaymentMethodView: View {
                 Image(systemName: "creditcard")
 
                 Text(L.offerCreatePaymentMethodTitle())
-                    .textStyle(.h3)
+                    .textStyle(.h2)
             }
             .foregroundColor(Appearance.Colors.whiteText)
 

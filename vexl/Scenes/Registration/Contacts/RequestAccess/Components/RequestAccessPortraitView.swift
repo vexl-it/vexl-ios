@@ -54,7 +54,7 @@ private struct SinglePortraitView: View {
             .padding(Appearance.GridGuide.point * 0.5)
 
             Text(name)
-                .textStyle(.h3)
+                .textStyle(.h2)
                 .foregroundColor(textColor)
                 .padding(.bottom, Appearance.GridGuide.point)
         }

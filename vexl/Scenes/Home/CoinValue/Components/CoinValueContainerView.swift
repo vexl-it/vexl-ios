@@ -62,7 +62,7 @@ final class CoinValueContainerView: UIView {
 
     private func setupViews() {
         minigraphView.image = R.image.profile.graph()
-        valueLabel.font = Appearance.TextStyle.h2.font
+        valueLabel.font = Appearance.TextStyle.h1.font
         valueLabel.textColor = R.color.green5()
         valueLabel.textAlignment = .right
         valueLabel.adjustsFontSizeToFitWidth = true

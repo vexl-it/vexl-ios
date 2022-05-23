@@ -15,17 +15,19 @@ struct MarketplaceFeedView: View {
     let displayFooter: Bool
 
     var body: some View {
-        VStack(spacing: Appearance.GridGuide.padding) {
+        VStack(spacing: Appearance.GridGuide.mediumPadding1) {
             Text(data.title)
-                .textStyle(.paragraph)
+                .textStyle(.h3)
+                .multilineTextAlignment(.leading)
                 .foregroundColor(Appearance.Colors.primaryText)
-                .padding([.horizontal, .top], Appearance.GridGuide.mediumPadding1)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.top, Appearance.GridGuide.mediumPadding1)
+                
 
             MarketplaceFeedDetailView(maxAmount: data.amount,
                                       paymentMethod: data.paymentMethodDisplayValue,
                                       fee: data.fee)
-                .padding(displayFooter ? [.horizontal] : [.horizontal, .bottom],
-                         Appearance.GridGuide.padding)
+                .padding(.bottom, displayFooter ? 0 : Appearance.GridGuide.padding)
 
             if displayFooter {
                 // TODO: - set contact type from viewmodel + real action
@@ -34,9 +36,10 @@ struct MarketplaceFeedView: View {
                                           location: data.location) {
                     print("facebook")
                 }
-                .padding([.horizontal, .bottom], Appearance.GridGuide.padding)
+                .padding(.bottom, Appearance.GridGuide.padding)
             }
         }
+        .padding(.horizontal, Appearance.GridGuide.padding)
         .background(Appearance.Colors.whiteText)
         .cornerRadius(Appearance.GridGuide.buttonCorner)
     }
@@ -72,6 +75,13 @@ struct MarketplaceFeedViewViewPreview: PreviewProvider {
                                            fee: nil)
         MarketplaceFeedView(data: data,
                             displayFooter: false)
+            .previewDevice("iPhone 11")
+            .frame(maxWidth: .infinity,
+                   maxHeight: .infinity)
+            .background(Color.black)
+        
+        MarketplaceFeedView(data: data,
+                            displayFooter: true)
             .previewDevice("iPhone 11")
             .frame(maxWidth: .infinity,
                    maxHeight: .infinity)

@@ -34,6 +34,8 @@ struct MarketplaceFeedDetailView: View {
 
 extension MarketplaceFeedDetailView {
 
+    private struct 
+    
     private struct SingleDetailItem: View {
         let title: String
 

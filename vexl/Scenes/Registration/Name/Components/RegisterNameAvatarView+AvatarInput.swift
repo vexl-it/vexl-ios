@@ -31,7 +31,7 @@ extension RegisterNameAvatarView {
 
                 Text(L.registerNameAvatarImageHeader(name))
                     .foregroundColor(Appearance.Colors.purple4)
-                    .textStyle(.h2)
+                    .textStyle(.h1)
             }
         }
 
