@@ -27,7 +27,7 @@ struct OfferRangePickerView: View {
                 Image(systemName: "plus.forwardslash.minus")
 
                 Text(L.offerCreateStatusAmountTitle())
-                    .textStyle(.h3)
+                    .textStyle(.h2)
             }
             .foregroundColor(Appearance.Colors.whiteText)
 

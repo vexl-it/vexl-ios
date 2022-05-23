@@ -24,7 +24,7 @@ extension RegisterPhoneView {
 
         private var phoneInputView: some View {
             PhoneNumberTextFieldView(placeholder: "",
-                                     font: Appearance.TextStyle.h3.font,
+                                     font: Appearance.TextStyle.h2.font,
                                      text: $phoneNumber)
                 .foregroundColor(Appearance.Colors.primaryText)
                 .keyboardType(.phonePad)

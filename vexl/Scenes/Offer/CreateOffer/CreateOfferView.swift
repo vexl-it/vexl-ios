@@ -70,7 +70,7 @@ struct CreateOfferView: View {
                                              Appearance.GridGuide.mediumPadding1),
                                 isEnabled: .constant(viewModel.isCreateEnabled),
                                 fullWidth: true,
-                                font: Appearance.TextStyle.h3.font.asFont,
+                                font: Appearance.TextStyle.h2.font.asFont,
                                 colors: SolidButtonColor.welcome,
                                 dimensions: SolidButtonDimension.largeButton,
                                 action: {

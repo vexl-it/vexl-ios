@@ -111,6 +111,7 @@ struct Appearance {
     // MARK: - Fonts
 
     enum TextStyle {
+        case largeTitle
         case h1
         case h2
         case h3
@@ -123,12 +124,14 @@ struct Appearance {
 
         var font: UIFont {
             switch self {
-            case .h1:
+            case .largeTitle:
                 return UIFont.systemFont(ofSize: 54, weight: .bold)
-            case .h2:
+            case .h1:
                 return UIFont.preferredFont(forTextStyle: .largeTitle, weight: .bold)
-            case .h3:
+            case .h2:
                 return UIFont.preferredFont(forTextStyle: .title2, weight: .semibold)
+            case .h3:
+                return UIFont.preferredFont(forTextStyle: .title3, weight: .semibold)
             case .paragraph:
                 return UIFont.preferredFont(forTextStyle: .callout, weight: .regular)
             case .paragraphBold:

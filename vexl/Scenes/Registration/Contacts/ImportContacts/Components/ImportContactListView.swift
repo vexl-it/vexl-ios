@@ -27,7 +27,7 @@ struct ImportContactListView: View {
             case .empty:
                 Text(L.registerContactsImportEmpty())
                     .foregroundColor(Appearance.Colors.primaryText)
-                    .textStyle(.h3)
+                    .textStyle(.h2)
             case .loading:
                 EmptyView()
             case .content, .success:

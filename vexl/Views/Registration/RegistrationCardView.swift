@@ -65,7 +65,7 @@ private struct RegistrationCardTitleView: View {
         VStack(alignment: .leading,
                spacing: Appearance.GridGuide.point) {
             Text(title)
-                .textStyle(.h2)
+                .textStyle(.h1)
                 .foregroundColor(Appearance.Colors.primaryText)
 
             HStack {

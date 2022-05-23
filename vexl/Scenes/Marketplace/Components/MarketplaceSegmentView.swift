@@ -23,7 +23,7 @@ struct MarketplaceSegmentView: View {
                     selectedOption = .buy
                 } label: {
                     Text(L.marketplaceBuy())
-                        .textStyle(.h1)
+                        .textStyle(.largeTitle)
                         .foregroundColor(selectedOption == .buy ? Appearance.Colors.whiteText : Appearance.Colors.gray1)
                 }
                 .frame(maxWidth: .infinity)
@@ -32,7 +32,7 @@ struct MarketplaceSegmentView: View {
                     selectedOption = .sell
                 } label: {
                     Text(L.marketplaceSell())
-                        .textStyle(.h1)
+                        .textStyle(.largeTitle)
                         .foregroundColor(selectedOption == .sell ? Appearance.Colors.whiteText : Appearance.Colors.gray1)
                 }
                 .frame(maxWidth: .infinity)
