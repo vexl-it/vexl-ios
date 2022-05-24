@@ -27,8 +27,8 @@ struct MarketplaceFilterView: View {
             Spacer()
 
             Button(action: mainAction, label: {
-                Text(actionTitle)
-                    .textStyle(.description)
+                Image(systemName: "plus")
+                    .frame(size: Appearance.GridGuide.iconSize)
             })
             .textStyle(.paragraphBold)
             .foregroundColor(Appearance.Colors.yellow100)
