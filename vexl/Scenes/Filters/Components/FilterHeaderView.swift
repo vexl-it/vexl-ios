@@ -33,7 +33,7 @@ struct FilterHeaderView: View {
         VStack {
             Group {
                 Text(filterType)
-                    .textStyle(.h3)
+                    .textStyle(.titleSmallBold)
                     .foregroundColor(Appearance.Colors.green1)
                 Text(L.filterTitle())
                     .textStyle(.h2)
@@ -48,7 +48,7 @@ struct FilterHeaderView: View {
             Image(systemName: "arrow.clockwise")
                 .rotationEffect(.degrees(90))
                 .foregroundColor(Appearance.Colors.whiteText)
-                .frame(size: .init(width: 40, height: 40))
+                .frame(size: Appearance.GridGuide.baseSize)
         })
         .background(
             RoundedRectangle(cornerRadius: 4)
@@ -60,7 +60,7 @@ struct FilterHeaderView: View {
         Button(action: closeAction, label: {
             Image(systemName: "xmark")
                 .foregroundColor(Appearance.Colors.whiteText)
-                .frame(size: .init(width: 40, height: 40))
+                .frame(size: Appearance.GridGuide.baseSize)
         })
         .background(
             RoundedRectangle(cornerRadius: 4)

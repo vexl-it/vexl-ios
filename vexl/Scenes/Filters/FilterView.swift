@@ -9,58 +9,26 @@ import SwiftUI
 import Cleevio
 
 struct FilterView: View {
-    enum UIProperties {
-        static let mainButtonHeight: CGFloat = 40
-    }
-
     @ObservedObject var viewModel: FilterViewModel
 
     private var scrollViewBottomPadding: CGFloat {
-        UIProperties.mainButtonHeight + Appearance.GridGuide.padding * 2
+        Appearance.GridGuide.baseHeight + Appearance.GridGuide.padding * 2
     }
 
     var body: some View {
         ZStack(alignment: .bottom) {
-            ScrollView(showsIndicators: false) {
-                VStack(spacing: Appearance.GridGuide.padding) {
-                    FilterHeaderView(
-                        filterType: viewModel.filterType,
-                        resetAction: { viewModel.send(action: .resetFilter) },
-                        closeAction: { viewModel.send(action: .dismissTap) }
-                    )
+            VStack(spacing: 0) {
+                FilterHeaderView(
+                    filterType: viewModel.filterType,
+                    resetAction: { viewModel.send(action: .resetFilter) },
+                    closeAction: { viewModel.send(action: .dismissTap) }
+                )
 
-                    Group {
-                        amount
-
-                        OfferLocationPickerView(
-                            items: viewModel.locations,
-                            addLocation: { viewModel.send(action: .addLocation) },
-                            deleteLocation: { id in
-                                viewModel.send(action: .deleteLocation(id: id))
-                            }
-                        )
-
-                        OfferPaymentMethodView(
-                            selectedOptions: $viewModel.selectedPaymentMethodOptions
-                        )
-
-                        Divider()
-                            .background(Appearance.Colors.gray4)
-                            .padding(.top, Appearance.GridGuide.padding)
-
-                        OfferAdvancedFilterView(
-                            selectedTypeOptions: $viewModel.selectedBTCOptions,
-                            selectedFriendSourceOptions: $viewModel.selectedFriendSources,
-                            selectedFriendDegreeOption: $viewModel.selectedFriendDegreeOption
-                        )
-                    }
-                    .padding(.horizontal, Appearance.GridGuide.padding)
-                }
-                .padding(.bottom, scrollViewBottomPadding)
+                scrollableContent
             }
 
             SolidButton(Text(L.filterApply()),
-                        font: Appearance.TextStyle.h3.font.asFont,
+                        font: Appearance.TextStyle.titleSmallBold.font.asFont,
                         colors: SolidButtonColor.welcome,
                         dimensions: SolidButtonDimension.largeButton,
                         action: {
@@ -71,16 +39,50 @@ struct FilterView: View {
         .background(Color.black.edgesIgnoringSafeArea(.all))
     }
 
+    private var scrollableContent: some View {
+        ScrollView(showsIndicators: false) {
+            VStack(spacing: Appearance.GridGuide.padding) {
+                Group {
+                    amount
+
+                    OfferLocationPickerView(
+                        items: viewModel.locations,
+                        addLocation: { viewModel.send(action: .addLocation) },
+                        deleteLocation: { id in
+                            viewModel.send(action: .deleteLocation(id: id))
+                        }
+                    )
+
+                    OfferPaymentMethodView(
+                        selectedOptions: $viewModel.selectedPaymentMethodOptions
+                    )
+
+                    Divider()
+                        .background(Appearance.Colors.gray4)
+                        .padding(.top, Appearance.GridGuide.padding)
+
+                    OfferAdvancedFilterView(
+                        selectedTypeOptions: $viewModel.selectedBTCOptions,
+                        selectedFriendDegreeOption: $viewModel.selectedFriendDegreeOption
+                    )
+                }
+                .padding(.horizontal, Appearance.GridGuide.padding)
+            }
+            .padding(.top, Appearance.GridGuide.padding)
+            .padding(.bottom, scrollViewBottomPadding)
+        }
+    }
+
     private var amount: some View {
         VStack(spacing: Appearance.GridGuide.point) {
             OfferAmountRangeView(
-                currencySymbol: "$",
+                currencySymbol: viewModel.currencySymbol,
                 currentValue: $viewModel.currentAmountRange,
                 sliderBounds: viewModel.amountRange
             )
 
             OfferFeePickerView(
-                feeLabel: "10%", // TODO: handle value updates
+                feeLabel: "\(viewModel.feeValue)%",
                 selectedOption: $viewModel.selectedFeeOption,
                 feeValue: $viewModel.feeAmount
             )

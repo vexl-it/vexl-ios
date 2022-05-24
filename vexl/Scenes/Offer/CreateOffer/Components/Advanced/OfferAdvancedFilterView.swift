@@ -10,7 +10,6 @@ import SwiftUI
 struct OfferAdvancedFilterView: View {
 
     @Binding var selectedTypeOptions: [OfferAdvancedBTCOption]
-    @Binding var selectedFriendSourceOptions: [OfferAdvancedFriendSourceOption]
     @Binding var selectedFriendDegreeOption: OfferAdvancedFriendDegreeOption
 
     @State private var isExpanded = true
@@ -23,7 +22,7 @@ struct OfferAdvancedFilterView: View {
                     .frame(size: Appearance.GridGuide.iconSize)
 
                 Text(L.offerCreateAdvancedTitle())
-                    .textStyle(.h3)
+                    .textStyle(.titleSemiBold)
                     .foregroundColor(Appearance.Colors.whiteText)
 
                 Spacer()
@@ -39,9 +38,6 @@ struct OfferAdvancedFilterView: View {
                 OfferAdvancedFilterBTCNetworkView(selectedOptions: $selectedTypeOptions)
                     .padding(.top, Appearance.GridGuide.padding)
 
-                OfferAdvancedFilterFriendSourceView(selectedOptions: $selectedFriendSourceOptions)
-                    .padding(.top, Appearance.GridGuide.mediumPadding1)
-
                 OfferAdvanceFilterFriendDegreeView(selectedOption: $selectedFriendDegreeOption)
                     .padding(.top, Appearance.GridGuide.mediumPadding1)
             }
@@ -54,7 +50,6 @@ struct OfferAdvancedFilterView: View {
 struct OfferAdvancedFilterViewPreview: PreviewProvider {
     static var previews: some View {
         OfferAdvancedFilterView(selectedTypeOptions: .constant([]),
-                                selectedFriendSourceOptions: .constant([]),
                                 selectedFriendDegreeOption: .constant(.firstDegree))
             .previewDevice("iPhone 11")
             .background(Color.black)

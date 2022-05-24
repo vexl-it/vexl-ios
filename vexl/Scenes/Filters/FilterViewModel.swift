@@ -23,10 +23,14 @@ final class FilterViewModel: ViewModelType, ObservableObject {
 
     let action: ActionSubject<UserAction> = .init()
 
+    // MARK: - Dependencies
+
+    @Inject var offerService: OfferServiceType
+
     // MARK: - View Bindings
 
     @Published var currentAmountRange: ClosedRange<Int>
-    var amountRange: ClosedRange<Int> = 1...10_000 // TODO: get this from BE?
+    @Published var amountRange: ClosedRange<Int> = 0...0
 
     @Published var selectedFeeOption: OfferFeeOption
     @Published var feeAmount: Double
@@ -36,10 +40,15 @@ final class FilterViewModel: ViewModelType, ObservableObject {
     @Published var selectedPaymentMethodOptions: [OfferPaymentMethodOption]
 
     @Published var selectedBTCOptions: [OfferAdvancedBTCOption]
-    @Published var selectedFriendSources: [OfferAdvancedFriendSourceOption]
     @Published var selectedFriendDegreeOption: OfferAdvancedFriendDegreeOption
 
     var filterType: String { offerFilter.type.title }
+    var feeValue: Int {
+        guard selectedFeeOption == .withFee else { return 0 }
+        return Int(((maxFee - minFee) * feeAmount) + minFee)
+    }
+
+    var currencySymbol = Constants.currencySymbol
 
     // MARK: - Coordinator Bindings
 
@@ -53,6 +62,8 @@ final class FilterViewModel: ViewModelType, ObservableObject {
 
     // MARK: - Variables
 
+    private var minFee: Double = 0
+    private var maxFee: Double = 0
     private var offerFilter: OfferFilter
     private let cancelBag: CancelBag = .init()
 
@@ -64,9 +75,27 @@ final class FilterViewModel: ViewModelType, ObservableObject {
         locations = offerFilter.locations
         selectedPaymentMethodOptions = offerFilter.selectedPaymentMethodOptions
         selectedBTCOptions = offerFilter.selectedBTCOptions
-        selectedFriendSources = offerFilter.selectedFriendSources
         selectedFriendDegreeOption = offerFilter.selectedFriendDegreeOption
+
+        setupDataBindings()
         setupBindings()
+    }
+
+    private func setupDataBindings() {
+        offerService
+            .getInitialOfferData()
+            .track(activity: primaryActivity)
+            .materialize()
+            .compactMap(\.value)
+            .withUnretained(self)
+            .sink { owner, data in
+                owner.amountRange = data.minOffer...data.maxOffer
+                owner.currentAmountRange = data.minOffer...data.maxOffer
+                owner.minFee = data.minFee
+                owner.maxFee = data.maxFee
+                owner.currencySymbol = data.currencySymbol
+            }
+            .store(in: cancelBag)
     }
 
     private func setupBindings() {
@@ -92,7 +121,6 @@ final class FilterViewModel: ViewModelType, ObservableObject {
                 owner.offerFilter.locations = owner.locations
                 owner.offerFilter.selectedPaymentMethodOptions = owner.selectedPaymentMethodOptions
                 owner.offerFilter.selectedBTCOptions = owner.selectedBTCOptions
-                owner.offerFilter.selectedFriendSources = owner.selectedFriendSources
                 owner.offerFilter.selectedFriendDegreeOption = owner.selectedFriendDegreeOption
 
                 owner.route.send(.applyFilterTapped(owner.offerFilter))
@@ -130,12 +158,8 @@ final class FilterViewModel: ViewModelType, ObservableObject {
 
         userAction
             .compactMap { action -> Int? in
-                switch action {
-                case let .deleteLocation(id):
-                    return id
-                default:
-                    return nil
-                }
+                if case let .deleteLocation(id) = action { return id }
+                return nil
             }
             .withUnretained(self)
             .sink { owner, id in
@@ -157,7 +181,6 @@ final class FilterViewModel: ViewModelType, ObservableObject {
         locations = []
         selectedPaymentMethodOptions = []
         selectedBTCOptions = []
-        selectedFriendSources = []
         selectedFriendDegreeOption = .firstDegree
         offerFilter.reset(with: currentAmountRange)
     }

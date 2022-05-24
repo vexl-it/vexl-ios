@@ -62,7 +62,6 @@ struct CreateOfferView: View {
 
                     OfferAdvancedFilterView(
                         selectedTypeOptions: $viewModel.selectedBTCOption,
-                        selectedFriendSourceOptions: $viewModel.selectedFriendSources,
                         selectedFriendDegreeOption: $viewModel.selectedFriendDegreeOption
                     )
                     .padding(.top, Appearance.GridGuide.largePadding1)
@@ -73,7 +72,7 @@ struct CreateOfferView: View {
                                              Appearance.GridGuide.mediumPadding1),
                                 isEnabled: .constant(viewModel.isCreateEnabled),
                                 fullWidth: true,
-                                font: Appearance.TextStyle.h3.font.asFont,
+                                font: Appearance.TextStyle.titleSmallBold.font.asFont,
                                 colors: SolidButtonColor.welcome,
                                 dimensions: SolidButtonDimension.largeButton,
                                 action: {

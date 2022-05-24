@@ -59,12 +59,8 @@ final class MarketplaceCoordinator: BaseCoordinator<Void> {
             .route
             .receive(on: RunLoop.main)
             .compactMap { route -> OfferFilter? in
-                switch route {
-                case .showFiltersTapped(let offerFilter):
-                    return offerFilter
-                default:
-                    return nil
-                }
+                if case let .showFiltersTapped(offerFilter) = route { return offerFilter }
+                return nil
             }
             .withUnretained(self)
             .flatMap { owner, filter -> CoordinatingResult<RouterResult<OfferFilter>> in
@@ -72,11 +68,8 @@ final class MarketplaceCoordinator: BaseCoordinator<Void> {
                 return owner.showFilters(router: modalRouter, filter: filter)
             }
             .sink(receiveValue: { result in
-                switch result {
-                case .finished(let filter):
+                if case .finished(let filter) = result {
                     viewModel.applyFilter(filter)
-                default:
-                    break
                 }
             })
             .store(in: cancelBag)

@@ -59,6 +59,7 @@ struct Appearance {
         // MARK: Button
 
         static let baseHeight: CGFloat = 40
+        static let baseSize: CGSize = CGSize(width: 40, height: 40)
         static let largeButtonHeight: CGFloat = 64
 
         // MARK: Avatar
@@ -115,7 +116,11 @@ struct Appearance {
         case h2
         case h3
         case title
+        case titleSemiBold
+        case titleBold
         case titleSmall
+        case titleSmallSemiBold
+        case titleSmallBold
         case paragraph
         case paragraphBold
         case paragraphMedium
@@ -134,9 +139,17 @@ struct Appearance {
             case .h3:
                 return R.font.ppMonumentExtendedBold(size: 24) ?? UIFont.systemFont(ofSize: 24, weight: .bold)
             case .title:
-                return R.font.ttSatoshiRegular(size: 24) ?? UIFont.systemFont(ofSize: 24, weight: .medium)
+                return R.font.ttSatoshiMedium(size: 24) ?? UIFont.systemFont(ofSize: 24, weight: .regular)
+            case .titleSemiBold:
+                return R.font.ttSatoshiDemiBold(size: 24) ?? UIFont.systemFont(ofSize: 24, weight: .semibold)
+            case .titleBold:
+                return R.font.ttSatoshiBold(size: 24) ?? UIFont.systemFont(ofSize: 24, weight: .bold)
             case .titleSmall:
                 return R.font.ttSatoshiRegular(size: 20) ?? UIFont.systemFont(ofSize: 20, weight: .medium)
+            case .titleSmallSemiBold:
+                return R.font.ttSatoshiDemiBold(size: 20) ?? UIFont.systemFont(ofSize: 20, weight: .semibold)
+            case .titleSmallBold:
+                return R.font.ttSatoshiBold(size: 20) ?? UIFont.systemFont(ofSize: 20, weight: .bold)
             case .paragraph:
                 return R.font.ttSatoshiRegular(size: 18) ?? UIFont.systemFont(ofSize: 18, weight: .regular)
             case .paragraphBold:

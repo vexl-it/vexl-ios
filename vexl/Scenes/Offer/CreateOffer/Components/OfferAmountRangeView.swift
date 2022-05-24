@@ -18,7 +18,7 @@ struct OfferAmountRangeView: View {
                 Image(systemName: "plus.forwardslash.minus")
 
                 Text(L.offerCreateStatusAmountTitle())
-                    .textStyle(.h3)
+                    .textStyle(.titleSemiBold)
             }
             .foregroundColor(Appearance.Colors.whiteText)
 

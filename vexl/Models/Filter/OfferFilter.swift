@@ -9,13 +9,12 @@ import Foundation
 
 struct OfferFilter: Equatable {
     let type: OfferType
-    var currentAmountRange: ClosedRange<Int> = 0...100
+    var currentAmountRange: ClosedRange<Int> = 0...0
     var selectedFeeOption: OfferFeeOption = .withoutFee
     var feeAmount: Double = 0
     var locations: [OfferLocationItemData] = []
     var selectedPaymentMethodOptions: [OfferPaymentMethodOption] = []
     var selectedBTCOptions: [OfferAdvancedBTCOption] = []
-    var selectedFriendSources: [OfferAdvancedFriendSourceOption] = []
     var selectedFriendDegreeOption: OfferAdvancedFriendDegreeOption = .firstDegree
 
     mutating func reset(with amountRange: ClosedRange<Int>) {
@@ -25,7 +24,6 @@ struct OfferFilter: Equatable {
         locations = []
         selectedPaymentMethodOptions = []
         selectedBTCOptions = []
-        selectedFriendSources = []
         selectedFriendDegreeOption = .firstDegree
     }
 }

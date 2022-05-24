@@ -36,12 +36,8 @@ final class FilterCoordinator: BaseCoordinator<RouterResult<OfferFilter>> {
         let filterApplied = viewModel
             .route
             .compactMap { route in
-                switch route {
-                case .applyFilterTapped(let filter):
-                    return filter
-                default:
-                    return nil
-                }
+                if case let .applyFilterTapped(filter) = route { return filter }
+                return nil
             }
             .map { RouterResult<OfferFilter>.finished($0) }
 
