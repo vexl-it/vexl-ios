@@ -34,6 +34,10 @@ final class FilterViewModel: ViewModelType, ObservableObject {
 
     @Published var selectedPaymentMethodOptions: [OfferPaymentMethodOption] = []
 
+    @Published var selectedBTCOption: [OfferAdvancedBTCOption] = []
+    @Published var selectedFriendSources: [OfferAdvancedFriendSourceOption] = []
+    @Published var selectedFriendDegreeOption: OfferAdvancedFriendDegreeOption = .firstDegree
+
     // MARK: - Coordinator Bindings
 
     enum Route: Equatable {

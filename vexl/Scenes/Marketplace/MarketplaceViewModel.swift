@@ -51,7 +51,7 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
 
     var buyFilters: [MarketplaceFilterData] {
         let openFilter = MarketplaceFilterData(
-            title: "Aqui",
+            title: "Filter offers",
             action: { [action] in action.send(.showBuyFilters) }
         )
         return [

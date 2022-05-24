@@ -9,8 +9,15 @@ import SwiftUI
 import Cleevio
 
 struct FilterView: View {
+    enum UIProperties {
+        static let mainButtonHeight: CGFloat = 40
+    }
 
     @ObservedObject var viewModel: FilterViewModel
+
+    private var scrollViewBottomPadding: CGFloat {
+        UIProperties.mainButtonHeight + Appearance.GridGuide.padding * 2
+    }
 
     var body: some View {
         ZStack(alignment: .bottom) {
@@ -36,11 +43,17 @@ struct FilterView: View {
                         Divider()
                             .background(Appearance.Colors.gray4)
                             .padding(.top, Appearance.GridGuide.padding)
+
+                        OfferAdvancedFilterView(
+                            selectedTypeOptions: $viewModel.selectedBTCOption,
+                            selectedFriendSourceOptions: $viewModel.selectedFriendSources,
+                            selectedFriendDegreeOption: $viewModel.selectedFriendDegreeOption
+                        )
                     }
                     .padding(.horizontal, Appearance.GridGuide.padding)
                 }
+                .padding(.bottom, scrollViewBottomPadding)
             }
-            .padding(.bottom, 40 + 32)
 
             SolidButton(Text("Apply filter"),
                         font: Appearance.TextStyle.h3.font.asFont,

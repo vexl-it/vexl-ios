@@ -16,23 +16,26 @@ struct OfferAdvanceFilterFriendDegreeView: View {
 
     var body: some View {
         VStack(alignment: .leading) {
-            HStack {
+            Group {
                 Text(L.offerCreateAdvancedFriendLevelTitle())
                     .textStyle(.paragraph)
 
-                Spacer()
-
-                Image(systemName: "arrow.clockwise")
+                Text("Trade with your friends only. \nOr with friends of your friends.")
+                    .textStyle(.micro)
             }
             .foregroundColor(Appearance.Colors.gray3)
 
             SingleOptionPickerView(selectedOption: $selectedOption,
                                    options: options,
                                    content: { option in
-                Text(option.title)
+                Image(option.imageName)
                     .frame(maxWidth: .infinity)
-            },
-                                   action: nil)
+                    .overlay(
+                        Image(systemName: "checkmark.circle.fill")
+                            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+                            .offset(x: -10, y: -10)
+                    )
+            }, action: nil)
         }
     }
 }
@@ -51,13 +54,25 @@ extension OfferAdvanceFilterFriendDegreeView {
             }
         }
 
-        var title: String {
+        var imageName: String {
             switch self {
             case .firstDegree:
-                return L.offerCreateAdvancedFriendLevelFirst()
+                return R.image.offer.firstDegree.name
             case .secondDegree:
-                return L.offerCreateAdvancedFriendLevelSecond()
+                return R.image.offer.secondDegree.name
             }
         }
     }
 }
+
+#if DEBUG || DEVEL
+// swiftlint:disable type_name
+struct OfferAdvanceFilterFriendDegreeViewPreview: PreviewProvider {
+    static var previews: some View {
+        OfferAdvanceFilterFriendDegreeView(
+            selectedOption: .constant(.firstDegree)
+        )
+        .previewDevice("iPhone 11")
+    }
+}
+#endif

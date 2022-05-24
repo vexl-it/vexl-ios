@@ -11,6 +11,7 @@
 		4FBF61DE283BD11C00DDBE71 /* FilterCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FBF61DD283BD11C00DDBE71 /* FilterCoordinator.swift */; };
 		4FBF61E0283BD12700DDBE71 /* FilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FBF61DF283BD12700DDBE71 /* FilterView.swift */; };
 		4FBF61E2283BD12D00DDBE71 /* FilterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FBF61E1283BD12D00DDBE71 /* FilterViewModel.swift */; };
+		4FBF6209283CD5C000DDBE71 /* OfferAdvancedFilterFriendSourceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FBF6208283CD5C000DDBE71 /* OfferAdvancedFilterFriendSourceView.swift */; };
 		4FD8E3DE2821B303003B165E /* CoinValueViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FD8E3DD2821B303003B165E /* CoinValueViewModel.swift */; };
 		4FD8E3E02821B922003B165E /* BitcoinData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FD8E3DF2821B922003B165E /* BitcoinData.swift */; };
 		B05A22132812BF2700BF8D58 /* Publisher+Crypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = B05A22122812BF2700BF8D58 /* Publisher+Crypto.swift */; };
@@ -243,6 +244,7 @@
 		4FBF61DD283BD11C00DDBE71 /* FilterCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterCoordinator.swift; sourceTree = "<group>"; };
 		4FBF61DF283BD12700DDBE71 /* FilterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterView.swift; sourceTree = "<group>"; };
 		4FBF61E1283BD12D00DDBE71 /* FilterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterViewModel.swift; sourceTree = "<group>"; };
+		4FBF6208283CD5C000DDBE71 /* OfferAdvancedFilterFriendSourceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferAdvancedFilterFriendSourceView.swift; sourceTree = "<group>"; };
 		4FD8E3DD2821B303003B165E /* CoinValueViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinValueViewModel.swift; sourceTree = "<group>"; };
 		4FD8E3DF2821B922003B165E /* BitcoinData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BitcoinData.swift; sourceTree = "<group>"; };
 		57B3CAA27CF4369A28B748A7 /* Pods_vexl.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_vexl.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1006,8 +1008,9 @@
 			isa = PBXGroup;
 			children = (
 				F18862642812E91700659786 /* OfferAdvancedFilterView.swift */,
-				F13B265B281897DE0011F2FB /* OfferAdvanceFilterFriendDegreeView.swift */,
 				F13B265D281899250011F2FB /* OfferAdvancedFilterBTCNetworkView.swift */,
+				4FBF6208283CD5C000DDBE71 /* OfferAdvancedFilterFriendSourceView.swift */,
+				F13B265B281897DE0011F2FB /* OfferAdvanceFilterFriendDegreeView.swift */,
 			);
 			path = Advanced;
 			sourceTree = "<group>";
@@ -1738,6 +1741,7 @@
 				F1A9453327F686C8009B5AE3 /* UserKeys.swift in Sources */,
 				B08F391C27AE7112008B344F /* BaseService.swift in Sources */,
 				F1C6D09E27BDDD4C009BD506 /* TextStyle.swift in Sources */,
+				4FBF6209283CD5C000DDBE71 /* OfferAdvancedFilterFriendSourceView.swift in Sources */,
 				F188627528169A3700659786 /* MarketplaceSegmentView.swift in Sources */,
 				F1D2012E283401D7006DF4AB /* OfferSortView.swift in Sources */,
 				B08F393627AE7112008B344F /* UIDevice+.swift in Sources */,

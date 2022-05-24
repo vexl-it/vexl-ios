@@ -60,10 +60,13 @@ struct CreateOfferView: View {
                         .padding(.top, Appearance.GridGuide.largePadding1)
                         .padding(.horizontal, Appearance.GridGuide.point)
 
-                    OfferAdvancedFilterView(selectedTypeOptions: $viewModel.selectedBTCOption,
-                                            selectedFriendDegreeOption: $viewModel.selectedFriendDegreeOption)
-                        .padding(.top, Appearance.GridGuide.largePadding1)
-                        .padding(.horizontal, Appearance.GridGuide.point)
+                    OfferAdvancedFilterView(
+                        selectedTypeOptions: $viewModel.selectedBTCOption,
+                        selectedFriendSourceOptions: $viewModel.selectedFriendSources,
+                        selectedFriendDegreeOption: $viewModel.selectedFriendDegreeOption
+                    )
+                    .padding(.top, Appearance.GridGuide.largePadding1)
+                    .padding(.horizontal, Appearance.GridGuide.point)
 
                     SolidButton(Text(viewModel.actionTitle)
                                     .padding(.horizontal,

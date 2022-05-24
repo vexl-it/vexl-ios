@@ -61,8 +61,9 @@ final class CreateOfferViewModel: ViewModelType, ObservableObject {
 
     @Published var selectedPaymentMethodOptions: [OfferPaymentMethodOption] = []
 
-    @Published var selectedFriendDegreeOption: OfferAdvancedFriendDegreeOption = .firstDegree
     @Published var selectedBTCOption: [OfferAdvancedBTCOption] = []
+    @Published var selectedFriendSources: [OfferAdvancedFriendSourceOption] = []
+    @Published var selectedFriendDegreeOption: OfferAdvancedFriendDegreeOption = .firstDegree
 
     @Published var state: State = .initial
     @Published var error: Error?

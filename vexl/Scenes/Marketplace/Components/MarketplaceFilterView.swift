@@ -26,9 +26,10 @@ struct MarketplaceFilterView: View {
 
             Spacer()
 
-            Button(actionTitle) {
-                mainAction()
-            }
+            Button(action: mainAction, label: {
+                Text(actionTitle)
+                    .textStyle(.description)
+            })
             .textStyle(.paragraphBold)
             .foregroundColor(Appearance.Colors.green5)
             .padding(.vertical, 5)
@@ -60,9 +61,10 @@ extension MarketplaceFilterView {
         var action: () -> Void
 
         var body: some View {
-            Button(title) {
-                action()
-            }
+            Button(action: action, label: {
+                Text(title)
+                    .textStyle(.description)
+            })
             .foregroundColor(Appearance.Colors.gray3)
             .padding(Appearance.GridGuide.point)
             .background(Appearance.Colors.gray1)
