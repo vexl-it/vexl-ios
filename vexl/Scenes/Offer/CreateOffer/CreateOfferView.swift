@@ -33,7 +33,7 @@ struct CreateOfferView: View {
                         .padding(.horizontal, Appearance.GridGuide.point)
                         .padding(.bottom, Appearance.GridGuide.largePadding1)
 
-                    OfferRangePickerView(currencySymbol: viewModel.currencySymbol,
+                    OfferAmountRangeView(currencySymbol: viewModel.currencySymbol,
                                          currentValue: $viewModel.currentAmountRange,
                                          sliderBounds: viewModel.amountRange)
                         .padding(.horizontal, Appearance.GridGuide.point)
@@ -60,17 +60,19 @@ struct CreateOfferView: View {
                         .padding(.top, Appearance.GridGuide.largePadding1)
                         .padding(.horizontal, Appearance.GridGuide.point)
 
-                    OfferAdvancedFilterView(selectedTypeOptions: $viewModel.selectedBTCOption,
-                                            selectedFriendDegreeOption: $viewModel.selectedFriendDegreeOption)
-                        .padding(.top, Appearance.GridGuide.largePadding1)
-                        .padding(.horizontal, Appearance.GridGuide.point)
+                    OfferAdvancedFilterView(
+                        selectedTypeOptions: $viewModel.selectedBTCOption,
+                        selectedFriendDegreeOption: $viewModel.selectedFriendDegreeOption
+                    )
+                    .padding(.top, Appearance.GridGuide.largePadding1)
+                    .padding(.horizontal, Appearance.GridGuide.point)
 
                     SolidButton(Text(viewModel.actionTitle)
                                     .padding(.horizontal,
                                              Appearance.GridGuide.mediumPadding1),
                                 isEnabled: .constant(viewModel.isCreateEnabled),
                                 fullWidth: true,
-                                font: Appearance.TextStyle.h3.font.asFont,
+                                font: Appearance.TextStyle.titleSmallBold.font.asFont,
                                 colors: SolidButtonColor.welcome,
                                 dimensions: SolidButtonDimension.largeButton,
                                 action: {

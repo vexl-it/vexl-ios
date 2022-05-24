@@ -16,7 +16,7 @@ extension OnboardingView {
 
         var body: some View {
             HStack {
-                ForEach(0..<numberOfPages) { index in
+                ForEach(0 ..< numberOfPages, id: \.self) { index in
                     Rectangle()
                         .foregroundColor(currentIndex >= index ? Color.white : Color(R.color.gray1.name))
                         .frame(height: 4)

@@ -48,8 +48,31 @@ final class MarketplaceCoordinator: BaseCoordinator<Void> {
             .sink()
             .store(in: cancelBag)
 
+        setupFilterBindings(viewModel: viewModel, viewController: viewController)
+
         return Empty(completeImmediately: false)
             .eraseToAnyPublisher()
+    }
+
+    private func setupFilterBindings(viewModel: MarketplaceViewModel, viewController: UIViewController) {
+        viewModel
+            .route
+            .receive(on: RunLoop.main)
+            .compactMap { route -> OfferFilter? in
+                if case let .showFiltersTapped(offerFilter) = route { return offerFilter }
+                return nil
+            }
+            .withUnretained(self)
+            .flatMap { owner, filter -> CoordinatingResult<RouterResult<OfferFilter>> in
+                let modalRouter = ModalRouter(parentViewController: viewController, presentationStyle: .fullScreen)
+                return owner.showFilters(router: modalRouter, filter: filter)
+            }
+            .sink(receiveValue: { result in
+                if case .finished(let filter) = result {
+                    viewModel.applyFilter(filter)
+                }
+            })
+            .store(in: cancelBag)
     }
 }
 
@@ -69,6 +92,18 @@ extension MarketplaceCoordinator {
     private func showBuyOffers(router: Router) -> CoordinatingResult<RouterResult<Void>> {
         coordinate(to: UserOffersCoordinator(router: router, offerType: .buy))
         .flatMap { result -> CoordinatingResult<RouterResult<Void>> in
+            guard result != .dismissedByRouter else {
+                return Just(result).eraseToAnyPublisher()
+            }
+            return router.dismiss(animated: true, returning: result)
+        }
+        .prefix(1)
+        .eraseToAnyPublisher()
+    }
+
+    private func showFilters(router: Router, filter: OfferFilter) -> CoordinatingResult<RouterResult<OfferFilter>> {
+        coordinate(to: FilterCoordinator(router: router, offerFilter: filter))
+        .flatMap { result -> CoordinatingResult<RouterResult<OfferFilter>> in
             guard result != .dismissedByRouter else {
                 return Just(result).eraseToAnyPublisher()
             }

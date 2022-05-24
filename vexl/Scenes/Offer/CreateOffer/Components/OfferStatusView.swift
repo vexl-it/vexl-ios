@@ -64,3 +64,13 @@ struct OfferStatusView: View {
         }
     }
 }
+
+#if DEBUG || DEVEL
+struct OfferStatusViewPreview: PreviewProvider {
+    static var previews: some View {
+        OfferStatusView(pauseAction: {}, deleteAction: {})
+            .previewDevice("iPhone 11")
+            .background(Color.black)
+    }
+}
+#endif

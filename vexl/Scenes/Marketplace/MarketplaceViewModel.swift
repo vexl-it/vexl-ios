@@ -17,6 +17,8 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
     // MARK: - Actions Bindings
 
     enum UserAction: Equatable {
+        case showBuyFilters
+        case showSellFilters
         case showSellOffer
         case showBuyOffer
     }
@@ -33,6 +35,7 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
     // MARK: - Coordinator Bindings
 
     enum Route: Equatable {
+        case showFiltersTapped(OfferFilter)
         case showSellOfferTapped
         case showBuyOfferTapped
     }
@@ -48,15 +51,26 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
     }
 
     var buyFilters: [MarketplaceFilterData] {
-        []
+        let openFilter = MarketplaceFilterData(
+            title: L.filterOffers(),
+            type: .filter,
+            action: { [action] in action.send(.showBuyFilters) }
+        )
+        return [
+            openFilter
+        ]
     }
 
     var sellFilters: [MarketplaceFilterData] {
-        []
+        let openFilter = MarketplaceFilterData(
+            title: L.filterOffers(),
+            type: .filter,
+            action: { [action] in action.send(.showSellFilters) }
+        )
+        return [
+            openFilter
+        ]
     }
-
-    private var buyFeedItems: [MarketplaceFeedViewData] = []
-    private var sellFeedItems: [MarketplaceFeedViewData] = []
 
     var marketplaceFeedItems: [MarketplaceFeedViewData] {
         switch selectedOption {
@@ -67,6 +81,10 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
         }
     }
 
+    private var buyOfferFilter = OfferFilter(type: .buy)
+    private var sellOfferFilter = OfferFilter(type: .sell)
+    private var buyFeedItems: [MarketplaceFeedViewData] = []
+    private var sellFeedItems: [MarketplaceFeedViewData] = []
     private let userOfferKeys: UserOfferKeys?
     private let cancelBag: CancelBag = .init()
 
@@ -74,6 +92,17 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
         self.userOfferKeys = UserDefaults.standard.codable(forKey: .storedOfferKeys)
         setupDataBindings()
         setupActionBindings()
+    }
+
+    func applyFilter(_ filter: OfferFilter) {
+        switch filter.type {
+        case .buy:
+            buyOfferFilter = filter
+        case .sell:
+            sellOfferFilter = filter
+        }
+
+        // filter offers
     }
 
     private func setupDataBindings() {
@@ -114,7 +143,6 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
     }
 
     private func setupActionBindings() {
-
         let userAction = action
             .share()
 
@@ -131,6 +159,22 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
             .withUnretained(self)
             .sink { owner, _ in
                 owner.route.send(.showBuyOfferTapped)
+            }
+            .store(in: cancelBag)
+
+        userAction
+            .filter { $0 == .showBuyFilters }
+            .withUnretained(self)
+            .sink { owner, _ in
+                owner.route.send(.showFiltersTapped(owner.buyOfferFilter))
+            }
+            .store(in: cancelBag)
+
+        userAction
+            .filter { $0 == .showSellFilters }
+            .withUnretained(self)
+            .sink { owner, _ in
+                owner.route.send(.showFiltersTapped(owner.sellOfferFilter))
             }
             .store(in: cancelBag)
     }

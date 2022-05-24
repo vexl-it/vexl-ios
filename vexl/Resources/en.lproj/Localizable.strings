@@ -78,6 +78,9 @@
 "marketplace.phone.contact" = "Phone Contact";
 "marketplace.sell.offer" = "My Offers";
 "marketplace.buy.add" = "+";
+"marketplace.detail.upTo" = "Up to %@";
+"marketplace.detail.friend.first" = "Friend";
+"marketplace.detail.friend.second" = "Friend of Friend";
 "offer.request" = "Request";
 "offer.requested" = "Requested";
 "offer.sell.title" = "My Sell Offers";
@@ -92,6 +95,9 @@
 "offer.sort.active" = "%@ active offers";
 "offer.sort.newest" = "Sorted by newest";
 "offer.sort.oldest" = "Sorted by oldest";
+"filter.title" = "Filter";
+"filter.apply" = "Apply filter";
+"filter.offers" = "Filter offers";
 "offer.create.fee.none" = "Without fee";
 "offer.create.fee.ok" = "Fee OK";
 "offer.create.trade.style.online" = "Online OK";
@@ -111,8 +117,12 @@
 "offer.create.payment.method.revolut" = "Revolut";
 "offer.create.payment.method.bank" = "Bank";
 "offer.create.payment.method.title" = "Payment Method";
+"offer.create.advanced.friend.source" = "Friend source";
+"offer.create.advanced.friend.source.contact" = "Contact list";
+"offer.create.advanced.friend.source.facebook" = "Facebook";
 "offer.create.advanced.friend.level.first" = "1st degree";
 "offer.create.advanced.friend.level.second" = "2nd degree";
+"offer.create.advanced.friend.description" = "Trade with your friends only. \nOr with friends of your friends.";
 "offer.create.advanced.type.lightning" = "Lighting";
 "offer.create.advanced.type.chain" = "On Chain";
 "offer.create.description" = "Description";
