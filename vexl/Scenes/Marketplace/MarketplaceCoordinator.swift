@@ -48,20 +48,38 @@ final class MarketplaceCoordinator: BaseCoordinator<Void> {
             .sink()
             .store(in: cancelBag)
 
-        viewModel
-            .route
-            .receive(on: RunLoop.main)
-            .filter { $0 == .showBuyFiltersTapped }
-            .withUnretained(self)
-            .flatMap { owner, _ -> CoordinatingResult<RouterResult<Void>> in
-                let modalRouter = ModalRouter(parentViewController: viewController, presentationStyle: .fullScreen)
-                return owner.showFilters(router: modalRouter)
-            }
-            .sink()
-            .store(in: cancelBag)
+        setupFilterBindings(viewModel: viewModel, viewController: viewController)
 
         return Empty(completeImmediately: false)
             .eraseToAnyPublisher()
+    }
+
+    private func setupFilterBindings(viewModel: MarketplaceViewModel, viewController: UIViewController) {
+        viewModel
+            .route
+            .receive(on: RunLoop.main)
+            .compactMap { route -> OfferFilter? in
+                switch route {
+                case .showFiltersTapped(let offerFilter):
+                    return offerFilter
+                default:
+                    return nil
+                }
+            }
+            .withUnretained(self)
+            .flatMap { owner, filter -> CoordinatingResult<RouterResult<OfferFilter>> in
+                let modalRouter = ModalRouter(parentViewController: viewController, presentationStyle: .fullScreen)
+                return owner.showFilters(router: modalRouter, filter: filter)
+            }
+            .sink(receiveValue: { result in
+                switch result {
+                case .finished(let filter):
+                    viewModel.applyFilter(filter)
+                default:
+                    break
+                }
+            })
+            .store(in: cancelBag)
     }
 }
 
@@ -90,9 +108,9 @@ extension MarketplaceCoordinator {
         .eraseToAnyPublisher()
     }
 
-    private func showFilters(router: Router) -> CoordinatingResult<RouterResult<Void>> {
-        coordinate(to: FilterCoordinator(router: router))
-        .flatMap { result -> CoordinatingResult<RouterResult<Void>> in
+    private func showFilters(router: Router, filter: OfferFilter) -> CoordinatingResult<RouterResult<OfferFilter>> {
+        coordinate(to: FilterCoordinator(router: router, offerFilter: filter))
+        .flatMap { result -> CoordinatingResult<RouterResult<OfferFilter>> in
             guard result != .dismissedByRouter else {
                 return Just(result).eraseToAnyPublisher()
             }

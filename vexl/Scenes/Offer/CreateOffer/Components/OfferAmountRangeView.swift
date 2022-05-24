@@ -38,4 +38,3 @@ struct OfferAmountRangeViewPreview: PreviewProvider {
     }
 }
 #endif
-

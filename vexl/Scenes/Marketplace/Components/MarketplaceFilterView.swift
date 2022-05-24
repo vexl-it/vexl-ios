@@ -19,7 +19,7 @@ struct MarketplaceFilterView: View {
     var body: some View {
         HStack(spacing: Appearance.GridGuide.tinyPadding) {
             ForEach(items, id: \.self) { item in
-                FilterButton(title: item.title) {
+                FilterButton(title: item.title, type: item.type) {
                     item.action?()
                 }
             }
@@ -42,28 +42,41 @@ struct MarketplaceFilterView: View {
 }
 
 extension MarketplaceFilterView {
+    enum LabelType {
+        case label
+        case filter
+    }
 
     struct FilterData: Hashable, Equatable {
+        let id = UUID()
         let title: String
+        let type: LabelType
         let action: (() -> Void)?
 
         func hash(into hasher: inout Hasher) {
-            hasher.combine(title)
+            hasher.combine(id)
         }
 
         static func == (lhs: MarketplaceFilterView.FilterData, rhs: MarketplaceFilterView.FilterData) -> Bool {
-            lhs.title == rhs.title
+            lhs.id == rhs.id
         }
     }
 
     private struct FilterButton: View {
-        var title: String
-        var action: () -> Void
+        let title: String
+        let type: LabelType
+        let action: () -> Void
 
         var body: some View {
             Button(action: action, label: {
-                Text(title)
-                    .textStyle(.description)
+                HStack {
+                    Text(title)
+                        .textStyle(.description)
+
+                    if type == .filter {
+                        Image(systemName: "chevron.down")
+                    }
+                }
             })
             .foregroundColor(Appearance.Colors.gray3)
             .padding(Appearance.GridGuide.point)
@@ -78,7 +91,11 @@ struct MarketplaceFilterViewPreview: PreviewProvider {
     static var previews: some View {
         MarketplaceFilterView(
             items: [
-                MarketplaceFilterView.FilterData(title: "Hello", action: nil)
+                MarketplaceFilterView.FilterData(
+                    title: "Hello",
+                    type: .label,
+                    action: nil
+                )
             ],
             actionTitle: "Offer",
             mainAction: { }

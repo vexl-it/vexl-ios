@@ -60,7 +60,7 @@ struct FilterView: View {
                         colors: SolidButtonColor.welcome,
                         dimensions: SolidButtonDimension.largeButton,
                         action: {
-                print("hey")
+                viewModel.send(action: .applyFilter)
             })
             .padding(.horizontal, Appearance.GridGuide.padding)
         }
@@ -120,7 +120,7 @@ struct FilterView: View {
 #if DEBUG || DEVEL
 struct FilterViewPreview: PreviewProvider {
     static var previews: some View {
-        FilterView(viewModel: .init())
+        FilterView(viewModel: .init(offerFilter: .stub))
     }
 }
 #endif

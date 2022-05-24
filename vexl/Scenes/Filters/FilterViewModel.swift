@@ -42,7 +42,7 @@ final class FilterViewModel: ViewModelType, ObservableObject {
 
     enum Route: Equatable {
         case dismissTapped
-        case applyFilterTapped
+        case applyFilterTapped(OfferFilter)
     }
 
     var route: CoordinatingSubject<Route> = .init()
@@ -50,9 +50,11 @@ final class FilterViewModel: ViewModelType, ObservableObject {
 
     // MARK: - Variables
 
+    private var offerFilter: OfferFilter
     private let cancelBag: CancelBag = .init()
 
-    init() {
+    init(offerFilter: OfferFilter) {
+        self.offerFilter = offerFilter
         setupBindings()
     }
 
@@ -66,6 +68,23 @@ final class FilterViewModel: ViewModelType, ObservableObject {
             .withUnretained(self)
             .sink { owner, _ in
                 owner.route.send(.dismissTapped)
+            }
+            .store(in: cancelBag)
+
+        userAction
+            .filter { $0 == .applyFilter }
+            .withUnretained(self)
+            .sink { owner, _ in
+                owner.offerFilter.currentAmountRange = owner.currentAmountRange
+                owner.offerFilter.selectedFeeOption = owner.selectedFeeOption
+                owner.offerFilter.feeAmount = owner.feeAmount
+                owner.offerFilter.locations = owner.locations
+                owner.offerFilter.selectedPaymentMethodOptions = owner.selectedPaymentMethodOptions
+                owner.offerFilter.selectedBTCOption = owner.selectedBTCOption
+                owner.offerFilter.selectedFriendSources = owner.selectedFriendSources
+                owner.offerFilter.selectedFriendDegreeOption = owner.selectedFriendDegreeOption
+
+                owner.route.send(.applyFilterTapped(owner.offerFilter))
             }
             .store(in: cancelBag)
 

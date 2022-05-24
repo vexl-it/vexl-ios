@@ -9,16 +9,18 @@ import Foundation
 import Cleevio
 import Combine
 
-final class FilterCoordinator: BaseCoordinator<RouterResult<Void>> {
+final class FilterCoordinator: BaseCoordinator<RouterResult<OfferFilter>> {
 
     private let router: Router
+    private let offerFilter: OfferFilter
 
-    init(router: Router) {
+    init(router: Router, offerFilter: OfferFilter) {
         self.router = router
+        self.offerFilter = offerFilter
     }
 
-    override func start() -> CoordinatingResult<RouterResult<Void>> {
-        let viewModel = FilterViewModel()
+    override func start() -> CoordinatingResult<RouterResult<OfferFilter>> {
+        let viewModel = FilterViewModel(offerFilter: offerFilter)
         let viewController = BaseViewController(rootView: FilterView(viewModel: viewModel))
 
         router.present(viewController, animated: true)
@@ -26,12 +28,24 @@ final class FilterCoordinator: BaseCoordinator<RouterResult<Void>> {
         let dismiss = viewModel
             .route
             .filter { $0 == .dismissTapped }
-            .map { _ -> RouterResult<Void> in .dismiss }
+            .map { _ -> RouterResult<OfferFilter> in .dismiss }
 
         let dismissByRouter = dismissObservable(with: viewController, dismissHandler: router)
-            .dismissedByRouter(type: Void.self)
+            .dismissedByRouter(type: OfferFilter.self)
 
-        return Publishers.Merge(dismiss, dismissByRouter)
+        let filterApplied = viewModel
+            .route
+            .compactMap { route in
+                switch route {
+                case .applyFilterTapped(let filter):
+                    return filter
+                default:
+                    return nil
+                }
+            }
+            .map { RouterResult<OfferFilter>.finished($0) }
+
+        return Publishers.Merge3(dismiss, dismissByRouter, filterApplied)
             .receive(on: RunLoop.main)
             .eraseToAnyPublisher()
     }
