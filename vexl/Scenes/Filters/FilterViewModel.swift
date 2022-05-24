@@ -26,7 +26,7 @@ final class FilterViewModel: ViewModelType, ObservableObject {
     // MARK: - View Bindings
 
     @Published var currentAmountRange: ClosedRange<Int>
-    var amountRange: ClosedRange<Int> = 1...10_000 // from BE?
+    var amountRange: ClosedRange<Int> = 1...10_000 // TODO: get this from BE?
 
     @Published var selectedFeeOption: OfferFeeOption
     @Published var feeAmount: Double
@@ -149,9 +149,9 @@ final class FilterViewModel: ViewModelType, ObservableObject {
             }
             .store(in: cancelBag)
     }
-    
+
     private func resetFilter() {
-//        currentAmountRange = owner.currentAmountRange
+        currentAmountRange = amountRange.lowerBound...amountRange.upperBound
         selectedFeeOption = .withoutFee
         feeAmount = 0
         locations = []
@@ -159,6 +159,6 @@ final class FilterViewModel: ViewModelType, ObservableObject {
         selectedBTCOptions = []
         selectedFriendSources = []
         selectedFriendDegreeOption = .firstDegree
-        offerFilter.reset()
+        offerFilter.reset(with: currentAmountRange)
     }
 }

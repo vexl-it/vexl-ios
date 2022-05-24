@@ -18,8 +18,8 @@ struct OfferFilter: Equatable {
     var selectedFriendSources: [OfferAdvancedFriendSourceOption] = []
     var selectedFriendDegreeOption: OfferAdvancedFriendDegreeOption = .firstDegree
 
-    mutating func reset() {
-        currentAmountRange = 0...100
+    mutating func reset(with amountRange: ClosedRange<Int>) {
+        currentAmountRange = amountRange
         selectedFeeOption = .withoutFee
         feeAmount = 0
         locations = []

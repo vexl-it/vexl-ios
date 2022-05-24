@@ -14,9 +14,9 @@ enum OfferType: String {
     var title: String {
         switch self {
         case .sell:
-            return "Sell"
+            return L.marketplaceSell()
         case .buy:
-            return "Buy"
+            return L.marketplaceBuy()
         }
     }
 }

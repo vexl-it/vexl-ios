@@ -20,7 +20,7 @@ struct OfferAdvanceFilterFriendDegreeView: View {
                 Text(L.offerCreateAdvancedFriendLevelTitle())
                     .textStyle(.paragraph)
 
-                Text("Trade with your friends only. \nOr with friends of your friends.")
+                Text(L.offerCreateAdvancedFriendDescription())
                     .textStyle(.micro)
             }
             .foregroundColor(Appearance.Colors.gray3)

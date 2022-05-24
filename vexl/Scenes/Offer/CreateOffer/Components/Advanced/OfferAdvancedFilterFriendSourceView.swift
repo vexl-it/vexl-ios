@@ -16,7 +16,7 @@ struct OfferAdvancedFilterFriendSourceView: View {
 
     var body: some View {
         VStack(alignment: .leading) {
-            Text("Friend source")
+            Text(L.offerCreateAdvancedFriendSource())
                 .textStyle(.paragraph)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .foregroundColor(Appearance.Colors.gray3)
@@ -38,9 +38,9 @@ extension OfferAdvancedFilterFriendSourceView {
         var title: String {
             switch self {
             case .contactList:
-                return "Contact list"
+                return L.offerCreateAdvancedFriendSourceContact()
             case .facebook:
-                return "Facebook"
+                return L.offerCreateAdvancedFriendSourceFacebook()
             }
         }
     }

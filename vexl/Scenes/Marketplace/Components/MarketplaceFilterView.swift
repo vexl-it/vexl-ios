@@ -92,7 +92,7 @@ struct MarketplaceFilterViewPreview: PreviewProvider {
         MarketplaceFilterView(
             items: [
                 MarketplaceFilterView.FilterData(
-                    title: "Hello",
+                    title: "Filters",
                     type: .label,
                     action: nil
                 )

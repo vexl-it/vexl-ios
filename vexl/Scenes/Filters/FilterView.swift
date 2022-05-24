@@ -59,7 +59,7 @@ struct FilterView: View {
                 .padding(.bottom, scrollViewBottomPadding)
             }
 
-            SolidButton(Text("Apply filter"),
+            SolidButton(Text(L.filterApply()),
                         font: Appearance.TextStyle.h3.font.asFont,
                         colors: SolidButtonColor.welcome,
                         dimensions: SolidButtonDimension.largeButton,
@@ -80,7 +80,7 @@ struct FilterView: View {
             )
 
             OfferFeePickerView(
-                feeLabel: "10%",
+                feeLabel: "10%", // TODO: handle value updates
                 selectedOption: $viewModel.selectedFeeOption,
                 feeValue: $viewModel.feeAmount
             )
