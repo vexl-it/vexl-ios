@@ -95,7 +95,14 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
     }
 
     func applyFilter(_ filter: OfferFilter) {
-        print(filter)
+        switch filter.type {
+        case .buy:
+            buyOfferFilter = filter
+        case .sell:
+            sellOfferFilter = filter
+        }
+
+        // filter offers
     }
 
     private func setupDataBindings() {

@@ -24,19 +24,19 @@ final class FilterViewModel: ViewModelType, ObservableObject {
 
     // MARK: - View Bindings
 
-    @Published var currentAmountRange: ClosedRange<Int> = 1...10_000
-    var amountRange: ClosedRange<Int> = 1...10_000
+    @Published var currentAmountRange: ClosedRange<Int>
+    var amountRange: ClosedRange<Int> = 1...10_000 // from BE?
 
-    @Published var selectedFeeOption: OfferFeeOption = .withoutFee
-    @Published var feeAmount: Double = 0
+    @Published var selectedFeeOption: OfferFeeOption
+    @Published var feeAmount: Double
 
-    @Published var locations: [OfferLocationItemData] = []
+    @Published var locations: [OfferLocationItemData]
 
-    @Published var selectedPaymentMethodOptions: [OfferPaymentMethodOption] = []
+    @Published var selectedPaymentMethodOptions: [OfferPaymentMethodOption]
 
-    @Published var selectedBTCOption: [OfferAdvancedBTCOption] = []
-    @Published var selectedFriendSources: [OfferAdvancedFriendSourceOption] = []
-    @Published var selectedFriendDegreeOption: OfferAdvancedFriendDegreeOption = .firstDegree
+    @Published var selectedBTCOption: [OfferAdvancedBTCOption]
+    @Published var selectedFriendSources: [OfferAdvancedFriendSourceOption]
+    @Published var selectedFriendDegreeOption: OfferAdvancedFriendDegreeOption
 
     // MARK: - Coordinator Bindings
 
@@ -55,6 +55,14 @@ final class FilterViewModel: ViewModelType, ObservableObject {
 
     init(offerFilter: OfferFilter) {
         self.offerFilter = offerFilter
+        currentAmountRange = offerFilter.currentAmountRange
+        selectedFeeOption = offerFilter.selectedFeeOption
+        feeAmount = offerFilter.feeAmount
+        locations = offerFilter.locations
+        selectedPaymentMethodOptions = offerFilter.selectedPaymentMethodOptions
+        selectedBTCOption = offerFilter.selectedBTCOption
+        selectedFriendSources = offerFilter.selectedFriendSources
+        selectedFriendDegreeOption = offerFilter.selectedFriendDegreeOption
         setupBindings()
     }
 
