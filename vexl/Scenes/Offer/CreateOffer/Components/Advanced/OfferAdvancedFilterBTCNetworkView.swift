@@ -12,7 +12,7 @@ typealias OfferAdvancedBTCOption = OfferAdvancedFilterBTCNetworkView.Option
 struct OfferAdvancedFilterBTCNetworkView: View {
 
     @Binding var selectedOptions: [Option]
-    let options: [Option] = [.lightning, .onChain]
+    private let options: [Option] = [.lightning, .onChain]
 
     var body: some View {
         VStack(alignment: .leading) {
@@ -20,10 +20,9 @@ struct OfferAdvancedFilterBTCNetworkView: View {
                 Text(L.offerCreateAdvancedType())
                     .textStyle(.paragraph)
 
-                Spacer()
-
-                Image(systemName: "arrow.clockwise")
+                Image(systemName: "info.circle.fill")
             }
+            .frame(maxWidth: .infinity, alignment: .leading)
             .foregroundColor(Appearance.Colors.gray3)
 
             MultipleOptionPickerView(selectedOptions: $selectedOptions,
@@ -51,3 +50,14 @@ extension OfferAdvancedFilterBTCNetworkView {
         }
     }
 }
+
+#if DEBUG || DEVEL
+struct OfferAdvancedFilterBTCNetworkViewPreview: PreviewProvider {
+    static var previews: some View {
+        OfferAdvancedFilterBTCNetworkView(
+            selectedOptions: .constant([.lightning, .onChain])
+        )
+        .previewDevice("iPhone 11")
+    }
+}
+#endif

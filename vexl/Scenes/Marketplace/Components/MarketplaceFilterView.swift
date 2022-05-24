@@ -13,25 +13,23 @@ typealias MarketplaceFilterData = MarketplaceFilterView.FilterData
 struct MarketplaceFilterView: View {
 
     let items: [FilterData]
-    let filterAction: (Int) -> Void
-    let action: () -> Void
+    let actionTitle: String
+    let mainAction: () -> Void
 
     var body: some View {
         HStack(spacing: Appearance.GridGuide.tinyPadding) {
-            ForEach(items.indices, id: \.self) { index in
-                let item = items[index]
-                FilterButton(title: item.title) {
-                    filterAction(index)
+            ForEach(items, id: \.self) { item in
+                FilterButton(title: item.title, type: item.type) {
+                    item.action?()
                 }
             }
 
             Spacer()
 
-            Button {
-                action()
-            } label: {
-                Image(systemName: "plus")
-            }
+            Button(action: mainAction, label: {
+                Text(actionTitle)
+                    .textStyle(.description)
+            })
             .textStyle(.paragraphBold)
             .foregroundColor(Appearance.Colors.yellow100)
             .padding(Appearance.GridGuide.point)
@@ -43,20 +41,42 @@ struct MarketplaceFilterView: View {
 }
 
 extension MarketplaceFilterView {
+    enum LabelType {
+        case label
+        case filter
+    }
 
-    struct FilterData: Identifiable {
-        let id: Int
+    struct FilterData: Hashable, Equatable {
+        let id = UUID()
         let title: String
+        let type: LabelType
+        let action: (() -> Void)?
+
+        func hash(into hasher: inout Hasher) {
+            hasher.combine(id)
+        }
+
+        static func == (lhs: MarketplaceFilterView.FilterData, rhs: MarketplaceFilterView.FilterData) -> Bool {
+            lhs.id == rhs.id
+        }
     }
 
     private struct FilterButton: View {
-        var title: String
-        var action: () -> Void
+        let title: String
+        let type: LabelType
+        let action: () -> Void
 
         var body: some View {
-            Button(title) {
-                action()
-            }
+            Button(action: action, label: {
+                HStack {
+                    Text(title)
+                        .textStyle(.description)
+
+                    if type == .filter {
+                        Image(systemName: "chevron.down")
+                    }
+                }
+            })
             .foregroundColor(Appearance.Colors.gray3)
             .padding(Appearance.GridGuide.point)
             .background(Appearance.Colors.gray1)
@@ -70,10 +90,14 @@ struct MarketplaceFilterViewPreview: PreviewProvider {
     static var previews: some View {
         MarketplaceFilterView(
             items: [
-                MarketplaceFilterView.FilterData(id: 1, title: "Hello")
+                MarketplaceFilterView.FilterData(
+                    title: "Filters",
+                    type: .label,
+                    action: nil
+                )
             ],
-            filterAction: { _ in },
-            action: { }
+            actionTitle: "Offer",
+            mainAction: { }
         )
             .background(Color.black)
             .previewDevice("iPhone 11")

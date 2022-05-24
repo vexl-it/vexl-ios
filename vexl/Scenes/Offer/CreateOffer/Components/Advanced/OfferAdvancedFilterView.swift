@@ -11,6 +11,7 @@ struct OfferAdvancedFilterView: View {
 
     @Binding var selectedTypeOptions: [OfferAdvancedBTCOption]
     @Binding var selectedFriendDegreeOption: OfferAdvancedFriendDegreeOption
+
     @State private var isExpanded = true
 
     var body: some View {
@@ -21,12 +22,12 @@ struct OfferAdvancedFilterView: View {
                     .frame(size: Appearance.GridGuide.iconSize)
 
                 Text(L.offerCreateAdvancedTitle())
-                    .textStyle(.h3)
+                    .textStyle(.titleSemiBold)
                     .foregroundColor(Appearance.Colors.whiteText)
 
                 Spacer()
 
-                Image(systemName: "chevron.down")
+                Image(systemName: isExpanded ? "chevron.up" : "chevron.down")
                     .foregroundColor(Appearance.Colors.gray3)
             }
             .onTapGesture {
@@ -35,7 +36,7 @@ struct OfferAdvancedFilterView: View {
 
             if isExpanded {
                 OfferAdvancedFilterBTCNetworkView(selectedOptions: $selectedTypeOptions)
-                    .padding(.top, Appearance.GridGuide.mediumPadding2)
+                    .padding(.top, Appearance.GridGuide.padding)
 
                 OfferAdvanceFilterFriendDegreeView(selectedOption: $selectedFriendDegreeOption)
                     .padding(.top, Appearance.GridGuide.mediumPadding1)
