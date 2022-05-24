@@ -19,7 +19,8 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
     enum UserAction: Equatable {
         case showSellOffer
         case showBuyOffer
-        case offerTapped(id: String)
+        case offerDetailTapped(id: String)
+        case requestOfferTapped(id: String)
     }
 
     let action: ActionSubject<UserAction> = .init()
@@ -137,7 +138,19 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
 
         userAction
             .compactMap { action -> String? in
-                if case let .offerTapped(id) = action { return id }
+                if case let .requestOfferTapped(id) = action { return id }
+                return nil
+            }
+            .withUnretained(self)
+            .sink { owner, id in
+                print("\(owner) will present the detail of the offer")
+                print("id selected: \(id)")
+            }
+            .store(in: cancelBag)
+
+        userAction
+            .compactMap { action -> String? in
+                if case let .offerDetailTapped(id) = action { return id }
                 return nil
             }
             .withUnretained(self)

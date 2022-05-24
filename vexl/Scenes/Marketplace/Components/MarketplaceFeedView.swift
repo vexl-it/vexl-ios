@@ -13,7 +13,8 @@ struct MarketplaceFeedView: View {
 
     let data: ViewData
     let displayFooter: Bool
-    let action: (String) -> Void
+    let detailAction: (String) -> Void
+    let requestAction: (String) -> Void
 
     var body: some View {
         VStack(spacing: Appearance.GridGuide.point) {
@@ -33,12 +34,15 @@ struct MarketplaceFeedView: View {
             .padding(.horizontal, Appearance.GridGuide.padding)
             .background(data.isRequested ? Appearance.Colors.gray1 : Appearance.Colors.whiteText)
             .cornerRadius(Appearance.GridGuide.buttonCorner)
+            .onTapGesture {
+                detailAction(data.id)
+            }
 
             // TODO: - set contact type from viewmodel + real action
 
             MarketplaceFeedFooterView(isRequested: data.isRequested,
                                       friendLevel: data.friendLevel) {
-                action(data.id)
+                requestAction(data.id)
             }
             .padding(.bottom, Appearance.GridGuide.padding)
         }
@@ -83,7 +87,8 @@ struct MarketplaceFeedViewViewPreview: PreviewProvider {
                                             fee: nil)
         MarketplaceFeedView(data: data,
                             displayFooter: false,
-                            action: { _ in })
+                            detailAction: { _ in },
+                            requestAction: { _ in })
             .previewDevice("iPhone 11")
             .frame(maxWidth: .infinity)
             .frame(height: 300)
@@ -91,7 +96,8 @@ struct MarketplaceFeedViewViewPreview: PreviewProvider {
 
         MarketplaceFeedView(data: data2,
                             displayFooter: true,
-                            action: { _ in })
+                            detailAction: { _ in },
+                            requestAction: { _ in })
             .previewDevice("iPhone 11")
             .frame(maxWidth: .infinity)
             .frame(height: 300)

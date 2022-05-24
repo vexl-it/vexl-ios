@@ -34,9 +34,13 @@ struct MarketplaceView: View {
                 Group {
                     ForEach(viewModel.marketplaceFeedItems) { item in
                         MarketplaceFeedView(data: item,
-                                            displayFooter: false) { id in
-                            viewModel.action.send(.offerTapped(id: id))
-                        }
+                                            displayFooter: false,
+                                            detailAction: { id in
+                            viewModel.action.send(.offerDetailTapped(id: id))
+                        },
+                                            requestAction: { id in
+                            viewModel.action.send(.requestOfferTapped(id: id))
+                        })
                             .padding(.horizontal, Appearance.GridGuide.point)
                     }
                 }
