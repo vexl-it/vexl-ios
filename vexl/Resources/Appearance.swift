@@ -31,6 +31,7 @@ struct Appearance {
         static let green5 = Color(R.color.green5.name)
 
         static let yellow100 = Color(R.color.yellow100.name)
+        static let yellow20 = Color(R.color.yellow20.name)
 
         static let whiteOpaque = Color.white.opacity(0.15)
 
@@ -68,11 +69,13 @@ struct Appearance {
 
         // MARK: Avatar
 
+        static let tinyIconSize = CGSize(width: 6, height: 6)
         static let avatarSize = CGSize(width: 190, height: 190)
         static let smallIconSize = CGSize(width: 12, height: 12)
         static let iconSize = CGSize(width: 24, height: 24)
         static let mediumIconSize = CGSize(width: 48, height: 48)
         static let thumbSize = CGSize(width: 38, height: 38)
+        static let feedAvatarSize = CGSize(width: 48, height: 48)
         static let feedIconSize = CGSize(width: 32, height: 32)
         static let feedMediumIconSize = CGSize(width: 20, height: 20)
         static let feedSmallIconSize = CGSize(width: 16, height: 16)

@@ -19,6 +19,7 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
     enum UserAction: Equatable {
         case showSellOffer
         case showBuyOffer
+        case offerTapped(id: String)
     }
 
     let action: ActionSubject<UserAction> = .init()
@@ -97,9 +98,9 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
                 let offerKeys = owner.userOfferKeys?.keys ?? []
 
                 for offer in offers {
-//                    guard !offerKeys.contains(where: { $0.publicKey == offer.offerPublicKey }) else {
-//                        continue
-//                    }
+                    guard !offerKeys.contains(where: { $0.publicKey == offer.offerPublicKey }) else {
+                        continue
+                    }
 
                     let marketplaceItem = Self.mapToMarketplaceFeed(usingOffer: offer)
                     switch offer.type {
@@ -133,14 +134,27 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
                 owner.route.send(.showBuyOfferTapped)
             }
             .store(in: cancelBag)
+
+        userAction
+            .compactMap { action -> String? in
+                if case let .offerTapped(id) = action { return id }
+                return nil
+            }
+            .withUnretained(self)
+            .sink { owner, id in
+                print("\(owner) will present the detail of the offer")
+                print("id selected: \(id)")
+            }
+            .store(in: cancelBag)
     }
 
     private static func mapToMarketplaceFeed(usingOffer offer: Offer) -> MarketplaceFeedViewData {
         let currencySymbol = Constants.currencySymbol
+        let friendLevel = offer.friendLevel == .firstDegree ? L.marketplaceDetailFriendFirst() : L.marketplaceDetailFriendSecond()
         return MarketplaceFeedViewData(id: offer.offerId,
                                        title: offer.description,
                                        isRequested: false,
-                                       location: L.offerSellNoLocation(),
+                                       friendLevel: friendLevel,
                                        amount: "\(offer.maxAmount)\(currencySymbol)",
                                        paymentMethods: offer.paymentMethods.map(\.title),
                                        fee: offer.feeAmount > 0 ? "\(offer.feeAmount)%" : nil)

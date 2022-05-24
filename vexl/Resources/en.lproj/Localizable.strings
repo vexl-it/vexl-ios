@@ -79,6 +79,8 @@
 "marketplace.sell.offer" = "My Offers";
 "marketplace.buy.add" = "+";
 "marketplace.detail.upTo" = "Up to %@";
+"marketplace.detail.friend.first" = "Friend";
+"marketplace.detail.friend.second" = "Friend of Friend";
 "offer.request" = "Request";
 "offer.requested" = "Requested";
 "offer.sell.title" = "My Sell Offers";

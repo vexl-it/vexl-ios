@@ -13,7 +13,6 @@ typealias MarketplaceFilterData = MarketplaceFilterView.FilterData
 struct MarketplaceFilterView: View {
 
     let items: [FilterData]
-    let actionTitle: String
     let filterAction: (Int) -> Void
     let action: () -> Void
 
@@ -28,14 +27,15 @@ struct MarketplaceFilterView: View {
 
             Spacer()
 
-            Button(actionTitle) {
+            Button {
                 action()
+            } label: {
+                Image(systemName: "plus")
             }
             .textStyle(.paragraphBold)
-            .foregroundColor(Appearance.Colors.green5)
-            .padding(.vertical, 5)
-            .padding(.horizontal, 12)
-            .background(Appearance.Colors.green1)
+            .foregroundColor(Appearance.Colors.yellow100)
+            .padding(Appearance.GridGuide.point)
+            .background(Appearance.Colors.yellow20)
             .cornerRadius(Appearance.GridGuide.buttonCorner)
         }
         .padding(.horizontal, Appearance.GridGuide.point)
@@ -72,7 +72,6 @@ struct MarketplaceFilterViewPreview: PreviewProvider {
             items: [
                 MarketplaceFilterView.FilterData(id: 1, title: "Hello")
             ],
-            actionTitle: "Offer",
             filterAction: { _ in },
             action: { }
         )

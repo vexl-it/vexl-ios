@@ -34,7 +34,9 @@ struct MarketplaceView: View {
                 Group {
                     ForEach(viewModel.marketplaceFeedItems) { item in
                         MarketplaceFeedView(data: item,
-                                            displayFooter: false)
+                                            displayFooter: false) { id in
+                            viewModel.action.send(.offerTapped(id: id))
+                        }
                             .padding(.horizontal, Appearance.GridGuide.point)
                     }
                 }
@@ -52,7 +54,6 @@ struct MarketplaceView: View {
         switch viewModel.selectedOption {
         case .buy:
             return MarketplaceFilterView(items: viewModel.buyFilters,
-                                         actionTitle: L.marketplaceSellOffer(),
                                          filterAction: { index in
                 print("filter from \(index) has been tapped")
             },
@@ -61,7 +62,6 @@ struct MarketplaceView: View {
             })
         case .sell:
             return MarketplaceFilterView(items: viewModel.sellFilters,
-                                         actionTitle: L.marketplaceSellOffer(),
                                          filterAction: { index in
                 print("filter from \(index) has been tapped")
             },

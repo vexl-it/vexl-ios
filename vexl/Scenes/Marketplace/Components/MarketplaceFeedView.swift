@@ -13,34 +13,35 @@ struct MarketplaceFeedView: View {
 
     let data: ViewData
     let displayFooter: Bool
+    let action: (String) -> Void
 
     var body: some View {
-        VStack(spacing: Appearance.GridGuide.mediumPadding1) {
-            Text(data.title)
-                .textStyle(.paragraph)
-                .multilineTextAlignment(.leading)
-                .foregroundColor(Appearance.Colors.primaryText)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.top, Appearance.GridGuide.mediumPadding1)
+        VStack(spacing: Appearance.GridGuide.point) {
+            VStack(spacing: Appearance.GridGuide.padding) {
+                Text(data.title)
+                    .textStyle(.paragraph)
+                    .multilineTextAlignment(.leading)
+                    .foregroundColor(data.isRequested ? Appearance.Colors.gray3 : Appearance.Colors.primaryText)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.top, Appearance.GridGuide.mediumPadding1)
 
-            MarketplaceFeedDetailView(maxAmount: data.amount,
-                                      paymentMethod: data.paymentMethodDisplayValue,
-                                      fee: data.fee)
-                .padding(.bottom, displayFooter ? 0 : Appearance.GridGuide.padding)
-
-            if displayFooter {
-                // TODO: - set contact type from viewmodel + real action
-                MarketplaceFeedFooterView(contactType: .phone,
-                                          isRequested: data.isRequested,
-                                          location: data.location) {
-                    print("facebook")
-                }
-                .padding(.bottom, Appearance.GridGuide.padding)
+                MarketplaceFeedDetailView(maxAmount: data.amount,
+                                          paymentMethod: data.paymentMethodDisplayValue,
+                                          fee: data.fee)
+                    .padding(.bottom, displayFooter ? 0 : Appearance.GridGuide.padding)
             }
+            .padding(.horizontal, Appearance.GridGuide.padding)
+            .background(data.isRequested ? Appearance.Colors.gray1 : Appearance.Colors.whiteText)
+            .cornerRadius(Appearance.GridGuide.buttonCorner)
+
+            // TODO: - set contact type from viewmodel + real action
+
+            MarketplaceFeedFooterView(isRequested: data.isRequested,
+                                      friendLevel: data.friendLevel) {
+                action(data.id)
+            }
+            .padding(.bottom, Appearance.GridGuide.padding)
         }
-        .padding(.horizontal, Appearance.GridGuide.mediumPadding1)
-        .background(Appearance.Colors.whiteText)
-        .cornerRadius(Appearance.GridGuide.buttonCorner)
     }
 }
 
@@ -50,7 +51,7 @@ extension MarketplaceFeedView {
         let id: String
         let title: String
         let isRequested: Bool
-        let location: String
+        let friendLevel: String
 
         let amount: String
         let paymentMethods: [String]
@@ -68,22 +69,32 @@ struct MarketplaceFeedViewViewPreview: PreviewProvider {
         let data = MarketplaceFeedViewData(id: "1",
                                            title: "I’ll be wearing a red hat, Don’t text me before 9am — I love to sleep...",
                                            isRequested: false,
-                                           location: "Prague",
+                                           friendLevel: "Friend",
                                            amount: "$10k",
                                            paymentMethods: ["Revolut"],
                                            fee: nil)
+
+        let data2 = MarketplaceFeedViewData(id: "2",
+                                            title: "I’ll be wearing a red hat, Don’t text me before 9am — I love to sleep...",
+                                            isRequested: true,
+                                            friendLevel: "Friend",
+                                            amount: "$10k",
+                                            paymentMethods: ["Revolut"],
+                                            fee: nil)
         MarketplaceFeedView(data: data,
-                            displayFooter: false)
+                            displayFooter: false,
+                            action: { _ in })
             .previewDevice("iPhone 11")
-            .frame(maxWidth: .infinity,
-                   maxHeight: .infinity)
+            .frame(maxWidth: .infinity)
+            .frame(height: 300)
             .background(Color.black)
 
-        MarketplaceFeedView(data: data,
-                            displayFooter: true)
+        MarketplaceFeedView(data: data2,
+                            displayFooter: true,
+                            action: { _ in })
             .previewDevice("iPhone 11")
-            .frame(maxWidth: .infinity,
-                   maxHeight: .infinity)
+            .frame(maxWidth: .infinity)
+            .frame(height: 300)
             .background(Color.black)
     }
 }

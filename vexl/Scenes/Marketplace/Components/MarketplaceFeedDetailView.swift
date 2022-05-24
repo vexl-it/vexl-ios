@@ -16,9 +16,9 @@ struct MarketplaceFeedDetailView: View {
 
     var body: some View {
         HStack {
-
             DetailItem(label: "To sell", content: {
                 Text(L.marketplaceDetailUpTo(maxAmount))
+                    .foregroundColor(Appearance.Colors.gray2)
                     .multilineTextAlignment(.center)
                     .lineLimit(3)
             })
@@ -41,6 +41,7 @@ struct MarketplaceFeedDetailView: View {
             })
                 .frame(maxWidth: .infinity)
         }
+        .padding(.bottom, Appearance.GridGuide.padding)
     }
 }
 
