@@ -17,6 +17,7 @@ final class FilterViewModel: ViewModelType, ObservableObject {
         case dismissTap
         case addLocation
         case deleteLocation(id: Int)
+        case resetFilter
         case applyFilter
     }
 
@@ -34,9 +35,11 @@ final class FilterViewModel: ViewModelType, ObservableObject {
 
     @Published var selectedPaymentMethodOptions: [OfferPaymentMethodOption]
 
-    @Published var selectedBTCOption: [OfferAdvancedBTCOption]
+    @Published var selectedBTCOptions: [OfferAdvancedBTCOption]
     @Published var selectedFriendSources: [OfferAdvancedFriendSourceOption]
     @Published var selectedFriendDegreeOption: OfferAdvancedFriendDegreeOption
+
+    var filterType: String { offerFilter.type.title }
 
     // MARK: - Coordinator Bindings
 
@@ -60,7 +63,7 @@ final class FilterViewModel: ViewModelType, ObservableObject {
         feeAmount = offerFilter.feeAmount
         locations = offerFilter.locations
         selectedPaymentMethodOptions = offerFilter.selectedPaymentMethodOptions
-        selectedBTCOption = offerFilter.selectedBTCOption
+        selectedBTCOptions = offerFilter.selectedBTCOptions
         selectedFriendSources = offerFilter.selectedFriendSources
         selectedFriendDegreeOption = offerFilter.selectedFriendDegreeOption
         setupBindings()
@@ -88,11 +91,19 @@ final class FilterViewModel: ViewModelType, ObservableObject {
                 owner.offerFilter.feeAmount = owner.feeAmount
                 owner.offerFilter.locations = owner.locations
                 owner.offerFilter.selectedPaymentMethodOptions = owner.selectedPaymentMethodOptions
-                owner.offerFilter.selectedBTCOption = owner.selectedBTCOption
+                owner.offerFilter.selectedBTCOptions = owner.selectedBTCOptions
                 owner.offerFilter.selectedFriendSources = owner.selectedFriendSources
                 owner.offerFilter.selectedFriendDegreeOption = owner.selectedFriendDegreeOption
 
                 owner.route.send(.applyFilterTapped(owner.offerFilter))
+            }
+            .store(in: cancelBag)
+
+        userAction
+            .filter { $0 == .resetFilter }
+            .withUnretained(self)
+            .sink { owner, _ in
+                owner.resetFilter()
             }
             .store(in: cancelBag)
 
@@ -137,5 +148,17 @@ final class FilterViewModel: ViewModelType, ObservableObject {
                 owner.locations = newLocations
             }
             .store(in: cancelBag)
+    }
+    
+    private func resetFilter() {
+//        currentAmountRange = owner.currentAmountRange
+        selectedFeeOption = .withoutFee
+        feeAmount = 0
+        locations = []
+        selectedPaymentMethodOptions = []
+        selectedBTCOptions = []
+        selectedFriendSources = []
+        selectedFriendDegreeOption = .firstDegree
+        offerFilter.reset()
     }
 }

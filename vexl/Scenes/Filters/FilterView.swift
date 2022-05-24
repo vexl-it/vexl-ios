@@ -23,7 +23,11 @@ struct FilterView: View {
         ZStack(alignment: .bottom) {
             ScrollView(showsIndicators: false) {
                 VStack(spacing: Appearance.GridGuide.padding) {
-                    header
+                    FilterHeaderView(
+                        filterType: viewModel.filterType,
+                        resetAction: { viewModel.send(action: .resetFilter) },
+                        closeAction: { viewModel.send(action: .dismissTap) }
+                    )
 
                     Group {
                         amount
@@ -45,7 +49,7 @@ struct FilterView: View {
                             .padding(.top, Appearance.GridGuide.padding)
 
                         OfferAdvancedFilterView(
-                            selectedTypeOptions: $viewModel.selectedBTCOption,
+                            selectedTypeOptions: $viewModel.selectedBTCOptions,
                             selectedFriendSourceOptions: $viewModel.selectedFriendSources,
                             selectedFriendDegreeOption: $viewModel.selectedFriendDegreeOption
                         )
@@ -65,39 +69,6 @@ struct FilterView: View {
             .padding(.horizontal, Appearance.GridGuide.padding)
         }
         .background(Color.black.edgesIgnoringSafeArea(.all))
-    }
-
-    private var header: some View {
-        VStack {
-            HStack {
-                VStack {
-                    Group {
-                        Text("Buy")
-                            .textStyle(.h3)
-                            .foregroundColor(Appearance.Colors.green1)
-                        Text("Filter")
-                            .textStyle(.h2)
-                            .foregroundColor(Appearance.Colors.whiteText)
-                    }
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                }
-
-                Button(action: { viewModel.send(action: .dismissTap) }, label: {
-                    Image(systemName: "xmark")
-                        .foregroundColor(Appearance.Colors.whiteText)
-                        .frame(size: .init(width: 40, height: 40))
-                })
-                .background(
-                    RoundedRectangle(cornerRadius: 4)
-                        .fill(Appearance.Colors.gray1)
-                )
-            }
-            .padding(.horizontal, Appearance.GridGuide.padding)
-
-            Divider()
-                .background(Appearance.Colors.gray4)
-                .padding(.horizontal, -Appearance.GridGuide.padding)
-        }
     }
 
     private var amount: some View {

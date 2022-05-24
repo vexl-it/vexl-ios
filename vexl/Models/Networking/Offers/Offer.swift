@@ -10,6 +10,15 @@ import Foundation
 enum OfferType: String {
     case sell = "SELL"
     case buy = "BUY"
+
+    var title: String {
+        switch self {
+        case .sell:
+            return "Sell"
+        case .buy:
+            return "Buy"
+        }
+    }
 }
 
 struct Offer {

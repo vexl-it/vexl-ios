@@ -14,9 +14,20 @@ struct OfferFilter: Equatable {
     var feeAmount: Double = 0
     var locations: [OfferLocationItemData] = []
     var selectedPaymentMethodOptions: [OfferPaymentMethodOption] = []
-    var selectedBTCOption: [OfferAdvancedBTCOption] = []
+    var selectedBTCOptions: [OfferAdvancedBTCOption] = []
     var selectedFriendSources: [OfferAdvancedFriendSourceOption] = []
     var selectedFriendDegreeOption: OfferAdvancedFriendDegreeOption = .firstDegree
+
+    mutating func reset() {
+        currentAmountRange = 0...100
+        selectedFeeOption = .withoutFee
+        feeAmount = 0
+        locations = []
+        selectedPaymentMethodOptions = []
+        selectedBTCOptions = []
+        selectedFriendSources = []
+        selectedFriendDegreeOption = .firstDegree
+    }
 }
 
 extension OfferFilter {
