@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct RangePickerView: View {
-
     let currencySymbol: String
     let currentValue: Binding<ClosedRange<Int>>
     let sliderBounds: ClosedRange<Int>
@@ -22,31 +21,21 @@ struct RangePickerView: View {
     }
 
     var body: some View {
-        VStack(alignment: .leading) {
-            HStack(spacing: Appearance.GridGuide.point) {
-                Image(systemName: "plus.forwardslash.minus")
+        VStack(alignment: .leading, spacing: Appearance.GridGuide.mediumPadding2) {
+            Text("\(minValue) - \(maxValue)")
+                .textStyle(.paragraph)
+                .foregroundColor(Appearance.Colors.green5)
 
-                Text(L.offerCreateStatusAmountTitle())
-                    .textStyle(.h3)
-            }
-            .foregroundColor(Appearance.Colors.whiteText)
-
-            VStack(alignment: .leading, spacing: Appearance.GridGuide.mediumPadding2) {
-                Text("\(minValue) - \(maxValue)")
-                    .textStyle(.paragraph)
-                    .foregroundColor(Appearance.Colors.green5)
-
-                OfferRangeSliderView(value: currentValue, bounds: sliderBounds)
-                    .padding(.horizontal, Appearance.GridGuide.padding)
-                    .padding(.bottom, Appearance.GridGuide.mediumPadding2)
-            }
-            .padding()
-            .background(Appearance.Colors.gray1)
-            .cornerRadius(Appearance.GridGuide.buttonCorner)
+            RangeSliderView(value: currentValue, bounds: sliderBounds)
+                .padding(.horizontal, Appearance.GridGuide.padding)
+                .padding(.bottom, Appearance.GridGuide.mediumPadding2)
         }
+        .padding()
+        .background(Appearance.Colors.gray1)
+        .cornerRadius(Appearance.GridGuide.buttonCorner)
     }
 
-    private struct OfferRangeSliderView: View {
+    private struct RangeSliderView: View {
 
         private let bigThumbSize = CGSize(width: 38, height: 38)
         private let smallThumbSize = CGSize(width: 30, height: 30)
