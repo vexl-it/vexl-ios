@@ -10,12 +10,13 @@ import Cleevio
 
 final class CoinValueContainerView: UIView {
 
+    @Published var isExpanded = false
     @Published var isLoading = false
     @Published var bitcoinValue: Decimal?
 
     private let activityIndicator = UIActivityIndicatorView()
     private let valueLabel = UILabel()
-    private let minigraphView = UIImageView()
+    private let minigraphView = CoinValueMiniGraphView()
     private let cancelBag: CancelBag = .init()
 
     override init(frame: CGRect) {
@@ -61,19 +62,16 @@ final class CoinValueContainerView: UIView {
     }
 
     private func setupViews() {
-        minigraphView.image = R.image.profile.graph()
         valueLabel.font = Appearance.TextStyle.h2.font
-        valueLabel.textColor = R.color.green5()
+        valueLabel.textColor = UIColor(Appearance.Colors.yellow60)
         valueLabel.textAlignment = .right
         valueLabel.adjustsFontSizeToFitWidth = true
         valueLabel.minimumScaleFactor = 0.5
 
-        backgroundColor = R.color.green1()
-        activityIndicator.color = .white
+        activityIndicator.color = UIColor(Appearance.Colors.whiteText)
 
         minigraphView.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
         valueLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
-        valueLabel.text = "-"
     }
 
     private func setupBindings() {
@@ -92,6 +90,16 @@ final class CoinValueContainerView: UIView {
                 if let value = value {
                     owner.valueLabel.text = Formatters.numberFormatter.string(for: value)
                 }
+            }
+            .store(in: cancelBag)
+
+        $isExpanded
+            .withUnretained(self)
+            .sink { owner, isExpanded in
+                UIView.transition(with: owner.valueLabel, duration: 0.25, options: .transitionCrossDissolve) {
+                    owner.valueLabel.textColor = isExpanded ? UIColor(Appearance.Colors.yellow100) : UIColor(Appearance.Colors.yellow60)
+                }
+                owner.minigraphView.displayGraph = !isExpanded
             }
             .store(in: cancelBag)
     }

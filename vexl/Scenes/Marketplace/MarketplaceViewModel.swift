@@ -21,6 +21,8 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
         case showSellFilters
         case showSellOffer
         case showBuyOffer
+        case offerDetailTapped(id: String)
+        case requestOfferTapped(id: String)
     }
 
     let action: ActionSubject<UserAction> = .init()
@@ -195,19 +197,43 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
                 owner.route.send(.showFiltersTapped(owner.sellOfferFilter))
             }
             .store(in: cancelBag)
+
+        userAction
+            .compactMap { action -> String? in
+                if case let .requestOfferTapped(id) = action { return id }
+                return nil
+            }
+            .withUnretained(self)
+            .sink { owner, id in
+                print("\(owner) will present the detail of the offer")
+                print("id selected: \(id)")
+            }
+            .store(in: cancelBag)
+
+        userAction
+            .compactMap { action -> String? in
+                if case let .offerDetailTapped(id) = action { return id }
+                return nil
+            }
+            .withUnretained(self)
+            .sink { owner, id in
+                print("\(owner) will present the detail of the offer")
+                print("id selected: \(id)")
+            }
+            .store(in: cancelBag)
     }
 
     private static func mapToMarketplaceFeed(usingOffer offer: Offer) -> MarketplaceOffer {
         let currencySymbol = Constants.currencySymbol
-        let viewData = MarketplaceFeedViewData(
-            id: offer.offerId,
-            title: offer.description,
-            isRequested: false,
-            location: L.offerSellNoLocation(),
-            amount: "\(currencySymbol)\(offer.minAmount) - \(currencySymbol)\(offer.maxAmount)",
-            paymentMethods: offer.paymentMethods.map(\.title),
-            fee: offer.feeAmount > 0 ? "\(offer.feeAmount)%" : nil
-        )
+        let friendLevel = offer.friendLevel == .firstDegree ? L.marketplaceDetailFriendFirst() : L.marketplaceDetailFriendSecond()
+        let viewData = MarketplaceFeedViewData(id: offer.offerId,
+                                       title: offer.description,
+                                       isRequested: false,
+                                       friendLevel: friendLevel,
+                                       amount: "\(offer.maxAmount)\(currencySymbol)",
+                                       paymentMethods: offer.paymentMethods,
+                                       fee: offer.feeAmount > 0 ? "\(offer.feeAmount)%" : nil,
+                                       offerType: offer.type)
         return MarketplaceOffer(offer: offer, viewData: viewData)
     }
 }

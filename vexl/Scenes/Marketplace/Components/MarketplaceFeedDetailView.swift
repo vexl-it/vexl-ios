@@ -11,63 +11,64 @@ import SwiftUI
 struct MarketplaceFeedDetailView: View {
 
     let maxAmount: String
-    let paymentMethod: String
+    let paymentLabel: String
+    let paymentIcons: [String]
     let fee: String?
+    let offerType: OfferType
+
+    private var paymentLayoutStyle: MarketplacePaymentIconView.LayoutStyle {
+        MarketplacePaymentIconView.LayoutStyle(icons: paymentIcons)
+    }
 
     var body: some View {
-        VStack(spacing: 0) {
-            DoubleDetailItem(firstTitle: maxAmount, secondTitle: paymentMethod)
+        HStack {
+            DetailItem(label: offerType == .buy ? L.marketplaceDetailBuy() : L.marketplaceDetailSell(), content: {
+                Text(L.marketplaceDetailUpTo(maxAmount))
+                    .foregroundColor(Appearance.Colors.gray2)
+                    .multilineTextAlignment(.center)
+                    .lineLimit(3)
+            })
+                .frame(maxWidth: .infinity)
 
-            Divider()
-                .background(Appearance.Colors.gray4)
-                .padding(.horizontal, Appearance.GridGuide.point)
+            VLine(color: Appearance.Colors.gray4, width: 1)
 
-            if let fee = fee {
-                SingleDetailItem(title: fee)
-            }
+            DetailItem(label: paymentLabel, content: {
+                MarketplacePaymentIconView(layoutStyle: paymentLayoutStyle)
+            })
+                .frame(maxWidth: .infinity)
+
+            VLine(color: Appearance.Colors.gray4, width: 1)
+
+            // TODO: - Set real location when it is implemented
+
+            DetailItem(label: "Prague", content: {
+                Image(R.image.marketplace.mapPin.name)
+                    .resizable()
+                    .frame(size: Appearance.GridGuide.feedIconSize)
+            })
+                .frame(maxWidth: .infinity)
         }
-        .makeCorneredBorder(color: Appearance.Colors.gray4,
-                            borderWidth: 1,
-                            cornerRadius: Appearance.GridGuide.buttonCorner)
+        .padding(.bottom, Appearance.GridGuide.padding)
     }
 }
 
 extension MarketplaceFeedDetailView {
 
-    private struct SingleDetailItem: View {
-        let title: String
+    private struct DetailItem<Content: View>: View {
+
+        let label: String
+        let content: () -> Content
 
         var body: some View {
-            Text(title)
-                .textStyle(.paragraphBold)
-                .foregroundColor(Appearance.Colors.primaryText)
-                .padding(Appearance.GridGuide.point)
-                .frame(height: Appearance.GridGuide.feedItemHeight)
-        }
-    }
+            VStack {
+                content()
+                    .frame(maxHeight: .infinity)
 
-    private struct DoubleDetailItem: View {
-        let firstTitle: String
-        let secondTitle: String
-
-        var body: some View {
-            HStack {
-                Text(firstTitle)
-                    .textStyle(.paragraph)
-                    .foregroundColor(Appearance.Colors.gray2)
-                    .frame(maxWidth: .infinity)
-
-                Divider()
-                    .frame(height: Appearance.GridGuide.mediumPadding2)
-                    .background(Appearance.Colors.gray4)
-
-                Text(secondTitle)
-                    .textStyle(.paragraph)
-                    .foregroundColor(Appearance.Colors.gray2)
-                    .frame(maxWidth: .infinity)
+                Text(label)
+                    .textStyle(.descriptionSemiBold)
+                    .foregroundColor(Appearance.Colors.gray3)
+                    .padding(.top, Appearance.GridGuide.point)
             }
-            .padding(Appearance.GridGuide.point)
-            .frame(height: Appearance.GridGuide.feedItemHeight)
         }
     }
 }
@@ -75,9 +76,12 @@ extension MarketplaceFeedDetailView {
 #if DEBUG || DEVEL
 struct MarketplaceFeedDetailViewPreview: PreviewProvider {
     static var previews: some View {
-        MarketplaceFeedDetailView(maxAmount: "up to $10k",
-                                  paymentMethod: "Revolut",
-                                  fee: "Wants $30 fee per transaction")
+        MarketplaceFeedDetailView(maxAmount: "$10k",
+                                  paymentLabel: "Revolut",
+                                  paymentIcons: [R.image.marketplace.revolut.name],
+                                  fee: "Wants $30 fee per transaction",
+                                  offerType: .sell)
+            .frame(height: 100)
             .previewDevice("iPhone 11")
     }
 }

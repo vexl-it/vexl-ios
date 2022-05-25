@@ -27,14 +27,13 @@ struct MarketplaceFilterView: View {
             Spacer()
 
             Button(action: mainAction, label: {
-                Text(actionTitle)
-                    .textStyle(.description)
+                Image(systemName: "plus")
+                    .frame(size: Appearance.GridGuide.iconSize)
             })
             .textStyle(.paragraphBold)
-            .foregroundColor(Appearance.Colors.green5)
-            .padding(.vertical, 5)
-            .padding(.horizontal, 12)
-            .background(Appearance.Colors.green1)
+            .foregroundColor(Appearance.Colors.yellow100)
+            .padding(Appearance.GridGuide.point)
+            .background(Appearance.Colors.yellow20)
             .cornerRadius(Appearance.GridGuide.buttonCorner)
         }
         .padding(.horizontal, Appearance.GridGuide.point)

@@ -51,6 +51,17 @@ extension OfferPaymentMethodView {
                 return L.offerCreatePaymentMethodBank()
             }
         }
+
+        var iconName: String {
+            switch self {
+            case .cash:
+                return R.image.marketplace.cash.name
+            case .revolut:
+                return R.image.marketplace.revolut.name
+            case .bank:
+                return R.image.marketplace.bank.name
+            }
+        }
     }
 }
 

@@ -27,7 +27,8 @@ struct UserProfileView: View {
             .padding(.horizontal, Appearance.GridGuide.padding)
             .padding(.vertical, Appearance.GridGuide.mediumPadding2)
 
-            LineDivider()
+            HLine(color: Color.white, height: 3)
+                .padding(.horizontal, Appearance.GridGuide.point)
 
             profileItems
         }

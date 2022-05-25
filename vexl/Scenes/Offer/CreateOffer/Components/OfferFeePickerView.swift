@@ -21,27 +21,27 @@ struct OfferFeePickerView: View {
             SegmentedPickerView(selectedOption: $selectedOption,
                                 options: options) { option in
                 Text(option.title)
-                    .foregroundColor(Appearance.Colors.green5)
             }
 
             if selectedOption == .withFee {
-                Rectangle()
-                    .frame(height: 1)
-                    .foregroundColor(Appearance.Colors.gray2)
+                HLine(color: Appearance.Colors.gray2,
+                      height: 1)
                     .padding(.top, Appearance.GridGuide.padding)
                     .padding(.horizontal, Appearance.GridGuide.point)
 
                 Text(feeLabel)
                     .textStyle(.paragraphMedium)
-                    .foregroundColor(Appearance.Colors.green5)
+                    .foregroundColor(Appearance.Colors.whiteText)
                     .padding(Appearance.GridGuide.padding)
 
-                SliderView(thumbColor: R.color.green5()!,
-                           minTrackColor: R.color.green5(),
-                           maxTrackColor: R.color.gray2(),
-                           value: $feeValue)
-                    .padding(.horizontal, Appearance.GridGuide.point)
-                    .padding(.bottom, Appearance.GridGuide.padding)
+                SliderView(
+                    thumbColor: UIColor(Appearance.Colors.whiteText),
+                    minTrackColor: UIColor(Appearance.Colors.whiteText),
+                    maxTrackColor: UIColor(Appearance.Colors.gray2),
+                    value: $feeValue
+                )
+                .padding(.horizontal, Appearance.GridGuide.point)
+                .padding(.bottom, Appearance.GridGuide.padding)
             }
         }
         .background(Appearance.Colors.gray1)

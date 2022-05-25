@@ -209,12 +209,8 @@ final class CreateOfferViewModel: ViewModelType, ObservableObject {
         action
             .share()
             .compactMap { action -> Int? in
-                switch action {
-                case let .deleteLocation(id):
-                    return id
-                default:
-                    return nil
-                }
+                if case let .deleteLocation(id) = action { return id }
+                return nil
             }
             .withUnretained(self)
             .sink { owner, id in

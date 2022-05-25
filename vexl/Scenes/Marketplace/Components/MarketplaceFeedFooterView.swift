@@ -10,67 +10,82 @@ import SwiftUI
 
 struct MarketplaceFeedFooterView: View {
 
-    enum ContactType {
-        case phone
-        case facebook
-    }
-
-    let contactType: ContactType
+    let username: String
     let isRequested: Bool
-    let location: String
+    let friendLevel: String
+    let offerType: OfferType
     let action: () -> Void
 
     var body: some View {
         HStack {
-            if contactType == .facebook {
-                Image(R.image.marketplace.facebookCircle.name)
+            ZStack {
+                Image(R.image.marketplace.defaultAvatar.name)
                     .resizable()
-                    .frame(size: isRequested ? Appearance.GridGuide.iconSize : Appearance.GridGuide.mediumIconSize)
+                    .frame(size: Appearance.GridGuide.feedAvatarSize)
+                    .cornerRadius(Appearance.GridGuide.buttonCorner)
+
+                if isRequested {
+                    Appearance.Colors.gray1
+                        .opacity(0.8)
+                        .frame(size: Appearance.GridGuide.feedAvatarSize)
+                        .cornerRadius(Appearance.GridGuide.buttonCorner)
+                }
             }
 
-            VStack {
-                Text(contactType == .facebook ? L.marketplaceFacebookFriend() : L.marketplacePhoneContact())
-                    .textStyle(isRequested ? .paragraph : .paragraphBold)
-                    .foregroundColor(isRequested ? Appearance.Colors.gray2 : Appearance.Colors.gray1)
+            VStack(alignment: .leading) {
+                Text(offerType == .buy ? L.marketplaceDetailUserBuy(username) : L.marketplaceDetailUserSell(username))
+                    .textStyle(.paragraphSmallSemiBold)
+                    .foregroundColor(Appearance.Colors.whiteText)
 
+                Text(friendLevel)
+                    .textStyle(.micro)
+                    .foregroundColor(Appearance.Colors.gray4)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+
+            Button {
                 if !isRequested {
-                    Text(location)
-                        .textStyle(.paragraph)
-                        .foregroundColor(Appearance.Colors.gray2)
-                }
-            }
-
-            Spacer()
-
-            if isRequested {
-                HStack {
-                    Image(systemName: "checkmark")
-                        .resizable()
-                        .foregroundColor(Appearance.Colors.green4)
-                        .frame(size: Appearance.GridGuide.smallIconSize)
-
-                    Text(L.offerRequested())
-                        .textStyle(.description)
-                        .foregroundColor(Appearance.Colors.green4)
-                }
-            } else {
-                Button {
                     action()
-                } label: {
-                    HStack {
-                        Image(R.image.onboarding.eye.name)
-
-                        Text(L.offerRequest())
-                            .textStyle(.description)
-                            .foregroundColor(Appearance.Colors.primaryText)
-                    }
-                    .padding(.horizontal, Appearance.GridGuide.padding)
                 }
-                .frame(height: Appearance.GridGuide.baseHeight)
-                .background(Appearance.Colors.purple5)
-                .cornerRadius(Appearance.GridGuide.buttonCorner)
+            } label: {
+                if isRequested {
+                    requestedLabel
+                } else {
+                    requestLabel
+                }
             }
+            .frame(height: Appearance.GridGuide.baseHeight)
+            .background(isRequested ? Appearance.Colors.gray1 : Appearance.Colors.yellow100)
+            .cornerRadius(Appearance.GridGuide.buttonCorner)
         }
+    }
+
+    private var requestedLabel: some View {
+        HStack {
+            Image(systemName: "checkmark")
+                .resizable()
+                .foregroundColor(Appearance.Colors.whiteText)
+                .frame(size: Appearance.GridGuide.tinyIconSize)
+                .padding(Appearance.GridGuide.tinyPadding)
+                .background(Color.blue)
+                .clipShape(Circle())
+
+            Text(L.offerRequested())
+                .textStyle(.descriptionSemiBold)
+                .foregroundColor(Appearance.Colors.whiteText)
+        }
+        .padding(.horizontal, Appearance.GridGuide.padding)
+    }
+
+    private var requestLabel: some View {
+        HStack {
+            Image(R.image.marketplace.eyeBlack.name)
+
+            Text(L.offerRequest())
+                .textStyle(.descriptionSemiBold)
+                .foregroundColor(Appearance.Colors.primaryText)
+        }
+        .padding(.horizontal, Appearance.GridGuide.padding)
     }
 }
 
@@ -78,28 +93,33 @@ struct MarketplaceFeedFooterView: View {
 struct MarketplaceFeedFooterViewPreview: PreviewProvider {
     static var previews: some View {
         VStack(spacing: 16) {
-            MarketplaceFeedFooterView(contactType: .phone,
+            MarketplaceFeedFooterView(username: "Murakami",
                                       isRequested: true,
-                                      location: "Prague",
+                                      friendLevel: "Friend",
+                                      offerType: .buy,
                                       action: {})
                 .previewDevice("iPhone 11")
-            MarketplaceFeedFooterView(contactType: .phone,
+            MarketplaceFeedFooterView(username: "Murakami",
                                       isRequested: false,
-                                      location: "Prague",
+                                      friendLevel: "Friend of Friend",
+                                      offerType: .sell,
                                       action: {})
                 .previewDevice("iPhone 11")
-            MarketplaceFeedFooterView(contactType: .facebook,
+            MarketplaceFeedFooterView(username: "Murakami",
                                       isRequested: true,
-                                      location: "Prague",
+                                      friendLevel: "Friend",
+                                      offerType: .buy,
                                       action: {})
                 .previewDevice("iPhone 11")
-            MarketplaceFeedFooterView(contactType: .facebook,
+            MarketplaceFeedFooterView(username: "Murakami",
                                       isRequested: false,
-                                      location: "Prague",
+                                      friendLevel: "Friend of Friend",
+                                      offerType: .sell,
                                       action: {})
                 .previewDevice("iPhone 11")
         }
         .padding()
+        .background(Color.black)
     }
 }
 #endif

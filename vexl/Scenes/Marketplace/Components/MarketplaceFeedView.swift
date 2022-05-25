@@ -13,49 +13,73 @@ struct MarketplaceFeedView: View {
 
     let data: ViewData
     let displayFooter: Bool
+    let detailAction: (String) -> Void
+    let requestAction: (String) -> Void
 
     var body: some View {
-        VStack(spacing: Appearance.GridGuide.padding) {
-            Text(data.title)
-                .textStyle(.paragraph)
-                .foregroundColor(Appearance.Colors.primaryText)
-                .padding([.horizontal, .top], Appearance.GridGuide.mediumPadding1)
+        VStack(spacing: Appearance.GridGuide.point) {
+            VStack(spacing: Appearance.GridGuide.padding) {
+                Text(data.title)
+                    .textStyle(.paragraph)
+                    .multilineTextAlignment(.leading)
+                    .foregroundColor(data.isRequested ? Appearance.Colors.gray3 : Appearance.Colors.primaryText)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.top, Appearance.GridGuide.mediumPadding1)
 
-            MarketplaceFeedDetailView(maxAmount: data.amount,
-                                      paymentMethod: data.paymentMethodDisplayValue,
-                                      fee: data.fee)
-                .padding(displayFooter ? [.horizontal] : [.horizontal, .bottom],
-                         Appearance.GridGuide.padding)
-
-            if displayFooter {
-                // TODO: - set contact type from viewmodel + real action
-                MarketplaceFeedFooterView(contactType: .phone,
-                                          isRequested: data.isRequested,
-                                          location: data.location) {
-                    print("facebook")
-                }
-                .padding([.horizontal, .bottom], Appearance.GridGuide.padding)
+                MarketplaceFeedDetailView(maxAmount: data.amount,
+                                          paymentLabel: data.paymentLabel,
+                                          paymentIcons: data.paymentIcons,
+                                          fee: data.fee,
+                                          offerType: data.offerType)
+                    .padding(.bottom, displayFooter ? 0 : Appearance.GridGuide.padding)
             }
+            .padding(.horizontal, Appearance.GridGuide.padding)
+            .background(data.isRequested ? Appearance.Colors.gray1 : Appearance.Colors.whiteText)
+            .cornerRadius(Appearance.GridGuide.buttonCorner)
+            .onTapGesture {
+                detailAction(data.id)
+            }
+
+            MarketplaceFeedFooterView(username: data.username,
+                                      isRequested: data.isRequested,
+                                      friendLevel: data.friendLevel,
+                                      offerType: data.offerType) {
+                requestAction(data.id)
+            }
+            .padding(.bottom, Appearance.GridGuide.padding)
         }
-        .background(Appearance.Colors.whiteText)
-        .cornerRadius(Appearance.GridGuide.buttonCorner)
     }
 }
 
 extension MarketplaceFeedView {
 
+    // TODO: Set real username when its implemented in the BE
+
     struct ViewData: Identifiable {
         let id: String
+        let username = "Murakami"
         let title: String
         let isRequested: Bool
-        let location: String
-
+        let friendLevel: String
         let amount: String
-        let paymentMethods: [String]
+        let paymentMethods: [OfferPaymentMethodOption]
         let fee: String?
+        let offerType: OfferType
 
-        var paymentMethodDisplayValue: String {
-            paymentMethods.joined(separator: "\n")
+        var paymentIcons: [String] {
+            paymentMethods.map(\.iconName)
+        }
+
+        var paymentLabel: String {
+            guard let label = paymentMethods.first?.title else {
+                return Constants.notAvailable
+            }
+
+            if paymentMethods.count > 1 {
+                return "\(label) +(\(paymentMethods.count - 1))"
+            }
+
+            return label
         }
     }
 }
@@ -66,15 +90,36 @@ struct MarketplaceFeedViewViewPreview: PreviewProvider {
         let data = MarketplaceFeedViewData(id: "1",
                                            title: "I’ll be wearing a red hat, Don’t text me before 9am — I love to sleep...",
                                            isRequested: false,
-                                           location: "Prague",
-                                           amount: "$10k - $20k",
-                                           paymentMethods: ["Revolut"],
-                                           fee: nil)
+                                           friendLevel: "Friend",
+                                           amount: "$10k",
+                                           paymentMethods: [.revolut, .bank],
+                                           fee: nil,
+                                           offerType: .sell)
+
+        let data2 = MarketplaceFeedViewData(id: "2",
+                                            title: "I’ll be wearing a red hat, Don’t text me before 9am — I love to sleep...",
+                                            isRequested: true,
+                                            friendLevel: "Friend",
+                                            amount: "$10k",
+                                            paymentMethods: [.revolut],
+                                            fee: nil,
+                                            offerType: .buy)
         MarketplaceFeedView(data: data,
-                            displayFooter: false)
+                            displayFooter: false,
+                            detailAction: { _ in },
+                            requestAction: { _ in })
             .previewDevice("iPhone 11")
-            .frame(maxWidth: .infinity,
-                   maxHeight: .infinity)
+            .frame(maxWidth: .infinity)
+            .frame(height: 300)
+            .background(Color.black)
+
+        MarketplaceFeedView(data: data2,
+                            displayFooter: true,
+                            detailAction: { _ in },
+                            requestAction: { _ in })
+            .previewDevice("iPhone 11")
+            .frame(maxWidth: .infinity)
+            .frame(height: 300)
             .background(Color.black)
     }
 }
