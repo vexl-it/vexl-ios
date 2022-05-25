@@ -9,7 +9,7 @@ import Foundation
 
 struct OfferFilter: Equatable {
     let type: OfferType
-    var currentAmountRange: ClosedRange<Int> = 0...0
+    var currentAmountRange: ClosedRange<Int>?
     var selectedFeeOption: OfferFeeOption = .withoutFee
     var feeAmount: Double = 0
     var locations: [OfferLocationItemData] = []
@@ -17,7 +17,7 @@ struct OfferFilter: Equatable {
     var selectedBTCOptions: [OfferAdvancedBTCOption] = []
     var selectedFriendDegreeOption: OfferAdvancedFriendDegreeOption = .firstDegree
 
-    mutating func reset(with amountRange: ClosedRange<Int>) {
+    mutating func reset(with amountRange: ClosedRange<Int>?) {
         currentAmountRange = amountRange
         selectedFeeOption = .withoutFee
         feeAmount = 0
@@ -40,7 +40,8 @@ struct OfferFilter: Equatable {
     }
 
     private func isInRange(offer: Offer) -> Bool {
-        offer.minAmount >= currentAmountRange.lowerBound && offer.maxAmount <= currentAmountRange.upperBound
+        guard let amountRange = currentAmountRange else { return true }
+        return offer.minAmount >= amountRange.lowerBound && offer.maxAmount <= amountRange.upperBound
     }
 
     private func hasSameFeeOption(offer: Offer) -> Bool {

@@ -69,7 +69,7 @@ final class FilterViewModel: ViewModelType, ObservableObject {
 
     init(offerFilter: OfferFilter) {
         self.offerFilter = offerFilter
-        currentAmountRange = offerFilter.currentAmountRange
+        currentAmountRange = offerFilter.currentAmountRange ?? 0...0
         selectedFeeOption = offerFilter.selectedFeeOption
         feeAmount = offerFilter.feeAmount
         locations = offerFilter.locations
@@ -90,10 +90,13 @@ final class FilterViewModel: ViewModelType, ObservableObject {
             .withUnretained(self)
             .sink { owner, data in
                 owner.amountRange = data.minOffer...data.maxOffer
-                owner.currentAmountRange = data.minOffer...data.maxOffer
                 owner.minFee = data.minFee
                 owner.maxFee = data.maxFee
                 owner.currencySymbol = data.currencySymbol
+
+                if owner.offerFilter.currentAmountRange == nil {
+                    owner.currentAmountRange = data.minOffer...data.maxOffer
+                }
             }
             .store(in: cancelBag)
     }
@@ -175,7 +178,7 @@ final class FilterViewModel: ViewModelType, ObservableObject {
     }
 
     private func resetFilter() {
-        currentAmountRange = amountRange.lowerBound...amountRange.upperBound
+        currentAmountRange = amountRange
         selectedFeeOption = .withoutFee
         feeAmount = 0
         locations = []
