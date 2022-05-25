@@ -29,6 +29,8 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
 
     @Published var primaryActivity: Activity = .init()
     @Published var selectedOption: OfferType = .buy
+    @Published private var filteredBuyFeedItems: [MarketplaceOffer] = []
+    @Published private var filteredSellFeedItems: [MarketplaceOffer] = []
 
     @Published var offerItems: [Offer] = []
 
@@ -75,16 +77,16 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
     var marketplaceFeedItems: [MarketplaceFeedViewData] {
         switch selectedOption {
         case .sell:
-            return sellFeedItems
+            return filteredSellFeedItems.map(\.viewData)
         case .buy:
-            return buyFeedItems
+            return filteredBuyFeedItems.map(\.viewData)
         }
     }
 
     private var buyOfferFilter = OfferFilter(type: .buy)
     private var sellOfferFilter = OfferFilter(type: .sell)
-    private var buyFeedItems: [MarketplaceFeedViewData] = []
-    private var sellFeedItems: [MarketplaceFeedViewData] = []
+    private var buyFeedItems: [MarketplaceOffer] = []
+    private var sellFeedItems: [MarketplaceOffer] = []
     private let userOfferKeys: UserOfferKeys?
     private let cancelBag: CancelBag = .init()
 
@@ -98,11 +100,25 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
         switch filter.type {
         case .buy:
             buyOfferFilter = filter
+            filterBuyOffers()
         case .sell:
             sellOfferFilter = filter
+            filterSellOffers()
         }
+    }
 
-        // filter offers
+    private func filterBuyOffers() {
+        let filteredItems = buyFeedItems.filter { item in
+            buyOfferFilter.shouldShow(offer: item.offer)
+        }
+        filteredBuyFeedItems = filteredItems
+    }
+
+    private func filterSellOffers() {
+        let filteredItems = sellFeedItems.filter { item in
+            sellOfferFilter.shouldShow(offer: item.offer)
+        }
+        filteredSellFeedItems = filteredItems
     }
 
     private func setupDataBindings() {
@@ -113,12 +129,11 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
             .compactMap(\.value)
             .map(\.items)
             .withUnretained(self)
-            .sink { owner, items in
-                owner.offerItems = items.compactMap {
-                    try? Offer(encryptedOffer: $0, keys: owner.userSecurity.userKeys)
-                }
+            .tryMap { owner, items in
+                items.compactMap { try? Offer(encryptedOffer: $0, keys: owner.userSecurity.userKeys) }
             }
-            .store(in: cancelBag)
+            .replaceError(with: [])
+            .assign(to: &$offerItems)
 
         $offerItems
             .withUnretained(self)
@@ -138,6 +153,9 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
                         owner.sellFeedItems.append(marketplaceItem)
                     }
                 }
+
+                owner.filteredBuyFeedItems = owner.buyFeedItems
+                owner.filteredSellFeedItems = owner.sellFeedItems
             }
             .store(in: cancelBag)
     }
@@ -179,14 +197,24 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
             .store(in: cancelBag)
     }
 
-    private static func mapToMarketplaceFeed(usingOffer offer: Offer) -> MarketplaceFeedViewData {
+    private static func mapToMarketplaceFeed(usingOffer offer: Offer) -> MarketplaceOffer {
         let currencySymbol = Constants.currencySymbol
-        return MarketplaceFeedViewData(id: offer.offerId,
-                                       title: offer.description,
-                                       isRequested: false,
-                                       location: L.offerSellNoLocation(),
-                                       amount: "\(currencySymbol)\(offer.minAmount) - \(currencySymbol)\(offer.maxAmount)",
-                                       paymentMethods: offer.paymentMethods.map(\.title),
-                                       fee: offer.feeAmount > 0 ? "\(offer.feeAmount)%" : nil)
+        let viewData = MarketplaceFeedViewData(
+            id: offer.offerId,
+            title: offer.description,
+            isRequested: false,
+            location: L.offerSellNoLocation(),
+            amount: "\(currencySymbol)\(offer.minAmount) - \(currencySymbol)\(offer.maxAmount)",
+            paymentMethods: offer.paymentMethods.map(\.title),
+            fee: offer.feeAmount > 0 ? "\(offer.feeAmount)%" : nil
+        )
+        return MarketplaceOffer(offer: offer, viewData: viewData)
+    }
+}
+
+extension MarketplaceViewModel {
+    struct MarketplaceOffer {
+        let offer: Offer
+        let viewData: MarketplaceFeedViewData
     }
 }
