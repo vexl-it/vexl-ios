@@ -13,7 +13,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
     // MARK: - Action Binding
 
     enum UserAction: Equatable {
-        case dismissTap
+        case selectFilter(option: ChatFilterOption)
         case continueTap
     }
 
@@ -21,6 +21,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
 
     // MARK: - View Bindings
 
+    @Published var filter: ChatFilterOption = .all
     @Published var primaryActivity: Activity = .init()
 
     // MARK: - Coordinator Bindings
@@ -34,4 +35,17 @@ final class ChatViewModel: ViewModelType, ObservableObject {
     // MARK: - Variables
 
     private let cancelBag: CancelBag = .init()
+
+    private func setupActionBindings() {
+        action
+            .compactMap { action -> ChatFilterOption? in
+                if case let .selectFilter(option) = action { return option }
+                return nil
+            }
+            .withUnretained(self)
+            .sink { owner, option in
+                owner.filter = option
+            }
+            .store(in: cancelBag)
+    }
 }
