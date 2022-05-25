@@ -33,7 +33,7 @@ struct UserProfileView: View {
             profileItems
         }
         .background(Color.black)
-        .cornerRadius(Appearance.GridGuide.padding,
+        .cornerRadius(Appearance.GridGuide.buttonCorner,
                       corners: [.topLeft, .topRight])
         .edgesIgnoringSafeArea(.bottom)
     }

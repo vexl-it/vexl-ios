@@ -72,7 +72,7 @@ final class CoinValueHeaderView: UIControl {
             stackView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
             stackView.leadingAnchor.constraint(equalTo: leadingAnchor),
             stackView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Appearance.GridGuide.padding)
+            stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Appearance.GridGuide.padding - Appearance.GridGuide.buttonCorner)
         ])
 
         stackView.addArrangedSubview(displayValue)
