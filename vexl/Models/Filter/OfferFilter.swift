@@ -50,7 +50,7 @@ struct OfferFilter: Equatable {
 
     private func hasSameFeeValue(offer: Offer) -> Bool {
         guard offer.feeState == .withFee else { return true }
-        return Int(offer.feeAmount) == Int(feeAmount)
+        return offer.feeAmount.rounded() == feeAmount.rounded()
     }
 
     private func hasSameLocations(offer: Offer) -> Bool {
