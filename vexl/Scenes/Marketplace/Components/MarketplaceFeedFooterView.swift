@@ -41,8 +41,7 @@ struct MarketplaceFeedFooterView: View {
                     .textStyle(.micro)
                     .foregroundColor(Appearance.Colors.gray4)
             }
-
-            Spacer()
+            .frame(maxWidth: .infinity, alignment: .leading)
 
             Button {
                 if !isRequested {

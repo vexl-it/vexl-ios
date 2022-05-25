@@ -52,8 +52,8 @@ final class CoinValueHeaderView: UIControl {
 
     private func setupLayer() {
         let gradientLayer = layer as? CAGradientLayer
-        let bottomColor = R.color.yellow100()?.withAlphaComponent(0.2) ?? .black
-        let topColor = R.color.yellow100()?.withAlphaComponent(0) ?? .black
+        let bottomColor = UIColor(Appearance.Colors.yellow100).withAlphaComponent(0.2)
+        let topColor = UIColor(Appearance.Colors.yellow100).withAlphaComponent(0)
         gradientLayer?.colors = [topColor.cgColor, bottomColor.cgColor]
         gradientLayer?.locations = [0.0, 0.75]
         gradientLayer?.startPoint = CGPoint(x: 0.5, y: 0)

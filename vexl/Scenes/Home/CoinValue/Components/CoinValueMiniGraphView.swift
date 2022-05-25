@@ -61,10 +61,10 @@ final class CoinValueMiniGraphView: UIView {
 
         // TODO: - remove when real data is set
         coinLabel.text = "Bitcoin"
-        coinLabel.textColor = .white
+        coinLabel.textColor = UIColor(Appearance.Colors.whiteText)
         coinLabel.font = Appearance.TextStyle.paragraphSmallBold.font
 
-        variationLabel.textColor = R.color.yellow100()
+        variationLabel.textColor = UIColor(Appearance.Colors.yellow100)
         variationLabel.text = "2% Today"
         variationLabel.font = Appearance.TextStyle.descriptionBold.font
 
@@ -81,33 +81,41 @@ final class CoinValueMiniGraphView: UIView {
             .sink { owner, displayGraph in
 
                 if displayGraph {
-                    owner.minigraphImageView.isHidden = !displayGraph
-
-                    UIView.animate(withDuration: 0.25,
-                                   delay: 0,
-                                   options: .curveEaseInOut,
-                                   animations: {
-                        owner.minigraphImageView.alpha = displayGraph ? 1 : 0
-                        owner.labelStack.alpha = displayGraph ? 0 : 1
-                    },
-                                   completion: { _ in
-                        owner.labelStack.isHidden = displayGraph
-                    })
+                    owner.showMinigraph()
                 } else {
-                    owner.labelStack.isHidden = displayGraph
-
-                    UIView.animate(withDuration: 0.25,
-                                   delay: 0,
-                                   options: .curveEaseInOut,
-                                   animations: {
-                        owner.minigraphImageView.alpha = displayGraph ? 1 : 0
-                        owner.labelStack.alpha = displayGraph ? 0 : 1
-                    },
-                                   completion: { _ in
-                        owner.minigraphImageView.isHidden = !displayGraph
-                    })
+                    owner.hideMinigraph()
                 }
             }
             .store(in: cancelBag)
+    }
+
+    private func showMinigraph() {
+        minigraphImageView.isHidden = false
+
+        UIView.animate(withDuration: 0.25,
+                       delay: 0,
+                       options: .curveEaseInOut,
+                       animations: {
+            self.minigraphImageView.alpha = 1
+            self.labelStack.alpha = 0
+        },
+                       completion: { _ in
+            self.labelStack.isHidden = true
+        })
+    }
+
+    private func hideMinigraph() {
+        labelStack.isHidden = false
+
+        UIView.animate(withDuration: 0.25,
+                       delay: 0,
+                       options: .curveEaseInOut,
+                       animations: {
+            self.minigraphImageView.alpha = 0
+            self.labelStack.alpha = 1
+        },
+                       completion: { _ in
+            self.minigraphImageView.isHidden = true
+        })
     }
 }
