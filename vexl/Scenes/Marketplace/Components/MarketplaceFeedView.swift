@@ -27,8 +27,10 @@ struct MarketplaceFeedView: View {
                     .padding(.top, Appearance.GridGuide.mediumPadding1)
 
                 MarketplaceFeedDetailView(maxAmount: data.amount,
-                                          paymentMethod: data.paymentMethodDisplayValue,
-                                          fee: data.fee)
+                                          paymentLabel: data.paymentLabel,
+                                          paymentIcons: data.paymentIcons,
+                                          fee: data.fee,
+                                          offerType: data.offerType)
                     .padding(.bottom, displayFooter ? 0 : Appearance.GridGuide.padding)
             }
             .padding(.horizontal, Appearance.GridGuide.padding)
@@ -38,10 +40,10 @@ struct MarketplaceFeedView: View {
                 detailAction(data.id)
             }
 
-            // TODO: - set contact type from viewmodel + real action
-
-            MarketplaceFeedFooterView(isRequested: data.isRequested,
-                                      friendLevel: data.friendLevel) {
+            MarketplaceFeedFooterView(username: data.username,
+                                      isRequested: data.isRequested,
+                                      friendLevel: data.friendLevel,
+                                      offerType: data.offerType) {
                 requestAction(data.id)
             }
             .padding(.bottom, Appearance.GridGuide.padding)
@@ -51,18 +53,33 @@ struct MarketplaceFeedView: View {
 
 extension MarketplaceFeedView {
 
+    // TODO: Set real username when its implemented in the BE
+
     struct ViewData: Identifiable {
         let id: String
+        let username = "Murakami"
         let title: String
         let isRequested: Bool
         let friendLevel: String
-
         let amount: String
-        let paymentMethods: [String]
+        let paymentMethods: [OfferPaymentMethodOption]
         let fee: String?
+        let offerType: OfferType
 
-        var paymentMethodDisplayValue: String {
-            paymentMethods.joined(separator: "\n")
+        var paymentIcons: [String] {
+            paymentMethods.map(\.iconName)
+        }
+
+        var paymentLabel: String {
+            guard let label = paymentMethods.first?.title else {
+                return Constants.notAvailable
+            }
+
+            if paymentMethods.count > 1 {
+                return "\(label) +(\(paymentMethods.count - 1))"
+            }
+
+            return label
         }
     }
 }
@@ -75,16 +92,18 @@ struct MarketplaceFeedViewViewPreview: PreviewProvider {
                                            isRequested: false,
                                            friendLevel: "Friend",
                                            amount: "$10k",
-                                           paymentMethods: ["Revolut"],
-                                           fee: nil)
+                                           paymentMethods: [.revolut, .bank],
+                                           fee: nil,
+                                           offerType: .sell)
 
         let data2 = MarketplaceFeedViewData(id: "2",
                                             title: "I’ll be wearing a red hat, Don’t text me before 9am — I love to sleep...",
                                             isRequested: true,
                                             friendLevel: "Friend",
                                             amount: "$10k",
-                                            paymentMethods: ["Revolut"],
-                                            fee: nil)
+                                            paymentMethods: [.revolut],
+                                            fee: nil,
+                                            offerType: .buy)
         MarketplaceFeedView(data: data,
                             displayFooter: false,
                             detailAction: { _ in },

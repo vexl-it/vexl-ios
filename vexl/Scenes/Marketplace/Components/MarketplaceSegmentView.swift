@@ -11,7 +11,6 @@ import SwiftUI
 struct MarketplaceSegmentView: View {
 
     private let selectorHeight: CGFloat = 2
-    private let lineWidth: CGFloat = 2
 
     @Binding var selectedOption: OfferType
     @State private var viewWidth: CGFloat = 0

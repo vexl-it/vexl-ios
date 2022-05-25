@@ -213,7 +213,8 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
                                        isRequested: false,
                                        friendLevel: friendLevel,
                                        amount: "\(offer.maxAmount)\(currencySymbol)",
-                                       paymentMethods: offer.paymentMethods.map(\.title),
-                                       fee: offer.feeAmount > 0 ? "\(offer.feeAmount)%" : nil)
+                                       paymentMethods: offer.paymentMethods,
+                                       fee: offer.feeAmount > 0 ? "\(offer.feeAmount)%" : nil,
+                                       offerType: offer.type)
     }
 }

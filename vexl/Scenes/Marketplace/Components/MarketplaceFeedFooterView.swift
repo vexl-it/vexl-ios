@@ -10,8 +10,10 @@ import SwiftUI
 
 struct MarketplaceFeedFooterView: View {
 
+    let username: String
     let isRequested: Bool
     let friendLevel: String
+    let offerType: OfferType
     let action: () -> Void
 
     var body: some View {
@@ -31,7 +33,7 @@ struct MarketplaceFeedFooterView: View {
             }
 
             VStack(alignment: .leading) {
-                Text("Murakami is selling")
+                Text(offerType == .buy ? L.marketplaceDetailUserBuy(username) : L.marketplaceDetailUserSell(username))
                     .textStyle(.paragraphSmallBold)
                     .foregroundColor(Appearance.Colors.whiteText)
 
@@ -92,20 +94,28 @@ struct MarketplaceFeedFooterView: View {
 struct MarketplaceFeedFooterViewPreview: PreviewProvider {
     static var previews: some View {
         VStack(spacing: 16) {
-            MarketplaceFeedFooterView(isRequested: true,
+            MarketplaceFeedFooterView(username: "Murakami",
+                                      isRequested: true,
                                       friendLevel: "Friend",
+                                      offerType: .buy,
                                       action: {})
                 .previewDevice("iPhone 11")
-            MarketplaceFeedFooterView(isRequested: false,
+            MarketplaceFeedFooterView(username: "Murakami",
+                                      isRequested: false,
                                       friendLevel: "Friend of Friend",
+                                      offerType: .sell,
                                       action: {})
                 .previewDevice("iPhone 11")
-            MarketplaceFeedFooterView(isRequested: true,
+            MarketplaceFeedFooterView(username: "Murakami",
+                                      isRequested: true,
                                       friendLevel: "Friend",
+                                      offerType: .buy,
                                       action: {})
                 .previewDevice("iPhone 11")
-            MarketplaceFeedFooterView(isRequested: false,
+            MarketplaceFeedFooterView(username: "Murakami",
+                                      isRequested: false,
                                       friendLevel: "Friend of Friend",
+                                      offerType: .sell,
                                       action: {})
                 .previewDevice("iPhone 11")
         }

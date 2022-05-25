@@ -229,6 +229,7 @@
 		F1F5F18D283D69E800968366 /* SingleOptionPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1F5F189283D69E800968366 /* SingleOptionPickerView.swift */; };
 		F1F5F18E283D69E800968366 /* MultipleOptionPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1F5F18A283D69E800968366 /* MultipleOptionPickerView.swift */; };
 		F1F5F18F283D69E800968366 /* PhoneNumberTextFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1F5F18B283D69E800968366 /* PhoneNumberTextFieldView.swift */; };
+		F1F5F194283E9FC500968366 /* MarketplacePaymentIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1F5F193283E9FC500968366 /* MarketplacePaymentIconView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -482,6 +483,7 @@
 		F1F5F189283D69E800968366 /* SingleOptionPickerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SingleOptionPickerView.swift; sourceTree = "<group>"; };
 		F1F5F18A283D69E800968366 /* MultipleOptionPickerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultipleOptionPickerView.swift; sourceTree = "<group>"; };
 		F1F5F18B283D69E800968366 /* PhoneNumberTextFieldView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhoneNumberTextFieldView.swift; sourceTree = "<group>"; };
+		F1F5F193283E9FC500968366 /* MarketplacePaymentIconView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketplacePaymentIconView.swift; sourceTree = "<group>"; };
 		F2FD3623B1DD9C04AD13743C /* Pods-vexl.devel.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-vexl.devel.xcconfig"; path = "Target Support Files/Pods-vexl/Pods-vexl.devel.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1207,6 +1209,7 @@
 				F188626B28169A3700659786 /* MarketplaceFeedView.swift */,
 				F188626C28169A3700659786 /* MarketplaceFeedFooterView.swift */,
 				F188626D28169A3700659786 /* MarketplaceSegmentView.swift */,
+				F1F5F193283E9FC500968366 /* MarketplacePaymentIconView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -1832,6 +1835,7 @@
 				F1BFA8D027FB31E800F4E745 /* FacebookUserData.swift in Sources */,
 				B08F399E27AE7D92008B344F /* OnboardingView.swift in Sources */,
 				B08F393F27AE7112008B344F /* APIError.swift in Sources */,
+				F1F5F194283E9FC500968366 /* MarketplacePaymentIconView.swift in Sources */,
 				B0FE523F280E822400A77EC3 /* CryptoService.swift in Sources */,
 				F1A9452D27F67FD5009B5AE3 /* PhoneConfirmation.swift in Sources */,
 				F151A2A227C86CA6000D7242 /* RegistrationCardView.swift in Sources */,

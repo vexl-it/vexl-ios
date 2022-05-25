@@ -48,7 +48,7 @@ struct FilterHeaderView: View {
             Image(systemName: "arrow.clockwise")
                 .rotationEffect(.degrees(90))
                 .foregroundColor(Appearance.Colors.whiteText)
-                .frame(size: Appearance.GridGuide.baseSize)
+                .frame(size: Appearance.GridGuide.baseButtonSize)
         })
         .background(
             RoundedRectangle(cornerRadius: 4)
@@ -60,7 +60,7 @@ struct FilterHeaderView: View {
         Button(action: closeAction, label: {
             Image(systemName: "xmark")
                 .foregroundColor(Appearance.Colors.whiteText)
-                .frame(size: Appearance.GridGuide.baseSize)
+                .frame(size: Appearance.GridGuide.baseButtonSize)
         })
         .background(
             RoundedRectangle(cornerRadius: 4)

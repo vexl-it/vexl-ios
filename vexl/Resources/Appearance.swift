@@ -66,7 +66,6 @@ struct Appearance {
 
         static let baseHeight: CGFloat = 40
         static let baseButtonSize: CGSize = CGSize(width: 40, height: 40)
-        static let baseSize: CGSize = CGSize(width: 40, height: 40)
         static let largeButtonHeight: CGFloat = 64
 
         // MARK: Avatar
