@@ -85,7 +85,7 @@ extension OfferLocationPickerView {
             HStack {
                 HStack {
                     Text(name)
-                        .foregroundColor(Appearance.Colors.green5)
+                        .foregroundColor(Appearance.Colors.yellow100)
 
                     Spacer()
 
@@ -94,7 +94,7 @@ extension OfferLocationPickerView {
                         .padding(.trailing, Appearance.GridGuide.smallPadding)
 
                     Text(distance)
-                        .foregroundColor(Appearance.Colors.green5)
+                        .foregroundColor(Appearance.Colors.whiteText)
                 }
                 .padding(Appearance.GridGuide.mediumPadding1)
                 .background(Appearance.Colors.gray1)

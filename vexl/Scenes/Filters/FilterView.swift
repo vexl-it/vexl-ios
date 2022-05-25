@@ -29,7 +29,7 @@ struct FilterView: View {
 
             SolidButton(Text(L.filterApply()),
                         font: Appearance.TextStyle.titleSmallBold.font.asFont,
-                        colors: SolidButtonColor.welcome,
+                        colors: SolidButtonColor.main,
                         dimensions: SolidButtonDimension.largeButton,
                         action: {
                 viewModel.send(action: .applyFilter)

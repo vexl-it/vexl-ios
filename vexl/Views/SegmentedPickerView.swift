@@ -23,10 +23,10 @@ struct SegmentedPickerView<Option: Hashable, Content: View>: View {
             .padding(Appearance.GridGuide.point)
             .pickerStyle(.segmented)
             .onAppear {
-                UISegmentedControl.appearance().selectedSegmentTintColor = R.color.gray2()
-                UISegmentedControl.appearance().setTitleTextAttributes([.foregroundColor: R.color.green5()!,
+                UISegmentedControl.appearance().selectedSegmentTintColor = UIColor(Appearance.Colors.gray2)
+                UISegmentedControl.appearance().setTitleTextAttributes([.foregroundColor: UIColor(Appearance.Colors.whiteText),
                                                                         .font: Appearance.TextStyle.paragraph.font], for: .selected)
-                UISegmentedControl.appearance().setTitleTextAttributes([.foregroundColor: R.color.gray3()!,
+                UISegmentedControl.appearance().setTitleTextAttributes([.foregroundColor: UIColor(Appearance.Colors.gray4),
                                                                         .font: Appearance.TextStyle.paragraph.font], for: .normal)
             }
         }

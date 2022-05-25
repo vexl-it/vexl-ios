@@ -16,12 +16,12 @@ struct OfferStatusView: View {
         HStack {
             HStack {
                 Circle()
-                    .foregroundColor(Appearance.Colors.green5)
+                    .foregroundColor(Appearance.Colors.green100)
                     .frame(size: Appearance.GridGuide.smallIconSize)
 
                 Text(L.offerCreateStatusActive())
                     .textStyle(.paragraph)
-                    .foregroundColor(Appearance.Colors.green5)
+                    .foregroundColor(Appearance.Colors.green100)
             }
 
             Spacer()

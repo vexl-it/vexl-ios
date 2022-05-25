@@ -34,7 +34,7 @@ struct FilterHeaderView: View {
             Group {
                 Text(filterType)
                     .textStyle(.titleSmallBold)
-                    .foregroundColor(Appearance.Colors.green1)
+                    .foregroundColor(Appearance.Colors.yellow100)
                 Text(L.filterTitle())
                     .textStyle(.h2)
                     .foregroundColor(Appearance.Colors.whiteText)

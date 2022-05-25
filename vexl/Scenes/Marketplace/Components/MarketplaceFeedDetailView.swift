@@ -65,7 +65,7 @@ extension MarketplaceFeedDetailView {
                     .frame(maxHeight: .infinity)
 
                 Text(label)
-                    .textStyle(.descriptionBold)
+                    .textStyle(.descriptionSemiBold)
                     .foregroundColor(Appearance.Colors.gray3)
                     .padding(.top, Appearance.GridGuide.point)
             }

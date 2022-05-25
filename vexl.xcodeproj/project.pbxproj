@@ -1205,8 +1205,8 @@
 			isa = PBXGroup;
 			children = (
 				F188626928169A3700659786 /* MarketplaceFilterView.swift */,
-				F188626A28169A3700659786 /* MarketplaceFeedDetailView.swift */,
 				F188626B28169A3700659786 /* MarketplaceFeedView.swift */,
+				F188626A28169A3700659786 /* MarketplaceFeedDetailView.swift */,
 				F188626C28169A3700659786 /* MarketplaceFeedFooterView.swift */,
 				F188626D28169A3700659786 /* MarketplaceSegmentView.swift */,
 				F1F5F193283E9FC500968366 /* MarketplacePaymentIconView.swift */,
