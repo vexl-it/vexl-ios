@@ -32,7 +32,7 @@ struct MarketplaceFeedFooterView: View {
 
             VStack(alignment: .leading) {
                 Text("Murakami is selling")
-                    .textStyle(.paragraphSmallBold)
+                    .textStyle(.paragraphSmallSemiBold)
                     .foregroundColor(Appearance.Colors.whiteText)
 
                 Text(friendLevel)
@@ -70,7 +70,7 @@ struct MarketplaceFeedFooterView: View {
                 .clipShape(Circle())
 
             Text(L.offerRequested())
-                .textStyle(.descriptionBold)
+                .textStyle(.descriptionSemiBold)
                 .foregroundColor(Appearance.Colors.whiteText)
         }
         .padding(.horizontal, Appearance.GridGuide.padding)
@@ -81,7 +81,7 @@ struct MarketplaceFeedFooterView: View {
             Image(R.image.marketplace.eyeBlack.name)
 
             Text(L.offerRequest())
-                .textStyle(.descriptionBold)
+                .textStyle(.descriptionSemiBold)
                 .foregroundColor(Appearance.Colors.primaryText)
         }
         .padding(.horizontal, Appearance.GridGuide.padding)

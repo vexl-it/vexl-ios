@@ -27,8 +27,11 @@ struct MarketplaceFeedDetailView: View {
             VLine(color: Appearance.Colors.gray4, width: 1)
 
             DetailItem(label: "Payment", content: {
-                PaymentIconView(icons: [R.image.marketplace.revolut.name,
-                                        R.image.marketplace.revolut.name])
+                PaymentIconView(
+                    icons: [
+                        R.image.marketplace.revolut.name
+                    ]
+                )
             })
                 .frame(maxWidth: .infinity)
 
@@ -97,7 +100,7 @@ extension MarketplaceFeedDetailView {
                     .frame(maxHeight: .infinity)
 
                 Text(label)
-                    .textStyle(.descriptionBold)
+                    .textStyle(.descriptionSemiBold)
                     .foregroundColor(Appearance.Colors.gray3)
                     .padding(.top, Appearance.GridGuide.point)
             }

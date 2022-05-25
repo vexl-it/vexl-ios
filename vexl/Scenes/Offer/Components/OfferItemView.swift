@@ -22,7 +22,7 @@ struct OfferItemView: View {
                     Image(R.image.offer.dottedButton.name)
                         .frame(size: Appearance.GridGuide.thumbSize)
                 }
-                .background(Appearance.Colors.gray6)
+                .background(Appearance.Colors.gray4)
                 .cornerRadius(Appearance.GridGuide.buttonCorner)
             }
             .frame(maxWidth: .infinity, alignment: .trailing)
