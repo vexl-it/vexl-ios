@@ -20,7 +20,7 @@ struct OptionPickerItemView<Content: View>: View {
             content()
         }
         .padding()
-        .foregroundColor(isSelected ? Appearance.Colors.green5 : Appearance.Colors.gray3)
+        .foregroundColor(isSelected ? Appearance.Colors.whiteText : Appearance.Colors.gray3)
         .background(isSelected ? Appearance.Colors.gray2 : Appearance.Colors.gray1)
         .cornerRadius(Appearance.GridGuide.buttonCorner)
         .transaction { transaction in

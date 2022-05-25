@@ -82,11 +82,11 @@ struct OfferTriggersView: View {
                     HStack(spacing: Appearance.GridGuide.tinyPadding) {
                         Text(currency)
                             .textStyle(.h3)
-                            .foregroundColor(Appearance.Colors.green5)
+                            .foregroundColor(Appearance.Colors.green100)
 
                         TextField("", text: $amount)
                             .textStyle(.h3)
-                            .foregroundColor(Appearance.Colors.green5)
+                            .foregroundColor(Appearance.Colors.green100)
                             .keyboardType(.numberPad)
                     }
                     .frame(width: UIScreen.main.width * 0.33)

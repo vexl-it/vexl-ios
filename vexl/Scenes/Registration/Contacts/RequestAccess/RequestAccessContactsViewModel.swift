@@ -64,8 +64,8 @@ class RequestAccessContactsViewModel: ObservableObject {
     var subtitle: String { "" }
     var importButton: String { "" }
     var displaySkipButton: Bool { false }
-    var portraitColor: Color { Appearance.Colors.green5 }
-    var portraitTextColor: Color { Appearance.Colors.green1 }
+    var portraitColor: Color { Appearance.Colors.green100 }
+    var portraitTextColor: Color { Appearance.Colors.green20 }
 
     let cancelBag: CancelBag = .init()
 

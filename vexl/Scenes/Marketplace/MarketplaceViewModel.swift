@@ -128,9 +128,9 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
                 let offerKeys = owner.userOfferKeys?.keys ?? []
 
                 for offer in offers {
-                    guard !offerKeys.contains(where: { $0.publicKey == offer.offerPublicKey }) else {
-                        continue
-                    }
+//                    guard !offerKeys.contains(where: { $0.publicKey == offer.offerPublicKey }) else {
+//                        continue
+//                    }
 
                     let marketplaceItem = Self.mapToMarketplaceFeed(usingOffer: offer)
                     switch offer.type {

@@ -18,7 +18,7 @@ struct OfferTradeLocationPickerView: View {
         SegmentedPickerView(selectedOption: $selectedOption,
                             options: options) { option in
             Text(option.title)
-                .foregroundColor(Appearance.Colors.green5)
+                .foregroundColor(Appearance.Colors.whiteText)
         }
         .background(Appearance.Colors.gray1)
         .cornerRadius(Appearance.GridGuide.buttonCorner)
