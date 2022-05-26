@@ -26,7 +26,31 @@ final class ChatCoordinator: BaseCoordinator<Void> {
 
         router.present(viewController, animated: animated)
 
+        viewModel
+            .route
+            .filter { $0 == .requestTapped }
+            .withUnretained(self)
+            .flatMap { owner, _ in
+                owner.showChatRequests(router: owner.router)
+            }
+            .sink()
+            .store(in: cancelBag)
+
         return Empty(completeImmediately: false)
             .eraseToAnyPublisher()
+    }
+}
+
+extension ChatCoordinator {
+    private func showChatRequests(router: Router) -> CoordinatingResult<RouterResult<Void>> {
+        coordinate(to: ChatRequestCoordinator(router: router, animated: animated))
+        .flatMap { result -> CoordinatingResult<RouterResult<Void>> in
+            guard result != .dismissedByRouter else {
+                return Just(result).eraseToAnyPublisher()
+            }
+            return router.dismiss(animated: true, returning: result)
+        }
+        .prefix(1)
+        .eraseToAnyPublisher()
     }
 }

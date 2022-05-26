@@ -14,6 +14,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
 
     enum UserAction: Equatable {
         case selectFilter(option: ChatFilterOption)
+        case requestTapped
         case continueTap
     }
 
@@ -40,6 +41,12 @@ final class ChatViewModel: ViewModelType, ObservableObject {
     private let cancelBag: CancelBag = .init()
 
     private func setupActionBindings() {
+        action
+            .filter { $0 == .requestTapped }
+            .map { _ -> Route in .requestTapped }
+            .subscribe(route)
+            .store(in: cancelBag)
+
         action
             .compactMap { action -> ChatFilterOption? in
                 if case let .selectFilter(option) = action { return option }
