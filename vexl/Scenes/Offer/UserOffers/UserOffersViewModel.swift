@@ -71,15 +71,8 @@ final class UserOffersViewModel: ViewModelType, ObservableObject {
         }
     }
 
-    var offerItems: [OfferItemViewData] {
-        userOffers.map { offer in
-            OfferItemViewData(id: offer.offerId,
-                              description: offer.description,
-                              minAmount: offer.minAmount,
-                              maxAmount: offer.maxAmount,
-                              paymentMethods: offer.paymentMethods.map(\.title),
-                              offerType: offer.type)
-        }
+    var offerItems: [OfferFeedViewData] {
+        userOffers.map { OfferFeed.mapToOfferFeed(usingOffer: $0).viewData }
     }
 
     init(offerType: OfferType) {

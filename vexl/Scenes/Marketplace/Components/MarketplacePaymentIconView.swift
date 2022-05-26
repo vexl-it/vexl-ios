@@ -21,7 +21,7 @@ struct MarketplacePaymentIconView: View {
             Image(icon)
                 .frame(size: Appearance.GridGuide.feedIconSize)
         case let .double(first, second):
-            HStack(spacing: .zero) {
+            HStack(spacing: Appearance.GridGuide.tinyPadding) {
                 Image(first)
                     .resizable()
                     .frame(size: Appearance.GridGuide.feedMediumIconSize)
@@ -30,11 +30,11 @@ struct MarketplacePaymentIconView: View {
                     .frame(size: Appearance.GridGuide.feedMediumIconSize)
             }
         case let .triple(first, second, third):
-            VStack(spacing: .zero) {
+            VStack(spacing: Appearance.GridGuide.tinyPadding) {
                 Image(first)
                     .resizable()
                     .frame(size: Appearance.GridGuide.feedSmallIconSize)
-                HStack(spacing: .zero) {
+                HStack(spacing: Appearance.GridGuide.tinyPadding) {
                     Image(second)
                         .resizable()
                         .frame(size: Appearance.GridGuide.feedSmallIconSize)
@@ -56,6 +56,7 @@ extension MarketplacePaymentIconView {
         case triple(String, String, String)
 
         init(icons: [String]) {
+            print(icons)
             switch icons.count {
             case 1:
                 self = .single(icons[0])

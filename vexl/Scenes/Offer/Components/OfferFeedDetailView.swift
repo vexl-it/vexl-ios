@@ -1,5 +1,5 @@
 //
-//  BuySellFeedDetailView.swift
+//  OfferFeedDetailView.swift
 //  vexl
 //
 //  Created by Diego Espinoza on 13/04/22.
@@ -8,12 +8,11 @@
 import Foundation
 import SwiftUI
 
-struct MarketplaceFeedDetailView: View {
+struct OfferFeedDetailView: View {
 
     let maxAmount: String
     let paymentLabel: String
     let paymentIcons: [String]
-    let fee: String?
     let offerType: OfferType
 
     private var paymentLayoutStyle: MarketplacePaymentIconView.LayoutStyle {
@@ -52,7 +51,7 @@ struct MarketplaceFeedDetailView: View {
     }
 }
 
-extension MarketplaceFeedDetailView {
+extension OfferFeedDetailView {
 
     private struct DetailItem<Content: View>: View {
 
@@ -76,11 +75,10 @@ extension MarketplaceFeedDetailView {
 #if DEBUG || DEVEL
 struct MarketplaceFeedDetailViewPreview: PreviewProvider {
     static var previews: some View {
-        MarketplaceFeedDetailView(maxAmount: "$10k",
-                                  paymentLabel: "Revolut",
-                                  paymentIcons: [R.image.marketplace.revolut.name],
-                                  fee: "Wants $30 fee per transaction",
-                                  offerType: .sell)
+        OfferFeedDetailView(maxAmount: "$10k",
+                            paymentLabel: "Revolut",
+                            paymentIcons: [R.image.marketplace.revolut.name],
+                            offerType: .sell)
             .frame(height: 100)
             .previewDevice("iPhone 11")
     }

@@ -7,21 +7,17 @@
 
 import SwiftUI
 
-struct LargeButton: View {
-
-    let title: String
+struct LargeButton<Content: View>: View {
+    @Binding var isEnabled: Bool
     let backgroundColor: Color
-    var textColor: Color = Appearance.Colors.primaryText
-    let isEnabled: Bool
+    let content: () -> Content
     let action: () -> Void
 
     var body: some View {
         Button {
             action()
         } label: {
-            Text(title)
-                .textStyle(.h3)
-                .foregroundColor(isEnabled ? textColor : Appearance.Colors.gray2)
+            content()
         }
         .frame(height: Appearance.GridGuide.largeButtonHeight)
         .frame(maxWidth: .infinity)

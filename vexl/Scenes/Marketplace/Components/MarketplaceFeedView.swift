@@ -7,11 +7,9 @@
 
 import SwiftUI
 
-typealias MarketplaceFeedViewData = MarketplaceFeedView.ViewData
-
 struct MarketplaceFeedView: View {
 
-    let data: ViewData
+    let data: OfferFeedViewData
     let displayFooter: Bool
     let detailAction: (String) -> Void
     let requestAction: (String) -> Void
@@ -26,11 +24,10 @@ struct MarketplaceFeedView: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.top, Appearance.GridGuide.mediumPadding1)
 
-                MarketplaceFeedDetailView(maxAmount: data.amount,
-                                          paymentLabel: data.paymentLabel,
-                                          paymentIcons: data.paymentIcons,
-                                          fee: data.fee,
-                                          offerType: data.offerType)
+                OfferFeedDetailView(maxAmount: data.amount,
+                                    paymentLabel: data.paymentLabel,
+                                    paymentIcons: data.paymentIcons,
+                                    offerType: data.offerType)
                     .padding(.bottom, displayFooter ? 0 : Appearance.GridGuide.padding)
             }
             .padding(.horizontal, Appearance.GridGuide.padding)
@@ -51,59 +48,30 @@ struct MarketplaceFeedView: View {
     }
 }
 
-extension MarketplaceFeedView {
-
-    // TODO: Set real username when its implemented in the BE
-
-    struct ViewData: Identifiable {
-        let id: String
-        let username = "Murakami"
-        let title: String
-        let isRequested: Bool
-        let friendLevel: String
-        let amount: String
-        let paymentMethods: [OfferPaymentMethodOption]
-        let fee: String?
-        let offerType: OfferType
-
-        var paymentIcons: [String] {
-            paymentMethods.map(\.iconName)
-        }
-
-        var paymentLabel: String {
-            guard let label = paymentMethods.first?.title else {
-                return Constants.notAvailable
-            }
-
-            if paymentMethods.count > 1 {
-                return "\(label) +(\(paymentMethods.count - 1))"
-            }
-
-            return label
-        }
-    }
-}
-
 #if DEBUG || DEVEL
 struct MarketplaceFeedViewViewPreview: PreviewProvider {
     static var previews: some View {
-        let data = MarketplaceFeedViewData(id: "1",
-                                           title: "I’ll be wearing a red hat, Don’t text me before 9am — I love to sleep...",
-                                           isRequested: false,
-                                           friendLevel: "Friend",
-                                           amount: "$10k",
-                                           paymentMethods: [.revolut, .bank],
-                                           fee: nil,
-                                           offerType: .sell)
+        let data = OfferFeedViewData(
+            id: "1",
+            title: "I’ll be wearing a red hat, Don’t text me before 9am — I love to sleep...",
+            isRequested: false,
+            friendLevel: "Friend",
+            amount: "$10k",
+            paymentMethods: [.revolut, .bank],
+            fee: nil,
+            offerType: .sell
+        )
 
-        let data2 = MarketplaceFeedViewData(id: "2",
-                                            title: "I’ll be wearing a red hat, Don’t text me before 9am — I love to sleep...",
-                                            isRequested: true,
-                                            friendLevel: "Friend",
-                                            amount: "$10k",
-                                            paymentMethods: [.revolut],
-                                            fee: nil,
-                                            offerType: .buy)
+        let data2 = OfferFeedViewData(
+            id: "2",
+            title: "I’ll be wearing a red hat, Don’t text me before 9am — I love to sleep...",
+            isRequested: true,
+            friendLevel: "Friend",
+            amount: "$10k",
+            paymentMethods: [.revolut],
+            fee: nil,
+            offerType: .buy
+        )
         MarketplaceFeedView(data: data,
                             displayFooter: false,
                             detailAction: { _ in },
