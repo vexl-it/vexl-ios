@@ -140,3 +140,9 @@
 "offer.create.action.title" = "Create sell offer";
 "offer.update.action.title" = "Update sell offer";
 "offer.create.buy.action.title" = "Create buy offer";
+"chat.main.title" = "Chat";
+"chat.filter.all" = "All";
+"chat.filter.buy" = "Buyers";
+"chat.filter.sell" = "Sellers";
+"chat.messageMe" = "me:";
+"chat.request.name" = "";

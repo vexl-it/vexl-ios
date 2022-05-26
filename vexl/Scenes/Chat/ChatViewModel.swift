@@ -24,10 +24,17 @@ final class ChatViewModel: ViewModelType, ObservableObject {
     @Published var filter: ChatFilterOption = .all
     @Published var primaryActivity: Activity = .init()
 
+    @Published var chatItems: [ChatItem] = [
+        .init(avatar: nil, username: "Murakami", detail: "me: Hello there", time: "9:30", offerType: .sell),
+        .init(avatar: nil, username: "Keichi", detail: "General Kenobi", time: "9:30", offerType: .buy),
+        .init(avatar: nil, username: "Satoshi", detail: "You are a bold one", time: "9:30", offerType: .sell),
+    ]
+
     // MARK: - Coordinator Bindings
 
     enum Route: Equatable {
         case dismissTapped
+        case requestTapped
     }
 
     var route: CoordinatingSubject<Route> = .init()

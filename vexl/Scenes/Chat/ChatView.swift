@@ -23,7 +23,14 @@ struct ChatView: View {
             })
 
             ScrollView {
-                ChatItemView()
+                Group {
+                    ForEach(viewModel.chatItems) { chatItem in
+                        ChatItemView(data: chatItem)
+                            .padding(.bottom, Appearance.GridGuide.mediumPadding1)
+                    }
+                }
+                .padding(.top, Appearance.GridGuide.mediumPadding1)
+                .padding(.bottom, Appearance.GridGuide.homeTabBarHeight)
             }
         }
         .background(Color.black)
@@ -32,14 +39,14 @@ struct ChatView: View {
 
     private var header: some View {
         HStack(alignment: .center) {
-            Text("Chat")
+            Text(L.chatMainTitle())
                 .textStyle(.h1)
                 .foregroundColor(.white)
 
             Spacer()
 
             Button {
-                print("tapped requested")
+                viewModel.route.send(.requestTapped)
             } label: {
                 Image(R.image.chat.request.name)
                     .frame(size: Appearance.GridGuide.iconSize)
@@ -49,19 +56,6 @@ struct ChatView: View {
             .cornerRadius(Appearance.GridGuide.buttonCorner)
         }
         .padding(.top, Appearance.GridGuide.mediumPadding2)
-        .padding(.horizontal, Appearance.GridGuide.padding)
-    }
-}
-
-struct ChatItemView: View {
-
-    var body: some View {
-        HStack {
-            Image(R.image.marketplace.defaultAvatar.name)
-                .resizable()
-                .frame(size: Appearance.GridGuide.mediumIconSize)
-                .cornerRadius(Appearance.GridGuide.buttonCorner)
-        }
         .padding(.horizontal, Appearance.GridGuide.padding)
     }
 }
