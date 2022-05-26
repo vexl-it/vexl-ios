@@ -62,6 +62,7 @@ struct Appearance {
 
         // MARK: Corner Radius
 
+        static let containerCorner: CGFloat = 10
         static let buttonCorner: CGFloat = 12
         static let tabBarCorner: CGFloat = 16
 
@@ -107,6 +108,7 @@ struct Appearance {
 
     static func setGlobalAppearance() {
         setDefaultNavBarStyle()
+        UIScrollView.appearance().keyboardDismissMode = .interactive
     }
 
     static func navigationBarDefaultAppearance(withColor color: UIColor = .clear) -> UINavigationBarAppearance {

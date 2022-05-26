@@ -9,17 +9,34 @@ import Foundation
 import SwiftUI
 
 struct OfferFeedDetailView: View {
-
+    let title: String
     let maxAmount: String
     let paymentLabel: String
     let paymentIcons: [String]
     let offerType: OfferType
+    let isRequested: Bool
 
     private var paymentLayoutStyle: MarketplacePaymentIconView.LayoutStyle {
         MarketplacePaymentIconView.LayoutStyle(icons: paymentIcons)
     }
 
     var body: some View {
+        VStack(spacing: Appearance.GridGuide.padding) {
+            Text(title)
+                .textStyle(.paragraph)
+                .multilineTextAlignment(.leading)
+                .foregroundColor(isRequested ? Appearance.Colors.gray3 : Appearance.Colors.primaryText)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.top, Appearance.GridGuide.mediumPadding1)
+
+            detail
+        }
+        .padding(.horizontal, Appearance.GridGuide.padding)
+        .background(isRequested ? Appearance.Colors.gray1 : Appearance.Colors.whiteText)
+        .cornerRadius(Appearance.GridGuide.buttonCorner)
+    }
+
+    private var detail: some View {
         HStack {
             DetailItem(label: offerType == .buy ? L.marketplaceDetailBuy() : L.marketplaceDetailSell(), content: {
                 Text(L.marketplaceDetailUpTo(maxAmount))
@@ -45,7 +62,7 @@ struct OfferFeedDetailView: View {
                     .resizable()
                     .frame(size: Appearance.GridGuide.feedIconSize)
             })
-                .frame(maxWidth: .infinity)
+            .frame(maxWidth: .infinity)
         }
         .padding(.bottom, Appearance.GridGuide.padding)
     }
@@ -75,12 +92,20 @@ extension OfferFeedDetailView {
 #if DEBUG || DEVEL
 struct MarketplaceFeedDetailViewPreview: PreviewProvider {
     static var previews: some View {
-        OfferFeedDetailView(maxAmount: "$10k",
-                            paymentLabel: "Revolut",
-                            paymentIcons: [R.image.marketplace.revolut.name],
-                            offerType: .sell)
-            .frame(height: 100)
-            .previewDevice("iPhone 11")
+        ZStack {
+            Color.black
+                .edgesIgnoringSafeArea(.all)
+
+            OfferFeedDetailView(
+                title: "Test df",
+                maxAmount: "$10k",
+                paymentLabel: "Revolut",
+                paymentIcons: [R.image.marketplace.revolut.name],
+                offerType: .sell,
+                isRequested: true
+            )
+            .frame(height: 250)
+        }
     }
 }
 #endif
