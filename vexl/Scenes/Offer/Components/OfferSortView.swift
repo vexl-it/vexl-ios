@@ -17,7 +17,7 @@ struct OfferSortView: View {
     var body: some View {
         HStack {
             Text(L.offerSortActive("\(numberOfOffers)"))
-                .foregroundColor(Appearance.Colors.gray3)
+                .foregroundColor(Appearance.Colors.whiteText)
                 .textStyle(.paragraphMedium)
 
             Spacer()
@@ -31,7 +31,7 @@ struct OfferSortView: View {
             } label: {
                 HStack {
                     Text(sortingOption.title)
-                        .foregroundColor(Appearance.Colors.gray3)
+                        .foregroundColor(Appearance.Colors.gray4)
                         .textStyle(.paragraphSmall)
 
                     Image(systemName: "chevron.down")
@@ -43,7 +43,6 @@ struct OfferSortView: View {
             .background(Appearance.Colors.gray1)
             .cornerRadius(Appearance.GridGuide.buttonCorner)
         }
-        .padding(Appearance.GridGuide.point)
     }
 }
 

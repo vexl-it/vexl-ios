@@ -31,8 +31,8 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
 
     @Published var primaryActivity: Activity = .init()
     @Published var selectedOption: OfferType = .buy
-    @Published private var filteredBuyFeedItems: [MarketplaceOffer] = []
-    @Published private var filteredSellFeedItems: [MarketplaceOffer] = []
+    @Published private var filteredBuyFeedItems: [OfferFeed] = []
+    @Published private var filteredSellFeedItems: [OfferFeed] = []
 
     @Published var offerItems: [Offer] = []
 
@@ -76,7 +76,7 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
         ]
     }
 
-    var marketplaceFeedItems: [MarketplaceFeedViewData] {
+    var marketplaceFeedItems: [OfferFeedViewData] {
         switch selectedOption {
         case .sell:
             return filteredSellFeedItems.map(\.viewData)
@@ -87,8 +87,8 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
 
     private var buyOfferFilter = OfferFilter(type: .buy)
     private var sellOfferFilter = OfferFilter(type: .sell)
-    private var buyFeedItems: [MarketplaceOffer] = []
-    private var sellFeedItems: [MarketplaceOffer] = []
+    private var buyFeedItems: [OfferFeed] = []
+    private var sellFeedItems: [OfferFeed] = []
     private let userOfferKeys: UserOfferKeys?
     private let cancelBag: CancelBag = .init()
 
@@ -147,7 +147,7 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
                         continue
                     }
 
-                    let marketplaceItem = Self.mapToMarketplaceFeed(usingOffer: offer)
+                    let marketplaceItem = OfferFeed.mapToOfferFeed(usingOffer: offer)
                     switch offer.type {
                     case .buy:
                         owner.buyFeedItems.append(marketplaceItem)
@@ -221,26 +221,5 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
                 print("id selected: \(id)")
             }
             .store(in: cancelBag)
-    }
-
-    private static func mapToMarketplaceFeed(usingOffer offer: Offer) -> MarketplaceOffer {
-        let currencySymbol = Constants.currencySymbol
-        let friendLevel = offer.friendLevel == .firstDegree ? L.marketplaceDetailFriendFirst() : L.marketplaceDetailFriendSecond()
-        let viewData = MarketplaceFeedViewData(id: offer.offerId,
-                                       title: offer.description,
-                                       isRequested: false,
-                                       friendLevel: friendLevel,
-                                       amount: "\(offer.maxAmount)\(currencySymbol)",
-                                       paymentMethods: offer.paymentMethods,
-                                       fee: offer.feeAmount > 0 ? "\(offer.feeAmount)%" : nil,
-                                       offerType: offer.type)
-        return MarketplaceOffer(offer: offer, viewData: viewData)
-    }
-}
-
-extension MarketplaceViewModel {
-    struct MarketplaceOffer {
-        let offer: Offer
-        let viewData: MarketplaceFeedViewData
     }
 }

@@ -16,32 +16,17 @@ struct MarketplaceFeedFooterView: View {
     let offerType: OfferType
     let action: () -> Void
 
+    private var title: String {
+        offerType == .buy ? L.marketplaceDetailUserBuy(username) : L.marketplaceDetailUserSell(username)
+    }
+
     var body: some View {
         HStack {
-            ZStack {
-                Image(R.image.marketplace.defaultAvatar.name)
-                    .resizable()
-                    .frame(size: Appearance.GridGuide.feedAvatarSize)
-                    .cornerRadius(Appearance.GridGuide.buttonCorner)
-
-                if isRequested {
-                    Appearance.Colors.gray1
-                        .opacity(0.8)
-                        .frame(size: Appearance.GridGuide.feedAvatarSize)
-                        .cornerRadius(Appearance.GridGuide.buttonCorner)
-                }
-            }
-
-            VStack(alignment: .leading) {
-                Text(offerType == .buy ? L.marketplaceDetailUserBuy(username) : L.marketplaceDetailUserSell(username))
-                    .textStyle(.paragraphSmallSemiBold)
-                    .foregroundColor(Appearance.Colors.whiteText)
-
-                Text(friendLevel)
-                    .textStyle(.micro)
-                    .foregroundColor(Appearance.Colors.gray4)
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
+            AvatarInfo(
+                isAvatarWithOpacity: isRequested,
+                title: title,
+                subtitle: friendLevel
+            )
 
             Button {
                 if !isRequested {
