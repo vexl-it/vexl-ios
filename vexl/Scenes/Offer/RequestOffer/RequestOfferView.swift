@@ -11,7 +11,30 @@ struct RequestOfferView: View {
     @ObservedObject var viewModel: RequestOfferViewModel
 
     var body: some View {
-        Text("Hello World")
+        VStack {
+            header
+        }
+    }
+
+    private var header: some View {
+        HStack {
+            Text("Offer")
+                .frame(maxWidth: .infinity)
+            
+            closeButton
+        }
+    }
+
+    private var closeButton: some View {
+        Button(action: { viewModel.send(action: .dismissTap) }, label: {
+            Image(systemName: "xmark")
+                .foregroundColor(Appearance.Colors.whiteText)
+                .frame(size: Appearance.GridGuide.baseButtonSize)
+        })
+        .background(
+            RoundedRectangle(cornerRadius: 4)
+                .fill(Appearance.Colors.gray1)
+        )
     }
 }
 
