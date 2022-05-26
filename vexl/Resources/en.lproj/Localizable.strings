@@ -99,6 +99,9 @@
 "offer.sort.active" = "%@ active offers";
 "offer.sort.newest" = "Sorted by newest";
 "offer.sort.oldest" = "Sorted by oldest";
+"offer.mine" = "My offer";
+"offer.edit" = "Edit offer";
+"offer.added" = "Added %@";
 "filter.title" = "Filter";
 "filter.apply" = "Apply filter";
 "filter.offers" = "Filter offers";

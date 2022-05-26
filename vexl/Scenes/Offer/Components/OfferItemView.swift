@@ -47,12 +47,12 @@ struct OfferItemView: View {
         HStack {
             AvatarInfo(
                 isAvatarWithOpacity: false,
-                title: "My offer",
-                subtitle: "Added 12. 7. 2022"
+                title: L.offerMine(),
+                subtitle: L.offerAdded("12. 7. 2022")
             )
 
             Button(action: editOfferAction, label: {
-                Text("Edit offer")
+                Text(L.offerEdit())
                     .foregroundColor(Appearance.Colors.yellow100)
             })
             .padding()
