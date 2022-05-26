@@ -49,6 +49,7 @@ final class MarketplaceCoordinator: BaseCoordinator<Void> {
             .store(in: cancelBag)
 
         setupFilterBindings(viewModel: viewModel, viewController: viewController)
+        setupRequestOfferBindings(viewModel: viewModel, viewController: viewController)
 
         return Empty(completeImmediately: false)
             .eraseToAnyPublisher()
@@ -72,6 +73,20 @@ final class MarketplaceCoordinator: BaseCoordinator<Void> {
                     viewModel.applyFilter(filter)
                 }
             })
+            .store(in: cancelBag)
+    }
+
+    private func setupRequestOfferBindings(viewModel: MarketplaceViewModel, viewController: UIViewController) {
+        viewModel
+            .route
+            .receive(on: RunLoop.main)
+            .filter { $0 == .showRequestOffer }
+            .withUnretained(self)
+            .flatMap { owner, _ -> CoordinatingResult<RouterResult<Void>> in
+                let modalRouter = ModalRouter(parentViewController: viewController, presentationStyle: .fullScreen)
+                return owner.showRequestOffer(router: modalRouter)
+            }
+            .sink()
             .store(in: cancelBag)
     }
 }
@@ -104,6 +119,18 @@ extension MarketplaceCoordinator {
     private func showFilters(router: Router, filter: OfferFilter) -> CoordinatingResult<RouterResult<OfferFilter>> {
         coordinate(to: FilterCoordinator(router: router, offerFilter: filter))
         .flatMap { result -> CoordinatingResult<RouterResult<OfferFilter>> in
+            guard result != .dismissedByRouter else {
+                return Just(result).eraseToAnyPublisher()
+            }
+            return router.dismiss(animated: true, returning: result)
+        }
+        .prefix(1)
+        .eraseToAnyPublisher()
+    }
+
+    private func showRequestOffer(router: Router) -> CoordinatingResult<RouterResult<Void>> {
+        coordinate(to: RequestOfferCoordinator(router: router))
+        .flatMap { result -> CoordinatingResult<RouterResult<Void>> in
             guard result != .dismissedByRouter else {
                 return Just(result).eraseToAnyPublisher()
             }

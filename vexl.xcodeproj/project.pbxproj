@@ -17,6 +17,9 @@
 		4FBF6213283CF54400DDBE71 /* FilterHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FBF6212283CF54400DDBE71 /* FilterHeaderView.swift */; };
 		4FBF623B283F8C3800DDBE71 /* OfferFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FBF623A283F8C3800DDBE71 /* OfferFeed.swift */; };
 		4FBF623D283F91B600DDBE71 /* AvatarInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FBF623C283F91B600DDBE71 /* AvatarInfo.swift */; };
+		4FBF6240283FBF6000DDBE71 /* RequestOfferCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FBF623F283FBF6000DDBE71 /* RequestOfferCoordinator.swift */; };
+		4FBF6242283FBF6B00DDBE71 /* RequestOfferViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FBF6241283FBF6B00DDBE71 /* RequestOfferViewModel.swift */; };
+		4FBF6244283FBF7200DDBE71 /* RequestOfferView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FBF6243283FBF7200DDBE71 /* RequestOfferView.swift */; };
 		4FD8E3DE2821B303003B165E /* CoinValueViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FD8E3DD2821B303003B165E /* CoinValueViewModel.swift */; };
 		4FD8E3E02821B922003B165E /* BitcoinData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FD8E3DF2821B922003B165E /* BitcoinData.swift */; };
 		B05A22132812BF2700BF8D58 /* Publisher+Crypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = B05A22122812BF2700BF8D58 /* Publisher+Crypto.swift */; };
@@ -257,6 +260,9 @@
 		4FBF6212283CF54400DDBE71 /* FilterHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterHeaderView.swift; sourceTree = "<group>"; };
 		4FBF623A283F8C3800DDBE71 /* OfferFeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferFeed.swift; sourceTree = "<group>"; };
 		4FBF623C283F91B600DDBE71 /* AvatarInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarInfo.swift; sourceTree = "<group>"; };
+		4FBF623F283FBF6000DDBE71 /* RequestOfferCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestOfferCoordinator.swift; sourceTree = "<group>"; };
+		4FBF6241283FBF6B00DDBE71 /* RequestOfferViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestOfferViewModel.swift; sourceTree = "<group>"; };
+		4FBF6243283FBF7200DDBE71 /* RequestOfferView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestOfferView.swift; sourceTree = "<group>"; };
 		4FD8E3DD2821B303003B165E /* CoinValueViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinValueViewModel.swift; sourceTree = "<group>"; };
 		4FD8E3DF2821B922003B165E /* BitcoinData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BitcoinData.swift; sourceTree = "<group>"; };
 		57B3CAA27CF4369A28B748A7 /* Pods_vexl.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_vexl.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -571,6 +577,16 @@
 				4FBF623A283F8C3800DDBE71 /* OfferFeed.swift */,
 			);
 			path = Offers;
+			sourceTree = "<group>";
+		};
+		4FBF623E283FBF4700DDBE71 /* RequestOffer */ = {
+			isa = PBXGroup;
+			children = (
+				4FBF623F283FBF6000DDBE71 /* RequestOfferCoordinator.swift */,
+				4FBF6241283FBF6B00DDBE71 /* RequestOfferViewModel.swift */,
+				4FBF6243283FBF7200DDBE71 /* RequestOfferView.swift */,
+			);
+			path = RequestOffer;
 			sourceTree = "<group>";
 		};
 		A5FD76CB56075DD22E000495 /* Frameworks */ = {
@@ -1161,6 +1177,7 @@
 			isa = PBXGroup;
 			children = (
 				F188624C2811553B00659786 /* Components */,
+				4FBF623E283FBF4700DDBE71 /* RequestOffer */,
 				F1B5321D2820976E009D4E0C /* UserOffers */,
 				F1886245281154FF00659786 /* CreateOffer */,
 			);
@@ -1782,6 +1799,7 @@
 				F12A150627E1A47D0096543E /* RequestAccessFacebookContactsViewModel.swift in Sources */,
 				F12A150427E1A4520096543E /* RequestAccessPhoneContactsViewModel.swift in Sources */,
 				F175AB8927E4F493000DAB15 /* Materialize.swift in Sources */,
+				4FBF6242283FBF6B00DDBE71 /* RequestOfferViewModel.swift in Sources */,
 				F12A150127DFC1D70096543E /* ImportContactItemView.swift in Sources */,
 				F1BFA96E2803A49300F4E745 /* UserProfileView+Item.swift in Sources */,
 				B08F397A27AE7112008B344F /* Codable+.swift in Sources */,
@@ -1819,6 +1837,7 @@
 				F1D200A628252C44006DF4AB /* HomeTabbarViewController.swift in Sources */,
 				F1886218281005BD00659786 /* CoinValueHeaderView.swift in Sources */,
 				F175AB9927F0D2D8000DAB15 /* ContactsService.swift in Sources */,
+				4FBF6244283FBF7200DDBE71 /* RequestOfferView.swift in Sources */,
 				B08F399C27AE7D8D008B344F /* OnboardingViewModel.swift in Sources */,
 				B08F397E27AE7112008B344F /* UIViewController+.swift in Sources */,
 				B08F396427AE7112008B344F /* UserError.swift in Sources */,
@@ -1847,6 +1866,7 @@
 				F1D20128282AB6EF006DF4AB /* CryptocurrencyValueManager.swift in Sources */,
 				F175ABA227F4A8F8000DAB15 /* UserAvailable.swift in Sources */,
 				B0E9BB322815D2B60012BF1D /* CryptographicError.swift in Sources */,
+				4FBF6240283FBF6000DDBE71 /* RequestOfferCoordinator.swift in Sources */,
 				B0F206FE27AEBDD500A44E72 /* AuthRouter.swift in Sources */,
 				F1BFA8D027FB31E800F4E745 /* FacebookUserData.swift in Sources */,
 				B08F399E27AE7D92008B344F /* OnboardingView.swift in Sources */,
