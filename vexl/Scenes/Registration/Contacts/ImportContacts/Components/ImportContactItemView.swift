@@ -76,10 +76,10 @@ private struct ImportContactSelectionView: View {
         } label: {
             if isSelected {
                 ZStack {
-                    Appearance.Colors.green5
+                    Appearance.Colors.green100
                         .cornerRadius(Appearance.GridGuide.buttonCorner)
                     Image(systemName: "checkmark")
-                        .foregroundColor(Appearance.Colors.green1)
+                        .foregroundColor(Appearance.Colors.green20)
                 }
             } else {
                 Appearance.Colors.gray4

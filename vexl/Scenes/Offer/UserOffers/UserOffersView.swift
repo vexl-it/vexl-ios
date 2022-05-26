@@ -20,7 +20,7 @@ struct UserOffersView: View {
             OfferSortView(numberOfOffers: viewModel.offerItems.count,
                           sortingOption: $viewModel.offerSortingOption)
 
-            DottedButton(color: Appearance.Colors.green5,
+            DottedButton(color: Appearance.Colors.green100,
                          content: {
                 offerLabel
             },
@@ -47,7 +47,7 @@ struct UserOffersView: View {
             Text(viewModel.createOfferTitle)
                 .textStyle(.descriptionBold)
         }
-        .foregroundColor(Appearance.Colors.green5)
+        .foregroundColor(Appearance.Colors.green100)
         .padding(Appearance.GridGuide.padding)
         .frame(maxWidth: .infinity)
     }

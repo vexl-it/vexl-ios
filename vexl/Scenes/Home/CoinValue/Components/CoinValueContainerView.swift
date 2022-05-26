@@ -63,16 +63,15 @@ final class CoinValueContainerView: UIView {
 
     private func setupViews() {
         valueLabel.font = Appearance.TextStyle.h2.font
-        valueLabel.textColor = R.color.yellow60()
+        valueLabel.textColor = UIColor(Appearance.Colors.yellow60)
         valueLabel.textAlignment = .right
         valueLabel.adjustsFontSizeToFitWidth = true
         valueLabel.minimumScaleFactor = 0.5
 
-        activityIndicator.color = .white
+        activityIndicator.color = UIColor(Appearance.Colors.whiteText)
 
         minigraphView.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
         valueLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
-        valueLabel.text = "-"
     }
 
     private func setupBindings() {
@@ -98,7 +97,7 @@ final class CoinValueContainerView: UIView {
             .withUnretained(self)
             .sink { owner, isExpanded in
                 UIView.transition(with: owner.valueLabel, duration: 0.25, options: .transitionCrossDissolve) {
-                    owner.valueLabel.textColor = isExpanded ? R.color.yellow100() : R.color.yellow60()
+                    owner.valueLabel.textColor = isExpanded ? UIColor(Appearance.Colors.yellow100) : UIColor(Appearance.Colors.yellow60)
                 }
                 owner.minigraphView.displayGraph = !isExpanded
             }

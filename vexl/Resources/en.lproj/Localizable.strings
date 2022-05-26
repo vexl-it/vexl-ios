@@ -81,6 +81,10 @@
 "marketplace.detail.upTo" = "Up to %@";
 "marketplace.detail.friend.first" = "Friend";
 "marketplace.detail.friend.second" = "Friend of Friend";
+"marketplace.detail.sell" = "To Sell";
+"marketplace.detail.buy" = "To Buy";
+"marketplace.detail.user.sell" = "%@ is selling";
+"marketplace.detail.user.buy" = "%@ is buying";
 "offer.request" = "Request";
 "offer.requested" = "Requested";
 "offer.sell.title" = "My Sell Offers";

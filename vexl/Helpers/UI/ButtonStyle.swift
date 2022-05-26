@@ -17,6 +17,13 @@ extension SolidButtonDimension {
 }
 
 extension SolidButtonColor {
+    static let main = SolidButtonColor(textColor: Appearance.Colors.primaryText,
+                                       disabledTextColor: Appearance.Colors.gray2,
+                                       backgroundColor: Appearance.Colors.yellow100,
+                                       disabledBackgroundColor: Appearance.Colors.gray1,
+                                       iconTint: nil,
+                                       disabledBackgroundOpacity: 1)
+
      static let welcome = SolidButtonColor(textColor: Appearance.Colors.primaryText,
                                            disabledTextColor: Appearance.Colors.gray2,
                                            backgroundColor: Appearance.Colors.purple5,
@@ -38,7 +45,7 @@ extension SolidButtonColor {
     
     static let success = SolidButtonColor(textColor: Appearance.Colors.primaryText,
                                             disabledTextColor: Appearance.Colors.gray2,
-                                            backgroundColor: Appearance.Colors.green5,
+                                            backgroundColor: Appearance.Colors.green100,
                                             disabledBackgroundColor: Appearance.Colors.gray1,
                                             iconTint: nil,
                                             disabledBackgroundOpacity: 1)

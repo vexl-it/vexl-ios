@@ -26,13 +26,20 @@ struct Appearance {
         static let gray4 = Color(R.color.gray4.name)
         static let gray5 = Color(R.color.gray5.name)
         static let gray6 = Color(R.color.gray6.name)
-        static let green1 = Color(R.color.green1.name)
-        static let green4 = Color(R.color.green4.name)
-        static let green5 = Color(R.color.green5.name)
 
-        static let yellow100 = Color(R.color.yellow100.name)
+        static let green20 = Color(R.color.green20.name)
+        static let green30 = Color(R.color.green30.name)
+        static let green40 = Color(R.color.green40.name)
+        static let green50 = Color(R.color.green50.name)
+        static let green60 = Color(R.color.green60.name)
+        static let green100 = Color(R.color.green100.name)
+
         static let yellow20 = Color(R.color.yellow20.name)
+        static let yellow30 = Color(R.color.yellow30.name)
+        static let yellow40 = Color(R.color.yellow40.name)
+        static let yellow50 = Color(R.color.yellow50.name)
         static let yellow60 = Color(R.color.yellow60.name)
+        static let yellow100 = Color(R.color.yellow100.name)
 
         static let whiteOpaque = Color.white.opacity(0.15)
 
@@ -66,7 +73,6 @@ struct Appearance {
 
         static let baseHeight: CGFloat = 40
         static let baseButtonSize: CGSize = CGSize(width: 40, height: 40)
-        static let baseSize: CGSize = CGSize(width: 40, height: 40)
         static let largeButtonHeight: CGFloat = 64
 
         // MARK: Avatar
@@ -137,8 +143,10 @@ struct Appearance {
         case paragraphBold
         case paragraphMedium
         case paragraphSmall
+        case paragraphSmallSemiBold
         case paragraphSmallBold
         case description
+        case descriptionSemiBold
         case descriptionBold
         case micro
 
@@ -170,10 +178,14 @@ struct Appearance {
                 return R.font.ttSatoshiMedium(size: 18) ?? UIFont.systemFont(ofSize: 18, weight: .medium)
             case .paragraphSmall:
                 return R.font.ttSatoshiMedium(size: 16) ?? UIFont.systemFont(ofSize: 16, weight: .medium)
+            case .paragraphSmallSemiBold:
+                return R.font.ttSatoshiDemiBold(size: 16) ?? UIFont.systemFont(ofSize: 16, weight: .semibold)
             case .paragraphSmallBold:
                 return R.font.ttSatoshiBold(size: 16) ?? UIFont.systemFont(ofSize: 16, weight: .bold)
             case .description:
                 return R.font.ttSatoshiRegular(size: 14) ?? UIFont.systemFont(ofSize: 14, weight: .regular)
+            case .descriptionSemiBold:
+                return R.font.ttSatoshiDemiBold(size: 14) ?? UIFont.systemFont(ofSize: 14, weight: .semibold)
             case .descriptionBold:
                 return R.font.ttSatoshiBold(size: 14) ?? UIFont.systemFont(ofSize: 14, weight: .bold)
             case .micro:

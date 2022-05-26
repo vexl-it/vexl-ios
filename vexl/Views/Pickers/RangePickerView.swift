@@ -24,7 +24,7 @@ struct RangePickerView: View {
         VStack(alignment: .leading, spacing: Appearance.GridGuide.mediumPadding2) {
             Text("\(minValue) - \(maxValue)")
                 .textStyle(.paragraph)
-                .foregroundColor(Appearance.Colors.green5)
+                .foregroundColor(Appearance.Colors.yellow100)
 
             RangeSliderView(value: currentValue, bounds: sliderBounds)
                 .padding(.horizontal, Appearance.GridGuide.padding)
@@ -118,7 +118,7 @@ struct RangePickerView: View {
             Path { path in
                 path.move(to: startPoint)
                 path.addLine(to: endPoint)
-            }.stroke(Appearance.Colors.green5, lineWidth: 4)
+            }.stroke(Appearance.Colors.whiteText, lineWidth: 4)
         }
 
         @ViewBuilder func thumbView(position: CGPoint, value: Int) -> some View {
@@ -129,7 +129,7 @@ struct RangePickerView: View {
 
                 Circle()
                     .frame(size: bigThumbSize)
-                    .foregroundColor(Appearance.Colors.green5)
+                    .foregroundColor(Appearance.Colors.whiteText)
 
                 Circle()
                     .stroke(lineWidth: 3)
