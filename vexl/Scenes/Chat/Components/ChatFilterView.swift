@@ -17,11 +17,11 @@ struct ChatFilterView: View {
         var title: String {
             switch self {
             case .all:
-                return "All"
+                return L.chatFilterAll()
             case .buy:
-                return "Buyers"
+                return L.chatFilterBuy()
             case .sell:
-                return "Sellers"
+                return L.chatFilterSell()
             }
         }
     }
