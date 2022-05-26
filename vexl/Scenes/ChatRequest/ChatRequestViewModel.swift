@@ -43,4 +43,16 @@ final class ChatRequestViewModel: ViewModelType, ObservableObject {
     // MARK: - Variables
 
     private let cancelBag: CancelBag = .init()
+
+    init() {
+        setupActionBindings()
+    }
+
+    private func setupActionBindings() {
+        action
+            .filter { $0 == .dismissTap }
+            .map { _ -> Route in .dismissTapped }
+            .subscribe(route)
+            .store(in: cancelBag)
+    }
 }

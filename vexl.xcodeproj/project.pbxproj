@@ -16,7 +16,7 @@
 		4FBF620E283CE3FB00DDBE71 /* OfferFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FBF620D283CE3FB00DDBE71 /* OfferFilter.swift */; };
 		4FBF6213283CF54400DDBE71 /* FilterHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FBF6212283CF54400DDBE71 /* FilterHeaderView.swift */; };
 		4FBF623B283F8C3800DDBE71 /* OfferFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FBF623A283F8C3800DDBE71 /* OfferFeed.swift */; };
-		4FBF623D283F91B600DDBE71 /* AvatarInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FBF623C283F91B600DDBE71 /* AvatarInfo.swift */; };
+		4FBF623D283F91B600DDBE71 /* ContactAvatarInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FBF623C283F91B600DDBE71 /* ContactAvatarInfo.swift */; };
 		4FD8E3DE2821B303003B165E /* CoinValueViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FD8E3DD2821B303003B165E /* CoinValueViewModel.swift */; };
 		4FD8E3E02821B922003B165E /* BitcoinData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FD8E3DF2821B922003B165E /* BitcoinData.swift */; };
 		B05A22132812BF2700BF8D58 /* Publisher+Crypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = B05A22122812BF2700BF8D58 /* Publisher+Crypto.swift */; };
@@ -156,7 +156,7 @@
 		F18862472811550C00659786 /* CreateOfferCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18862462811550C00659786 /* CreateOfferCoordinator.swift */; };
 		F18862492811551700659786 /* CreateOfferViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18862482811551700659786 /* CreateOfferViewModel.swift */; };
 		F188624B2811551E00659786 /* CreateOfferView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F188624A2811551E00659786 /* CreateOfferView.swift */; };
-		F188624E2811556100659786 /* OfferHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F188624D2811556100659786 /* OfferHeaderView.swift */; };
+		F188624E2811556100659786 /* HeaderTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F188624D2811556100659786 /* HeaderTitleView.swift */; };
 		F18862512811710100659786 /* OfferStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18862502811710100659786 /* OfferStatusView.swift */; };
 		F18862532811734A00659786 /* RangePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18862522811734A00659786 /* RangePickerView.swift */; };
 		F1886255281185E900659786 /* OfferFeePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1886254281185E900659786 /* OfferFeePickerView.swift */; };
@@ -261,7 +261,7 @@
 		4FBF620D283CE3FB00DDBE71 /* OfferFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferFilter.swift; sourceTree = "<group>"; };
 		4FBF6212283CF54400DDBE71 /* FilterHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterHeaderView.swift; sourceTree = "<group>"; };
 		4FBF623A283F8C3800DDBE71 /* OfferFeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferFeed.swift; sourceTree = "<group>"; };
-		4FBF623C283F91B600DDBE71 /* AvatarInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarInfo.swift; sourceTree = "<group>"; };
+		4FBF623C283F91B600DDBE71 /* ContactAvatarInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactAvatarInfo.swift; sourceTree = "<group>"; };
 		4FD8E3DD2821B303003B165E /* CoinValueViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinValueViewModel.swift; sourceTree = "<group>"; };
 		4FD8E3DF2821B922003B165E /* BitcoinData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BitcoinData.swift; sourceTree = "<group>"; };
 		57B3CAA27CF4369A28B748A7 /* Pods_vexl.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_vexl.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -417,7 +417,7 @@
 		F18862462811550C00659786 /* CreateOfferCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateOfferCoordinator.swift; sourceTree = "<group>"; };
 		F18862482811551700659786 /* CreateOfferViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateOfferViewModel.swift; sourceTree = "<group>"; };
 		F188624A2811551E00659786 /* CreateOfferView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateOfferView.swift; sourceTree = "<group>"; };
-		F188624D2811556100659786 /* OfferHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferHeaderView.swift; sourceTree = "<group>"; };
+		F188624D2811556100659786 /* HeaderTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderTitleView.swift; sourceTree = "<group>"; };
 		F18862502811710100659786 /* OfferStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferStatusView.swift; sourceTree = "<group>"; };
 		F18862522811734A00659786 /* RangePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RangePickerView.swift; sourceTree = "<group>"; };
 		F1886254281185E900659786 /* OfferFeePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferFeePickerView.swift; sourceTree = "<group>"; };
@@ -772,6 +772,7 @@
 				F1B5FCD227C703160018729B /* Modifiers */,
 				F1C6D09527BDAD71009BD506 /* Buttons */,
 				B08F390C27AE7110008B344F /* InfoBarView.swift */,
+				F188624D2811556100659786 /* HeaderTitleView.swift */,
 				F1C6D0A127BE9157009BD506 /* LinkTextView.swift */,
 				F151A2A327C87074000D7242 /* BorderedTextField.swift */,
 				F175AB8A27E8062A000DAB15 /* LoadingIndicatorView.swift */,
@@ -780,7 +781,7 @@
 				F1BFA8D627FFB2AC00F4E745 /* ImagePickerView.swift */,
 				F188625A2811D84000659786 /* SegmentedPickerView.swift */,
 				F13B265828188A580011F2FB /* SliderView.swift */,
-				4FBF623C283F91B600DDBE71 /* AvatarInfo.swift */,
+				4FBF623C283F91B600DDBE71 /* ContactAvatarInfo.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1193,7 +1194,6 @@
 			isa = PBXGroup;
 			children = (
 				F1B5321B28202B36009D4E0C /* OfferItemView.swift */,
-				F188624D2811556100659786 /* OfferHeaderView.swift */,
 				F1D2012D283401D7006DF4AB /* OfferSortView.swift */,
 				F188626A28169A3700659786 /* OfferFeedDetailView.swift */,
 			);
@@ -1855,9 +1855,9 @@
 				B08F397E27AE7112008B344F /* UIViewController+.swift in Sources */,
 				B08F396427AE7112008B344F /* UserError.swift in Sources */,
 				F1A9453727F686D1009B5AE3 /* PhoneVerification.swift in Sources */,
-				4FBF623D283F91B600DDBE71 /* AvatarInfo.swift in Sources */,
+				4FBF623D283F91B600DDBE71 /* ContactAvatarInfo.swift in Sources */,
 				F1D2011A28292868006DF4AB /* HomeTabBarCoordinator.swift in Sources */,
-				F188624E2811556100659786 /* OfferHeaderView.swift in Sources */,
+				F188624E2811556100659786 /* HeaderTitleView.swift in Sources */,
 				4FBF61DE283BD11C00DDBE71 /* FilterCoordinator.swift in Sources */,
 				F175AB9D27F147B5000DAB15 /* ContactsManager.swift in Sources */,
 				B08F392027AE7112008B344F /* UserDefaultsConfig.swift in Sources */,

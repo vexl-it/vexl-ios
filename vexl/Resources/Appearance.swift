@@ -64,6 +64,7 @@ struct Appearance {
 
         static let buttonCorner: CGFloat = 12
         static let tabBarCorner: CGFloat = 16
+        static let requestCorner: CGFloat = 20
 
         // MARK: Margins
 
@@ -91,6 +92,7 @@ struct Appearance {
         static let mediumIconSize = CGSize(width: 48, height: 48)
         static let thumbSize = CGSize(width: 38, height: 38)
         static let feedAvatarSize = CGSize(width: 48, height: 48)
+        static let feedLargeAvatarSize = CGSize(width: 64, height: 64)
         static let feedIconSize = CGSize(width: 32, height: 32)
         static let feedMediumIconSize = CGSize(width: 20, height: 20)
         static let feedSmallIconSize = CGSize(width: 16, height: 16)

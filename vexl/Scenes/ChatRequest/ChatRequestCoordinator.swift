@@ -38,7 +38,12 @@ final class ChatRequestCoordinator: BaseCoordinator<RouterResult<Void>> {
             .$isLoading
             .assign(to: &viewController.$isLoading)
 
-        return Empty(completeImmediately: false)
+        let dismiss = viewModel
+            .route
+            .filter { $0 == .dismissTapped }
+            .map { _ -> RouterResult<Void> in .dismiss }
+
+        return dismiss
             .eraseToAnyPublisher()
     }
 }
