@@ -41,6 +41,13 @@ struct Appearance {
         static let yellow60 = Color(R.color.yellow60.name)
         static let yellow100 = Color(R.color.yellow100.name)
 
+        static let pink20 = Color(R.color.pink20.name)
+        static let pink30 = Color(R.color.pink30.name)
+        static let pink40 = Color(R.color.pink40.name)
+        static let pink50 = Color(R.color.pink50.name)
+        static let pink60 = Color(R.color.pink60.name)
+        static let pink100 = Color(R.color.pink100.name)
+
         static let whiteOpaque = Color.white.opacity(0.15)
 
         // MARK: Text

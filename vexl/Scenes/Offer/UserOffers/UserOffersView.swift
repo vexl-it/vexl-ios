@@ -12,7 +12,7 @@ struct UserOffersView: View {
     @ObservedObject var viewModel: UserOffersViewModel
 
     var body: some View {
-        VStack {
+        VStack(spacing: Appearance.GridGuide.padding) {
             OfferHeaderView(title: viewModel.offerTitle) {
                 viewModel.action.send(.dismissTap)
             }
@@ -20,23 +20,28 @@ struct UserOffersView: View {
             OfferSortView(numberOfOffers: viewModel.offerItems.count,
                           sortingOption: $viewModel.offerSortingOption)
 
-            DottedButton(color: Appearance.Colors.green100,
-                         content: {
-                offerLabel
-            },
-                         action: {
-                viewModel.action.send(.createOfferTap)
-            })
-
-            Spacer()
+            LargeButton(
+                isEnabled: .constant(true),
+                backgroundColor: Appearance.Colors.pink20,
+                content: {
+                    offerLabel
+                }, action: {
+                    viewModel.action.send(.createOfferTap)
+                }
+            )
 
             ScrollView(showsIndicators: false) {
-                ForEach(viewModel.offerItems, id: \.self) { offerData in
-                    OfferItemView(data: offerData)
-                        .padding(.horizontal, Appearance.GridGuide.point)
+                VStack(spacing: Appearance.GridGuide.mediumPadding1) {
+                    ForEach(viewModel.offerItems) { offerData in
+                        OfferItemView(
+                            data: offerData,
+                            editOfferAction: { print("handle edit offer") }
+                        )
+                    }
                 }
             }
         }
+        .padding(.horizontal, Appearance.GridGuide.padding)
         .background(Color.black.edgesIgnoringSafeArea(.all))
     }
 
@@ -47,7 +52,7 @@ struct UserOffersView: View {
             Text(viewModel.createOfferTitle)
                 .textStyle(.descriptionBold)
         }
-        .foregroundColor(Appearance.Colors.green100)
+        .foregroundColor(Appearance.Colors.pink100)
         .padding(Appearance.GridGuide.padding)
         .frame(maxWidth: .infinity)
     }
