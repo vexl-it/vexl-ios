@@ -24,10 +24,10 @@ struct MarketplaceFeedView: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.top, Appearance.GridGuide.mediumPadding1)
 
-                OfferFeedDetailView(maxAmount: data.amount,
-                                    paymentLabel: data.paymentLabel,
-                                    paymentIcons: data.paymentIcons,
-                                    offerType: data.offerType)
+                OfferInformationDetailView(maxAmount: data.amount,
+                                           paymentLabel: data.paymentLabel,
+                                           paymentIcons: data.paymentIcons,
+                                           offerType: data.offerType)
                     .padding(.bottom, displayFooter ? 0 : Appearance.GridGuide.padding)
             }
             .padding(.horizontal, Appearance.GridGuide.padding)
@@ -78,7 +78,6 @@ struct MarketplaceFeedViewViewPreview: PreviewProvider {
                             requestAction: { _ in })
             .previewDevice("iPhone 11")
             .frame(maxWidth: .infinity)
-            .frame(height: 300)
             .background(Color.black)
 
         MarketplaceFeedView(data: data2,
@@ -87,7 +86,6 @@ struct MarketplaceFeedViewViewPreview: PreviewProvider {
                             requestAction: { _ in })
             .previewDevice("iPhone 11")
             .frame(maxWidth: .infinity)
-            .frame(height: 300)
             .background(Color.black)
     }
 }

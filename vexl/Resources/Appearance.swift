@@ -147,6 +147,7 @@ struct Appearance {
         case titleBold
         case titleSmall
         case titleSmallSemiBold
+        case titleSmallMedium
         case titleSmallBold
         case paragraph
         case paragraphBold
@@ -174,9 +175,11 @@ struct Appearance {
             case .titleBold:
                 return R.font.ttSatoshiBold(size: 24) ?? UIFont.systemFont(ofSize: 24, weight: .bold)
             case .titleSmall:
-                return R.font.ttSatoshiRegular(size: 20) ?? UIFont.systemFont(ofSize: 20, weight: .medium)
+                return R.font.ttSatoshiRegular(size: 20) ?? UIFont.systemFont(ofSize: 20, weight: .regular)
             case .titleSmallSemiBold:
                 return R.font.ttSatoshiDemiBold(size: 20) ?? UIFont.systemFont(ofSize: 20, weight: .semibold)
+            case .titleSmallMedium:
+                return R.font.ttSatoshiMedium(size: 20) ?? UIFont.systemFont(ofSize: 20, weight: .medium)
             case .titleSmallBold:
                 return R.font.ttSatoshiBold(size: 20) ?? UIFont.systemFont(ofSize: 20, weight: .bold)
             case .paragraph:

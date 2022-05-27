@@ -8,15 +8,15 @@
 import Foundation
 import SwiftUI
 
-struct OfferFeedDetailView: View {
+struct OfferInformationDetailView: View {
 
     let maxAmount: String
     let paymentLabel: String
     let paymentIcons: [String]
     let offerType: OfferType
 
-    private var paymentLayoutStyle: MarketplacePaymentIconView.LayoutStyle {
-        MarketplacePaymentIconView.LayoutStyle(icons: paymentIcons)
+    private var paymentLayoutStyle: OfferPaymentIconView.LayoutStyle {
+        OfferPaymentIconView.LayoutStyle(icons: paymentIcons)
     }
 
     var body: some View {
@@ -32,7 +32,7 @@ struct OfferFeedDetailView: View {
             VLine(color: Appearance.Colors.gray4, width: 1)
 
             DetailItem(label: paymentLabel, content: {
-                MarketplacePaymentIconView(layoutStyle: paymentLayoutStyle)
+                OfferPaymentIconView(layoutStyle: paymentLayoutStyle)
             })
                 .frame(maxWidth: .infinity)
 
@@ -51,7 +51,7 @@ struct OfferFeedDetailView: View {
     }
 }
 
-extension OfferFeedDetailView {
+extension OfferInformationDetailView {
 
     private struct DetailItem<Content: View>: View {
 
@@ -75,11 +75,10 @@ extension OfferFeedDetailView {
 #if DEBUG || DEVEL
 struct MarketplaceFeedDetailViewPreview: PreviewProvider {
     static var previews: some View {
-        OfferFeedDetailView(maxAmount: "$10k",
-                            paymentLabel: "Revolut",
-                            paymentIcons: [R.image.marketplace.revolut.name],
-                            offerType: .sell)
-            .frame(height: 100)
+        OfferInformationDetailView(maxAmount: "$10k",
+                                   paymentLabel: "Revolut",
+                                   paymentIcons: [R.image.marketplace.revolut.name],
+                                   offerType: .sell)
             .previewDevice("iPhone 11")
     }
 }

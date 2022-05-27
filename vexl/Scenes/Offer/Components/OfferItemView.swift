@@ -33,7 +33,7 @@ struct OfferItemView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.top, Appearance.GridGuide.mediumPadding1)
 
-            OfferFeedDetailView(maxAmount: data.amount,
+            OfferInformationDetailView(maxAmount: data.amount,
                                 paymentLabel: data.paymentLabel,
                                 paymentIcons: data.paymentIcons,
                                 offerType: data.offerType)

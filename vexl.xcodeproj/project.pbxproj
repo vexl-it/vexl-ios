@@ -169,7 +169,7 @@
 		F18862652812E91700659786 /* OfferAdvancedFilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18862642812E91700659786 /* OfferAdvancedFilterView.swift */; };
 		F188627028169A3700659786 /* MarketplaceCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F188626728169A3700659786 /* MarketplaceCoordinator.swift */; };
 		F188627128169A3700659786 /* MarketplaceFilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F188626928169A3700659786 /* MarketplaceFilterView.swift */; };
-		F188627228169A3700659786 /* OfferFeedDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F188626A28169A3700659786 /* OfferFeedDetailView.swift */; };
+		F188627228169A3700659786 /* OfferInformationDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F188626A28169A3700659786 /* OfferInformationDetailView.swift */; };
 		F188627328169A3700659786 /* MarketplaceFeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F188626B28169A3700659786 /* MarketplaceFeedView.swift */; };
 		F188627428169A3700659786 /* MarketplaceFeedFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F188626C28169A3700659786 /* MarketplaceFeedFooterView.swift */; };
 		F188627528169A3700659786 /* MarketplaceSegmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F188626D28169A3700659786 /* MarketplaceSegmentView.swift */; };
@@ -232,7 +232,7 @@
 		F1F5F18E283D69E800968366 /* MultipleOptionPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1F5F18A283D69E800968366 /* MultipleOptionPickerView.swift */; };
 		F1F5F18F283D69E800968366 /* PhoneNumberTextFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1F5F18B283D69E800968366 /* PhoneNumberTextFieldView.swift */; };
 		F1F5F192283E928600968366 /* ChatFilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1F5F191283E928600968366 /* ChatFilterView.swift */; };
-		F1F5F194283E9FC500968366 /* MarketplacePaymentIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1F5F193283E9FC500968366 /* MarketplacePaymentIconView.swift */; };
+		F1F5F194283E9FC500968366 /* OfferPaymentIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1F5F193283E9FC500968366 /* OfferPaymentIconView.swift */; };
 		F1F5F196283FDFF100968366 /* ChatItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1F5F195283FDFF100968366 /* ChatItemView.swift */; };
 		F1F5F199283FE52D00968366 /* ChatRequestCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1F5F198283FE52D00968366 /* ChatRequestCoordinator.swift */; };
 		F1F5F19B283FE53300968366 /* ChatRequestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1F5F19A283FE53300968366 /* ChatRequestView.swift */; };
@@ -430,7 +430,7 @@
 		F18862642812E91700659786 /* OfferAdvancedFilterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferAdvancedFilterView.swift; sourceTree = "<group>"; };
 		F188626728169A3700659786 /* MarketplaceCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MarketplaceCoordinator.swift; sourceTree = "<group>"; };
 		F188626928169A3700659786 /* MarketplaceFilterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MarketplaceFilterView.swift; sourceTree = "<group>"; };
-		F188626A28169A3700659786 /* OfferFeedDetailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OfferFeedDetailView.swift; sourceTree = "<group>"; };
+		F188626A28169A3700659786 /* OfferInformationDetailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OfferInformationDetailView.swift; sourceTree = "<group>"; };
 		F188626B28169A3700659786 /* MarketplaceFeedView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MarketplaceFeedView.swift; sourceTree = "<group>"; };
 		F188626C28169A3700659786 /* MarketplaceFeedFooterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MarketplaceFeedFooterView.swift; sourceTree = "<group>"; };
 		F188626D28169A3700659786 /* MarketplaceSegmentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MarketplaceSegmentView.swift; sourceTree = "<group>"; };
@@ -493,7 +493,7 @@
 		F1F5F18A283D69E800968366 /* MultipleOptionPickerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultipleOptionPickerView.swift; sourceTree = "<group>"; };
 		F1F5F18B283D69E800968366 /* PhoneNumberTextFieldView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhoneNumberTextFieldView.swift; sourceTree = "<group>"; };
 		F1F5F191283E928600968366 /* ChatFilterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatFilterView.swift; sourceTree = "<group>"; };
-		F1F5F193283E9FC500968366 /* MarketplacePaymentIconView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketplacePaymentIconView.swift; sourceTree = "<group>"; };
+		F1F5F193283E9FC500968366 /* OfferPaymentIconView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferPaymentIconView.swift; sourceTree = "<group>"; };
 		F1F5F195283FDFF100968366 /* ChatItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatItemView.swift; sourceTree = "<group>"; };
 		F1F5F198283FE52D00968366 /* ChatRequestCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRequestCoordinator.swift; sourceTree = "<group>"; };
 		F1F5F19A283FE53300968366 /* ChatRequestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRequestView.swift; sourceTree = "<group>"; };
@@ -1195,7 +1195,7 @@
 			children = (
 				F1B5321B28202B36009D4E0C /* OfferItemView.swift */,
 				F1D2012D283401D7006DF4AB /* OfferSortView.swift */,
-				F188626A28169A3700659786 /* OfferFeedDetailView.swift */,
+				F188626A28169A3700659786 /* OfferInformationDetailView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -1234,7 +1234,7 @@
 				F188626B28169A3700659786 /* MarketplaceFeedView.swift */,
 				F188626C28169A3700659786 /* MarketplaceFeedFooterView.swift */,
 				F188626D28169A3700659786 /* MarketplaceSegmentView.swift */,
-				F1F5F193283E9FC500968366 /* MarketplacePaymentIconView.swift */,
+				F1F5F193283E9FC500968366 /* OfferPaymentIconView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -1743,7 +1743,7 @@
 				F18862512811710100659786 /* OfferStatusView.swift in Sources */,
 				B08F399A27AE7D87008B344F /* OnboardingCoordinator.swift in Sources */,
 				F12A14F027D912410096543E /* RequestAccessContactsViewModel.swift in Sources */,
-				F188627228169A3700659786 /* OfferFeedDetailView.swift in Sources */,
+				F188627228169A3700659786 /* OfferInformationDetailView.swift in Sources */,
 				F12A14EB27D6B1CF0096543E /* RequestAccessPortraitView.swift in Sources */,
 				F1CFF3B827F6015B007D9FE1 /* UserSecurity.swift in Sources */,
 				F1D2012428296F19006DF4AB /* ChatViewModel.swift in Sources */,
@@ -1884,7 +1884,7 @@
 				F1BFA8D027FB31E800F4E745 /* FacebookUserData.swift in Sources */,
 				B08F399E27AE7D92008B344F /* OnboardingView.swift in Sources */,
 				B08F393F27AE7112008B344F /* APIError.swift in Sources */,
-				F1F5F194283E9FC500968366 /* MarketplacePaymentIconView.swift in Sources */,
+				F1F5F194283E9FC500968366 /* OfferPaymentIconView.swift in Sources */,
 				B0FE523F280E822400A77EC3 /* CryptoService.swift in Sources */,
 				F1A9452D27F67FD5009B5AE3 /* PhoneConfirmation.swift in Sources */,
 				F151A2A227C86CA6000D7242 /* RegistrationCardView.swift in Sources */,

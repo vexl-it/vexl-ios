@@ -77,7 +77,20 @@ struct MarketplaceView: View {
 #if DEBUG || DEVEL
 struct BuySellViewPreview: PreviewProvider {
     static var previews: some View {
-        MarketplaceView(viewModel: .init())
+        let viewModel = MarketplaceViewModel()
+        viewModel.offerItems = [
+            .init(minAmount: 100,
+                  maxAmount: 2_000,
+                  description: "qwerty",
+                  feeState: OfferFeeOption.withoutFee,
+                  feeAmount: 0,
+                  locationState: OfferTradeLocationOption.online,
+                  paymentMethods: [OfferPaymentMethodOption.revolut, .bank],
+                  btcNetwork: [OfferAdvancedBTCOption.onChain],
+                  friendLevel: .firstDegree,
+                  type: .buy)
+        ]
+        return MarketplaceView(viewModel: viewModel)
             .previewDevice("iPhone 11")
     }
 }
