@@ -35,6 +35,10 @@ final class RequestOfferViewModel: ViewModelType, ObservableObject {
         primaryActivity.error
     }
 
+    var offerFeed: OfferFeedViewData {
+        OfferFeed.mapToOfferFeed(usingOffer: offer).viewData
+    }
+
     // MARK: - Coordinator Bindings
 
     enum Route: Equatable {

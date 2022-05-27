@@ -37,7 +37,7 @@ struct RequestOfferView: View {
 
     private var normalHeader: some View {
         HStack {
-            Text("Offer")
+            Text(L.requestTitleNormal())
                 .textStyle(.h2)
                 .foregroundColor(Appearance.Colors.whiteText)
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -48,7 +48,7 @@ struct RequestOfferView: View {
 
     private var requestingHeader: some View {
         HStack(alignment: .bottom) {
-            Text("Sending")
+            Text(L.requestTitleRequesting())
                 .textStyle(.h2)
                 .foregroundColor(Appearance.Colors.whiteText)
 
@@ -87,13 +87,13 @@ struct RequestOfferView: View {
                         commonFriendsContainer
 
                         ExpandingTextView(
-                            placeholder: "e.g. let’s trade my friend...",
+                            placeholder: L.requestPlaceholder(),
                             text: $viewModel.requestText
                         )
 
                         Spacer()
 
-                        SolidButton(Text("Send request"),
+                        SolidButton(Text(L.requestButton()),
                                     font: Appearance.TextStyle.titleSmallBold.font.asFont,
                                     colors: SolidButtonColor.main,
                                     dimensions: SolidButtonDimension.largeButton,
@@ -110,18 +110,18 @@ struct RequestOfferView: View {
     private var offer: some View {
         VStack(spacing: Appearance.GridGuide.point) {
             OfferFeedDetailView(
-                title: "Test df",
-                maxAmount: "Up to 10K czk",
-                paymentLabel: "Something",
-                paymentIcons: [],
-                offerType: .buy,
+                title: viewModel.offerFeed.title,
+                maxAmount: viewModel.offerFeed.amount,
+                paymentLabel: viewModel.offerFeed.paymentLabel,
+                paymentIcons: viewModel.offerFeed.paymentIcons,
+                offerType: viewModel.offerFeed.offerType,
                 isRequested: false
             )
 
             AvatarInfo(
                 isAvatarWithOpacity: false,
                 title: "Murakami is selling",
-                subtitle: "Friend of friend"
+                subtitle: viewModel.offerFeed.friendLevel
             )
         }
         .padding(.top, Appearance.GridGuide.padding)
@@ -129,7 +129,7 @@ struct RequestOfferView: View {
 
     private var commonFriendsContainer: some View {
         VStack(alignment: .leading, spacing: Appearance.GridGuide.point) {
-            Text("16 common friends")
+            Text(L.requestCommonFriends(16))
                 .textStyle(.descriptionSemiBold)
                 .foregroundColor(Appearance.Colors.gray3)
                 .frame(maxWidth: .infinity, alignment: .leading)
