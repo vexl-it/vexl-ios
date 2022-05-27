@@ -15,6 +15,7 @@ struct OfferInformationDetailView: View {
     let paymentIcons: [String]
     let offerType: OfferType
     let isRequested: Bool
+    @State private var lineSize: CGSize = .zero
 
     private var paymentLayoutStyle: MarketplacePaymentIconView.LayoutStyle {
         MarketplacePaymentIconView.LayoutStyle(icons: paymentIcons)
@@ -44,16 +45,21 @@ struct OfferInformationDetailView: View {
                     .multilineTextAlignment(.center)
                     .lineLimit(3)
             })
-                .frame(maxWidth: .infinity)
+            .readSize(onChange: { size in
+                lineSize = size
+            })
+            .frame(maxWidth: .infinity)
 
             VLine(color: Appearance.Colors.gray4, width: 1)
+                .frame(maxHeight: lineSize.height)
 
             DetailItem(label: paymentLabel, content: {
                 MarketplacePaymentIconView(layoutStyle: paymentLayoutStyle)
             })
-                .frame(maxWidth: .infinity)
+            .frame(maxWidth: .infinity)
 
             VLine(color: Appearance.Colors.gray4, width: 1)
+                .frame(maxHeight: lineSize.height)
 
             // TODO: - Set real location when it is implemented
 
@@ -71,14 +77,14 @@ struct OfferInformationDetailView: View {
 extension OfferInformationDetailView {
 
     private struct DetailItem<Content: View>: View {
-
         let label: String
         let content: () -> Content
+        private let maxHeight: CGFloat = 80
 
         var body: some View {
             VStack {
                 content()
-                    .frame(maxHeight: .infinity)
+                    .frame(maxHeight: maxHeight)
 
                 Text(label)
                     .textStyle(.descriptionSemiBold)

@@ -163,7 +163,7 @@ final class OfferService: BaseService, OfferServiceType {
     }
 
     func requestOffer(offerId: String, string: String) -> AnyPublisher<Void, Error> {
-        Future {promise in
+        Future { promise in
             after(2) {
                 promise(.success(()))
             }

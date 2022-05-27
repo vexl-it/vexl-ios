@@ -10,7 +10,6 @@ import Cleevio
 
 struct RequestOfferView: View {
     @ObservedObject var viewModel: RequestOfferViewModel
-    @State private var offerSize: CGSize = .zero
 
     private var scrollViewBottomPadding: CGFloat {
         Appearance.GridGuide.baseHeight + Appearance.GridGuide.padding * 2
@@ -75,10 +74,6 @@ struct RequestOfferView: View {
             ScrollView(showsIndicators: false) {
                 VStack(spacing: Appearance.GridGuide.padding) {
                     offer
-//                        .readSize { size in
-//                            offerSize = size
-//                        }
-//                        .frame(maxHeight: offerSize.height.isZero ? nil : offerSize.height)
 
                     switch viewModel.state {
                     case .requesting:
@@ -118,7 +113,7 @@ struct RequestOfferView: View {
                 isRequested: false
             )
 
-            AvatarInfo(
+            ContactAvatarInfo(
                 isAvatarWithOpacity: false,
                 title: "Murakami is selling",
                 subtitle: viewModel.offerFeed.friendLevel

@@ -37,7 +37,7 @@ struct OfferItemView: View {
 
     private var footer: some View {
         HStack {
-            AvatarInfo(
+            ContactAvatarInfo(
                 isAvatarWithOpacity: false,
                 title: L.offerMine(),
                 subtitle: L.offerAdded("12. 7. 2022")
