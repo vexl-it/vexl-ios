@@ -42,7 +42,7 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
         case showFiltersTapped(OfferFilter)
         case showSellOfferTapped
         case showBuyOfferTapped
-        case showRequestOffer
+        case showRequestOffer(Offer)
     }
 
     var route: CoordinatingSubject<Route> = .init()
@@ -208,7 +208,7 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
             .compactMap { owner, id in
                 owner.offerItems.first(where: { $0.offerId == id })
             }
-            .map { _ -> Route in .showRequestOffer }
+            .map { offer in Route.showRequestOffer(offer) }
             .subscribe(route)
             .store(in: cancelBag)
 

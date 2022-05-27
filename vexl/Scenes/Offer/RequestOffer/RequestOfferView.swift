@@ -10,7 +10,7 @@ import Cleevio
 
 struct RequestOfferView: View {
     @ObservedObject var viewModel: RequestOfferViewModel
-    @State var text: String = ""
+    @State private var offerSize: CGSize = .zero
 
     private var scrollViewBottomPadding: CGFloat {
         Appearance.GridGuide.baseHeight + Appearance.GridGuide.padding * 2
@@ -26,7 +26,16 @@ struct RequestOfferView: View {
         .background(Color.black.edgesIgnoringSafeArea(.all))
     }
 
-    private var header: some View {
+   @ViewBuilder private var header: some View {
+        switch viewModel.state {
+        case .normal:
+            normalHeader
+        case .requesting:
+            requestingHeader
+        }
+    }
+
+    private var normalHeader: some View {
         HStack {
             Text("Offer")
                 .textStyle(.h2)
@@ -35,6 +44,18 @@ struct RequestOfferView: View {
 
             closeButton
         }
+    }
+
+    private var requestingHeader: some View {
+        HStack(alignment: .bottom) {
+            Text("Sending")
+                .textStyle(.h2)
+                .foregroundColor(Appearance.Colors.whiteText)
+
+            LoadingDotsView()
+                .padding(.bottom, 5)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
     }
 
     private var closeButton: some View {
@@ -50,25 +71,39 @@ struct RequestOfferView: View {
     }
 
     private var scrollableContent: some View {
-        ScrollView(showsIndicators: false) {
-            VStack(spacing: Appearance.GridGuide.padding) {
-                offer
+        GeometryReader { geometry in
+            ScrollView(showsIndicators: false) {
+                VStack(spacing: Appearance.GridGuide.padding) {
+                    offer
+                        .readSize { size in
+                            offerSize = size
+                        }
+                        .frame(maxHeight: offerSize.height.isZero ? nil : offerSize.height)
 
-                commonFriendsContainer
+                    switch viewModel.state {
+                    case .requesting:
+                        Spacer()
+                    case .normal:
+                        commonFriendsContainer
 
-                ExpandingTextView(
-                    placeholder: "e.g. let’s trade my friend...",
-                    text: $text
-                )
+                        ExpandingTextView(
+                            placeholder: "e.g. let’s trade my friend...",
+                            text: $viewModel.requestText
+                        )
 
-                SolidButton(Text("Send request"),
-                            font: Appearance.TextStyle.titleSmallBold.font.asFont,
-                            colors: SolidButtonColor.main,
-                            dimensions: SolidButtonDimension.largeButton,
-                            action: {
-                    viewModel.send(action: .dismissTap)
-                })
+                        Spacer()
+
+                        SolidButton(Text("Send request"),
+                                    font: Appearance.TextStyle.titleSmallBold.font.asFont,
+                                    colors: SolidButtonColor.main,
+                                    dimensions: SolidButtonDimension.largeButton,
+                                    action: { viewModel.send(action: .sendRequest) })
+                    }
+                }
+                .frame(minHeight: offerSize.height.isZero ? nil : geometry.size.height)
+                .animation(.easeInOut, value: viewModel.state)
             }
+            .frame(width: geometry.size.width)
         }
     }
 
@@ -119,10 +154,25 @@ struct RequestOfferView: View {
     }
 }
 
+extension VerticalAlignment {
+    private enum BottomTextAndLoading: AlignmentID {
+        static func defaultValue(in dimensions: ViewDimensions) -> CGFloat {
+            dimensions[.bottom]
+        }
+    }
+
+    static let bottomTextAndLoading = VerticalAlignment(BottomTextAndLoading.self)
+}
+
 #if DEBUG || DEVEL
 struct RequestOfferViewPreview: PreviewProvider {
     static var previews: some View {
-        RequestOfferView(viewModel: .init())
+        let viewModel: RequestOfferViewModel = {
+            let vm = RequestOfferViewModel(offer: .stub)
+            vm.state = .requesting
+            return vm
+        }()
+        return RequestOfferView(viewModel: viewModel)
     }
 }
 #endif

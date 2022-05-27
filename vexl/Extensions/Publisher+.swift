@@ -26,6 +26,20 @@ public extension Publisher {
     func sink() -> AnyCancellable {
         sink(receiveCompletion: { _ in }, receiveValue: { _ in })
     }
+
+    func flatMapLatest<T: Publisher>(_ transform: @escaping (Self.Output) -> T) -> Publishers.SwitchToLatest<T, Publishers.Map<Self, T>> {
+        map(transform)
+            .switchToLatest()
+    }
+
+    func flatMapLatest<T: Publisher, ReferenceType: AnyObject>(
+        with obj: ReferenceType,
+        _ transform: @escaping (ReferenceType, Self.Output) -> T
+    ) -> Publishers.SwitchToLatest<T, Publishers.Map<Publishers.CompactMap<Self, (ReferenceType, Self.Output)>, T>> {
+        withUnretained(obj)
+        .map(transform)
+        .switchToLatest()
+    }
 }
 
 public extension Publisher where Output == Void {

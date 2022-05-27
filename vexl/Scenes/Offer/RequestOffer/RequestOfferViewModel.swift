@@ -7,8 +7,13 @@
 
 import Foundation
 import Cleevio
+import Combine
 
 final class RequestOfferViewModel: ViewModelType, ObservableObject {
+    enum State {
+        case normal
+        case requesting
+    }
 
     // MARK: - Action Binding
 
@@ -22,14 +27,12 @@ final class RequestOfferViewModel: ViewModelType, ObservableObject {
     // MARK: - View Bindings
 
     @Published var primaryActivity: Activity = .init()
-    @Published var isLoading = false
     @Published var error: Error?
+    @Published var state: State = .normal
+    @Published var requestText: String = ""
 
     var errorIndicator: ErrorIndicator {
         primaryActivity.error
-    }
-    var activityIndicator: ActivityIndicator {
-        primaryActivity.indicator
     }
 
     // MARK: - Coordinator Bindings
@@ -43,32 +46,47 @@ final class RequestOfferViewModel: ViewModelType, ObservableObject {
 
     // MARK: - Variables
 
+    @Inject private var offerService: OfferServiceType
+    private let offer: Offer
     private let cancelBag: CancelBag = .init()
 
-    init() {
+    init(offer: Offer) {
+        self.offer = offer
         setupActivityBindings()
-        setupBindings()
-        setupDataBindings()
         setupActionBindings()
     }
 
     private func setupActivityBindings() {
-        activityIndicator
-            .loading
-            .assign(to: &$isLoading)
-
         errorIndicator
             .errors
             .asOptional()
+            .handleEvents(receiveOutput: { [weak self] error in
+                if error != nil {
+                    self?.state = .normal
+                }
+            })
             .assign(to: &$error)
     }
 
-    private func setupBindings() {
-    }
-
-    private func setupDataBindings() {
-    }
-
     private func setupActionBindings() {
+        let userAction = action
+            .share()
+
+        userAction
+            .filter { $0 == .dismissTap }
+            .map { _ in Route.dismissTapped }
+            .subscribe(route)
+            .store(in: cancelBag)
+
+        userAction
+            .filter { $0 == .sendRequest }
+            .flatMapLatest(with: self) { owner, _ -> AnyPublisher<Void, Never> in
+                owner.state = .requesting
+                return owner.offerService.requestOffer(offerId: owner.offer.offerId, string: owner.requestText)
+                    .trackError(owner.primaryActivity.error)
+            }
+            .map { _ in Route.requestSent }
+            .subscribe(route)
+            .store(in: cancelBag)
     }
 }

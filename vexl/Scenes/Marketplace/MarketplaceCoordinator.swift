@@ -80,11 +80,13 @@ final class MarketplaceCoordinator: BaseCoordinator<Void> {
         viewModel
             .route
             .receive(on: RunLoop.main)
-            .filter { $0 == .showRequestOffer }
+            .compactMap { route -> Offer? in
+                if case let .showRequestOffer(offer) = route { return offer } else { return nil }
+            }
             .withUnretained(self)
-            .flatMap { owner, _ -> CoordinatingResult<RouterResult<Void>> in
+            .flatMap { owner, offer -> CoordinatingResult<RouterResult<Void>> in
                 let modalRouter = ModalRouter(parentViewController: viewController, presentationStyle: .fullScreen)
-                return owner.showRequestOffer(router: modalRouter)
+                return owner.showRequestOffer(router: modalRouter, offer: offer)
             }
             .sink()
             .store(in: cancelBag)
@@ -128,8 +130,8 @@ extension MarketplaceCoordinator {
         .eraseToAnyPublisher()
     }
 
-    private func showRequestOffer(router: Router) -> CoordinatingResult<RouterResult<Void>> {
-        coordinate(to: RequestOfferCoordinator(router: router))
+    private func showRequestOffer(router: Router, offer: Offer) -> CoordinatingResult<RouterResult<Void>> {
+        coordinate(to: RequestOfferCoordinator(router: router, offer: offer))
         .flatMap { result -> CoordinatingResult<RouterResult<Void>> in
             guard result != .dismissedByRouter else {
                 return Just(result).eraseToAnyPublisher()

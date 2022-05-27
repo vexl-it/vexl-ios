@@ -108,7 +108,6 @@ struct Appearance {
 
     static func setGlobalAppearance() {
         setDefaultNavBarStyle()
-        UIScrollView.appearance().keyboardDismissMode = .interactive
     }
 
     static func navigationBarDefaultAppearance(withColor color: UIColor = .clear) -> UINavigationBarAppearance {
