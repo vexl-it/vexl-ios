@@ -22,7 +22,7 @@ struct MarketplaceFeedFooterView: View {
 
     var body: some View {
         HStack {
-            AvatarInfo(
+            ContactAvatarInfo(
                 isAvatarWithOpacity: isRequested,
                 title: title,
                 subtitle: friendLevel
