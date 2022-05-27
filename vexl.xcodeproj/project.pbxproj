@@ -223,6 +223,9 @@
 		F1C267E228413B500014998C /* Line.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1C267CE28413B500014998C /* Line.swift */; };
 		F1C267E328413B500014998C /* DashedLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1C267CF28413B500014998C /* DashedLine.swift */; };
 		F1C267E428413B500014998C /* LinkTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1C267D028413B500014998C /* LinkTextView.swift */; };
+		F1C267E72841541D0014998C /* ChatRequestOfferView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1C267E62841541D0014998C /* ChatRequestOfferView.swift */; };
+		F1C267E9284154860014998C /* ChatRequestFriendsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1C267E8284154860014998C /* ChatRequestFriendsView.swift */; };
+		F1C267EB284155260014998C /* ChatRequestOfferInformationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1C267EA284155260014998C /* ChatRequestOfferInformationView.swift */; };
 		F1C6D09E27BDDD4C009BD506 /* TextStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1C6D09D27BDDD4C009BD506 /* TextStyle.swift */; };
 		F1C6D0A027BDECB0009BD506 /* WelcomeView+LogoImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1C6D09F27BDECB0009BD506 /* WelcomeView+LogoImageView.swift */; };
 		F1CFF3B827F6015B007D9FE1 /* UserSecurity.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1CFF3B727F6015B007D9FE1 /* UserSecurity.swift */; };
@@ -490,6 +493,9 @@
 		F1C267CE28413B500014998C /* Line.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Line.swift; sourceTree = "<group>"; };
 		F1C267CF28413B500014998C /* DashedLine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashedLine.swift; sourceTree = "<group>"; };
 		F1C267D028413B500014998C /* LinkTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LinkTextView.swift; sourceTree = "<group>"; };
+		F1C267E62841541D0014998C /* ChatRequestOfferView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRequestOfferView.swift; sourceTree = "<group>"; };
+		F1C267E8284154860014998C /* ChatRequestFriendsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRequestFriendsView.swift; sourceTree = "<group>"; };
+		F1C267EA284155260014998C /* ChatRequestOfferInformationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRequestOfferInformationView.swift; sourceTree = "<group>"; };
 		F1C6D09D27BDDD4C009BD506 /* TextStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextStyle.swift; sourceTree = "<group>"; };
 		F1C6D09F27BDECB0009BD506 /* WelcomeView+LogoImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WelcomeView+LogoImageView.swift"; sourceTree = "<group>"; };
 		F1CFF3B727F6015B007D9FE1 /* UserSecurity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSecurity.swift; sourceTree = "<group>"; };
@@ -1424,6 +1430,16 @@
 			path = Lines;
 			sourceTree = "<group>";
 		};
+		F1C267E528414FFD0014998C /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				F1C267E62841541D0014998C /* ChatRequestOfferView.swift */,
+				F1C267E8284154860014998C /* ChatRequestFriendsView.swift */,
+				F1C267EA284155260014998C /* ChatRequestOfferInformationView.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
 		F1C6D09A27BDDBC7009BD506 /* UI */ = {
 			isa = PBXGroup;
 			children = (
@@ -1476,6 +1492,7 @@
 		F1F5F197283FE51F00968366 /* ChatRequest */ = {
 			isa = PBXGroup;
 			children = (
+				F1C267E528414FFD0014998C /* Components */,
 				F1F5F198283FE52D00968366 /* ChatRequestCoordinator.swift */,
 				F1F5F19A283FE53300968366 /* ChatRequestView.swift */,
 				F1F5F19C283FE53A00968366 /* ChatRequestViewModel.swift */,
@@ -1804,6 +1821,7 @@
 				F1C267E428413B500014998C /* LinkTextView.swift in Sources */,
 				F175ABAA27F4FC3F000DAB15 /* ImportPhoneContactsViewModel.swift in Sources */,
 				F188624B2811551E00659786 /* CreateOfferView.swift in Sources */,
+				F1C267E9284154860014998C /* ChatRequestFriendsView.swift in Sources */,
 				F13B266528192BBF0011F2FB /* OfferInitialData.swift in Sources */,
 				F12A14F327D96FD40096543E /* ImportContactsView.swift in Sources */,
 				F12A150827E1A4940096543E /* RequestAccessAlert.swift in Sources */,
@@ -1817,6 +1835,7 @@
 				F12A14E827D6A8690096543E /* RequestAccessContactsView.swift in Sources */,
 				F13B2675281EB23A0011F2FB /* ContactFriendLevel.swift in Sources */,
 				B0E9BB302815C7310012BF1D /* SHA.swift in Sources */,
+				F1C267E72841541D0014998C /* ChatRequestOfferView.swift in Sources */,
 				B08F390727AE7110008B344F /* UserDefault.swift in Sources */,
 				F1D2012A282ABB1F006DF4AB /* HomeTabBarViewModel.swift in Sources */,
 				4FBF6213283CF54400DDBE71 /* FilterHeaderView.swift in Sources */,
@@ -1940,6 +1959,7 @@
 				F151A2A227C86CA6000D7242 /* RegistrationCardView.swift in Sources */,
 				F1B5321C28202B36009D4E0C /* OfferItemView.swift in Sources */,
 				F1F5F192283E928600968366 /* ChatFilterView.swift in Sources */,
+				F1C267EB284155260014998C /* ChatRequestOfferInformationView.swift in Sources */,
 				F1A9454627F81278009B5AE3 /* ContactInformation.swift in Sources */,
 				F1D2011F282960DC006DF4AB /* HomeTabBarView.swift in Sources */,
 				B08F391327AE7112008B344F /* ManagerAssembly.swift in Sources */,

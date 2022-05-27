@@ -77,7 +77,7 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
         ]
     }
 
-    var marketplaceFeedItems: [OfferFeedViewData] {
+    var marketplaceFeedItems: [OfferDetailViewData] {
         switch selectedOption {
         case .sell:
             return filteredSellFeedItems.map(\.viewData)

@@ -150,4 +150,8 @@
 "chat.filter.buy" = "Buyers";
 "chat.filter.sell" = "Sellers";
 "chat.messageMe" = "me:";
-"chat.request.name" = "";
+"chat.request.name" = "%@ requested your identity.";
+"chat.request.main.title" = "%@ Requests";
+"chat.request.accept" = "Accept";
+"chat.request.decline" = "Decline";
+"chat.request.myOffer" = "My Offer";

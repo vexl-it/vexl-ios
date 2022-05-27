@@ -71,7 +71,7 @@ final class UserOffersViewModel: ViewModelType, ObservableObject {
         }
     }
 
-    var offerItems: [OfferFeedViewData] {
+    var offerItems: [OfferDetailViewData] {
         userOffers.map { OfferFeed.mapToOfferFeed(usingOffer: $0).viewData }
     }
 

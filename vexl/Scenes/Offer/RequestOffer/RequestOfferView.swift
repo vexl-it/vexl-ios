@@ -105,12 +105,7 @@ struct RequestOfferView: View {
     private var offer: some View {
         VStack(spacing: Appearance.GridGuide.point) {
             OfferInformationDetailView(
-                title: viewModel.offerFeed.title,
-                maxAmount: viewModel.offerFeed.amount,
-                paymentLabel: viewModel.offerFeed.paymentLabel,
-                paymentIcons: viewModel.offerFeed.paymentIcons,
-                offerType: viewModel.offerFeed.offerType,
-                isRequested: false,
+                data: viewModel.offerFeed,
                 useInnerPadding: true,
                 showBackground: true
             )

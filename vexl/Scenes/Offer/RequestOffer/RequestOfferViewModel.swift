@@ -35,7 +35,7 @@ final class RequestOfferViewModel: ViewModelType, ObservableObject {
         primaryActivity.error
     }
 
-    var offerFeed: OfferFeedViewData {
+    var offerFeed: OfferDetailViewData {
         OfferFeed.mapToOfferFeed(usingOffer: offer).viewData
     }
 

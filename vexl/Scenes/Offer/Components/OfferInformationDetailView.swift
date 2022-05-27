@@ -9,33 +9,35 @@ import Foundation
 import SwiftUI
 
 struct OfferInformationDetailView: View {
-    let title: String
-    let maxAmount: String
-    let paymentLabel: String
-    let paymentIcons: [String]
-    let offerType: OfferType
-    let isRequested: Bool
+    let data: OfferDetailViewData
     let useInnerPadding: Bool
     let showBackground: Bool
     @State private var lineSize: CGSize = .zero
 
     private var paymentLayoutStyle: OfferPaymentIconView.LayoutStyle {
-        OfferPaymentIconView.LayoutStyle(icons: paymentIcons)
+        OfferPaymentIconView.LayoutStyle(icons: data.paymentIcons)
     }
 
     private var backgroundColor: Color {
         guard showBackground else {
             return Color.clear
         }
-        return isRequested ? Appearance.Colors.gray1 : Appearance.Colors.whiteText
+        return data.isRequested ? Appearance.Colors.gray1 : Appearance.Colors.whiteText
+    }
+cl
+    private var textColor: Color {
+        guard showBackground else {
+            return Appearance.Colors.primaryText
+        }
+        return data.isRequested ? Appearance.Colors.gray3 : Appearance.Colors.primaryText
     }
 
     var body: some View {
         VStack(spacing: Appearance.GridGuide.padding) {
-            Text(title)
+            Text(data.title)
                 .textStyle(.paragraphMedium)
                 .multilineTextAlignment(.leading)
-                .foregroundColor(isRequested ? Appearance.Colors.gray3 : Appearance.Colors.primaryText)
+                .foregroundColor(textColor)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.top, useInnerPadding ? Appearance.GridGuide.mediumPadding1 : 0)
 
@@ -48,8 +50,8 @@ struct OfferInformationDetailView: View {
 
     private var detail: some View {
         HStack {
-            DetailItem(label: offerType == .buy ? L.marketplaceDetailBuy() : L.marketplaceDetailSell(), content: {
-                Text(L.marketplaceDetailUpTo(maxAmount))
+            DetailItem(label: data.offerType == .buy ? L.marketplaceDetailBuy() : L.marketplaceDetailSell(), content: {
+                Text(L.marketplaceDetailUpTo(data.amount))
                     .foregroundColor(Appearance.Colors.gray2)
                     .multilineTextAlignment(.center)
                     .lineLimit(3)
@@ -62,7 +64,7 @@ struct OfferInformationDetailView: View {
             VLine(color: Appearance.Colors.gray4, width: 1)
                 .frame(maxHeight: lineSize.height)
 
-            DetailItem(label: paymentLabel, content: {
+            DetailItem(label: data.paymentLabel, content: {
                 OfferPaymentIconView(layoutStyle: paymentLayoutStyle)
             })
             .frame(maxWidth: .infinity)
@@ -112,12 +114,7 @@ struct MarketplaceFeedDetailViewPreview: PreviewProvider {
                 .edgesIgnoringSafeArea(.all)
 
             OfferInformationDetailView(
-                title: "Test df",
-                maxAmount: "$10k",
-                paymentLabel: "Revolut",
-                paymentIcons: [R.image.marketplace.revolut.name],
-                offerType: .sell,
-                isRequested: true,
+                data: .stub,
                 useInnerPadding: false,
                 showBackground: true
             )
