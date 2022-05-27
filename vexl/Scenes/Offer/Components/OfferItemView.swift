@@ -25,7 +25,7 @@ struct OfferItemView: View {
     }
 
     private var bubble: some View {
-        OfferFeedDetailView(
+        OfferInformationDetailView(
             title: data.title,
             maxAmount: data.amount,
             paymentLabel: data.paymentLabel,

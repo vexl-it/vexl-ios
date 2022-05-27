@@ -1,5 +1,5 @@
 //
-//  OfferFeedDetailView.swift
+//  OfferInformationDetailView.swift
 //  vexl
 //
 //  Created by Diego Espinoza on 13/04/22.
@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-struct OfferFeedDetailView: View {
+struct OfferInformationDetailView: View {
     let title: String
     let maxAmount: String
     let paymentLabel: String
@@ -68,7 +68,7 @@ struct OfferFeedDetailView: View {
     }
 }
 
-extension OfferFeedDetailView {
+extension OfferInformationDetailView {
 
     private struct DetailItem<Content: View>: View {
 
@@ -96,7 +96,7 @@ struct MarketplaceFeedDetailViewPreview: PreviewProvider {
             Color.black
                 .edgesIgnoringSafeArea(.all)
 
-            OfferFeedDetailView(
+            OfferInformationDetailView(
                 title: "Test df",
                 maxAmount: "$10k",
                 paymentLabel: "Revolut",

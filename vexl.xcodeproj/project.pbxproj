@@ -175,7 +175,7 @@
 		F18862652812E91700659786 /* OfferAdvancedFilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18862642812E91700659786 /* OfferAdvancedFilterView.swift */; };
 		F188627028169A3700659786 /* MarketplaceCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F188626728169A3700659786 /* MarketplaceCoordinator.swift */; };
 		F188627128169A3700659786 /* MarketplaceFilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F188626928169A3700659786 /* MarketplaceFilterView.swift */; };
-		F188627228169A3700659786 /* OfferFeedDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F188626A28169A3700659786 /* OfferFeedDetailView.swift */; };
+		F188627228169A3700659786 /* OfferInformationDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F188626A28169A3700659786 /* OfferInformationDetailView.swift */; };
 		F188627328169A3700659786 /* MarketplaceFeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F188626B28169A3700659786 /* MarketplaceFeedView.swift */; };
 		F188627428169A3700659786 /* MarketplaceFeedFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F188626C28169A3700659786 /* MarketplaceFeedFooterView.swift */; };
 		F188627528169A3700659786 /* MarketplaceSegmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F188626D28169A3700659786 /* MarketplaceSegmentView.swift */; };
@@ -437,7 +437,7 @@
 		F18862642812E91700659786 /* OfferAdvancedFilterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferAdvancedFilterView.swift; sourceTree = "<group>"; };
 		F188626728169A3700659786 /* MarketplaceCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MarketplaceCoordinator.swift; sourceTree = "<group>"; };
 		F188626928169A3700659786 /* MarketplaceFilterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MarketplaceFilterView.swift; sourceTree = "<group>"; };
-		F188626A28169A3700659786 /* OfferFeedDetailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OfferFeedDetailView.swift; sourceTree = "<group>"; };
+		F188626A28169A3700659786 /* OfferInformationDetailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OfferInformationDetailView.swift; sourceTree = "<group>"; };
 		F188626B28169A3700659786 /* MarketplaceFeedView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MarketplaceFeedView.swift; sourceTree = "<group>"; };
 		F188626C28169A3700659786 /* MarketplaceFeedFooterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MarketplaceFeedFooterView.swift; sourceTree = "<group>"; };
 		F188626D28169A3700659786 /* MarketplaceSegmentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MarketplaceSegmentView.swift; sourceTree = "<group>"; };
@@ -1226,7 +1226,7 @@
 				F1B5321B28202B36009D4E0C /* OfferItemView.swift */,
 				F188624D2811556100659786 /* OfferHeaderView.swift */,
 				F1D2012D283401D7006DF4AB /* OfferSortView.swift */,
-				F188626A28169A3700659786 /* OfferFeedDetailView.swift */,
+				F188626A28169A3700659786 /* OfferInformationDetailView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -1754,7 +1754,7 @@
 				F18862512811710100659786 /* OfferStatusView.swift in Sources */,
 				B08F399A27AE7D87008B344F /* OnboardingCoordinator.swift in Sources */,
 				F12A14F027D912410096543E /* RequestAccessContactsViewModel.swift in Sources */,
-				F188627228169A3700659786 /* OfferFeedDetailView.swift in Sources */,
+				F188627228169A3700659786 /* OfferInformationDetailView.swift in Sources */,
 				F12A14EB27D6B1CF0096543E /* RequestAccessPortraitView.swift in Sources */,
 				F1CFF3B827F6015B007D9FE1 /* UserSecurity.swift in Sources */,
 				F1D2012428296F19006DF4AB /* ChatViewModel.swift in Sources */,

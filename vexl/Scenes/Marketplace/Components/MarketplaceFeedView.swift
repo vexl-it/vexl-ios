@@ -16,7 +16,7 @@ struct MarketplaceFeedView: View {
 
     var body: some View {
         VStack(spacing: Appearance.GridGuide.point) {
-            OfferFeedDetailView(
+            OfferInformationDetailView(
                 title: data.title,
                 maxAmount: data.amount,
                 paymentLabel: data.paymentLabel,

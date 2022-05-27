@@ -75,10 +75,10 @@ struct RequestOfferView: View {
             ScrollView(showsIndicators: false) {
                 VStack(spacing: Appearance.GridGuide.padding) {
                     offer
-                        .readSize { size in
-                            offerSize = size
-                        }
-                        .frame(maxHeight: offerSize.height.isZero ? nil : offerSize.height)
+//                        .readSize { size in
+//                            offerSize = size
+//                        }
+//                        .frame(maxHeight: offerSize.height.isZero ? nil : offerSize.height)
 
                     switch viewModel.state {
                     case .requesting:
@@ -100,7 +100,7 @@ struct RequestOfferView: View {
                                     action: { viewModel.send(action: .sendRequest) })
                     }
                 }
-                .frame(minHeight: offerSize.height.isZero ? nil : geometry.size.height)
+                .frame(minHeight: geometry.size.height)
                 .animation(.easeInOut, value: viewModel.state)
             }
             .frame(width: geometry.size.width)
@@ -109,7 +109,7 @@ struct RequestOfferView: View {
 
     private var offer: some View {
         VStack(spacing: Appearance.GridGuide.point) {
-            OfferFeedDetailView(
+            OfferInformationDetailView(
                 title: viewModel.offerFeed.title,
                 maxAmount: viewModel.offerFeed.amount,
                 paymentLabel: viewModel.offerFeed.paymentLabel,
