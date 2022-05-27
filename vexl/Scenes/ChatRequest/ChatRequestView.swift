@@ -96,15 +96,11 @@ struct ChatRequestOfferView: View {
         HStack {
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack {
-                    Text("Friend 1 goes here")
+                    friendItem()
 
-                    Text("Friend 2 goes here")
+                    friendItem()
 
-                    Text("Friend 3 goes here")
-
-                    Text("Friend 4 goes here")
-
-                    Text("Friend 4 goes here")
+                    friendItem()
                 }
                 .padding()
             }
@@ -116,6 +112,19 @@ struct ChatRequestOfferView: View {
         }
         .background(Appearance.Colors.gray6)
         .cornerRadius(Appearance.GridGuide.buttonCorner)
+    }
+
+    @ViewBuilder private func friendItem() -> some View {
+        HStack(spacing: Appearance.GridGuide.tinyPadding) {
+            Image(R.image.marketplace.defaultAvatar.name)
+                .resizable()
+                .frame(size: Appearance.GridGuide.iconSize)
+                .cornerRadius(Appearance.GridGuide.buttonCorner)
+
+            Text("Friend 12345678")
+                .foregroundColor(Appearance.Colors.primaryText)
+                .textStyle(Appearance.TextStyle.paragraphSmallMedium)
+        }
     }
 
     private var buttons: some View {
