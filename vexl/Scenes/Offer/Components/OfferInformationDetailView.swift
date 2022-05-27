@@ -24,7 +24,7 @@ struct OfferInformationDetailView: View {
         }
         return data.isRequested ? Appearance.Colors.gray1 : Appearance.Colors.whiteText
     }
-cl
+
     private var textColor: Color {
         guard showBackground else {
             return Appearance.Colors.primaryText
