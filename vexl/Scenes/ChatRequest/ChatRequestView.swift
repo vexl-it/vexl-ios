@@ -73,16 +73,18 @@ struct ChatRequestOfferView: View {
         VStack(alignment: .leading, spacing: .zero) {
 
             Text("Your offer")
+                .textStyle(.descriptionSemiBold)
+                .foregroundColor(Appearance.Colors.gray3)
                 .padding([.horizontal, .top], Appearance.GridGuide.padding)
 
-            Text("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit")
-                .padding(.horizontal, Appearance.GridGuide.padding)
-                .padding(.top, Appearance.GridGuide.point)
-
-            OfferInformationDetailView(maxAmount: "10k",
+            OfferInformationDetailView(title: "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+                                       maxAmount: "10k",
                                        paymentLabel: "Payment",
                                        paymentIcons: [OfferPaymentMethodOption.revolut.iconName],
-                                       offerType: .buy)
+                                       offerType: .buy,
+                                       isRequested: false,
+                                       useInnerPadding: false,
+                                       showBackground: false)
                 .padding(Appearance.GridGuide.padding)
         }
             .background(Appearance.Colors.gray6)

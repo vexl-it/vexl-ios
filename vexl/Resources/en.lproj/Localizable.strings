@@ -140,6 +140,11 @@
 "offer.create.action.title" = "Create sell offer";
 "offer.update.action.title" = "Update sell offer";
 "offer.create.buy.action.title" = "Create buy offer";
+"request.title.normal" = "Offer";
+"request.title.requesting" = "Sending";
+"request.placeholder" = "e.g. let's trade my friend...";
+"request.button" = "Send request";
+"request.common.friends" = "%d common friends";
 "chat.main.title" = "Chat";
 "chat.filter.all" = "All";
 "chat.filter.buy" = "Buyers";

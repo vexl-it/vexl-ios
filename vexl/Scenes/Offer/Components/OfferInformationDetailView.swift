@@ -1,5 +1,5 @@
 //
-//  OfferFeedDetailView.swift
+//  OfferInformationDetailView.swift
 //  vexl
 //
 //  Created by Diego Espinoza on 13/04/22.
@@ -9,17 +9,44 @@ import Foundation
 import SwiftUI
 
 struct OfferInformationDetailView: View {
-
+    let title: String
     let maxAmount: String
     let paymentLabel: String
     let paymentIcons: [String]
     let offerType: OfferType
+    let isRequested: Bool
+    let useInnerPadding: Bool
+    let showBackground: Bool
+    @State private var lineSize: CGSize = .zero
 
     private var paymentLayoutStyle: OfferPaymentIconView.LayoutStyle {
         OfferPaymentIconView.LayoutStyle(icons: paymentIcons)
     }
 
+    private var backgroundColor: Color {
+        guard showBackground else {
+            return Color.clear
+        }
+        return isRequested ? Appearance.Colors.gray1 : Appearance.Colors.whiteText
+    }
+
     var body: some View {
+        VStack(spacing: Appearance.GridGuide.padding) {
+            Text(title)
+                .textStyle(.paragraphMedium)
+                .multilineTextAlignment(.leading)
+                .foregroundColor(isRequested ? Appearance.Colors.gray3 : Appearance.Colors.primaryText)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.top, useInnerPadding ? Appearance.GridGuide.mediumPadding1 : 0)
+
+            detail
+        }
+        .padding(.horizontal, useInnerPadding ? Appearance.GridGuide.padding : 0)
+        .background(backgroundColor)
+        .cornerRadius(showBackground ? Appearance.GridGuide.buttonCorner : 0)
+    }
+
+    private var detail: some View {
         HStack {
             DetailItem(label: offerType == .buy ? L.marketplaceDetailBuy() : L.marketplaceDetailSell(), content: {
                 Text(L.marketplaceDetailUpTo(maxAmount))
@@ -27,16 +54,21 @@ struct OfferInformationDetailView: View {
                     .multilineTextAlignment(.center)
                     .lineLimit(3)
             })
-                .frame(maxWidth: .infinity)
+            .readSize(onChange: { size in
+                lineSize = size
+            })
+            .frame(maxWidth: .infinity)
 
             VLine(color: Appearance.Colors.gray4, width: 1)
+                .frame(maxHeight: lineSize.height)
 
             DetailItem(label: paymentLabel, content: {
                 OfferPaymentIconView(layoutStyle: paymentLayoutStyle)
             })
-                .frame(maxWidth: .infinity)
+            .frame(maxWidth: .infinity)
 
             VLine(color: Appearance.Colors.gray4, width: 1)
+                .frame(maxHeight: lineSize.height)
 
             // TODO: - Set real location when it is implemented
 
@@ -45,23 +77,23 @@ struct OfferInformationDetailView: View {
                     .resizable()
                     .frame(size: Appearance.GridGuide.feedIconSize)
             })
-                .frame(maxWidth: .infinity)
+            .frame(maxWidth: .infinity)
         }
-        .padding(.bottom, Appearance.GridGuide.padding)
+        .padding(.bottom, useInnerPadding ? Appearance.GridGuide.padding : 0)
     }
 }
 
 extension OfferInformationDetailView {
 
     private struct DetailItem<Content: View>: View {
-
         let label: String
         let content: () -> Content
+        private let maxHeight: CGFloat = 80
 
         var body: some View {
             VStack {
                 content()
-                    .frame(maxHeight: .infinity)
+                    .frame(maxHeight: maxHeight)
 
                 Text(label)
                     .textStyle(.descriptionSemiBold)
@@ -75,11 +107,22 @@ extension OfferInformationDetailView {
 #if DEBUG || DEVEL
 struct MarketplaceFeedDetailViewPreview: PreviewProvider {
     static var previews: some View {
-        OfferInformationDetailView(maxAmount: "$10k",
-                                   paymentLabel: "Revolut",
-                                   paymentIcons: [R.image.marketplace.revolut.name],
-                                   offerType: .sell)
-            .previewDevice("iPhone 11")
+        ZStack {
+            Color.black
+                .edgesIgnoringSafeArea(.all)
+
+            OfferInformationDetailView(
+                title: "Test df",
+                maxAmount: "$10k",
+                paymentLabel: "Revolut",
+                paymentIcons: [R.image.marketplace.revolut.name],
+                offerType: .sell,
+                isRequested: true,
+                useInnerPadding: false,
+                showBackground: true
+            )
+            .frame(height: 250)
+        }
     }
 }
 #endif

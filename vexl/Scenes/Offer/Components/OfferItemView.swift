@@ -25,22 +25,16 @@ struct OfferItemView: View {
     }
 
     private var bubble: some View {
-        VStack(spacing: Appearance.GridGuide.padding) {
-            Text(data.title)
-                .textStyle(.paragraph)
-                .multilineTextAlignment(.leading)
-                .foregroundColor(data.isRequested ? Appearance.Colors.gray3 : Appearance.Colors.primaryText)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.top, Appearance.GridGuide.mediumPadding1)
-
-            OfferInformationDetailView(maxAmount: data.amount,
-                                paymentLabel: data.paymentLabel,
-                                paymentIcons: data.paymentIcons,
-                                offerType: data.offerType)
-        }
-        .padding(.horizontal, Appearance.GridGuide.padding)
-        .background(Appearance.Colors.whiteText)
-        .cornerRadius(Appearance.GridGuide.buttonCorner)
+        OfferInformationDetailView(
+            title: data.title,
+            maxAmount: data.amount,
+            paymentLabel: data.paymentLabel,
+            paymentIcons: data.paymentIcons,
+            offerType: data.offerType,
+            isRequested: data.isRequested,
+            useInnerPadding: true,
+            showBackground: true
+        )
     }
 
     private var footer: some View {
