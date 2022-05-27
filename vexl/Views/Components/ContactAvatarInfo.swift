@@ -1,5 +1,5 @@
 //
-//  AvatarInfo.swift
+//  ContactAvatarInfo.swift
 //  vexl
 //
 //  Created by Daniel Fernandez Yopla on 26.05.2022.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct AvatarInfo: View {
+struct ContactAvatarInfo: View {
     let isAvatarWithOpacity: Bool
     let title: String
     let subtitle: String
@@ -46,13 +46,13 @@ struct AvatarInfo: View {
 struct AvatarInfoViewPreview: PreviewProvider {
     static var previews: some View {
         VStack(spacing: 16) {
-            AvatarInfo(
+            ContactAvatarInfo(
                 isAvatarWithOpacity: false,
                 title: "My offer",
                 subtitle: "Added 12. 7. 2022"
             )
 
-            AvatarInfo(
+            ContactAvatarInfo(
                 isAvatarWithOpacity: true,
                 title: "Sully is selling",
                 subtitle: "Friend of friend"

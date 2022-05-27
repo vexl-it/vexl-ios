@@ -18,6 +18,7 @@ protocol OfferServiceType {
     func storeOfferKey(key: ECCKeys, withId id: String, offerType: OfferType) -> AnyPublisher<Void, Error>
     func getStoredOfferIds(forType offerType: OfferType) -> AnyPublisher<[String], Never>
     func deleteOffers() -> AnyPublisher<Void, Error>
+    func requestOffer(offerId: String, string: String) -> AnyPublisher<Void, Error>
 }
 
 final class OfferService: BaseService, OfferServiceType {
@@ -159,5 +160,14 @@ final class OfferService: BaseService, OfferServiceType {
                 }
             }
             .eraseToAnyPublisher()
+    }
+
+    func requestOffer(offerId: String, string: String) -> AnyPublisher<Void, Error> {
+        Future { promise in
+            after(2) {
+                promise(.success(()))
+            }
+        }
+        .eraseToAnyPublisher()
     }
 }
