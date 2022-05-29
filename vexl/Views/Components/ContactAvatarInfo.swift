@@ -37,11 +37,11 @@ struct ContactAvatarInfo: View {
          subtitle: String,
          style: Style = .regular,
          avatar: UIImage? = nil) {
-        self.avatar = avatar
         self.isAvatarWithOpacity = isAvatarWithOpacity
         self.title = title
         self.subtitle = subtitle
         self.style = style
+        self.avatar = avatar
     }
 
     var body: some View {

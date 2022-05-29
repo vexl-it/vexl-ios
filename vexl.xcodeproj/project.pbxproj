@@ -2037,6 +2037,7 @@
 				F1D2012228296F0F006DF4AB /* ChatCoordinator.swift in Sources */,
 				F1C267E028413B500014998C /* LoadingIndicatorView.swift in Sources */,
 				B08F394327AE7112008B344F /* Keychain+.swift in Sources */,
+				F1C267F828443C390014998C /* ContactAvatarView.swift in Sources */,
 				F13B2677281F43A10011F2FB /* Offer.swift in Sources */,
 				F1C267E128413B500014998C /* SegmentedPickerView.swift in Sources */,
 				F175AB8727E4D5C8000DAB15 /* UIScreen+.swift in Sources */,
