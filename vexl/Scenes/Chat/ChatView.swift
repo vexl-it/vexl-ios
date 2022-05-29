@@ -42,8 +42,7 @@ struct ChatView: View {
             Text(L.chatMainTitle())
                 .textStyle(.h1)
                 .foregroundColor(.white)
-
-            Spacer()
+                .frame(maxWidth: .infinity, alignment: .leading)
 
             Button {
                 viewModel.action.send(.requestTap)

@@ -25,7 +25,11 @@ final class ChatViewModel: ViewModelType, ObservableObject {
     @Published var filter: ChatFilterOption = .all
     @Published var primaryActivity: Activity = .init()
 
-    @Published var chatItems: [ChatItem] = []
+    @Published var chatItems: [ChatItem] = [
+        .init(avatar: nil, username: "Keichi", detail: "qwerty", time: "Yesterday", offerType: .buy),
+        .init(avatar: nil, username: "Keichi", detail: "qwerty", time: "Yesterday", offerType: .buy),
+        .init(avatar: nil, username: "Keichi", detail: "qwerty", time: "Yesterday", offerType: .sell)
+    ]
 
     // MARK: - Coordinator Bindings
 
@@ -60,10 +64,6 @@ final class ChatViewModel: ViewModelType, ObservableObject {
                 if case let .selectFilter(option) = action { return option }
                 return nil
             }
-            .withUnretained(self)
-            .sink { owner, option in
-                owner.filter = option
-            }
-            .store(in: cancelBag)
+            .assign(to: &$filter)
     }
 }
