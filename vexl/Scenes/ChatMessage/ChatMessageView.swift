@@ -13,9 +13,27 @@ struct ChatMessageView: View {
 
     var body: some View {
         VStack {
-            Text("Message")
-                .foregroundColor(Appearance.Colors.whiteText)
+            HStack {
+                CloseButton {
+                    
+                }
+                
+                VStack {
+                    Image(R.image.marketplace.defaultAvatar.name)
+                }
+            }
+
+            Spacer()
         }
-        .background(Color.black)
+        .frame(maxWidth: .infinity)
+        .background(Color.black.edgesIgnoringSafeArea(.all))
+    }
+}
+
+struct ChatMessageViewPreview: PreviewProvider {
+    static var previews: some View {
+        ChatMessageView(viewModel: .init())
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .previewDevice("iPhone 11")
     }
 }

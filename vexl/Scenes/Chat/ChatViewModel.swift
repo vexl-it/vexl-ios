@@ -14,9 +14,9 @@ final class ChatViewModel: ViewModelType, ObservableObject {
 
     enum UserAction: Equatable {
         case selectFilter(option: ChatFilterOption)
-        case selectMessage(id: String)
-        case requestTap
         case continueTap
+        case requestTap
+        case selectMessage(id: String)
     }
 
     let action: ActionSubject<UserAction> = .init()
@@ -27,7 +27,9 @@ final class ChatViewModel: ViewModelType, ObservableObject {
     @Published var primaryActivity: Activity = .init()
 
     @Published var chatItems: [ChatItem] = [
-        .init(avatar: nil, username: "Keichi", detail: "Hello there", time: "Yesterday", offerType: .buy)
+        .init(avatar: nil, username: "Keichi", detail: "qwerty", time: "Yesterday", offerType: .buy),
+        .init(avatar: nil, username: "Keichi", detail: "qwerty", time: "Yesterday", offerType: .buy),
+        .init(avatar: nil, username: "Keichi", detail: "qwerty", time: "Yesterday", offerType: .sell)
     ]
 
     // MARK: - Coordinator Bindings
@@ -43,6 +45,10 @@ final class ChatViewModel: ViewModelType, ObservableObject {
     // MARK: - Variables
 
     private let cancelBag: CancelBag = .init()
+
+    init() {
+        setupActionBindings()
+    }
 
     private func setupActionBindings() {
 
@@ -60,22 +66,15 @@ final class ChatViewModel: ViewModelType, ObservableObject {
                 if case let .selectFilter(option) = action { return option }
                 return nil
             }
-            .withUnretained(self)
-            .sink { owner, option in
-                owner.filter = option
-            }
-            .store(in: cancelBag)
+            .assign(to: &$filter)
 
         action
-            .print("???!!")
             .compactMap { action -> String? in
                 if case let .selectMessage(id) = action { return id }
                 return nil
             }
-            .withUnretained(self)
-            .sink { owner, id in
-                owner.route.send(.messageTapped(id: id))
-            }
+            .map { id -> Route in .messageTapped(id: id) }
+            .subscribe(route)
             .store(in: cancelBag)
     }
 }

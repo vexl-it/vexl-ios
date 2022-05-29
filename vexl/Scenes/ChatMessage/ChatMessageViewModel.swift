@@ -42,5 +42,8 @@ final class ChatMessageViewModel: ViewModelType, ObservableObject {
 
     // MARK: - Variables
 
+    var username: String {
+        "Keichi"
+    }
     private let cancelBag: CancelBag = .init()
 }

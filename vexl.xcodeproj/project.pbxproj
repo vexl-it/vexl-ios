@@ -229,6 +229,8 @@
 		F1C267EE284431B70014998C /* ChatMessageCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1C267ED284431B70014998C /* ChatMessageCoordinator.swift */; };
 		F1C267F0284431BF0014998C /* ChatMessageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1C267EF284431BF0014998C /* ChatMessageViewModel.swift */; };
 		F1C267F2284431C50014998C /* ChatMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1C267F1284431C50014998C /* ChatMessageView.swift */; };
+		F1C267F4284439D30014998C /* CloseButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1C267F3284439D30014998C /* CloseButton.swift */; };
+		F1C267F628443AA70014998C /* ContactAvatarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1C267F528443AA70014998C /* ContactAvatarView.swift */; };
 		F1C6D09E27BDDD4C009BD506 /* TextStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1C6D09D27BDDD4C009BD506 /* TextStyle.swift */; };
 		F1C6D0A027BDECB0009BD506 /* WelcomeView+LogoImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1C6D09F27BDECB0009BD506 /* WelcomeView+LogoImageView.swift */; };
 		F1CFF3B827F6015B007D9FE1 /* UserSecurity.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1CFF3B727F6015B007D9FE1 /* UserSecurity.swift */; };
@@ -502,6 +504,8 @@
 		F1C267ED284431B70014998C /* ChatMessageCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageCoordinator.swift; sourceTree = "<group>"; };
 		F1C267EF284431BF0014998C /* ChatMessageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageViewModel.swift; sourceTree = "<group>"; };
 		F1C267F1284431C50014998C /* ChatMessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageView.swift; sourceTree = "<group>"; };
+		F1C267F3284439D30014998C /* CloseButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloseButton.swift; sourceTree = "<group>"; };
+		F1C267F528443AA70014998C /* ContactAvatarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactAvatarView.swift; sourceTree = "<group>"; };
 		F1C6D09D27BDDD4C009BD506 /* TextStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextStyle.swift; sourceTree = "<group>"; };
 		F1C6D09F27BDECB0009BD506 /* WelcomeView+LogoImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WelcomeView+LogoImageView.swift"; sourceTree = "<group>"; };
 		F1CFF3B727F6015B007D9FE1 /* UserSecurity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSecurity.swift; sourceTree = "<group>"; };
@@ -1385,6 +1389,7 @@
 				F1C267CB28413B500014998C /* LoadingIndicatorView.swift */,
 				F1C267CC28413B500014998C /* SegmentedPickerView.swift */,
 				F1C267D028413B500014998C /* LinkTextView.swift */,
+				F1C267F528443AA70014998C /* ContactAvatarView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -1394,6 +1399,7 @@
 			children = (
 				F1C267B928413B500014998C /* DottedButton.swift */,
 				F1C267BA28413B500014998C /* LargeButton.swift */,
+				F1C267F3284439D30014998C /* CloseButton.swift */,
 			);
 			path = Buttons;
 			sourceTree = "<group>";
@@ -1812,6 +1818,7 @@
 				F12A14E427D692DB0096543E /* RegisterViewController.swift in Sources */,
 				B08F392C27AE7112008B344F /* ApiInterceptor.swift in Sources */,
 				F1B5FCCF27C6F7E80018729B /* RegisterPhoneViewModel.swift in Sources */,
+				F1C267F628443AA70014998C /* ContactAvatarView.swift in Sources */,
 				F1C267D628413B500014998C /* ImagePickerView.swift in Sources */,
 				F12A14DE27D677420096543E /* RegisterContactsViewModel.swift in Sources */,
 				B08F390D27AE7110008B344F /* InfoBarView.swift in Sources */,
@@ -1888,6 +1895,7 @@
 				B08F397227AE7112008B344F /* Formatters.swift in Sources */,
 				F1886201280824D600659786 /* CoinValueViewController.swift in Sources */,
 				B0F206F127AE94C400A44E72 /* InitialScreenManager.swift in Sources */,
+				F1C267F4284439D30014998C /* CloseButton.swift in Sources */,
 				F12A14E027D6774C0096543E /* RegisterContactsView.swift in Sources */,
 				F188626128129ED600659786 /* OfferTriggersView.swift in Sources */,
 				F1BFA958280223BD00F4E745 /* UserProfileViewModel+Options.swift in Sources */,

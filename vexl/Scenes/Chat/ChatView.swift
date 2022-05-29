@@ -45,11 +45,10 @@ struct ChatView: View {
             Text(L.chatMainTitle())
                 .textStyle(.h1)
                 .foregroundColor(.white)
-
-            Spacer()
+                .frame(maxWidth: .infinity, alignment: .leading)
 
             Button {
-                viewModel.route.send(.requestTapped)
+                viewModel.action.send(.requestTap)
             } label: {
                 Image(R.image.chat.request.name)
                     .frame(size: Appearance.GridGuide.iconSize)
