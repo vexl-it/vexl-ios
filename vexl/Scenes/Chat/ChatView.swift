@@ -46,7 +46,7 @@ struct ChatView: View {
             Spacer()
 
             Button {
-                viewModel.route.send(.requestTapped)
+                viewModel.action.send(.requestTap)
             } label: {
                 Image(R.image.chat.request.name)
                     .frame(size: Appearance.GridGuide.iconSize)
