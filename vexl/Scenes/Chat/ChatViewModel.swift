@@ -14,7 +14,6 @@ final class ChatViewModel: ViewModelType, ObservableObject {
 
     enum UserAction: Equatable {
         case selectFilter(option: ChatFilterOption)
-        case requestTapped
         case continueTap
         case requestTap
     }
@@ -56,12 +55,6 @@ final class ChatViewModel: ViewModelType, ObservableObject {
 
         action
             .filter { $0 == .requestTap }
-            .map { _ -> Route in .requestTapped }
-            .subscribe(route)
-            .store(in: cancelBag)
-
-        action
-            .filter { $0 == .requestTapped }
             .map { _ -> Route in .requestTapped }
             .subscribe(route)
             .store(in: cancelBag)
