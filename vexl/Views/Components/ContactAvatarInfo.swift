@@ -14,6 +14,7 @@ struct ContactAvatarInfo: View {
         case large
     }
 
+    let avatar: UIImage?
     let isAvatarWithOpacity: Bool
     let title: String
     let subtitle: String
@@ -34,20 +35,20 @@ struct ContactAvatarInfo: View {
     init(isAvatarWithOpacity: Bool,
          title: String,
          subtitle: String,
+         avatar: UIImage? = nil,
          style: Style = .regular) {
         self.isAvatarWithOpacity = isAvatarWithOpacity
         self.title = title
         self.subtitle = subtitle
         self.style = style
+        self.avatar = avatar
     }
 
     var body: some View {
         HStack {
             ZStack {
-                Image(R.image.marketplace.defaultAvatar.name)
-                    .resizable()
-                    .frame(size: avatarSize)
-                    .cornerRadius(Appearance.GridGuide.buttonCorner)
+                ContactAvatarView(image: avatar,
+                                  size: avatarSize)
 
                 if isAvatarWithOpacity {
                     Appearance.Colors.gray1

@@ -35,10 +35,8 @@ struct ChatRequestFriendsView: View {
 
     @ViewBuilder private func friendItem(_ data: ViewData) -> some View {
         HStack(spacing: Appearance.GridGuide.tinyPadding) {
-            Image(R.image.marketplace.defaultAvatar.name)
-                .resizable()
-                .frame(size: Appearance.GridGuide.iconSize)
-                .cornerRadius(Appearance.GridGuide.buttonCorner)
+            ContactAvatarView(image: data.image,
+                              size: Appearance.GridGuide.iconSize)
 
             Text(data.name)
                 .foregroundColor(Appearance.Colors.primaryText)
