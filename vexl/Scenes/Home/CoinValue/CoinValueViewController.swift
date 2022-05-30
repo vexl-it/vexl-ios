@@ -7,7 +7,21 @@
 
 import Foundation
 import UIKit
+import SwiftUI
 import Cleevio
+
+final class ChildTabBarViewController: UIViewController, HomeTabBarItemType {
+    let homeTabBarItem: HomeTabBarItem
+
+    init(homeBarItem: HomeTabBarItem) {
+        self.homeTabBarItem = homeBarItem
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
 
 final class CoinValueViewController: UIViewController, HomeTabBarItemType {
 

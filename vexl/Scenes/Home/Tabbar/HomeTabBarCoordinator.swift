@@ -13,19 +13,18 @@ final class HomeTabBarCoordinator: BaseCoordinator<Void> {
 
     @Inject var authenticationManager: AuthenticationManagerType
 
-    private let tabBarController: HomeTabBarController
+    private let tabBarController: TabBarController
     private let window: UIWindow
     private let tabs: [HomeTab] = [.marketplace, .chat, .profile]
 
     init(window: UIWindow) {
         let viewModel = HomeTabBarViewModel()
-        self.tabBarController = HomeTabBarController(viewModel: viewModel)
+        self.tabBarController = TabBarController(viewModel: viewModel)
         self.window = window
     }
 
     override func start() -> CoordinatingResult<Void> {
-
-        Publishers.MergeMany(configure(tabBar: tabBarController, tabs: tabs))
+        Publishers.MergeMany(configure(tabs: tabs))
             .sink(receiveValue: { _ in })
             .store(in: cancelBag)
 
@@ -51,29 +50,52 @@ final class HomeTabBarCoordinator: BaseCoordinator<Void> {
             .eraseToAnyPublisher()
     }
 
-    private func configure(tabBar: HomeTabBarController, tabs: [HomeTab]) -> [CoordinatingResult<Void>] {
+    private func configure(tabs: [HomeTab]) -> [CoordinatingResult<Void>] {
         let viewControllers = tabs.map { tab in
-            CoinValueViewController(viewModel: CoinValueViewModel(startsLoading: true),
-                                    homeBarItem: tab.tabBarItem)
+            ChildTabBarViewController(homeBarItem: tab.tabBarItem)
+//            CoinValueViewController(viewModel: CoinValueViewModel(startsLoading: true),
+//                                    homeBarItem: tab.tabBarItem)
         }
+        let navigationControllers = tabs.map { _ in UINavigationController() }
 
-        tabBarController.setViewControllers(viewControllers, animated: false)
+        tabBarController.setViewControllers(navigationControllers, animated: false)
 
-        return zip(viewControllers, tabs)
-            .map { viewController, tab in
+        return zip(navigationControllers, tabs)
+            .map { navigationController, tab in
                 switch tab {
                 case .marketplace:
-                    let router = CoinValueRouter(homeViewController: viewController)
-                    return coordinate(to: MarketplaceCoordinator(router: router,
-                                                                 animated: false))
+                    let router = NavigationRouter(navigationController: navigationController)
+                    return coordinate(
+                        to: HomeCoordinator(
+                            router: router,
+                            animated: true
+                        )
+                    )
+//                    let router = CoinValueRouter(homeViewController: viewController)
+//                    return coordinate(to: MarketplaceCoordinator(router: router,
+//                                                                 animated: false))
                 case .chat:
-                    let router = CoinValueRouter(homeViewController: viewController)
-                    return coordinate(to: ChatCoordinator(router: router,
-                                                          animated: false))
+                    let router = NavigationRouter(navigationController: navigationController)
+                    return coordinate(
+                        to: HomeCoordinator(
+                            router: router,
+                            animated: true
+                        )
+                    )
+//                    let router = CoinValueRouter(homeViewController: viewController)
+//                    return coordinate(to: ChatCoordinator(router: router,
+//                                                          animated: false))
                 case .profile:
-                    let router = CoinValueRouter(homeViewController: viewController)
-                    return coordinate(to: UserProfileCoordinator(router: router,
-                                                                 animated: false))
+                    let router = NavigationRouter(navigationController: navigationController)
+                    return coordinate(
+                        to: HomeCoordinator(
+                            router: router,
+                            animated: true
+                        )
+                    )
+//                    let router = CoinValueRouter(homeViewController: viewController)
+//                    return coordinate(to: UserProfileCoordinator(router: router,
+//                                                                 animated: false))
                 }
             }
     }

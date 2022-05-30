@@ -1,5 +1,5 @@
 //
-//  HomeTabbarViewController.swift
+//  TabBarController.swift
 //  vexl
 //
 //  Created by Diego Espinoza on 6/05/22.
@@ -25,7 +25,7 @@ enum HomeTab {
     }
 }
 
-final class HomeTabBarController: UITabBarController {
+final class TabBarController: UITabBarController {
 
     private lazy var homeTabBarView: HomeTabBarView = {
         let tabBar = HomeTabBarView()
@@ -56,17 +56,17 @@ final class HomeTabBarController: UITabBarController {
     }
 
     override func setViewControllers(_ viewControllers: [UIViewController]?, animated: Bool) {
-        guard let viewControllers = viewControllers else {
-            super.setViewControllers(viewControllers, animated: animated)
-            return
-        }
-
-        let homeViewControllers = viewControllers
-            .compactMap { $0 as? HomeTabBarItemType & UIViewController }
-
-        super.setViewControllers(homeViewControllers, animated: animated)
-        homeTabBarView.add(tabs: homeViewControllers)
-        _storedViewController = []
+//        guard let viewControllers = viewControllers else {
+//            super.setViewControllers(viewControllers, animated: animated)
+//            return
+//        }
+//
+//        let homeViewControllers = viewControllers
+//            .compactMap { $0 as? HomeTabBarItemType & UIViewController }
+//
+        super.setViewControllers(viewControllers, animated: animated)
+//        homeTabBarView.add(tabs: homeViewControllers)
+//        _storedViewController = []
     }
 
     private func arrangeSubviews() {

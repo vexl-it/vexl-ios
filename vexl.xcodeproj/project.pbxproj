@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		0AA456AF4C162D9C8AF6AB30 /* Pods_vexl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57B3CAA27CF4369A28B748A7 /* Pods_vexl.framework */; };
+		4F700CB3284120C70085139F /* HomeCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F700CB2284120C70085139F /* HomeCoordinator.swift */; };
+		4F700CB5284120D00085139F /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F700CB4284120D00085139F /* HomeViewModel.swift */; };
+		4F700CB7284120D60085139F /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F700CB6284120D60085139F /* HomeView.swift */; };
+		4F700CBA2844B08B0085139F /* BitcoinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F700CB92844B08B0085139F /* BitcoinView.swift */; };
 		4FBF61DE283BD11C00DDBE71 /* FilterCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FBF61DD283BD11C00DDBE71 /* FilterCoordinator.swift */; };
 		4FBF61E0283BD12700DDBE71 /* FilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FBF61DF283BD12700DDBE71 /* FilterView.swift */; };
 		4FBF61E2283BD12D00DDBE71 /* FilterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FBF61E1283BD12D00DDBE71 /* FilterViewModel.swift */; };
@@ -216,7 +220,7 @@
 		F1C6D0A027BDECB0009BD506 /* WelcomeView+LogoImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1C6D09F27BDECB0009BD506 /* WelcomeView+LogoImageView.swift */; };
 		F1C6D0A227BE9157009BD506 /* LinkTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1C6D0A127BE9157009BD506 /* LinkTextView.swift */; };
 		F1CFF3B827F6015B007D9FE1 /* UserSecurity.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1CFF3B727F6015B007D9FE1 /* UserSecurity.swift */; };
-		F1D200A628252C44006DF4AB /* HomeTabbarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D200A528252C44006DF4AB /* HomeTabbarViewController.swift */; };
+		F1D200A628252C44006DF4AB /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D200A528252C44006DF4AB /* TabBarController.swift */; };
 		F1D2011A28292868006DF4AB /* HomeTabBarCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D2011928292868006DF4AB /* HomeTabBarCoordinator.swift */; };
 		F1D2011D282960B9006DF4AB /* HomeTabBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D2011C282960B9006DF4AB /* HomeTabBarItem.swift */; };
 		F1D2011F282960DC006DF4AB /* HomeTabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D2011E282960DC006DF4AB /* HomeTabBarView.swift */; };
@@ -248,6 +252,10 @@
 		1627349009CA3CC8460BA3C3 /* Pods-vexl-vexlTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-vexl-vexlTests.debug.xcconfig"; path = "Target Support Files/Pods-vexl-vexlTests/Pods-vexl-vexlTests.debug.xcconfig"; sourceTree = "<group>"; };
 		2037AA1BF15F43490962C3E2 /* Pods-vexl-vexlTests.appstore.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-vexl-vexlTests.appstore.xcconfig"; path = "Target Support Files/Pods-vexl-vexlTests/Pods-vexl-vexlTests.appstore.xcconfig"; sourceTree = "<group>"; };
 		41AF8987CFFD44F9E45C3897 /* Pods-vexl-vexlTests.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-vexl-vexlTests.staging.xcconfig"; path = "Target Support Files/Pods-vexl-vexlTests/Pods-vexl-vexlTests.staging.xcconfig"; sourceTree = "<group>"; };
+		4F700CB2284120C70085139F /* HomeCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCoordinator.swift; sourceTree = "<group>"; };
+		4F700CB4284120D00085139F /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
+		4F700CB6284120D60085139F /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		4F700CB92844B08B0085139F /* BitcoinView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BitcoinView.swift; sourceTree = "<group>"; };
 		4FBF61DD283BD11C00DDBE71 /* FilterCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterCoordinator.swift; sourceTree = "<group>"; };
 		4FBF61DF283BD12700DDBE71 /* FilterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterView.swift; sourceTree = "<group>"; };
 		4FBF61E1283BD12D00DDBE71 /* FilterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterViewModel.swift; sourceTree = "<group>"; };
@@ -472,7 +480,7 @@
 		F1C6D09F27BDECB0009BD506 /* WelcomeView+LogoImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WelcomeView+LogoImageView.swift"; sourceTree = "<group>"; };
 		F1C6D0A127BE9157009BD506 /* LinkTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkTextView.swift; sourceTree = "<group>"; };
 		F1CFF3B727F6015B007D9FE1 /* UserSecurity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSecurity.swift; sourceTree = "<group>"; };
-		F1D200A528252C44006DF4AB /* HomeTabbarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTabbarViewController.swift; sourceTree = "<group>"; };
+		F1D200A528252C44006DF4AB /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		F1D2011928292868006DF4AB /* HomeTabBarCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTabBarCoordinator.swift; sourceTree = "<group>"; };
 		F1D2011C282960B9006DF4AB /* HomeTabBarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTabBarItem.swift; sourceTree = "<group>"; };
 		F1D2011E282960DC006DF4AB /* HomeTabBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTabBarView.swift; sourceTree = "<group>"; };
@@ -527,6 +535,25 @@
 				2037AA1BF15F43490962C3E2 /* Pods-vexl-vexlTests.appstore.xcconfig */,
 			);
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		4F700CB12841208F0085139F /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				4F700CB82844B0750085139F /* BitcoinView */,
+				4F700CB2284120C70085139F /* HomeCoordinator.swift */,
+				4F700CB4284120D00085139F /* HomeViewModel.swift */,
+				4F700CB6284120D60085139F /* HomeView.swift */,
+			);
+			path = Main;
+			sourceTree = "<group>";
+		};
+		4F700CB82844B0750085139F /* BitcoinView */ = {
+			isa = PBXGroup;
+			children = (
+				4F700CB92844B08B0085139F /* BitcoinView.swift */,
+			);
+			path = BitcoinView;
 			sourceTree = "<group>";
 		};
 		4FBF61DC283BCE3500DDBE71 /* Filters */ = {
@@ -778,6 +805,7 @@
 		B08F38FB27AE7110008B344F /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
+				4F700CB12841208F0085139F /* Main */,
 				4FBF61DC283BCE3500DDBE71 /* Filters */,
 				F1D2012028296EF7006DF4AB /* Chat */,
 				F188626628169A3700659786 /* Marketplace */,
@@ -1373,7 +1401,7 @@
 			isa = PBXGroup;
 			children = (
 				F1D2011B28296099006DF4AB /* Components */,
-				F1D200A528252C44006DF4AB /* HomeTabbarViewController.swift */,
+				F1D200A528252C44006DF4AB /* TabBarController.swift */,
 				F1D2011928292868006DF4AB /* HomeTabBarCoordinator.swift */,
 				F1D20129282ABB1F006DF4AB /* HomeTabBarViewModel.swift */,
 			);
@@ -1750,6 +1778,7 @@
 				F1886257281193CA00659786 /* OfferLocationPickerView.swift in Sources */,
 				B08F394B27AE7112008B344F /* ServerError.swift in Sources */,
 				F14D29C927BFEA1400D1CD85 /* OnboardingView+Presentation.swift in Sources */,
+				4F700CB5284120D00085139F /* HomeViewModel.swift in Sources */,
 				F1A9454427F81211009B5AE3 /* ContactsAvailable.swift in Sources */,
 				B0EEE11A27B14D3D0097031E /* WelcomeView.swift in Sources */,
 				F1C13751283D530B00F109C4 /* CoinValueMiniGraphView.swift in Sources */,
@@ -1799,6 +1828,7 @@
 				B08F391C27AE7112008B344F /* BaseService.swift in Sources */,
 				F1C6D09E27BDDD4C009BD506 /* TextStyle.swift in Sources */,
 				4FBF6209283CD5C000DDBE71 /* OfferAdvancedFilterFriendSourceView.swift in Sources */,
+				4F700CB3284120C70085139F /* HomeCoordinator.swift in Sources */,
 				F188627528169A3700659786 /* MarketplaceSegmentView.swift in Sources */,
 				F1D2012E283401D7006DF4AB /* OfferSortView.swift in Sources */,
 				B08F393627AE7112008B344F /* UIDevice+.swift in Sources */,
@@ -1816,7 +1846,7 @@
 				F188627028169A3700659786 /* MarketplaceCoordinator.swift in Sources */,
 				B08F391927AE7112008B344F /* User.swift in Sources */,
 				F1F5F18F283D69E800968366 /* PhoneNumberTextFieldView.swift in Sources */,
-				F1D200A628252C44006DF4AB /* HomeTabbarViewController.swift in Sources */,
+				F1D200A628252C44006DF4AB /* TabBarController.swift in Sources */,
 				F1886218281005BD00659786 /* CoinValueHeaderView.swift in Sources */,
 				F175AB9927F0D2D8000DAB15 /* ContactsService.swift in Sources */,
 				B08F399C27AE7D8D008B344F /* OnboardingViewModel.swift in Sources */,
@@ -1887,6 +1917,7 @@
 				F1A9454227F81200009B5AE3 /* ContactsImported.swift in Sources */,
 				B0FE5249280E93D200A77EC3 /* ECCKeys.swift in Sources */,
 				B08F394127AE7112008B344F /* Shortcuts.swift in Sources */,
+				4F700CB7284120D60085139F /* HomeView.swift in Sources */,
 				F18862592811CCAA00659786 /* DottedButton.swift in Sources */,
 				4FD8E3DE2821B303003B165E /* CoinValueViewModel.swift in Sources */,
 				F1B5FCD827C7040C0018729B /* RoundedCorners.swift in Sources */,
@@ -1903,6 +1934,7 @@
 				F1886211280EC49B00659786 /* Image+Base64.swift in Sources */,
 				F188622128105A1200659786 /* UserOffersViewModel.swift in Sources */,
 				F1D2012228296F0F006DF4AB /* ChatCoordinator.swift in Sources */,
+				4F700CBA2844B08B0085139F /* BitcoinView.swift in Sources */,
 				B08F394327AE7112008B344F /* Keychain+.swift in Sources */,
 				F13B2677281F43A10011F2FB /* Offer.swift in Sources */,
 				F188625B2811D84000659786 /* SegmentedPickerView.swift in Sources */,
