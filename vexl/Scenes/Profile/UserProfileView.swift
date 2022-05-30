@@ -14,28 +14,37 @@ struct UserProfileView: View {
     @ObservedObject var viewModel: UserProfileViewModel
 
     var body: some View {
+        VStack(spacing: .zero) {
+            BitcoinView(viewModel: viewModel.bitcoinViewModel)
+
+            content
+        }
+        .background(Color.black.edgesIgnoringSafeArea(.all))
+        .navigationBarHidden(true)
+    }
+
+    private var content: some View {
         VStack {
-            HStack(spacing: Appearance.GridGuide.padding) {
-                avatarImage
-
-                Text(viewModel.username)
-                    .textStyle(.h1)
-                    .foregroundColor(.white)
-
-                Spacer()
-            }
-            .padding(.horizontal, Appearance.GridGuide.padding)
-            .padding(.vertical, Appearance.GridGuide.mediumPadding2)
+            header
 
             HLine(color: Color.white, height: 3)
                 .padding(.horizontal, Appearance.GridGuide.point)
 
             profileItems
         }
-        .navigationBarHidden(true)
-        .background(Color.black)
-        .cornerRadius(Appearance.GridGuide.padding,
-                      corners: [.topLeft, .topRight])
+    }
+
+    private var header: some View {
+        HStack(spacing: Appearance.GridGuide.padding) {
+            avatarImage
+
+            Text(viewModel.username)
+                .textStyle(.h1)
+                .foregroundColor(.white)
+                .frame(maxWidth: .infinity, alignment: .leading)
+        }
+        .padding(.horizontal, Appearance.GridGuide.padding)
+        .padding(.vertical, Appearance.GridGuide.mediumPadding2)
     }
 
     private var avatarImage: some View {

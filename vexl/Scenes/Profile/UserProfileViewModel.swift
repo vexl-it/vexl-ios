@@ -10,7 +10,7 @@ import Cleevio
 import SwiftUI
 import Combine
 
-final class UserProfileViewModel: ViewModelType, HasBitcoinViewModel, ObservableObject {
+final class UserProfileViewModel: ViewModelType, ObservableObject {
 
     @Inject var authenticationManager: AuthenticationManagerType
     @Inject var userService: UserServiceType

@@ -48,14 +48,3 @@ final class BitcoinViewModel: ViewModelType, ObservableObject {
     private func setupDataBindings() {
     }
 }
-
-extension BitcoinViewModel: HasBitcoinViewModel {
-    /// This protocol conformance is only for us to use it in the Previews easily
-    ///
-    /// BitcoinContainerView(
-    ///     hasBitcoinViewModel: BitcoinViewModel(),
-    ///     content: UserProfileView(viewModel: .init())
-    /// )
-    ///
-    var bitcoinViewModel: BitcoinViewModel { self }
-}

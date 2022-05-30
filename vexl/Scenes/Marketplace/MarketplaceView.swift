@@ -15,36 +15,13 @@ struct MarketplaceView: View {
     @State private var stickHeaderIsVisible = false
 
     var body: some View {
-        ZStack(alignment: .top) {
-            OffsetScrollView(
-                showsIndicators: false,
-                offsetChanged: offsetChanged(to:),
-                content: { scrollableContent }
-            )
-            .padding(.top, 1) // to make scroll view clipped content
-
-            if stickHeaderIsVisible {
-                marketPlaceHeader
-                    .background(Color.black)
-            }
-        }
+        StickyBitcoinView(
+            bitcoinViewModel: viewModel.bitcoinViewModel,
+            content: { marketPlaceContent },
+            stickyHeader: { marketPlaceHeader }
+        )
         .background(Color.black.edgesIgnoringSafeArea(.all))
         .navigationBarHidden(true)
-    }
-
-    private var scrollableContent: some View {
-        VStack(spacing: .zero) {
-            BitcoinView(viewModel: viewModel.bitcoinViewModel)
-                .readSize(onChange: { size in
-                    bitcoinSize = size
-                })
-
-            marketPlaceContent
-                .background(Color.black)
-                .cornerRadius(Appearance.GridGuide.buttonCorner,
-                              corners: [.topLeft, .topRight])
-        }
-        .padding(.bottom, Appearance.GridGuide.homeTabBarHeight)
     }
 
     private var marketPlaceContent: some View {
@@ -93,19 +70,6 @@ struct MarketplaceView: View {
                     viewModel.action.send(.showSellOffer)
                 })
         }
-    }
-
-    private func offsetChanged(to offset: CGPoint) {
-        if offset.y < 0 {
-            let currentOffset = abs(offset.y)
-            stickHeaderIsVisible = currentOffset >= bitcoinSize.height
-        }
-        print(offset.y )
-//        if offset.y < 0 {
-//            isBitcoinVisible = false
-//        } else {
-//            isBitcoinVisible = true
-//        }
     }
 }
 

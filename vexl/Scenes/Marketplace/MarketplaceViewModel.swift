@@ -9,7 +9,7 @@ import Foundation
 import Cleevio
 import Combine
 
-final class MarketplaceViewModel: ViewModelType, HasBitcoinViewModel, ObservableObject {
+final class MarketplaceViewModel: ViewModelType, ObservableObject {
 
     @Inject var offerService: OfferServiceType
     @Inject var userSecurity: UserSecurityType
@@ -145,9 +145,9 @@ final class MarketplaceViewModel: ViewModelType, HasBitcoinViewModel, Observable
                 let offerKeys = owner.userOfferKeys?.keys ?? []
 
                 for offer in offers {
-                    guard !offerKeys.contains(where: { $0.publicKey == offer.offerPublicKey }) else {
-                        continue
-                    }
+//                    guard !offerKeys.contains(where: { $0.publicKey == offer.offerPublicKey }) else {
+//                        continue
+//                    }
 
                     let marketplaceItem = OfferFeed.mapToOfferFeed(usingOffer: offer)
                     switch offer.type {
