@@ -42,6 +42,7 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
         case showFiltersTapped(OfferFilter)
         case showSellOfferTapped
         case showBuyOfferTapped
+        case showRequestOffer(Offer)
     }
 
     var route: CoordinatingSubject<Route> = .init()
@@ -206,10 +207,11 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
                 return nil
             }
             .withUnretained(self)
-            .sink { owner, id in
-                print("\(owner) will present the detail of the offer")
-                print("id selected: \(id)")
+            .compactMap { owner, id in
+                owner.offerItems.first(where: { $0.offerId == id })
             }
+            .map { offer in Route.showRequestOffer(offer) }
+            .subscribe(route)
             .store(in: cancelBag)
 
         userAction

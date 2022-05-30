@@ -22,7 +22,6 @@ enum OfferType: String {
 }
 
 struct Offer {
-
     var offerId: String = ""
     var offerPublicKey: String = ""
     var userPublicKey: String = ""
@@ -220,4 +219,25 @@ struct Offer {
 
         return btcNetworkList
     }
+}
+
+extension Offer: Equatable {
+    static func == (lhs: Offer, rhs: Offer) -> Bool {
+        lhs.offerId == rhs.offerId
+    }
+}
+
+extension Offer {
+    static var stub: Offer = Offer(
+        minAmount: 100,
+        maxAmount: 300,
+        description: "Offer stub",
+        feeState: .withoutFee,
+        feeAmount: 0,
+        locationState: .online,
+        paymentMethods: [.bank],
+        btcNetwork: [.lightning],
+        friendLevel: .firstDegree,
+        type: .buy
+    )
 }

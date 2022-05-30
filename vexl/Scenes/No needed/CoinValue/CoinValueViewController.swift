@@ -61,7 +61,7 @@ final class CoinValueViewController: UIViewController, TabItemType {
         self.bottomViewController = bottomViewController
         addChild(bottomViewController)
         let childView = bottomViewController.view!
-        childView.backgroundColor = .black
+        childView.backgroundColor = .clear
         childView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(childView)
 
@@ -69,7 +69,7 @@ final class CoinValueViewController: UIViewController, TabItemType {
             childView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             childView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             childView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            childView.topAnchor.constraint(equalTo: headerView.bottomAnchor)
+            childView.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: -Appearance.GridGuide.buttonCorner)
         ])
 
         bottomViewController.didMove(toParent: self)

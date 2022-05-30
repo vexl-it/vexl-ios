@@ -56,7 +56,6 @@ extension MarketplacePaymentIconView {
         case triple(String, String, String)
 
         init(icons: [String]) {
-            print(icons)
             switch icons.count {
             case 1:
                 self = .single(icons[0])

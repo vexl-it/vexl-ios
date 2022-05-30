@@ -28,15 +28,15 @@ final class UserOffersViewModel: ViewModelType, ObservableObject {
     @Published var offerSortingOption: OfferSortOption = .newest
 
     @Published var primaryActivity: Activity = .init()
+    @Published var isLoading = false
+    @Published var error: Error?
+
     var errorIndicator: ErrorIndicator {
         primaryActivity.error
     }
     var activityIndicator: ActivityIndicator {
         primaryActivity.indicator
     }
-
-    @Published var isLoading = false
-    @Published var error: Error?
 
     // MARK: - Coordinator Bindings
 
@@ -78,13 +78,13 @@ final class UserOffersViewModel: ViewModelType, ObservableObject {
     init(offerType: OfferType) {
         self.offerType = offerType
         self.userOfferKeys = UserDefaults.standard.codable(forKey: .storedOfferKeys)
-        setupActivity()
+        setupActivityBindings()
         setupBindings()
         setupDataBindings()
         setupActionBindings()
     }
 
-    private func setupActivity() {
+    private func setupActivityBindings() {
         activityIndicator
             .loading
             .assign(to: &$isLoading)
