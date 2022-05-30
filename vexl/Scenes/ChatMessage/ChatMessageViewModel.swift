@@ -15,6 +15,7 @@ final class ChatMessageViewModel: ViewModelType, ObservableObject {
     enum UserAction: Equatable {
         case dismissTap
         case continueTap
+        case chatActionTap(action: ChatMessageView.ChatAction)
     }
 
     let action: ActionSubject<UserAction> = .init()
@@ -46,4 +47,16 @@ final class ChatMessageViewModel: ViewModelType, ObservableObject {
         "Keichi"
     }
     private let cancelBag: CancelBag = .init()
+
+    init() {
+        setupActionBindings()
+    }
+
+    private func setupActionBindings() {
+        action
+            .filter { $0 == .dismissTap }
+            .map { _ -> Route in .dismissTapped }
+            .subscribe(route)
+            .store(in: cancelBag)
+    }
 }

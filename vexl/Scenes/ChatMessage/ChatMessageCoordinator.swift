@@ -31,7 +31,12 @@ final class ChatMessageCoordinator: BaseCoordinator<RouterResult<Void>> {
             router.present(viewController, animated: true)
         }
 
-        return Empty(completeImmediately: false)
+        let dismiss = viewModel
+            .route
+            .filter { $0 == .dismissTapped }
+            .map { _ -> RouterResult<Void> in .dismiss }
+
+        return dismiss
             .eraseToAnyPublisher()
     }
 }
