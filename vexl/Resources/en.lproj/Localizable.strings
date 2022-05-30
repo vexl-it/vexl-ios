@@ -66,6 +66,7 @@
 "user.profile.request.data" = "Request known data";
 "user.profile.logout" = "Log out";
 "marketplace.currency.bitcoin" = "Bitcoin";
+"marketplace.currency.variation" = "%@ today";
 "marketplace.currency.1day" = "1 day";
 "marketplace.currency.1week" = "1 week";
 "marketplace.currency.1month" = "1 mth";

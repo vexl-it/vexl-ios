@@ -42,12 +42,12 @@ struct BitcoinView: View {
     private var expandedInfo: some View {
         VStack {
             Group {
-                Text("Bitcoin")
+                Text(L.marketplaceCurrencyBitcoin())
                     .foregroundColor(Appearance.Colors.whiteText)
 
                 HStack {
                     Image(systemName: "triangle.fill")
-                    Text("2.5% today")
+                    Text(L.marketplaceCurrencyVariation("2.5%"))
                 }
                 .foregroundColor(Appearance.Colors.yellow100)
             }
@@ -57,7 +57,7 @@ struct BitcoinView: View {
     }
 
     private var price: some View {
-        Text("31 241 czk")
+        Text(viewModel.bitcoinWithCurrency)
             .textStyle(.h2)
             .foregroundColor(Appearance.Colors.yellow60)
             .minimumScaleFactor(0.5)

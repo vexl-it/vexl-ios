@@ -20,7 +20,7 @@ final class BitcoinViewModel: ViewModelType, ObservableObject {
 
     // MARK: - View Bindings
 
-    @Published var bitcoinValue: Decimal?
+    @Published private var bitcoinValue: Decimal?
 
     var errorIndicator: ErrorIndicator {
         primaryActivity.error
@@ -29,6 +29,8 @@ final class BitcoinViewModel: ViewModelType, ObservableObject {
     var activityIndicator: ActivityIndicator {
         primaryActivity.indicator
     }
+
+    var bitcoinWithCurrency: String { "31 241 czk" }
 
     // MARK: - Coordinator Bindings
 
