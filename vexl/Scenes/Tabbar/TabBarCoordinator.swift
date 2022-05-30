@@ -1,5 +1,5 @@
 //
-//  HomeTabBarCoordinator.swift
+//  TabBarCoordinator.swift
 //  vexl
 //
 //  Created by Diego Espinoza on 9/05/22.
@@ -9,7 +9,7 @@ import UIKit
 import Cleevio
 import Combine
 
-final class HomeTabBarCoordinator: BaseCoordinator<Void> {
+final class TabBarCoordinator: BaseCoordinator<Void> {
 
     @Inject var authenticationManager: AuthenticationManagerType
 
@@ -18,7 +18,7 @@ final class HomeTabBarCoordinator: BaseCoordinator<Void> {
     private let tabs: [HomeTab] = [.marketplace, .chat, .profile]
 
     init(window: UIWindow) {
-        let viewModel = HomeTabBarViewModel()
+        let viewModel = TabBarViewModel()
         self.tabBarController = TabBarController(viewModel: viewModel)
         self.window = window
     }
@@ -51,13 +51,7 @@ final class HomeTabBarCoordinator: BaseCoordinator<Void> {
     }
 
     private func configure(tabs: [HomeTab]) -> [CoordinatingResult<Void>] {
-        let viewControllers = tabs.map { tab in
-            ChildTabBarViewController(homeBarItem: tab.tabBarItem)
-//            CoinValueViewController(viewModel: CoinValueViewModel(startsLoading: true),
-//                                    homeBarItem: tab.tabBarItem)
-        }
-        let navigationControllers = tabs.map { _ in UINavigationController() }
-
+        let navigationControllers = tabs.map { tab in TabBarNavigationController(homeBarItem: tab.tabBarItem) }
         tabBarController.setViewControllers(navigationControllers, animated: false)
 
         return zip(navigationControllers, tabs)
@@ -71,31 +65,22 @@ final class HomeTabBarCoordinator: BaseCoordinator<Void> {
                             animated: true
                         )
                     )
-//                    let router = CoinValueRouter(homeViewController: viewController)
-//                    return coordinate(to: MarketplaceCoordinator(router: router,
-//                                                                 animated: false))
                 case .chat:
                     let router = NavigationRouter(navigationController: navigationController)
                     return coordinate(
-                        to: HomeCoordinator(
+                        to: ChatCoordinator(
                             router: router,
                             animated: true
                         )
                     )
-//                    let router = CoinValueRouter(homeViewController: viewController)
-//                    return coordinate(to: ChatCoordinator(router: router,
-//                                                          animated: false))
                 case .profile:
                     let router = NavigationRouter(navigationController: navigationController)
                     return coordinate(
-                        to: HomeCoordinator(
+                        to: UserProfileCoordinator(
                             router: router,
                             animated: true
                         )
                     )
-//                    let router = CoinValueRouter(homeViewController: viewController)
-//                    return coordinate(to: UserProfileCoordinator(router: router,
-//                                                                 animated: false))
                 }
             }
     }

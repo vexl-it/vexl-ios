@@ -1,5 +1,5 @@
 //
-//  HomeTabBarViewModel.swift
+//  TabBarViewModel.swift
 //  vexl
 //
 //  Created by Diego Espinoza on 10/05/22.
@@ -8,7 +8,7 @@
 import Foundation
 import Cleevio
 
-final class HomeTabBarViewModel: ViewModelType {
+final class TabBarViewModel: ViewModelType {
 
     @Inject var cryptocurrencyManager: CryptocurrencyValueManagerType
 

@@ -34,10 +34,10 @@ final class TabBarController: UITabBarController {
     }()
 
     private var _storedViewController: [UIViewController & HomeTabBarItemType] = []
-    private let viewModel: HomeTabBarViewModel
+    private let viewModel: TabBarViewModel
     private let cancelBag: CancelBag = .init()
 
-    init(viewModel: HomeTabBarViewModel) {
+    init(viewModel: TabBarViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
@@ -56,17 +56,17 @@ final class TabBarController: UITabBarController {
     }
 
     override func setViewControllers(_ viewControllers: [UIViewController]?, animated: Bool) {
-//        guard let viewControllers = viewControllers else {
-//            super.setViewControllers(viewControllers, animated: animated)
-//            return
-//        }
-//
-//        let homeViewControllers = viewControllers
-//            .compactMap { $0 as? HomeTabBarItemType & UIViewController }
-//
+        guard let viewControllers = viewControllers else {
+            super.setViewControllers(viewControllers, animated: animated)
+            return
+        }
+
+        let homeViewControllers = viewControllers
+            .compactMap { $0 as? HomeTabBarItemType & UIViewController }
+
         super.setViewControllers(viewControllers, animated: animated)
-//        homeTabBarView.add(tabs: homeViewControllers)
-//        _storedViewController = []
+        homeTabBarView.add(tabs: homeViewControllers)
+        _storedViewController = []
     }
 
     private func arrangeSubviews() {
