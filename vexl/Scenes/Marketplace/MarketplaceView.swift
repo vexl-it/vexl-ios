@@ -15,12 +15,13 @@ struct MarketplaceView: View {
 
     var body: some View {
         content
-            .background(Color.black.edgesIgnoringSafeArea(.bottom))
+            .background(Color.black)
             .cornerRadius(Appearance.GridGuide.buttonCorner,
                           corners: [.topLeft, .topRight])
             .transaction { transaction in
                 transaction.animation = .easeInOut(duration: 0.25)
             }
+            .navigationBarHidden(true)
     }
 
     private var content: some View {
@@ -77,8 +78,12 @@ struct MarketplaceView: View {
 #if DEBUG || DEVEL
 struct BuySellViewPreview: PreviewProvider {
     static var previews: some View {
-        MarketplaceView(viewModel: .init())
-            .previewDevice("iPhone 11")
+        MarketplaceView(
+            viewModel: MarketplaceViewModel(
+                bitcoinViewModel: .init()
+            )
+        )
+        .previewDevice("iPhone 11")
     }
 }
 #endif

@@ -8,11 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		0AA456AF4C162D9C8AF6AB30 /* Pods_vexl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57B3CAA27CF4369A28B748A7 /* Pods_vexl.framework */; };
-		4F700CB3284120C70085139F /* HomeCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F700CB2284120C70085139F /* HomeCoordinator.swift */; };
-		4F700CB5284120D00085139F /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F700CB4284120D00085139F /* HomeViewModel.swift */; };
-		4F700CB7284120D60085139F /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F700CB6284120D60085139F /* HomeView.swift */; };
 		4F700CBA2844B08B0085139F /* BitcoinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F700CB92844B08B0085139F /* BitcoinView.swift */; };
 		4F700CBC2844C3260085139F /* TabBarNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F700CBB2844C3260085139F /* TabBarNavigationController.swift */; };
+		4F700CBE2844C4C20085139F /* BitcoinContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F700CBD2844C4C20085139F /* BitcoinContainerView.swift */; };
+		4F700CC02844C54E0085139F /* BitcoinViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F700CBF2844C54E0085139F /* BitcoinViewModel.swift */; };
 		4FBF61DE283BD11C00DDBE71 /* FilterCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FBF61DD283BD11C00DDBE71 /* FilterCoordinator.swift */; };
 		4FBF61E0283BD12700DDBE71 /* FilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FBF61DF283BD12700DDBE71 /* FilterView.swift */; };
 		4FBF61E2283BD12D00DDBE71 /* FilterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FBF61E1283BD12D00DDBE71 /* FilterViewModel.swift */; };
@@ -253,11 +252,10 @@
 		1627349009CA3CC8460BA3C3 /* Pods-vexl-vexlTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-vexl-vexlTests.debug.xcconfig"; path = "Target Support Files/Pods-vexl-vexlTests/Pods-vexl-vexlTests.debug.xcconfig"; sourceTree = "<group>"; };
 		2037AA1BF15F43490962C3E2 /* Pods-vexl-vexlTests.appstore.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-vexl-vexlTests.appstore.xcconfig"; path = "Target Support Files/Pods-vexl-vexlTests/Pods-vexl-vexlTests.appstore.xcconfig"; sourceTree = "<group>"; };
 		41AF8987CFFD44F9E45C3897 /* Pods-vexl-vexlTests.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-vexl-vexlTests.staging.xcconfig"; path = "Target Support Files/Pods-vexl-vexlTests/Pods-vexl-vexlTests.staging.xcconfig"; sourceTree = "<group>"; };
-		4F700CB2284120C70085139F /* HomeCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCoordinator.swift; sourceTree = "<group>"; };
-		4F700CB4284120D00085139F /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
-		4F700CB6284120D60085139F /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		4F700CB92844B08B0085139F /* BitcoinView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BitcoinView.swift; sourceTree = "<group>"; };
 		4F700CBB2844C3260085139F /* TabBarNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarNavigationController.swift; sourceTree = "<group>"; };
+		4F700CBD2844C4C20085139F /* BitcoinContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BitcoinContainerView.swift; sourceTree = "<group>"; };
+		4F700CBF2844C54E0085139F /* BitcoinViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BitcoinViewModel.swift; sourceTree = "<group>"; };
 		4FBF61DD283BD11C00DDBE71 /* FilterCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterCoordinator.swift; sourceTree = "<group>"; };
 		4FBF61DF283BD12700DDBE71 /* FilterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterView.swift; sourceTree = "<group>"; };
 		4FBF61E1283BD12D00DDBE71 /* FilterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterViewModel.swift; sourceTree = "<group>"; };
@@ -539,20 +537,12 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
-		4F700CB12841208F0085139F /* Home */ = {
-			isa = PBXGroup;
-			children = (
-				4F700CB2284120C70085139F /* HomeCoordinator.swift */,
-				4F700CB4284120D00085139F /* HomeViewModel.swift */,
-				4F700CB6284120D60085139F /* HomeView.swift */,
-			);
-			path = Home;
-			sourceTree = "<group>";
-		};
 		4F700CB82844B0750085139F /* BitcoinView */ = {
 			isa = PBXGroup;
 			children = (
+				4F700CBD2844C4C20085139F /* BitcoinContainerView.swift */,
 				4F700CB92844B08B0085139F /* BitcoinView.swift */,
+				4F700CBF2844C54E0085139F /* BitcoinViewModel.swift */,
 			);
 			path = BitcoinView;
 			sourceTree = "<group>";
@@ -807,7 +797,6 @@
 			isa = PBXGroup;
 			children = (
 				4F700CB82844B0750085139F /* BitcoinView */,
-				4F700CB12841208F0085139F /* Home */,
 				4FBF61DC283BCE3500DDBE71 /* Filters */,
 				F1D2012028296EF7006DF4AB /* Chat */,
 				F188626628169A3700659786 /* Marketplace */,
@@ -1239,8 +1228,8 @@
 			isa = PBXGroup;
 			children = (
 				F188626828169A3700659786 /* Components */,
-				F188627828169A7400659786 /* MarketplaceView.swift */,
 				F188626728169A3700659786 /* MarketplaceCoordinator.swift */,
+				F188627828169A7400659786 /* MarketplaceView.swift */,
 				F188626F28169A3700659786 /* MarketplaceViewModel.swift */,
 			);
 			path = Marketplace;
@@ -1365,10 +1354,10 @@
 			isa = PBXGroup;
 			children = (
 				F1BFA96F2803A59F00F4E745 /* Components */,
+				F1BFA955280223BD00F4E745 /* UserProfileCoordinator.swift */,
 				F1BFA952280223BD00F4E745 /* UserProfileView.swift */,
 				F1BFA953280223BD00F4E745 /* UserProfileViewModel.swift */,
 				F1BFA954280223BD00F4E745 /* UserProfileViewModel+Options.swift */,
-				F1BFA955280223BD00F4E745 /* UserProfileCoordinator.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -1781,7 +1770,6 @@
 				F1886257281193CA00659786 /* OfferLocationPickerView.swift in Sources */,
 				B08F394B27AE7112008B344F /* ServerError.swift in Sources */,
 				F14D29C927BFEA1400D1CD85 /* OnboardingView+Presentation.swift in Sources */,
-				4F700CB5284120D00085139F /* HomeViewModel.swift in Sources */,
 				F1A9454427F81211009B5AE3 /* ContactsAvailable.swift in Sources */,
 				B0EEE11A27B14D3D0097031E /* WelcomeView.swift in Sources */,
 				F1C13751283D530B00F109C4 /* CoinValueMiniGraphView.swift in Sources */,
@@ -1809,6 +1797,7 @@
 				F1886201280824D600659786 /* CoinValueViewController.swift in Sources */,
 				B0F206F127AE94C400A44E72 /* InitialScreenManager.swift in Sources */,
 				F12A14E027D6774C0096543E /* RegisterContactsView.swift in Sources */,
+				4F700CBE2844C4C20085139F /* BitcoinContainerView.swift in Sources */,
 				F188626128129ED600659786 /* OfferTriggersView.swift in Sources */,
 				F1BFA958280223BD00F4E745 /* UserProfileViewModel+Options.swift in Sources */,
 				F13B266028189F580011F2FB /* OffersService.swift in Sources */,
@@ -1832,8 +1821,8 @@
 				B08F391C27AE7112008B344F /* BaseService.swift in Sources */,
 				F1C6D09E27BDDD4C009BD506 /* TextStyle.swift in Sources */,
 				4FBF6209283CD5C000DDBE71 /* OfferAdvancedFilterFriendSourceView.swift in Sources */,
-				4F700CB3284120C70085139F /* HomeCoordinator.swift in Sources */,
 				F188627528169A3700659786 /* MarketplaceSegmentView.swift in Sources */,
+				4F700CC02844C54E0085139F /* BitcoinViewModel.swift in Sources */,
 				F1D2012E283401D7006DF4AB /* OfferSortView.swift in Sources */,
 				B08F393627AE7112008B344F /* UIDevice+.swift in Sources */,
 				F13B266F281D4A510011F2FB /* Paged.swift in Sources */,
@@ -1921,7 +1910,6 @@
 				F1A9454227F81200009B5AE3 /* ContactsImported.swift in Sources */,
 				B0FE5249280E93D200A77EC3 /* ECCKeys.swift in Sources */,
 				B08F394127AE7112008B344F /* Shortcuts.swift in Sources */,
-				4F700CB7284120D60085139F /* HomeView.swift in Sources */,
 				F18862592811CCAA00659786 /* DottedButton.swift in Sources */,
 				4FD8E3DE2821B303003B165E /* CoinValueViewModel.swift in Sources */,
 				F1B5FCD827C7040C0018729B /* RoundedCorners.swift in Sources */,

@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct BitcoinView: View {
+    @ObservedObject var viewModel: BitcoinViewModel
     @State private var isExpanded = false
 
     var body: some View {
@@ -77,7 +78,7 @@ struct BitcoinView: View {
 #if DEBUG
 struct BitcoinViewPreview: PreviewProvider {
     static var previews: some View {
-        BitcoinView()
+        BitcoinView(viewModel: .init())
     }
 }
 #endif

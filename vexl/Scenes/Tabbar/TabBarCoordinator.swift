@@ -60,7 +60,7 @@ final class TabBarCoordinator: BaseCoordinator<Void> {
                 case .marketplace:
                     let router = NavigationRouter(navigationController: navigationController)
                     return coordinate(
-                        to: HomeCoordinator(
+                        to: MarketplaceCoordinator(
                             router: router,
                             animated: true
                         )

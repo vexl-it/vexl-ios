@@ -32,10 +32,10 @@ struct UserProfileView: View {
 
             profileItems
         }
+        .navigationBarHidden(true)
         .background(Color.black)
         .cornerRadius(Appearance.GridGuide.padding,
                       corners: [.topLeft, .topRight])
-        .edgesIgnoringSafeArea(.bottom)
     }
 
     private var avatarImage: some View {
@@ -71,7 +71,11 @@ struct UserProfileView: View {
 
 struct UserProfileViewPreview: PreviewProvider {
     static var previews: some View {
-        UserProfileView(viewModel: .init())
+        UserProfileView(
+            viewModel: UserProfileViewModel(
+                bitcoinViewModel: .init()
+            )
+        )
             .previewDevice("iPhone 11")
     }
 }

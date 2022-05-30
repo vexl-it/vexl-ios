@@ -9,7 +9,7 @@ import Foundation
 import Cleevio
 import Combine
 
-final class MarketplaceViewModel: ViewModelType, ObservableObject {
+final class MarketplaceViewModel: ViewModelType, HasBitcoinViewModel, ObservableObject {
 
     @Inject var offerService: OfferServiceType
     @Inject var userSecurity: UserSecurityType
@@ -85,6 +85,7 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
         }
     }
 
+    let bitcoinViewModel: BitcoinViewModel
     private var buyOfferFilter = OfferFilter(type: .buy)
     private var sellOfferFilter = OfferFilter(type: .sell)
     private var buyFeedItems: [OfferFeed] = []
@@ -92,7 +93,8 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
     private let userOfferKeys: UserOfferKeys?
     private let cancelBag: CancelBag = .init()
 
-    init() {
+    init(bitcoinViewModel: BitcoinViewModel) {
+        self.bitcoinViewModel = bitcoinViewModel
         self.userOfferKeys = UserDefaults.standard.codable(forKey: .storedOfferKeys)
         setupDataBindings()
         setupActionBindings()
