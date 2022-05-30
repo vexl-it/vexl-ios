@@ -47,10 +47,14 @@ struct StickyBitcoinView<Content: View, Header: View>: View {
     }
 
     private func offsetChanged(to offset: CGPoint) {
-        // TODO: improve this logic
         if offset.y < 0 {
             let currentOffset = abs(offset.y)
-            stickHeaderIsVisible = currentOffset >= bitcoinSize.height
+            let headerIsVisible = currentOffset >= bitcoinSize.height
+            if headerIsVisible != stickHeaderIsVisible {
+                stickHeaderIsVisible = headerIsVisible
+            }
+        } else {
+            stickHeaderIsVisible = false
         }
     }
 }
@@ -60,11 +64,17 @@ struct StickyBitcoinViewViewPreview: PreviewProvider {
     static var previews: some View {
         let bvm = BitcoinViewModel()
         return StickyBitcoinView(
-            bitcoinViewModel: bvm) {
-                UserProfileView(viewModel: .init(bitcoinViewModel: bvm))
-            } stickyHeader: {
-                EmptyView()
-            }
+            bitcoinViewModel: bvm,
+            content: {
+                VStack {
+                    Text("Some content")
+                        .frame(maxWidth: .infinity)
+                        .foregroundColor(.white)
+                        .padding()
+                }
+            },
+            stickyHeader: { EmptyView() }
+        )
     }
 }
 #endif
