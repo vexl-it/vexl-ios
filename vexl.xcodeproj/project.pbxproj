@@ -12,6 +12,7 @@
 		4F700CB5284120D00085139F /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F700CB4284120D00085139F /* HomeViewModel.swift */; };
 		4F700CB7284120D60085139F /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F700CB6284120D60085139F /* HomeView.swift */; };
 		4F700CBA2844B08B0085139F /* BitcoinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F700CB92844B08B0085139F /* BitcoinView.swift */; };
+		4F700CBC2844C3260085139F /* TabBarNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F700CBB2844C3260085139F /* TabBarNavigationController.swift */; };
 		4FBF61DE283BD11C00DDBE71 /* FilterCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FBF61DD283BD11C00DDBE71 /* FilterCoordinator.swift */; };
 		4FBF61E0283BD12700DDBE71 /* FilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FBF61DF283BD12700DDBE71 /* FilterView.swift */; };
 		4FBF61E2283BD12D00DDBE71 /* FilterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FBF61E1283BD12D00DDBE71 /* FilterViewModel.swift */; };
@@ -222,8 +223,8 @@
 		F1CFF3B827F6015B007D9FE1 /* UserSecurity.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1CFF3B727F6015B007D9FE1 /* UserSecurity.swift */; };
 		F1D200A628252C44006DF4AB /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D200A528252C44006DF4AB /* TabBarController.swift */; };
 		F1D2011A28292868006DF4AB /* TabBarCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D2011928292868006DF4AB /* TabBarCoordinator.swift */; };
-		F1D2011D282960B9006DF4AB /* HomeTabBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D2011C282960B9006DF4AB /* HomeTabBarItem.swift */; };
-		F1D2011F282960DC006DF4AB /* HomeTabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D2011E282960DC006DF4AB /* HomeTabBarView.swift */; };
+		F1D2011D282960B9006DF4AB /* TabItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D2011C282960B9006DF4AB /* TabItem.swift */; };
+		F1D2011F282960DC006DF4AB /* TabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D2011E282960DC006DF4AB /* TabBarView.swift */; };
 		F1D2012228296F0F006DF4AB /* ChatCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D2012128296F0F006DF4AB /* ChatCoordinator.swift */; };
 		F1D2012428296F19006DF4AB /* ChatViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D2012328296F19006DF4AB /* ChatViewModel.swift */; };
 		F1D2012628296F1F006DF4AB /* ChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D2012528296F1F006DF4AB /* ChatView.swift */; };
@@ -256,6 +257,7 @@
 		4F700CB4284120D00085139F /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		4F700CB6284120D60085139F /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		4F700CB92844B08B0085139F /* BitcoinView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BitcoinView.swift; sourceTree = "<group>"; };
+		4F700CBB2844C3260085139F /* TabBarNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarNavigationController.swift; sourceTree = "<group>"; };
 		4FBF61DD283BD11C00DDBE71 /* FilterCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterCoordinator.swift; sourceTree = "<group>"; };
 		4FBF61DF283BD12700DDBE71 /* FilterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterView.swift; sourceTree = "<group>"; };
 		4FBF61E1283BD12D00DDBE71 /* FilterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterViewModel.swift; sourceTree = "<group>"; };
@@ -482,8 +484,8 @@
 		F1CFF3B727F6015B007D9FE1 /* UserSecurity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSecurity.swift; sourceTree = "<group>"; };
 		F1D200A528252C44006DF4AB /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		F1D2011928292868006DF4AB /* TabBarCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarCoordinator.swift; sourceTree = "<group>"; };
-		F1D2011C282960B9006DF4AB /* HomeTabBarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTabBarItem.swift; sourceTree = "<group>"; };
-		F1D2011E282960DC006DF4AB /* HomeTabBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTabBarView.swift; sourceTree = "<group>"; };
+		F1D2011C282960B9006DF4AB /* TabItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabItem.swift; sourceTree = "<group>"; };
+		F1D2011E282960DC006DF4AB /* TabBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarView.swift; sourceTree = "<group>"; };
 		F1D2012128296F0F006DF4AB /* ChatCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatCoordinator.swift; sourceTree = "<group>"; };
 		F1D2012328296F19006DF4AB /* ChatViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewModel.swift; sourceTree = "<group>"; };
 		F1D2012528296F1F006DF4AB /* ChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatView.swift; sourceTree = "<group>"; };
@@ -537,15 +539,14 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
-		4F700CB12841208F0085139F /* Main */ = {
+		4F700CB12841208F0085139F /* Home */ = {
 			isa = PBXGroup;
 			children = (
-				4F700CB82844B0750085139F /* BitcoinView */,
 				4F700CB2284120C70085139F /* HomeCoordinator.swift */,
 				4F700CB4284120D00085139F /* HomeViewModel.swift */,
 				4F700CB6284120D60085139F /* HomeView.swift */,
 			);
-			path = Main;
+			path = Home;
 			sourceTree = "<group>";
 		};
 		4F700CB82844B0750085139F /* BitcoinView */ = {
@@ -805,13 +806,14 @@
 		B08F38FB27AE7110008B344F /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
-				4F700CB12841208F0085139F /* Main */,
+				4F700CB82844B0750085139F /* BitcoinView */,
+				4F700CB12841208F0085139F /* Home */,
 				4FBF61DC283BCE3500DDBE71 /* Filters */,
 				F1D2012028296EF7006DF4AB /* Chat */,
 				F188626628169A3700659786 /* Marketplace */,
 				F188621D2810587100659786 /* Offer */,
 				F1D200A428251C4E006DF4AB /* Tabbar */,
-				F18861FF280824A500659786 /* Home */,
+				F18861FF280824A500659786 /* No needed */,
 				F1BFA951280223BD00F4E745 /* Profile */,
 				B08F399127AE7CEC008B344F /* SplashScreen */,
 				B08F399827AE7D4B008B344F /* Onboarding */,
@@ -1155,12 +1157,12 @@
 			path = ViewModels;
 			sourceTree = "<group>";
 		};
-		F18861FF280824A500659786 /* Home */ = {
+		F18861FF280824A500659786 /* No needed */ = {
 			isa = PBXGroup;
 			children = (
 				F1886204280835D600659786 /* CoinValue */,
 			);
-			path = Home;
+			path = "No needed";
 			sourceTree = "<group>";
 		};
 		F1886204280835D600659786 /* CoinValue */ = {
@@ -1402,8 +1404,8 @@
 			children = (
 				F1D2011B28296099006DF4AB /* Components */,
 				F1D2011928292868006DF4AB /* TabBarCoordinator.swift */,
-				F1D20129282ABB1F006DF4AB /* TabBarViewModel.swift */,
 				F1D200A528252C44006DF4AB /* TabBarController.swift */,
+				F1D20129282ABB1F006DF4AB /* TabBarViewModel.swift */,
 			);
 			path = Tabbar;
 			sourceTree = "<group>";
@@ -1411,8 +1413,9 @@
 		F1D2011B28296099006DF4AB /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				F1D2011C282960B9006DF4AB /* HomeTabBarItem.swift */,
-				F1D2011E282960DC006DF4AB /* HomeTabBarView.swift */,
+				F1D2011C282960B9006DF4AB /* TabItem.swift */,
+				F1D2011E282960DC006DF4AB /* TabBarView.swift */,
+				4F700CBB2844C3260085139F /* TabBarNavigationController.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -1765,7 +1768,7 @@
 				F151A29427C826AD000D7242 /* RegistrationCounterView.swift in Sources */,
 				B0E9BB2E2815C7260012BF1D /* HMAC.swift in Sources */,
 				4FBF61E2283BD12D00DDBE71 /* FilterViewModel.swift in Sources */,
-				F1D2011D282960B9006DF4AB /* HomeTabBarItem.swift in Sources */,
+				F1D2011D282960B9006DF4AB /* TabItem.swift in Sources */,
 				B0F206EF27AE8F6900A44E72 /* Publisher+.swift in Sources */,
 				F1A9453627F686D1009B5AE3 /* CodeValidation.swift in Sources */,
 				F12A14E827D6A8690096543E /* RequestAccessContactsView.swift in Sources */,
@@ -1797,6 +1800,7 @@
 				F1D2012628296F1F006DF4AB /* ChatView.swift in Sources */,
 				F12A14F727D9768E0096543E /* ImportContactListView.swift in Sources */,
 				B08F38DF27AE7110008B344F /* DIContainer.swift in Sources */,
+				4F700CBC2844C3260085139F /* TabBarNavigationController.swift in Sources */,
 				B08F391E27AE7112008B344F /* AppDelegate.swift in Sources */,
 				B08F394F27AE7112008B344F /* Localization.swift in Sources */,
 				B0E9BB2C2815C71E0012BF1D /* ECC.swift in Sources */,
@@ -1887,7 +1891,7 @@
 				F151A2A227C86CA6000D7242 /* RegistrationCardView.swift in Sources */,
 				F1B5321C28202B36009D4E0C /* OfferItemView.swift in Sources */,
 				F1A9454627F81278009B5AE3 /* ContactInformation.swift in Sources */,
-				F1D2011F282960DC006DF4AB /* HomeTabBarView.swift in Sources */,
+				F1D2011F282960DC006DF4AB /* TabBarView.swift in Sources */,
 				B08F391327AE7112008B344F /* ManagerAssembly.swift in Sources */,
 				F13B266928194A060011F2FB /* OffersRouter.swift in Sources */,
 				F188625F2811E53400659786 /* OfferPaymentMethodView.swift in Sources */,

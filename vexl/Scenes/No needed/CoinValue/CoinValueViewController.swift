@@ -10,36 +10,10 @@ import UIKit
 import SwiftUI
 import Cleevio
 
-final class TabBarNavigationController: UINavigationController, HomeTabBarItemType {
-    let homeTabBarItem: HomeTabBarItem
-
-    init(homeBarItem: HomeTabBarItem) {
-        self.homeTabBarItem = homeBarItem
-        super.init(nibName: nil, bundle: nil)
-    }
-
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-}
-
-//final class ChildTabBarViewController: UIViewController, HomeTabBarItemType {
-//    let homeTabBarItem: HomeTabBarItem
-//
-//    init(homeBarItem: HomeTabBarItem) {
-//        self.homeTabBarItem = homeBarItem
-//        super.init(nibName: nil, bundle: nil)
-//    }
-//
-//    required init?(coder: NSCoder) {
-//        fatalError("init(coder:) has not been implemented")
-//    }
-//}
-
-final class CoinValueViewController: UIViewController, HomeTabBarItemType {
+final class CoinValueViewController: UIViewController, TabItemType {
 
 //    let dismissPublisher: ActionSubject<Void> = .init()
-    let homeTabBarItem: HomeTabBarItem
+    let tabItem: TabItem
     var bottomViewController: UIViewController?
 
     private let viewModel: CoinValueViewModel
@@ -48,9 +22,9 @@ final class CoinValueViewController: UIViewController, HomeTabBarItemType {
     private var currentViewController: UIViewController?
     private var isExpanded = false
 
-    init(viewModel: CoinValueViewModel, homeBarItem: HomeTabBarItem) {
+    init(viewModel: CoinValueViewModel, homeBarItem: TabItem) {
         self.viewModel = viewModel
-        self.homeTabBarItem = homeBarItem
+        self.tabItem = homeBarItem
         super.init(nibName: nil, bundle: nil)
     }
 

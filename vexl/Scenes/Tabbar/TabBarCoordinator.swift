@@ -15,7 +15,7 @@ final class TabBarCoordinator: BaseCoordinator<Void> {
 
     private let tabBarController: TabBarController
     private let window: UIWindow
-    private let tabs: [HomeTab] = [.marketplace, .chat, .profile]
+    private let tabs: [Tab] = [.marketplace, .chat, .profile]
 
     init(window: UIWindow) {
         let viewModel = TabBarViewModel()
@@ -50,7 +50,7 @@ final class TabBarCoordinator: BaseCoordinator<Void> {
             .eraseToAnyPublisher()
     }
 
-    private func configure(tabs: [HomeTab]) -> [CoordinatingResult<Void>] {
+    private func configure(tabs: [Tab]) -> [CoordinatingResult<Void>] {
         let navigationControllers = tabs.map { tab in TabBarNavigationController(homeBarItem: tab.tabBarItem) }
         tabBarController.setViewControllers(navigationControllers, animated: false)
 

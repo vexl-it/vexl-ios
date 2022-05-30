@@ -8,12 +8,12 @@
 import UIKit
 import Cleevio
 
-enum HomeTab {
+enum Tab {
     case marketplace
     case chat
     case profile
 
-    var tabBarItem: HomeTabBarItem {
+    var tabBarItem: TabItem {
         switch self {
         case .marketplace:
             return .marketplace
@@ -27,13 +27,13 @@ enum HomeTab {
 
 final class TabBarController: UITabBarController {
 
-    private lazy var homeTabBarView: HomeTabBarView = {
-        let tabBar = HomeTabBarView()
+    private lazy var tabBarView: TabBarView = {
+        let tabBar = TabBarView()
         tabBar.translatesAutoresizingMaskIntoConstraints = false
         return tabBar
     }()
 
-    private var _storedViewController: [UIViewController & HomeTabBarItemType] = []
+    private var _storedViewController: [UIViewController & TabItemType] = []
     private let viewModel: TabBarViewModel
     private let cancelBag: CancelBag = .init()
 
@@ -62,30 +62,30 @@ final class TabBarController: UITabBarController {
         }
 
         let homeViewControllers = viewControllers
-            .compactMap { $0 as? HomeTabBarItemType & UIViewController }
+            .compactMap { $0 as? TabItemType & UIViewController }
 
         super.setViewControllers(viewControllers, animated: animated)
-        homeTabBarView.add(tabs: homeViewControllers)
+        tabBarView.add(tabs: homeViewControllers)
         _storedViewController = []
     }
 
     private func arrangeSubviews() {
-        view.addSubview(homeTabBarView)
+        view.addSubview(tabBarView)
     }
 
     private func layout() {
         NSLayoutConstraint.activate([
-            homeTabBarView.leadingAnchor.constraint(equalTo: view.leadingAnchor,
+            tabBarView.leadingAnchor.constraint(equalTo: view.leadingAnchor,
                                                     constant: Appearance.GridGuide.mediumPadding1),
-            homeTabBarView.trailingAnchor.constraint(equalTo: view.trailingAnchor,
+            tabBarView.trailingAnchor.constraint(equalTo: view.trailingAnchor,
                                                      constant: -Appearance.GridGuide.mediumPadding1),
-            homeTabBarView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            homeTabBarView.heightAnchor.constraint(equalToConstant: Appearance.GridGuide.homeTabBarHeight)
+            tabBarView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            tabBarView.heightAnchor.constraint(equalToConstant: Appearance.GridGuide.homeTabBarHeight)
         ])
     }
 
     private func setupBindings() {
-        homeTabBarView
+        tabBarView
             .selectedItem
             .withUnretained(self)
             .sink { owner, index in
