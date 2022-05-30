@@ -10,49 +10,70 @@ import Cleevio
 import Combine
 
 struct MarketplaceView: View {
-
     @ObservedObject var viewModel: MarketplaceViewModel
+    @State private var bitcoinSize: CGSize = .zero
+    @State private var stickHeaderIsVisible = false
 
     var body: some View {
-        content
-            .background(Color.black)
-            .cornerRadius(Appearance.GridGuide.buttonCorner,
-                          corners: [.topLeft, .topRight])
-            .transaction { transaction in
-                transaction.animation = .easeInOut(duration: 0.25)
+        ZStack(alignment: .top) {
+            OffsetScrollView(
+                showsIndicators: false,
+                offsetChanged: offsetChanged(to:),
+                content: { scrollableContent }
+            )
+            .padding(.top, 1) // to make scroll view clipped content
+
+            if stickHeaderIsVisible {
+                marketPlaceHeader
+                    .background(Color.black)
             }
-            .navigationBarHidden(true)
+        }
+        .background(Color.black.edgesIgnoringSafeArea(.all))
+        .navigationBarHidden(true)
     }
 
-    private var content: some View {
-        VStack(spacing: Appearance.GridGuide.mediumPadding2) {
+    private var scrollableContent: some View {
+        VStack(spacing: .zero) {
+            BitcoinView(viewModel: viewModel.bitcoinViewModel)
+                .readSize(onChange: { size in
+                    bitcoinSize = size
+                })
+
+            marketPlaceContent
+                .background(Color.black)
+                .cornerRadius(Appearance.GridGuide.buttonCorner,
+                              corners: [.topLeft, .topRight])
+        }
+        .padding(.bottom, Appearance.GridGuide.homeTabBarHeight)
+    }
+
+    private var marketPlaceContent: some View {
+        VStack(spacing: Appearance.GridGuide.mediumPadding1) {
+            marketPlaceHeader
+
+            Group {
+                ForEach(viewModel.marketplaceFeedItems) { item in
+                    MarketplaceFeedView(data: item,
+                                        displayFooter: false,
+                                        detailAction: { id in
+                        viewModel.action.send(.offerDetailTapped(id: id))
+                    },
+                                        requestAction: { id in
+                        viewModel.action.send(.requestOfferTapped(id: id))
+                    })
+                        .padding(.horizontal, Appearance.GridGuide.point)
+                }
+            }
+        }
+    }
+
+    private var marketPlaceHeader: some View {
+        VStack(spacing: Appearance.GridGuide.padding) {
             MarketplaceSegmentView(selectedOption: $viewModel.selectedOption)
                 .padding(.top, Appearance.GridGuide.mediumPadding2)
 
             filter
-
-            ScrollView {
-                Group {
-                    ForEach(viewModel.marketplaceFeedItems) { item in
-                        MarketplaceFeedView(data: item,
-                                            displayFooter: false,
-                                            detailAction: { id in
-                            viewModel.action.send(.offerDetailTapped(id: id))
-                        },
-                                            requestAction: { id in
-                            viewModel.action.send(.requestOfferTapped(id: id))
-                        })
-                            .padding(.horizontal, Appearance.GridGuide.point)
-                    }
-                }
-                .padding(.bottom, Appearance.GridGuide.homeTabBarHeight)
-            }
-            .transaction { transaction in
-                transaction.animation = nil
-            }
         }
-        .frame(maxHeight: .infinity, alignment: .top)
-        .cornerRadius(Appearance.GridGuide.padding)
     }
 
     private var filter: some View {
@@ -72,6 +93,19 @@ struct MarketplaceView: View {
                     viewModel.action.send(.showSellOffer)
                 })
         }
+    }
+
+    private func offsetChanged(to offset: CGPoint) {
+        if offset.y < 0 {
+            let currentOffset = abs(offset.y)
+            stickHeaderIsVisible = currentOffset >= bitcoinSize.height
+        }
+        print(offset.y )
+//        if offset.y < 0 {
+//            isBitcoinVisible = false
+//        } else {
+//            isBitcoinVisible = true
+//        }
     }
 }
 
