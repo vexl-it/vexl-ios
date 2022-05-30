@@ -15,12 +15,15 @@ final class ChatMessageViewModel: ViewModelType, ObservableObject {
     enum UserAction: Equatable {
         case dismissTap
         case continueTap
-        case chatActionTap(action: ChatMessageView.ChatAction)
+        case chatActionTap(action: ChatMessageAction)
     }
 
     let action: ActionSubject<UserAction> = .init()
 
     // MARK: - View Bindings
+
+    @Published var currentMessage: String = ""
+    @Published var keyboardHeight: CGFloat = 0
 
     @Published var primaryActivity: Activity = .init()
     @Published var isLoading = false
@@ -46,6 +49,11 @@ final class ChatMessageViewModel: ViewModelType, ObservableObject {
     var username: String {
         "Keichi"
     }
+
+    var messages: [ChatMessageGroup] {
+        ChatMessageGroup.stub
+    }
+
     private let cancelBag: CancelBag = .init()
 
     init() {
@@ -58,5 +66,17 @@ final class ChatMessageViewModel: ViewModelType, ObservableObject {
             .map { _ -> Route in .dismissTapped }
             .subscribe(route)
             .store(in: cancelBag)
+
+        NotificationCenter.default.publisher(for: UIResponder.keyboardDidShowNotification, object: nil)
+            .map(\.userInfo)
+            .compactMap { userInfo -> CGFloat? in
+                guard let frame = userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return nil }
+                return frame.height
+            }
+            .assign(to: &$keyboardHeight)
+
+        NotificationCenter.default.publisher(for: UIResponder.keyboardDidHideNotification, object: nil)
+            .map { _ in 0 }
+            .assign(to: &$keyboardHeight)
     }
 }

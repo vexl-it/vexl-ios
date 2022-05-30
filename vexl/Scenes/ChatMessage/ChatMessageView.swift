@@ -7,6 +7,9 @@
 
 import SwiftUI
 
+typealias ChatMessageGroup = ChatMessageView.MessageGroup
+typealias ChatMessageAction = ChatMessageView.ChatAction
+
 struct ChatMessageView: View {
 
     @ObservedObject var viewModel: ChatMessageViewModel
@@ -20,7 +23,10 @@ struct ChatMessageView: View {
 
             actions
 
-            Spacer()
+            messages
+                .frame(maxHeight: .infinity)
+
+            messageInput
         }
         .frame(maxWidth: .infinity)
         .background(Color.black.edgesIgnoringSafeArea(.all))
@@ -67,6 +73,45 @@ struct ChatMessageView: View {
         }
         .padding(.top, Appearance.GridGuide.smallPadding)
     }
+
+    private var messages: some View {
+        ScrollView(showsIndicators: false) {
+            LazyVStack {
+                ForEach(viewModel.messages) { messageGroup in
+                    ChatMessageDateView(date: messageGroup.date, isInitial: false)
+
+                    ForEach(messageGroup.messages) { message in
+                        ChatMessageBubbleView(text: message.text, style: message.isContact ? .contact : .user)
+                    }
+                }
+            }
+            .padding(.top, Appearance.GridGuide.padding)
+        }
+        .padding([.horizontal, .top], Appearance.GridGuide.point)
+    }
+
+    private var messageInput: some View {
+        HStack {
+            Button("Image") {
+                print("will show image picker")
+            }
+
+            HStack {
+                PlaceholderTextField(placeholder: "Type something",
+                                     textColor: Appearance.Colors.gray4,
+                                     text: $viewModel.currentMessage)
+
+                Button("send") {
+                    print("will send message")
+                }
+            }
+            .padding()
+            .frame(height: Appearance.GridGuide.chatTextFieldHeight)
+            .background(Appearance.Colors.gray1)
+            .cornerRadius(Appearance.GridGuide.chatTextFieldHeight * 0.5)
+        }
+        .padding([.horizontal, .bottom], Appearance.GridGuide.padding)
+    }
 }
 
 extension ChatMessageView {
@@ -94,6 +139,31 @@ extension ChatMessageView {
             case .blockUser:
                 return ".blockUserTap"
             }
+        }
+    }
+
+    struct MessageGroup: Identifiable, Hashable {
+        let id = UUID()
+        let date: Date
+        let messages: [Message]
+
+        // swiftlint: disable nesting
+        struct Message: Identifiable, Hashable {
+            let id = UUID()
+            let text: String
+            let isContact: Bool
+        }
+
+        static var stub: [MessageGroup] {
+            [
+                .init(date: Date(), messages: [
+                    .init(text: "Hello there", isContact: true),
+                    .init(text: "General Kenobi", isContact: false)
+                ]),
+                .init(date: Date(), messages: [
+                    .init(text: "Haha you are a bold one", isContact: false)
+                ])
+            ]
         }
     }
 }

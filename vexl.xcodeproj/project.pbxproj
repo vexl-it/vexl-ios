@@ -169,6 +169,8 @@
 		F188627528169A3700659786 /* MarketplaceSegmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F188626D28169A3700659786 /* MarketplaceSegmentView.swift */; };
 		F188627728169A3700659786 /* MarketplaceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F188626F28169A3700659786 /* MarketplaceViewModel.swift */; };
 		F188627928169A7400659786 /* MarketplaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F188627828169A7400659786 /* MarketplaceView.swift */; };
+		F19D602D2845538C00876170 /* ChatMessageDateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F19D602C2845538C00876170 /* ChatMessageDateView.swift */; };
+		F19D602F2845570500876170 /* ChatMessageBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F19D602E2845570500876170 /* ChatMessageBubbleView.swift */; };
 		F1A9452D27F67FD5009B5AE3 /* PhoneConfirmation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1A9452C27F67FD5009B5AE3 /* PhoneConfirmation.swift */; };
 		F1A9453227F686C8009B5AE3 /* UserSignature.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1A9453027F686C8009B5AE3 /* UserSignature.swift */; };
 		F1A9453327F686C8009B5AE3 /* UserKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1A9453127F686C8009B5AE3 /* UserKeys.swift */; };
@@ -444,6 +446,8 @@
 		F188626D28169A3700659786 /* MarketplaceSegmentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MarketplaceSegmentView.swift; sourceTree = "<group>"; };
 		F188626F28169A3700659786 /* MarketplaceViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MarketplaceViewModel.swift; sourceTree = "<group>"; };
 		F188627828169A7400659786 /* MarketplaceView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MarketplaceView.swift; sourceTree = "<group>"; };
+		F19D602C2845538C00876170 /* ChatMessageDateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageDateView.swift; sourceTree = "<group>"; };
+		F19D602E2845570500876170 /* ChatMessageBubbleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageBubbleView.swift; sourceTree = "<group>"; };
 		F1A9452C27F67FD5009B5AE3 /* PhoneConfirmation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneConfirmation.swift; sourceTree = "<group>"; };
 		F1A9453027F686C8009B5AE3 /* UserSignature.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserSignature.swift; sourceTree = "<group>"; };
 		F1A9453127F686C8009B5AE3 /* UserKeys.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserKeys.swift; sourceTree = "<group>"; };
@@ -1260,6 +1264,15 @@
 			path = Components;
 			sourceTree = "<group>";
 		};
+		F19D602B2845538300876170 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				F19D602C2845538C00876170 /* ChatMessageDateView.swift */,
+				F19D602E2845570500876170 /* ChatMessageBubbleView.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
 		F1A9452B27F67FC6009B5AE3 /* Confirmation */ = {
 			isa = PBXGroup;
 			children = (
@@ -1456,6 +1469,7 @@
 		F1C267EC2844319A0014998C /* ChatMessage */ = {
 			isa = PBXGroup;
 			children = (
+				F19D602B2845538300876170 /* Components */,
 				F1C267ED284431B70014998C /* ChatMessageCoordinator.swift */,
 				F1C267EF284431BF0014998C /* ChatMessageViewModel.swift */,
 				F1C267F1284431C50014998C /* ChatMessageView.swift */,
@@ -1824,6 +1838,7 @@
 				F1A9453C27F7E01D009B5AE3 /* ChallengeValidation.swift in Sources */,
 				F18862512811710100659786 /* OfferStatusView.swift in Sources */,
 				B08F399A27AE7D87008B344F /* OnboardingCoordinator.swift in Sources */,
+				F19D602D2845538C00876170 /* ChatMessageDateView.swift in Sources */,
 				F12A14F027D912410096543E /* RequestAccessContactsViewModel.swift in Sources */,
 				F1C267DA28413B500014998C /* SliderView.swift in Sources */,
 				F188627228169A3700659786 /* OfferInformationDetailView.swift in Sources */,
@@ -2042,6 +2057,7 @@
 				F175AB8727E4D5C8000DAB15 /* UIScreen+.swift in Sources */,
 				F18862472811550C00659786 /* CreateOfferCoordinator.swift in Sources */,
 				F151A2A727C962CC000D7242 /* RegisterNameAvatarView+NameInput.swift in Sources */,
+				F19D602F2845570500876170 /* ChatMessageBubbleView.swift in Sources */,
 				F1F5F19B283FE53300968366 /* ChatRequestView.swift in Sources */,
 				B08F399527AE7D29008B344F /* SplashScreenViewModel.swift in Sources */,
 				F151A29027C80708000D7242 /* RegisterPhoneView+PhoneInput.swift in Sources */,
