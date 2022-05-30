@@ -61,7 +61,6 @@ final class SplashScreenViewModel: ViewModelType {
             .withUnretained(self)
             .flatMap { owner, _ -> AnyPublisher<InitialScreenManager.State, Never> in
                 Just(())
-                    // TODO: Load initial data
                     .map { _ -> InitialScreenManager.State in
                         .home
                     }
