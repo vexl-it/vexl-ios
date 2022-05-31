@@ -40,13 +40,43 @@ public extension Publisher {
         .map(transform)
         .switchToLatest()
     }
+    
+//    func filterNil<T>() -> Publishers.Filter<Self, T> where Output == Optional<T> {
+//        
+//    }
 }
 
-public extension Publisher where Output == Void {
+extension Publisher where Output == Void {
     func withUnretained<ReferenceType: AnyObject>(_ obj: ReferenceType) -> Publishers.CompactMap<Self, ReferenceType> {
         compactMap { [weak obj] _ -> ReferenceType? in
             guard let obj = obj else { return nil }
             return obj
         }
+    }
+}
+
+protocol _OptionalType {
+    associatedtype Wrapped
+
+    var value: Wrapped? { get }
+}
+
+extension Optional: _OptionalType {
+    /// Cast `Optional<Wrapped>` to `Wrapped?`
+    public var value: Wrapped? {
+        return self
+    }
+}
+
+extension Publisher where Output: _OptionalType {
+    func filterNil() -> AnyPublisher<Output.Wrapped, Failure> {
+        flatMap { element -> AnyPublisher<Output.Wrapped, Never> in
+            guard let value = element.value else {
+                return Empty().eraseToAnyPublisher()
+            }
+
+            return Just(value).eraseToAnyPublisher()
+        }
+        .eraseToAnyPublisher()
     }
 }

@@ -17,6 +17,8 @@ struct BitcoinView: View {
 
             if isExpanded {
                 bigGraph
+
+                timeline
             }
         }
         .padding(Appearance.GridGuide.padding)
@@ -47,8 +49,10 @@ struct BitcoinView: View {
 
                 HStack {
                     Image(systemName: "triangle.fill")
-                    Text(L.marketplaceCurrencyVariation("2.5%"))
+                        .rotationEffect(viewModel.bitcoinIncreased ? .zero : .degrees(180))
+                    Text(viewModel.bitcoinPercentageVariation)
                 }
+                .animation(.easeInOut, value: viewModel.timelineSelected)
                 .foregroundColor(Appearance.Colors.yellow100)
             }
             .textStyle(.descriptionSemiBold)
@@ -81,12 +85,40 @@ struct BitcoinView: View {
         Image(R.image.profile.bigGraph.name)
             .frame(maxWidth: .infinity, alignment: .leading)
     }
+
+    private var timeline: some View {
+        HStack {
+            ForEach(viewModel.timelineOptions) { option in
+                Button(action: { viewModel.send(action: .timelineTap(option)) }, label: {
+                    Text(option.title)
+                        .foregroundColor(Appearance.Colors.whiteText)
+                        .opacity(opacity(for: option))
+                        .textStyle(.description)
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.5)
+                })
+                .padding(Appearance.GridGuide.point)
+                .background(backgroundColor(for: option))
+                .cornerRadius(8)
+            }
+        }
+    }
+
+    private func opacity(for option: TimelineOption) -> CGFloat {
+        viewModel.timelineSelected == option ? 1.0 : 0.15
+    }
+
+    private func backgroundColor(for option: TimelineOption) -> Color {
+        viewModel.timelineSelected == option ?
+        Color.white.opacity(0.15) : .clear
+    }
 }
 
 #if DEBUG
 struct BitcoinViewPreview: PreviewProvider {
     static var previews: some View {
         BitcoinView(viewModel: .init())
+            .background(Color.black)
     }
 }
 #endif

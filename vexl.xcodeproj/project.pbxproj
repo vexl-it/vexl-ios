@@ -15,6 +15,7 @@
 		4F481E6B284504050051D3B9 /* PhoneNumberTextFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F481E66284504050051D3B9 /* PhoneNumberTextFieldView.swift */; };
 		4F481E6F2845040A0051D3B9 /* Line.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F481E6D2845040A0051D3B9 /* Line.swift */; };
 		4F481E702845040A0051D3B9 /* DashedLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F481E6E2845040A0051D3B9 /* DashedLine.swift */; };
+		4F481E7228466B320051D3B9 /* TimelineOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F481E7128466B320051D3B9 /* TimelineOption.swift */; };
 		4F700CB02840E4650085139F /* LoadingDotsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F700CAF2840E4650085139F /* LoadingDotsView.swift */; };
 		4F700CBA2844B08B0085139F /* BitcoinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F700CB92844B08B0085139F /* BitcoinView.swift */; };
 		4F700CBC2844C3260085139F /* TabBarNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F700CBB2844C3260085139F /* TabBarNavigationController.swift */; };
@@ -261,6 +262,7 @@
 		4F481E66284504050051D3B9 /* PhoneNumberTextFieldView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhoneNumberTextFieldView.swift; sourceTree = "<group>"; };
 		4F481E6D2845040A0051D3B9 /* Line.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Line.swift; sourceTree = "<group>"; };
 		4F481E6E2845040A0051D3B9 /* DashedLine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashedLine.swift; sourceTree = "<group>"; };
+		4F481E7128466B320051D3B9 /* TimelineOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineOption.swift; sourceTree = "<group>"; };
 		4F700CAF2840E4650085139F /* LoadingDotsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingDotsView.swift; sourceTree = "<group>"; };
 		4F700CB92844B08B0085139F /* BitcoinView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BitcoinView.swift; sourceTree = "<group>"; };
 		4F700CBB2844C3260085139F /* TabBarNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarNavigationController.swift; sourceTree = "<group>"; };
@@ -576,6 +578,7 @@
 				4F700CBD2844C4C20085139F /* StickyBitcoinView.swift */,
 				4F700CB92844B08B0085139F /* BitcoinView.swift */,
 				4F700CBF2844C54E0085139F /* BitcoinViewModel.swift */,
+				4F481E7128466B320051D3B9 /* TimelineOption.swift */,
 			);
 			path = BitcoinView;
 			sourceTree = "<group>";
@@ -1937,6 +1940,7 @@
 				F1A9454227F81200009B5AE3 /* ContactsImported.swift in Sources */,
 				B0FE5249280E93D200A77EC3 /* ECCKeys.swift in Sources */,
 				B08F394127AE7112008B344F /* Shortcuts.swift in Sources */,
+				4F481E7228466B320051D3B9 /* TimelineOption.swift in Sources */,
 				F18862592811CCAA00659786 /* DottedButton.swift in Sources */,
 				F1B5FCD827C7040C0018729B /* RoundedCorners.swift in Sources */,
 				F151A29D27C866C7000D7242 /* RegisterNameAvatarView.swift in Sources */,
