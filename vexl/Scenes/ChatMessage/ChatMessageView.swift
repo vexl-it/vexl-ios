@@ -15,6 +15,25 @@ struct ChatMessageView: View {
     @ObservedObject var viewModel: ChatMessageViewModel
 
     var body: some View {
+        ZStack {
+            content
+                .zIndex(0)
+
+            if viewModel.presentedModal == .offer {
+                ChatMessageOfferView {
+                    withAnimation {
+                        viewModel.action.send(.dismissModal)
+                    }
+                }
+                .transition(.move(edge: .bottom))
+                .zIndex(1)
+            }
+        }
+        .frame(maxWidth: .infinity)
+        .background(Color.black.edgesIgnoringSafeArea(.all))
+    }
+
+    private var content: some View {
         VStack(spacing: .zero) {
             header
 
@@ -35,8 +54,6 @@ struct ChatMessageView: View {
             })
                 .padding([.horizontal, .bottom], Appearance.GridGuide.padding)
         }
-        .frame(maxWidth: .infinity)
-        .background(Color.black.edgesIgnoringSafeArea(.all))
     }
 
     private var header: some View {
@@ -68,7 +85,9 @@ struct ChatMessageView: View {
             HStack {
                 ForEach(ChatAction.allCases) { action in
                     Button(action.title) {
-                        viewModel.action.send(.chatActionTap(action: action))
+                        withAnimation {
+                            viewModel.action.send(.chatActionTap(action: action))
+                        }
                     }
                     .textStyle(.paragraphSmallMedium)
                     .padding(Appearance.GridGuide.point)

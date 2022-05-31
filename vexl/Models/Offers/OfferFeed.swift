@@ -60,7 +60,7 @@ struct OfferDetailViewData: Identifiable, Hashable {
         OfferDetailViewData(
             id: "2",
             title: "I’ll be wearing a red hat, Don’t text me before 9am — I love to sleep...",
-            isRequested: true,
+            isRequested: false,
             friendLevel: "Friend",
             amount: "$10k",
             paymentMethods: [.revolut],
