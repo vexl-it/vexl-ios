@@ -41,7 +41,7 @@ final class BitcoinViewModel: ViewModelType, ObservableObject {
         return "$ \(value)"
     }
 
-    var bitcoinIncreased: Bool { bitcoinData?.bitcoinIncrease(for: timelineSelected) ?? true }
+    var bitcoinIncreased: Bool { bitcoinData?.bitcoinIncreased(for: timelineSelected) ?? true }
     var bitcoinPercentageVariation: String { timelineSelected.variation(percentage: bitcoinPercentage) }
     private var bitcoinPercentage: String { bitcoinData?.getPercentage(for: timelineSelected) ?? "-" }
 

@@ -18,6 +18,9 @@ struct BitcoinView: View {
             if isExpanded {
                 bigGraph
 
+                HLine(color: Appearance.Colors.gray1,
+                      height: 2)
+
                 timeline
             }
         }
@@ -83,6 +86,8 @@ struct BitcoinView: View {
 
     private var bigGraph: some View {
         Image(R.image.profile.bigGraph.name)
+            .resizable()
+            .aspectRatio(contentMode: .fit)
             .frame(maxWidth: .infinity, alignment: .leading)
     }
 

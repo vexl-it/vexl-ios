@@ -26,7 +26,7 @@ struct BitcoinData: Decodable {
         case percentageChangeOneYearAgo = "priceChangePercentage1y"
     }
 
-    func bitcoinIncrease(for option: TimelineOption) -> Bool {
+    func bitcoinIncreased(for option: TimelineOption) -> Bool {
         switch option {
         case .oneDayAgo:
             return percentageChangeOneDayAgo > 0
@@ -44,21 +44,22 @@ struct BitcoinData: Decodable {
     }
 
     func getPercentage(for option: TimelineOption) -> String {
+        let decimalFormat = "%.2f"
         var twoDecimalValue: String
 
         switch option {
         case .oneDayAgo:
-            twoDecimalValue = String(format: "%.2f", percentageChangeOneDayAgo)
+            twoDecimalValue = String(format: decimalFormat, percentageChangeOneDayAgo)
         case .oneWeekAgo:
-            twoDecimalValue = String(format: "%.2f", percentageChangeOneWeekAgo)
+            twoDecimalValue = String(format: decimalFormat, percentageChangeOneWeekAgo)
         case .oneMonthAgo:
-            twoDecimalValue = String(format: "%.2f", percentageChangeOneMonthAgo)
+            twoDecimalValue = String(format: decimalFormat, percentageChangeOneMonthAgo)
         case .threeMonthsAgo:
-            twoDecimalValue = String(format: "%.2f", percentageChangeThreeMonthsAgo)
+            twoDecimalValue = String(format: decimalFormat, percentageChangeThreeMonthsAgo)
         case .sixMonthsAgo:
-            twoDecimalValue = String(format: "%.2f", percentageChangeSixMonthsAgo)
+            twoDecimalValue = String(format: decimalFormat, percentageChangeSixMonthsAgo)
         case .oneYearAgo:
-            twoDecimalValue = String(format: "%.2f", percentageChangeOneYearAgo)
+            twoDecimalValue = String(format: decimalFormat, percentageChangeOneYearAgo)
         }
 
         return "\(twoDecimalValue)%"

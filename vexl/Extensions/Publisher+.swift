@@ -40,10 +40,6 @@ public extension Publisher {
         .map(transform)
         .switchToLatest()
     }
-    
-//    func filterNil<T>() -> Publishers.Filter<Self, T> where Output == Optional<T> {
-//        
-//    }
 }
 
 extension Publisher where Output == Void {

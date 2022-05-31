@@ -20,17 +20,17 @@ enum TimelineOption: CaseIterable, Identifiable {
     var title: String {
         switch self {
         case .oneDayAgo:
-            return "1 day"
+            return L.marketplaceCurrency1day()
         case .oneWeekAgo:
-            return "1 week"
+            return L.marketplaceCurrency1week()
         case .oneMonthAgo:
-            return "1 mth"
+            return L.marketplaceCurrency1month()
         case .threeMonthsAgo:
-            return "3 mth"
+            return L.marketplaceCurrency3month()
         case .sixMonthsAgo:
-            return "6 mth"
+            return L.marketplaceCurrency6month()
         case .oneYearAgo:
-            return "1 year"
+            return L.marketplaceCurrency1year()
         }
     }
 
