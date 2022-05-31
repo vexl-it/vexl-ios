@@ -58,7 +58,7 @@ struct CreateOfferView: View {
                         selectedFriendDegreeOption: $viewModel.selectedFriendDegreeOption
                     )
                     .padding(.top, Appearance.GridGuide.largePadding1)
-                    
+
                     SolidButton(Text(viewModel.actionTitle)
                                     .padding(.horizontal,
                                              Appearance.GridGuide.mediumPadding1),

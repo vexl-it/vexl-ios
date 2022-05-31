@@ -10,31 +10,39 @@ import Combine
 import Cleevio
 
 protocol CryptocurrencyValueManagerType {
-    var currentValue: CurrentValueSubject<BitcoinData, Never> { get set }
-    var isFetching: PassthroughSubject<Bool, Never> { get set }
+    var currentValue: AnyPublisher<BitcoinData, Never> { get }
+    var isFetching: AnyPublisher<Bool, Never> { get }
 
-    func startFetchingCurrency()
+    func startFetchingCurrency(every interval: TimeInterval)
+    func stopFetchingCurrency()
 }
 
 final class CryptocurrencyValueManager: CryptocurrencyValueManagerType {
 
-    @Inject var userService: UserServiceType
+    var currentValue: AnyPublisher<BitcoinData, Never> { currentValueSubject.eraseToAnyPublisher() }
+    var isFetching: AnyPublisher<Bool, Never> { activity.indicator.loading }
 
-    var currentValue: CurrentValueSubject<BitcoinData, Never> = .init(.noValue)
-    var isFetching: PassthroughSubject<Bool, Never> = .init()
+    @Inject private var userService: UserServiceType
+    private let currentValueSubject: CurrentValueSubject<BitcoinData, Never> = .init(.noValue)
+    private let activity: Activity = .init()
+    private var cancellable: AnyCancellable?
 
-    private let cancelBag: CancelBag = .init()
-
-    func startFetchingCurrency() {
-        userService
-            .getBitcoinData()
-            .materialize()
-            .compactMap(\.value)
-            .withUnretained(self)
-            .sink { owner, data in
-                owner.isFetching.send(false)
-                owner.currentValue.send(data)
+    func startFetchingCurrency(every interval: TimeInterval) {
+        cancellable = Timer.publish(every: interval, on: RunLoop.main, in: .default)
+            .autoconnect()
+            .merge(with: Just(Date()))
+            .flatMapLatest(with: self) { owner, _ -> AnyPublisher<BitcoinData, Never> in
+                owner.userService
+                    .getBitcoinData()
+                    .track(activity: owner.activity)
+                    .materialize()
+                    .compactMap(\.value)
+                    .eraseToAnyPublisher()
             }
-            .store(in: cancelBag)
+            .subscribe(currentValueSubject)
+    }
+
+    func stopFetchingCurrency() {
+        cancellable = nil
     }
 }

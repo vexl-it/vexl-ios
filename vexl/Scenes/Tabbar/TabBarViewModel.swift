@@ -33,7 +33,6 @@ final class TabBarViewModel: ViewModelType {
     private let cancelBag: CancelBag = .init()
 
     init() {
-        cryptocurrencyManager
-            .startFetchingCurrency()
+        cryptocurrencyManager.startFetchingCurrency(every: Constants.bitcoinPollInterval)
     }
 }

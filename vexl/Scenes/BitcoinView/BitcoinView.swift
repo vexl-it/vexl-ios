@@ -56,12 +56,20 @@ struct BitcoinView: View {
         }
     }
 
-    private var price: some View {
-        Text(viewModel.bitcoinWithCurrency)
-            .textStyle(.h2)
-            .foregroundColor(Appearance.Colors.yellow60)
-            .minimumScaleFactor(0.5)
-            .lineLimit(1)
+    @ViewBuilder private var price: some View {
+        if viewModel.isLoading {
+            LoadingDotsView(
+                dotCount: 3,
+                dotDiameter: 10,
+                color: Appearance.Colors.yellow100
+            )
+        } else {
+            Text(viewModel.bitcoinWithCurrency)
+                .textStyle(.h2)
+                .foregroundColor(Appearance.Colors.yellow60)
+                .minimumScaleFactor(0.5)
+                .lineLimit(1)
+        }
     }
 
     private var smallGraph: some View {
