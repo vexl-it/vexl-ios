@@ -61,14 +61,14 @@ struct OfferFilter: Equatable {
         guard !selectedPaymentMethodOptions.isEmpty else { return true }
         let offerSet = Set(offer.paymentMethods)
         let filterSet = Set(selectedPaymentMethodOptions)
-        return offerSet.isSubset(of: filterSet)
+        return filterSet.isSubset(of: offerSet)
     }
 
     private func hasSameBTCOptions(offer: Offer) -> Bool {
         guard !selectedBTCOptions.isEmpty else { return true }
         let offerSet = Set(offer.btcNetwork)
         let filterSet = Set(selectedBTCOptions)
-        return offerSet.isSubset(of: filterSet)
+        return filterSet.isSubset(of: offerSet)
     }
 
     private func hasSameFriendDegree(offer: Offer) -> Bool {

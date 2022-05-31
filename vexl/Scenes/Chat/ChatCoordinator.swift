@@ -11,17 +11,16 @@ import Combine
 
 final class ChatCoordinator: BaseCoordinator<Void> {
 
-    private let router: CoinValueRouter
+    private let router: Router
     private let animated: Bool
 
-    init(router: CoinValueRouter, animated: Bool) {
+    init(router: Router, animated: Bool) {
         self.router = router
         self.animated = animated
     }
 
     override func start() -> CoordinatingResult<Void> {
-
-        let viewModel = ChatViewModel()
+        let viewModel = ChatViewModel(bitcoinViewModel: .init())
         let viewController = BaseViewController(rootView: ChatView(viewModel: viewModel))
 
         router.present(viewController, animated: animated)

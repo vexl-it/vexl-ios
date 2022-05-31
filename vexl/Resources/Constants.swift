@@ -64,5 +64,7 @@ struct Constants {
 
     static let pageMaxLimit = 1_000
 
+    static let bitcoinPollInterval: TimeInterval = 30
+
     static let notAvailable = "N/A"
 }

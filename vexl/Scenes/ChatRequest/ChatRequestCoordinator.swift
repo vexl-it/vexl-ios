@@ -24,11 +24,7 @@ final class ChatRequestCoordinator: BaseCoordinator<RouterResult<Void>> {
         let viewModel = ChatRequestViewModel()
         let viewController = BaseViewController(rootView: ChatRequestView(viewModel: viewModel))
 
-        if let chatRouter = router as? CoinValueRouter {
-            chatRouter.presentFullscreen(viewController, animated: true)
-        } else {
-            router.present(viewController, animated: true)
-        }
+        router.present(viewController, animated: true)
 
         viewModel
             .$error

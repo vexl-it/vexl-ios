@@ -20,7 +20,8 @@ final class MarketplaceCoordinator: BaseCoordinator<Void> {
     }
 
     override func start() -> CoordinatingResult<Void> {
-        let viewModel = MarketplaceViewModel()
+        let bitcoinViewModel = BitcoinViewModel()
+        let viewModel = MarketplaceViewModel(bitcoinViewModel: bitcoinViewModel)
         let viewController = BaseViewController(rootView: MarketplaceView(viewModel: viewModel))
 
         router.present(viewController, animated: true)

@@ -25,11 +25,7 @@ final class ChatMessageCoordinator: BaseCoordinator<RouterResult<Void>> {
         let viewModel = ChatMessageViewModel()
         let viewController = BaseViewController(rootView: ChatMessageView(viewModel: viewModel))
 
-        if let chatRouter = router as? CoinValueRouter {
-            chatRouter.presentFullscreen(viewController, animated: true)
-        } else {
-            router.present(viewController, animated: true)
-        }
+        router.present(viewController, animated: true)
 
         let dismiss = viewModel
             .route

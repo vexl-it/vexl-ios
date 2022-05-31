@@ -27,21 +27,17 @@ struct CreateOfferView: View {
                                     deleteAction: {
                         viewModel.action.send(.delete)
                     })
-                    .padding(Appearance.GridGuide.padding)
 
                     OfferDescriptionView(text: $viewModel.description)
-                        .padding(.horizontal, Appearance.GridGuide.point)
-                        .padding(.bottom, Appearance.GridGuide.largePadding1)
+                        .padding(.bottom, Appearance.GridGuide.padding)
 
                     OfferAmountRangeView(currencySymbol: viewModel.currencySymbol,
                                          currentValue: $viewModel.currentAmountRange,
                                          sliderBounds: viewModel.amountRange)
-                        .padding(.horizontal, Appearance.GridGuide.point)
 
                     OfferFeePickerView(feeLabel: "\(viewModel.feeValue)%",
                                        selectedOption: $viewModel.selectedFeeOption,
                                        feeValue: $viewModel.feeAmount)
-                        .padding(.horizontal, Appearance.GridGuide.point)
 
                     OfferLocationPickerView(items: viewModel.locations,
                                             addLocation: {
@@ -51,21 +47,17 @@ struct CreateOfferView: View {
                         viewModel.action.send(.deleteLocation(id: id))
                     })
                         .padding(.top, Appearance.GridGuide.largePadding1)
-                        .padding(.horizontal, Appearance.GridGuide.point)
 
                     OfferTradeLocationPickerView(selectedOption: $viewModel.selectedTradeStyleOption)
-                        .padding(.horizontal, Appearance.GridGuide.point)
 
                     OfferPaymentMethodView(selectedOptions: $viewModel.selectedPaymentMethodOptions)
                         .padding(.top, Appearance.GridGuide.largePadding1)
-                        .padding(.horizontal, Appearance.GridGuide.point)
 
                     OfferAdvancedFilterView(
                         selectedTypeOptions: $viewModel.selectedBTCOption,
                         selectedFriendDegreeOption: $viewModel.selectedFriendDegreeOption
                     )
                     .padding(.top, Appearance.GridGuide.largePadding1)
-                    .padding(.horizontal, Appearance.GridGuide.point)
 
                     SolidButton(Text(viewModel.actionTitle)
                                     .padding(.horizontal,
@@ -73,16 +65,16 @@ struct CreateOfferView: View {
                                 isEnabled: .constant(viewModel.isCreateEnabled),
                                 fullWidth: true,
                                 font: Appearance.TextStyle.titleSmallBold.font.asFont,
-                                colors: SolidButtonColor.welcome,
+                                colors: SolidButtonColor.main,
                                 dimensions: SolidButtonDimension.largeButton,
                                 action: {
                         viewModel.action.send(.createOffer)
                     })
-                        .padding(.horizontal, Appearance.GridGuide.point)
                         .padding(.vertical, Appearance.GridGuide.largePadding1)
                 }
             }
         }
+        .padding(Appearance.GridGuide.padding)
         .background(Color.black.edgesIgnoringSafeArea(.all))
     }
 }

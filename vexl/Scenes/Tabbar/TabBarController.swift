@@ -1,5 +1,5 @@
 //
-//  HomeTabbarViewController.swift
+//  TabBarController.swift
 //  vexl
 //
 //  Created by Diego Espinoza on 6/05/22.
@@ -8,12 +8,12 @@
 import UIKit
 import Cleevio
 
-enum HomeTab {
+enum Tab {
     case marketplace
     case chat
     case profile
 
-    var tabBarItem: HomeTabBarItem {
+    var tabBarItem: TabItem {
         switch self {
         case .marketplace:
             return .marketplace
@@ -25,19 +25,19 @@ enum HomeTab {
     }
 }
 
-final class HomeTabBarController: UITabBarController {
+final class TabBarController: UITabBarController {
 
-    private lazy var homeTabBarView: HomeTabBarView = {
-        let tabBar = HomeTabBarView()
+    private lazy var tabBarView: TabBarView = {
+        let tabBar = TabBarView()
         tabBar.translatesAutoresizingMaskIntoConstraints = false
         return tabBar
     }()
 
-    private var _storedViewController: [UIViewController & HomeTabBarItemType] = []
-    private let viewModel: HomeTabBarViewModel
+    private var _storedViewController: [UIViewController & TabItemType] = []
+    private let viewModel: TabBarViewModel
     private let cancelBag: CancelBag = .init()
 
-    init(viewModel: HomeTabBarViewModel) {
+    init(viewModel: TabBarViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
@@ -62,30 +62,30 @@ final class HomeTabBarController: UITabBarController {
         }
 
         let homeViewControllers = viewControllers
-            .compactMap { $0 as? HomeTabBarItemType & UIViewController }
+            .compactMap { $0 as? TabItemType & UIViewController }
 
-        super.setViewControllers(homeViewControllers, animated: animated)
-        homeTabBarView.add(tabs: homeViewControllers)
+        super.setViewControllers(viewControllers, animated: animated)
+        tabBarView.add(tabs: homeViewControllers)
         _storedViewController = []
     }
 
     private func arrangeSubviews() {
-        view.addSubview(homeTabBarView)
+        view.addSubview(tabBarView)
     }
 
     private func layout() {
         NSLayoutConstraint.activate([
-            homeTabBarView.leadingAnchor.constraint(equalTo: view.leadingAnchor,
-                                                    constant: Appearance.GridGuide.mediumPadding1),
-            homeTabBarView.trailingAnchor.constraint(equalTo: view.trailingAnchor,
-                                                     constant: -Appearance.GridGuide.mediumPadding1),
-            homeTabBarView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            homeTabBarView.heightAnchor.constraint(equalToConstant: Appearance.GridGuide.homeTabBarHeight)
+            tabBarView.leadingAnchor.constraint(equalTo: view.leadingAnchor,
+                                                constant: Appearance.GridGuide.mediumPadding1),
+            tabBarView.trailingAnchor.constraint(equalTo: view.trailingAnchor,
+                                                 constant: -Appearance.GridGuide.mediumPadding1),
+            tabBarView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            tabBarView.heightAnchor.constraint(equalToConstant: Appearance.GridGuide.homeTabBarHeight)
         ])
     }
 
     private func setupBindings() {
-        homeTabBarView
+        tabBarView
             .selectedItem
             .withUnretained(self)
             .sink { owner, index in
