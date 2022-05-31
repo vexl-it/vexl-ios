@@ -20,6 +20,7 @@ final class BitcoinViewModel: ViewModelType, ObservableObject {
 
     // MARK: - View Bindings
 
+    @Published var isLoading: Bool = false
     @Published private var bitcoinValue: Decimal?
 
     var errorIndicator: ErrorIndicator {
@@ -30,7 +31,10 @@ final class BitcoinViewModel: ViewModelType, ObservableObject {
         primaryActivity.indicator
     }
 
-    var bitcoinWithCurrency: String { "31 241 czk" }
+    var bitcoinWithCurrency: String {
+        guard let value = bitcoinValue else { return "-" }
+        return "$ \(value)"
+    }
 
     // MARK: - Coordinator Bindings
 
@@ -48,5 +52,19 @@ final class BitcoinViewModel: ViewModelType, ObservableObject {
     }
 
     private func setupDataBindings() {
+        cryptocurrencyManager
+            .currentValue
+            .map(\.priceUsd)
+            .filter { !$0.isZero }
+            .asOptional()
+            .assign(to: &$bitcoinValue)
+
+        cryptocurrencyManager
+            .isFetching
+            .withUnretained(self)
+            .sink { owner, isFetching in
+                owner.isLoading = isFetching
+            }
+            .store(in: cancelBag)
     }
 }

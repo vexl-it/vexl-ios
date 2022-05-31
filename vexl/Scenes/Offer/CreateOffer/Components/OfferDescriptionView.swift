@@ -17,9 +17,10 @@ struct OfferDescriptionView: View {
                 .textStyle(.titleSemiBold)
                 .foregroundColor(Appearance.Colors.whiteText)
 
-            PlaceholderTextField(placeholder: L.offerCreateDescriptionPlaceholder(),
-                                 textColor: Appearance.Colors.whiteText,
-                                 text: $text)
+            ExpandingTextView(
+                placeholder: L.offerCreateDescriptionPlaceholder(),
+                text: $text
+            )
         }
     }
 }
