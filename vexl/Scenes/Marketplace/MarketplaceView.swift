@@ -20,6 +20,7 @@ struct MarketplaceView: View {
             content: { marketPlaceContent },
             stickyHeader: { marketPlaceHeader }
         )
+        .animation(.easeInOut, value: viewModel.selectedOption)
         .background(Color.black.edgesIgnoringSafeArea(.all))
         .navigationBarHidden(true)
     }
@@ -28,20 +29,19 @@ struct MarketplaceView: View {
         VStack(spacing: Appearance.GridGuide.mediumPadding1) {
             marketPlaceHeader
 
-            Group {
-                ForEach(viewModel.marketplaceFeedItems) { item in
-                    MarketplaceFeedView(data: item,
-                                        displayFooter: false,
-                                        detailAction: { id in
-                        viewModel.action.send(.offerDetailTapped(id: id))
-                    },
-                                        requestAction: { id in
-                        viewModel.action.send(.requestOfferTapped(id: id))
-                    })
-                        .padding(.horizontal, Appearance.GridGuide.point)
-                }
+            ForEach(viewModel.marketplaceFeedItems) { item in
+                MarketplaceFeedView(data: item,
+                                    displayFooter: false,
+                                    detailAction: { id in
+                    viewModel.action.send(.offerDetailTapped(id: id))
+                },
+                                    requestAction: { id in
+                    viewModel.action.send(.requestOfferTapped(id: id))
+                })
+                .padding(.horizontal, Appearance.GridGuide.point)
             }
         }
+        .animation(.easeInOut, value: viewModel.marketplaceFeedItems)
     }
 
     private var marketPlaceHeader: some View {
