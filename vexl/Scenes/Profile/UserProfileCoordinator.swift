@@ -20,7 +20,8 @@ final class UserProfileCoordinator: BaseCoordinator<Void> {
     }
 
     override func start() -> CoordinatingResult<Void> {
-        let viewModel = UserProfileViewModel()
+        let bitcoinViewModel = BitcoinViewModel()
+        let viewModel = UserProfileViewModel(bitcoinViewModel: bitcoinViewModel)
         let viewController = BaseViewController(rootView: UserProfileView(viewModel: viewModel))
         router.present(viewController, animated: animated)
 

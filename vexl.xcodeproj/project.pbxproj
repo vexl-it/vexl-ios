@@ -8,7 +8,19 @@
 
 /* Begin PBXBuildFile section */
 		0AA456AF4C162D9C8AF6AB30 /* Pods_vexl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57B3CAA27CF4369A28B748A7 /* Pods_vexl.framework */; };
+		4F481E67284504050051D3B9 /* RangePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F481E61284504050051D3B9 /* RangePickerView.swift */; };
+		4F481E68284504050051D3B9 /* OptionPickerItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F481E63284504050051D3B9 /* OptionPickerItemView.swift */; };
+		4F481E69284504050051D3B9 /* SingleOptionPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F481E64284504050051D3B9 /* SingleOptionPickerView.swift */; };
+		4F481E6A284504050051D3B9 /* MultipleOptionPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F481E65284504050051D3B9 /* MultipleOptionPickerView.swift */; };
+		4F481E6B284504050051D3B9 /* PhoneNumberTextFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F481E66284504050051D3B9 /* PhoneNumberTextFieldView.swift */; };
+		4F481E6F2845040A0051D3B9 /* Line.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F481E6D2845040A0051D3B9 /* Line.swift */; };
+		4F481E702845040A0051D3B9 /* DashedLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F481E6E2845040A0051D3B9 /* DashedLine.swift */; };
 		4F700CB02840E4650085139F /* LoadingDotsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F700CAF2840E4650085139F /* LoadingDotsView.swift */; };
+		4F700CBA2844B08B0085139F /* BitcoinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F700CB92844B08B0085139F /* BitcoinView.swift */; };
+		4F700CBC2844C3260085139F /* TabBarNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F700CBB2844C3260085139F /* TabBarNavigationController.swift */; };
+		4F700CBE2844C4C20085139F /* StickyBitcoinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F700CBD2844C4C20085139F /* StickyBitcoinView.swift */; };
+		4F700CC02844C54E0085139F /* BitcoinViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F700CBF2844C54E0085139F /* BitcoinViewModel.swift */; };
+		4F700CC32844DA250085139F /* OffsetScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F700CC22844DA250085139F /* OffsetScrollView.swift */; };
 		4FBF61DE283BD11C00DDBE71 /* FilterCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FBF61DD283BD11C00DDBE71 /* FilterCoordinator.swift */; };
 		4FBF61E0283BD12700DDBE71 /* FilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FBF61DF283BD12700DDBE71 /* FilterView.swift */; };
 		4FBF61E2283BD12D00DDBE71 /* FilterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FBF61E1283BD12D00DDBE71 /* FilterViewModel.swift */; };
@@ -148,7 +160,6 @@
 		F175ABA227F4A8F8000DAB15 /* UserAvailable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F175ABA127F4A8F8000DAB15 /* UserAvailable.swift */; };
 		F175ABAA27F4FC3F000DAB15 /* ImportPhoneContactsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F175ABA927F4FC3E000DAB15 /* ImportPhoneContactsViewModel.swift */; };
 		F175ABAC27F4FF30000DAB15 /* ImportFacebookContactsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F175ABAB27F4FF30000DAB15 /* ImportFacebookContactsViewModel.swift */; };
-		F18861FE2808136D00659786 /* DashedLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18861FD2808136D00659786 /* DashedLine.swift */; };
 		F1886201280824D600659786 /* CoinValueViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1886200280824D600659786 /* CoinValueViewController.swift */; };
 		F18862032808318E00659786 /* CoinValueRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18862022808318E00659786 /* CoinValueRouter.swift */; };
 		F188620F280EABB600659786 /* FetchImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F188620E280EABB600659786 /* FetchImage.swift */; };
@@ -164,7 +175,6 @@
 		F188624B2811551E00659786 /* CreateOfferView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F188624A2811551E00659786 /* CreateOfferView.swift */; };
 		F188624E2811556100659786 /* OfferHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F188624D2811556100659786 /* OfferHeaderView.swift */; };
 		F18862512811710100659786 /* OfferStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18862502811710100659786 /* OfferStatusView.swift */; };
-		F18862532811734A00659786 /* RangePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18862522811734A00659786 /* RangePickerView.swift */; };
 		F1886255281185E900659786 /* OfferFeePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1886254281185E900659786 /* OfferFeePickerView.swift */; };
 		F1886257281193CA00659786 /* OfferLocationPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1886256281193CA00659786 /* OfferLocationPickerView.swift */; };
 		F18862592811CCAA00659786 /* DottedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18862582811CCAA00659786 /* DottedButton.swift */; };
@@ -202,7 +212,6 @@
 		F1B5FCD627C703BF0018729B /* View+.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B5FCD527C703BF0018729B /* View+.swift */; };
 		F1B5FCD827C7040C0018729B /* RoundedCorners.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B5FCD727C7040C0018729B /* RoundedCorners.swift */; };
 		F1BBC7052835C2960067F81B /* ContactsCount.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1BBC7042835C2960067F81B /* ContactsCount.swift */; };
-		F1BBC7082837254D0067F81B /* Line.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1BBC7072837254D0067F81B /* Line.swift */; };
 		F1BBC70E283BE5570067F81B /* TT Satoshi SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = F1BBC70A283BE5570067F81B /* TT Satoshi SemiBold.otf */; };
 		F1BBC70F283BE5570067F81B /* TT Satoshi Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = F1BBC70B283BE5570067F81B /* TT Satoshi Medium.otf */; };
 		F1BBC710283BE5570067F81B /* TT Satoshi Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = F1BBC70C283BE5570067F81B /* TT Satoshi Regular.otf */; };
@@ -222,21 +231,17 @@
 		F1C6D0A027BDECB0009BD506 /* WelcomeView+LogoImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1C6D09F27BDECB0009BD506 /* WelcomeView+LogoImageView.swift */; };
 		F1C6D0A227BE9157009BD506 /* LinkTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1C6D0A127BE9157009BD506 /* LinkTextView.swift */; };
 		F1CFF3B827F6015B007D9FE1 /* UserSecurity.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1CFF3B727F6015B007D9FE1 /* UserSecurity.swift */; };
-		F1D200A628252C44006DF4AB /* HomeTabbarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D200A528252C44006DF4AB /* HomeTabbarViewController.swift */; };
-		F1D2011A28292868006DF4AB /* HomeTabBarCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D2011928292868006DF4AB /* HomeTabBarCoordinator.swift */; };
-		F1D2011D282960B9006DF4AB /* HomeTabBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D2011C282960B9006DF4AB /* HomeTabBarItem.swift */; };
-		F1D2011F282960DC006DF4AB /* HomeTabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D2011E282960DC006DF4AB /* HomeTabBarView.swift */; };
+		F1D200A628252C44006DF4AB /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D200A528252C44006DF4AB /* TabBarController.swift */; };
+		F1D2011A28292868006DF4AB /* TabBarCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D2011928292868006DF4AB /* TabBarCoordinator.swift */; };
+		F1D2011D282960B9006DF4AB /* TabItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D2011C282960B9006DF4AB /* TabItem.swift */; };
+		F1D2011F282960DC006DF4AB /* TabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D2011E282960DC006DF4AB /* TabBarView.swift */; };
 		F1D2012228296F0F006DF4AB /* ChatCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D2012128296F0F006DF4AB /* ChatCoordinator.swift */; };
 		F1D2012428296F19006DF4AB /* ChatViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D2012328296F19006DF4AB /* ChatViewModel.swift */; };
 		F1D2012628296F1F006DF4AB /* ChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D2012528296F1F006DF4AB /* ChatView.swift */; };
 		F1D20128282AB6EF006DF4AB /* CryptocurrencyValueManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D20127282AB6EF006DF4AB /* CryptocurrencyValueManager.swift */; };
-		F1D2012A282ABB1F006DF4AB /* HomeTabBarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D20129282ABB1F006DF4AB /* HomeTabBarViewModel.swift */; };
+		F1D2012A282ABB1F006DF4AB /* TabBarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D20129282ABB1F006DF4AB /* TabBarViewModel.swift */; };
 		F1D2012C282D4CD5006DF4AB /* DidSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D2012B282D4CD5006DF4AB /* DidSet.swift */; };
 		F1D2012E283401D7006DF4AB /* OfferSortView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D2012D283401D7006DF4AB /* OfferSortView.swift */; };
-		F1F5F18C283D69E800968366 /* OptionPickerItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1F5F188283D69E800968366 /* OptionPickerItemView.swift */; };
-		F1F5F18D283D69E800968366 /* SingleOptionPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1F5F189283D69E800968366 /* SingleOptionPickerView.swift */; };
-		F1F5F18E283D69E800968366 /* MultipleOptionPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1F5F18A283D69E800968366 /* MultipleOptionPickerView.swift */; };
-		F1F5F18F283D69E800968366 /* PhoneNumberTextFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1F5F18B283D69E800968366 /* PhoneNumberTextFieldView.swift */; };
 		F1F5F192283E928600968366 /* ChatFilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1F5F191283E928600968366 /* ChatFilterView.swift */; };
 		F1F5F194283E9FC500968366 /* MarketplacePaymentIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1F5F193283E9FC500968366 /* MarketplacePaymentIconView.swift */; };
 		F1F5F196283FDFF100968366 /* ChatItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1F5F195283FDFF100968366 /* ChatItemView.swift */; };
@@ -256,7 +261,19 @@
 		1627349009CA3CC8460BA3C3 /* Pods-vexl-vexlTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-vexl-vexlTests.debug.xcconfig"; path = "Target Support Files/Pods-vexl-vexlTests/Pods-vexl-vexlTests.debug.xcconfig"; sourceTree = "<group>"; };
 		2037AA1BF15F43490962C3E2 /* Pods-vexl-vexlTests.appstore.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-vexl-vexlTests.appstore.xcconfig"; path = "Target Support Files/Pods-vexl-vexlTests/Pods-vexl-vexlTests.appstore.xcconfig"; sourceTree = "<group>"; };
 		41AF8987CFFD44F9E45C3897 /* Pods-vexl-vexlTests.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-vexl-vexlTests.staging.xcconfig"; path = "Target Support Files/Pods-vexl-vexlTests/Pods-vexl-vexlTests.staging.xcconfig"; sourceTree = "<group>"; };
+		4F481E61284504050051D3B9 /* RangePickerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RangePickerView.swift; sourceTree = "<group>"; };
+		4F481E63284504050051D3B9 /* OptionPickerItemView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OptionPickerItemView.swift; sourceTree = "<group>"; };
+		4F481E64284504050051D3B9 /* SingleOptionPickerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SingleOptionPickerView.swift; sourceTree = "<group>"; };
+		4F481E65284504050051D3B9 /* MultipleOptionPickerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultipleOptionPickerView.swift; sourceTree = "<group>"; };
+		4F481E66284504050051D3B9 /* PhoneNumberTextFieldView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhoneNumberTextFieldView.swift; sourceTree = "<group>"; };
+		4F481E6D2845040A0051D3B9 /* Line.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Line.swift; sourceTree = "<group>"; };
+		4F481E6E2845040A0051D3B9 /* DashedLine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashedLine.swift; sourceTree = "<group>"; };
 		4F700CAF2840E4650085139F /* LoadingDotsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingDotsView.swift; sourceTree = "<group>"; };
+		4F700CB92844B08B0085139F /* BitcoinView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BitcoinView.swift; sourceTree = "<group>"; };
+		4F700CBB2844C3260085139F /* TabBarNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarNavigationController.swift; sourceTree = "<group>"; };
+		4F700CBD2844C4C20085139F /* StickyBitcoinView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickyBitcoinView.swift; sourceTree = "<group>"; };
+		4F700CBF2844C54E0085139F /* BitcoinViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BitcoinViewModel.swift; sourceTree = "<group>"; };
+		4F700CC22844DA250085139F /* OffsetScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OffsetScrollView.swift; sourceTree = "<group>"; };
 		4FBF61DD283BD11C00DDBE71 /* FilterCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterCoordinator.swift; sourceTree = "<group>"; };
 		4FBF61DF283BD12700DDBE71 /* FilterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterView.swift; sourceTree = "<group>"; };
 		4FBF61E1283BD12D00DDBE71 /* FilterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterViewModel.swift; sourceTree = "<group>"; };
@@ -412,7 +429,6 @@
 		F175ABA127F4A8F8000DAB15 /* UserAvailable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAvailable.swift; sourceTree = "<group>"; };
 		F175ABA927F4FC3E000DAB15 /* ImportPhoneContactsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportPhoneContactsViewModel.swift; sourceTree = "<group>"; };
 		F175ABAB27F4FF30000DAB15 /* ImportFacebookContactsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportFacebookContactsViewModel.swift; sourceTree = "<group>"; };
-		F18861FD2808136D00659786 /* DashedLine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashedLine.swift; sourceTree = "<group>"; };
 		F1886200280824D600659786 /* CoinValueViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinValueViewController.swift; sourceTree = "<group>"; };
 		F18862022808318E00659786 /* CoinValueRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinValueRouter.swift; sourceTree = "<group>"; };
 		F188620E280EABB600659786 /* FetchImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchImage.swift; sourceTree = "<group>"; };
@@ -428,7 +444,6 @@
 		F188624A2811551E00659786 /* CreateOfferView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateOfferView.swift; sourceTree = "<group>"; };
 		F188624D2811556100659786 /* OfferHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferHeaderView.swift; sourceTree = "<group>"; };
 		F18862502811710100659786 /* OfferStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferStatusView.swift; sourceTree = "<group>"; };
-		F18862522811734A00659786 /* RangePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RangePickerView.swift; sourceTree = "<group>"; };
 		F1886254281185E900659786 /* OfferFeePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferFeePickerView.swift; sourceTree = "<group>"; };
 		F1886256281193CA00659786 /* OfferLocationPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferLocationPickerView.swift; sourceTree = "<group>"; };
 		F18862582811CCAA00659786 /* DottedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DottedButton.swift; sourceTree = "<group>"; };
@@ -466,7 +481,6 @@
 		F1B5FCD527C703BF0018729B /* View+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+.swift"; sourceTree = "<group>"; };
 		F1B5FCD727C7040C0018729B /* RoundedCorners.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedCorners.swift; sourceTree = "<group>"; };
 		F1BBC7042835C2960067F81B /* ContactsCount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsCount.swift; sourceTree = "<group>"; };
-		F1BBC7072837254D0067F81B /* Line.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Line.swift; sourceTree = "<group>"; };
 		F1BBC70A283BE5570067F81B /* TT Satoshi SemiBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "TT Satoshi SemiBold.otf"; sourceTree = "<group>"; };
 		F1BBC70B283BE5570067F81B /* TT Satoshi Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "TT Satoshi Medium.otf"; sourceTree = "<group>"; };
 		F1BBC70C283BE5570067F81B /* TT Satoshi Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "TT Satoshi Regular.otf"; sourceTree = "<group>"; };
@@ -486,21 +500,17 @@
 		F1C6D09F27BDECB0009BD506 /* WelcomeView+LogoImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WelcomeView+LogoImageView.swift"; sourceTree = "<group>"; };
 		F1C6D0A127BE9157009BD506 /* LinkTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkTextView.swift; sourceTree = "<group>"; };
 		F1CFF3B727F6015B007D9FE1 /* UserSecurity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSecurity.swift; sourceTree = "<group>"; };
-		F1D200A528252C44006DF4AB /* HomeTabbarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTabbarViewController.swift; sourceTree = "<group>"; };
-		F1D2011928292868006DF4AB /* HomeTabBarCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTabBarCoordinator.swift; sourceTree = "<group>"; };
-		F1D2011C282960B9006DF4AB /* HomeTabBarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTabBarItem.swift; sourceTree = "<group>"; };
-		F1D2011E282960DC006DF4AB /* HomeTabBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTabBarView.swift; sourceTree = "<group>"; };
+		F1D200A528252C44006DF4AB /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
+		F1D2011928292868006DF4AB /* TabBarCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarCoordinator.swift; sourceTree = "<group>"; };
+		F1D2011C282960B9006DF4AB /* TabItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabItem.swift; sourceTree = "<group>"; };
+		F1D2011E282960DC006DF4AB /* TabBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarView.swift; sourceTree = "<group>"; };
 		F1D2012128296F0F006DF4AB /* ChatCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatCoordinator.swift; sourceTree = "<group>"; };
 		F1D2012328296F19006DF4AB /* ChatViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewModel.swift; sourceTree = "<group>"; };
 		F1D2012528296F1F006DF4AB /* ChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatView.swift; sourceTree = "<group>"; };
 		F1D20127282AB6EF006DF4AB /* CryptocurrencyValueManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptocurrencyValueManager.swift; sourceTree = "<group>"; };
-		F1D20129282ABB1F006DF4AB /* HomeTabBarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTabBarViewModel.swift; sourceTree = "<group>"; };
+		F1D20129282ABB1F006DF4AB /* TabBarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarViewModel.swift; sourceTree = "<group>"; };
 		F1D2012B282D4CD5006DF4AB /* DidSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DidSet.swift; sourceTree = "<group>"; };
 		F1D2012D283401D7006DF4AB /* OfferSortView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferSortView.swift; sourceTree = "<group>"; };
-		F1F5F188283D69E800968366 /* OptionPickerItemView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OptionPickerItemView.swift; sourceTree = "<group>"; };
-		F1F5F189283D69E800968366 /* SingleOptionPickerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SingleOptionPickerView.swift; sourceTree = "<group>"; };
-		F1F5F18A283D69E800968366 /* MultipleOptionPickerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultipleOptionPickerView.swift; sourceTree = "<group>"; };
-		F1F5F18B283D69E800968366 /* PhoneNumberTextFieldView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhoneNumberTextFieldView.swift; sourceTree = "<group>"; };
 		F1F5F191283E928600968366 /* ChatFilterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatFilterView.swift; sourceTree = "<group>"; };
 		F1F5F193283E9FC500968366 /* MarketplacePaymentIconView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketplacePaymentIconView.swift; sourceTree = "<group>"; };
 		F1F5F195283FDFF100968366 /* ChatItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatItemView.swift; sourceTree = "<group>"; };
@@ -545,6 +555,53 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		4F481E60284504050051D3B9 /* Pickers */ = {
+			isa = PBXGroup;
+			children = (
+				4F481E61284504050051D3B9 /* RangePickerView.swift */,
+				4F481E62284504050051D3B9 /* OptionPicker */,
+			);
+			path = Pickers;
+			sourceTree = "<group>";
+		};
+		4F481E62284504050051D3B9 /* OptionPicker */ = {
+			isa = PBXGroup;
+			children = (
+				4F481E63284504050051D3B9 /* OptionPickerItemView.swift */,
+				4F481E64284504050051D3B9 /* SingleOptionPickerView.swift */,
+				4F481E65284504050051D3B9 /* MultipleOptionPickerView.swift */,
+				4F481E66284504050051D3B9 /* PhoneNumberTextFieldView.swift */,
+			);
+			path = OptionPicker;
+			sourceTree = "<group>";
+		};
+		4F481E6C2845040A0051D3B9 /* Lines */ = {
+			isa = PBXGroup;
+			children = (
+				4F481E6D2845040A0051D3B9 /* Line.swift */,
+				4F481E6E2845040A0051D3B9 /* DashedLine.swift */,
+			);
+			path = Lines;
+			sourceTree = "<group>";
+		};
+		4F700CB82844B0750085139F /* BitcoinView */ = {
+			isa = PBXGroup;
+			children = (
+				4F700CBD2844C4C20085139F /* StickyBitcoinView.swift */,
+				4F700CB92844B08B0085139F /* BitcoinView.swift */,
+				4F700CBF2844C54E0085139F /* BitcoinViewModel.swift */,
+			);
+			path = BitcoinView;
+			sourceTree = "<group>";
+		};
+		4F700CC12844DA1B0085139F /* ScrollViews */ = {
+			isa = PBXGroup;
+			children = (
+				4F700CC22844DA250085139F /* OffsetScrollView.swift */,
+			);
+			path = ScrollViews;
+			sourceTree = "<group>";
+		};
 		4FBF61DC283BCE3500DDBE71 /* Filters */ = {
 			isa = PBXGroup;
 			children = (
@@ -554,15 +611,6 @@
 				4FBF61DF283BD12700DDBE71 /* FilterView.swift */,
 			);
 			path = Filters;
-			sourceTree = "<group>";
-		};
-		4FBF61E4283BE00A00DDBE71 /* Pickers */ = {
-			isa = PBXGroup;
-			children = (
-				F1F5F187283D69E800968366 /* OptionPicker */,
-				F18862522811734A00659786 /* RangePickerView.swift */,
-			);
-			path = Pickers;
 			sourceTree = "<group>";
 		};
 		4FBF620C283CE3F100DDBE71 /* Filter */ = {
@@ -602,9 +650,10 @@
 		4FBF6245283FD9BB00DDBE71 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				4F481E6C2845040A0051D3B9 /* Lines */,
+				4F481E60284504050051D3B9 /* Pickers */,
+				4F700CC12844DA1B0085139F /* ScrollViews */,
 				4FBF6246283FD9E500DDBE71 /* TextFields */,
-				F1BBC706283725410067F81B /* Lines */,
-				4FBF61E4283BE00A00DDBE71 /* Pickers */,
 				F1C6D09527BDAD71009BD506 /* Buttons */,
 				F1BFA8D627FFB2AC00F4E745 /* ImagePickerView.swift */,
 				F175AB8A27E8062A000DAB15 /* LoadingIndicatorView.swift */,
@@ -823,11 +872,13 @@
 		B08F38FB27AE7110008B344F /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
+				4F700CB82844B0750085139F /* BitcoinView */,
 				4FBF61DC283BCE3500DDBE71 /* Filters */,
 				F1D2012028296EF7006DF4AB /* Chat */,
 				F188626628169A3700659786 /* Marketplace */,
 				F188621D2810587100659786 /* Offer */,
-				F18861FF280824A500659786 /* Home */,
+				F1D200A428251C4E006DF4AB /* Tabbar */,
+				F18861FF280824A500659786 /* No needed */,
 				F1BFA951280223BD00F4E745 /* Profile */,
 				B08F399127AE7CEC008B344F /* SplashScreen */,
 				B08F399827AE7D4B008B344F /* Onboarding */,
@@ -1171,13 +1222,12 @@
 			path = ViewModels;
 			sourceTree = "<group>";
 		};
-		F18861FF280824A500659786 /* Home */ = {
+		F18861FF280824A500659786 /* No needed */ = {
 			isa = PBXGroup;
 			children = (
-				F1D200A428251C4E006DF4AB /* Tabbar */,
 				F1886204280835D600659786 /* CoinValue */,
 			);
-			path = Home;
+			path = "No needed";
 			sourceTree = "<group>";
 		};
 		F1886204280835D600659786 /* CoinValue */ = {
@@ -1255,8 +1305,8 @@
 			isa = PBXGroup;
 			children = (
 				F188626828169A3700659786 /* Components */,
-				F188627828169A7400659786 /* MarketplaceView.swift */,
 				F188626728169A3700659786 /* MarketplaceCoordinator.swift */,
+				F188627828169A7400659786 /* MarketplaceView.swift */,
 				F188626F28169A3700659786 /* MarketplaceViewModel.swift */,
 			);
 			path = Marketplace;
@@ -1356,15 +1406,6 @@
 			path = Modifiers;
 			sourceTree = "<group>";
 		};
-		F1BBC706283725410067F81B /* Lines */ = {
-			isa = PBXGroup;
-			children = (
-				F18861FD2808136D00659786 /* DashedLine.swift */,
-				F1BBC7072837254D0067F81B /* Line.swift */,
-			);
-			path = Lines;
-			sourceTree = "<group>";
-		};
 		F1BBC709283BE5430067F81B /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
@@ -1381,10 +1422,10 @@
 			isa = PBXGroup;
 			children = (
 				F1BFA96F2803A59F00F4E745 /* Components */,
+				F1BFA955280223BD00F4E745 /* UserProfileCoordinator.swift */,
 				F1BFA952280223BD00F4E745 /* UserProfileView.swift */,
 				F1BFA953280223BD00F4E745 /* UserProfileViewModel.swift */,
 				F1BFA954280223BD00F4E745 /* UserProfileViewModel+Options.swift */,
-				F1BFA955280223BD00F4E745 /* UserProfileCoordinator.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -1419,9 +1460,9 @@
 			isa = PBXGroup;
 			children = (
 				F1D2011B28296099006DF4AB /* Components */,
-				F1D200A528252C44006DF4AB /* HomeTabbarViewController.swift */,
-				F1D2011928292868006DF4AB /* HomeTabBarCoordinator.swift */,
-				F1D20129282ABB1F006DF4AB /* HomeTabBarViewModel.swift */,
+				F1D2011928292868006DF4AB /* TabBarCoordinator.swift */,
+				F1D200A528252C44006DF4AB /* TabBarController.swift */,
+				F1D20129282ABB1F006DF4AB /* TabBarViewModel.swift */,
 			);
 			path = Tabbar;
 			sourceTree = "<group>";
@@ -1429,8 +1470,9 @@
 		F1D2011B28296099006DF4AB /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				F1D2011C282960B9006DF4AB /* HomeTabBarItem.swift */,
-				F1D2011E282960DC006DF4AB /* HomeTabBarView.swift */,
+				F1D2011C282960B9006DF4AB /* TabItem.swift */,
+				F1D2011E282960DC006DF4AB /* TabBarView.swift */,
+				4F700CBB2844C3260085139F /* TabBarNavigationController.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -1444,17 +1486,6 @@
 				F1D2012528296F1F006DF4AB /* ChatView.swift */,
 			);
 			path = Chat;
-			sourceTree = "<group>";
-		};
-		F1F5F187283D69E800968366 /* OptionPicker */ = {
-			isa = PBXGroup;
-			children = (
-				F1F5F188283D69E800968366 /* OptionPickerItemView.swift */,
-				F1F5F189283D69E800968366 /* SingleOptionPickerView.swift */,
-				F1F5F18A283D69E800968366 /* MultipleOptionPickerView.swift */,
-				F1F5F18B283D69E800968366 /* PhoneNumberTextFieldView.swift */,
-			);
-			path = OptionPicker;
 			sourceTree = "<group>";
 		};
 		F1F5F190283E927900968366 /* Components */ = {
@@ -1764,7 +1795,6 @@
 				F12A14DE27D677420096543E /* RegisterContactsViewModel.swift in Sources */,
 				B08F390D27AE7110008B344F /* InfoBarView.swift in Sources */,
 				F1A9453C27F7E01D009B5AE3 /* ChallengeValidation.swift in Sources */,
-				F1F5F18E283D69E800968366 /* MultipleOptionPickerView.swift in Sources */,
 				F18862512811710100659786 /* OfferStatusView.swift in Sources */,
 				B08F399A27AE7D87008B344F /* OnboardingCoordinator.swift in Sources */,
 				F12A14F027D912410096543E /* RequestAccessContactsViewModel.swift in Sources */,
@@ -1786,14 +1816,14 @@
 				F175ABAA27F4FC3F000DAB15 /* ImportPhoneContactsViewModel.swift in Sources */,
 				F188624B2811551E00659786 /* CreateOfferView.swift in Sources */,
 				F1C6D09727BDAD7F009BD506 /* LargeButton.swift in Sources */,
-				F1BBC7082837254D0067F81B /* Line.swift in Sources */,
 				F13B266528192BBF0011F2FB /* OfferInitialData.swift in Sources */,
 				F12A14F327D96FD40096543E /* ImportContactsView.swift in Sources */,
 				F12A150827E1A4940096543E /* RequestAccessAlert.swift in Sources */,
 				F151A29427C826AD000D7242 /* RegistrationCounterView.swift in Sources */,
 				B0E9BB2E2815C7260012BF1D /* HMAC.swift in Sources */,
 				4FBF61E2283BD12D00DDBE71 /* FilterViewModel.swift in Sources */,
-				F1D2011D282960B9006DF4AB /* HomeTabBarItem.swift in Sources */,
+				F1D2011D282960B9006DF4AB /* TabItem.swift in Sources */,
+				4F481E6B284504050051D3B9 /* PhoneNumberTextFieldView.swift in Sources */,
 				4F700CB02840E4650085139F /* LoadingDotsView.swift in Sources */,
 				B0F206EF27AE8F6900A44E72 /* Publisher+.swift in Sources */,
 				F1A9453627F686D1009B5AE3 /* CodeValidation.swift in Sources */,
@@ -1801,7 +1831,7 @@
 				F13B2675281EB23A0011F2FB /* ContactFriendLevel.swift in Sources */,
 				B0E9BB302815C7310012BF1D /* SHA.swift in Sources */,
 				B08F390727AE7110008B344F /* UserDefault.swift in Sources */,
-				F1D2012A282ABB1F006DF4AB /* HomeTabBarViewModel.swift in Sources */,
+				F1D2012A282ABB1F006DF4AB /* TabBarViewModel.swift in Sources */,
 				4FBF6213283CF54400DDBE71 /* FilterHeaderView.swift in Sources */,
 				B08F391727AE7112008B344F /* AuthenticationManager.swift in Sources */,
 				F1886257281193CA00659786 /* OfferLocationPickerView.swift in Sources */,
@@ -1814,6 +1844,7 @@
 				F18862492811551700659786 /* CreateOfferViewModel.swift in Sources */,
 				F1BFA957280223BD00F4E745 /* UserProfileViewModel.swift in Sources */,
 				F1BFA97328043D6300F4E745 /* Image+.swift in Sources */,
+				4F481E67284504050051D3B9 /* RangePickerView.swift in Sources */,
 				F175AB8B27E8062A000DAB15 /* LoadingIndicatorView.swift in Sources */,
 				B0F206F727AEB2C000A44E72 /* UIViewStyle.swift in Sources */,
 				F1A9453227F686C8009B5AE3 /* UserSignature.swift in Sources */,
@@ -1825,6 +1856,7 @@
 				F1D2012628296F1F006DF4AB /* ChatView.swift in Sources */,
 				F12A14F727D9768E0096543E /* ImportContactListView.swift in Sources */,
 				B08F38DF27AE7110008B344F /* DIContainer.swift in Sources */,
+				4F700CBC2844C3260085139F /* TabBarNavigationController.swift in Sources */,
 				B08F391E27AE7112008B344F /* AppDelegate.swift in Sources */,
 				B08F394F27AE7112008B344F /* Localization.swift in Sources */,
 				B0E9BB2C2815C71E0012BF1D /* ECC.swift in Sources */,
@@ -1833,6 +1865,7 @@
 				F1886201280824D600659786 /* CoinValueViewController.swift in Sources */,
 				B0F206F127AE94C400A44E72 /* InitialScreenManager.swift in Sources */,
 				F12A14E027D6774C0096543E /* RegisterContactsView.swift in Sources */,
+				4F700CBE2844C4C20085139F /* StickyBitcoinView.swift in Sources */,
 				F188626128129ED600659786 /* OfferTriggersView.swift in Sources */,
 				F1BFA958280223BD00F4E745 /* UserProfileViewModel+Options.swift in Sources */,
 				F13B266028189F580011F2FB /* OffersService.swift in Sources */,
@@ -1842,6 +1875,7 @@
 				4FBF6242283FBF6B00DDBE71 /* RequestOfferViewModel.swift in Sources */,
 				F12A150127DFC1D70096543E /* ImportContactItemView.swift in Sources */,
 				F1BFA96E2803A49300F4E745 /* UserProfileView+Item.swift in Sources */,
+				4F481E68284504050051D3B9 /* OptionPickerItemView.swift in Sources */,
 				B08F397A27AE7112008B344F /* Codable+.swift in Sources */,
 				F188620F280EABB600659786 /* FetchImage.swift in Sources */,
 				F175AB9B27F1432E000DAB15 /* ContactsRouter.swift in Sources */,
@@ -1852,12 +1886,12 @@
 				F1B5FCD427C703230018729B /* CardModifier.swift in Sources */,
 				F188627328169A3700659786 /* MarketplaceFeedView.swift in Sources */,
 				F12A14F527D96FDC0096543E /* ImportContactsViewModel.swift in Sources */,
-				F18862532811734A00659786 /* RangePickerView.swift in Sources */,
 				F1A9453327F686C8009B5AE3 /* UserKeys.swift in Sources */,
 				B08F391C27AE7112008B344F /* BaseService.swift in Sources */,
 				F1C6D09E27BDDD4C009BD506 /* TextStyle.swift in Sources */,
 				4FBF6209283CD5C000DDBE71 /* OfferAdvancedFilterFriendSourceView.swift in Sources */,
 				F188627528169A3700659786 /* MarketplaceSegmentView.swift in Sources */,
+				4F700CC02844C54E0085139F /* BitcoinViewModel.swift in Sources */,
 				F1D2012E283401D7006DF4AB /* OfferSortView.swift in Sources */,
 				B08F393627AE7112008B344F /* UIDevice+.swift in Sources */,
 				F13B266F281D4A510011F2FB /* Paged.swift in Sources */,
@@ -1874,8 +1908,8 @@
 				F188621C2810153700659786 /* CoinValueGraphView.swift in Sources */,
 				F188627028169A3700659786 /* MarketplaceCoordinator.swift in Sources */,
 				B08F391927AE7112008B344F /* User.swift in Sources */,
-				F1F5F18F283D69E800968366 /* PhoneNumberTextFieldView.swift in Sources */,
-				F1D200A628252C44006DF4AB /* HomeTabbarViewController.swift in Sources */,
+				4F481E69284504050051D3B9 /* SingleOptionPickerView.swift in Sources */,
+				F1D200A628252C44006DF4AB /* TabBarController.swift in Sources */,
 				F1886218281005BD00659786 /* CoinValueHeaderView.swift in Sources */,
 				F175AB9927F0D2D8000DAB15 /* ContactsService.swift in Sources */,
 				4FBF6244283FBF7200DDBE71 /* RequestOfferView.swift in Sources */,
@@ -1883,8 +1917,8 @@
 				B08F397E27AE7112008B344F /* UIViewController+.swift in Sources */,
 				B08F396427AE7112008B344F /* UserError.swift in Sources */,
 				F1A9453727F686D1009B5AE3 /* PhoneVerification.swift in Sources */,
+				F1D2011A28292868006DF4AB /* TabBarCoordinator.swift in Sources */,
 				4FBF623D283F91B600DDBE71 /* ContactAvatarInfo.swift in Sources */,
-				F1D2011A28292868006DF4AB /* HomeTabBarCoordinator.swift in Sources */,
 				F188624E2811556100659786 /* OfferHeaderView.swift in Sources */,
 				4FBF61DE283BD11C00DDBE71 /* FilterCoordinator.swift in Sources */,
 				F175AB9D27F147B5000DAB15 /* ContactsManager.swift in Sources */,
@@ -1893,6 +1927,7 @@
 				F1F5F196283FDFF100968366 /* ChatItemView.swift in Sources */,
 				F13B2673281D81060011F2FB /* EncryptedOffer.swift in Sources */,
 				F188627928169A7400659786 /* MarketplaceView.swift in Sources */,
+				4F481E702845040A0051D3B9 /* DashedLine.swift in Sources */,
 				B08F397C27AE7112008B344F /* SwipeNavigationController.swift in Sources */,
 				4FBF620B283CE08800DDBE71 /* OfferAmountRangeView.swift in Sources */,
 				F13B265C281897DE0011F2FB /* OfferAdvanceFilterFriendDegreeView.swift in Sources */,
@@ -1900,6 +1935,7 @@
 				F1BBC7052835C2960067F81B /* ContactsCount.swift in Sources */,
 				B08F38E227AE7110008B344F /* Inject.swift in Sources */,
 				B08F395727AE7112008B344F /* ApiRouter.swift in Sources */,
+				4F481E6A284504050051D3B9 /* MultipleOptionPickerView.swift in Sources */,
 				F188627428169A3700659786 /* MarketplaceFeedFooterView.swift in Sources */,
 				4FD8E3E02821B922003B165E /* BitcoinData.swift in Sources */,
 				F1042BA227BEADB70048C2F0 /* WelcomeView+Agreement.swift in Sources */,
@@ -1920,13 +1956,13 @@
 				F1B5321C28202B36009D4E0C /* OfferItemView.swift in Sources */,
 				F1F5F192283E928600968366 /* ChatFilterView.swift in Sources */,
 				F1A9454627F81278009B5AE3 /* ContactInformation.swift in Sources */,
-				F1D2011F282960DC006DF4AB /* HomeTabBarView.swift in Sources */,
+				F1D2011F282960DC006DF4AB /* TabBarView.swift in Sources */,
 				B08F391327AE7112008B344F /* ManagerAssembly.swift in Sources */,
 				F13B266928194A060011F2FB /* OffersRouter.swift in Sources */,
 				F188625F2811E53400659786 /* OfferPaymentMethodView.swift in Sources */,
-				F18861FE2808136D00659786 /* DashedLine.swift in Sources */,
 				4FBF61E0283BD12700DDBE71 /* FilterView.swift in Sources */,
 				F18862652812E91700659786 /* OfferAdvancedFilterView.swift in Sources */,
+				4F481E6F2845040A0051D3B9 /* Line.swift in Sources */,
 				F14D29C727BFD93C00D1CD85 /* ButtonStyle.swift in Sources */,
 				F13B265928188A580011F2FB /* SliderView.swift in Sources */,
 				B08F394527AE7112008B344F /* ReusableView.swift in Sources */,
@@ -1943,6 +1979,7 @@
 				B0EEE11827B14D360097031E /* WelcomeViewModel.swift in Sources */,
 				F151A2AB27CE818C000D7242 /* RegisterNameAvatarView+PhoneVerification.swift in Sources */,
 				F1BFA956280223BD00F4E745 /* UserProfileView.swift in Sources */,
+				4F700CC32844DA250085139F /* OffsetScrollView.swift in Sources */,
 				F1B5FCBE27C68EA70018729B /* OnboardingView+BottomButtons.swift in Sources */,
 				F1886255281185E900659786 /* OfferFeePickerView.swift in Sources */,
 				4FBF624C2840D31C00DDBE71 /* ToggleKeyboardBaseViewController.swift in Sources */,
@@ -1956,7 +1993,6 @@
 				F1B5FCD827C7040C0018729B /* RoundedCorners.swift in Sources */,
 				F151A29D27C866C7000D7242 /* RegisterNameAvatarView.swift in Sources */,
 				B08F395F27AE7112008B344F /* String+.swift in Sources */,
-				F1F5F18C283D69E800968366 /* OptionPickerItemView.swift in Sources */,
 				F12A14FF27DFC1620096543E /* ImportContactSearchBar.swift in Sources */,
 				F188622328105A2000659786 /* UserOffersView.swift in Sources */,
 				F1C6D0A027BDECB0009BD506 /* WelcomeView+LogoImageView.swift in Sources */,
@@ -1967,12 +2003,12 @@
 				F1886211280EC49B00659786 /* Image+Base64.swift in Sources */,
 				F188622128105A1200659786 /* UserOffersViewModel.swift in Sources */,
 				F1D2012228296F0F006DF4AB /* ChatCoordinator.swift in Sources */,
+				4F700CBA2844B08B0085139F /* BitcoinView.swift in Sources */,
 				B08F394327AE7112008B344F /* Keychain+.swift in Sources */,
 				F13B2677281F43A10011F2FB /* Offer.swift in Sources */,
 				F188625B2811D84000659786 /* SegmentedPickerView.swift in Sources */,
 				F175AB8727E4D5C8000DAB15 /* UIScreen+.swift in Sources */,
 				F18862472811550C00659786 /* CreateOfferCoordinator.swift in Sources */,
-				F1F5F18D283D69E800968366 /* SingleOptionPickerView.swift in Sources */,
 				F151A2A727C962CC000D7242 /* RegisterNameAvatarView+NameInput.swift in Sources */,
 				F1BFA8D727FFB2AC00F4E745 /* ImagePickerView.swift in Sources */,
 				B08F399527AE7D29008B344F /* SplashScreenViewModel.swift in Sources */,

@@ -1,5 +1,5 @@
 //
-//  HomeTabBarView.swift
+//  TabBarView.swift
 //  vexl
 //
 //  Created by Diego Espinoza on 9/05/22.
@@ -8,7 +8,7 @@
 import UIKit
 import Cleevio
 
-final class HomeTabBarView: UIView {
+final class TabBarView: UIView {
 
     var selectedItem: ActionSubject<Int> = .init()
 
@@ -21,11 +21,11 @@ final class HomeTabBarView: UIView {
         return stackView
     }()
 
-    var selectedButton: HomeTabBarButton? {
+    var selectedButton: TabBarButton? {
         tabBarButtons.first(where: { $0.isSelected })
     }
 
-    private var tabBarButtons: [HomeTabBarButton] = []
+    private var tabBarButtons: [TabBarButton] = []
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -44,7 +44,7 @@ final class HomeTabBarView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func add(tabs: [HomeTabBarItemType], withSelectedIndex selectedIndex: Int = 0) {
+    func add(tabs: [TabItemType], withSelectedIndex selectedIndex: Int = 0) {
         for button in tabBarButtons {
             stackView.removeArrangedSubview(button)
         }
@@ -52,7 +52,7 @@ final class HomeTabBarView: UIView {
         tabBarButtons.removeAll()
 
         for tab in tabs {
-            let button = HomeTabBarButton(item: tab.homeTabBarItem)
+            let button = TabBarButton(item: tab.tabItem)
             button.addTarget(self, action: #selector(itemTap(sender:)), for: .touchUpInside)
             tabBarButtons.append(button)
             stackView.addArrangedSubview(button)
@@ -62,7 +62,7 @@ final class HomeTabBarView: UIView {
     }
 
     @objc
-    private func itemTap(sender: HomeTabBarButton) {
+    private func itemTap(sender: TabBarButton) {
         guard let index = tabBarButtons.firstIndex(of: sender) else { return }
         selectedButton?.isSelected = false
         tabBarButtons[index].isSelected = true
