@@ -171,6 +171,7 @@
 		F188627928169A7400659786 /* MarketplaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F188627828169A7400659786 /* MarketplaceView.swift */; };
 		F19D602D2845538C00876170 /* ChatMessageDateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F19D602C2845538C00876170 /* ChatMessageDateView.swift */; };
 		F19D602F2845570500876170 /* ChatMessageBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F19D602E2845570500876170 /* ChatMessageBubbleView.swift */; };
+		F19D60312845A14000876170 /* ChatMessageInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F19D60302845A14000876170 /* ChatMessageInputView.swift */; };
 		F1A9452D27F67FD5009B5AE3 /* PhoneConfirmation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1A9452C27F67FD5009B5AE3 /* PhoneConfirmation.swift */; };
 		F1A9453227F686C8009B5AE3 /* UserSignature.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1A9453027F686C8009B5AE3 /* UserSignature.swift */; };
 		F1A9453327F686C8009B5AE3 /* UserKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1A9453127F686C8009B5AE3 /* UserKeys.swift */; };
@@ -448,6 +449,7 @@
 		F188627828169A7400659786 /* MarketplaceView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MarketplaceView.swift; sourceTree = "<group>"; };
 		F19D602C2845538C00876170 /* ChatMessageDateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageDateView.swift; sourceTree = "<group>"; };
 		F19D602E2845570500876170 /* ChatMessageBubbleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageBubbleView.swift; sourceTree = "<group>"; };
+		F19D60302845A14000876170 /* ChatMessageInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageInputView.swift; sourceTree = "<group>"; };
 		F1A9452C27F67FD5009B5AE3 /* PhoneConfirmation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneConfirmation.swift; sourceTree = "<group>"; };
 		F1A9453027F686C8009B5AE3 /* UserSignature.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserSignature.swift; sourceTree = "<group>"; };
 		F1A9453127F686C8009B5AE3 /* UserKeys.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserKeys.swift; sourceTree = "<group>"; };
@@ -1269,6 +1271,7 @@
 			children = (
 				F19D602C2845538C00876170 /* ChatMessageDateView.swift */,
 				F19D602E2845570500876170 /* ChatMessageBubbleView.swift */,
+				F19D60302845A14000876170 /* ChatMessageInputView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -1955,6 +1958,7 @@
 				B08F391927AE7112008B344F /* User.swift in Sources */,
 				F1D200A628252C44006DF4AB /* HomeTabbarViewController.swift in Sources */,
 				F1886218281005BD00659786 /* CoinValueHeaderView.swift in Sources */,
+				F19D60312845A14000876170 /* ChatMessageInputView.swift in Sources */,
 				F175AB9927F0D2D8000DAB15 /* ContactsService.swift in Sources */,
 				F1C267D828413B500014998C /* FetchImage.swift in Sources */,
 				4FBF6244283FBF7200DDBE71 /* RequestOfferView.swift in Sources */,

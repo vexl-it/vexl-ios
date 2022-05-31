@@ -13,7 +13,7 @@ struct ChatMessageDateView: View {
     let isInitial: Bool
 
     var body: some View {
-        Text("Date goes here\(isInitial ? " • Chat has started" : "")")
+        Text("Date goes here\(isInitial ? L.chatMessageStarted() : "")")
             .textStyle(.descriptionSemiBold)
             .foregroundColor(Appearance.Colors.gray3)
     }

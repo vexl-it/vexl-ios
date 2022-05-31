@@ -16,6 +16,8 @@ final class ChatMessageViewModel: ViewModelType, ObservableObject {
         case dismissTap
         case continueTap
         case chatActionTap(action: ChatMessageAction)
+        case messageSend
+        case cameraTap
     }
 
     let action: ActionSubject<UserAction> = .init()
@@ -23,7 +25,6 @@ final class ChatMessageViewModel: ViewModelType, ObservableObject {
     // MARK: - View Bindings
 
     @Published var currentMessage: String = ""
-    @Published var keyboardHeight: CGFloat = 0
 
     @Published var primaryActivity: Activity = .init()
     @Published var isLoading = false
@@ -50,9 +51,8 @@ final class ChatMessageViewModel: ViewModelType, ObservableObject {
         "Keichi"
     }
 
-    var messages: [ChatMessageGroup] {
-        ChatMessageGroup.stub
-    }
+    var messages: [ChatMessageGroup] = ChatMessageGroup.stub
+    let offerType: OfferType = .buy
 
     private let cancelBag: CancelBag = .init()
 
@@ -61,22 +61,37 @@ final class ChatMessageViewModel: ViewModelType, ObservableObject {
     }
 
     private func setupActionBindings() {
+
+        let action = action
+            .share()
+
         action
             .filter { $0 == .dismissTap }
             .map { _ -> Route in .dismissTapped }
             .subscribe(route)
             .store(in: cancelBag)
 
-        NotificationCenter.default.publisher(for: UIResponder.keyboardDidShowNotification, object: nil)
-            .map(\.userInfo)
-            .compactMap { userInfo -> CGFloat? in
-                guard let frame = userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return nil }
-                return frame.height
+        action
+            .filter { $0 == .messageSend }
+            .withUnretained(self)
+            .sink { owner, _ in
+                owner.messages.appendMessage(.init(text: owner.currentMessage, isContact: false))
+                owner.currentMessage = ""
             }
-            .assign(to: &$keyboardHeight)
+            .store(in: cancelBag)
+    }
+}
 
-        NotificationCenter.default.publisher(for: UIResponder.keyboardDidHideNotification, object: nil)
-            .map { _ in 0 }
-            .assign(to: &$keyboardHeight)
+extension Array where Element == ChatMessageGroup {
+    mutating func appendMessage(_ message: ChatMessageGroup.Message) {
+        if let lastGroup = self.last {
+            var updatedGroup = lastGroup
+            updatedGroup.addMessage(message)
+            self[self.count - 1] = updatedGroup
+        } else {
+            let newGroup = ChatMessageGroup(date: Date(),
+                                            messages: [message])
+            self.append(newGroup)
+        }
     }
 }

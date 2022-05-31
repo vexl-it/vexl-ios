@@ -66,6 +66,12 @@
 "user.profile.request.data" = "Request known data";
 "user.profile.logout" = "Log out";
 "marketplace.currency.bitcoin" = "Bitcoin";
+"marketplace.currency.variation.1day" = "%@ today";
+"marketplace.currency.variation.1week" = "%@ last week";
+"marketplace.currency.variation.1month" = "%@ last month";
+"marketplace.currency.variation.3month" = "%@ 3 months ago";
+"marketplace.currency.variation.6month" = "%@ 6 months ago";
+"marketplace.currency.variation1year" = "%@ last year";
 "marketplace.currency.1day" = "1 day";
 "marketplace.currency.1week" = "1 week";
 "marketplace.currency.1month" = "1 mth";
@@ -155,3 +161,10 @@
 "chat.request.accept" = "Accept";
 "chat.request.decline" = "Decline";
 "chat.request.myOffer" = "My Offer";
+"chat.message.reveal.identity" = "Reveal Identity";
+"chat.message.offer" = "My Offer";
+"chat.message.common.friend" = "Common Friends";
+"chat.message.delete.chat" = "Delete Chat";
+"chat.message.block.user" = "Block User";
+"chat.message.input.placeholder" = "Type something";
+"chat.message.started" = "• Chat has started";

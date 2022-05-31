@@ -26,7 +26,14 @@ struct ChatMessageView: View {
             messages
                 .frame(maxHeight: .infinity)
 
-            messageInput
+            ChatMessageInputView(text: $viewModel.currentMessage,
+                                 sendAction: {
+                viewModel.action.send(.messageSend)
+            },
+                                 cameraAction: {
+                viewModel.action.send(.cameraTap)
+            })
+                .padding([.horizontal, .bottom], Appearance.GridGuide.padding)
         }
         .frame(maxWidth: .infinity)
         .background(Color.black.edgesIgnoringSafeArea(.all))
@@ -46,7 +53,7 @@ struct ChatMessageView: View {
                     Text(viewModel.username)
                         .foregroundColor(Appearance.Colors.whiteText)
 
-                    Text(" is Buying")
+                    Text(viewModel.offerType == .buy ? L.marketplaceDetailUserBuy("") : L.marketplaceDetailUserSell(""))
                         .foregroundColor(Appearance.Colors.whiteText)
                 }
                 .frame(maxWidth: .infinity)
@@ -89,29 +96,6 @@ struct ChatMessageView: View {
         }
         .padding([.horizontal, .top], Appearance.GridGuide.point)
     }
-
-    private var messageInput: some View {
-        HStack {
-            Button("Image") {
-                print("will show image picker")
-            }
-
-            HStack {
-                PlaceholderTextField(placeholder: "Type something",
-                                     textColor: Appearance.Colors.gray4,
-                                     text: $viewModel.currentMessage)
-
-                Button("send") {
-                    print("will send message")
-                }
-            }
-            .padding()
-            .frame(height: Appearance.GridGuide.chatTextFieldHeight)
-            .background(Appearance.Colors.gray1)
-            .cornerRadius(Appearance.GridGuide.chatTextFieldHeight * 0.5)
-        }
-        .padding([.horizontal, .bottom], Appearance.GridGuide.padding)
-    }
 }
 
 extension ChatMessageView {
@@ -129,15 +113,15 @@ extension ChatMessageView {
         var title: String {
             switch self {
             case .revealIdentity:
-                return ".revealIdentityTap"
+                return L.chatMessageRevealIdentity()
             case .showOffer:
-                return ".showOfferTap"
+                return L.chatMessageOffer()
             case .commonFriends:
-                return ".commonFriendTap"
+                return L.chatMessageCommonFriend()
             case .deleteChat:
-                return ".deleteChatTap"
+                return L.chatMessageDeleteChat()
             case .blockUser:
-                return ".blockUserTap"
+                return L.chatMessageBlockUser()
             }
         }
     }
@@ -145,13 +129,17 @@ extension ChatMessageView {
     struct MessageGroup: Identifiable, Hashable {
         let id = UUID()
         let date: Date
-        let messages: [Message]
+        var messages: [Message]
 
         // swiftlint: disable nesting
         struct Message: Identifiable, Hashable {
             let id = UUID()
             let text: String
             let isContact: Bool
+        }
+
+        mutating func addMessage(_ message: Message) {
+            self.messages.append(message)
         }
 
         static var stub: [MessageGroup] {

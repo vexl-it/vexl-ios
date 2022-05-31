@@ -53,7 +53,7 @@ extension ChatMessageBubbleView {
 struct ChatMessageBubbleViewPreview: PreviewProvider {
     static var previews: some View {
         VStack {
-            ChatMessageBubbleView(text: "qwertyyutwrewerwer qwertyyutwrewerwer qwertyyutwrewerwer qwertyyutwrewerwer qwertyyutwrewerwer ", style: .contact)
+            ChatMessageBubbleView(text: "qwertyyutwrewerwer qwer qwertyyutwrewerwer qwertyyutwrewerwer qwertyyutwrewerwer ", style: .contact)
             ChatMessageBubbleView(text: "qwererwer qwertyyrewewer qwetyyutwrewerwer qwertyyutwrewerwer qwer erew12312erwer ", style: .user)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
