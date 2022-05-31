@@ -10,48 +10,47 @@ import Cleevio
 import Combine
 
 struct MarketplaceView: View {
-
     @ObservedObject var viewModel: MarketplaceViewModel
+    @State private var bitcoinSize: CGSize = .zero
+    @State private var stickHeaderIsVisible = false
 
     var body: some View {
-        content
-            .background(Color.black.edgesIgnoringSafeArea(.bottom))
-            .cornerRadius(Appearance.GridGuide.buttonCorner,
-                          corners: [.topLeft, .topRight])
-            .transaction { transaction in
-                transaction.animation = .easeInOut(duration: 0.25)
-            }
+        StickyBitcoinView(
+            bitcoinViewModel: viewModel.bitcoinViewModel,
+            content: { marketPlaceContent },
+            stickyHeader: { marketPlaceHeader }
+        )
+        .animation(.easeInOut, value: viewModel.selectedOption)
+        .background(Color.black.edgesIgnoringSafeArea(.all))
+        .navigationBarHidden(true)
     }
 
-    private var content: some View {
-        VStack(spacing: Appearance.GridGuide.mediumPadding2) {
+    private var marketPlaceContent: some View {
+        VStack(spacing: Appearance.GridGuide.mediumPadding1) {
+            marketPlaceHeader
+
+            ForEach(viewModel.marketplaceFeedItems) { item in
+                MarketplaceFeedView(data: item,
+                                    displayFooter: false,
+                                    detailAction: { id in
+                    viewModel.action.send(.offerDetailTapped(id: id))
+                },
+                                    requestAction: { id in
+                    viewModel.action.send(.requestOfferTapped(id: id))
+                })
+                .padding(.horizontal, Appearance.GridGuide.point)
+            }
+        }
+        .animation(.easeInOut, value: viewModel.marketplaceFeedItems)
+    }
+
+    private var marketPlaceHeader: some View {
+        VStack(spacing: Appearance.GridGuide.padding) {
             MarketplaceSegmentView(selectedOption: $viewModel.selectedOption)
                 .padding(.top, Appearance.GridGuide.mediumPadding2)
 
             filter
-
-            ScrollView {
-                Group {
-                    ForEach(viewModel.marketplaceFeedItems) { item in
-                        MarketplaceFeedView(data: item,
-                                            displayFooter: false,
-                                            detailAction: { id in
-                            viewModel.action.send(.offerDetailTapped(id: id))
-                        },
-                                            requestAction: { id in
-                            viewModel.action.send(.requestOfferTapped(id: id))
-                        })
-                            .padding(.horizontal, Appearance.GridGuide.point)
-                    }
-                }
-                .padding(.bottom, Appearance.GridGuide.homeTabBarHeight)
-            }
-            .transaction { transaction in
-                transaction.animation = nil
-            }
         }
-        .frame(maxHeight: .infinity, alignment: .top)
-        .cornerRadius(Appearance.GridGuide.padding)
     }
 
     private var filter: some View {
@@ -77,21 +76,12 @@ struct MarketplaceView: View {
 #if DEBUG || DEVEL
 struct BuySellViewPreview: PreviewProvider {
     static var previews: some View {
-        let viewModel = MarketplaceViewModel()
-        viewModel.offerItems = [
-            .init(minAmount: 100,
-                  maxAmount: 2_000,
-                  description: "qwerty",
-                  feeState: OfferFeeOption.withoutFee,
-                  feeAmount: 0,
-                  locationState: OfferTradeLocationOption.online,
-                  paymentMethods: [OfferPaymentMethodOption.revolut, .bank],
-                  btcNetwork: [OfferAdvancedBTCOption.onChain],
-                  friendLevel: .firstDegree,
-                  type: .buy)
-        ]
-        return MarketplaceView(viewModel: viewModel)
-            .previewDevice("iPhone 11")
+        MarketplaceView(
+            viewModel: MarketplaceViewModel(
+                bitcoinViewModel: .init()
+            )
+        )
+        .previewDevice("iPhone 11")
     }
 }
 #endif

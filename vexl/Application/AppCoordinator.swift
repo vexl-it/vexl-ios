@@ -72,7 +72,7 @@ extension AppCoordinator {
     }
 
     private func showHomeCoordinator() -> CoordinatingResult<Void> {
-        coordinate(to: HomeTabBarCoordinator(window: window))
+        coordinate(to: TabBarCoordinator(window: window))
             .prefix(1)
             .eraseToAnyPublisher()
     }

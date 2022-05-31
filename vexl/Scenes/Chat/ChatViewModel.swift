@@ -42,9 +42,11 @@ final class ChatViewModel: ViewModelType, ObservableObject {
 
     // MARK: - Variables
 
+    let bitcoinViewModel: BitcoinViewModel
     private let cancelBag: CancelBag = .init()
 
-    init() {
+    init(bitcoinViewModel: BitcoinViewModel) {
+        self.bitcoinViewModel = bitcoinViewModel
         setupActionBindings()
     }
 

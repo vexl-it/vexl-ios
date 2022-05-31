@@ -14,6 +14,16 @@ struct ChatView: View {
     @ObservedObject var viewModel: ChatViewModel
 
     var body: some View {
+        VStack(spacing: .zero) {
+            BitcoinView(viewModel: viewModel.bitcoinViewModel)
+
+            chatContent
+        }
+        .background(Color.black.edgesIgnoringSafeArea(.all))
+        .navigationBarHidden(true)
+    }
+
+    private var chatContent: some View {
         VStack(alignment: .leading) {
             header
 
@@ -61,7 +71,7 @@ struct ChatView: View {
 
 struct ChatViewPreview: PreviewProvider {
     static var previews: some View {
-        ChatView(viewModel: .init())
+        ChatView(viewModel: .init(bitcoinViewModel: .init()))
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .previewDevice("iPhone 11")
     }

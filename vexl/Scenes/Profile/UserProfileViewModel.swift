@@ -42,17 +42,6 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
         primaryActivity.indicator
     }
 
-    // MARK: - Coordinator Bindings
-
-    enum Route: Equatable {
-        case dismissTapped
-    }
-
-    var route: CoordinatingSubject<Route> = .init()
-
-    // MARK: - Variables
-
-    private let cancelBag: CancelBag = .init()
     // TODO: - Remove hardcoded values
     var username: String {
         authenticationManager.currentUser?.username ?? ""
@@ -66,6 +55,26 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
         Option.groupedOptions
     }
 
+    // MARK: - Coordinator Bindings
+
+    enum Route: Equatable {
+        case dismissTapped
+    }
+
+    var route: CoordinatingSubject<Route> = .init()
+
+    // MARK: - Variables
+
+    let bitcoinViewModel: BitcoinViewModel
+    private let cancelBag: CancelBag = .init()
+
+    init(bitcoinViewModel: BitcoinViewModel) {
+        self.bitcoinViewModel = bitcoinViewModel
+        setupActivity()
+        setupDataBindings()
+        setupBindings()
+    }
+
     func subtitle(for item: UserProfileViewModel.Option) -> String? {
         switch item {
         case .contacts:
@@ -76,12 +85,6 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
         default:
             return nil
         }
-    }
-
-    init() {
-        setupActivity()
-        setupDataBindings()
-        setupBindings()
     }
 
     private func setupActivity() {
