@@ -30,7 +30,7 @@ final class CryptocurrencyValueManager: CryptocurrencyValueManagerType {
     func startFetchingCurrency(every interval: TimeInterval) {
         cancellable = Timer.publish(every: interval, on: RunLoop.main, in: .default)
             .autoconnect()
-            .merge(with: Just(Date()))
+            .prepend(Date())
             .flatMapLatest(with: self) { owner, _ -> AnyPublisher<BitcoinData, Never> in
                 owner.userService
                     .getBitcoinData()
