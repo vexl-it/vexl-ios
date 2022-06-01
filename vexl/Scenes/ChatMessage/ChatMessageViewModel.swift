@@ -13,6 +13,7 @@ final class ChatMessageViewModel: ViewModelType, ObservableObject {
     enum Modal {
         case none
         case offer
+        case friends
     }
 
     // MARK: - Action Binding
@@ -100,6 +101,15 @@ final class ChatMessageViewModel: ViewModelType, ObservableObject {
             }
             .filter { $0 == .showOffer }
             .map { _ -> Modal in .offer }
+            .assign(to: &$presentedModal)
+
+        action
+            .compactMap { action -> ChatMessageAction? in
+                if case let .chatActionTap(chatAction) = action { return chatAction }
+                return nil
+            }
+            .filter { $0 == .commonFriends }
+            .map { _ -> Modal in .friends }
             .assign(to: &$presentedModal)
     }
 }

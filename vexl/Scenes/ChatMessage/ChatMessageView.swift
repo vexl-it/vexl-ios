@@ -32,6 +32,14 @@ struct ChatMessageView: View {
                 }
                 .zIndex(2)
                 .transition(.move(edge: .bottom))
+            } else if viewModel.presentedModal == .friends {
+                ChatMessageCommonFriendsView {
+                    withAnimation {
+                        viewModel.action.send(.dismissModal)
+                    }
+                }
+                .zIndex(2)
+                .transition(.move(edge: .bottom))
             }
         }
         .frame(maxWidth: .infinity)
