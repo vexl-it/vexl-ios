@@ -18,6 +18,11 @@ class ServiceAssembly: Assembly {
             ApiService()
         }
 
+        container.register(CryptoServiceType.self) { _ in
+            CryptoService()
+        }
+        .inObjectScope(.container)
+
         container.register(UserServiceType.self) { _ in
             UserService()
         }
@@ -28,6 +33,10 @@ class ServiceAssembly: Assembly {
 
         container.register(OfferServiceType.self) { _ in
             OfferService()
+        }
+
+        container.register(ChatServiceType.self) { _ in
+            ChatService()
         }
     }
 }

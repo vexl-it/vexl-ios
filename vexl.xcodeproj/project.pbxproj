@@ -146,7 +146,7 @@
 		F12A150827E1A4940096543E /* RequestAccessAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12A150727E1A4940096543E /* RequestAccessAlert.swift */; };
 		F13B265C281897DE0011F2FB /* OfferAdvanceFilterFriendDegreeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F13B265B281897DE0011F2FB /* OfferAdvanceFilterFriendDegreeView.swift */; };
 		F13B265E281899250011F2FB /* OfferAdvancedFilterBTCNetworkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F13B265D281899250011F2FB /* OfferAdvancedFilterBTCNetworkView.swift */; };
-		F13B266028189F580011F2FB /* OffersService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F13B265F28189F580011F2FB /* OffersService.swift */; };
+		F13B266028189F580011F2FB /* OfferService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F13B265F28189F580011F2FB /* OfferService.swift */; };
 		F13B26622818A7EC0011F2FB /* OfferDescriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F13B26612818A7EC0011F2FB /* OfferDescriptionView.swift */; };
 		F13B266528192BBF0011F2FB /* OfferInitialData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F13B266428192BBF0011F2FB /* OfferInitialData.swift */; };
 		F13B266928194A060011F2FB /* OffersRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F13B266828194A060011F2FB /* OffersRouter.swift */; };
@@ -279,6 +279,8 @@
 		4F481E6D2845040A0051D3B9 /* Line.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Line.swift; sourceTree = "<group>"; };
 		4F481E6E2845040A0051D3B9 /* DashedLine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashedLine.swift; sourceTree = "<group>"; };
 		4F481E7128466B320051D3B9 /* TimelineOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineOption.swift; sourceTree = "<group>"; };
+		4F481E75284767480051D3B9 /* ChatRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRouter.swift; sourceTree = "<group>"; };
+		4F481E77284768840051D3B9 /* ChatService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatService.swift; sourceTree = "<group>"; };
 		4F700CAF2840E4650085139F /* LoadingDotsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingDotsView.swift; sourceTree = "<group>"; };
 		4F700CB92844B08B0085139F /* BitcoinView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BitcoinView.swift; sourceTree = "<group>"; };
 		4F700CBB2844C3260085139F /* TabBarNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarNavigationController.swift; sourceTree = "<group>"; };
@@ -434,7 +436,7 @@
 		F12A150727E1A4940096543E /* RequestAccessAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestAccessAlert.swift; sourceTree = "<group>"; };
 		F13B265B281897DE0011F2FB /* OfferAdvanceFilterFriendDegreeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferAdvanceFilterFriendDegreeView.swift; sourceTree = "<group>"; };
 		F13B265D281899250011F2FB /* OfferAdvancedFilterBTCNetworkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferAdvancedFilterBTCNetworkView.swift; sourceTree = "<group>"; };
-		F13B265F28189F580011F2FB /* OffersService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OffersService.swift; sourceTree = "<group>"; };
+		F13B265F28189F580011F2FB /* OfferService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferService.swift; sourceTree = "<group>"; };
 		F13B26612818A7EC0011F2FB /* OfferDescriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferDescriptionView.swift; sourceTree = "<group>"; };
 		F13B266428192BBF0011F2FB /* OfferInitialData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferInitialData.swift; sourceTree = "<group>"; };
 		F13B266828194A060011F2FB /* OffersRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OffersRouter.swift; sourceTree = "<group>"; };
@@ -887,7 +889,8 @@
 				B08F391B27AE7112008B344F /* BaseService.swift */,
 				B08F392D27AE7112008B344F /* UserService.swift */,
 				F175AB9827F0D2D8000DAB15 /* ContactsService.swift */,
-				F13B265F28189F580011F2FB /* OffersService.swift */,
+				F13B265F28189F580011F2FB /* OfferService.swift */,
+				4F481E77284768840051D3B9 /* ChatService.swift */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -947,6 +950,7 @@
 				B0F206FD27AEBDD500A44E72 /* AuthRouter.swift */,
 				F175AB9A27F1432E000DAB15 /* ContactsRouter.swift */,
 				F13B266828194A060011F2FB /* OffersRouter.swift */,
+				4F481E75284767480051D3B9 /* ChatRouter.swift */,
 			);
 			path = Routers;
 			sourceTree = "<group>";
@@ -1942,6 +1946,7 @@
 				F11441CF284681EC00307D39 /* ExpandingTextView.swift in Sources */,
 				B0F206F127AE94C400A44E72 /* InitialScreenManager.swift in Sources */,
 				F12A14E027D6774C0096543E /* RegisterContactsView.swift in Sources */,
+				4F481E76284767480051D3B9 /* ChatRouter.swift in Sources */,
 				4F700CBE2844C4C20085139F /* StickyBitcoinView.swift in Sources */,
 				F188626128129ED600659786 /* OfferTriggersView.swift in Sources */,
 				F1BFA958280223BD00F4E745 /* UserProfileViewModel+Options.swift in Sources */,
@@ -2022,6 +2027,7 @@
 				F175ABA227F4A8F8000DAB15 /* UserAvailable.swift in Sources */,
 				B0E9BB322815D2B60012BF1D /* CryptographicError.swift in Sources */,
 				4FBF6240283FBF6000DDBE71 /* RequestOfferCoordinator.swift in Sources */,
+				4F481E78284768840051D3B9 /* ChatService.swift in Sources */,
 				B0F206FE27AEBDD500A44E72 /* AuthRouter.swift in Sources */,
 				F1BFA8D027FB31E800F4E745 /* FacebookUserData.swift in Sources */,
 				F11441D3284681EC00307D39 /* ContactAvatarInfo.swift in Sources */,
