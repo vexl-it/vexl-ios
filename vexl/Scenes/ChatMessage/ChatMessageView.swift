@@ -19,14 +19,17 @@ struct ChatMessageView: View {
             content
                 .zIndex(0)
 
+            dimmingView
+                .zIndex(1)
+
             if viewModel.presentedModal == .offer {
                 ChatMessageOfferView {
                     withAnimation {
                         viewModel.action.send(.dismissModal)
                     }
                 }
+                .zIndex(2)
                 .transition(.move(edge: .bottom))
-                .zIndex(1)
             }
         }
         .frame(maxWidth: .infinity)
@@ -54,6 +57,17 @@ struct ChatMessageView: View {
             })
                 .padding([.horizontal, .bottom], Appearance.GridGuide.padding)
         }
+    }
+
+    private var dimmingView: some View {
+        Color.black
+            .opacity(viewModel.presentedModal == .none ? 0 : 0.8)
+            .animation(.easeInOut(duration: 0.25), value: viewModel.presentedModal)
+            .onTapGesture {
+                withAnimation {
+                    viewModel.action.send(.dismissModal)
+                }
+            }
     }
 
     private var header: some View {

@@ -13,47 +13,45 @@ struct ChatMessageOfferView: View {
     let dismiss: () -> Void
 
     var body: some View {
-        ZStack(alignment: .bottom) {
+        content
+    }
 
-            Color.black
-                .zIndex(0)
+    private var content: some View {
+        VStack {
+            VStack(alignment: .leading) {
+                Text("My Offer")
+                    .textStyle(.h2)
+                    .foregroundColor(Appearance.Colors.primaryText)
+                    .padding(.horizontal, Appearance.GridGuide.point)
 
-            VStack {
-                VStack(alignment: .leading) {
-                    Text("My Offer")
-                        .textStyle(.h2)
-                        .foregroundColor(Appearance.Colors.primaryText)
-                        .padding(.horizontal, Appearance.GridGuide.point)
-
-                    OfferInformationDetailView(data: .stub,
-                                               useInnerPadding: true,
-                                               showBackground: false)
-                        .background(Appearance.Colors.gray6)
-                        .cornerRadius(Appearance.GridGuide.buttonCorner)
-                        .padding(.bottom, Appearance.GridGuide.point)
-                }
-                .padding(.top, Appearance.GridGuide.mediumPadding1)
-                .padding(.horizontal, Appearance.GridGuide.point)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .background(Appearance.Colors.whiteText)
-                .cornerRadius(Appearance.GridGuide.buttonCorner)
-
-                SolidButton(Text("Got it"),
-                            iconImage: nil,
-                            isEnabled: .constant(true),
-                            isLoading: .constant(false),
-                            fullWidth: true,
-                            loadingViewScale: 1,
-                            font: Appearance.TextStyle.titleSmallSemiBold.font.asFont,
-                            colors: .main,
-                            dimensions: .largeButton,
-                            action: {
-                    dismiss()
-                })
+                OfferInformationDetailView(data: .stub,
+                                           useInnerPadding: true,
+                                           showBackground: false)
+                    .background(Appearance.Colors.gray6)
+                    .cornerRadius(Appearance.GridGuide.buttonCorner)
+                    .padding(.bottom, Appearance.GridGuide.point)
             }
-            .padding(Appearance.GridGuide.point)
-            .zIndex(1)
+            .padding(.top, Appearance.GridGuide.mediumPadding1)
+            .padding(.horizontal, Appearance.GridGuide.point)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .background(Appearance.Colors.whiteText)
+            .cornerRadius(Appearance.GridGuide.buttonCorner)
+
+            SolidButton(Text("Got it"),
+                        iconImage: nil,
+                        isEnabled: .constant(true),
+                        isLoading: .constant(false),
+                        fullWidth: true,
+                        loadingViewScale: 1,
+                        font: Appearance.TextStyle.titleSmallSemiBold.font.asFont,
+                        colors: .main,
+                        dimensions: .largeButton,
+                        action: {
+                dismiss()
+            })
         }
+        .padding(Appearance.GridGuide.point)
+        .frame(maxHeight: .infinity, alignment: .bottom)
     }
 }
 
