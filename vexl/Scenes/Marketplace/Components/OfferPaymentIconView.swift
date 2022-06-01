@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct MarketplacePaymentIconView: View {
+struct OfferPaymentIconView: View {
 
     let layoutStyle: LayoutStyle
 
@@ -47,7 +47,7 @@ struct MarketplacePaymentIconView: View {
     }
 }
 
-extension MarketplacePaymentIconView {
+extension OfferPaymentIconView {
 
     enum LayoutStyle {
         case none

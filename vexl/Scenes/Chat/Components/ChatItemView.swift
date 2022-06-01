@@ -33,7 +33,8 @@ struct ChatItemView: View {
 
     var body: some View {
         HStack(alignment: .top) {
-            userAvatar
+            ContactAvatarView(image: data.avatar,
+                              size: Appearance.GridGuide.mediumIconSize)
 
             VStack(alignment: .leading) {
                 HStack(spacing: .zero) {
@@ -59,19 +60,5 @@ struct ChatItemView: View {
                 .textStyle(.micro)
         }
         .padding(.horizontal, Appearance.GridGuide.padding)
-    }
-
-    @ViewBuilder private var userAvatar: some View {
-        if let avatar = data.avatar {
-            Image(uiImage: avatar)
-                .resizable()
-                .frame(size: Appearance.GridGuide.mediumIconSize)
-                .cornerRadius(Appearance.GridGuide.buttonCorner)
-        } else {
-            Image(R.image.marketplace.defaultAvatar.name)
-                .resizable()
-                .frame(size: Appearance.GridGuide.mediumIconSize)
-                .cornerRadius(Appearance.GridGuide.buttonCorner)
-        }
     }
 }

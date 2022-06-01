@@ -8,33 +8,63 @@
 import SwiftUI
 
 struct ContactAvatarInfo: View {
+
+    enum Style {
+        case regular
+        case large
+    }
+
+    let avatar: UIImage?
     let isAvatarWithOpacity: Bool
     let title: String
     let subtitle: String
+    let style: Style
+
+    private var avatarSize: CGSize {
+        style == .regular ? Appearance.GridGuide.feedAvatarSize : Appearance.GridGuide.feedLargeAvatarSize
+    }
+
+    private var titleStyle: Appearance.TextStyle {
+        style == .regular ? .paragraphSmallSemiBold : .titleSmallSemiBold
+    }
+
+    private var subtitleStyle: Appearance.TextStyle {
+        style == .regular ? .micro : .paragraphSmallSemiBold
+    }
+
+    init(isAvatarWithOpacity: Bool,
+         title: String,
+         subtitle: String,
+         avatar: UIImage? = nil,
+         style: Style = .regular) {
+        self.isAvatarWithOpacity = isAvatarWithOpacity
+        self.title = title
+        self.subtitle = subtitle
+        self.style = style
+        self.avatar = avatar
+    }
 
     var body: some View {
         HStack {
             ZStack {
-                Image(R.image.marketplace.defaultAvatar.name)
-                    .resizable()
-                    .frame(size: Appearance.GridGuide.feedAvatarSize)
-                    .cornerRadius(Appearance.GridGuide.buttonCorner)
+                ContactAvatarView(image: avatar,
+                                  size: avatarSize)
 
                 if isAvatarWithOpacity {
                     Appearance.Colors.gray1
                         .opacity(0.8)
-                        .frame(size: Appearance.GridGuide.feedAvatarSize)
+                        .frame(size: avatarSize)
                         .cornerRadius(Appearance.GridGuide.buttonCorner)
                 }
             }
 
             VStack(alignment: .leading) {
                 Text(title)
-                    .textStyle(.paragraphSmallSemiBold)
+                    .textStyle(titleStyle)
                     .foregroundColor(Appearance.Colors.whiteText)
 
                 Text(subtitle)
-                    .textStyle(.micro)
+                    .textStyle(subtitleStyle)
                     .foregroundColor(Appearance.Colors.gray4)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -43,7 +73,7 @@ struct ContactAvatarInfo: View {
 }
 
 #if DEBUG || DEVEL
-struct AvatarInfoViewPreview: PreviewProvider {
+struct ContactAvatarInfoViewPreview: PreviewProvider {
     static var previews: some View {
         VStack(spacing: 16) {
             ContactAvatarInfo(

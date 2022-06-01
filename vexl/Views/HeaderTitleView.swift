@@ -7,14 +7,15 @@
 
 import SwiftUI
 
-struct OfferHeaderView: View {
+struct HeaderTitleView: View {
 
     let title: String
+    let showsSeparator: Bool
     let dismissAction: () -> Void
 
     var body: some View {
         VStack {
-            HStack(alignment: .top) {
+            HStack(alignment: .center) {
                 Text(title)
                     .textStyle(.h2)
                     .foregroundColor(Appearance.Colors.whiteText)
@@ -26,17 +27,17 @@ struct OfferHeaderView: View {
                 } label: {
                     Image(systemName: "xmark")
                         .foregroundColor(Color.white)
-                        .padding(Appearance.GridGuide.point)
+                        .frame(size: Appearance.GridGuide.baseButtonSize)
                         .background(Appearance.Colors.gray1)
                         .cornerRadius(Appearance.GridGuide.point)
                 }
-                .frame(size: Appearance.GridGuide.baseButtonSize)
-                .padding(.top, Appearance.GridGuide.point)
             }
             .padding(.bottom, Appearance.GridGuide.point)
 
-            HLine(color: Appearance.Colors.whiteOpaque,
-                  height: 1)
+            if showsSeparator {
+                HLine(color: Appearance.Colors.whiteOpaque,
+                      height: 1)
+            }
         }
     }
 }
@@ -45,12 +46,16 @@ struct OfferHeaderView: View {
 
 struct OfferHeaderViewPreview: PreviewProvider {
     static var previews: some View {
-        OfferHeaderView(title: L.offerSellTitle(), dismissAction: {})
+        HeaderTitleView(title: L.offerSellTitle(),
+                        showsSeparator: true,
+                        dismissAction: {})
             .frame(maxHeight: .infinity)
             .previewDevice("iPhone 11")
             .background(Color.black)
 
-        OfferHeaderView(title: L.offerBuyTitle(), dismissAction: {})
+        HeaderTitleView(title: L.offerBuyTitle(),
+                        showsSeparator: true,
+                        dismissAction: {})
             .frame(maxHeight: .infinity)
             .previewDevice("iPhone 11")
             .background(Color.black)

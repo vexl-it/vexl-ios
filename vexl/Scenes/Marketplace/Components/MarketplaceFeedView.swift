@@ -9,7 +9,7 @@ import SwiftUI
 
 struct MarketplaceFeedView: View {
 
-    let data: OfferFeedViewData
+    let data: OfferDetailViewData
     let displayFooter: Bool
     let detailAction: (String) -> Void
     let requestAction: (String) -> Void
@@ -17,12 +17,9 @@ struct MarketplaceFeedView: View {
     var body: some View {
         VStack(spacing: Appearance.GridGuide.point) {
             OfferInformationDetailView(
-                title: data.title,
-                maxAmount: data.amount,
-                paymentLabel: data.paymentLabel,
-                paymentIcons: data.paymentIcons,
-                offerType: data.offerType,
-                isRequested: data.isRequested
+                data: data,
+                useInnerPadding: true,
+                showBackground: true
             )
             .padding(.bottom, displayFooter ? 0 : Appearance.GridGuide.padding)
             .onTapGesture {
@@ -44,7 +41,7 @@ struct MarketplaceFeedView: View {
 #if DEBUG || DEVEL
 struct MarketplaceFeedViewViewPreview: PreviewProvider {
     static var previews: some View {
-        let data = OfferFeedViewData(
+        let data = OfferDetailViewData(
             id: "1",
             title: "I’ll be wearing a red hat, Don’t text me before 9am — I love to sleep...",
             isRequested: false,
@@ -55,7 +52,7 @@ struct MarketplaceFeedViewViewPreview: PreviewProvider {
             offerType: .sell
         )
 
-        let data2 = OfferFeedViewData(
+        let data2 = OfferDetailViewData(
             id: "2",
             title: "I’ll be wearing a red hat, Don’t text me before 9am — I love to sleep...",
             isRequested: true,
@@ -66,7 +63,7 @@ struct MarketplaceFeedViewViewPreview: PreviewProvider {
             offerType: .buy
         )
 
-        ZStack {
+        return ZStack {
             Color.black
                 .edgesIgnoringSafeArea(.all)
 

@@ -14,7 +14,7 @@ struct CreateOfferView: View {
 
     var body: some View {
         VStack {
-            OfferHeaderView(title: viewModel.headerTitle) {
+            HeaderTitleView(title: viewModel.headerTitle, showsSeparator: true) {
                 viewModel.action.send(.dismissTap)
             }
 

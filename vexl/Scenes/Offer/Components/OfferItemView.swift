@@ -13,7 +13,7 @@ struct OfferItemView: View {
         static let editOfferButtonHeight: CGFloat = 48
     }
 
-    let data: OfferFeedViewData
+    let data: OfferDetailViewData
     let editOfferAction: () -> Void
 
     var body: some View {
@@ -26,12 +26,9 @@ struct OfferItemView: View {
 
     private var bubble: some View {
         OfferInformationDetailView(
-            title: data.title,
-            maxAmount: data.amount,
-            paymentLabel: data.paymentLabel,
-            paymentIcons: data.paymentIcons,
-            offerType: data.offerType,
-            isRequested: data.isRequested
+            data: data,
+            useInnerPadding: true,
+            showBackground: true
         )
     }
 
@@ -58,7 +55,7 @@ struct OfferItemView: View {
 #if DEBUG || DEVEL
 struct OfferItemViewPreview: PreviewProvider {
     static var previews: some View {
-        let data = OfferFeedViewData(
+        let data = OfferDetailViewData(
             id: "2",
             title: "I’ll be wearing a red hat, Don’t text me before 9am — I love to sleep...",
             isRequested: true,

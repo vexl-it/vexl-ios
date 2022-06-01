@@ -65,6 +65,7 @@ struct Appearance {
         static let containerCorner: CGFloat = 10
         static let buttonCorner: CGFloat = 12
         static let tabBarCorner: CGFloat = 16
+        static let requestCorner: CGFloat = 20
 
         // MARK: Margins
 
@@ -92,6 +93,7 @@ struct Appearance {
         static let mediumIconSize = CGSize(width: 48, height: 48)
         static let thumbSize = CGSize(width: 38, height: 38)
         static let feedAvatarSize = CGSize(width: 48, height: 48)
+        static let feedLargeAvatarSize = CGSize(width: 64, height: 64)
         static let feedIconSize = CGSize(width: 32, height: 32)
         static let feedMediumIconSize = CGSize(width: 20, height: 20)
         static let feedSmallIconSize = CGSize(width: 16, height: 16)
@@ -146,12 +148,14 @@ struct Appearance {
         case titleBold
         case titleSmall
         case titleSmallSemiBold
+        case titleSmallMedium
         case titleSmallBold
         case paragraph
         case paragraphBold
         case paragraphMedium
         case paragraphSmall
         case paragraphSmallSemiBold
+        case paragraphSmallMedium
         case paragraphSmallBold
         case description
         case descriptionSemiBold
@@ -173,9 +177,11 @@ struct Appearance {
             case .titleBold:
                 return R.font.ttSatoshiBold(size: 24) ?? UIFont.systemFont(ofSize: 24, weight: .bold)
             case .titleSmall:
-                return R.font.ttSatoshiRegular(size: 20) ?? UIFont.systemFont(ofSize: 20, weight: .medium)
+                return R.font.ttSatoshiRegular(size: 20) ?? UIFont.systemFont(ofSize: 20, weight: .regular)
             case .titleSmallSemiBold:
                 return R.font.ttSatoshiDemiBold(size: 20) ?? UIFont.systemFont(ofSize: 20, weight: .semibold)
+            case .titleSmallMedium:
+                return R.font.ttSatoshiMedium(size: 20) ?? UIFont.systemFont(ofSize: 20, weight: .medium)
             case .titleSmallBold:
                 return R.font.ttSatoshiBold(size: 20) ?? UIFont.systemFont(ofSize: 20, weight: .bold)
             case .paragraph:
@@ -188,6 +194,8 @@ struct Appearance {
                 return R.font.ttSatoshiMedium(size: 16) ?? UIFont.systemFont(ofSize: 16, weight: .medium)
             case .paragraphSmallSemiBold:
                 return R.font.ttSatoshiDemiBold(size: 16) ?? UIFont.systemFont(ofSize: 16, weight: .semibold)
+            case .paragraphSmallMedium:
+                return R.font.ttSatoshiMedium(size: 16) ?? UIFont.systemFont(ofSize: 16, weight: .medium)
             case .paragraphSmallBold:
                 return R.font.ttSatoshiBold(size: 16) ?? UIFont.systemFont(ofSize: 16, weight: .bold)
             case .description:

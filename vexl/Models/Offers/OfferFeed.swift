@@ -9,13 +9,13 @@ import Foundation
 
 struct OfferFeed {
     let offer: Offer
-    let viewData: OfferFeedViewData
+    let viewData: OfferDetailViewData
 
     static func mapToOfferFeed(usingOffer offer: Offer) -> OfferFeed {
         let currencySymbol = Constants.currencySymbol
         let friendLevel = offer.friendLevel == .firstDegree ? L.marketplaceDetailFriendFirst() : L.marketplaceDetailFriendSecond()
         let formattedAmount = offer.maxAmount
-        let viewData = OfferFeedViewData(
+        let viewData = OfferDetailViewData(
             id: offer.offerId,
             title: offer.description,
             isRequested: false,
@@ -29,7 +29,7 @@ struct OfferFeed {
     }
 }
 
-struct OfferFeedViewData: Identifiable, Hashable {
+struct OfferDetailViewData: Identifiable, Hashable {
     let id: String
     let username = "Murakami"
     let title: String
@@ -54,5 +54,18 @@ struct OfferFeedViewData: Identifiable, Hashable {
         }
 
         return label
+    }
+
+    static var stub: OfferDetailViewData {
+        OfferDetailViewData(
+            id: "2",
+            title: "I’ll be wearing a red hat, Don’t text me before 9am — I love to sleep...",
+            isRequested: true,
+            friendLevel: "Friend",
+            amount: "$10k",
+            paymentMethods: [.revolut],
+            fee: nil,
+            offerType: .buy
+        )
     }
 }
