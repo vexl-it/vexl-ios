@@ -19,7 +19,7 @@ struct ChatMessageOfferView: View {
     private var content: some View {
         VStack {
             VStack(alignment: .leading) {
-                Text("My Offer")
+                Text(L.chatMessageOffer())
                     .textStyle(.h2)
                     .foregroundColor(Appearance.Colors.primaryText)
                     .padding(.horizontal, Appearance.GridGuide.point)
@@ -37,7 +37,7 @@ struct ChatMessageOfferView: View {
             .background(Appearance.Colors.whiteText)
             .cornerRadius(Appearance.GridGuide.buttonCorner)
 
-            SolidButton(Text("Got it"),
+            SolidButton(Text(L.buttonGotIt()),
                         iconImage: nil,
                         isEnabled: .constant(true),
                         isLoading: .constant(false),
