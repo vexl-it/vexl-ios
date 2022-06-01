@@ -40,6 +40,10 @@ public extension Publisher {
         .map(transform)
         .switchToLatest()
     }
+
+    func filterNil<T>() -> Publishers.CompactMap<Self, T> where Output == Optional<T> {
+        compactMap { $0 }
+    }
 }
 
 extension Publisher where Output == Void {
@@ -48,31 +52,5 @@ extension Publisher where Output == Void {
             guard let obj = obj else { return nil }
             return obj
         }
-    }
-}
-
-protocol _OptionalType {
-    associatedtype Wrapped
-
-    var value: Wrapped? { get }
-}
-
-extension Optional: _OptionalType {
-    /// Cast `Optional<Wrapped>` to `Wrapped?`
-    public var value: Wrapped? {
-        return self
-    }
-}
-
-extension Publisher where Output: _OptionalType {
-    func filterNil() -> AnyPublisher<Output.Wrapped, Failure> {
-        flatMap { element -> AnyPublisher<Output.Wrapped, Never> in
-            guard let value = element.value else {
-                return Empty().eraseToAnyPublisher()
-            }
-
-            return Just(value).eraseToAnyPublisher()
-        }
-        .eraseToAnyPublisher()
     }
 }
