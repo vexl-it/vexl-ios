@@ -19,8 +19,10 @@ struct ChatMessageView: View {
             content
                 .zIndex(0)
 
-            dimmingView
-                .zIndex(1)
+            if viewModel.presentedModal != .none {
+                dimmingView
+                    .zIndex(1)
+            }
 
             if viewModel.presentedModal == .offer {
                 ChatMessageOfferView {
