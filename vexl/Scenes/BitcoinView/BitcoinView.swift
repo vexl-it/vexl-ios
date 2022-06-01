@@ -47,7 +47,7 @@ struct BitcoinView: View {
 
                 HStack {
                     Image(systemName: "triangle.fill")
-                    Text(L.marketplaceCurrencyVariation("2.5%"))
+                    Text(L.marketplaceCurrencyVariation1day("2.5%"))
                 }
                 .foregroundColor(Appearance.Colors.yellow100)
             }

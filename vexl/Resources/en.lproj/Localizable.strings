@@ -12,6 +12,7 @@
 "skip" = "Skip";
 "got.it" = "Got it!";
 "continue" = "Continue";
+"button.gotIt" = "Got it";
 "onboarding.intro.message.friend" = "import your friends anonymously.";
 "onboarding.intro.message.buySell" = "see their buy & sell offers.";
 "onboarding.intro.message.request" = "request identity for the ones you like and trade.";
@@ -72,7 +73,6 @@
 "marketplace.currency.variation.3month" = "%@ 3 months ago";
 "marketplace.currency.variation.6month" = "%@ 6 months ago";
 "marketplace.currency.variation1year" = "%@ last year";
-"marketplace.currency.variation" = "%@ today";
 "marketplace.currency.1day" = "1 day";
 "marketplace.currency.1week" = "1 week";
 "marketplace.currency.1month" = "1 mth";
