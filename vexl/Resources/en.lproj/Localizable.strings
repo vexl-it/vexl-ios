@@ -66,7 +66,12 @@
 "user.profile.request.data" = "Request known data";
 "user.profile.logout" = "Log out";
 "marketplace.currency.bitcoin" = "Bitcoin";
-"marketplace.currency.variation" = "%@ today";
+"marketplace.currency.variation.1day" = "%@ today";
+"marketplace.currency.variation.1week" = "%@ last week";
+"marketplace.currency.variation.1month" = "%@ last month";
+"marketplace.currency.variation.3month" = "%@ 3 months ago";
+"marketplace.currency.variation.6month" = "%@ 6 months ago";
+"marketplace.currency.variation1year" = "%@ last year";
 "marketplace.currency.1day" = "1 day";
 "marketplace.currency.1week" = "1 week";
 "marketplace.currency.1month" = "1 mth";
