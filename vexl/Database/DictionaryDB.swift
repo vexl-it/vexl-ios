@@ -7,6 +7,8 @@
 
 import Foundation
 
+// This is not for production, just to accelerate development. Later we should setup CoreData with proper security
+
 final class DictionaryDB {
     static private var inboxes: [String: [Inbox]] = ["created": [], "requested": []] {
         didSet {

@@ -8,16 +8,6 @@
 import Combine
 import Foundation
 
-struct Inbox: Codable {
-    enum InboxType: String, Codable {
-        case created
-        case requested
-    }
-
-    let publicKey: String
-    let type: InboxType
-}
-
 enum LocalStorageError: Error {
     case saveFailed
     case readFailed
