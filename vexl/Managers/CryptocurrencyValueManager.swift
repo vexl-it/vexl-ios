@@ -19,11 +19,11 @@ protocol CryptocurrencyValueManagerType {
 
 final class CryptocurrencyValueManager: CryptocurrencyValueManagerType {
 
-    var currentValue: AnyPublisher<BitcoinData, Never> { currentValueSubject.eraseToAnyPublisher() }
+    var currentValue: AnyPublisher<BitcoinData, Never> { currentValueSubject.filterNil().eraseToAnyPublisher() }
     var isFetching: AnyPublisher<Bool, Never> { activity.indicator.loading }
 
     @Inject private var userService: UserServiceType
-    private let currentValueSubject: CurrentValueSubject<BitcoinData, Never> = .init(.noValue)
+    private let currentValueSubject: CurrentValueSubject<BitcoinData?, Never> = .init(nil)
     private let activity: Activity = .init()
     private var cancellable: AnyCancellable?
 
@@ -39,6 +39,7 @@ final class CryptocurrencyValueManager: CryptocurrencyValueManagerType {
                     .compactMap(\.value)
                     .eraseToAnyPublisher()
             }
+            .asOptional()
             .subscribe(currentValueSubject)
     }
 
