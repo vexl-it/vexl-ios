@@ -100,6 +100,7 @@ struct ChatMessageConfirmationViewPreview: PreviewProvider {
                                     subtitle: "Are you sure you want to delete the chat bla bla bla?",
                                     actionTitle: "Delete Chat",
                                     dismissTitle: "Back",
+                                    style: .regular,
                                     mainAction: { },
                                     dismiss: { })
             .frame(maxWidth: .infinity, maxHeight: .infinity)
