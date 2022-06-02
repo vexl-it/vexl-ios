@@ -13,16 +13,17 @@ struct ContactAvatarView: View {
     let size: CGSize
 
     var body: some View {
+        let avatarImage: Image
+
         if let image = image {
-            Image(uiImage: image)
-                .resizable()
-                .frame(size: size)
-                .cornerRadius(Appearance.GridGuide.buttonCorner)
+            avatarImage = Image(uiImage: image)
         } else {
-            Image(R.image.marketplace.defaultAvatar.name)
-                .resizable()
-                .frame(size: size)
-                .cornerRadius(Appearance.GridGuide.buttonCorner)
+            avatarImage = Image(R.image.marketplace.defaultAvatar.name)
         }
+
+        return avatarImage
+            .resizable()
+            .frame(size: size)
+            .cornerRadius(Appearance.GridGuide.buttonCorner)
     }
 }

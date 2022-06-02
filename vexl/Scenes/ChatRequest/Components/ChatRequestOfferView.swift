@@ -51,27 +51,32 @@ struct ChatRequestOfferView: View {
 
     private var buttons: some View {
         HStack {
-            Button(L.chatRequestDecline(), action: {
+            actionButton(title: L.chatRequestDecline(),
+                         backgroundColor: Appearance.Colors.yellow20,
+                         action: {
                 print("Declined")
             })
-                .textStyle(.titleSmallSemiBold)
                 .foregroundColor(Appearance.Colors.yellow100)
-                .frame(height: Appearance.GridGuide.largeButtonHeight)
-                .frame(maxWidth: .infinity)
-                .background(Appearance.Colors.yellow20)
-                .cornerRadius(Appearance.GridGuide.buttonCorner)
 
-            Button(L.chatRequestAccept(), action: {
+            actionButton(title: L.chatRequestAccept(),
+                         backgroundColor: Appearance.Colors.yellow100,
+                         action: {
                 print("Accept")
             })
-                .textStyle(.titleSmallSemiBold)
                 .foregroundColor(Appearance.Colors.primaryText)
-                .frame(height: Appearance.GridGuide.largeButtonHeight)
-                .frame(maxWidth: .infinity)
-                .background(Appearance.Colors.yellow100)
-                .cornerRadius(Appearance.GridGuide.buttonCorner)
         }
         .padding(.top, Appearance.GridGuide.largePadding2)
+    }
+
+    @ViewBuilder private func actionButton(title: String,
+                                           backgroundColor: Color,
+                                           action: @escaping () -> Void) -> some View {
+        Button(title, action: action)
+            .textStyle(.titleSmallSemiBold)
+            .frame(height: Appearance.GridGuide.largeButtonHeight)
+            .frame(maxWidth: .infinity)
+            .background(backgroundColor)
+            .cornerRadius(Appearance.GridGuide.buttonCorner)
     }
 }
 

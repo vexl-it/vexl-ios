@@ -25,13 +25,13 @@ extension SolidButtonColor {
                                        disabledBackgroundOpacity: 1)
 
     static let secondary = SolidButtonColor(textColor: Appearance.Colors.yellow100,
-                                            disabledTextColor: Appearance.Colors.gray2,
-                                            backgroundColor: Appearance.Colors.yellow20,
-                                            disabledBackgroundColor: Appearance.Colors.gray1,
-                                            iconTint: nil,
-                                            disabledBackgroundOpacity: 1)
+                                       disabledTextColor: Appearance.Colors.gray2,
+                                       backgroundColor: Appearance.Colors.yellow20,
+                                       disabledBackgroundColor: Appearance.Colors.gray1,
+                                       iconTint: nil,
+                                       disabledBackgroundOpacity: 1)
 
-    static let welcome = SolidButtonColor(textColor: Appearance.Colors.primaryText,
+     static let welcome = SolidButtonColor(textColor: Appearance.Colors.primaryText,
                                            disabledTextColor: Appearance.Colors.gray2,
                                            backgroundColor: Appearance.Colors.purple5,
                                            disabledBackgroundColor: Appearance.Colors.gray1,
@@ -51,9 +51,23 @@ extension SolidButtonColor {
                                             disabledBackgroundOpacity: 1)
     
     static let success = SolidButtonColor(textColor: Appearance.Colors.primaryText,
-                                            disabledTextColor: Appearance.Colors.gray2,
-                                            backgroundColor: Appearance.Colors.green100,
-                                            disabledBackgroundColor: Appearance.Colors.gray1,
-                                            iconTint: nil,
-                                            disabledBackgroundOpacity: 1)
+                                          disabledTextColor: Appearance.Colors.gray2,
+                                          backgroundColor: Appearance.Colors.green100,
+                                          disabledBackgroundColor: Appearance.Colors.gray1,
+                                          iconTint: nil,
+                                          disabledBackgroundOpacity: 1)
+
+    static let red = SolidButtonColor(textColor: Appearance.Colors.whiteText,
+                                        disabledTextColor: Appearance.Colors.gray2,
+                                        backgroundColor: Appearance.Colors.red100,
+                                        disabledBackgroundColor: Appearance.Colors.gray1,
+                                        iconTint: nil,
+                                        disabledBackgroundOpacity: 1)
+
+    static let redSecondary = SolidButtonColor(textColor: Appearance.Colors.red100,
+                                        disabledTextColor: Appearance.Colors.gray2,
+                                        backgroundColor: Appearance.Colors.red20,
+                                        disabledBackgroundColor: Appearance.Colors.gray1,
+                                        iconTint: nil,
+                                        disabledBackgroundOpacity: 1)
 }

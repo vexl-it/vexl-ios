@@ -27,14 +27,15 @@ struct FilterView: View {
                 scrollableContent
             }
 
-            SolidButton(Text(L.filterApply()),
-                        font: Appearance.TextStyle.titleSmallBold.font.asFont,
-                        colors: SolidButtonColor.main,
-                        dimensions: SolidButtonDimension.largeButton,
-                        action: {
+            LargeSolidButton(title: L.filterApply(),
+                             font: Appearance.TextStyle.titleSmallBold.font.asFont,
+                             style: .main,
+                             isFullWidth: true,
+                             isEnabled: .constant(true),
+                             action: {
                 viewModel.send(action: .applyFilter)
             })
-            .padding(.horizontal, Appearance.GridGuide.padding)
+                .padding(.horizontal, Appearance.GridGuide.padding)
         }
         .background(Color.black.edgesIgnoringSafeArea(.all))
     }

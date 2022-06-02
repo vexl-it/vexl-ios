@@ -13,15 +13,14 @@ struct UserOffersView: View {
 
     var body: some View {
         VStack(spacing: Appearance.GridGuide.padding) {
-            HeaderTitleView(title: viewModel.offerTitle,
-                            showSeparator: true) {
+            HeaderTitleView(title: viewModel.offerTitle, showsSeparator: true) {
                 viewModel.action.send(.dismissTap)
             }
 
             OfferSortView(numberOfOffers: viewModel.offerItems.count,
                           sortingOption: $viewModel.offerSortingOption)
 
-            LargeButton(
+            LargeLabelButton(
                 isEnabled: .constant(true),
                 backgroundColor: Appearance.Colors.pink20,
                 content: {
