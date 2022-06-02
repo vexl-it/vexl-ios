@@ -18,13 +18,15 @@ struct ImportContactsView: View {
                 .padding(.horizontal, Appearance.GridGuide.point)
                 .padding(.vertical, Appearance.GridGuide.padding)
 
-            SolidButton(Text(viewModel.actionTitle),
-                        font: Appearance.TextStyle.h3.font.asFont,
-                        colors: viewModel.currentState == .success ? SolidButtonColor.success : SolidButtonColor.welcome,
-                        dimensions: SolidButtonDimension.largeButton) {
+            LargeSolidButton(title: viewModel.actionTitle,
+                             font: Appearance.TextStyle.h3.font.asFont,
+                             style: .custom(color: viewModel.currentState == .success ? .success : .welcome),
+                             isFullWidth: true,
+                             isEnabled: .constant(true),
+                             action: {
                 viewModel.action.send(.importContacts)
-            }
-            .padding(.horizontal, Appearance.GridGuide.mediumPadding1)
+            })
+                .padding(.horizontal, Appearance.GridGuide.mediumPadding1)
         }
     }
 }

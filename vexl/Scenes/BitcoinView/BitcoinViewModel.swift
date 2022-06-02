@@ -14,14 +14,19 @@ final class BitcoinViewModel: ViewModelType, ObservableObject {
 
     // MARK: - Action Binding
 
-    enum UserAction: Equatable {}
+    enum UserAction: Equatable {
+        case timelineTap(TimelineOption)
+    }
 
     let action: ActionSubject<UserAction> = .init()
 
     // MARK: - View Bindings
 
     @Published var isLoading: Bool = false
-    @Published private var bitcoinValue: Decimal?
+    @Published var timelineSelected: TimelineOption = .oneDayAgo
+    @Published private var bitcoinData: BitcoinData?
+
+    let timelineOptions: [TimelineOption] = TimelineOption.allCases
 
     var errorIndicator: ErrorIndicator {
         primaryActivity.error
@@ -32,9 +37,13 @@ final class BitcoinViewModel: ViewModelType, ObservableObject {
     }
 
     var bitcoinWithCurrency: String {
-        guard let value = bitcoinValue else { return "-" }
+        guard let value = bitcoinData?.priceUsd else { return "-" }
         return "$ \(value)"
     }
+
+    var bitcoinIncreased: Bool { bitcoinData?.bitcoinIncreased(for: timelineSelected) ?? true }
+    var bitcoinPercentageVariation: String { timelineSelected.variation(percentage: bitcoinPercentage) }
+    private var bitcoinPercentage: String { bitcoinData?.getPercentage(for: timelineSelected) ?? "-" }
 
     // MARK: - Coordinator Bindings
 
@@ -48,16 +57,22 @@ final class BitcoinViewModel: ViewModelType, ObservableObject {
     private let cancelBag: CancelBag = .init()
 
     init() {
+        setupActionBindings()
         setupDataBindings()
+    }
+
+    private func setupActionBindings() {
+        action
+            .compactMap { if case let .timelineTap(option) = $0 { return option } else { return nil } }
+            .assign(to: &$timelineSelected)
     }
 
     private func setupDataBindings() {
         cryptocurrencyManager
             .currentValue
-            .map(\.priceUsd)
-            .filter { !$0.isZero }
+            .filter { !$0.priceUsd.isZero }
             .asOptional()
-            .assign(to: &$bitcoinValue)
+            .assign(to: &$bitcoinData)
 
         cryptocurrencyManager
             .isFetching

@@ -35,16 +35,17 @@ struct RegisterPhoneView: View {
 
             Spacer()
 
-            SolidButton(Text(viewModel.actionTitle),
-                        isEnabled: $viewModel.isActionEnabled,
-                        font: Appearance.TextStyle.h3.font.asFont,
-                        colors: viewModel.actionColor,
-                        dimensions: SolidButtonDimension.largeButton) {
+            LargeSolidButton(title: viewModel.actionTitle,
+                             font: Appearance.TextStyle.h3.font.asFont,
+                             style: .custom(color: viewModel.actionColor),
+                             isFullWidth: true,
+                             isEnabled: $viewModel.isActionEnabled,
+                             action: {
                 viewModel.send(action: viewModel.showCodeInput ? .validateCode : .sendPhoneNumber)
-            }
-            .padding(.horizontal, Appearance.GridGuide.padding)
-            .padding(.bottom, Appearance.GridGuide.padding)
-            .transaction { $0.disablesAnimations = true }
+            })
+                .padding(.horizontal, Appearance.GridGuide.padding)
+                .padding(.bottom, Appearance.GridGuide.padding)
+                .transaction { $0.disablesAnimations = true }
         }
         .background(Color.black.edgesIgnoringSafeArea(.all))
         .animation(.easeInOut(duration: 0.5), value: viewModel.showCodeInput)
