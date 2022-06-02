@@ -30,6 +30,7 @@ final class CreateOfferViewModel: ViewModelType, ObservableObject {
 
     @Inject var userSecurity: UserSecurityType
     @Inject var offerService: OfferServiceType
+    @Inject var chatService: ChatServiceType
     @Inject var contactsMananger: ContactsManagerType
     @Inject var contactsService: ContactsServiceType
 
@@ -284,19 +285,23 @@ final class CreateOfferViewModel: ViewModelType, ObservableObject {
             }
 
         createOffer
-            .withUnretained(self)
-            .flatMap { owner, response in
+            .flatMapLatest(with: self) { owner, response in
                 owner.offerService
                     .storeOfferKey(key: owner.offerKey, withId: response.offerId, offerType: owner.offerType)
                     .track(activity: owner.primaryActivity)
                     .materialize()
                     .compactMap(\.value)
             }
-            .subscribe(on: RunLoop.main)
-            .withUnretained(self)
-            .sink { owner, _ in
-                owner.route.send(.offerCreated)
+            .flatMapLatest(with: self) { owner, _ in
+                // TODO: setup firebase notifications to get a proper token
+                owner.chatService.createInbox(offerPublicKey: owner.offerKey.publicKey, pushToken: "03df25c845d460bcdad7802d2vf6fc1dfde97283bf75cc993eb6dca835ea2e2f")
+                    .track(activity: owner.primaryActivity)
+                    .materialize()
+                    .compactMap(\.value)
             }
+            .receive(on: RunLoop.main)
+            .map { _ in .offerCreated }
+            .subscribe(route)
             .store(in: cancelBag)
     }
 }

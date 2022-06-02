@@ -9,11 +9,16 @@ import Foundation
 import Combine
 
 protocol ChatServiceType {
+    func createInbox(offerPublicKey: String, pushToken: String) -> AnyPublisher<Void, Error>
     func request(inboxPublicKey: String, message: String) -> AnyPublisher<Void, Error>
 }
 
 final class ChatService: BaseService, ChatServiceType {
     @Inject private var cryptoService: CryptoServiceType
+
+    func createInbox(offerPublicKey: String, pushToken: String) -> AnyPublisher<Void, Error> {
+        request(endpoint: ChatRouter.createInbox(offerPublicKey: offerPublicKey, pushToken: pushToken))
+    }
 
     func request(inboxPublicKey: String, message: String) -> AnyPublisher<Void, Error> {
         cryptoService

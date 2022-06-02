@@ -9,11 +9,12 @@ import Foundation
 import Alamofire
 
 enum ChatRouter: ApiRouter {
+    case createInbox(offerPublicKey: String, pushToken: String)
     case request(inboxPublicKey: String, message: String)
 
     var method: HTTPMethod {
         switch self {
-        case .request:
+        case .createInbox, .request:
             return .post
         }
     }
@@ -24,6 +25,8 @@ enum ChatRouter: ApiRouter {
 
     var path: String {
         switch self {
+        case .createInbox:
+            return "inboxes"
         case .request:
             return "inboxes/allowance/request"
         }
@@ -31,6 +34,11 @@ enum ChatRouter: ApiRouter {
 
     var parameters: Parameters {
         switch self {
+        case let .createInbox(offerPublicKey, pushToken):
+            return [
+                "publicKey": offerPublicKey,
+                "token": pushToken
+            ]
         case let .request(inboxPublicKey, message):
             return [
                 "publicKey": inboxPublicKey,
