@@ -59,15 +59,12 @@ struct CreateOfferView: View {
                     )
                     .padding(.top, Appearance.GridGuide.largePadding1)
 
-                    SolidButton(Text(viewModel.actionTitle)
-                                    .padding(.horizontal,
-                                             Appearance.GridGuide.mediumPadding1),
-                                isEnabled: .constant(viewModel.isCreateEnabled),
-                                fullWidth: true,
-                                font: Appearance.TextStyle.titleSmallBold.font.asFont,
-                                colors: SolidButtonColor.main,
-                                dimensions: SolidButtonDimension.largeButton,
-                                action: {
+                    LargeSolidButton(title: viewModel.actionTitle,
+                                     font: Appearance.TextStyle.titleSmallBold.font.asFont,
+                                     style: .main,
+                                     isFullWidth: true,
+                                     isEnabled: .constant(viewModel.isCreateEnabled),
+                                     action: {
                         viewModel.action.send(.createOffer)
                     })
                         .padding(.vertical, Appearance.GridGuide.largePadding1)

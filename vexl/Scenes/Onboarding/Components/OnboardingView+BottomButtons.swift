@@ -18,26 +18,33 @@ extension OnboardingView {
 
         var body: some View {
             HStack(alignment: .center) {
-                SolidButton(Text(L.skip())
-                                .padding(.horizontal,
-                                         Appearance.GridGuide.mediumPadding1),
-                            fullWidth: false,
-                            font: Appearance.TextStyle.h3.font.asFont,
-                            colors: SolidButtonColor.skip,
-                            dimensions: SolidButtonDimension.largeButton,
-                            action: {
+                LargeSolidButton(title: L.skip(),
+                                 font: Appearance.TextStyle.h3.font.asFont,
+                                 style: .custom(color: .skip),
+                                 isFullWidth: false,
+                                 isEnabled: .constant(true),
+                                 action: {
                     skipAction()
                 })
 
-                SolidButton(Text(nextTitle),
-                            isEnabled: .constant(true),
-                            font: Appearance.TextStyle.h3.font.asFont,
-                            colors: SolidButtonColor.welcome,
-                            dimensions: SolidButtonDimension.largeButton,
-                            action: {
+                LargeSolidButton(title: nextTitle,
+                                 font: Appearance.TextStyle.h3.font.asFont,
+                                 style: .custom(color: .welcome),
+                                 isFullWidth: true,
+                                 isEnabled: .constant(true),
+                                 action: {
                     nextAction()
                 })
             }
         }
+    }
+}
+
+struct OnboardingButtonBarViewPreview: PreviewProvider {
+
+    static var previews: some View {
+        OnboardingView.ButtonBarView(nextTitle: "Next", skipAction: {}, nextAction: {})
+            .background(Color.black)
+            .previewDevice("iPhone 13 Pro")
     }
 }

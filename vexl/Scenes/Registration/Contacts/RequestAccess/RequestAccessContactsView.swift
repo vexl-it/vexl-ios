@@ -29,22 +29,26 @@ struct RequestAccessContactsView: View {
             contactsView
                 .padding(.bottom, Appearance.GridGuide.mediumPadding1)
 
-            SolidButton(Text(viewModel.importButton),
-                        font: Appearance.TextStyle.h3.font.asFont,
-                        colors: SolidButtonColor.welcome,
-                        dimensions: SolidButtonDimension.largeButton) {
+            LargeSolidButton(title: viewModel.importButton,
+                             font: Appearance.TextStyle.h3.font.asFont,
+                             style: .custom(color: .welcome),
+                             isFullWidth: true,
+                             isEnabled: .constant(true),
+                             action: {
                 viewModel.action.send(.next)
-            }
-            .padding(.horizontal, Appearance.GridGuide.mediumPadding1)
+            })
+                .padding(.horizontal, Appearance.GridGuide.mediumPadding1)
 
             if viewModel.displaySkipButton {
-                SolidButton(Text(L.registerContactsSkip()),
-                            font: Appearance.TextStyle.h3.font.asFont,
-                            colors: SolidButtonColor.skip,
-                            dimensions: SolidButtonDimension.largeButton) {
+                LargeSolidButton(title: L.registerContactsSkip(),
+                                 font: Appearance.TextStyle.h3.font.asFont,
+                                 style: .custom(color: .skip),
+                                 isFullWidth: true,
+                                 isEnabled: .constant(true),
+                                 action: {
                     viewModel.action.send(.skip)
-                }
-                .padding(.horizontal, Appearance.GridGuide.mediumPadding1)
+                })
+                    .padding(.horizontal, Appearance.GridGuide.mediumPadding1)
             }
         }
         .alert(item: $viewModel.alert) { alert in

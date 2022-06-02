@@ -8,15 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0AA456AF4C162D9C8AF6AB30 /* Pods_vexl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57B3CAA27CF4369A28B748A7 /* Pods_vexl.framework */; };
-		4F481E67284504050051D3B9 /* RangePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F481E61284504050051D3B9 /* RangePickerView.swift */; };
-		4F481E68284504050051D3B9 /* OptionPickerItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F481E63284504050051D3B9 /* OptionPickerItemView.swift */; };
-		4F481E69284504050051D3B9 /* SingleOptionPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F481E64284504050051D3B9 /* SingleOptionPickerView.swift */; };
-		4F481E6A284504050051D3B9 /* MultipleOptionPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F481E65284504050051D3B9 /* MultipleOptionPickerView.swift */; };
-		4F481E6B284504050051D3B9 /* PhoneNumberTextFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F481E66284504050051D3B9 /* PhoneNumberTextFieldView.swift */; };
-		4F481E6F2845040A0051D3B9 /* Line.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F481E6D2845040A0051D3B9 /* Line.swift */; };
-		4F481E702845040A0051D3B9 /* DashedLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F481E6E2845040A0051D3B9 /* DashedLine.swift */; };
 		4F481E7228466B320051D3B9 /* TimelineOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F481E7128466B320051D3B9 /* TimelineOption.swift */; };
-		4F700CB02840E4650085139F /* LoadingDotsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F700CAF2840E4650085139F /* LoadingDotsView.swift */; };
 		4F700CBA2844B08B0085139F /* BitcoinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F700CB92844B08B0085139F /* BitcoinView.swift */; };
 		4F700CBC2844C3260085139F /* TabBarNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F700CBB2844C3260085139F /* TabBarNavigationController.swift */; };
 		4F700CBE2844C4C20085139F /* StickyBitcoinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F700CBD2844C4C20085139F /* StickyBitcoinView.swift */; };
@@ -106,7 +98,7 @@
 		F11441C9284681EC00307D39 /* CardModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11441A6284681EC00307D39 /* CardModifier.swift */; };
 		F11441CA284681EC00307D39 /* HeaderTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11441A7284681EC00307D39 /* HeaderTitleView.swift */; };
 		F11441CC284681EC00307D39 /* DottedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11441AB284681EC00307D39 /* DottedButton.swift */; };
-		F11441CD284681EC00307D39 /* LargeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11441AC284681EC00307D39 /* LargeButton.swift */; };
+		F11441CD284681EC00307D39 /* LargeLabelButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11441AC284681EC00307D39 /* LargeLabelButton.swift */; };
 		F11441CE284681EC00307D39 /* OffsetScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11441AE284681EC00307D39 /* OffsetScrollView.swift */; };
 		F11441CF284681EC00307D39 /* ExpandingTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11441B0284681EC00307D39 /* ExpandingTextView.swift */; };
 		F11441D0284681EC00307D39 /* BorderedTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11441B1284681EC00307D39 /* BorderedTextField.swift */; };
@@ -136,6 +128,7 @@
 		F11441F028468B2F00307D39 /* ChatMessageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11441ED28468B2F00307D39 /* ChatMessageViewModel.swift */; };
 		F11441F128468B2F00307D39 /* ChatMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11441EE28468B2F00307D39 /* ChatMessageView.swift */; };
 		F11441F328468B5600307D39 /* CloseButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11441F228468B5600307D39 /* CloseButton.swift */; };
+		F114420128495E1900307D39 /* LargeSolidButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F114420028495E1900307D39 /* LargeSolidButton.swift */; };
 		F12A14DC27D677340096543E /* RegisterContactsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12A14DB27D677340096543E /* RegisterContactsCoordinator.swift */; };
 		F12A14DE27D677420096543E /* RegisterContactsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12A14DD27D677420096543E /* RegisterContactsViewModel.swift */; };
 		F12A14E027D6774C0096543E /* RegisterContactsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12A14DF27D6774C0096543E /* RegisterContactsView.swift */; };
@@ -392,7 +385,7 @@
 		F11441A6284681EC00307D39 /* CardModifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardModifier.swift; sourceTree = "<group>"; };
 		F11441A7284681EC00307D39 /* HeaderTitleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeaderTitleView.swift; sourceTree = "<group>"; };
 		F11441AB284681EC00307D39 /* DottedButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DottedButton.swift; sourceTree = "<group>"; };
-		F11441AC284681EC00307D39 /* LargeButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LargeButton.swift; sourceTree = "<group>"; };
+		F11441AC284681EC00307D39 /* LargeLabelButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LargeLabelButton.swift; sourceTree = "<group>"; };
 		F11441AE284681EC00307D39 /* OffsetScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OffsetScrollView.swift; sourceTree = "<group>"; };
 		F11441B0284681EC00307D39 /* ExpandingTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExpandingTextView.swift; sourceTree = "<group>"; };
 		F11441B1284681EC00307D39 /* BorderedTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BorderedTextField.swift; sourceTree = "<group>"; };
@@ -422,6 +415,7 @@
 		F11441ED28468B2F00307D39 /* ChatMessageViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatMessageViewModel.swift; sourceTree = "<group>"; };
 		F11441EE28468B2F00307D39 /* ChatMessageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatMessageView.swift; sourceTree = "<group>"; };
 		F11441F228468B5600307D39 /* CloseButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloseButton.swift; sourceTree = "<group>"; };
+		F114420028495E1900307D39 /* LargeSolidButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LargeSolidButton.swift; sourceTree = "<group>"; };
 		F12A14DB27D677340096543E /* RegisterContactsCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterContactsCoordinator.swift; sourceTree = "<group>"; };
 		F12A14DD27D677420096543E /* RegisterContactsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterContactsViewModel.swift; sourceTree = "<group>"; };
 		F12A14DF27D6774C0096543E /* RegisterContactsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterContactsView.swift; sourceTree = "<group>"; };
@@ -1099,7 +1093,8 @@
 			children = (
 				F11441F228468B5600307D39 /* CloseButton.swift */,
 				F11441AB284681EC00307D39 /* DottedButton.swift */,
-				F11441AC284681EC00307D39 /* LargeButton.swift */,
+				F11441AC284681EC00307D39 /* LargeLabelButton.swift */,
+				F114420028495E1900307D39 /* LargeSolidButton.swift */,
 			);
 			path = Buttons;
 			sourceTree = "<group>";
@@ -1974,6 +1969,7 @@
 				B08F392627AE7112008B344F /* R.generated.swift in Sources */,
 				F1042BA527BEF0360048C2F0 /* OnboardingView+PageControl.swift in Sources */,
 				F1B5FCD627C703BF0018729B /* View+.swift in Sources */,
+				F114420128495E1900307D39 /* LargeSolidButton.swift in Sources */,
 				B08F396627AE7112008B344F /* Constants.swift in Sources */,
 				F13B265E281899250011F2FB /* OfferAdvancedFilterBTCNetworkView.swift in Sources */,
 				B08F391527AE7112008B344F /* ApiService.swift in Sources */,
@@ -2061,7 +2057,6 @@
 				B08F394127AE7112008B344F /* Shortcuts.swift in Sources */,
 				F11441E8284682B200307D39 /* ChatRequestOfferView.swift in Sources */,
 				4F481E7228466B320051D3B9 /* TimelineOption.swift in Sources */,
-				F18862592811CCAA00659786 /* DottedButton.swift in Sources */,
 				F1B5FCD827C7040C0018729B /* RoundedCorners.swift in Sources */,
 				F151A29D27C866C7000D7242 /* RegisterNameAvatarView.swift in Sources */,
 				B08F395F27AE7112008B344F /* String+.swift in Sources */,
@@ -2079,7 +2074,7 @@
 				4F700CBA2844B08B0085139F /* BitcoinView.swift in Sources */,
 				B08F394327AE7112008B344F /* Keychain+.swift in Sources */,
 				F13B2677281F43A10011F2FB /* Offer.swift in Sources */,
-				F11441CD284681EC00307D39 /* LargeButton.swift in Sources */,
+				F11441CD284681EC00307D39 /* LargeLabelButton.swift in Sources */,
 				F175AB8727E4D5C8000DAB15 /* UIScreen+.swift in Sources */,
 				F18862472811550C00659786 /* CreateOfferCoordinator.swift in Sources */,
 				F151A2A727C962CC000D7242 /* RegisterNameAvatarView+NameInput.swift in Sources */,
