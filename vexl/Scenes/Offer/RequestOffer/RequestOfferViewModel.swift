@@ -36,7 +36,7 @@ final class RequestOfferViewModel: ViewModelType, ObservableObject {
     }
 
     var offerFeed: OfferDetailViewData {
-        OfferFeed.mapToOfferFeed(usingOffer: offer).viewData
+        OfferFeed.mapToOfferFeed(usingOffer: offer, isRequested: false).viewData
     }
 
     // MARK: - Coordinator Bindings

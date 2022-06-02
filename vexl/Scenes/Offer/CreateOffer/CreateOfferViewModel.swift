@@ -28,11 +28,11 @@ final class CreateOfferViewModel: ViewModelType, ObservableObject {
         case loading
     }
 
-    @Inject var userSecurity: UserSecurityType
-    @Inject var offerService: OfferServiceType
-    @Inject var chatService: ChatServiceType
-    @Inject var contactsMananger: ContactsManagerType
-    @Inject var contactsService: ContactsServiceType
+    @Inject private var userSecurity: UserSecurityType
+    @Inject private var offerService: OfferServiceType
+    @Inject private var chatService: ChatServiceType
+    @Inject private var contactsMananger: ContactsManagerType
+    @Inject private var contactsService: ContactsServiceType
 
     // MARK: - Action Binding
 

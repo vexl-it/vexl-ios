@@ -9,6 +9,10 @@
 /* Begin PBXBuildFile section */
 		0AA456AF4C162D9C8AF6AB30 /* Pods_vexl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57B3CAA27CF4369A28B748A7 /* Pods_vexl.framework */; };
 		4F481E7228466B320051D3B9 /* TimelineOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F481E7128466B320051D3B9 /* TimelineOption.swift */; };
+		4F24169E2848CF4300B4A437 /* LocalStorageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F24169D2848CF4300B4A437 /* LocalStorageService.swift */; };
+		4F2416A12848F2F100B4A437 /* DictionaryDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2416A02848F2F100B4A437 /* DictionaryDB.swift */; };
+		4F481E76284767480051D3B9 /* ChatRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F481E75284767480051D3B9 /* ChatRouter.swift */; };
+		4F481E78284768840051D3B9 /* ChatService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F481E77284768840051D3B9 /* ChatService.swift */; };
 		4F700CBA2844B08B0085139F /* BitcoinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F700CB92844B08B0085139F /* BitcoinView.swift */; };
 		4F700CBC2844C3260085139F /* TabBarNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F700CBB2844C3260085139F /* TabBarNavigationController.swift */; };
 		4F700CBE2844C4C20085139F /* StickyBitcoinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F700CBD2844C4C20085139F /* StickyBitcoinView.swift */; };
@@ -271,6 +275,8 @@
 		1627349009CA3CC8460BA3C3 /* Pods-vexl-vexlTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-vexl-vexlTests.debug.xcconfig"; path = "Target Support Files/Pods-vexl-vexlTests/Pods-vexl-vexlTests.debug.xcconfig"; sourceTree = "<group>"; };
 		2037AA1BF15F43490962C3E2 /* Pods-vexl-vexlTests.appstore.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-vexl-vexlTests.appstore.xcconfig"; path = "Target Support Files/Pods-vexl-vexlTests/Pods-vexl-vexlTests.appstore.xcconfig"; sourceTree = "<group>"; };
 		41AF8987CFFD44F9E45C3897 /* Pods-vexl-vexlTests.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-vexl-vexlTests.staging.xcconfig"; path = "Target Support Files/Pods-vexl-vexlTests/Pods-vexl-vexlTests.staging.xcconfig"; sourceTree = "<group>"; };
+		4F24169D2848CF4300B4A437 /* LocalStorageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalStorageService.swift; sourceTree = "<group>"; };
+		4F2416A02848F2F100B4A437 /* DictionaryDB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryDB.swift; sourceTree = "<group>"; };
 		4F481E61284504050051D3B9 /* RangePickerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RangePickerView.swift; sourceTree = "<group>"; };
 		4F481E63284504050051D3B9 /* OptionPickerItemView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OptionPickerItemView.swift; sourceTree = "<group>"; };
 		4F481E64284504050051D3B9 /* SingleOptionPickerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SingleOptionPickerView.swift; sourceTree = "<group>"; };
@@ -587,6 +593,14 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		4F24169F2848F27E00B4A437 /* Database */ = {
+			isa = PBXGroup;
+			children = (
+				4F2416A02848F2F100B4A437 /* DictionaryDB.swift */,
+			);
+			path = Database;
+			sourceTree = "<group>";
+		};
 		4F700CB82844B0750085139F /* BitcoinView */ = {
 			isa = PBXGroup;
 			children = (
@@ -684,6 +698,7 @@
 		B08F38BF27AE7110008B344F /* vexl */ = {
 			isa = PBXGroup;
 			children = (
+				4F24169F2848F27E00B4A437 /* Database */,
 				B08F38C027AE7110008B344F /* Info.plist */,
 				B08F38C927AE7110008B344F /* Changelog.txt */,
 				B08F38D927AE7110008B344F /* Application */,
@@ -819,6 +834,7 @@
 		B08F38F527AE7110008B344F /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				4F24169D2848CF4300B4A437 /* LocalStorageService.swift */,
 				B0FE523E280E822400A77EC3 /* CryptoService.swift */,
 				B08F391A27AE7112008B344F /* Networking */,
 			);
@@ -1974,6 +1990,7 @@
 				B08F391C27AE7112008B344F /* BaseService.swift in Sources */,
 				F1C6D09E27BDDD4C009BD506 /* TextStyle.swift in Sources */,
 				4FBF6209283CD5C000DDBE71 /* OfferAdvancedFilterFriendSourceView.swift in Sources */,
+				4F24169E2848CF4300B4A437 /* LocalStorageService.swift in Sources */,
 				F188627528169A3700659786 /* MarketplaceSegmentView.swift in Sources */,
 				4F700CC02844C54E0085139F /* BitcoinViewModel.swift in Sources */,
 				F1D2012E283401D7006DF4AB /* OfferSortView.swift in Sources */,
@@ -1991,6 +2008,7 @@
 				F13B265E281899250011F2FB /* OfferAdvancedFilterBTCNetworkView.swift in Sources */,
 				B08F391527AE7112008B344F /* ApiService.swift in Sources */,
 				F188627028169A3700659786 /* MarketplaceCoordinator.swift in Sources */,
+				4F2416A12848F2F100B4A437 /* DictionaryDB.swift in Sources */,
 				B08F391927AE7112008B344F /* User.swift in Sources */,
 				F19D60312845A14000876170 /* ChatMessageInputView.swift in Sources */,
 				F1D200A628252C44006DF4AB /* TabBarController.swift in Sources */,

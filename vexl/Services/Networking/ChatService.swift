@@ -15,17 +15,39 @@ protocol ChatServiceType {
 
 final class ChatService: BaseService, ChatServiceType {
     @Inject private var cryptoService: CryptoServiceType
+    @Inject private var localStorageService: LocalStorageServiceType
 
     func createInbox(offerPublicKey: String, pushToken: String) -> AnyPublisher<Void, Error> {
-        request(endpoint: ChatRouter.createInbox(offerPublicKey: offerPublicKey, pushToken: pushToken))
+        Future<Void, Error> { [localStorageService] promise in
+            do {
+                try localStorageService.saveInbox(Inbox(publicKey: offerPublicKey, type: .created))
+                promise(.success(()))
+            } catch {
+                promise(.failure(LocalStorageError.saveFailed))
+            }
+        }
+        .flatMapLatest(with: self) { owner, _ in
+            owner.request(endpoint: ChatRouter.createInbox(offerPublicKey: offerPublicKey, pushToken: pushToken))
+        }
+        .eraseToAnyPublisher()
     }
 
     func request(inboxPublicKey: String, message: String) -> AnyPublisher<Void, Error> {
-        cryptoService
-            .encryptECIES(publicKey: inboxPublicKey, secret: message)
-            .flatMapLatest(with: self) { owner, encryptedMessage in
-                owner.request(endpoint: ChatRouter.request(inboxPublicKey: inboxPublicKey, message: encryptedMessage))
+        Future<Void, Error> { [localStorageService] promise in
+            do {
+                try localStorageService.saveInbox(Inbox(publicKey: inboxPublicKey, type: .requested))
+                promise(.success(()))
+            } catch {
+                promise(.failure(LocalStorageError.saveFailed))
             }
-            .eraseToAnyPublisher()
+        }
+        .flatMapLatest(with: self) { owner, _ in
+            owner.cryptoService
+                .encryptECIES(publicKey: inboxPublicKey, secret: message)
+        }
+        .flatMapLatest(with: self) { owner, encryptedMessage in
+            owner.request(endpoint: ChatRouter.request(inboxPublicKey: inboxPublicKey, message: encryptedMessage))
+        }
+        .eraseToAnyPublisher()
     }
 }

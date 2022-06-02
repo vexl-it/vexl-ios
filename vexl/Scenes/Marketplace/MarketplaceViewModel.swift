@@ -11,8 +11,9 @@ import Combine
 
 final class MarketplaceViewModel: ViewModelType, ObservableObject {
 
-    @Inject var offerService: OfferServiceType
-    @Inject var userSecurity: UserSecurityType
+    @Inject private var offerService: OfferServiceType
+    @Inject private var userSecurity: UserSecurityType
+    @Inject private var localStorageService: LocalStorageServiceType
 
     // MARK: - Actions Bindings
 
@@ -143,6 +144,8 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
         $offerItems
             .withUnretained(self)
             .sink { owner, offers in
+                let requestedInboxes = owner.getRequestedInboxes()
+
                 let offerKeys = owner.userOfferKeys?.keys ?? []
 
                 for offer in offers {
@@ -150,7 +153,8 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
                         continue
                     }
 
-                    let marketplaceItem = OfferFeed.mapToOfferFeed(usingOffer: offer)
+                    let isRequested = requestedInboxes.contains(where: { $0.publicKey == offer.offerPublicKey })
+                    let marketplaceItem = OfferFeed.mapToOfferFeed(usingOffer: offer, isRequested: isRequested)
                     switch offer.type {
                     case .buy:
                         owner.buyFeedItems.append(marketplaceItem)
@@ -225,5 +229,13 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
                 print("id selected: \(id)")
             }
             .store(in: cancelBag)
+    }
+
+    private func getRequestedInboxes() -> [Inbox] {
+        do {
+            return try localStorageService.getInboxes(ofType: .requested)
+        } catch {
+            return []
+        }
     }
 }
