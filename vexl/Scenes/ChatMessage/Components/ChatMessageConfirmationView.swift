@@ -14,10 +14,29 @@ struct ChatMessageConfirmationView: View {
     let subtitle: String
     let actionTitle: String
     let dismissTitle: String
+    let style: Style
     let mainAction: () -> Void
     let dismiss: () -> Void
 
     private let screenHeight: CGFloat = UIScreen.main.bounds.height
+
+    private var primaryColor: SolidButtonColor {
+        switch style {
+        case .regular:
+            return .main
+        case .block:
+            return .main
+        }
+    }
+    
+    private var secondaryColor: SolidButtonColor {
+        switch style {
+        case .regular:
+            return .secondary
+        case .block:
+            return .secondary
+        }
+    }
 
     var body: some View {
         VStack {
@@ -36,6 +55,19 @@ struct ChatMessageConfirmationView: View {
             .cornerRadius(Appearance.GridGuide.buttonCorner)
 
             HStack {
+                SolidButton(Text(dismissTitle),
+                            iconImage: nil,
+                            isEnabled: .constant(true),
+                            isLoading: .constant(false),
+                            fullWidth: true,
+                            loadingViewScale: 1,
+                            font: Appearance.TextStyle.titleSmallSemiBold.font.asFont,
+                            colors: .secondary,
+                            dimensions: .largeButton,
+                            action: {
+                    dismiss()
+                })
+
                 SolidButton(Text(actionTitle),
                             iconImage: nil,
                             isEnabled: .constant(true),
@@ -48,23 +80,17 @@ struct ChatMessageConfirmationView: View {
                             action: {
                     mainAction()
                 })
-
-                SolidButton(Text(dismissTitle),
-                            iconImage: nil,
-                            isEnabled: .constant(true),
-                            isLoading: .constant(false),
-                            fullWidth: true,
-                            loadingViewScale: 1,
-                            font: Appearance.TextStyle.titleSmallSemiBold.font.asFont,
-                            colors: .main,
-                            dimensions: .largeButton,
-                            action: {
-                    dismiss()
-                })
             }
         }
         .padding(Appearance.GridGuide.point)
         .frame(maxHeight: .infinity, alignment: .bottom)
+    }
+}
+
+extension ChatMessageConfirmationView {
+    enum Style {
+        case regular
+        case block
     }
 }
 

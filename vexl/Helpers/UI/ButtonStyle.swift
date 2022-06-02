@@ -24,7 +24,14 @@ extension SolidButtonColor {
                                        iconTint: nil,
                                        disabledBackgroundOpacity: 1)
 
-     static let welcome = SolidButtonColor(textColor: Appearance.Colors.primaryText,
+    static let secondary = SolidButtonColor(textColor: Appearance.Colors.yellow100,
+                                            disabledTextColor: Appearance.Colors.gray2,
+                                            backgroundColor: Appearance.Colors.yellow20,
+                                            disabledBackgroundColor: Appearance.Colors.gray1,
+                                            iconTint: nil,
+                                            disabledBackgroundOpacity: 1)
+
+    static let welcome = SolidButtonColor(textColor: Appearance.Colors.primaryText,
                                            disabledTextColor: Appearance.Colors.gray2,
                                            backgroundColor: Appearance.Colors.purple5,
                                            disabledBackgroundColor: Appearance.Colors.gray1,

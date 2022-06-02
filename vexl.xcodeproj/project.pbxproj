@@ -1387,11 +1387,11 @@
 			isa = PBXGroup;
 			children = (
 				F11441F8284819CC00307D39 /* CommonFriends */,
+				F11441FC28481AB600307D39 /* ChatMessageConfirmationView.swift */,
 				F19D602C2845538C00876170 /* ChatMessageDateView.swift */,
 				F19D602E2845570500876170 /* ChatMessageBubbleView.swift */,
 				F19D60302845A14000876170 /* ChatMessageInputView.swift */,
 				F11441F42846BE0D00307D39 /* ChatMessageOfferView.swift */,
-				F11441FC28481AB600307D39 /* ChatMessageConfirmationView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";

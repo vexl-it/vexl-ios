@@ -13,7 +13,8 @@ struct UserOffersView: View {
 
     var body: some View {
         VStack(spacing: Appearance.GridGuide.padding) {
-            HeaderTitleView(title: viewModel.offerTitle, showSeparator: true) {
+            HeaderTitleView(title: viewModel.offerTitle,
+                            showSeparator: true) {
                 viewModel.action.send(.dismissTap)
             }
 
