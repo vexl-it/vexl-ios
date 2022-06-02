@@ -71,14 +71,15 @@ struct RegisterNameAvatarView: View {
     }
 
     @ViewBuilder private func actionButton(with action: @escaping () -> Void) -> some View {
-        SolidButton(Text(L.continue()),
-                    isEnabled: $viewModel.isActionEnabled,
-                    font: Appearance.TextStyle.h3.font.asFont,
-                    colors: SolidButtonColor.welcome,
-                    dimensions: SolidButtonDimension.largeButton) {
+        LargeSolidButton(title: L.continue(),
+                         font: Appearance.TextStyle.h3.font.asFont,
+                         style: .custom(color: .welcome),
+                         isFullWidth: true,
+                         isEnabled: $viewModel.isActionEnabled,
+                         action: {
             action()
-        }
-        .padding(.horizontal, Appearance.GridGuide.padding)
+        })
+            .padding(.horizontal, Appearance.GridGuide.padding)
     }
 }
 
