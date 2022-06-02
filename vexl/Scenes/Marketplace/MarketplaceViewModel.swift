@@ -87,6 +87,7 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
         }
     }
 
+    let refresh = PassthroughSubject<Void, Never>()
     let bitcoinViewModel: BitcoinViewModel
     private var buyOfferFilter = OfferFilter(type: .buy)
     private var sellOfferFilter = OfferFilter(type: .sell)
@@ -128,11 +129,14 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
     }
 
     private func setupDataBindings() {
-        offerService
-            .getOffer(pageLimit: Constants.pageMaxLimit)
-            .track(activity: primaryActivity)
-            .materialize()
-            .compactMap(\.value)
+        Publishers.Merge(refresh, Just(()))
+            .flatMapLatest(with: self) { owner, _ in
+                owner.offerService
+                    .getOffer(pageLimit: Constants.pageMaxLimit)
+                    .track(activity: owner.primaryActivity)
+                    .materialize()
+                    .compactMap(\.value)
+            }
             .map(\.items)
             .withUnretained(self)
             .tryMap { owner, items in
@@ -144,6 +148,8 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
         $offerItems
             .withUnretained(self)
             .sink { owner, offers in
+                owner.buyFeedItems.removeAll()
+                owner.sellFeedItems.removeAll()
                 let requestedInboxes = owner.getRequestedInboxes()
 
                 let offerKeys = owner.userOfferKeys?.keys ?? []
