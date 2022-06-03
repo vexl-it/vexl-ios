@@ -36,7 +36,7 @@ final class ChatMessageViewModel: ViewModelType, ObservableObject {
     @Published var primaryActivity: Activity = .init()
     @Published var isLoading = false
     @Published var error: Error?
-    @Published var presentedModal = Modal.none
+    @Published var modal = Modal.none
 
     var errorIndicator: ErrorIndicator {
         primaryActivity.error
@@ -92,7 +92,7 @@ final class ChatMessageViewModel: ViewModelType, ObservableObject {
             .filter { $0 == .dismissModal }
             .withUnretained(self)
             .map { _ -> Modal in .none }
-            .assign(to: &$presentedModal)
+            .assign(to: &$modal)
 
         action
             .compactMap { action -> ChatMessageAction? in
@@ -101,7 +101,7 @@ final class ChatMessageViewModel: ViewModelType, ObservableObject {
             }
             .filter { $0 == .showOffer }
             .map { _ -> Modal in .offer }
-            .assign(to: &$presentedModal)
+            .assign(to: &$modal)
 
         action
             .compactMap { action -> ChatMessageAction? in
@@ -110,7 +110,7 @@ final class ChatMessageViewModel: ViewModelType, ObservableObject {
             }
             .filter { $0 == .commonFriends }
             .map { _ -> Modal in .friends }
-            .assign(to: &$presentedModal)
+            .assign(to: &$modal)
     }
 }
 

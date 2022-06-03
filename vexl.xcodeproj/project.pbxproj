@@ -131,10 +131,12 @@
 		F11441F52846BE0D00307D39 /* ChatMessageOfferView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11441F42846BE0D00307D39 /* ChatMessageOfferView.swift */; };
 		F11441F72847EA3900307D39 /* ChatMessageCommonFriendsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11441F62847EA3900307D39 /* ChatMessageCommonFriendsView.swift */; };
 		F11441FA284819DB00307D39 /* ChatMessageCommonFriendItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11441F9284819DB00307D39 /* ChatMessageCommonFriendItemView.swift */; };
-		F11441FD28481AB600307D39 /* ChatMessageConfirmationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11441FC28481AB600307D39 /* ChatMessageConfirmationView.swift */; };
 		F114420128495E1900307D39 /* LargeSolidButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F114420028495E1900307D39 /* LargeSolidButton.swift */; };
 		F114420428498FCA00307D39 /* ChatMessageDeleteConfirmationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F114420328498FCA00307D39 /* ChatMessageDeleteConfirmationView.swift */; };
 		F114420628498FE600307D39 /* ChatMessageBlockConfirmationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F114420528498FE600307D39 /* ChatMessageBlockConfirmationView.swift */; };
+		F11442082849922B00307D39 /* ChatMessageConversationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11442072849922B00307D39 /* ChatMessageConversationView.swift */; };
+		F114420A284992A600307D39 /* ChatMessageHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1144209284992A600307D39 /* ChatMessageHeaderView.swift */; };
+		F114420C284993EB00307D39 /* ChatMessageActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F114420B284993EB00307D39 /* ChatMessageActionView.swift */; };
 		F12A14DC27D677340096543E /* RegisterContactsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12A14DB27D677340096543E /* RegisterContactsCoordinator.swift */; };
 		F12A14DE27D677420096543E /* RegisterContactsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12A14DD27D677420096543E /* RegisterContactsViewModel.swift */; };
 		F12A14E027D6774C0096543E /* RegisterContactsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12A14DF27D6774C0096543E /* RegisterContactsView.swift */; };
@@ -241,6 +243,7 @@
 		F1BFA959280223BD00F4E745 /* UserProfileCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1BFA955280223BD00F4E745 /* UserProfileCoordinator.swift */; };
 		F1BFA96E2803A49300F4E745 /* UserProfileView+Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1BFA96D2803A49300F4E745 /* UserProfileView+Item.swift */; };
 		F1BFA97328043D6300F4E745 /* Image+.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1BFA97228043D6300F4E745 /* Image+.swift */; };
+		F1C4A8252849989D005BEFEB /* ChatMessageConfirmationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1C4A8242849989D005BEFEB /* ChatMessageConfirmationView.swift */; };
 		F1C6D09E27BDDD4C009BD506 /* TextStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1C6D09D27BDDD4C009BD506 /* TextStyle.swift */; };
 		F1C6D0A027BDECB0009BD506 /* WelcomeView+LogoImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1C6D09F27BDECB0009BD506 /* WelcomeView+LogoImageView.swift */; };
 		F1CFF3B827F6015B007D9FE1 /* UserSecurity.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1CFF3B727F6015B007D9FE1 /* UserSecurity.swift */; };
@@ -424,10 +427,12 @@
 		F11441F42846BE0D00307D39 /* ChatMessageOfferView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageOfferView.swift; sourceTree = "<group>"; };
 		F11441F62847EA3900307D39 /* ChatMessageCommonFriendsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageCommonFriendsView.swift; sourceTree = "<group>"; };
 		F11441F9284819DB00307D39 /* ChatMessageCommonFriendItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageCommonFriendItemView.swift; sourceTree = "<group>"; };
-		F11441FC28481AB600307D39 /* ChatMessageConfirmationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageConfirmationView.swift; sourceTree = "<group>"; };
 		F114420028495E1900307D39 /* LargeSolidButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LargeSolidButton.swift; sourceTree = "<group>"; };
 		F114420328498FCA00307D39 /* ChatMessageDeleteConfirmationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageDeleteConfirmationView.swift; sourceTree = "<group>"; };
 		F114420528498FE600307D39 /* ChatMessageBlockConfirmationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageBlockConfirmationView.swift; sourceTree = "<group>"; };
+		F11442072849922B00307D39 /* ChatMessageConversationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageConversationView.swift; sourceTree = "<group>"; };
+		F1144209284992A600307D39 /* ChatMessageHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageHeaderView.swift; sourceTree = "<group>"; };
+		F114420B284993EB00307D39 /* ChatMessageActionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageActionView.swift; sourceTree = "<group>"; };
 		F12A14DB27D677340096543E /* RegisterContactsCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterContactsCoordinator.swift; sourceTree = "<group>"; };
 		F12A14DD27D677420096543E /* RegisterContactsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterContactsViewModel.swift; sourceTree = "<group>"; };
 		F12A14DF27D6774C0096543E /* RegisterContactsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterContactsView.swift; sourceTree = "<group>"; };
@@ -534,6 +539,7 @@
 		F1BFA955280223BD00F4E745 /* UserProfileCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfileCoordinator.swift; sourceTree = "<group>"; };
 		F1BFA96D2803A49300F4E745 /* UserProfileView+Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserProfileView+Item.swift"; sourceTree = "<group>"; };
 		F1BFA97228043D6300F4E745 /* Image+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Image+.swift"; sourceTree = "<group>"; };
+		F1C4A8242849989D005BEFEB /* ChatMessageConfirmationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatMessageConfirmationView.swift; sourceTree = "<group>"; };
 		F1C6D09627BDAD7F009BD506 /* LargeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LargeButton.swift; sourceTree = "<group>"; };
 		F1C6D09D27BDDD4C009BD506 /* TextStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextStyle.swift; sourceTree = "<group>"; };
 		F1C6D09F27BDECB0009BD506 /* WelcomeView+LogoImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WelcomeView+LogoImageView.swift"; sourceTree = "<group>"; };
@@ -1180,7 +1186,7 @@
 		F114420228498FB400307D39 /* Confirmation */ = {
 			isa = PBXGroup;
 			children = (
-				F11441FC28481AB600307D39 /* ChatMessageConfirmationView.swift */,
+				F1C4A8242849989D005BEFEB /* ChatMessageConfirmationView.swift */,
 				F114420328498FCA00307D39 /* ChatMessageDeleteConfirmationView.swift */,
 				F114420528498FE600307D39 /* ChatMessageBlockConfirmationView.swift */,
 			);
@@ -1408,10 +1414,13 @@
 			children = (
 				F114420228498FB400307D39 /* Confirmation */,
 				F11441F8284819CC00307D39 /* CommonFriends */,
+				F1144209284992A600307D39 /* ChatMessageHeaderView.swift */,
+				F114420B284993EB00307D39 /* ChatMessageActionView.swift */,
 				F19D602C2845538C00876170 /* ChatMessageDateView.swift */,
 				F19D602E2845570500876170 /* ChatMessageBubbleView.swift */,
 				F19D60302845A14000876170 /* ChatMessageInputView.swift */,
 				F11441F42846BE0D00307D39 /* ChatMessageOfferView.swift */,
+				F11442072849922B00307D39 /* ChatMessageConversationView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -1903,6 +1912,7 @@
 				F188627128169A3700659786 /* MarketplaceFilterView.swift in Sources */,
 				B08F392227AE7112008B344F /* UIColor+.swift in Sources */,
 				B08F396A27AE7112008B344F /* URLRequest+.swift in Sources */,
+				F114420C284993EB00307D39 /* ChatMessageActionView.swift in Sources */,
 				F188627728169A3700659786 /* MarketplaceViewModel.swift in Sources */,
 				F175AB9727ECC159000DAB15 /* SecurityHeader.swift in Sources */,
 				F12A14DC27D677340096543E /* RegisterContactsCoordinator.swift in Sources */,
@@ -1917,9 +1927,9 @@
 				F13B266528192BBF0011F2FB /* OfferInitialData.swift in Sources */,
 				F12A14F327D96FD40096543E /* ImportContactsView.swift in Sources */,
 				F12A150827E1A4940096543E /* RequestAccessAlert.swift in Sources */,
-				F11441FD28481AB600307D39 /* ChatMessageConfirmationView.swift in Sources */,
 				B0E9BB2E2815C7260012BF1D /* HMAC.swift in Sources */,
 				4FBF61E2283BD12D00DDBE71 /* FilterViewModel.swift in Sources */,
+				F11442082849922B00307D39 /* ChatMessageConversationView.swift in Sources */,
 				F11441D1284681EC00307D39 /* PlaceholderTextField.swift in Sources */,
 				B0F206EF27AE8F6900A44E72 /* Publisher+.swift in Sources */,
 				F1A9453627F686D1009B5AE3 /* CodeValidation.swift in Sources */,
@@ -2085,6 +2095,7 @@
 				F114420628498FE600307D39 /* ChatMessageBlockConfirmationView.swift in Sources */,
 				B0EEE11827B14D360097031E /* WelcomeViewModel.swift in Sources */,
 				F151A2AB27CE818C000D7242 /* RegisterNameAvatarView+PhoneVerification.swift in Sources */,
+				F114420A284992A600307D39 /* ChatMessageHeaderView.swift in Sources */,
 				F1BFA956280223BD00F4E745 /* UserProfileView.swift in Sources */,
 				F1B5FCBE27C68EA70018729B /* OnboardingView+BottomButtons.swift in Sources */,
 				F1886255281185E900659786 /* OfferFeePickerView.swift in Sources */,
@@ -2107,6 +2118,7 @@
 				F11441DB284681EC00307D39 /* PhoneNumberTextFieldView.swift in Sources */,
 				F1B5FCD127C6F7EF0018729B /* RegisterPhoneView.swift in Sources */,
 				F175ABA027F4A7EC000DAB15 /* RegistryError.swift in Sources */,
+				F1C4A8252849989D005BEFEB /* ChatMessageConfirmationView.swift in Sources */,
 				B08F397027AE7112008B344F /* UserRouter.swift in Sources */,
 				F1886211280EC49B00659786 /* Image+Base64.swift in Sources */,
 				F188622128105A1200659786 /* UserOffersViewModel.swift in Sources */,
