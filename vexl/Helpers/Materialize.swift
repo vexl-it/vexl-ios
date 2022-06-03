@@ -57,7 +57,6 @@ public extension Publishers {
                         case .finished:
                             _ = subscriber.receive(.finished)
                         }
-                        subscriber.receive(completion: .finished)
                     },
                     receiveValue: { _ = subscriber.receive(.value($0)) }
                 )

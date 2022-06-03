@@ -30,9 +30,9 @@ final class MarketplaceCoordinator: BaseCoordinator<Void> {
             .route
             .receive(on: RunLoop.main)
             .filter { $0 == .showSellOfferTapped }
-            .withUnretained(self)
-            .flatMap { owner, _ in
-                owner.showSellOffers(router: owner.router)
+            .flatMapLatest(with: self) { owner, _ -> CoordinatingResult<RouterResult<Void>> in
+                let modalRouter = ModalRouter(parentViewController: viewController, presentationStyle: .fullScreen)
+                return owner.showSellOffers(router: modalRouter)
             }
             .sink()
             .store(in: cancelBag)
@@ -41,8 +41,7 @@ final class MarketplaceCoordinator: BaseCoordinator<Void> {
             .route
             .receive(on: RunLoop.main)
             .filter { $0 == .showBuyOfferTapped }
-            .withUnretained(self)
-            .flatMap { owner, _ -> CoordinatingResult<RouterResult<Void>> in
+            .flatMapLatest(with: self) { owner, _ -> CoordinatingResult<RouterResult<Void>> in
                 let modalRouter = ModalRouter(parentViewController: viewController, presentationStyle: .fullScreen)
                 return owner.showBuyOffers(router: modalRouter)
             }
@@ -64,8 +63,7 @@ final class MarketplaceCoordinator: BaseCoordinator<Void> {
                 if case let .showFiltersTapped(offerFilter) = route { return offerFilter }
                 return nil
             }
-            .withUnretained(self)
-            .flatMap { owner, filter -> CoordinatingResult<RouterResult<OfferFilter>> in
+            .flatMapLatest(with: self) { owner, filter -> CoordinatingResult<RouterResult<OfferFilter>> in
                 let modalRouter = ModalRouter(parentViewController: viewController, presentationStyle: .fullScreen)
                 return owner.showFilters(router: modalRouter, filter: filter)
             }
@@ -84,12 +82,13 @@ final class MarketplaceCoordinator: BaseCoordinator<Void> {
             .compactMap { route -> Offer? in
                 if case let .showRequestOffer(offer) = route { return offer } else { return nil }
             }
-            .withUnretained(self)
-            .flatMap { owner, offer -> CoordinatingResult<RouterResult<Void>> in
+            .flatMapLatest(with: self) { owner, offer -> CoordinatingResult<RouterResult<Void>> in
                 let modalRouter = ModalRouter(parentViewController: viewController, presentationStyle: .fullScreen)
                 return owner.showRequestOffer(router: modalRouter, offer: offer)
             }
-            .sink()
+            .filter { if case .finished = $0 { return true } else { return false } }
+            .asVoid()
+            .subscribe(viewModel.refresh)
             .store(in: cancelBag)
     }
 }

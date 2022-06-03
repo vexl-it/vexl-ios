@@ -11,8 +11,9 @@ import Combine
 
 final class MarketplaceViewModel: ViewModelType, ObservableObject {
 
-    @Inject var offerService: OfferServiceType
-    @Inject var userSecurity: UserSecurityType
+    @Inject private var offerService: OfferServiceType
+    @Inject private var userSecurity: UserSecurityType
+    @Inject private var localStorageService: LocalStorageServiceType
 
     // MARK: - Actions Bindings
 
@@ -86,6 +87,7 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
         }
     }
 
+    let refresh = PassthroughSubject<Void, Never>()
     let bitcoinViewModel: BitcoinViewModel
     private var buyOfferFilter = OfferFilter(type: .buy)
     private var sellOfferFilter = OfferFilter(type: .sell)
@@ -127,11 +129,14 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
     }
 
     private func setupDataBindings() {
-        offerService
-            .getOffer(pageLimit: Constants.pageMaxLimit)
-            .track(activity: primaryActivity)
-            .materialize()
-            .compactMap(\.value)
+        Publishers.Merge(refresh, Just(()))
+            .flatMapLatest(with: self) { owner, _ in
+                owner.offerService
+                    .getOffer(pageLimit: Constants.pageMaxLimit)
+                    .track(activity: owner.primaryActivity)
+                    .materialize()
+                    .compactMap(\.value)
+            }
             .map(\.items)
             .withUnretained(self)
             .tryMap { owner, items in
@@ -143,6 +148,10 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
         $offerItems
             .withUnretained(self)
             .sink { owner, offers in
+                owner.buyFeedItems.removeAll()
+                owner.sellFeedItems.removeAll()
+                let requestedInboxes = owner.getRequestedInboxes()
+
                 let offerKeys = owner.userOfferKeys?.keys ?? []
 
                 for offer in offers {
@@ -150,7 +159,8 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
                         continue
                     }
 
-                    let marketplaceItem = OfferFeed.mapToOfferFeed(usingOffer: offer)
+                    let isRequested = requestedInboxes.contains(where: { $0.publicKey == offer.offerPublicKey })
+                    let marketplaceItem = OfferFeed.mapToOfferFeed(usingOffer: offer, isRequested: isRequested)
                     switch offer.type {
                     case .buy:
                         owner.buyFeedItems.append(marketplaceItem)
@@ -225,5 +235,13 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
                 print("id selected: \(id)")
             }
             .store(in: cancelBag)
+    }
+
+    private func getRequestedInboxes() -> [Inbox] {
+        do {
+            return try localStorageService.getInboxes(ofType: .requested)
+        } catch {
+            return []
+        }
     }
 }
