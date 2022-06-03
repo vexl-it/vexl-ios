@@ -67,6 +67,8 @@ struct ChatMessageView: View {
             switch viewModel.modal {
             case .offer:
                 offerView
+            case .friends:
+                commonFriendView
             case .none:
                 EmptyView()
             }
@@ -86,6 +88,16 @@ struct ChatMessageView: View {
 
     private var offerView: some View {
         ChatMessageOfferView {
+            withAnimation {
+                viewModel.action.send(.dismissModal)
+            }
+        }
+        .zIndex(3)
+        .transition(.move(edge: .bottom))
+    }
+
+    private var commonFriendView: some View {
+        ChatMessageCommonFriendsView {
             withAnimation {
                 viewModel.action.send(.dismissModal)
             }
