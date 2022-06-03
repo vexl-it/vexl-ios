@@ -53,7 +53,7 @@ struct ChatMessageView: View {
                         .foregroundColor(Appearance.Colors.whiteText)
 
                     Text(viewModel.offerType == .buy ? L.marketplaceDetailUserBuy("") : L.marketplaceDetailUserSell(""))
-                        .foregroundColor(Appearance.Colors.whiteText)
+                        .foregroundColor(viewModel.offerType == .buy ? Appearance.Colors.green100 : Appearance.Colors.pink100)
                 }
                 .frame(maxWidth: .infinity)
             }
