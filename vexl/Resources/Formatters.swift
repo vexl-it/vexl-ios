@@ -19,6 +19,13 @@ struct Formatters {
         return formatter
     }()
 
+    static let chatDateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "E dd.MM HH:mm"
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        return formatter
+    }()
+
     static let phoneNumberFormatter = PhoneNumberKit()
 
     static let numberFormatter: NumberFormatter = {
