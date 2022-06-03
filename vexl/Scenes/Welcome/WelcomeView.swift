@@ -32,13 +32,15 @@ struct WelcomeView: View {
                     .padding(.bottom, Appearance.GridGuide.largePadding1)
                     .padding(.top, Appearance.GridGuide.largePadding1)
 
-                SolidButton(Text(L.continue()),
-                            isEnabled: $viewModel.hasAgreedTermsAndConditions,
-                            font: Appearance.TextStyle.h3.font.asFont,
-                            colors: SolidButtonColor.welcome,
-                            dimensions: SolidButtonDimension.largeButton) {
+                LargeSolidButton(title: L.continue(),
+                                 font: Appearance.TextStyle.h3.font.asFont,
+                                 style: .custom(color: .welcome),
+                                 isFullWidth: true,
+                                 isEnabled: $viewModel.hasAgreedTermsAndConditions,
+                                 action: {
                     viewModel.send(action: .continueTap)
-                }.padding(.horizontal, Appearance.GridGuide.padding)
+                })
+                    .padding(.horizontal, Appearance.GridGuide.padding)
             }.frame(maxHeight: .infinity, alignment: .bottom)
         }
     }

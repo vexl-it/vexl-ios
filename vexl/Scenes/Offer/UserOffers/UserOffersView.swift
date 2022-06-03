@@ -20,7 +20,7 @@ struct UserOffersView: View {
             OfferSortView(numberOfOffers: viewModel.offerItems.count,
                           sortingOption: $viewModel.offerSortingOption)
 
-            LargeButton(
+            LargeLabelButton(
                 isEnabled: .constant(true),
                 backgroundColor: Appearance.Colors.pink20,
                 content: {
