@@ -9,6 +9,11 @@
 /* Begin PBXBuildFile section */
 		0AA456AF4C162D9C8AF6AB30 /* Pods_vexl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57B3CAA27CF4369A28B748A7 /* Pods_vexl.framework */; };
 		4F481E7228466B320051D3B9 /* TimelineOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F481E7128466B320051D3B9 /* TimelineOption.swift */; };
+		4F24169E2848CF4300B4A437 /* LocalStorageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F24169D2848CF4300B4A437 /* LocalStorageService.swift */; };
+		4F2416A12848F2F100B4A437 /* DictionaryDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2416A02848F2F100B4A437 /* DictionaryDB.swift */; };
+		4F2416A328490B3C00B4A437 /* Inbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2416A228490B3C00B4A437 /* Inbox.swift */; };
+		4F481E76284767480051D3B9 /* ChatRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F481E75284767480051D3B9 /* ChatRouter.swift */; };
+		4F481E78284768840051D3B9 /* ChatService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F481E77284768840051D3B9 /* ChatService.swift */; };
 		4F700CBA2844B08B0085139F /* BitcoinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F700CB92844B08B0085139F /* BitcoinView.swift */; };
 		4F700CBC2844C3260085139F /* TabBarNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F700CBB2844C3260085139F /* TabBarNavigationController.swift */; };
 		4F700CBE2844C4C20085139F /* StickyBitcoinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F700CBD2844C4C20085139F /* StickyBitcoinView.swift */; };
@@ -154,7 +159,7 @@
 		F12A150827E1A4940096543E /* RequestAccessAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12A150727E1A4940096543E /* RequestAccessAlert.swift */; };
 		F13B265C281897DE0011F2FB /* OfferAdvanceFilterFriendDegreeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F13B265B281897DE0011F2FB /* OfferAdvanceFilterFriendDegreeView.swift */; };
 		F13B265E281899250011F2FB /* OfferAdvancedFilterBTCNetworkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F13B265D281899250011F2FB /* OfferAdvancedFilterBTCNetworkView.swift */; };
-		F13B266028189F580011F2FB /* OffersService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F13B265F28189F580011F2FB /* OffersService.swift */; };
+		F13B266028189F580011F2FB /* OfferService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F13B265F28189F580011F2FB /* OfferService.swift */; };
 		F13B26622818A7EC0011F2FB /* OfferDescriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F13B26612818A7EC0011F2FB /* OfferDescriptionView.swift */; };
 		F13B266528192BBF0011F2FB /* OfferInitialData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F13B266428192BBF0011F2FB /* OfferInitialData.swift */; };
 		F13B266928194A060011F2FB /* OffersRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F13B266828194A060011F2FB /* OffersRouter.swift */; };
@@ -280,6 +285,9 @@
 		1627349009CA3CC8460BA3C3 /* Pods-vexl-vexlTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-vexl-vexlTests.debug.xcconfig"; path = "Target Support Files/Pods-vexl-vexlTests/Pods-vexl-vexlTests.debug.xcconfig"; sourceTree = "<group>"; };
 		2037AA1BF15F43490962C3E2 /* Pods-vexl-vexlTests.appstore.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-vexl-vexlTests.appstore.xcconfig"; path = "Target Support Files/Pods-vexl-vexlTests/Pods-vexl-vexlTests.appstore.xcconfig"; sourceTree = "<group>"; };
 		41AF8987CFFD44F9E45C3897 /* Pods-vexl-vexlTests.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-vexl-vexlTests.staging.xcconfig"; path = "Target Support Files/Pods-vexl-vexlTests/Pods-vexl-vexlTests.staging.xcconfig"; sourceTree = "<group>"; };
+		4F24169D2848CF4300B4A437 /* LocalStorageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalStorageService.swift; sourceTree = "<group>"; };
+		4F2416A02848F2F100B4A437 /* DictionaryDB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryDB.swift; sourceTree = "<group>"; };
+		4F2416A228490B3C00B4A437 /* Inbox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Inbox.swift; sourceTree = "<group>"; };
 		4F481E61284504050051D3B9 /* RangePickerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RangePickerView.swift; sourceTree = "<group>"; };
 		4F481E63284504050051D3B9 /* OptionPickerItemView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OptionPickerItemView.swift; sourceTree = "<group>"; };
 		4F481E64284504050051D3B9 /* SingleOptionPickerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SingleOptionPickerView.swift; sourceTree = "<group>"; };
@@ -288,6 +296,8 @@
 		4F481E6D2845040A0051D3B9 /* Line.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Line.swift; sourceTree = "<group>"; };
 		4F481E6E2845040A0051D3B9 /* DashedLine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashedLine.swift; sourceTree = "<group>"; };
 		4F481E7128466B320051D3B9 /* TimelineOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineOption.swift; sourceTree = "<group>"; };
+		4F481E75284767480051D3B9 /* ChatRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRouter.swift; sourceTree = "<group>"; };
+		4F481E77284768840051D3B9 /* ChatService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatService.swift; sourceTree = "<group>"; };
 		4F700CAF2840E4650085139F /* LoadingDotsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingDotsView.swift; sourceTree = "<group>"; };
 		4F700CB92844B08B0085139F /* BitcoinView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BitcoinView.swift; sourceTree = "<group>"; };
 		4F700CBB2844C3260085139F /* TabBarNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarNavigationController.swift; sourceTree = "<group>"; };
@@ -451,7 +461,7 @@
 		F12A150727E1A4940096543E /* RequestAccessAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestAccessAlert.swift; sourceTree = "<group>"; };
 		F13B265B281897DE0011F2FB /* OfferAdvanceFilterFriendDegreeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferAdvanceFilterFriendDegreeView.swift; sourceTree = "<group>"; };
 		F13B265D281899250011F2FB /* OfferAdvancedFilterBTCNetworkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferAdvancedFilterBTCNetworkView.swift; sourceTree = "<group>"; };
-		F13B265F28189F580011F2FB /* OffersService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OffersService.swift; sourceTree = "<group>"; };
+		F13B265F28189F580011F2FB /* OfferService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferService.swift; sourceTree = "<group>"; };
 		F13B26612818A7EC0011F2FB /* OfferDescriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferDescriptionView.swift; sourceTree = "<group>"; };
 		F13B266428192BBF0011F2FB /* OfferInitialData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferInitialData.swift; sourceTree = "<group>"; };
 		F13B266828194A060011F2FB /* OffersRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OffersRouter.swift; sourceTree = "<group>"; };
@@ -603,6 +613,14 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		4F24169F2848F27E00B4A437 /* Database */ = {
+			isa = PBXGroup;
+			children = (
+				4F2416A02848F2F100B4A437 /* DictionaryDB.swift */,
+			);
+			path = Database;
+			sourceTree = "<group>";
+		};
 		4F700CB82844B0750085139F /* BitcoinView */ = {
 			isa = PBXGroup;
 			children = (
@@ -645,6 +663,7 @@
 			isa = PBXGroup;
 			children = (
 				4FBF623A283F8C3800DDBE71 /* OfferFeed.swift */,
+				4F2416A228490B3C00B4A437 /* Inbox.swift */,
 			);
 			path = Offers;
 			sourceTree = "<group>";
@@ -700,6 +719,7 @@
 		B08F38BF27AE7110008B344F /* vexl */ = {
 			isa = PBXGroup;
 			children = (
+				4F24169F2848F27E00B4A437 /* Database */,
 				B08F38C027AE7110008B344F /* Info.plist */,
 				B08F38C927AE7110008B344F /* Changelog.txt */,
 				B08F38D927AE7110008B344F /* Application */,
@@ -835,6 +855,7 @@
 		B08F38F527AE7110008B344F /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				4F24169D2848CF4300B4A437 /* LocalStorageService.swift */,
 				B0FE523E280E822400A77EC3 /* CryptoService.swift */,
 				B08F391A27AE7112008B344F /* Networking */,
 			);
@@ -905,7 +926,8 @@
 				B08F391B27AE7112008B344F /* BaseService.swift */,
 				B08F392D27AE7112008B344F /* UserService.swift */,
 				F175AB9827F0D2D8000DAB15 /* ContactsService.swift */,
-				F13B265F28189F580011F2FB /* OffersService.swift */,
+				F13B265F28189F580011F2FB /* OfferService.swift */,
+				4F481E77284768840051D3B9 /* ChatService.swift */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -965,6 +987,7 @@
 				B0F206FD27AEBDD500A44E72 /* AuthRouter.swift */,
 				F175AB9A27F1432E000DAB15 /* ContactsRouter.swift */,
 				F13B266828194A060011F2FB /* OffersRouter.swift */,
+				4F481E75284767480051D3B9 /* ChatRouter.swift */,
 			);
 			path = Routers;
 			sourceTree = "<group>";
@@ -1989,6 +2012,7 @@
 				B0F206F127AE94C400A44E72 /* InitialScreenManager.swift in Sources */,
 				F11441F72847EA3900307D39 /* ChatMessageCommonFriendsView.swift in Sources */,
 				F12A14E027D6774C0096543E /* RegisterContactsView.swift in Sources */,
+				4F481E76284767480051D3B9 /* ChatRouter.swift in Sources */,
 				4F700CBE2844C4C20085139F /* StickyBitcoinView.swift in Sources */,
 				F188626128129ED600659786 /* OfferTriggersView.swift in Sources */,
 				F1BFA958280223BD00F4E745 /* UserProfileViewModel+Options.swift in Sources */,
@@ -2017,6 +2041,7 @@
 				B08F391C27AE7112008B344F /* BaseService.swift in Sources */,
 				F1C6D09E27BDDD4C009BD506 /* TextStyle.swift in Sources */,
 				4FBF6209283CD5C000DDBE71 /* OfferAdvancedFilterFriendSourceView.swift in Sources */,
+				4F24169E2848CF4300B4A437 /* LocalStorageService.swift in Sources */,
 				F188627528169A3700659786 /* MarketplaceSegmentView.swift in Sources */,
 				4F700CC02844C54E0085139F /* BitcoinViewModel.swift in Sources */,
 				F1D2012E283401D7006DF4AB /* OfferSortView.swift in Sources */,
@@ -2034,8 +2059,10 @@
 				F13B265E281899250011F2FB /* OfferAdvancedFilterBTCNetworkView.swift in Sources */,
 				B08F391527AE7112008B344F /* ApiService.swift in Sources */,
 				F188627028169A3700659786 /* MarketplaceCoordinator.swift in Sources */,
+				4F2416A12848F2F100B4A437 /* DictionaryDB.swift in Sources */,
 				B08F391927AE7112008B344F /* User.swift in Sources */,
 				F19D60312845A14000876170 /* ChatMessageInputView.swift in Sources */,
+				4F2416A328490B3C00B4A437 /* Inbox.swift in Sources */,
 				F1D200A628252C44006DF4AB /* TabBarController.swift in Sources */,
 				F175AB9927F0D2D8000DAB15 /* ContactsService.swift in Sources */,
 				F11441C9284681EC00307D39 /* CardModifier.swift in Sources */,
@@ -2071,6 +2098,7 @@
 				F175ABA227F4A8F8000DAB15 /* UserAvailable.swift in Sources */,
 				B0E9BB322815D2B60012BF1D /* CryptographicError.swift in Sources */,
 				4FBF6240283FBF6000DDBE71 /* RequestOfferCoordinator.swift in Sources */,
+				4F481E78284768840051D3B9 /* ChatService.swift in Sources */,
 				B0F206FE27AEBDD500A44E72 /* AuthRouter.swift in Sources */,
 				F1BFA8D027FB31E800F4E745 /* FacebookUserData.swift in Sources */,
 				F11441D3284681EC00307D39 /* ContactAvatarInfo.swift in Sources */,
@@ -2261,7 +2289,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 52;
+				CURRENT_PROJECT_VERSION = 54;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = SHD6TUKSPH;
 				ENABLE_PREVIEWS = YES;
@@ -2292,7 +2320,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 52;
+				CURRENT_PROJECT_VERSION = 54;
 				DEVELOPMENT_TEAM = SHD6TUKSPH;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
@@ -2375,7 +2403,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 52;
+				CURRENT_PROJECT_VERSION = 54;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = SHD6TUKSPH;
 				ENABLE_PREVIEWS = YES;
@@ -2407,7 +2435,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 52;
+				CURRENT_PROJECT_VERSION = 54;
 				DEVELOPMENT_TEAM = SHD6TUKSPH;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
@@ -2549,7 +2577,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 52;
+				CURRENT_PROJECT_VERSION = 54;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = SHD6TUKSPH;
 				ENABLE_BITCODE = YES;
@@ -2582,7 +2610,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 52;
+				CURRENT_PROJECT_VERSION = 54;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
@@ -2614,7 +2642,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 52;
+				CURRENT_PROJECT_VERSION = 54;
 				DEVELOPMENT_TEAM = SHD6TUKSPH;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
@@ -2633,7 +2661,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 52;
+				CURRENT_PROJECT_VERSION = 54;
 				DEVELOPMENT_TEAM = SHD6TUKSPH;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;

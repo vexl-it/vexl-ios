@@ -28,11 +28,7 @@ struct MarketplaceFeedFooterView: View {
                 subtitle: friendLevel
             )
 
-            Button {
-                if !isRequested {
-                    action()
-                }
-            } label: {
+            Button(action: action) {
                 if isRequested {
                     requestedLabel
                 } else {
@@ -42,6 +38,7 @@ struct MarketplaceFeedFooterView: View {
             .frame(height: Appearance.GridGuide.baseHeight)
             .background(isRequested ? Appearance.Colors.gray1 : Appearance.Colors.yellow100)
             .cornerRadius(Appearance.GridGuide.buttonCorner)
+            .disabled(isRequested)
         }
     }
 

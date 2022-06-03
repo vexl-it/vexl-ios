@@ -36,7 +36,7 @@ final class RequestOfferViewModel: ViewModelType, ObservableObject {
     }
 
     var offerFeed: OfferDetailViewData {
-        OfferFeed.mapToOfferFeed(usingOffer: offer).viewData
+        OfferFeed.mapToOfferFeed(usingOffer: offer, isRequested: false).viewData
     }
 
     // MARK: - Coordinator Bindings
@@ -50,7 +50,7 @@ final class RequestOfferViewModel: ViewModelType, ObservableObject {
 
     // MARK: - Variables
 
-    @Inject private var offerService: OfferServiceType
+    @Inject private var chatService: ChatServiceType
     private let offer: Offer
     private let cancelBag: CancelBag = .init()
 
@@ -86,7 +86,7 @@ final class RequestOfferViewModel: ViewModelType, ObservableObject {
             .filter { $0 == .sendRequest }
             .flatMapLatest(with: self) { owner, _ -> AnyPublisher<Void, Never> in
                 owner.state = .requesting
-                return owner.offerService.requestOffer(offerId: owner.offer.offerId, string: owner.requestText)
+                return owner.chatService.request(inboxPublicKey: owner.offer.offerPublicKey, message: owner.requestText)
                     .trackError(owner.primaryActivity.error)
             }
             .map { _ in Route.requestSent }
