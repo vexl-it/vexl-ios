@@ -1,5 +1,5 @@
 //
-//  OffersService.swift
+//  OfferService.swift
 //  vexl
 //
 //  Created by Diego Espinoza on 26/04/22.
@@ -18,7 +18,6 @@ protocol OfferServiceType {
     func storeOfferKey(key: ECCKeys, withId id: String, offerType: OfferType) -> AnyPublisher<Void, Error>
     func getStoredOfferIds(forType offerType: OfferType) -> AnyPublisher<[String], Never>
     func deleteOffers() -> AnyPublisher<Void, Error>
-    func requestOffer(offerId: String, string: String) -> AnyPublisher<Void, Error>
 }
 
 final class OfferService: BaseService, OfferServiceType {
@@ -54,56 +53,6 @@ final class OfferService: BaseService, OfferServiceType {
             }
         }
         .eraseToAnyPublisher()
-    }
-
-    // TODO: - add some optimizations so that the encryption is done in multiple threads
-
-    private func encrypt(offer: Offer, withOfferKey offerKey: ECCKeys, publicKey contactPublicKey: String) throws -> EncryptedOffer {
-        let minAmount = try offer.minAmountString.ecc.encrypt(publicKey: contactPublicKey)
-        let maxAmount = try offer.maxAmountString.ecc.encrypt(publicKey: contactPublicKey)
-        let offerPublicKey = try offerKey.publicKey.ecc.encrypt(publicKey: contactPublicKey)
-        let description = try offer.description.ecc.encrypt(publicKey: contactPublicKey)
-        let feeState = try offer.feeStateString.ecc.encrypt(publicKey: contactPublicKey)
-        let feeAmount = try offer.feeAmountString.ecc.encrypt(publicKey: contactPublicKey)
-        let locationState = try offer.locationStateString.ecc.encrypt(publicKey: contactPublicKey)
-        var paymentMethods: [String] = []
-        var btcNetwork: [String] = []
-        let friendLevel = try offer.friendLevelString.ecc.encrypt(publicKey: contactPublicKey)
-        let offerType = try offer.offerTypeString.ecc.encrypt(publicKey: contactPublicKey)
-
-        offer.paymentMethodsList.forEach { method in
-            if let encrypted = try? method.ecc.encrypt(publicKey: contactPublicKey) {
-                paymentMethods.append(encrypted)
-            }
-        }
-
-        offer.btcNetworkList.forEach { network in
-            if let encrypted = try? network.ecc.encrypt(publicKey: contactPublicKey) {
-                btcNetwork.append(encrypted)
-            }
-        }
-
-        // TODO: - convert locations to JSON and then to string and set real Location
-
-        let fakeLocation = OfferLocation(latitude: 14.418_540,
-                                         longitude: 50.073_658,
-                                         radius: 1)
-        let locationString = fakeLocation.asString ?? ""
-        let encryptedString = try? locationString.ecc.encrypt(publicKey: contactPublicKey)
-
-        return EncryptedOffer(userPublicKey: contactPublicKey,
-                              location: [encryptedString ?? ""],
-                              offerPublicKey: offerPublicKey,
-                              offerDescription: description,
-                              amountTopLimit: maxAmount,
-                              amountBottomLimit: minAmount,
-                              feeState: feeState,
-                              feeAmount: feeAmount,
-                              locationState: locationState,
-                              paymentMethod: paymentMethods,
-                              btcNetwork: btcNetwork,
-                              friendLevel: friendLevel,
-                              offerType: offerType)
     }
 
     func getUserOffers(offerIds: [String]) -> AnyPublisher<[EncryptedOffer], Error> {
@@ -161,13 +110,56 @@ final class OfferService: BaseService, OfferServiceType {
             }
             .eraseToAnyPublisher()
     }
+}
 
-    func requestOffer(offerId: String, string: String) -> AnyPublisher<Void, Error> {
-        Future { promise in
-            after(2) {
-                promise(.success(()))
+extension OfferService {
+    // TODO: - add some optimizations so that the encryption is done in multiple threads
+
+    private func encrypt(offer: Offer, withOfferKey offerKey: ECCKeys, publicKey contactPublicKey: String) throws -> EncryptedOffer {
+        let minAmount = try offer.minAmountString.ecc.encrypt(publicKey: contactPublicKey)
+        let maxAmount = try offer.maxAmountString.ecc.encrypt(publicKey: contactPublicKey)
+        let offerPublicKey = try offerKey.publicKey.ecc.encrypt(publicKey: contactPublicKey)
+        let description = try offer.description.ecc.encrypt(publicKey: contactPublicKey)
+        let feeState = try offer.feeStateString.ecc.encrypt(publicKey: contactPublicKey)
+        let feeAmount = try offer.feeAmountString.ecc.encrypt(publicKey: contactPublicKey)
+        let locationState = try offer.locationStateString.ecc.encrypt(publicKey: contactPublicKey)
+        var paymentMethods: [String] = []
+        var btcNetwork: [String] = []
+        let friendLevel = try offer.friendLevelString.ecc.encrypt(publicKey: contactPublicKey)
+        let offerType = try offer.offerTypeString.ecc.encrypt(publicKey: contactPublicKey)
+
+        offer.paymentMethodsList.forEach { method in
+            if let encrypted = try? method.ecc.encrypt(publicKey: contactPublicKey) {
+                paymentMethods.append(encrypted)
             }
         }
-        .eraseToAnyPublisher()
+
+        offer.btcNetworkList.forEach { network in
+            if let encrypted = try? network.ecc.encrypt(publicKey: contactPublicKey) {
+                btcNetwork.append(encrypted)
+            }
+        }
+
+        // TODO: - convert locations to JSON and then to string and set real Location
+
+        let fakeLocation = OfferLocation(latitude: 14.418_540,
+                                         longitude: 50.073_658,
+                                         radius: 1)
+        let locationString = fakeLocation.asString ?? ""
+        let encryptedString = try? locationString.ecc.encrypt(publicKey: contactPublicKey)
+
+        return EncryptedOffer(userPublicKey: contactPublicKey,
+                              location: [encryptedString ?? ""],
+                              offerPublicKey: offerPublicKey,
+                              offerDescription: description,
+                              amountTopLimit: maxAmount,
+                              amountBottomLimit: minAmount,
+                              feeState: feeState,
+                              feeAmount: feeAmount,
+                              locationState: locationState,
+                              paymentMethod: paymentMethods,
+                              btcNetwork: btcNetwork,
+                              friendLevel: friendLevel,
+                              offerType: offerType)
     }
 }
