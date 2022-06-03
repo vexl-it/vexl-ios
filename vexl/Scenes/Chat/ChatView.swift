@@ -37,6 +37,9 @@ struct ChatView: View {
                     ForEach(viewModel.chatItems) { chatItem in
                         ChatItemView(data: chatItem)
                             .padding(.bottom, Appearance.GridGuide.mediumPadding1)
+                            .onTapGesture {
+                                viewModel.action.send(.selectMessage(id: chatItem.id.uuidString))
+                            }
                     }
                 }
                 .padding(.top, Appearance.GridGuide.mediumPadding1)

@@ -161,3 +161,10 @@
 "chat.request.accept" = "Accept";
 "chat.request.decline" = "Decline";
 "chat.request.myOffer" = "My Offer";
+"chat.message.reveal.identity" = "Reveal Identity";
+"chat.message.offer" = "My Offer";
+"chat.message.common.friend" = "Common Friends";
+"chat.message.delete.chat" = "Delete Chat";
+"chat.message.block.user" = "Block User";
+"chat.message.input.placeholder" = "Type something";
+"chat.message.started" = "• Chat has started";

@@ -35,8 +35,8 @@ struct ContactAvatarInfo: View {
     init(isAvatarWithOpacity: Bool,
          title: String,
          subtitle: String,
-         avatar: UIImage? = nil,
-         style: Style = .regular) {
+         style: Style = .regular,
+         avatar: UIImage? = nil) {
         self.isAvatarWithOpacity = isAvatarWithOpacity
         self.title = title
         self.subtitle = subtitle

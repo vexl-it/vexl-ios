@@ -94,6 +94,7 @@ struct Appearance {
         static let smallIconSize = CGSize(width: 12, height: 12)
         static let iconSize = CGSize(width: 24, height: 24)
         static let mediumIconSize = CGSize(width: 48, height: 48)
+        static let chatAvatarSize = CGSize(width: 40, height: 40)
         static let thumbSize = CGSize(width: 38, height: 38)
         static let feedAvatarSize = CGSize(width: 48, height: 48)
         static let feedLargeAvatarSize = CGSize(width: 64, height: 64)
@@ -107,6 +108,7 @@ struct Appearance {
         static let homeTabBarHeight: CGFloat = 72
 
         static let scrollContentInset = UIEdgeInsets(top: 0, left: 0, bottom: Self.homeTabBarHeight, right: 0)
+        static let chatTextFieldHeight: CGFloat = 44
     }
 
     // MARK: - Global

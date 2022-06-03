@@ -16,6 +16,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
         case selectFilter(option: ChatFilterOption)
         case continueTap
         case requestTap
+        case selectMessage(id: String)
     }
 
     let action: ActionSubject<UserAction> = .init()
@@ -36,6 +37,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
     enum Route: Equatable {
         case dismissTapped
         case requestTapped
+        case messageTapped(id: String)
     }
 
     var route: CoordinatingSubject<Route> = .init()
@@ -67,5 +69,14 @@ final class ChatViewModel: ViewModelType, ObservableObject {
                 return nil
             }
             .assign(to: &$filter)
+
+        action
+            .compactMap { action -> String? in
+                if case let .selectMessage(id) = action { return id }
+                return nil
+            }
+            .map { id -> Route in .messageTapped(id: id) }
+            .subscribe(route)
+            .store(in: cancelBag)
     }
 }

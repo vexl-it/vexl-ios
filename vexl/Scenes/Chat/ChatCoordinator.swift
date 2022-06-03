@@ -35,6 +35,20 @@ final class ChatCoordinator: BaseCoordinator<Void> {
             .sink()
             .store(in: cancelBag)
 
+        viewModel
+            .route
+            .compactMap { route -> String? in
+                if case let .messageTapped(id) = route { return id }
+                return nil
+            }
+            .withUnretained(self)
+            .flatMap { owner, id -> CoordinatingResult<RouterResult<Void>> in
+                let modalRouter = ModalRouter(parentViewController: viewController, presentationStyle: .fullScreen)
+                return owner.showChatMessage(router: modalRouter, id: id)
+            }
+            .sink()
+            .store(in: cancelBag)
+
         return Empty(completeImmediately: false)
             .eraseToAnyPublisher()
     }
@@ -43,6 +57,18 @@ final class ChatCoordinator: BaseCoordinator<Void> {
 extension ChatCoordinator {
     private func showChatRequests(router: Router) -> CoordinatingResult<RouterResult<Void>> {
         coordinate(to: ChatRequestCoordinator(router: router, animated: animated))
+        .flatMap { result -> CoordinatingResult<RouterResult<Void>> in
+            guard result != .dismissedByRouter else {
+                return Just(result).eraseToAnyPublisher()
+            }
+            return router.dismiss(animated: true, returning: result)
+        }
+        .prefix(1)
+        .eraseToAnyPublisher()
+    }
+
+    private func showChatMessage(router: Router, id: String) -> CoordinatingResult<RouterResult<Void>> {
+        coordinate(to: ChatMessageCoordinator(id: id, router: router, animated: animated))
         .flatMap { result -> CoordinatingResult<RouterResult<Void>> in
             guard result != .dismissedByRouter else {
                 return Just(result).eraseToAnyPublisher()
