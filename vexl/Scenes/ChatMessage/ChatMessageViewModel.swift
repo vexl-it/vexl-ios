@@ -54,6 +54,8 @@ final class ChatMessageViewModel: ViewModelType, ObservableObject {
 
     // MARK: - Variables
 
+    // TODO: - set real data when the BE integration is done
+
     var username: String {
         "Keichi"
     }
