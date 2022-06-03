@@ -133,6 +133,8 @@
 		F11441FA284819DB00307D39 /* ChatMessageCommonFriendItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11441F9284819DB00307D39 /* ChatMessageCommonFriendItemView.swift */; };
 		F11441FD28481AB600307D39 /* ChatMessageConfirmationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11441FC28481AB600307D39 /* ChatMessageConfirmationView.swift */; };
 		F114420128495E1900307D39 /* LargeSolidButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F114420028495E1900307D39 /* LargeSolidButton.swift */; };
+		F114420428498FCA00307D39 /* ChatMessageDeleteConfirmationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F114420328498FCA00307D39 /* ChatMessageDeleteConfirmationView.swift */; };
+		F114420628498FE600307D39 /* ChatMessageBlockConfirmationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F114420528498FE600307D39 /* ChatMessageBlockConfirmationView.swift */; };
 		F12A14DC27D677340096543E /* RegisterContactsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12A14DB27D677340096543E /* RegisterContactsCoordinator.swift */; };
 		F12A14DE27D677420096543E /* RegisterContactsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12A14DD27D677420096543E /* RegisterContactsViewModel.swift */; };
 		F12A14E027D6774C0096543E /* RegisterContactsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12A14DF27D6774C0096543E /* RegisterContactsView.swift */; };
@@ -424,6 +426,8 @@
 		F11441F9284819DB00307D39 /* ChatMessageCommonFriendItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageCommonFriendItemView.swift; sourceTree = "<group>"; };
 		F11441FC28481AB600307D39 /* ChatMessageConfirmationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageConfirmationView.swift; sourceTree = "<group>"; };
 		F114420028495E1900307D39 /* LargeSolidButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LargeSolidButton.swift; sourceTree = "<group>"; };
+		F114420328498FCA00307D39 /* ChatMessageDeleteConfirmationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageDeleteConfirmationView.swift; sourceTree = "<group>"; };
+		F114420528498FE600307D39 /* ChatMessageBlockConfirmationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageBlockConfirmationView.swift; sourceTree = "<group>"; };
 		F12A14DB27D677340096543E /* RegisterContactsCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterContactsCoordinator.swift; sourceTree = "<group>"; };
 		F12A14DD27D677420096543E /* RegisterContactsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterContactsViewModel.swift; sourceTree = "<group>"; };
 		F12A14DF27D6774C0096543E /* RegisterContactsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterContactsView.swift; sourceTree = "<group>"; };
@@ -1173,6 +1177,16 @@
 			path = CommonFriends;
 			sourceTree = "<group>";
 		};
+		F114420228498FB400307D39 /* Confirmation */ = {
+			isa = PBXGroup;
+			children = (
+				F11441FC28481AB600307D39 /* ChatMessageConfirmationView.swift */,
+				F114420328498FCA00307D39 /* ChatMessageDeleteConfirmationView.swift */,
+				F114420528498FE600307D39 /* ChatMessageBlockConfirmationView.swift */,
+			);
+			path = Confirmation;
+			sourceTree = "<group>";
+		};
 		F12A14D927D677010096543E /* Contacts */ = {
 			isa = PBXGroup;
 			children = (
@@ -1392,8 +1406,8 @@
 		F19D602B2845538300876170 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				F114420228498FB400307D39 /* Confirmation */,
 				F11441F8284819CC00307D39 /* CommonFriends */,
-				F11441FC28481AB600307D39 /* ChatMessageConfirmationView.swift */,
 				F19D602C2845538C00876170 /* ChatMessageDateView.swift */,
 				F19D602E2845570500876170 /* ChatMessageBubbleView.swift */,
 				F19D60302845A14000876170 /* ChatMessageInputView.swift */,
@@ -1831,7 +1845,7 @@
 		};
 		F1B5FCC627C6CF7F0018729B /* ACKLocalization */ = {
 			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 8;
+			buildActionMask = 12;
 			files = (
 			);
 			inputFileListPaths = (
@@ -1843,7 +1857,7 @@
 			);
 			outputPaths = (
 			);
-			runOnlyForDeploymentPostprocessing = 1;
+			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "# Download the latest localized strings\nif [ \"${CONFIGURATION}\" == \"Debug\" ]\nthen\n    ./Pods/ACKLocalization/ACKLocalization\nfi\n";
 		};
@@ -1899,6 +1913,7 @@
 				B08F399727AE7D33008B344F /* SplashScreenView.swift in Sources */,
 				F175ABAA27F4FC3F000DAB15 /* ImportPhoneContactsViewModel.swift in Sources */,
 				F188624B2811551E00659786 /* CreateOfferView.swift in Sources */,
+				F114420428498FCA00307D39 /* ChatMessageDeleteConfirmationView.swift in Sources */,
 				F13B266528192BBF0011F2FB /* OfferInitialData.swift in Sources */,
 				F12A14F327D96FD40096543E /* ImportContactsView.swift in Sources */,
 				F12A150827E1A4940096543E /* RequestAccessAlert.swift in Sources */,
@@ -2067,6 +2082,7 @@
 				B0EEE11627B14D320097031E /* WelcomeCoordinator.swift in Sources */,
 				B08F393227AE7112008B344F /* SceneDelegate.swift in Sources */,
 				F13B266D281C8FC80011F2FB /* EncryptionError.swift in Sources */,
+				F114420628498FE600307D39 /* ChatMessageBlockConfirmationView.swift in Sources */,
 				B0EEE11827B14D360097031E /* WelcomeViewModel.swift in Sources */,
 				F151A2AB27CE818C000D7242 /* RegisterNameAvatarView+PhoneVerification.swift in Sources */,
 				F1BFA956280223BD00F4E745 /* UserProfileView.swift in Sources */,

@@ -31,16 +31,12 @@ struct ChatMessageCommonFriendsView: View {
             .background(Appearance.Colors.whiteText)
             .cornerRadius(Appearance.GridGuide.buttonCorner)
 
-            SolidButton(Text(L.buttonGotIt()),
-                        iconImage: nil,
-                        isEnabled: .constant(true),
-                        isLoading: .constant(false),
-                        fullWidth: true,
-                        loadingViewScale: 1,
-                        font: Appearance.TextStyle.titleSmallSemiBold.font.asFont,
-                        colors: .main,
-                        dimensions: .largeButton,
-                        action: {
+            LargeSolidButton(title: L.buttonGotIt(),
+                             font: Appearance.TextStyle.titleSmallSemiBold.font.asFont,
+                             style: .main,
+                             isFullWidth: true,
+                             isEnabled: .constant(true),
+                             action: {
                 dismiss()
             })
         }

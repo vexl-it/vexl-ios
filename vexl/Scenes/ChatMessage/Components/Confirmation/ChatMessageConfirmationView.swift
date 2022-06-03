@@ -14,29 +14,12 @@ struct ChatMessageConfirmationView: View {
     let subtitle: String
     let actionTitle: String
     let dismissTitle: String
-    let style: Style
+    let primaryColor: LargeSolidButton.Style
+    let secondaryColor: LargeSolidButton.Style
     let mainAction: () -> Void
     let dismiss: () -> Void
 
     private let screenHeight: CGFloat = UIScreen.main.bounds.height
-
-    private var primaryColor: SolidButtonColor {
-        switch style {
-        case .regular:
-            return .main
-        case .block:
-            return .main
-        }
-    }
-    
-    private var secondaryColor: SolidButtonColor {
-        switch style {
-        case .regular:
-            return .secondary
-        case .block:
-            return .secondary
-        }
-    }
 
     var body: some View {
         VStack {
@@ -55,31 +38,19 @@ struct ChatMessageConfirmationView: View {
             .cornerRadius(Appearance.GridGuide.buttonCorner)
 
             HStack {
-                SolidButton(Text(dismissTitle),
-                            iconImage: nil,
-                            isEnabled: .constant(true),
-                            isLoading: .constant(false),
-                            fullWidth: true,
-                            loadingViewScale: 1,
-                            font: Appearance.TextStyle.titleSmallSemiBold.font.asFont,
-                            colors: .secondary,
-                            dimensions: .largeButton,
-                            action: {
-                    dismiss()
-                })
+                LargeSolidButton(title: dismissTitle,
+                                 font: Appearance.TextStyle.titleSmallSemiBold.font.asFont,
+                                 style: secondaryColor,
+                                 isFullWidth: true,
+                                 isEnabled: .constant(true),
+                                 action: dismiss)
 
-                SolidButton(Text(actionTitle),
-                            iconImage: nil,
-                            isEnabled: .constant(true),
-                            isLoading: .constant(false),
-                            fullWidth: true,
-                            loadingViewScale: 1,
-                            font: Appearance.TextStyle.titleSmallSemiBold.font.asFont,
-                            colors: .main,
-                            dimensions: .largeButton,
-                            action: {
-                    mainAction()
-                })
+                LargeSolidButton(title: actionTitle,
+                                 font: Appearance.TextStyle.titleSmallSemiBold.font.asFont,
+                                 style: primaryColor,
+                                 isFullWidth: true,
+                                 isEnabled: .constant(true),
+                                 action: mainAction)
             }
         }
         .padding(Appearance.GridGuide.point)
@@ -100,7 +71,20 @@ struct ChatMessageConfirmationViewPreview: PreviewProvider {
                                     subtitle: "Are you sure you want to delete the chat bla bla bla?",
                                     actionTitle: "Delete Chat",
                                     dismissTitle: "Back",
-                                    style: .regular,
+                                    primaryColor: .main,
+                                    secondaryColor: .secondary,
+                                    mainAction: { },
+                                    dismiss: { })
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background(Color.black)
+            .previewDevice("iPhone 11")
+
+        ChatMessageConfirmationView(title: "Block chat?",
+                                    subtitle: "Are you sure you want to block the chat bla bla bla?",
+                                    actionTitle: "Block Chat",
+                                    dismissTitle: "Back",
+                                    primaryColor: .red,
+                                    secondaryColor: .redSecondary,
                                     mainAction: { },
                                     dismiss: { })
             .frame(maxWidth: .infinity, maxHeight: .infinity)
