@@ -130,7 +130,6 @@
 		F11441F52846BE0D00307D39 /* ChatMessageOfferView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11441F42846BE0D00307D39 /* ChatMessageOfferView.swift */; };
 		F11441F72847EA3900307D39 /* ChatMessageCommonFriendsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11441F62847EA3900307D39 /* ChatMessageCommonFriendsView.swift */; };
 		F11441FA284819DB00307D39 /* ChatMessageCommonFriendItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11441F9284819DB00307D39 /* ChatMessageCommonFriendItemView.swift */; };
-		F11441FD28481AB600307D39 /* ChatMessageConfirmationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11441FC28481AB600307D39 /* ChatMessageConfirmationView.swift */; };
 		F12A14DC27D677340096543E /* RegisterContactsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12A14DB27D677340096543E /* RegisterContactsCoordinator.swift */; };
 		F12A14DE27D677420096543E /* RegisterContactsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12A14DD27D677420096543E /* RegisterContactsViewModel.swift */; };
 		F12A14E027D6774C0096543E /* RegisterContactsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12A14DF27D6774C0096543E /* RegisterContactsView.swift */; };
@@ -419,7 +418,6 @@
 		F11441F42846BE0D00307D39 /* ChatMessageOfferView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageOfferView.swift; sourceTree = "<group>"; };
 		F11441F62847EA3900307D39 /* ChatMessageCommonFriendsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageCommonFriendsView.swift; sourceTree = "<group>"; };
 		F11441F9284819DB00307D39 /* ChatMessageCommonFriendItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageCommonFriendItemView.swift; sourceTree = "<group>"; };
-		F11441FC28481AB600307D39 /* ChatMessageConfirmationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageConfirmationView.swift; sourceTree = "<group>"; };
 		F12A14DB27D677340096543E /* RegisterContactsCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterContactsCoordinator.swift; sourceTree = "<group>"; };
 		F12A14DD27D677420096543E /* RegisterContactsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterContactsViewModel.swift; sourceTree = "<group>"; };
 		F12A14DF27D6774C0096543E /* RegisterContactsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterContactsView.swift; sourceTree = "<group>"; };
@@ -1391,7 +1389,6 @@
 				F19D602E2845570500876170 /* ChatMessageBubbleView.swift */,
 				F19D60302845A14000876170 /* ChatMessageInputView.swift */,
 				F11441F42846BE0D00307D39 /* ChatMessageOfferView.swift */,
-				F11441FC28481AB600307D39 /* ChatMessageConfirmationView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -1896,7 +1893,6 @@
 				F13B266528192BBF0011F2FB /* OfferInitialData.swift in Sources */,
 				F12A14F327D96FD40096543E /* ImportContactsView.swift in Sources */,
 				F12A150827E1A4940096543E /* RequestAccessAlert.swift in Sources */,
-				F11441FD28481AB600307D39 /* ChatMessageConfirmationView.swift in Sources */,
 				B0E9BB2E2815C7260012BF1D /* HMAC.swift in Sources */,
 				4FBF61E2283BD12D00DDBE71 /* FilterViewModel.swift in Sources */,
 				F11441D1284681EC00307D39 /* PlaceholderTextField.swift in Sources */,
