@@ -13,6 +13,8 @@ struct ChatMessageInputView: View {
     let sendAction: () -> Void
     let cameraAction: () -> Void
 
+    @State private var textHeight: CGFloat = .zero
+
     var body: some View {
         HStack {
             Button {
@@ -27,9 +29,13 @@ struct ChatMessageInputView: View {
             }
 
             HStack {
-                PlaceholderTextField(placeholder: L.chatMessageInputPlaceholder(),
-                                     textColor: Appearance.Colors.gray4,
-                                     text: $text)
+                ExpandingTextView(
+                    placeholder: L.chatMessageInputPlaceholder(),
+                    text: $text,
+                    height: textHeight,
+                    textColor: Appearance.Colors.whiteText
+                )
+                    .padding(.top, Appearance.GridGuide.tinyPadding)
 
                 Button {
                     sendAction()
@@ -46,17 +52,27 @@ struct ChatMessageInputView: View {
             .frame(height: Appearance.GridGuide.chatTextFieldHeight)
             .background(Appearance.Colors.gray1)
             .cornerRadius(Appearance.GridGuide.chatTextFieldHeight * 0.5)
+            .readSize { size in
+                textHeight = size.height
+            }
         }
     }
 }
 
 struct ChatMessageInputViewPreview: PreviewProvider {
     static var previews: some View {
-        ChatMessageInputView(text: .constant("Hello there"),
-                             sendAction: {},
-                             cameraAction: {})
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(Color.black)
-            .previewDevice("iPhone 11")
+        VStack {
+            ChatMessageInputView(text: .constant("Hello there"),
+                                 sendAction: {},
+                                 cameraAction: {})
+                .background(Color.black)
+                .previewDevice("iPhone 11")
+
+            ChatMessageInputView(text: .constant(""),
+                                 sendAction: {},
+                                 cameraAction: {})
+                .background(Color.black)
+                .previewDevice("iPhone 11")
+        }
     }
 }

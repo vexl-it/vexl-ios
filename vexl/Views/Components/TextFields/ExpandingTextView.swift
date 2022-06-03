@@ -11,16 +11,24 @@ struct ExpandingTextView: View {
     private enum UIProperties {
         static let cornerRadius: CGFloat = 8
         static let placeholderPadding: CGFloat = 6
+        static let topPlaceholderPadding: CGFloat = 8
         static let minHeight: CGFloat = 150
     }
 
     let placeholder: String
     @Binding var text: String
     @State private var textEditorHeight: CGFloat = .zero
+    private let minHeight: CGFloat
+    private let textColor: Color
 
-    init(placeholder: String, text: Binding<String>) {
+    init(placeholder: String,
+         text: Binding<String>,
+         height: CGFloat? = nil,
+         textColor: Color? = nil) {
         self.placeholder = placeholder
         self._text = text
+        self.minHeight = height ?? UIProperties.minHeight
+        self.textColor = textColor ?? Appearance.Colors.gray3
         UITextView.appearance().backgroundColor = .clear
     }
 
@@ -28,7 +36,8 @@ struct ExpandingTextView: View {
         ZStack(alignment: .topLeading) {
             if text.isEmpty {
                 smallPlaceholder
-                    .padding(UIProperties.placeholderPadding)
+                    .padding([.bottom, .horizontal], UIProperties.placeholderPadding)
+                    .padding(.top, UIProperties.topPlaceholderPadding)
             }
 
             Text(text)
@@ -40,8 +49,8 @@ struct ExpandingTextView: View {
 
             TextEditor(text: $text)
                 .textStyle(.paragraph)
-                .foregroundColor(Appearance.Colors.gray3)
-                .frame(height: max(UIProperties.minHeight, textEditorHeight))
+                .foregroundColor(textColor)
+                .frame(height: max(minHeight, textEditorHeight))
         }
         .background(Appearance.Colors.gray1)
         .cornerRadius(UIProperties.cornerRadius)
@@ -58,6 +67,20 @@ struct ExpandingTextView: View {
 struct MainTextView_Previews: PreviewProvider {
    static var previews: some View {
        Group {
+           ExpandingTextView(
+               placeholder: "Email",
+               text: .constant(""),
+               height: 40
+           )
+           .previewDisplayName("Small, Empty")
+
+           ExpandingTextView(
+               placeholder: "Email",
+               text: .constant("Qwerty"),
+               height: 40
+           )
+           .previewDisplayName("Small, with text")
+
            ExpandingTextView(
                placeholder: "Email",
                text: .constant("")
