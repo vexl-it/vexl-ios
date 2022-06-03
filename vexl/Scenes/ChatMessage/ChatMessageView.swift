@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-typealias ChatMessageGroup = ChatMessageView.MessageGroup
 typealias ChatMessageAction = ChatMessageView.ChatAction
 
 struct ChatMessageView: View {
@@ -123,35 +122,6 @@ extension ChatMessageView {
             case .blockUser:
                 return L.chatMessageBlockUser()
             }
-        }
-    }
-
-    struct MessageGroup: Identifiable, Hashable {
-        let id = UUID()
-        let date: Date
-        var messages: [Message]
-
-        // swiftlint: disable nesting
-        struct Message: Identifiable, Hashable {
-            let id = UUID()
-            let text: String
-            let isContact: Bool
-        }
-
-        mutating func addMessage(_ message: Message) {
-            self.messages.append(message)
-        }
-
-        static var stub: [MessageGroup] {
-            [
-                .init(date: Date(), messages: [
-                    .init(text: "Hello there", isContact: true),
-                    .init(text: "General Kenobi", isContact: false)
-                ]),
-                .init(date: Date(), messages: [
-                    .init(text: "Haha you are a bold one", isContact: false)
-                ])
-            ]
         }
     }
 }

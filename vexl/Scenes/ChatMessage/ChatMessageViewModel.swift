@@ -84,16 +84,4 @@ final class ChatMessageViewModel: ViewModelType, ObservableObject {
     }
 }
 
-extension Array where Element == ChatMessageGroup {
-    mutating func appendMessage(_ message: ChatMessageGroup.Message) {
-        if let lastGroup = self.last {
-            var updatedGroup = lastGroup
-            updatedGroup.addMessage(message)
-            self[self.count - 1] = updatedGroup
-        } else {
-            let newGroup = ChatMessageGroup(date: Date(),
-                                            messages: [message])
-            self.append(newGroup)
-        }
-    }
-}
+
