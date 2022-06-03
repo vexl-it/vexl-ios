@@ -7,28 +7,50 @@
 
 import SwiftUI
 
+typealias ChatMessageCommonFriendViewData = ChatMessageCommonFriendItemView.ViewData
+
 struct ChatMessageCommonFriendItemView: View {
 
-    let title: String
-    let subtitle: String
+    let data: ViewData
 
     var body: some View {
         HStack {
-            Image(R.image.marketplace.defaultAvatar.name)
-                .resizable()
-                .frame(size: Appearance.GridGuide.mediumIconSize)
-                .cornerRadius(Appearance.GridGuide.buttonCorner)
+            ContactAvatarView(image: data.avatar,
+                              size: Appearance.GridGuide.mediumIconSize)
 
             VStack(alignment: .leading) {
-                Text(title)
+                Text(data.title)
                     .textStyle(.paragraphMedium)
                     .foregroundColor(Appearance.Colors.primaryText)
 
-                Text(subtitle)
+                Text(data.subtitle)
                     .textStyle(.description)
                     .foregroundColor(Appearance.Colors.gray3)
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
+    }
+}
+
+extension ChatMessageCommonFriendItemView {
+    struct ViewData: Identifiable, Hashable {
+        let id = UUID()
+        let title: String
+        let subtitle: String
+        let avatar: UIImage?
+
+        static var stub: ViewData {
+            .init(title: "Username", subtitle: "Description goes here", avatar: nil)
+        }
+    }
+}
+
+struct ChatMessageCommonFriendItemViewPreview: PreviewProvider {
+    static var previews: some View {
+        ChatMessageCommonFriendItemView(data: .init(title: "Name goes here",
+                                                    subtitle: "Description goes here bla bla",
+                                                    avatar: nil))
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .previewDevice("iPhone 11")
     }
 }

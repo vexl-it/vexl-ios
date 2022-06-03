@@ -10,6 +10,7 @@ import Cleevio
 
 struct ChatMessageCommonFriendsView: View {
 
+    let friends: [ChatMessageCommonFriendViewData]
     let dismiss: () -> Void
     private let screenHeight: CGFloat = UIScreen.main.bounds.height
 
@@ -21,8 +22,11 @@ struct ChatMessageCommonFriendsView: View {
                     .padding(.top, Appearance.GridGuide.mediumPadding1)
 
                 ScrollView {
-                    ChatMessageCommonFriendItemView(title: "Hello there",
-                                                    subtitle: "General Kenobi")
+                    LazyVStack {
+                        ForEach(friends) { friend in
+                            ChatMessageCommonFriendItemView(data: friend)
+                        }
+                    }
                 }
                 .frame(height: screenHeight * 0.5)
             }
@@ -36,9 +40,7 @@ struct ChatMessageCommonFriendsView: View {
                              style: .main,
                              isFullWidth: true,
                              isEnabled: .constant(true),
-                             action: {
-                dismiss()
-            })
+                             action: dismiss)
         }
         .padding(Appearance.GridGuide.point)
         .frame(maxHeight: .infinity, alignment: .bottom)
@@ -47,7 +49,8 @@ struct ChatMessageCommonFriendsView: View {
 
 struct ChatMessageCommonFriendsViewPreview: PreviewProvider {
     static var previews: some View {
-        ChatMessageCommonFriendsView(dismiss: { })
+        ChatMessageCommonFriendsView(friends: [.stub, .stub],
+                                     dismiss: { })
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color.black)
             .previewDevice("iPhone 11")

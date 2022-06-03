@@ -55,10 +55,9 @@ final class ChatMessageViewModel: ViewModelType, ObservableObject {
 
     // MARK: - Variables
 
-    var username: String {
-        "Keichi"
-    }
-
+    let username: String = "Keichi"
+    let avatar: UIImage? = nil
+    let friends: [ChatMessageCommonFriendViewData] = [.stub, .stub, .stub]
     var messages: [ChatMessageGroup] = ChatMessageGroup.stub
     let offerType: OfferType = .buy
 
@@ -111,19 +110,5 @@ final class ChatMessageViewModel: ViewModelType, ObservableObject {
             .filter { $0 == .commonFriends }
             .map { _ -> Modal in .friends }
             .assign(to: &$modal)
-    }
-}
-
-extension Array where Element == ChatMessageGroup {
-    mutating func appendMessage(_ message: ChatMessageGroup.Message) {
-        if let lastGroup = self.last {
-            var updatedGroup = lastGroup
-            updatedGroup.addMessage(message)
-            self[self.count - 1] = updatedGroup
-        } else {
-            let newGroup = ChatMessageGroup(date: Date(),
-                                            messages: [message])
-            self.append(newGroup)
-        }
     }
 }
