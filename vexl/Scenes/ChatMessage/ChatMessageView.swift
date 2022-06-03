@@ -62,14 +62,26 @@ struct ChatMessageView: View {
                     .zIndex(2)
             }
 
-            switch viewModel.modal {
-            case .offer:
-                offerView
-            case .friends:
-                commonFriendView
-            case .none:
-                EmptyView()
+            Group {
+                switch viewModel.modal {
+                case .offer:
+                    offerView
+                case .friends:
+                    commonFriendView
+                case .delete:
+                    deleteView
+                case .deleteConfirmation:
+                    deleteConfirmationView
+                case .block:
+                    blockView
+                case .blockConfirmation:
+                    blockConfirmationView
+                case .none:
+                    EmptyView()
+                }
             }
+            .zIndex(3)
+            .transition(.move(edge: .bottom))
         }
     }
 
@@ -90,8 +102,6 @@ struct ChatMessageView: View {
                 viewModel.action.send(.dismissModal)
             }
         }
-        .zIndex(3)
-        .transition(.move(edge: .bottom))
     }
 
     private var commonFriendView: some View {
@@ -100,8 +110,62 @@ struct ChatMessageView: View {
                 viewModel.action.send(.dismissModal)
             }
         }
-        .zIndex(3)
-        .transition(.move(edge: .bottom))
+    }
+
+    private var deleteView: some View {
+        ChatMessageDeleteConfirmationView(style: .regular,
+                                          mainAction: {
+            withAnimation {
+                viewModel.action.send(.deleteTap)
+            }
+        },
+                                          dismiss: {
+            withAnimation {
+                viewModel.action.send(.dismissModal)
+            }
+        })
+    }
+
+    private var deleteConfirmationView: some View {
+        ChatMessageDeleteConfirmationView(style: .confirmation,
+                                          mainAction: {
+            withAnimation {
+                viewModel.action.send(.deleteConfirmedTap)
+            }
+        },
+                                          dismiss: {
+            withAnimation {
+                viewModel.action.send(.dismissModal)
+            }
+        })
+    }
+
+    private var blockView: some View {
+        ChatMessageBlockConfirmationView(style: .regular,
+                                         mainAction: {
+            withAnimation {
+                viewModel.action.send(.blockTap)
+            }
+        },
+                                         dismiss: {
+            withAnimation {
+                viewModel.action.send(.dismissModal)
+            }
+        })
+    }
+
+    private var blockConfirmationView: some View {
+        ChatMessageBlockConfirmationView(style: .confirmation,
+                                         mainAction: {
+            withAnimation {
+                viewModel.action.send(.blockConfirmedTap)
+            }
+        },
+                                         dismiss: {
+            withAnimation {
+                viewModel.action.send(.dismissModal)
+            }
+        })
     }
 }
 
