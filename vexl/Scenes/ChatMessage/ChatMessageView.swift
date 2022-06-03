@@ -7,8 +7,6 @@
 
 import SwiftUI
 
-typealias ChatMessageGroup = ChatMessageView.MessageGroup
-
 struct ChatMessageView: View {
 
     @ObservedObject var viewModel: ChatMessageViewModel
@@ -28,7 +26,7 @@ struct ChatMessageView: View {
     private var content: some View {
         VStack(spacing: .zero) {
             ChatMessageHeaderView(username: viewModel.username,
-                                  avatar: nil,
+                                  avatar: viewModel.avatar,
                                   offerType: viewModel.offerType,
                                   closeAction: {
                 viewModel.action.send(.dismissTap)
@@ -97,45 +95,13 @@ struct ChatMessageView: View {
     }
 
     private var commonFriendView: some View {
-        ChatMessageCommonFriendsView {
+        ChatMessageCommonFriendsView(friends: viewModel.friends) {
             withAnimation {
                 viewModel.action.send(.dismissModal)
             }
         }
         .zIndex(3)
         .transition(.move(edge: .bottom))
-    }
-}
-
-extension ChatMessageView {
-
-    struct MessageGroup: Identifiable, Hashable {
-        let id = UUID()
-        let date: Date
-        var messages: [Message]
-
-        // swiftlint: disable nesting
-        struct Message: Identifiable, Hashable {
-            let id = UUID()
-            let text: String
-            let isContact: Bool
-        }
-
-        mutating func addMessage(_ message: Message) {
-            self.messages.append(message)
-        }
-
-        static var stub: [MessageGroup] {
-            [
-                .init(date: Date(), messages: [
-                    .init(text: "Hello there", isContact: true),
-                    .init(text: "General Kenobi", isContact: false)
-                ]),
-                .init(date: Date(), messages: [
-                    .init(text: "Haha you are a bold one", isContact: false)
-                ])
-            ]
-        }
     }
 }
 
