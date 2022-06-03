@@ -102,18 +102,18 @@ final class ChatMessageViewModel: ViewModelType, ObservableObject {
         let action = action
             .share()
 
-        action
-            .filter { $0 == .dismissModal }
-            .withUnretained(self)
-            .map { _ -> Modal in .none }
-            .assign(to: &$modal)
-
         let modalAction = action
             .compactMap { action -> ChatMessageAction? in
                 if case let .chatActionTap(chatAction) = action { return chatAction }
                 return nil
             }
             .share()
+
+        action
+            .filter { $0 == .dismissModal }
+            .withUnretained(self)
+            .map { _ -> Modal in .none }
+            .assign(to: &$modal)
 
         modalAction
             .filter { $0 == .showOffer }
