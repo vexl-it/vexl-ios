@@ -32,18 +32,7 @@ final class ChatRequestViewModel: ViewModelType, ObservableObject {
         primaryActivity.indicator
     }
 
-    var offerRequests: [ChatRequestOfferViewData] = [
-        .init(contactName: "Murakami",
-              contactFriendLevel: "Friend",
-              requestText: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-              friends: [.init(name: "Keichi", image: nil), .init(name: "Satoshi", image: nil), .init(name: "Saito", image: nil)],
-              offer: .stub),
-        .init(contactName: "Keichi",
-              contactFriendLevel: "Friend of Friend",
-              requestText: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-              friends: [.init(name: "Murakami", image: nil), .init(name: "Satoshi", image: nil), .init(name: "Saito", image: nil)],
-              offer: .stub)
-    ]
+    var offerRequests: [ChatRequestOfferViewData] = []
 
     // MARK: - Coordinator Bindings
 

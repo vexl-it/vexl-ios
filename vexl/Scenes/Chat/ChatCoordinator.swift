@@ -28,8 +28,7 @@ final class ChatCoordinator: BaseCoordinator<Void> {
         viewModel
             .route
             .filter { $0 == .requestTapped }
-            .withUnretained(self)
-            .flatMap { owner, _ -> CoordinatingResult<RouterResult<Void>> in
+            .flatMapLatest(with: self) { owner, _ -> CoordinatingResult<RouterResult<Void>> in
                 let modalRouter = ModalRouter(parentViewController: viewController, presentationStyle: .fullScreen)
                 return owner.showChatRequests(router: modalRouter)
             }

@@ -88,11 +88,14 @@ struct RequestOfferView: View {
 
                         Spacer()
 
-                        SolidButton(Text(L.requestButton()),
-                                    font: Appearance.TextStyle.titleSmallBold.font.asFont,
-                                    colors: SolidButtonColor.main,
-                                    dimensions: SolidButtonDimension.largeButton,
-                                    action: { viewModel.send(action: .sendRequest) })
+                        LargeSolidButton(title: L.requestButton(),
+                                         font: Appearance.TextStyle.titleSmallBold.font.asFont,
+                                         style: .main,
+                                         isFullWidth: true,
+                                         isEnabled: .constant(true),
+                                         action: {
+                            viewModel.send(action: .sendRequest)
+                        })
                     }
                 }
                 .frame(minHeight: geometry.size.height)

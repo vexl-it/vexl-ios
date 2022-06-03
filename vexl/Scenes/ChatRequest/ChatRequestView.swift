@@ -14,7 +14,7 @@ struct ChatRequestView: View {
     var body: some View {
         VStack {
             HeaderTitleView(title: L.chatRequestMainTitle("\(viewModel.offerRequests.count)"),
-                            showSeparator: false) {
+                            showsSeparator: false) {
                 viewModel.action.send(.dismissTap)
             }
             .padding(.horizontal, Appearance.GridGuide.mediumPadding1)

@@ -10,7 +10,7 @@ import SwiftUI
 struct HeaderTitleView: View {
 
     let title: String
-    let showSeparator: Bool
+    let showsSeparator: Bool
     let dismissAction: () -> Void
 
     var body: some View {
@@ -34,7 +34,7 @@ struct HeaderTitleView: View {
             }
             .padding(.bottom, Appearance.GridGuide.point)
 
-            if showSeparator {
+            if showsSeparator {
                 HLine(color: Appearance.Colors.whiteOpaque,
                       height: 1)
             }
@@ -47,14 +47,14 @@ struct HeaderTitleView: View {
 struct OfferHeaderViewPreview: PreviewProvider {
     static var previews: some View {
         HeaderTitleView(title: L.offerSellTitle(),
-                        showSeparator: true,
+                        showsSeparator: true,
                         dismissAction: {})
             .frame(maxHeight: .infinity)
             .previewDevice("iPhone 11")
             .background(Color.black)
 
         HeaderTitleView(title: L.offerBuyTitle(),
-                        showSeparator: true,
+                        showsSeparator: true,
                         dismissAction: {})
             .frame(maxHeight: .infinity)
             .previewDevice("iPhone 11")

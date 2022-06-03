@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct LargeButton<Content: View>: View {
+struct LargeLabelButton<Content: View>: View {
     @Binding var isEnabled: Bool
     let backgroundColor: Color
     let content: () -> Content
