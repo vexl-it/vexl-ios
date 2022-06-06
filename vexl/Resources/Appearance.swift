@@ -11,6 +11,8 @@ import SwiftUI
 
 struct Appearance {
 
+    static let dimmingViewOpacity: CGFloat = 0.8
+
     // MARK: - Colors
 
     struct Colors {
@@ -47,7 +49,7 @@ struct Appearance {
         static let pink50 = Color(R.color.pink50.name)
         static let pink60 = Color(R.color.pink60.name)
         static let pink100 = Color(R.color.pink100.name)
-        
+
         static let red100 = Color(R.color.red100.name)
         static let red20 = Color(R.color.red20.name)
 
