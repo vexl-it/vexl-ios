@@ -10,6 +10,11 @@ import Cleevio
 
 final class ChatMessageViewModel: ViewModelType, ObservableObject {
 
+    enum Modal {
+        case none
+        case offer
+    }
+
     // MARK: - Action Binding
 
     enum UserAction: Equatable {
@@ -18,6 +23,7 @@ final class ChatMessageViewModel: ViewModelType, ObservableObject {
         case chatActionTap(action: ChatMessageAction)
         case messageSend
         case cameraTap
+        case dismissModal
     }
 
     let action: ActionSubject<UserAction> = .init()
@@ -29,6 +35,7 @@ final class ChatMessageViewModel: ViewModelType, ObservableObject {
     @Published var primaryActivity: Activity = .init()
     @Published var isLoading = false
     @Published var error: Error?
+    @Published var modal = Modal.none
 
     var errorIndicator: ErrorIndicator {
         primaryActivity.error
@@ -51,6 +58,14 @@ final class ChatMessageViewModel: ViewModelType, ObservableObject {
 
     var username: String {
         "Keichi"
+    }
+
+    var offerLabel: String {
+        offerType == .buy ? L.marketplaceDetailUserBuy("") : L.marketplaceDetailUserSell("")
+    }
+
+    var isModalPresented: Bool {
+        modal != .none
     }
 
     var messages: [ChatMessageGroup] = ChatMessageGroup.stub
@@ -81,6 +96,21 @@ final class ChatMessageViewModel: ViewModelType, ObservableObject {
                 owner.currentMessage = ""
             }
             .store(in: cancelBag)
+
+        action
+            .filter { $0 == .dismissModal }
+            .withUnretained(self)
+            .map { _ -> Modal in .none }
+            .assign(to: &$modal)
+
+        action
+            .compactMap { action -> ChatMessageAction? in
+                if case let .chatActionTap(chatAction) = action { return chatAction }
+                return nil
+            }
+            .filter { $0 == .showOffer }
+            .map { _ -> Modal in .offer }
+            .assign(to: &$modal)
     }
 }
 

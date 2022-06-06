@@ -12,6 +12,7 @@
 "skip" = "Skip";
 "got.it" = "Got it!";
 "continue" = "Continue";
+"button.gotIt" = "Got it";
 "onboarding.intro.message.friend" = "import your friends anonymously.";
 "onboarding.intro.message.buySell" = "see their buy & sell offers.";
 "onboarding.intro.message.request" = "request identity for the ones you like and trade.";
