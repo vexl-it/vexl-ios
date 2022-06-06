@@ -14,6 +14,7 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
     @Inject private var offerService: OfferServiceType
     @Inject private var userSecurity: UserSecurityType
     @Inject private var localStorageService: LocalStorageServiceType
+    @Inject private var inboxManager: InboxManagerType
 
     // MARK: - Actions Bindings
 

@@ -11,6 +11,9 @@ import Combine
 protocol ChatServiceType {
     func createInbox(offerPublicKey: String, pushToken: String) -> AnyPublisher<Void, Error>
     func request(inboxPublicKey: String, message: String) -> AnyPublisher<Void, Error>
+    func requestChallenge(publicKey: String) -> AnyPublisher<ChatChallenge, Error>
+    func pullInboxMessages(publicKey: String, signature: String) -> AnyPublisher<[ChatMessage], Error>
+    func deleteInboxMessages(publicKey: String) -> AnyPublisher<Void, Error>
 }
 
 final class ChatService: BaseService, ChatServiceType {
@@ -49,5 +52,20 @@ final class ChatService: BaseService, ChatServiceType {
             owner.request(endpoint: ChatRouter.request(inboxPublicKey: inboxPublicKey, message: encryptedMessage))
         }
         .eraseToAnyPublisher()
+    }
+
+    func requestChallenge(publicKey: String) -> AnyPublisher<ChatChallenge, Error> {
+        request(type: ChatChallenge.self, endpoint: ChatRouter.requestChallenge(publicKey: publicKey))
+            .eraseToAnyPublisher()
+    }
+
+    func pullInboxMessages(publicKey: String, signature: String) -> AnyPublisher<[ChatMessage], Error> {
+        request(type: [ChatMessage].self, endpoint: ChatRouter.pullChat(publicKey: publicKey, signature: signature))
+            .eraseToAnyPublisher()
+    }
+
+    func deleteInboxMessages(publicKey: String) -> AnyPublisher<Void, Error> {
+        request(endpoint: ChatRouter.deleteChat(publicKey: publicKey))
+            .eraseToAnyPublisher()
     }
 }

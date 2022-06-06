@@ -8,10 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		0AA456AF4C162D9C8AF6AB30 /* Pods_vexl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57B3CAA27CF4369A28B748A7 /* Pods_vexl.framework */; };
-		4F481E7228466B320051D3B9 /* TimelineOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F481E7128466B320051D3B9 /* TimelineOption.swift */; };
 		4F24169E2848CF4300B4A437 /* LocalStorageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F24169D2848CF4300B4A437 /* LocalStorageService.swift */; };
 		4F2416A12848F2F100B4A437 /* DictionaryDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2416A02848F2F100B4A437 /* DictionaryDB.swift */; };
 		4F2416A328490B3C00B4A437 /* Inbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2416A228490B3C00B4A437 /* Inbox.swift */; };
+		4F481E7228466B320051D3B9 /* TimelineOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F481E7128466B320051D3B9 /* TimelineOption.swift */; };
 		4F481E76284767480051D3B9 /* ChatRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F481E75284767480051D3B9 /* ChatRouter.swift */; };
 		4F481E78284768840051D3B9 /* ChatService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F481E77284768840051D3B9 /* ChatService.swift */; };
 		4F700CBA2844B08B0085139F /* BitcoinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F700CB92844B08B0085139F /* BitcoinView.swift */; };
@@ -142,6 +142,10 @@
 		F11442082849922B00307D39 /* ChatMessageConversationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11442072849922B00307D39 /* ChatMessageConversationView.swift */; };
 		F114420A284992A600307D39 /* ChatMessageHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1144209284992A600307D39 /* ChatMessageHeaderView.swift */; };
 		F114420C284993EB00307D39 /* ChatMessageActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F114420B284993EB00307D39 /* ChatMessageActionView.swift */; };
+		F11BA977284A9877001243EB /* ChatChallenge.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11BA976284A9877001243EB /* ChatChallenge.swift */; };
+		F11BA979284AAC05001243EB /* ChatMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11BA978284AAC05001243EB /* ChatMessage.swift */; };
+		F11BA97B284D6E2E001243EB /* InboxManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11BA97A284D6E2E001243EB /* InboxManager.swift */; };
+		F11BA97D284D6FF2001243EB /* ChatError.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11BA97C284D6FF2001243EB /* ChatError.swift */; };
 		F12A14DC27D677340096543E /* RegisterContactsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12A14DB27D677340096543E /* RegisterContactsCoordinator.swift */; };
 		F12A14DE27D677420096543E /* RegisterContactsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12A14DD27D677420096543E /* RegisterContactsViewModel.swift */; };
 		F12A14E027D6774C0096543E /* RegisterContactsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12A14DF27D6774C0096543E /* RegisterContactsView.swift */; };
@@ -444,6 +448,10 @@
 		F11442072849922B00307D39 /* ChatMessageConversationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageConversationView.swift; sourceTree = "<group>"; };
 		F1144209284992A600307D39 /* ChatMessageHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageHeaderView.swift; sourceTree = "<group>"; };
 		F114420B284993EB00307D39 /* ChatMessageActionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageActionView.swift; sourceTree = "<group>"; };
+		F11BA976284A9877001243EB /* ChatChallenge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatChallenge.swift; sourceTree = "<group>"; };
+		F11BA978284AAC05001243EB /* ChatMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessage.swift; sourceTree = "<group>"; };
+		F11BA97A284D6E2E001243EB /* InboxManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InboxManager.swift; sourceTree = "<group>"; };
+		F11BA97C284D6FF2001243EB /* ChatError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatError.swift; sourceTree = "<group>"; };
 		F12A14DB27D677340096543E /* RegisterContactsCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterContactsCoordinator.swift; sourceTree = "<group>"; };
 		F12A14DD27D677420096543E /* RegisterContactsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterContactsViewModel.swift; sourceTree = "<group>"; };
 		F12A14DF27D6774C0096543E /* RegisterContactsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterContactsView.swift; sourceTree = "<group>"; };
@@ -848,6 +856,7 @@
 				B0F206F027AE94C400A44E72 /* InitialScreenManager.swift */,
 				F175AB9C27F147B5000DAB15 /* ContactsManager.swift */,
 				F1D20127282AB6EF006DF4AB /* CryptocurrencyValueManager.swift */,
+				F11BA97A284D6E2E001243EB /* InboxManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -941,6 +950,7 @@
 				B08F396327AE7112008B344F /* UserError.swift */,
 				F175AB9F27F4A7EC000DAB15 /* RegistryError.swift */,
 				F13B266C281C8FC80011F2FB /* EncryptionError.swift */,
+				F11BA97C284D6FF2001243EB /* ChatError.swift */,
 			);
 			path = Errors;
 			sourceTree = "<group>";
@@ -1218,6 +1228,15 @@
 			path = Confirmation;
 			sourceTree = "<group>";
 		};
+		F11BA975284A9869001243EB /* Chats */ = {
+			isa = PBXGroup;
+			children = (
+				F11BA976284A9877001243EB /* ChatChallenge.swift */,
+				F11BA978284AAC05001243EB /* ChatMessage.swift */,
+			);
+			path = Chats;
+			sourceTree = "<group>";
+		};
 		F12A14D927D677010096543E /* Contacts */ = {
 			isa = PBXGroup;
 			children = (
@@ -1336,6 +1355,7 @@
 		F175AB8227E4CBFE000DAB15 /* Networking */ = {
 			isa = PBXGroup;
 			children = (
+				F11BA975284A9869001243EB /* Chats */,
 				F13B266328192BAC0011F2FB /* Offers */,
 				F1A9453E27F811CA009B5AE3 /* Contacts */,
 				F175AB8327E4CC04000DAB15 /* Users */,
@@ -1963,6 +1983,7 @@
 				F12A150827E1A4940096543E /* RequestAccessAlert.swift in Sources */,
 				B0E9BB2E2815C7260012BF1D /* HMAC.swift in Sources */,
 				4FBF61E2283BD12D00DDBE71 /* FilterViewModel.swift in Sources */,
+				F11BA977284A9877001243EB /* ChatChallenge.swift in Sources */,
 				F11442082849922B00307D39 /* ChatMessageConversationView.swift in Sources */,
 				F11441D1284681EC00307D39 /* PlaceholderTextField.swift in Sources */,
 				B0F206EF27AE8F6900A44E72 /* Publisher+.swift in Sources */,
@@ -2017,7 +2038,7 @@
 				F188626128129ED600659786 /* OfferTriggersView.swift in Sources */,
 				F1BFA958280223BD00F4E745 /* UserProfileViewModel+Options.swift in Sources */,
 				F11441E2284681EC00307D39 /* InfoBarView.swift in Sources */,
-				F13B266028189F580011F2FB /* OffersService.swift in Sources */,
+				F13B266028189F580011F2FB /* OfferService.swift in Sources */,
 				F12A150627E1A47D0096543E /* RequestAccessFacebookContactsViewModel.swift in Sources */,
 				F12A150427E1A4520096543E /* RequestAccessPhoneContactsViewModel.swift in Sources */,
 				F175AB8927E4F493000DAB15 /* Materialize.swift in Sources */,
@@ -2048,6 +2069,7 @@
 				B08F393627AE7112008B344F /* UIDevice+.swift in Sources */,
 				F13B266F281D4A510011F2FB /* Paged.swift in Sources */,
 				F11441E9284682B200307D39 /* ChatRequestFriendsView.swift in Sources */,
+				F11BA979284AAC05001243EB /* ChatMessage.swift in Sources */,
 				F11441D2284681EC00307D39 /* ImagePickerView.swift in Sources */,
 				F151A29227C807DD000D7242 /* RegisterPhoneView+CodeInput.swift in Sources */,
 				B08F392627AE7112008B344F /* R.generated.swift in Sources */,
@@ -2165,11 +2187,13 @@
 				F1D2012228296F0F006DF4AB /* ChatCoordinator.swift in Sources */,
 				4F700CBA2844B08B0085139F /* BitcoinView.swift in Sources */,
 				B08F394327AE7112008B344F /* Keychain+.swift in Sources */,
+				F11BA97D284D6FF2001243EB /* ChatError.swift in Sources */,
 				F13B2677281F43A10011F2FB /* Offer.swift in Sources */,
 				F11441CD284681EC00307D39 /* LargeLabelButton.swift in Sources */,
 				F175AB8727E4D5C8000DAB15 /* UIScreen+.swift in Sources */,
 				F18862472811550C00659786 /* CreateOfferCoordinator.swift in Sources */,
 				F151A2A727C962CC000D7242 /* RegisterNameAvatarView+NameInput.swift in Sources */,
+				F11BA97B284D6E2E001243EB /* InboxManager.swift in Sources */,
 				F19D602F2845570500876170 /* ChatMessageBubbleView.swift in Sources */,
 				F11441D9284681EC00307D39 /* SingleOptionPickerView.swift in Sources */,
 				F1F5F19B283FE53300968366 /* ChatRequestView.swift in Sources */,
