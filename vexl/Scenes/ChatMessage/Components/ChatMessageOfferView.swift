@@ -13,10 +13,6 @@ struct ChatMessageOfferView: View {
     let dismiss: () -> Void
 
     var body: some View {
-        content
-    }
-
-    private var content: some View {
         VStack {
             VStack(alignment: .leading) {
                 Text(L.chatMessageOffer())

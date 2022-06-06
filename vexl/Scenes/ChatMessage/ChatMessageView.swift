@@ -26,6 +26,7 @@ struct ChatMessageView: View {
     private var content: some View {
         VStack(spacing: .zero) {
             ChatMessageHeaderView(username: viewModel.username,
+                                  offerLabel: viewModel.offerLabel,
                                   avatar: nil,
                                   offerType: viewModel.offerType,
                                   closeAction: {
@@ -57,9 +58,8 @@ struct ChatMessageView: View {
 
     private var modalView: some View {
         Group {
-            if viewModel.modal != .none {
+            if viewModel.isModalPresented {
                 dimmingView
-                    .zIndex(2)
             }
 
             switch viewModel.modal {
@@ -73,7 +73,7 @@ struct ChatMessageView: View {
 
     private var dimmingView: some View {
         Color.black
-            .opacity(viewModel.modal == .none ? 0 : 0.8)
+            .opacity(Appearance.dimmingViewOpacity)
             .animation(.easeInOut(duration: 0.25), value: viewModel.modal)
             .onTapGesture {
                 withAnimation {
@@ -84,11 +84,8 @@ struct ChatMessageView: View {
 
     private var offerView: some View {
         ChatMessageOfferView {
-            withAnimation {
-                viewModel.action.send(.dismissModal)
-            }
+            viewModel.action.send(.dismissModal)
         }
-        .zIndex(3)
         .transition(.move(edge: .bottom))
     }
 }

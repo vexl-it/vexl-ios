@@ -60,6 +60,14 @@ final class ChatMessageViewModel: ViewModelType, ObservableObject {
         "Keichi"
     }
 
+    var offerLabel: String {
+        offerType == .buy ? L.marketplaceDetailUserBuy("") : L.marketplaceDetailUserSell("")
+    }
+
+    var isModalPresented: Bool {
+        modal != .none
+    }
+
     var messages: [ChatMessageGroup] = ChatMessageGroup.stub
     let offerType: OfferType = .buy
 
