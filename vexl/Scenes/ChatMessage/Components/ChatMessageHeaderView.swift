@@ -10,6 +10,7 @@ import SwiftUI
 struct ChatMessageHeaderView: View {
 
     let username: String
+    let offerLabel: String
     let avatar: UIImage?
     let offerType: OfferType
     let closeAction: () -> Void
@@ -28,7 +29,7 @@ struct ChatMessageHeaderView: View {
                     Text(username)
                         .foregroundColor(Appearance.Colors.whiteText)
 
-                    Text(offerType == .buy ? L.marketplaceDetailUserBuy("") : L.marketplaceDetailUserSell(""))
+                    Text(offerLabel)
                         .foregroundColor(Appearance.Colors.whiteText)
                 }
                 .frame(maxWidth: .infinity)

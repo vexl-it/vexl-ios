@@ -26,6 +26,7 @@ struct ChatMessageView: View {
     private var content: some View {
         VStack(spacing: .zero) {
             ChatMessageHeaderView(username: viewModel.username,
+                                  offerLabel: viewModel.offerLabel,
                                   avatar: viewModel.avatar,
                                   offerType: viewModel.offerType,
                                   closeAction: {
@@ -57,38 +58,19 @@ struct ChatMessageView: View {
 
     private var modalView: some View {
         Group {
-            if viewModel.modal != .none {
+            if viewModel.isModalPresented {
                 dimmingView
-                    .zIndex(2)
             }
 
-            Group {
-                switch viewModel.modal {
-                case .offer:
-                    offerView
-                case .friends:
-                    commonFriendView
-                case .delete:
-                    deleteView
-                case .deleteConfirmation:
-                    deleteConfirmationView
-                case .block:
-                    blockView
-                case .blockConfirmation:
-                    blockConfirmationView
-                case .none:
-                    EmptyView()
-                }
-            }
-            .zIndex(3)
-            .transition(.move(edge: .bottom))
+            modalSheet
         }
     }
 
     private var dimmingView: some View {
         Color.black
-            .opacity(viewModel.modal == .none ? 0 : 0.8)
+            .opacity(Appearance.dimmingViewOpacity)
             .animation(.easeInOut(duration: 0.25), value: viewModel.modal)
+            .edgesIgnoringSafeArea(.all)
             .onTapGesture {
                 withAnimation {
                     viewModel.action.send(.dismissModal)
@@ -96,19 +78,37 @@ struct ChatMessageView: View {
             }
     }
 
+    private var modalSheet: some View {
+        Group {
+            switch viewModel.modal {
+            case .offer:
+                offerView
+            case .friends:
+                commonFriendView
+            case .delete:
+                deleteView
+            case .deleteConfirmation:
+                deleteConfirmationView
+            case .block:
+                blockView
+            case .blockConfirmation:
+                blockConfirmationView
+            case .none:
+                EmptyView()
+            }
+        }
+        .transition(.move(edge: .bottom))
+    }
+
     private var offerView: some View {
         ChatMessageOfferView {
-            withAnimation {
-                viewModel.action.send(.dismissModal)
-            }
+            viewModel.action.send(.dismissModal)
         }
     }
 
     private var commonFriendView: some View {
         ChatMessageCommonFriendsView(friends: viewModel.friends) {
-            withAnimation {
-                viewModel.action.send(.dismissModal)
-            }
+            viewModel.action.send(.dismissModal)
         }
     }
 
