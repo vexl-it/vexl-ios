@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ChatFilterView: View {
+struct InboxFilterView: View {
 
     enum Option: CaseIterable {
         case all

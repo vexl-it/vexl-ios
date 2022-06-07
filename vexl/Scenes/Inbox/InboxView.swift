@@ -7,27 +7,27 @@
 
 import SwiftUI
 
-typealias ChatFilterOption = ChatFilterView.Option
+typealias InboxFilterOption = InboxFilterView.Option
 
-struct ChatView: View {
+struct InboxView: View {
 
-    @ObservedObject var viewModel: ChatViewModel
+    @ObservedObject var viewModel: InboxViewModel
 
     var body: some View {
         VStack(spacing: .zero) {
             BitcoinView(viewModel: viewModel.bitcoinViewModel)
 
-            chatContent
+            inboxContent
         }
         .background(Color.black.edgesIgnoringSafeArea(.all))
         .navigationBarHidden(true)
     }
 
-    private var chatContent: some View {
+    private var inboxContent: some View {
         VStack(alignment: .leading) {
             header
 
-            ChatFilterView(selectedOption: $viewModel.filter,
+            InboxFilterView(selectedOption: $viewModel.filter,
                            action: { option in
                 viewModel.action.send(.selectFilter(option: option))
             })
@@ -35,7 +35,7 @@ struct ChatView: View {
             ScrollView {
                 Group {
                     ForEach(viewModel.chatItems) { chatItem in
-                        ChatItemView(data: chatItem)
+                        InboxItemView(data: chatItem)
                             .padding(.bottom, Appearance.GridGuide.mediumPadding1)
                             .onTapGesture {
                                 viewModel.action.send(.selectMessage(id: chatItem.id.uuidString))
@@ -74,7 +74,7 @@ struct ChatView: View {
 
 struct ChatViewPreview: PreviewProvider {
     static var previews: some View {
-        ChatView(viewModel: .init(bitcoinViewModel: .init()))
+        InboxView(viewModel: .init(bitcoinViewModel: .init()))
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .previewDevice("iPhone 11")
     }

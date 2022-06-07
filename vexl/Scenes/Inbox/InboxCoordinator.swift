@@ -9,7 +9,7 @@ import Foundation
 import Cleevio
 import Combine
 
-final class ChatCoordinator: BaseCoordinator<Void> {
+final class InboxCoordinator: BaseCoordinator<Void> {
 
     private let router: Router
     private let animated: Bool
@@ -20,8 +20,8 @@ final class ChatCoordinator: BaseCoordinator<Void> {
     }
 
     override func start() -> CoordinatingResult<Void> {
-        let viewModel = ChatViewModel(bitcoinViewModel: .init())
-        let viewController = BaseViewController(rootView: ChatView(viewModel: viewModel))
+        let viewModel = InboxViewModel(bitcoinViewModel: .init())
+        let viewController = BaseViewController(rootView: InboxView(viewModel: viewModel))
 
         router.present(viewController, animated: animated)
 
@@ -54,7 +54,7 @@ final class ChatCoordinator: BaseCoordinator<Void> {
     }
 }
 
-extension ChatCoordinator {
+extension InboxCoordinator {
     private func showChatRequests(router: Router) -> CoordinatingResult<RouterResult<Void>> {
         coordinate(to: ChatRequestCoordinator(router: router, animated: animated))
         .flatMap { result -> CoordinatingResult<RouterResult<Void>> in

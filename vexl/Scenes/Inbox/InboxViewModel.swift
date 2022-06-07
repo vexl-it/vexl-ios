@@ -8,12 +8,12 @@
 import Foundation
 import Cleevio
 
-final class ChatViewModel: ViewModelType, ObservableObject {
+final class InboxViewModel: ViewModelType, ObservableObject {
 
     // MARK: - Action Binding
 
     enum UserAction: Equatable {
-        case selectFilter(option: ChatFilterOption)
+        case selectFilter(option: InboxFilterOption)
         case continueTap
         case requestTap
         case selectMessage(id: String)
@@ -23,10 +23,10 @@ final class ChatViewModel: ViewModelType, ObservableObject {
 
     // MARK: - View Bindings
 
-    @Published var filter: ChatFilterOption = .all
+    @Published var filter: InboxFilterOption = .all
     @Published var primaryActivity: Activity = .init()
 
-    @Published var chatItems: [ChatItem] = [
+    @Published var chatItems: [InboxItem] = [
         .init(avatar: nil, username: "Keichi", detail: "qwerty", time: "Yesterday", offerType: .buy),
         .init(avatar: nil, username: "Keichi", detail: "qwerty", time: "Yesterday", offerType: .buy),
         .init(avatar: nil, username: "Keichi", detail: "qwerty", time: "Yesterday", offerType: .sell)
@@ -64,7 +64,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
             .store(in: cancelBag)
 
         action
-            .compactMap { action -> ChatFilterOption? in
+            .compactMap { action -> InboxFilterOption? in
                 if case let .selectFilter(option) = action { return option }
                 return nil
             }
