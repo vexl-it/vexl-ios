@@ -13,6 +13,7 @@ final class ChatMessageViewModel: ViewModelType, ObservableObject {
     enum Modal {
         case none
         case offer
+        case friends
     }
 
     // MARK: - Action Binding
@@ -54,11 +55,11 @@ final class ChatMessageViewModel: ViewModelType, ObservableObject {
 
     // MARK: - Variables
 
-    // TODO: - set real data when the BE integration is done
-
-    var username: String {
-        "Keichi"
-    }
+    let username: String = "Keichi"
+    let avatar: UIImage? = nil
+    let friends: [ChatMessageCommonFriendViewData] = [.stub, .stub, .stub]
+    var messages: [ChatMessageGroup] = ChatMessageGroup.stub
+    let offerType: OfferType = .buy
 
     var offerLabel: String {
         offerType == .buy ? L.marketplaceDetailUserBuy("") : L.marketplaceDetailUserSell("")
@@ -67,9 +68,6 @@ final class ChatMessageViewModel: ViewModelType, ObservableObject {
     var isModalPresented: Bool {
         modal != .none
     }
-
-    var messages: [ChatMessageGroup] = ChatMessageGroup.stub
-    let offerType: OfferType = .buy
 
     private let cancelBag: CancelBag = .init()
 
@@ -111,7 +109,14 @@ final class ChatMessageViewModel: ViewModelType, ObservableObject {
             .filter { $0 == .showOffer }
             .map { _ -> Modal in .offer }
             .assign(to: &$modal)
+
+        action
+            .compactMap { action -> ChatMessageAction? in
+                if case let .chatActionTap(chatAction) = action { return chatAction }
+                return nil
+            }
+            .filter { $0 == .commonFriends }
+            .map { _ -> Modal in .friends }
+            .assign(to: &$modal)
     }
 }
-
-

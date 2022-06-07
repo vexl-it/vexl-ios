@@ -134,6 +134,8 @@
 		F11441F128468B2F00307D39 /* ChatMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11441EE28468B2F00307D39 /* ChatMessageView.swift */; };
 		F11441F328468B5600307D39 /* CloseButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11441F228468B5600307D39 /* CloseButton.swift */; };
 		F11441F52846BE0D00307D39 /* ChatMessageOfferView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11441F42846BE0D00307D39 /* ChatMessageOfferView.swift */; };
+		F11441F72847EA3900307D39 /* ChatMessageCommonFriendsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11441F62847EA3900307D39 /* ChatMessageCommonFriendsView.swift */; };
+		F11441FA284819DB00307D39 /* ChatMessageCommonFriendItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11441F9284819DB00307D39 /* ChatMessageCommonFriendItemView.swift */; };
 		F114420128495E1900307D39 /* LargeSolidButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F114420028495E1900307D39 /* LargeSolidButton.swift */; };
 		F11442082849922B00307D39 /* ChatMessageConversationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11442072849922B00307D39 /* ChatMessageConversationView.swift */; };
 		F114420A284992A600307D39 /* ChatMessageHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1144209284992A600307D39 /* ChatMessageHeaderView.swift */; };
@@ -431,6 +433,8 @@
 		F11441EE28468B2F00307D39 /* ChatMessageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatMessageView.swift; sourceTree = "<group>"; };
 		F11441F228468B5600307D39 /* CloseButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloseButton.swift; sourceTree = "<group>"; };
 		F11441F42846BE0D00307D39 /* ChatMessageOfferView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageOfferView.swift; sourceTree = "<group>"; };
+		F11441F62847EA3900307D39 /* ChatMessageCommonFriendsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageCommonFriendsView.swift; sourceTree = "<group>"; };
+		F11441F9284819DB00307D39 /* ChatMessageCommonFriendItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageCommonFriendItemView.swift; sourceTree = "<group>"; };
 		F114420028495E1900307D39 /* LargeSolidButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LargeSolidButton.swift; sourceTree = "<group>"; };
 		F11442072849922B00307D39 /* ChatMessageConversationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageConversationView.swift; sourceTree = "<group>"; };
 		F1144209284992A600307D39 /* ChatMessageHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageHeaderView.swift; sourceTree = "<group>"; };
@@ -1189,6 +1193,15 @@
 			path = Components;
 			sourceTree = "<group>";
 		};
+		F11441F8284819CC00307D39 /* CommonFriends */ = {
+			isa = PBXGroup;
+			children = (
+				F11441F62847EA3900307D39 /* ChatMessageCommonFriendsView.swift */,
+				F11441F9284819DB00307D39 /* ChatMessageCommonFriendItemView.swift */,
+			);
+			path = CommonFriends;
+			sourceTree = "<group>";
+		};
 		F12A14D927D677010096543E /* Contacts */ = {
 			isa = PBXGroup;
 			children = (
@@ -1408,6 +1421,7 @@
 		F19D602B2845538300876170 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				F11441F8284819CC00307D39 /* CommonFriends */,
 				F1144209284992A600307D39 /* ChatMessageHeaderView.swift */,
 				F114420B284993EB00307D39 /* ChatMessageActionView.swift */,
 				F19D602C2845538C00876170 /* ChatMessageDateView.swift */,
@@ -1978,6 +1992,7 @@
 				F11441F028468B2F00307D39 /* ChatMessageViewModel.swift in Sources */,
 				F11441CF284681EC00307D39 /* ExpandingTextView.swift in Sources */,
 				B0F206F127AE94C400A44E72 /* InitialScreenManager.swift in Sources */,
+				F11441F72847EA3900307D39 /* ChatMessageCommonFriendsView.swift in Sources */,
 				F12A14E027D6774C0096543E /* RegisterContactsView.swift in Sources */,
 				4F481E76284767480051D3B9 /* ChatRouter.swift in Sources */,
 				4F700CBE2844C4C20085139F /* StickyBitcoinView.swift in Sources */,
@@ -2047,6 +2062,7 @@
 				F13B2673281D81060011F2FB /* EncryptedOffer.swift in Sources */,
 				F11441CC284681EC00307D39 /* DottedButton.swift in Sources */,
 				F188627928169A7400659786 /* MarketplaceView.swift in Sources */,
+				F11441FA284819DB00307D39 /* ChatMessageCommonFriendItemView.swift in Sources */,
 				B08F397C27AE7112008B344F /* SwipeNavigationController.swift in Sources */,
 				4FBF620B283CE08800DDBE71 /* OfferAmountRangeView.swift in Sources */,
 				F13B265C281897DE0011F2FB /* OfferAdvanceFilterFriendDegreeView.swift in Sources */,

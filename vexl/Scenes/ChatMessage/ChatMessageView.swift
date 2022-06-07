@@ -27,7 +27,7 @@ struct ChatMessageView: View {
         VStack(spacing: .zero) {
             ChatMessageHeaderView(username: viewModel.username,
                                   offerLabel: viewModel.offerLabel,
-                                  avatar: nil,
+                                  avatar: viewModel.avatar,
                                   offerType: viewModel.offerType,
                                   closeAction: {
                 viewModel.action.send(.dismissTap)
@@ -65,6 +65,8 @@ struct ChatMessageView: View {
             switch viewModel.modal {
             case .offer:
                 offerView
+            case .friends:
+                commonFriendView
             case .none:
                 EmptyView()
             }
@@ -80,11 +82,23 @@ struct ChatMessageView: View {
                     viewModel.action.send(.dismissModal)
                 }
             }
+            .edgesIgnoringSafeArea(.all)
     }
 
     private var offerView: some View {
         ChatMessageOfferView {
-            viewModel.action.send(.dismissModal)
+            withAnimation {
+                viewModel.action.send(.dismissModal)
+            }
+        }
+        .transition(.move(edge: .bottom))
+    }
+
+    private var commonFriendView: some View {
+        ChatMessageCommonFriendsView(friends: viewModel.friends) {
+            withAnimation {
+                viewModel.action.send(.dismissModal)
+            }
         }
         .transition(.move(edge: .bottom))
     }
