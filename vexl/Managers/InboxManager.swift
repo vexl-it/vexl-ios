@@ -9,9 +9,12 @@ import Foundation
 import Combine
 
 private typealias KeyAndSignature = (key: String, signature: String)
+private typealias KeyAndMessages = (key: String, messages: [ChatMessage])
 
 protocol InboxManagerType {
-    func syncInbox(publicKey: String) -> AnyPublisher<Void, Error>
+    func getStoredMessages() -> AnyPublisher<[ParsedChatMessage], Error>
+    func syncInbox(publicKey: String) -> AnyPublisher<[ChatMessage], Error>
+    func storeMessages(_ messages: [ChatMessage]) -> AnyPublisher<Void, Never>
 }
 
 final class InboxManager: InboxManagerType {
@@ -21,7 +24,28 @@ final class InboxManager: InboxManagerType {
 
     var messages: [ChatMessage] = []
 
-    func syncInbox(publicKey: String) -> AnyPublisher<Void, Error> {
+    func getStoredMessages() -> AnyPublisher<[ParsedChatMessage], Error> {
+        let messages = localStorageService.getMessages()
+        return Future<[ParsedChatMessage], Error> { promise in
+            promise(.success(messages))
+        }
+        .eraseToAnyPublisher()
+    }
+
+    func storeMessages(_ messages: [ChatMessage]) -> AnyPublisher<Void, Never> {
+        messages.publisher
+            .compactMap { chatMessage in
+                ParsedChatMessage(chatMessage: chatMessage)
+            }
+            .collect()
+            .handleEvents(receiveOutput: { parsedMessages in
+                DictionaryDB.saveMessages(parsedMessages)
+            })
+            .asVoid()
+            .eraseToAnyPublisher()
+    }
+
+    func syncInbox(publicKey: String) -> AnyPublisher<[ChatMessage], Error> {
         do {
             let createdInboxes = try localStorageService.getInboxes(ofType: .created)
             let requestedInboxes = try localStorageService.getInboxes(ofType: .requested)
@@ -35,25 +59,30 @@ final class InboxManager: InboxManagerType {
                         .eraseToAnyPublisher()
                 }
 
-            let pullAndDelete = challenges
+            let pullChat = challenges
                 .withUnretained(self)
-                .flatMap { owner, keyAndSignature -> AnyPublisher<String, Error> in
+                .flatMap { owner, keyAndSignature -> AnyPublisher<KeyAndMessages, Error> in
                     owner.chatService.pullInboxMessages(publicKey: keyAndSignature.key, signature: keyAndSignature.signature)
                         .withUnretained(self)
                         .handleEvents(receiveOutput: { owner, messages in
-                            owner.messages.append(contentsOf: messages)
+                            let updatedMessages = owner.messages + messages
+                            owner.messages.append(contentsOf: updatedMessages)
                         })
-                        .map { _ in keyAndSignature.key }
+                        .map { _, messages in KeyAndMessages(key: keyAndSignature.key, messages: messages) }
                         .eraseToAnyPublisher()
                 }
+
+            let deleteChat = pullChat
                 .withUnretained(self)
-                .flatMap { owner, key in
-                    owner.chatService.deleteInboxMessages(publicKey: key)
+                .flatMap { owner, keyAndMessages -> AnyPublisher<[ChatMessage], Error> in
+                    owner.chatService.deleteInboxMessages(publicKey: keyAndMessages.key)
+                        .map { _ in keyAndMessages.messages }
+                        .eraseToAnyPublisher()
                 }
 
-            return pullAndDelete
+            return deleteChat
                 .collect()
-                .asVoid()
+                .map { Array($0.joined()) }
                 .eraseToAnyPublisher()
         } catch {
             return Fail(error: ChatError.storageEmpty)

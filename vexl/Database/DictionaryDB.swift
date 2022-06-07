@@ -17,6 +17,13 @@ final class DictionaryDB {
         }
     }
 
+    static private var messages: [ParsedChatMessage] = [] {
+        didSet {
+            guard let encodedData = try? JSONEncoder().encode(messages) else { return }
+            UserDefaults.standard.setValue(encodedData, forKey: "messages")
+        }
+    }
+
     static func setupDatabase() {
         guard let inboxesData = UserDefaults.standard.data(forKey: "inboxes"),
               let savedInboxes = try? JSONDecoder().decode([String: [Inbox]].self, from: inboxesData) else { return }
@@ -42,5 +49,15 @@ final class DictionaryDB {
 
     static func getRequestedInboxes() -> [Inbox] {
         inboxes["requested"] ?? []
+    }
+
+    static func saveMessages(_ messages: [ParsedChatMessage]) {
+        var content = self.messages
+        content.append(contentsOf: messages)
+        self.messages = content
+    }
+
+    static func getMessages() -> [ParsedChatMessage] {
+        self.messages
     }
 }
