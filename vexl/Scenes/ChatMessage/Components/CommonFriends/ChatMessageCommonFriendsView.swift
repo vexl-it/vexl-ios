@@ -12,38 +12,39 @@ struct ChatMessageCommonFriendsView: View {
 
     let friends: [ChatMessageCommonFriendViewData]
     let dismiss: () -> Void
-    private let screenHeight: CGFloat = UIScreen.main.bounds.height
 
     var body: some View {
-        VStack {
-            VStack(alignment: .leading) {
-                Text(L.chatMessageCommonFriend())
-                    .textStyle(.h2)
-                    .padding(.top, Appearance.GridGuide.mediumPadding1)
+        GeometryReader { reader in
+            VStack {
+                VStack(alignment: .leading) {
+                    Text(L.chatMessageCommonFriend())
+                        .textStyle(.h2)
+                        .padding(.top, Appearance.GridGuide.mediumPadding1)
 
-                ScrollView {
-                    LazyVStack {
-                        ForEach(friends) { friend in
-                            ChatMessageCommonFriendItemView(data: friend)
+                    ScrollView {
+                        LazyVStack {
+                            ForEach(friends) { friend in
+                                ChatMessageCommonFriendItemView(data: friend)
+                            }
                         }
                     }
+                    .frame(height: reader.size.height * 0.5)
                 }
-                .frame(height: screenHeight * 0.5)
-            }
-            .padding(.horizontal, Appearance.GridGuide.padding)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .background(Appearance.Colors.whiteText)
-            .cornerRadius(Appearance.GridGuide.buttonCorner)
+                .padding(.horizontal, Appearance.GridGuide.padding)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .background(Appearance.Colors.whiteText)
+                .cornerRadius(Appearance.GridGuide.buttonCorner)
 
-            LargeSolidButton(title: L.buttonGotIt(),
-                             font: Appearance.TextStyle.titleSmallSemiBold.font.asFont,
-                             style: .main,
-                             isFullWidth: true,
-                             isEnabled: .constant(true),
-                             action: dismiss)
+                LargeSolidButton(title: L.buttonGotIt(),
+                                 font: Appearance.TextStyle.titleSmallSemiBold.font.asFont,
+                                 style: .main,
+                                 isFullWidth: true,
+                                 isEnabled: .constant(true),
+                                 action: dismiss)
+            }
+            .padding(Appearance.GridGuide.point)
+            .frame(maxHeight: .infinity, alignment: .bottom)
         }
-        .padding(Appearance.GridGuide.point)
-        .frame(maxHeight: .infinity, alignment: .bottom)
     }
 }
 
