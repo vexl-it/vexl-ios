@@ -1,5 +1,5 @@
 //
-//  ChatMessageCoordinator.swift
+//  ChatCoordinator.swift
 //  vexl
 //
 //  Created by Diego Espinoza on 29/05/22.
@@ -9,7 +9,7 @@ import Foundation
 import Cleevio
 import Combine
 
-final class ChatMessageCoordinator: BaseCoordinator<RouterResult<Void>> {
+final class ChatCoordinator: BaseCoordinator<RouterResult<Void>> {
 
     private let id: String
     private let router: Router
@@ -22,8 +22,8 @@ final class ChatMessageCoordinator: BaseCoordinator<RouterResult<Void>> {
     }
 
     override func start() -> CoordinatingResult<RouterResult<Void>> {
-        let viewModel = ChatMessageViewModel()
-        let viewController = BaseViewController(rootView: ChatMessageView(viewModel: viewModel))
+        let viewModel = ChatViewModel()
+        let viewController = BaseViewController(rootView: ChatView(viewModel: viewModel))
 
         router.present(viewController, animated: true)
 

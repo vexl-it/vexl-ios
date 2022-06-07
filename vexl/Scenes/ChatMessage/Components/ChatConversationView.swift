@@ -1,5 +1,5 @@
 //
-//  ChatMessageConversationView.swift
+//  ChatConversationView.swift
 //  vexl
 //
 //  Created by Diego Espinoza on 2/06/22.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ChatMessageConversationView: View {
+struct ChatConversationView: View {
 
     let messages: [ChatMessageGroup]
 
@@ -15,10 +15,10 @@ struct ChatMessageConversationView: View {
         ScrollView(showsIndicators: false) {
             LazyVStack {
                 ForEach(messages) { messageGroup in
-                    ChatMessageDateView(date: messageGroup.date, isInitial: false)
+                    ChatDateView(date: messageGroup.date, isInitial: false)
 
                     ForEach(messageGroup.messages) { message in
-                        ChatMessageBubbleView(text: message.text, style: message.isContact ? .contact : .user)
+                        ChatBubbleView(text: message.text, style: message.isContact ? .contact : .user)
                     }
                 }
             }

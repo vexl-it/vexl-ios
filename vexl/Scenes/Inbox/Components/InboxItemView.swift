@@ -7,9 +7,9 @@
 
 import SwiftUI
 
-typealias ChatItem = ChatItemView.ViewData
+typealias InboxItem = InboxItemView.ViewData
 
-struct ChatItemView: View {
+struct InboxItemView: View {
 
     struct ViewData: Identifiable, Hashable {
         let id = UUID()

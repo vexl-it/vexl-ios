@@ -1,5 +1,5 @@
 //
-//  ChatMessageViewModel.swift
+//  ChatViewModel.swift
 //  vexl
 //
 //  Created by Diego Espinoza on 29/05/22.
@@ -8,7 +8,7 @@
 import Foundation
 import Cleevio
 
-final class ChatMessageViewModel: ViewModelType, ObservableObject {
+final class ChatViewModel: ViewModelType, ObservableObject {
 
     enum Modal {
         case none
@@ -65,7 +65,7 @@ final class ChatMessageViewModel: ViewModelType, ObservableObject {
 
     let username: String = "Keichi"
     let avatar: UIImage? = nil
-    let friends: [ChatMessageCommonFriendViewData] = [.stub, .stub, .stub]
+    let friends: [ChatCommonFriendViewData] = [.stub, .stub, .stub]
     var messages: [ChatMessageGroup] = ChatMessageGroup.stub
     let offerType: OfferType = .buy
 

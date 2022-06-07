@@ -1,5 +1,5 @@
 //
-//  ChatMessageConfirmationView.swift
+//  ChatConfirmationView.swift
 //  vexl
 //
 //  Created by Diego Espinoza on 1/06/22.
@@ -8,7 +8,7 @@
 import SwiftUI
 import Cleevio
 
-struct ChatMessageConfirmationView: View {
+struct ChatConfirmationView: View {
 
     let title: String
     let subtitle: String
@@ -58,7 +58,7 @@ struct ChatMessageConfirmationView: View {
     }
 }
 
-extension ChatMessageConfirmationView {
+extension ChatConfirmationView {
     enum Style {
         case regular
         case block
@@ -67,7 +67,7 @@ extension ChatMessageConfirmationView {
 
 struct ChatMessageConfirmationViewPreview: PreviewProvider {
     static var previews: some View {
-        ChatMessageConfirmationView(title: "Delete chat?",
+        ChatConfirmationView(title: "Delete chat?",
                                     subtitle: "Are you sure you want to delete the chat bla bla bla?",
                                     actionTitle: "Delete Chat",
                                     dismissTitle: "Back",
@@ -79,7 +79,7 @@ struct ChatMessageConfirmationViewPreview: PreviewProvider {
             .background(Color.black)
             .previewDevice("iPhone 11")
 
-        ChatMessageConfirmationView(title: "Block chat?",
+        ChatConfirmationView(title: "Block chat?",
                                     subtitle: "Are you sure you want to block the chat bla bla bla?",
                                     actionTitle: "Block Chat",
                                     dismissTitle: "Back",

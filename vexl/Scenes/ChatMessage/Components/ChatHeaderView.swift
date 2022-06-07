@@ -1,5 +1,5 @@
 //
-//  ChatMessageHeaderView.swift
+//  ChatHeaderView.swift
 //  vexl
 //
 //  Created by Diego Espinoza on 2/06/22.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ChatMessageHeaderView: View {
+struct ChatHeaderView: View {
 
     let username: String
     let offerLabel: String

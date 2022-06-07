@@ -1,5 +1,5 @@
 //
-//  ChatMessageCommonFriendsView.swift
+//  ChatCommonFriendsView.swift
 //  vexl
 //
 //  Created by Diego Espinoza on 1/06/22.
@@ -8,9 +8,9 @@
 import SwiftUI
 import Cleevio
 
-struct ChatMessageCommonFriendsView: View {
+struct ChatCommonFriendsView: View {
 
-    let friends: [ChatMessageCommonFriendViewData]
+    let friends: [ChatCommonFriendViewData]
     let dismiss: () -> Void
 
     var body: some View {
@@ -24,7 +24,7 @@ struct ChatMessageCommonFriendsView: View {
                     ScrollView {
                         LazyVStack {
                             ForEach(friends) { friend in
-                                ChatMessageCommonFriendItemView(data: friend)
+                                ChatCommonFriendItemView(data: friend)
                             }
                         }
                     }
@@ -50,7 +50,7 @@ struct ChatMessageCommonFriendsView: View {
 
 struct ChatMessageCommonFriendsViewPreview: PreviewProvider {
     static var previews: some View {
-        ChatMessageCommonFriendsView(friends: [.stub, .stub],
+        ChatCommonFriendsView(friends: [.stub, .stub],
                                      dismiss: { })
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color.black)
