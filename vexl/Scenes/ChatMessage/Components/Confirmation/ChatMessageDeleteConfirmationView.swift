@@ -18,9 +18,17 @@ struct ChatMessageDeleteConfirmationView: View {
     let mainAction: () -> Void
     let dismiss: () -> Void
 
+    private var title: String {
+        style == .regular ? L.chatMessageDeleteTitle() : L.chatMessageDeleteConfirmTitle()
+    }
+
+    private var subtitle: String {
+        style == .regular ? L.chatMessageDeleteDescription() : L.chatMessageDeleteConfirmDescription()
+    }
+
     var body: some View {
-        ChatMessageConfirmationView(title: style == .regular ? L.chatMessageDeleteTitle() : L.chatMessageDeleteConfirmTitle(),
-                                    subtitle: style == .regular ? L.chatMessageDeleteDescription() : L.chatMessageDeleteConfirmDescription(),
+        ChatMessageConfirmationView(title: title,
+                                    subtitle: subtitle,
                                     actionTitle: L.chatMessageDeleteAction(),
                                     dismissTitle: L.chatMessageDeleteBack(),
                                     primaryColor: .main,

@@ -18,9 +18,17 @@ struct ChatMessageBlockConfirmationView: View {
     let mainAction: () -> Void
     let dismiss: () -> Void
 
+    private var title: String {
+        style == .regular ? L.chatMessageBlockTitle() : L.chatMessageBlockConfirmTitle()
+    }
+
+    private var subtitle: String {
+        style == .regular ? L.chatMessageBlockDescription() : L.chatMessageBlockConfirmDescription()
+    }
+
     var body: some View {
-        ChatMessageConfirmationView(title: style == .regular ? L.chatMessageBlockTitle() : L.chatMessageBlockConfirmTitle(),
-                                    subtitle: style == .regular ? L.chatMessageBlockDescription() : L.chatMessageBlockConfirmDescription(),
+        ChatMessageConfirmationView(title: title,
+                                    subtitle: subtitle,
                                     actionTitle: L.chatMessageBlockAction(),
                                     dismissTitle: L.chatMessageBlockBack(),
                                     primaryColor: .red,
