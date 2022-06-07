@@ -23,13 +23,13 @@ struct ChatDeleteConfirmationView: View {
 
     var body: some View {
         ChatConfirmationView(title: title,
-                                    subtitle: subtitle,
-                                    actionTitle: L.chatMessageDeleteAction(),
-                                    dismissTitle: L.chatMessageDeleteBack(),
-                                    primaryColor: .main,
-                                    secondaryColor: .secondary,
-                                    mainAction: mainAction,
-                                    dismiss: dismiss)
+                             subtitle: subtitle,
+                             actionTitle: L.chatMessageDeleteAction(),
+                             dismissTitle: L.chatMessageDeleteBack(),
+                             primaryColor: .main,
+                             secondaryColor: .secondary,
+                             mainAction: mainAction,
+                             dismiss: dismiss)
     }
 }
 

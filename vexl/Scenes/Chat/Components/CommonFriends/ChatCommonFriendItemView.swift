@@ -48,8 +48,8 @@ extension ChatCommonFriendItemView {
 struct ChatMessageCommonFriendItemViewPreview: PreviewProvider {
     static var previews: some View {
         ChatCommonFriendItemView(data: .init(title: "Name goes here",
-                                                    subtitle: "Description goes here bla bla",
-                                                    avatar: nil))
+                                             subtitle: "Description goes here bla bla",
+                                             avatar: nil))
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .previewDevice("iPhone 11")
     }

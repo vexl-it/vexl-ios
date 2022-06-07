@@ -26,10 +26,10 @@ struct ChatView: View {
     private var content: some View {
         VStack(spacing: .zero) {
             ChatHeaderView(username: viewModel.username,
-                                  offerLabel: viewModel.offerLabel,
-                                  avatar: viewModel.avatar,
-                                  offerType: viewModel.offerType,
-                                  closeAction: {
+                           offerLabel: viewModel.offerLabel,
+                           avatar: viewModel.avatar,
+                           offerType: viewModel.offerType,
+                           closeAction: {
                 viewModel.action.send(.dismissTap)
             })
 
@@ -46,7 +46,7 @@ struct ChatView: View {
                 .frame(maxHeight: .infinity)
 
             ChatInputView(text: $viewModel.currentMessage,
-                                 sendAction: {
+                          sendAction: {
                 viewModel.action.send(.messageSend)
             },
                                  cameraAction: {
@@ -119,7 +119,7 @@ struct ChatView: View {
 
     private var deleteView: some View {
         ChatDeleteConfirmationView(style: .regular,
-                                          mainAction: {
+                                   mainAction: {
             withAnimation {
                 viewModel.action.send(.deleteTap)
             }
@@ -133,7 +133,7 @@ struct ChatView: View {
 
     private var deleteConfirmationView: some View {
         ChatDeleteConfirmationView(style: .confirmation,
-                                          mainAction: {
+                                   mainAction: {
             withAnimation {
                 viewModel.action.send(.deleteConfirmedTap)
             }
@@ -147,7 +147,7 @@ struct ChatView: View {
 
     private var blockView: some View {
         ChatBlockConfirmationView(style: .regular,
-                                         mainAction: {
+                                  mainAction: {
             withAnimation {
                 viewModel.action.send(.blockTap)
             }
@@ -161,7 +161,7 @@ struct ChatView: View {
 
     private var blockConfirmationView: some View {
         ChatBlockConfirmationView(style: .confirmation,
-                                         mainAction: {
+                                  mainAction: {
             withAnimation {
                 viewModel.action.send(.blockConfirmedTap)
             }

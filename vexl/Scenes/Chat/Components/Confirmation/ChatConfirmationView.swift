@@ -68,25 +68,25 @@ extension ChatConfirmationView {
 struct ChatMessageConfirmationViewPreview: PreviewProvider {
     static var previews: some View {
         ChatConfirmationView(title: "Delete chat?",
-                                    subtitle: "Are you sure you want to delete the chat bla bla bla?",
-                                    actionTitle: "Delete Chat",
-                                    dismissTitle: "Back",
-                                    primaryColor: .main,
-                                    secondaryColor: .secondary,
-                                    mainAction: { },
-                                    dismiss: { })
+                             subtitle: "Are you sure you want to delete the chat bla bla bla?",
+                             actionTitle: "Delete Chat",
+                             dismissTitle: "Back",
+                             primaryColor: .main,
+                             secondaryColor: .secondary,
+                             mainAction: { },
+                             dismiss: { })
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color.black)
             .previewDevice("iPhone 11")
 
         ChatConfirmationView(title: "Block chat?",
-                                    subtitle: "Are you sure you want to block the chat bla bla bla?",
-                                    actionTitle: "Block Chat",
-                                    dismissTitle: "Back",
-                                    primaryColor: .red,
-                                    secondaryColor: .redSecondary,
-                                    mainAction: { },
-                                    dismiss: { })
+                             subtitle: "Are you sure you want to block the chat bla bla bla?",
+                             actionTitle: "Block Chat",
+                             dismissTitle: "Back",
+                             primaryColor: .red,
+                             secondaryColor: .redSecondary,
+                             mainAction: { },
+                             dismiss: { })
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color.black)
             .previewDevice("iPhone 11")

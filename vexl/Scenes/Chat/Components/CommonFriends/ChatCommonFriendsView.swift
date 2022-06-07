@@ -51,7 +51,7 @@ struct ChatCommonFriendsView: View {
 struct ChatMessageCommonFriendsViewPreview: PreviewProvider {
     static var previews: some View {
         ChatCommonFriendsView(friends: [.stub, .stub],
-                                     dismiss: { })
+                              dismiss: { })
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color.black)
             .previewDevice("iPhone 11")
