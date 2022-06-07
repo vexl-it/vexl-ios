@@ -76,6 +76,7 @@ struct ChatMessageView: View {
                     viewModel.action.send(.dismissModal)
                 }
             }
+            .edgesIgnoringSafeArea(.all)
     }
 
     private var modalSheet: some View {
@@ -102,13 +103,17 @@ struct ChatMessageView: View {
 
     private var offerView: some View {
         ChatMessageOfferView {
-            viewModel.action.send(.dismissModal)
+            withAnimation {
+                viewModel.action.send(.dismissModal)
+            }
         }
     }
 
     private var commonFriendView: some View {
         ChatMessageCommonFriendsView(friends: viewModel.friends) {
-            viewModel.action.send(.dismissModal)
+            withAnimation {
+                viewModel.action.send(.dismissModal)
+            }
         }
     }
 
