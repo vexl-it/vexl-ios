@@ -25,7 +25,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
     enum UserAction: Equatable {
         case dismissTap
         case continueTap
-        case chatActionTap(action: ChatMessageAction)
+        case chatActionTap(action: ChatAction)
         case messageSend
         case cameraTap
         case dismissModal
@@ -111,7 +111,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
             .share()
 
         let modalAction = action
-            .compactMap { action -> ChatMessageAction? in
+            .compactMap { action -> ChatAction? in
                 if case let .chatActionTap(chatAction) = action { return chatAction }
                 return nil
             }

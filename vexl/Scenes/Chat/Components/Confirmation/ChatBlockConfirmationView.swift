@@ -28,12 +28,12 @@ struct ChatBlockConfirmationView: View {
 
     var body: some View {
         ChatConfirmationView(title: title,
-                                    subtitle: subtitle,
-                                    actionTitle: L.chatMessageBlockAction(),
-                                    dismissTitle: L.chatMessageBlockBack(),
-                                    primaryColor: .red,
-                                    secondaryColor: .redSecondary,
-                                    mainAction: mainAction,
-                                    dismiss: dismiss)
+                             subtitle: subtitle,
+                             actionTitle: L.chatMessageBlockAction(),
+                             dismissTitle: L.chatMessageBlockBack(),
+                             primaryColor: .red,
+                             secondaryColor: .redSecondary,
+                             mainAction: mainAction,
+                             dismiss: dismiss)
     }
 }

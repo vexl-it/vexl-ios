@@ -28,7 +28,7 @@ struct InboxView: View {
             header
 
             InboxFilterView(selectedOption: $viewModel.filter,
-                           action: { option in
+                            action: { option in
                 viewModel.action.send(.selectFilter(option: option))
             })
 

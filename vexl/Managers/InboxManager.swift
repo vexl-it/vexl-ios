@@ -82,7 +82,7 @@ final class InboxManager: InboxManagerType {
                         .map { _, messages in KeyAndMessages(key: keyAndSignature.key, messages: messages) }
                         .eraseToAnyPublisher()
                 }
-            
+
             //store in core data/db
 
             let deleteChat = pullChat

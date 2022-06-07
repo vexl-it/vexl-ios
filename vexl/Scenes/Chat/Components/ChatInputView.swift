@@ -63,14 +63,14 @@ struct ChatMessageInputViewPreview: PreviewProvider {
     static var previews: some View {
         VStack {
             ChatInputView(text: .constant("Hello there"),
-                                 sendAction: {},
-                                 cameraAction: {})
+                          sendAction: {},
+                          cameraAction: {})
                 .background(Color.black)
                 .previewDevice("iPhone 11")
 
             ChatInputView(text: .constant(""),
-                                 sendAction: {},
-                                 cameraAction: {})
+                          sendAction: {},
+                          cameraAction: {})
                 .background(Color.black)
                 .previewDevice("iPhone 11")
         }
