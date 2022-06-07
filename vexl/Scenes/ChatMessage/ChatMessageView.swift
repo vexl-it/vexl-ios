@@ -82,18 +82,23 @@ struct ChatMessageView: View {
                     viewModel.action.send(.dismissModal)
                 }
             }
+            .edgesIgnoringSafeArea(.all)
     }
 
     private var offerView: some View {
         ChatMessageOfferView {
-            viewModel.action.send(.dismissModal)
+            withAnimation {
+                viewModel.action.send(.dismissModal)
+            }
         }
         .transition(.move(edge: .bottom))
     }
 
     private var commonFriendView: some View {
         ChatMessageCommonFriendsView(friends: viewModel.friends) {
-            viewModel.action.send(.dismissModal)
+            withAnimation {
+                viewModel.action.send(.dismissModal)
+            }
         }
         .transition(.move(edge: .bottom))
     }
