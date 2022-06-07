@@ -137,6 +137,8 @@
 		F11441F72847EA3900307D39 /* ChatMessageCommonFriendsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11441F62847EA3900307D39 /* ChatMessageCommonFriendsView.swift */; };
 		F11441FA284819DB00307D39 /* ChatMessageCommonFriendItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11441F9284819DB00307D39 /* ChatMessageCommonFriendItemView.swift */; };
 		F114420128495E1900307D39 /* LargeSolidButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F114420028495E1900307D39 /* LargeSolidButton.swift */; };
+		F114420428498FCA00307D39 /* ChatMessageDeleteConfirmationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F114420328498FCA00307D39 /* ChatMessageDeleteConfirmationView.swift */; };
+		F114420628498FE600307D39 /* ChatMessageBlockConfirmationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F114420528498FE600307D39 /* ChatMessageBlockConfirmationView.swift */; };
 		F11442082849922B00307D39 /* ChatMessageConversationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11442072849922B00307D39 /* ChatMessageConversationView.swift */; };
 		F114420A284992A600307D39 /* ChatMessageHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1144209284992A600307D39 /* ChatMessageHeaderView.swift */; };
 		F114420C284993EB00307D39 /* ChatMessageActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F114420B284993EB00307D39 /* ChatMessageActionView.swift */; };
@@ -246,6 +248,7 @@
 		F1BFA959280223BD00F4E745 /* UserProfileCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1BFA955280223BD00F4E745 /* UserProfileCoordinator.swift */; };
 		F1BFA96E2803A49300F4E745 /* UserProfileView+Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1BFA96D2803A49300F4E745 /* UserProfileView+Item.swift */; };
 		F1BFA97328043D6300F4E745 /* Image+.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1BFA97228043D6300F4E745 /* Image+.swift */; };
+		F1C4A8252849989D005BEFEB /* ChatMessageConfirmationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1C4A8242849989D005BEFEB /* ChatMessageConfirmationView.swift */; };
 		F1C4A82B28499E58005BEFEB /* ChatMessageGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1C4A82A28499E58005BEFEB /* ChatMessageGroup.swift */; };
 		F1C6D09E27BDDD4C009BD506 /* TextStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1C6D09D27BDDD4C009BD506 /* TextStyle.swift */; };
 		F1C6D0A027BDECB0009BD506 /* WelcomeView+LogoImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1C6D09F27BDECB0009BD506 /* WelcomeView+LogoImageView.swift */; };
@@ -436,6 +439,8 @@
 		F11441F62847EA3900307D39 /* ChatMessageCommonFriendsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageCommonFriendsView.swift; sourceTree = "<group>"; };
 		F11441F9284819DB00307D39 /* ChatMessageCommonFriendItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageCommonFriendItemView.swift; sourceTree = "<group>"; };
 		F114420028495E1900307D39 /* LargeSolidButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LargeSolidButton.swift; sourceTree = "<group>"; };
+		F114420328498FCA00307D39 /* ChatMessageDeleteConfirmationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageDeleteConfirmationView.swift; sourceTree = "<group>"; };
+		F114420528498FE600307D39 /* ChatMessageBlockConfirmationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageBlockConfirmationView.swift; sourceTree = "<group>"; };
 		F11442072849922B00307D39 /* ChatMessageConversationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageConversationView.swift; sourceTree = "<group>"; };
 		F1144209284992A600307D39 /* ChatMessageHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageHeaderView.swift; sourceTree = "<group>"; };
 		F114420B284993EB00307D39 /* ChatMessageActionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageActionView.swift; sourceTree = "<group>"; };
@@ -545,6 +550,7 @@
 		F1BFA955280223BD00F4E745 /* UserProfileCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfileCoordinator.swift; sourceTree = "<group>"; };
 		F1BFA96D2803A49300F4E745 /* UserProfileView+Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserProfileView+Item.swift"; sourceTree = "<group>"; };
 		F1BFA97228043D6300F4E745 /* Image+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Image+.swift"; sourceTree = "<group>"; };
+		F1C4A8242849989D005BEFEB /* ChatMessageConfirmationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatMessageConfirmationView.swift; sourceTree = "<group>"; };
 		F1C4A82A28499E58005BEFEB /* ChatMessageGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageGroup.swift; sourceTree = "<group>"; };
 		F1C6D09627BDAD7F009BD506 /* LargeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LargeButton.swift; sourceTree = "<group>"; };
 		F1C6D09D27BDDD4C009BD506 /* TextStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextStyle.swift; sourceTree = "<group>"; };
@@ -1202,6 +1208,16 @@
 			path = CommonFriends;
 			sourceTree = "<group>";
 		};
+		F114420228498FB400307D39 /* Confirmation */ = {
+			isa = PBXGroup;
+			children = (
+				F1C4A8242849989D005BEFEB /* ChatMessageConfirmationView.swift */,
+				F114420328498FCA00307D39 /* ChatMessageDeleteConfirmationView.swift */,
+				F114420528498FE600307D39 /* ChatMessageBlockConfirmationView.swift */,
+			);
+			path = Confirmation;
+			sourceTree = "<group>";
+		};
 		F12A14D927D677010096543E /* Contacts */ = {
 			isa = PBXGroup;
 			children = (
@@ -1421,6 +1437,7 @@
 		F19D602B2845538300876170 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				F114420228498FB400307D39 /* Confirmation */,
 				F11441F8284819CC00307D39 /* CommonFriends */,
 				F1144209284992A600307D39 /* ChatMessageHeaderView.swift */,
 				F114420B284993EB00307D39 /* ChatMessageActionView.swift */,
@@ -1871,7 +1888,7 @@
 		};
 		F1B5FCC627C6CF7F0018729B /* ACKLocalization */ = {
 			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 8;
+			buildActionMask = 12;
 			files = (
 			);
 			inputFileListPaths = (
@@ -1883,7 +1900,7 @@
 			);
 			outputPaths = (
 			);
-			runOnlyForDeploymentPostprocessing = 1;
+			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "# Download the latest localized strings\nif [ \"${CONFIGURATION}\" == \"Debug\" ]\nthen\n    ./Pods/ACKLocalization/ACKLocalization\nfi\n";
 		};
@@ -1940,6 +1957,7 @@
 				B08F399727AE7D33008B344F /* SplashScreenView.swift in Sources */,
 				F175ABAA27F4FC3F000DAB15 /* ImportPhoneContactsViewModel.swift in Sources */,
 				F188624B2811551E00659786 /* CreateOfferView.swift in Sources */,
+				F114420428498FCA00307D39 /* ChatMessageDeleteConfirmationView.swift in Sources */,
 				F13B266528192BBF0011F2FB /* OfferInitialData.swift in Sources */,
 				F12A14F327D96FD40096543E /* ImportContactsView.swift in Sources */,
 				F12A150827E1A4940096543E /* RequestAccessAlert.swift in Sources */,
@@ -2114,6 +2132,7 @@
 				B0EEE11627B14D320097031E /* WelcomeCoordinator.swift in Sources */,
 				B08F393227AE7112008B344F /* SceneDelegate.swift in Sources */,
 				F13B266D281C8FC80011F2FB /* EncryptionError.swift in Sources */,
+				F114420628498FE600307D39 /* ChatMessageBlockConfirmationView.swift in Sources */,
 				B0EEE11827B14D360097031E /* WelcomeViewModel.swift in Sources */,
 				F151A2AB27CE818C000D7242 /* RegisterNameAvatarView+PhoneVerification.swift in Sources */,
 				F114420A284992A600307D39 /* ChatMessageHeaderView.swift in Sources */,
@@ -2139,6 +2158,7 @@
 				F11441DB284681EC00307D39 /* PhoneNumberTextFieldView.swift in Sources */,
 				F1B5FCD127C6F7EF0018729B /* RegisterPhoneView.swift in Sources */,
 				F175ABA027F4A7EC000DAB15 /* RegistryError.swift in Sources */,
+				F1C4A8252849989D005BEFEB /* ChatMessageConfirmationView.swift in Sources */,
 				B08F397027AE7112008B344F /* UserRouter.swift in Sources */,
 				F1886211280EC49B00659786 /* Image+Base64.swift in Sources */,
 				F188622128105A1200659786 /* UserOffersViewModel.swift in Sources */,

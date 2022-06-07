@@ -14,6 +14,10 @@ final class ChatMessageViewModel: ViewModelType, ObservableObject {
         case none
         case offer
         case friends
+        case delete
+        case deleteConfirmation
+        case block
+        case blockConfirmation
     }
 
     // MARK: - Action Binding
@@ -25,6 +29,10 @@ final class ChatMessageViewModel: ViewModelType, ObservableObject {
         case messageSend
         case cameraTap
         case dismissModal
+        case deleteTap
+        case deleteConfirmedTap
+        case blockTap
+        case blockConfirmedTap
     }
 
     let action: ActionSubject<UserAction> = .init()
@@ -73,6 +81,7 @@ final class ChatMessageViewModel: ViewModelType, ObservableObject {
 
     init() {
         setupActionBindings()
+        setupModalBindings()
     }
 
     private func setupActionBindings() {
@@ -94,6 +103,19 @@ final class ChatMessageViewModel: ViewModelType, ObservableObject {
                 owner.currentMessage = ""
             }
             .store(in: cancelBag)
+    }
+
+    private func setupModalBindings() {
+
+        let action = action
+            .share()
+
+        let modalAction = action
+            .compactMap { action -> ChatMessageAction? in
+                if case let .chatActionTap(chatAction) = action { return chatAction }
+                return nil
+            }
+            .share()
 
         action
             .filter { $0 == .dismissModal }
@@ -101,22 +123,44 @@ final class ChatMessageViewModel: ViewModelType, ObservableObject {
             .map { _ -> Modal in .none }
             .assign(to: &$modal)
 
-        action
-            .compactMap { action -> ChatMessageAction? in
-                if case let .chatActionTap(chatAction) = action { return chatAction }
-                return nil
-            }
+        modalAction
             .filter { $0 == .showOffer }
             .map { _ -> Modal in .offer }
             .assign(to: &$modal)
 
-        action
-            .compactMap { action -> ChatMessageAction? in
-                if case let .chatActionTap(chatAction) = action { return chatAction }
-                return nil
-            }
+        modalAction
             .filter { $0 == .commonFriends }
             .map { _ -> Modal in .friends }
+            .assign(to: &$modal)
+
+        modalAction
+            .filter { $0 == .deleteChat }
+            .map { _ -> Modal in .delete }
+            .assign(to: &$modal)
+
+        modalAction
+            .filter { $0 == .blockUser }
+            .map { _ -> Modal in .block }
+            .assign(to: &$modal)
+
+        action
+            .filter { $0 == .deleteTap }
+            .map { _ -> Modal in .deleteConfirmation }
+            .assign(to: &$modal)
+
+        action
+            .filter { $0 == .blockTap }
+            .map { _ -> Modal in .blockConfirmation }
+            .assign(to: &$modal)
+
+        action
+            .filter { $0 == .deleteConfirmedTap }
+            .map { _ -> Modal in .none }
+            .assign(to: &$modal)
+
+        action
+            .filter { $0 == .blockConfirmedTap }
+            .map { _ -> Modal in .none }
             .assign(to: &$modal)
     }
 }
