@@ -102,6 +102,7 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
         self.userOfferKeys = UserDefaults.standard.codable(forKey: .storedOfferKeys)
         setupDataBindings()
         setupActionBindings()
+        setupInbox()
     }
 
     func applyFilter(_ filter: OfferFilter) {
@@ -127,6 +128,13 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
             sellOfferFilter.shouldShow(offer: item.offer)
         }
         filteredSellFeedItems = filteredItems
+    }
+
+    private func setupInbox() {
+        inboxManager
+            .syncInbox()
+            .sink()
+            .store(in: cancelBag)
     }
 
     private func setupDataBindings() {

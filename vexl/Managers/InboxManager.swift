@@ -8,21 +8,25 @@
 import Foundation
 import Combine
 
+private typealias KeyAndChallenge = (key: String, challenge: String)
 private typealias KeyAndSignature = (key: String, signature: String)
 private typealias KeyAndMessages = (key: String, messages: [ChatMessage])
 
 protocol InboxManagerType {
     func getStoredMessages() -> AnyPublisher<[ParsedChatMessage], Error>
-    func syncInbox(publicKey: String) -> AnyPublisher<[ChatMessage], Error>
     func storeMessages(_ messages: [ChatMessage]) -> AnyPublisher<Void, Never>
+    func syncInbox() -> AnyPublisher<[ChatMessage], Error>
 }
 
 final class InboxManager: InboxManagerType {
 
+    @Inject var userSecurity: UserSecurityType
+    @Inject var cryptoService: CryptoServiceType
     @Inject var chatService: ChatServiceType
     @Inject var localStorageService: LocalStorageServiceType
 
     var messages: [ChatMessage] = []
+    var messageSubject: CurrentValueSubject<[ChatMessage], Never> =  .init([])
 
     func getStoredMessages() -> AnyPublisher<[ParsedChatMessage], Error> {
         let messages = localStorageService.getMessages()
@@ -45,7 +49,7 @@ final class InboxManager: InboxManagerType {
             .eraseToAnyPublisher()
     }
 
-    func syncInbox(publicKey: String) -> AnyPublisher<[ChatMessage], Error> {
+    func syncInbox() -> AnyPublisher<[ChatMessage], Error> {
         do {
             let createdInboxes = try localStorageService.getInboxes(ofType: .created)
             let requestedInboxes = try localStorageService.getInboxes(ofType: .requested)
@@ -53,24 +57,33 @@ final class InboxManager: InboxManagerType {
 
             let challenges = inboxes.publisher
                 .withUnretained(self)
-                .flatMap { owner, inbox -> AnyPublisher<KeyAndSignature, Error> in
+                .flatMap { owner, inbox -> AnyPublisher<KeyAndChallenge, Error> in
                     owner.chatService.requestChallenge(publicKey: inbox.publicKey)
-                        .map { KeyAndSignature(key: inbox.publicKey, signature: $0.publicKey) }
+                        .map { KeyAndChallenge(key: inbox.publicKey, challenge: $0.challenge) }
                         .eraseToAnyPublisher()
                 }
 
-            let pullChat = challenges
+            let signature = challenges
+                .withUnretained(self)
+                .flatMap { owner, keyAndChallenge -> AnyPublisher<KeyAndSignature, Error> in
+                    owner.cryptoService.signECDSA(keys: owner.userSecurity.userKeys, message: keyAndChallenge.challenge)
+                        .map { KeyAndSignature(key: keyAndChallenge.key, signature: $0) }
+                        .eraseToAnyPublisher()
+                }
+
+            let pullChat = signature
                 .withUnretained(self)
                 .flatMap { owner, keyAndSignature -> AnyPublisher<KeyAndMessages, Error> in
                     owner.chatService.pullInboxMessages(publicKey: keyAndSignature.key, signature: keyAndSignature.signature)
                         .withUnretained(self)
                         .handleEvents(receiveOutput: { owner, messages in
-                            let updatedMessages = owner.messages + messages
-                            owner.messages.append(contentsOf: updatedMessages)
+                            owner.messages.append(contentsOf: messages)
                         })
                         .map { _, messages in KeyAndMessages(key: keyAndSignature.key, messages: messages) }
                         .eraseToAnyPublisher()
                 }
+            
+            //store in core data/db
 
             let deleteChat = pullChat
                 .withUnretained(self)

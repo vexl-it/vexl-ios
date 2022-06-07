@@ -8,5 +8,5 @@
 import Foundation
 
 struct ChatChallenge: Decodable {
-    let publicKey: String
+    let challenge: String
 }
