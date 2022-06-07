@@ -24,7 +24,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>55</string>
+	<string>56</string>
 	<key>FacebookAppID</key>
 	<string>364593362214966</string>
 	<key>FacebookClientToken</key>
@@ -37,7 +37,7 @@
 		<string>fb-messenger-share-api</string>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>55</string>
+	<string>56</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
