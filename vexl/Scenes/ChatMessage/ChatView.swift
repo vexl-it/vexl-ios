@@ -1,5 +1,5 @@
 //
-//  ChatMessageView.swift
+//  ChatView.swift
 //  vexl
 //
 //  Created by Diego Espinoza on 29/05/22.
@@ -7,9 +7,9 @@
 
 import SwiftUI
 
-struct ChatMessageView: View {
+struct ChatView: View {
 
-    @ObservedObject var viewModel: ChatMessageViewModel
+    @ObservedObject var viewModel: ChatViewModel
 
     var body: some View {
         ZStack {
@@ -25,7 +25,7 @@ struct ChatMessageView: View {
 
     private var content: some View {
         VStack(spacing: .zero) {
-            ChatMessageHeaderView(username: viewModel.username,
+            ChatHeaderView(username: viewModel.username,
                                   offerLabel: viewModel.offerLabel,
                                   avatar: viewModel.avatar,
                                   offerType: viewModel.offerType,
@@ -36,16 +36,16 @@ struct ChatMessageView: View {
             HLine(color: Appearance.Colors.whiteOpaque, height: 1)
                 .padding(.top, Appearance.GridGuide.smallPadding)
 
-            ChatMessageActionView { chatAction in
+            ChatActionView { chatAction in
                 withAnimation {
                     viewModel.action.send(.chatActionTap(action: chatAction))
                 }
             }
 
-            ChatMessageConversationView(messages: viewModel.messages)
+            ChatConversationView(messages: viewModel.messages)
                 .frame(maxHeight: .infinity)
 
-            ChatMessageInputView(text: $viewModel.currentMessage,
+            ChatInputView(text: $viewModel.currentMessage,
                                  sendAction: {
                 viewModel.action.send(.messageSend)
             },
@@ -102,7 +102,7 @@ struct ChatMessageView: View {
     }
 
     private var offerView: some View {
-        ChatMessageOfferView {
+        ChatOfferView {
             withAnimation {
                 viewModel.action.send(.dismissModal)
             }
@@ -110,7 +110,7 @@ struct ChatMessageView: View {
     }
 
     private var commonFriendView: some View {
-        ChatMessageCommonFriendsView(friends: viewModel.friends) {
+        ChatCommonFriendsView(friends: viewModel.friends) {
             withAnimation {
                 viewModel.action.send(.dismissModal)
             }
@@ -118,7 +118,7 @@ struct ChatMessageView: View {
     }
 
     private var deleteView: some View {
-        ChatMessageDeleteConfirmationView(style: .regular,
+        ChatDeleteConfirmationView(style: .regular,
                                           mainAction: {
             withAnimation {
                 viewModel.action.send(.deleteTap)
@@ -132,7 +132,7 @@ struct ChatMessageView: View {
     }
 
     private var deleteConfirmationView: some View {
-        ChatMessageDeleteConfirmationView(style: .confirmation,
+        ChatDeleteConfirmationView(style: .confirmation,
                                           mainAction: {
             withAnimation {
                 viewModel.action.send(.deleteConfirmedTap)
@@ -146,7 +146,7 @@ struct ChatMessageView: View {
     }
 
     private var blockView: some View {
-        ChatMessageBlockConfirmationView(style: .regular,
+        ChatBlockConfirmationView(style: .regular,
                                          mainAction: {
             withAnimation {
                 viewModel.action.send(.blockTap)
@@ -160,7 +160,7 @@ struct ChatMessageView: View {
     }
 
     private var blockConfirmationView: some View {
-        ChatMessageBlockConfirmationView(style: .confirmation,
+        ChatBlockConfirmationView(style: .confirmation,
                                          mainAction: {
             withAnimation {
                 viewModel.action.send(.blockConfirmedTap)
@@ -176,7 +176,7 @@ struct ChatMessageView: View {
 
 struct ChatMessageViewPreview: PreviewProvider {
     static var previews: some View {
-        ChatMessageView(viewModel: .init())
+        ChatView(viewModel: .init())
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .previewDevice("iPhone 11")
     }

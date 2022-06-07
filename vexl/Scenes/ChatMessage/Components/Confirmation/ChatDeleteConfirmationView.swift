@@ -1,5 +1,5 @@
 //
-//  ChatMessageDeleteConfirmationView.swift
+//  ChatDeleteConfirmationView.swift
 //  vexl
 //
 //  Created by Diego Espinoza on 2/06/22.
@@ -7,12 +7,7 @@
 
 import SwiftUI
 
-struct ChatMessageDeleteConfirmationView: View {
-
-    enum Style {
-        case regular
-        case confirmation
-    }
+struct ChatDeleteConfirmationView: View {
 
     let style: Style
     let mainAction: () -> Void
@@ -27,7 +22,7 @@ struct ChatMessageDeleteConfirmationView: View {
     }
 
     var body: some View {
-        ChatMessageConfirmationView(title: title,
+        ChatConfirmationView(title: title,
                                     subtitle: subtitle,
                                     actionTitle: L.chatMessageDeleteAction(),
                                     dismissTitle: L.chatMessageDeleteBack(),
@@ -35,5 +30,12 @@ struct ChatMessageDeleteConfirmationView: View {
                                     secondaryColor: .secondary,
                                     mainAction: mainAction,
                                     dismiss: dismiss)
+    }
+}
+
+extension ChatDeleteConfirmationView {
+    enum Style {
+        case regular
+        case confirmation
     }
 }

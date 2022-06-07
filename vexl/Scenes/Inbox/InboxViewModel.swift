@@ -1,5 +1,5 @@
 //
-//  ChatViewModel.swift
+//  InboxViewModel.swift
 //  vexl
 //
 //  Created by Diego Espinoza on 9/05/22.

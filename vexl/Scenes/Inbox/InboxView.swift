@@ -1,5 +1,5 @@
 //
-//  ChatView.swift
+//  InboxView.swift
 //  vexl
 //
 //  Created by Diego Espinoza on 9/05/22.
@@ -72,7 +72,7 @@ struct InboxView: View {
     }
 }
 
-struct ChatViewPreview: PreviewProvider {
+struct InboxViewPreview: PreviewProvider {
     static var previews: some View {
         InboxView(viewModel: .init(bitcoinViewModel: .init()))
             .frame(maxWidth: .infinity, maxHeight: .infinity)

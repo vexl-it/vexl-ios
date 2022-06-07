@@ -1,5 +1,5 @@
 //
-//  ChatMessageContactBubbleView.swift
+//  ChatContactBubbleView.swift
 //  vexl
 //
 //  Created by Diego Espinoza on 30/05/22.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ChatMessageBubbleView: View {
+struct ChatBubbleView: View {
 
     let text: String
     let style: Style
@@ -43,7 +43,7 @@ struct ChatMessageBubbleView: View {
     }
 }
 
-extension ChatMessageBubbleView {
+extension ChatBubbleView {
     enum Style {
         case contact
         case user
@@ -53,8 +53,8 @@ extension ChatMessageBubbleView {
 struct ChatMessageBubbleViewPreview: PreviewProvider {
     static var previews: some View {
         VStack {
-            ChatMessageBubbleView(text: "qwertyyutwrewerwer qwer qwertyyutwrewerwer qwertyyutwrewerwer qwertyyutwrewerwer ", style: .contact)
-            ChatMessageBubbleView(text: "qwererwer qwertyyrewewer qwetyyutwrewerwer qwertyyutwrewerwer qwer erew12312erwer ", style: .user)
+            ChatBubbleView(text: "qwertyyutwrewerwer qwer qwertyyutwrewerwer qwertyyutwrewerwer qwertyyutwrewerwer ", style: .contact)
+            ChatBubbleView(text: "qwererwer qwertyyrewewer qwetyyutwrewerwer qwertyyutwrewerwer qwer erew12312erwer ", style: .user)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color.black)

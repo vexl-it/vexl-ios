@@ -68,7 +68,7 @@ extension InboxCoordinator {
     }
 
     private func showChatMessage(router: Router, id: String) -> CoordinatingResult<RouterResult<Void>> {
-        coordinate(to: ChatMessageCoordinator(id: id, router: router, animated: animated))
+        coordinate(to: ChatCoordinator(id: id, router: router, animated: animated))
         .flatMap { result -> CoordinatingResult<RouterResult<Void>> in
             guard result != .dismissedByRouter else {
                 return Just(result).eraseToAnyPublisher()

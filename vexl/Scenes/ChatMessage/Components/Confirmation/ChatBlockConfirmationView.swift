@@ -1,5 +1,5 @@
 //
-//  ChatMessageBlockConfirmationView.swift
+//  ChatBlockConfirmationView.swift
 //  vexl
 //
 //  Created by Diego Espinoza on 2/06/22.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ChatMessageBlockConfirmationView: View {
+struct ChatBlockConfirmationView: View {
 
     enum Style {
         case regular
@@ -27,7 +27,7 @@ struct ChatMessageBlockConfirmationView: View {
     }
 
     var body: some View {
-        ChatMessageConfirmationView(title: title,
+        ChatConfirmationView(title: title,
                                     subtitle: subtitle,
                                     actionTitle: L.chatMessageBlockAction(),
                                     dismissTitle: L.chatMessageBlockBack(),

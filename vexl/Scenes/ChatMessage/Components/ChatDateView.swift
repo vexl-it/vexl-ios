@@ -1,5 +1,5 @@
 //
-//  ChatMessageDateView.swift
+//  ChatDateView.swift
 //  vexl
 //
 //  Created by Diego Espinoza on 30/05/22.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ChatMessageDateView: View {
+struct ChatDateView: View {
 
     let date: Date
     let isInitial: Bool

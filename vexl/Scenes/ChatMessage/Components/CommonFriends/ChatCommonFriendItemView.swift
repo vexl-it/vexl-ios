@@ -7,9 +7,9 @@
 
 import SwiftUI
 
-typealias ChatMessageCommonFriendViewData = ChatMessageCommonFriendItemView.ViewData
+typealias ChatCommonFriendViewData = ChatCommonFriendItemView.ViewData
 
-struct ChatMessageCommonFriendItemView: View {
+struct ChatCommonFriendItemView: View {
 
     let data: ViewData
 
@@ -32,7 +32,7 @@ struct ChatMessageCommonFriendItemView: View {
     }
 }
 
-extension ChatMessageCommonFriendItemView {
+extension ChatCommonFriendItemView {
     struct ViewData: Identifiable, Hashable {
         let id = UUID()
         let title: String
@@ -47,7 +47,7 @@ extension ChatMessageCommonFriendItemView {
 
 struct ChatMessageCommonFriendItemViewPreview: PreviewProvider {
     static var previews: some View {
-        ChatMessageCommonFriendItemView(data: .init(title: "Name goes here",
+        ChatCommonFriendItemView(data: .init(title: "Name goes here",
                                                     subtitle: "Description goes here bla bla",
                                                     avatar: nil))
             .frame(maxWidth: .infinity, maxHeight: .infinity)
