@@ -131,10 +131,7 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
     }
 
     private func setupInbox() {
-        inboxManager
-            .syncInbox()
-            .sink()
-            .store(in: cancelBag)
+        try? inboxManager.syncInboxes()
     }
 
     private func setupDataBindings() {

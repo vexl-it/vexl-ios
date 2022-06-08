@@ -7,6 +7,8 @@
 
 import Foundation
 
-enum ChatError: Error {
-    case storageEmpty
+enum InboxError: Error {
+    case noLocalInboxes
+    case inboxSyncFailed
+    case inboxesSyncFailed
 }

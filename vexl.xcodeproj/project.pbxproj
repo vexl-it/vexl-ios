@@ -184,7 +184,7 @@
 		F148564F284FD5E2003213D7 /* InboxManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F148564E284FD5E2003213D7 /* InboxManager.swift */; };
 		F1485653284FD5FD003213D7 /* ChatMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1485651284FD5FD003213D7 /* ChatMessage.swift */; };
 		F1485654284FD5FD003213D7 /* ChatChallenge.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1485652284FD5FD003213D7 /* ChatChallenge.swift */; };
-		F1485656284FD60D003213D7 /* ChatError.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1485655284FD60D003213D7 /* ChatError.swift */; };
+		F1485656284FD60D003213D7 /* InboxError.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1485655284FD60D003213D7 /* InboxError.swift */; };
 		F14D29C727BFD93C00D1CD85 /* ButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = F14D29C627BFD93C00D1CD85 /* ButtonStyle.swift */; };
 		F14D29C927BFEA1400D1CD85 /* OnboardingView+Presentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F14D29C827BFEA1400D1CD85 /* OnboardingView+Presentation.swift */; };
 		F151A29027C80708000D7242 /* RegisterPhoneView+PhoneInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = F151A28F27C80708000D7242 /* RegisterPhoneView+PhoneInput.swift */; };
@@ -490,7 +490,7 @@
 		F148564E284FD5E2003213D7 /* InboxManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InboxManager.swift; sourceTree = "<group>"; };
 		F1485651284FD5FD003213D7 /* ChatMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatMessage.swift; sourceTree = "<group>"; };
 		F1485652284FD5FD003213D7 /* ChatChallenge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatChallenge.swift; sourceTree = "<group>"; };
-		F1485655284FD60D003213D7 /* ChatError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatError.swift; sourceTree = "<group>"; };
+		F1485655284FD60D003213D7 /* InboxError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InboxError.swift; sourceTree = "<group>"; };
 		F14D29C627BFD93C00D1CD85 /* ButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonStyle.swift; sourceTree = "<group>"; };
 		F14D29C827BFEA1400D1CD85 /* OnboardingView+Presentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OnboardingView+Presentation.swift"; sourceTree = "<group>"; };
 		F151A28F27C80708000D7242 /* RegisterPhoneView+PhoneInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RegisterPhoneView+PhoneInput.swift"; sourceTree = "<group>"; };
@@ -944,7 +944,7 @@
 		B08F393D27AE7112008B344F /* Errors */ = {
 			isa = PBXGroup;
 			children = (
-				F1485655284FD60D003213D7 /* ChatError.swift */,
+				F1485655284FD60D003213D7 /* InboxError.swift */,
 				B08F393E27AE7112008B344F /* APIError.swift */,
 				B08F394A27AE7112008B344F /* ServerError.swift */,
 				B08F395827AE7112008B344F /* ClientAPIError.swift */,
@@ -2187,7 +2187,7 @@
 				B08F397027AE7112008B344F /* UserRouter.swift in Sources */,
 				F1886211280EC49B00659786 /* Image+Base64.swift in Sources */,
 				F188622128105A1200659786 /* UserOffersViewModel.swift in Sources */,
-				F1485656284FD60D003213D7 /* ChatError.swift in Sources */,
+				F1485656284FD60D003213D7 /* InboxError.swift in Sources */,
 				4F700CBA2844B08B0085139F /* BitcoinView.swift in Sources */,
 				B08F394327AE7112008B344F /* Keychain+.swift in Sources */,
 				F13B2677281F43A10011F2FB /* Offer.swift in Sources */,
