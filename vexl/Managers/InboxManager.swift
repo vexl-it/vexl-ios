@@ -66,19 +66,27 @@ final class InboxManager: InboxManagerType {
                     owner.saveFetchedMessages(keyAndMessages: keyAndMessages)
                 }
 
+            // Store/Update messages in the Latest Message table - check if depending on the type it will always go ? - if not first then get last. Logic should be in ChatService.
+
             let deleteChat = saveMessages
                 .withUnretained(self)
                 .flatMap { owner, keyAndMessages -> AnyPublisher<[ParsedChatMessage], Error> in
                     owner.deleteMessages(keyAndMessages: keyAndMessages)
                 }
 
+            // 2. Fetch all Last Message table
             // 1. Notify isSync(false)
-            // 2. Notify completedSync([ParsedChatMessage])
-            // 3. Update Inbox with ParsedChatMessage per offer + from - check if 
+            // 3. Notify completedSync([ParsedChatMessage])
 
-            return deleteChat
+            let latestMessages = deleteChat
                 .collect()
                 .asVoid()
+                .withUnretained(self)
+                .flatMap { owner, _ -> AnyPublisher<Void, Error> in
+                    owner.updateLatestMessages()
+                }
+
+            return latestMessages
                 .eraseToAnyPublisher()
         } catch {
             return Fail(error: ChatError.storageEmpty)
@@ -136,6 +144,12 @@ final class InboxManager: InboxManagerType {
                 if case .failure = completion { self?._isSyncing.send(false) }
             })
             .map { _ in keyAndMessages.messages }
+            .eraseToAnyPublisher()
+    }
+    
+    private func updateLatestMessages() -> AnyPublisher<Void, Error> {
+        chatService.getInboxMessages()
+            .asVoid()
             .eraseToAnyPublisher()
     }
 }

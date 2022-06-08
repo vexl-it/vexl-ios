@@ -25,7 +25,7 @@ final class ChatCoordinator: BaseCoordinator<RouterResult<Void>> {
         let viewModel = ChatViewModel()
         let viewController = BaseViewController(rootView: ChatView(viewModel: viewModel))
 
-        router.present(viewController, animated: true)
+        router.present(viewController, animated: animated)
 
         let dismiss = viewModel
             .route

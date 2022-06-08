@@ -16,6 +16,7 @@ protocol ChatServiceType {
     func deleteInboxMessages(publicKey: String) -> AnyPublisher<Void, Error>
 
     func saveFetchedMessages(_ messages: [ChatMessage]) -> AnyPublisher<Void, Error>
+    func getInboxMessages() -> AnyPublisher<[ParsedChatMessage], Error>
 }
 
 final class ChatService: BaseService, ChatServiceType {
@@ -73,5 +74,12 @@ final class ChatService: BaseService, ChatServiceType {
 
     func saveFetchedMessages(_ messages: [ChatMessage]) -> AnyPublisher<Void, Error> {
         localStorageService.saveMessages(messages)
+    }
+    
+    func getInboxMessages() -> AnyPublisher<[ParsedChatMessage], Error> {
+        Future { promise in
+            promise(.success([]))
+        }
+        .eraseToAnyPublisher()
     }
 }
