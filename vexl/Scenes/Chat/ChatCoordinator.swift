@@ -2,80 +2,37 @@
 //  ChatCoordinator.swift
 //  vexl
 //
-//  Created by Diego Espinoza on 9/05/22.
+//  Created by Diego Espinoza on 29/05/22.
 //
 
 import Foundation
 import Cleevio
 import Combine
 
-final class ChatCoordinator: BaseCoordinator<Void> {
+final class ChatCoordinator: BaseCoordinator<RouterResult<Void>> {
 
+    private let id: String
     private let router: Router
     private let animated: Bool
 
-    init(router: Router, animated: Bool) {
+    init(id: String, router: Router, animated: Bool) {
+        self.id = id
         self.router = router
         self.animated = animated
     }
 
-    override func start() -> CoordinatingResult<Void> {
-        let viewModel = ChatViewModel(bitcoinViewModel: .init())
+    override func start() -> CoordinatingResult<RouterResult<Void>> {
+        let viewModel = ChatViewModel()
         let viewController = BaseViewController(rootView: ChatView(viewModel: viewModel))
 
-        router.present(viewController, animated: animated)
+        router.present(viewController, animated: true)
 
-        viewModel
+        let dismiss = viewModel
             .route
-            .filter { $0 == .requestTapped }
-            .flatMapLatest(with: self) { owner, _ -> CoordinatingResult<RouterResult<Void>> in
-                let modalRouter = ModalRouter(parentViewController: viewController, presentationStyle: .fullScreen)
-                return owner.showChatRequests(router: modalRouter)
-            }
-            .sink()
-            .store(in: cancelBag)
+            .filter { $0 == .dismissTapped }
+            .map { _ -> RouterResult<Void> in .dismiss }
 
-        viewModel
-            .route
-            .compactMap { route -> String? in
-                if case let .messageTapped(id) = route { return id }
-                return nil
-            }
-            .withUnretained(self)
-            .flatMap { owner, id -> CoordinatingResult<RouterResult<Void>> in
-                let modalRouter = ModalRouter(parentViewController: viewController, presentationStyle: .fullScreen)
-                return owner.showChatMessage(router: modalRouter, id: id)
-            }
-            .sink()
-            .store(in: cancelBag)
-
-        return Empty(completeImmediately: false)
+        return dismiss
             .eraseToAnyPublisher()
-    }
-}
-
-extension ChatCoordinator {
-    private func showChatRequests(router: Router) -> CoordinatingResult<RouterResult<Void>> {
-        coordinate(to: ChatRequestCoordinator(router: router, animated: animated))
-        .flatMap { result -> CoordinatingResult<RouterResult<Void>> in
-            guard result != .dismissedByRouter else {
-                return Just(result).eraseToAnyPublisher()
-            }
-            return router.dismiss(animated: true, returning: result)
-        }
-        .prefix(1)
-        .eraseToAnyPublisher()
-    }
-
-    private func showChatMessage(router: Router, id: String) -> CoordinatingResult<RouterResult<Void>> {
-        coordinate(to: ChatMessageCoordinator(id: id, router: router, animated: animated))
-        .flatMap { result -> CoordinatingResult<RouterResult<Void>> in
-            guard result != .dismissedByRouter else {
-                return Just(result).eraseToAnyPublisher()
-            }
-            return router.dismiss(animated: true, returning: result)
-        }
-        .prefix(1)
-        .eraseToAnyPublisher()
     }
 }

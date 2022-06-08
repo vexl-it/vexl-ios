@@ -1,5 +1,5 @@
 //
-//  ChatMessageOfferView.swift
+//  ChatOfferView.swift
 //  vexl
 //
 //  Created by Diego Espinoza on 31/05/22.
@@ -8,7 +8,7 @@
 import SwiftUI
 import Cleevio
 
-struct ChatMessageOfferView: View {
+struct ChatOfferView: View {
 
     let dismiss: () -> Void
 
@@ -47,9 +47,9 @@ struct ChatMessageOfferView: View {
     }
 }
 
-struct ChatMessageOfferViewPreview: PreviewProvider {
+struct ChatOfferViewPreview: PreviewProvider {
     static var previews: some View {
-        ChatMessageOfferView(dismiss: { })
+        ChatOfferView(dismiss: { })
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color.blue)
             .previewDevice("iPhone 11")

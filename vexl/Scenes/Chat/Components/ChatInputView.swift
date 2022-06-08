@@ -1,5 +1,5 @@
 //
-//  ChatMessageInputView.swift
+//  ChatInputView.swift
 //  vexl
 //
 //  Created by Diego Espinoza on 30/05/22.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ChatMessageInputView: View {
+struct ChatInputView: View {
 
     @Binding var text: String
     let sendAction: () -> Void
@@ -62,15 +62,15 @@ struct ChatMessageInputView: View {
 struct ChatMessageInputViewPreview: PreviewProvider {
     static var previews: some View {
         VStack {
-            ChatMessageInputView(text: .constant("Hello there"),
-                                 sendAction: {},
-                                 cameraAction: {})
+            ChatInputView(text: .constant("Hello there"),
+                          sendAction: {},
+                          cameraAction: {})
                 .background(Color.black)
                 .previewDevice("iPhone 11")
 
-            ChatMessageInputView(text: .constant(""),
-                                 sendAction: {},
-                                 cameraAction: {})
+            ChatInputView(text: .constant(""),
+                          sendAction: {},
+                          cameraAction: {})
                 .background(Color.black)
                 .previewDevice("iPhone 11")
         }

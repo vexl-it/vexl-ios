@@ -2,7 +2,7 @@
 //  ChatViewModel.swift
 //  vexl
 //
-//  Created by Diego Espinoza on 9/05/22.
+//  Created by Diego Espinoza on 29/05/22.
 //
 
 import Foundation
@@ -10,46 +10,78 @@ import Cleevio
 
 final class ChatViewModel: ViewModelType, ObservableObject {
 
+    enum Modal {
+        case none
+        case offer
+        case friends
+        case delete
+        case deleteConfirmation
+        case block
+        case blockConfirmation
+    }
+
     // MARK: - Action Binding
 
     enum UserAction: Equatable {
-        case selectFilter(option: ChatFilterOption)
+        case dismissTap
         case continueTap
-        case requestTap
-        case selectMessage(id: String)
+        case chatActionTap(action: ChatAction)
+        case messageSend
+        case cameraTap
+        case dismissModal
+        case deleteTap
+        case deleteConfirmedTap
+        case blockTap
+        case blockConfirmedTap
     }
 
     let action: ActionSubject<UserAction> = .init()
 
     // MARK: - View Bindings
 
-    @Published var filter: ChatFilterOption = .all
-    @Published var primaryActivity: Activity = .init()
+    @Published var currentMessage: String = ""
 
-    @Published var chatItems: [ChatItem] = [
-        .init(avatar: nil, username: "Keichi", detail: "qwerty", time: "Yesterday", offerType: .buy),
-        .init(avatar: nil, username: "Keichi", detail: "qwerty", time: "Yesterday", offerType: .buy),
-        .init(avatar: nil, username: "Keichi", detail: "qwerty", time: "Yesterday", offerType: .sell)
-    ]
+    @Published var primaryActivity: Activity = .init()
+    @Published var isLoading = false
+    @Published var error: Error?
+    @Published var modal = Modal.none
+
+    var errorIndicator: ErrorIndicator {
+        primaryActivity.error
+    }
+    var activityIndicator: ActivityIndicator {
+        primaryActivity.indicator
+    }
 
     // MARK: - Coordinator Bindings
 
     enum Route: Equatable {
         case dismissTapped
-        case requestTapped
-        case messageTapped(id: String)
     }
 
     var route: CoordinatingSubject<Route> = .init()
 
     // MARK: - Variables
 
-    let bitcoinViewModel: BitcoinViewModel
+    let username: String = "Keichi"
+    let avatar: UIImage? = nil
+    let friends: [ChatCommonFriendViewData] = [.stub, .stub, .stub]
+    var messages: [ChatMessageGroup] = ChatMessageGroup.stub
+    let offerType: OfferType = .buy
+
+    var offerLabel: String {
+        offerType == .buy ? L.marketplaceDetailUserBuy("") : L.marketplaceDetailUserSell("")
+    }
+
+    var isModalPresented: Bool {
+        modal != .none
+    }
+
     private let cancelBag: CancelBag = .init()
 
-    init(bitcoinViewModel: BitcoinViewModel) {
-        self.bitcoinViewModel = bitcoinViewModel
+    init() {
         setupActionBindings()
+        setupModalBindings()
     }
 
     private func setupActionBindings() {
@@ -58,25 +90,77 @@ final class ChatViewModel: ViewModelType, ObservableObject {
             .share()
 
         action
-            .filter { $0 == .requestTap }
-            .map { _ -> Route in .requestTapped }
+            .filter { $0 == .dismissTap }
+            .map { _ -> Route in .dismissTapped }
             .subscribe(route)
             .store(in: cancelBag)
 
         action
-            .compactMap { action -> ChatFilterOption? in
-                if case let .selectFilter(option) = action { return option }
+            .filter { $0 == .messageSend }
+            .withUnretained(self)
+            .sink { owner, _ in
+                owner.messages.appendMessage(.init(text: owner.currentMessage, isContact: false))
+                owner.currentMessage = ""
+            }
+            .store(in: cancelBag)
+    }
+
+    private func setupModalBindings() {
+
+        let action = action
+            .share()
+
+        let modalAction = action
+            .compactMap { action -> ChatAction? in
+                if case let .chatActionTap(chatAction) = action { return chatAction }
                 return nil
             }
-            .assign(to: &$filter)
+            .share()
 
         action
-            .compactMap { action -> String? in
-                if case let .selectMessage(id) = action { return id }
-                return nil
-            }
-            .map { id -> Route in .messageTapped(id: id) }
-            .subscribe(route)
-            .store(in: cancelBag)
+            .filter { $0 == .dismissModal }
+            .withUnretained(self)
+            .map { _ -> Modal in .none }
+            .assign(to: &$modal)
+
+        modalAction
+            .filter { $0 == .showOffer }
+            .map { _ -> Modal in .offer }
+            .assign(to: &$modal)
+
+        modalAction
+            .filter { $0 == .commonFriends }
+            .map { _ -> Modal in .friends }
+            .assign(to: &$modal)
+
+        modalAction
+            .filter { $0 == .deleteChat }
+            .map { _ -> Modal in .delete }
+            .assign(to: &$modal)
+
+        modalAction
+            .filter { $0 == .blockUser }
+            .map { _ -> Modal in .block }
+            .assign(to: &$modal)
+
+        action
+            .filter { $0 == .deleteTap }
+            .map { _ -> Modal in .deleteConfirmation }
+            .assign(to: &$modal)
+
+        action
+            .filter { $0 == .blockTap }
+            .map { _ -> Modal in .blockConfirmation }
+            .assign(to: &$modal)
+
+        action
+            .filter { $0 == .deleteConfirmedTap }
+            .map { _ -> Modal in .none }
+            .assign(to: &$modal)
+
+        action
+            .filter { $0 == .blockConfirmedTap }
+            .map { _ -> Modal in .none }
+            .assign(to: &$modal)
     }
 }

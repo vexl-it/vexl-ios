@@ -68,7 +68,7 @@ final class TabBarCoordinator: BaseCoordinator<Void> {
                 case .chat:
                     let router = NavigationRouter(navigationController: navigationController)
                     return coordinate(
-                        to: ChatCoordinator(
+                        to: InboxCoordinator(
                             router: router,
                             animated: true
                         )
