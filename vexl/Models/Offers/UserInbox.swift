@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Inbox: Codable {
+struct UserInbox: Codable {
     enum InboxType: String, Codable {
         case created
         case requested

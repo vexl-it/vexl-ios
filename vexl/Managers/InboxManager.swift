@@ -11,11 +11,13 @@ import Combine
 private typealias KeyAndChallenge = (key: String, challenge: String)
 private typealias KeyAndSignature = (key: String, signature: String)
 private typealias KeyAndMessages = (key: String, messages: [ChatMessage])
+private typealias KeyAndParsedMessages = (key: String, messages: [ParsedChatMessage])
 
 protocol InboxManagerType {
-    func getStoredMessages() -> AnyPublisher<[ParsedChatMessage], Error>
-    func storeMessages(_ messages: [ChatMessage]) -> AnyPublisher<Void, Never>
-    func syncInbox() -> AnyPublisher<[ChatMessage], Error>
+    var isSyncing: AnyPublisher<Bool, Never> { get }
+    var completedSyncing: AnyPublisher<[ChatMessage], Never> { get }
+
+    func syncInbox() -> AnyPublisher<Void, Error>
 }
 
 final class InboxManager: InboxManagerType {
@@ -25,31 +27,18 @@ final class InboxManager: InboxManagerType {
     @Inject var chatService: ChatServiceType
     @Inject var localStorageService: LocalStorageServiceType
 
-    var messages: [ChatMessage] = []
-    var messageSubject: CurrentValueSubject<[ChatMessage], Never> =  .init([])
+    private var _isSyncing = CurrentValueSubject<Bool, Never>(false)
+    private var _completedSyncing = PassthroughSubject<[ChatMessage], Never>()
 
-    func getStoredMessages() -> AnyPublisher<[ParsedChatMessage], Error> {
-        let messages = localStorageService.getMessages()
-        return Future<[ParsedChatMessage], Error> { promise in
-            promise(.success(messages))
-        }
-        .eraseToAnyPublisher()
+    var isSyncing: AnyPublisher<Bool, Never> {
+        _isSyncing.eraseToAnyPublisher()
     }
 
-    func storeMessages(_ messages: [ChatMessage]) -> AnyPublisher<Void, Never> {
-        messages.publisher
-            .compactMap { chatMessage in
-                ParsedChatMessage(chatMessage: chatMessage)
-            }
-            .collect()
-            .handleEvents(receiveOutput: { parsedMessages in
-                DictionaryDB.saveMessages(parsedMessages)
-            })
-            .asVoid()
-            .eraseToAnyPublisher()
+    var completedSyncing: AnyPublisher<[ChatMessage], Never> {
+        _completedSyncing.eraseToAnyPublisher()
     }
 
-    func syncInbox() -> AnyPublisher<[ChatMessage], Error> {
+    func syncInbox() -> AnyPublisher<Void, Error> {
         do {
             let createdInboxes = try localStorageService.getInboxes(ofType: .created)
             let requestedInboxes = try localStorageService.getInboxes(ofType: .requested)
@@ -58,48 +47,95 @@ final class InboxManager: InboxManagerType {
             let challenges = inboxes.publisher
                 .withUnretained(self)
                 .flatMap { owner, inbox -> AnyPublisher<KeyAndChallenge, Error> in
-                    owner.chatService.requestChallenge(publicKey: inbox.publicKey)
-                        .map { KeyAndChallenge(key: inbox.publicKey, challenge: $0.challenge) }
-                        .eraseToAnyPublisher()
+                    owner.requestChallenge(publicKey: inbox.publicKey)
                 }
 
             let signature = challenges
-                .withUnretained(self)
-                .flatMap { owner, keyAndChallenge -> AnyPublisher<KeyAndSignature, Error> in
-                    owner.cryptoService.signECDSA(keys: owner.userSecurity.userKeys, message: keyAndChallenge.challenge)
-                        .map { KeyAndSignature(key: keyAndChallenge.key, signature: $0) }
-                        .eraseToAnyPublisher()
+                .flatMapLatest(with: self) { owner, keyAndChallenge -> AnyPublisher<KeyAndSignature, Error> in
+                    owner.signChallenge(keys: owner.userSecurity.userKeys, keyAndChallenge: keyAndChallenge)
                 }
 
             let pullChat = signature
-                .withUnretained(self)
-                .flatMap { owner, keyAndSignature -> AnyPublisher<KeyAndMessages, Error> in
-                    owner.chatService.pullInboxMessages(publicKey: keyAndSignature.key, signature: keyAndSignature.signature)
-                        .withUnretained(self)
-                        .handleEvents(receiveOutput: { owner, messages in
-                            owner.messages.append(contentsOf: messages)
-                        })
-                        .map { _, messages in KeyAndMessages(key: keyAndSignature.key, messages: messages) }
-                        .eraseToAnyPublisher()
+                .flatMapLatest(with: self) { owner, keyAndSignature -> AnyPublisher<KeyAndMessages, Error> in
+                    owner.pullInboxMessage(keyAndSignature: keyAndSignature)
                 }
 
-            //store in core data/db
-
-            let deleteChat = pullChat
+            let saveMessages = pullChat
                 .withUnretained(self)
-                .flatMap { owner, keyAndMessages -> AnyPublisher<[ChatMessage], Error> in
-                    owner.chatService.deleteInboxMessages(publicKey: keyAndMessages.key)
-                        .map { _ in keyAndMessages.messages }
-                        .eraseToAnyPublisher()
+                .flatMap { owner, keyAndMessages -> AnyPublisher<KeyAndParsedMessages, Error> in
+                    owner.saveFetchedMessages(keyAndMessages: keyAndMessages)
                 }
+
+            let deleteChat = saveMessages
+                .withUnretained(self)
+                .flatMap { owner, keyAndMessages -> AnyPublisher<[ParsedChatMessage], Error> in
+                    owner.deleteMessages(keyAndMessages: keyAndMessages)
+                }
+
+            // 1. Notify isSync(false)
+            // 2. Notify completedSync([ParsedChatMessage])
+            // 3. Update Inbox with ParsedChatMessage per offer + from - check if 
 
             return deleteChat
                 .collect()
-                .map { Array($0.joined()) }
+                .asVoid()
                 .eraseToAnyPublisher()
         } catch {
             return Fail(error: ChatError.storageEmpty)
                 .eraseToAnyPublisher()
         }
+    }
+
+    private func requestChallenge(publicKey: String) -> AnyPublisher<KeyAndChallenge, Error> {
+        chatService.requestChallenge(publicKey: publicKey)
+            .handleEvents(receiveCompletion: { [weak self] completion in
+                if case .failure = completion { self?._isSyncing.send(false) }
+            })
+            .map { KeyAndChallenge(key: publicKey, challenge: $0.challenge) }
+            .eraseToAnyPublisher()
+    }
+
+    private func signChallenge(keys: ECCKeys, keyAndChallenge: KeyAndChallenge) -> AnyPublisher<KeyAndSignature, Error> {
+        cryptoService.signECDSA(keys: keys, message: keyAndChallenge.challenge)
+            .handleEvents(receiveCompletion: { [weak self] completion in
+                if case .failure = completion { self?._isSyncing.send(false) }
+            })
+            .map { KeyAndSignature(key: keyAndChallenge.key, signature: $0) }
+            .eraseToAnyPublisher()
+    }
+
+    private func pullInboxMessage(keyAndSignature: KeyAndSignature) -> AnyPublisher<KeyAndMessages, Error> {
+        chatService.pullInboxMessages(publicKey: keyAndSignature.key, signature: keyAndSignature.signature)
+            .handleEvents(receiveCompletion: { [weak self] completion in
+                if case .failure = completion { self?._isSyncing.send(false) }
+            })
+            .map { KeyAndMessages(key: keyAndSignature.key, messages: $0) }
+            .eraseToAnyPublisher()
+    }
+
+    private func saveFetchedMessages(keyAndMessages: KeyAndMessages) -> AnyPublisher<KeyAndParsedMessages, Error> {
+        chatService.saveFetchedMessages(keyAndMessages.messages)
+            .flatMapLatest(with: self) { owner, _ -> AnyPublisher<[ParsedChatMessage], Error> in
+                owner.parseMessages(keyAndMessages.messages)
+            }
+            .map { KeyAndParsedMessages(key: keyAndMessages.key, messages: $0) }
+            .eraseToAnyPublisher()
+    }
+
+    private func parseMessages(_ messages: [ChatMessage]) -> AnyPublisher<[ParsedChatMessage], Error> {
+        messages.publisher
+            .compactMap { ParsedChatMessage(chatMessage: $0) }
+            .collect()
+            .setFailureType(to: Error.self)
+            .eraseToAnyPublisher()
+    }
+
+    private func deleteMessages(keyAndMessages: KeyAndParsedMessages) -> AnyPublisher<[ParsedChatMessage], Error> {
+        chatService.deleteInboxMessages(publicKey: keyAndMessages.key)
+            .handleEvents(receiveCompletion: { [weak self] completion in
+                if case .failure = completion { self?._isSyncing.send(false) }
+            })
+            .map { _ in keyAndMessages.messages }
+            .eraseToAnyPublisher()
     }
 }

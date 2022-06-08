@@ -14,6 +14,8 @@ protocol ChatServiceType {
     func requestChallenge(publicKey: String) -> AnyPublisher<ChatChallenge, Error>
     func pullInboxMessages(publicKey: String, signature: String) -> AnyPublisher<[ChatMessage], Error>
     func deleteInboxMessages(publicKey: String) -> AnyPublisher<Void, Error>
+
+    func saveFetchedMessages(_ messages: [ChatMessage]) -> AnyPublisher<Void, Error>
 }
 
 final class ChatService: BaseService, ChatServiceType {
@@ -23,7 +25,7 @@ final class ChatService: BaseService, ChatServiceType {
     func createInbox(offerPublicKey: String, pushToken: String) -> AnyPublisher<Void, Error> {
         Future<Void, Error> { [localStorageService] promise in
             do {
-                try localStorageService.saveInbox(Inbox(publicKey: offerPublicKey, type: .created))
+                try localStorageService.saveInbox(UserInbox(publicKey: offerPublicKey, type: .created))
                 promise(.success(()))
             } catch {
                 promise(.failure(LocalStorageError.saveFailed))
@@ -38,7 +40,7 @@ final class ChatService: BaseService, ChatServiceType {
     func request(inboxPublicKey: String, message: String) -> AnyPublisher<Void, Error> {
         Future<Void, Error> { [localStorageService] promise in
             do {
-                try localStorageService.saveInbox(Inbox(publicKey: inboxPublicKey, type: .requested))
+                try localStorageService.saveInbox(UserInbox(publicKey: inboxPublicKey, type: .requested))
                 promise(.success(()))
             } catch {
                 promise(.failure(LocalStorageError.saveFailed))
@@ -67,5 +69,9 @@ final class ChatService: BaseService, ChatServiceType {
     func deleteInboxMessages(publicKey: String) -> AnyPublisher<Void, Error> {
         request(endpoint: ChatRouter.deleteChat(publicKey: publicKey))
             .eraseToAnyPublisher()
+    }
+
+    func saveFetchedMessages(_ messages: [ChatMessage]) -> AnyPublisher<Void, Error> {
+        localStorageService.saveMessages(messages)
     }
 }

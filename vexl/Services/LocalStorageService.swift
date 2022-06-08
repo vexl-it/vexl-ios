@@ -14,14 +14,14 @@ enum LocalStorageError: Error {
 }
 
 protocol LocalStorageServiceType {
-    func saveInbox(_ inbox: Inbox) throws
-    func getInboxes(ofType type: Inbox.InboxType) throws -> [Inbox]
-    func saveMessages(_ messages: [ParsedChatMessage])
-    func getMessages() -> [ParsedChatMessage]
+    func saveInbox(_ inbox: UserInbox) throws
+    func getInboxes(ofType type: UserInbox.InboxType) throws -> [UserInbox]
+    func saveMessages(_ messages: [ChatMessage]) -> AnyPublisher<Void, Error>
+    func getMessages() -> AnyPublisher<[ParsedChatMessage], Error>
 }
 
 final class LocalStorageService: LocalStorageServiceType {
-    func saveInbox(_ inbox: Inbox) throws {
+    func saveInbox(_ inbox: UserInbox) throws {
         switch inbox.type {
         case .created:
             DictionaryDB.saveCreatedInbox(inbox)
@@ -30,7 +30,7 @@ final class LocalStorageService: LocalStorageServiceType {
         }
     }
 
-    func getInboxes(ofType type: Inbox.InboxType) throws -> [Inbox] {
+    func getInboxes(ofType type: UserInbox.InboxType) throws -> [UserInbox] {
         switch type {
         case .created:
             return DictionaryDB.getCreatedInboxes()
@@ -39,11 +39,24 @@ final class LocalStorageService: LocalStorageServiceType {
         }
     }
 
-    func saveMessages(_ messages: [ParsedChatMessage]) {
-        DictionaryDB.saveMessages(messages)
+    func saveMessages(_ messages: [ChatMessage]) -> AnyPublisher<Void, Error> {
+        Future { promise in
+            var parsedMessages: [ParsedChatMessage] = []
+            for message in messages {
+                if let parsedMessage = ParsedChatMessage(chatMessage: message) {
+                    parsedMessages.append(parsedMessage)
+                }
+            }
+            DictionaryDB.saveMessages(parsedMessages)
+            promise(.success(()))
+        }
+        .eraseToAnyPublisher()
     }
 
-    func getMessages() -> [ParsedChatMessage] {
-        DictionaryDB.getMessages()
+    func getMessages() -> AnyPublisher<[ParsedChatMessage], Error> {
+        Future { promise in
+            promise(.success((DictionaryDB.getMessages())))
+        }
+        .eraseToAnyPublisher()
     }
 }
