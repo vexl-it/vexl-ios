@@ -10,6 +10,8 @@ import Cleevio
 
 final class ChatViewModel: ViewModelType, ObservableObject {
 
+    @Inject var inboxManager: InboxManagerType
+
     enum Modal {
         case none
         case offer
@@ -82,6 +84,11 @@ final class ChatViewModel: ViewModelType, ObservableObject {
     init() {
         setupActionBindings()
         setupModalBindings()
+        setupSyncBindings()
+    }
+
+    private func setupSyncBindings() {
+        inboxManager.syncInboxes()
     }
 
     private func setupActionBindings() {

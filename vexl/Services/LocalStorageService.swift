@@ -14,14 +14,14 @@ enum LocalStorageError: Error {
 }
 
 protocol LocalStorageServiceType {
-    func saveInbox(_ inbox: UserInbox) throws
-    func getInboxes(ofType type: UserInbox.InboxType) throws -> [UserInbox]
+    func saveInbox(_ inbox: OfferInbox) throws
+    func getInboxes(ofType type: OfferInbox.InboxType) throws -> [OfferInbox]
     func saveMessages(_ messages: [ChatMessage]) -> AnyPublisher<Void, Error>
     func getMessages() -> AnyPublisher<[ParsedChatMessage], Error>
 }
 
 final class LocalStorageService: LocalStorageServiceType {
-    func saveInbox(_ inbox: UserInbox) throws {
+    func saveInbox(_ inbox: OfferInbox) throws {
         switch inbox.type {
         case .created:
             DictionaryDB.saveCreatedInbox(inbox)
@@ -30,7 +30,7 @@ final class LocalStorageService: LocalStorageServiceType {
         }
     }
 
-    func getInboxes(ofType type: UserInbox.InboxType) throws -> [UserInbox] {
+    func getInboxes(ofType type: OfferInbox.InboxType) throws -> [OfferInbox] {
         switch type {
         case .created:
             return DictionaryDB.getCreatedInboxes()

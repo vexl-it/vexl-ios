@@ -17,6 +17,13 @@ struct ChatMessage: Codable {
         self.message = value
     }
 
+    func asJSON(with key: ECCKeys) -> [String: Any]? {
+        guard let decryptedMessage = try? message.ecc.decrypt(keys: key),
+              let data = decryptedMessage.data(using: .utf8),
+              let json = try? JSONSerialization.jsonObject(with: data, options: .mutableContainers) else { return nil }
+        return json as? [String: Any]
+    }
+    
     var asJSON: [String: Any]? {
         guard let data = message.data(using: .utf8),
               let json = try? JSONSerialization.jsonObject(with: data, options: .mutableContainers) else { return nil }

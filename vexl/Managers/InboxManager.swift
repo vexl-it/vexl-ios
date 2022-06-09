@@ -46,13 +46,13 @@ final class InboxManager: InboxManagerType {
     private var _inboxMessages = CurrentValueSubject<[ParsedChatMessage], Error>([])
     private var cancelBag = CancelBag()
 
-    private func syncInbox(_ inbox: UserInbox) -> AnyPublisher<Result<[ParsedChatMessage], Error>, Error> {
+    private func syncInbox(_ inbox: OfferInbox) -> AnyPublisher<Result<[ParsedChatMessage], Error>, Error> {
         let challenge = requestChallenge(publicKey: inbox.publicKey)
             .subscribe(on: DispatchQueue.global(qos: .background))
 
         let signature = challenge
             .flatMapLatest(with: self) { owner, keyAndChallenge -> AnyPublisher<KeyAndSignature, Error> in
-                owner.signChallenge(keys: owner.userSecurity.userKeys, keyAndChallenge: keyAndChallenge)
+                owner.signChallenge(keys: inbox.key, keyAndChallenge: keyAndChallenge)
             }
 
         let pullChat = signature

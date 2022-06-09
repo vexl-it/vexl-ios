@@ -10,7 +10,7 @@ import Foundation
 // This is not for production, just to accelerate development. Later we should setup CoreData with proper security
 
 final class DictionaryDB {
-    static private var inboxes: [String: [UserInbox]] = ["created": [], "requested": []] {
+    static private var inboxes: [String: [OfferInbox]] = ["created": [], "requested": []] {
         didSet {
             guard let encodedData = try? JSONEncoder().encode(inboxes) else { return }
             UserDefaults.standard.setValue(encodedData, forKey: "inboxes")
@@ -26,28 +26,28 @@ final class DictionaryDB {
 
     static func setupDatabase() {
         guard let inboxesData = UserDefaults.standard.data(forKey: "inboxes"),
-              let savedInboxes = try? JSONDecoder().decode([String: [UserInbox]].self, from: inboxesData) else { return }
+              let savedInboxes = try? JSONDecoder().decode([String: [OfferInbox]].self, from: inboxesData) else { return }
 
         inboxes = savedInboxes
     }
 
-    static func saveCreatedInbox(_ inbox: UserInbox) {
+    static func saveCreatedInbox(_ inbox: OfferInbox) {
         var content = inboxes["created"] ?? []
         content.append(inbox)
         inboxes["created"] = content
     }
 
-    static func saveRequestedInbox(_ inbox: UserInbox) {
+    static func saveRequestedInbox(_ inbox: OfferInbox) {
         var content = inboxes["requested"] ?? []
         content.append(inbox)
         inboxes["requested"] = content
     }
 
-    static func getCreatedInboxes() -> [UserInbox] {
+    static func getCreatedInboxes() -> [OfferInbox] {
         inboxes["created"] ?? []
     }
 
-    static func getRequestedInboxes() -> [UserInbox] {
+    static func getRequestedInboxes() -> [OfferInbox] {
         inboxes["requested"] ?? []
     }
 

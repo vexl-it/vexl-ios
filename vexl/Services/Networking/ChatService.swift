@@ -9,7 +9,7 @@ import Foundation
 import Combine
 
 protocol ChatServiceType {
-    func createInbox(offerPublicKey: String, pushToken: String) -> AnyPublisher<Void, Error>
+    func createInbox(offerKey: ECCKeys, pushToken: String) -> AnyPublisher<Void, Error>
     func request(inboxPublicKey: String, message: String) -> AnyPublisher<Void, Error>
     func requestConfirmation(confirmation: Bool,
                              message: String,
@@ -26,20 +26,21 @@ protocol ChatServiceType {
 }
 
 final class ChatService: BaseService, ChatServiceType {
+
     @Inject private var cryptoService: CryptoServiceType
     @Inject private var localStorageService: LocalStorageServiceType
 
-    func createInbox(offerPublicKey: String, pushToken: String) -> AnyPublisher<Void, Error> {
+    func createInbox(offerKey: ECCKeys, pushToken: String) -> AnyPublisher<Void, Error> {
         Future<Void, Error> { [localStorageService] promise in
             do {
-                try localStorageService.saveInbox(UserInbox(publicKey: offerPublicKey, type: .created))
+                try localStorageService.saveInbox(OfferInbox(key: offerKey, type: .created))
                 promise(.success(()))
             } catch {
                 promise(.failure(LocalStorageError.saveFailed))
             }
         }
         .flatMapLatest(with: self) { owner, _ in
-            owner.request(endpoint: ChatRouter.createInbox(offerPublicKey: offerPublicKey, pushToken: pushToken))
+            owner.request(endpoint: ChatRouter.createInbox(offerPublicKey: offerKey.publicKey, pushToken: pushToken))
         }
         .eraseToAnyPublisher()
     }
@@ -47,7 +48,7 @@ final class ChatService: BaseService, ChatServiceType {
     func request(inboxPublicKey: String, message: String) -> AnyPublisher<Void, Error> {
         Future<Void, Error> { [localStorageService] promise in
             do {
-                try localStorageService.saveInbox(UserInbox(publicKey: inboxPublicKey, type: .requested))
+                try localStorageService.saveInbox(OfferInbox(publicKey: inboxPublicKey, type: .requested))
                 promise(.success(()))
             } catch {
                 promise(.failure(LocalStorageError.saveFailed))
