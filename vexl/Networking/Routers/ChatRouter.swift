@@ -35,7 +35,7 @@ enum ChatRouter: ApiRouter {
         case .createInbox:
             return "inboxes"
         case .request:
-            return "inboxes/allowance/request"
+            return "inboxes/approval/request"
         case .requestChallenge:
             return "challenges"
         case .pullChat:

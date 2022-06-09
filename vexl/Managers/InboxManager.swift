@@ -100,7 +100,8 @@ final class InboxManager: InboxManagerType {
         let updateInboxMessages = syncInboxes
             .flatMapLatest(with: self) { owner, results -> AnyPublisher<[Result<[ParsedChatMessage], Error>], Error> in
 
-                // TODO: - Makes sense to have this in the queue? or should it be just a call and let it update after it finishes / dont worrying about it
+                // TODO: - Makes sense to have this in the queue? or should it be just a call and
+                // let it update after it finishes / dont worrying about it
 
                 owner.updateInboxMessages()
                     .map { results }
