@@ -24,11 +24,28 @@ final class DictionaryDB {
         }
     }
 
-    static func setupDatabase() {
-        guard let inboxesData = UserDefaults.standard.data(forKey: "inboxes"),
-              let savedInboxes = try? JSONDecoder().decode([String: [OfferInbox]].self, from: inboxesData) else { return }
+    static private var requests: [ParsedChatMessage] = [] {
+        didSet {
+            guard let encodedData = try? JSONEncoder().encode(messages) else { return }
+            UserDefaults.standard.setValue(encodedData, forKey: "requests")
+        }
+    }
 
-        inboxes = savedInboxes
+    static func setupDatabase() {
+        if let inboxesData = UserDefaults.standard.data(forKey: "inboxes"),
+           let savedInboxes = try? JSONDecoder().decode([String: [OfferInbox]].self, from: inboxesData) {
+            inboxes = savedInboxes
+        }
+
+        if let messagesData = UserDefaults.standard.data(forKey: "messages"),
+           let savedMessages = try? JSONDecoder().decode([ParsedChatMessage].self, from: messagesData) {
+            messages = savedMessages
+        }
+
+        if let requestsData = UserDefaults.standard.data(forKey: "requests"),
+           let savedRequests = try? JSONDecoder().decode([ParsedChatMessage].self, from: requestsData) {
+            requests = savedRequests
+        }
     }
 
     static func saveCreatedInbox(_ inbox: OfferInbox) {
@@ -59,5 +76,15 @@ final class DictionaryDB {
 
     static func getMessages() -> [ParsedChatMessage] {
         self.messages
+    }
+
+    static func saveRequests(_ requests: [ParsedChatMessage]) {
+        var content = self.requests
+        content.append(contentsOf: requests)
+        self.requests = content
+    }
+
+    static func getRequests() -> [ParsedChatMessage] {
+        self.requests
     }
 }

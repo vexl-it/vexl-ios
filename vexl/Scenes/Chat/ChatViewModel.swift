@@ -84,11 +84,6 @@ final class ChatViewModel: ViewModelType, ObservableObject {
     init() {
         setupActionBindings()
         setupModalBindings()
-        setupSyncBindings()
-    }
-
-    private func setupSyncBindings() {
-        inboxManager.syncInboxes()
     }
 
     private func setupActionBindings() {

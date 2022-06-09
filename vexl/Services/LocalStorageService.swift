@@ -16,7 +16,7 @@ enum LocalStorageError: Error {
 protocol LocalStorageServiceType {
     func saveInbox(_ inbox: OfferInbox) throws
     func getInboxes(ofType type: OfferInbox.InboxType) throws -> [OfferInbox]
-    func saveMessages(_ messages: [ChatMessage]) -> AnyPublisher<Void, Error>
+    func saveMessages(_ messages: [ParsedChatMessage]) -> AnyPublisher<Void, Error>
     func getMessages() -> AnyPublisher<[ParsedChatMessage], Error>
 }
 
@@ -39,15 +39,9 @@ final class LocalStorageService: LocalStorageServiceType {
         }
     }
 
-    func saveMessages(_ messages: [ChatMessage]) -> AnyPublisher<Void, Error> {
+    func saveMessages(_ messages: [ParsedChatMessage]) -> AnyPublisher<Void, Error> {
         Future { promise in
-            var parsedMessages: [ParsedChatMessage] = []
-            for message in messages {
-                if let parsedMessage = ParsedChatMessage(chatMessage: message) {
-                    parsedMessages.append(parsedMessage)
-                }
-            }
-            DictionaryDB.saveMessages(parsedMessages)
+            DictionaryDB.saveMessages(messages)
             promise(.success(()))
         }
         .eraseToAnyPublisher()

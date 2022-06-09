@@ -9,10 +9,10 @@ import Foundation
 import Combine
 import Cleevio
 
-private typealias KeyAndChallenge = (key: String, challenge: String)
-private typealias KeyAndSignature = (key: String, signature: String)
-private typealias KeyAndMessages = (key: String, messages: [ChatMessage])
-private typealias KeyAndParsedMessages = (key: String, messages: [ParsedChatMessage])
+private typealias KeyAndChallenge = (key: ECCKeys, challenge: String)
+private typealias KeyAndSignature = (key: ECCKeys, signature: String)
+private typealias KeyAndMessages = (key: ECCKeys, messages: [EncryptedChatMessage])
+private typealias KeyAndParsedMessages = (key: ECCKeys, messages: [ParsedChatMessage])
 
 protocol InboxManagerType {
     var inboxMessages: AnyPublisher<[ParsedChatMessage], Error> { get }
@@ -47,7 +47,7 @@ final class InboxManager: InboxManagerType {
     private var cancelBag = CancelBag()
 
     private func syncInbox(_ inbox: OfferInbox) -> AnyPublisher<Result<[ParsedChatMessage], Error>, Error> {
-        let challenge = requestChallenge(publicKey: inbox.publicKey)
+        let challenge = requestChallenge(key: inbox.key)
             .subscribe(on: DispatchQueue.global(qos: .background))
 
         let signature = challenge
@@ -134,9 +134,9 @@ final class InboxManager: InboxManagerType {
 
     // MARK: - Methods for syncing up the app messages with the server
 
-    private func requestChallenge(publicKey: String) -> AnyPublisher<KeyAndChallenge, Error> {
-        chatService.requestChallenge(publicKey: publicKey)
-            .map { KeyAndChallenge(key: publicKey, challenge: $0.challenge) }
+    private func requestChallenge(key: ECCKeys) -> AnyPublisher<KeyAndChallenge, Error> {
+        chatService.requestChallenge(publicKey: key.publicKey)
+            .map { KeyAndChallenge(key: key, challenge: $0.challenge) }
             .eraseToAnyPublisher()
     }
 
@@ -147,30 +147,31 @@ final class InboxManager: InboxManagerType {
     }
 
     private func pullInboxMessage(keyAndSignature: KeyAndSignature) -> AnyPublisher<KeyAndMessages, Error> {
-        chatService.pullInboxMessages(publicKey: keyAndSignature.key, signature: keyAndSignature.signature)
+        chatService.pullInboxMessages(publicKey: keyAndSignature.key.publicKey, signature: keyAndSignature.signature)
             .map { KeyAndMessages(key: keyAndSignature.key, messages: $0) }
             .eraseToAnyPublisher()
     }
 
     private func saveFetchedMessages(keyAndMessages: KeyAndMessages) -> AnyPublisher<KeyAndParsedMessages, Error> {
-        chatService.saveFetchedMessages(keyAndMessages.messages)
-            .flatMapLatest(with: self) { owner, _ -> AnyPublisher<[ParsedChatMessage], Error> in
-                owner.parseMessages(keyAndMessages.messages)
+        parseMessages(keyAndMessages.messages, key: keyAndMessages.key)
+            .flatMapLatest(with: self) { owner, messages -> AnyPublisher<KeyAndParsedMessages, Error> in
+                owner.chatService.saveFetchedMessages(messages)
+                    .map { KeyAndParsedMessages(key: keyAndMessages.key, messages: messages) }
+                    .eraseToAnyPublisher()
             }
-            .map { KeyAndParsedMessages(key: keyAndMessages.key, messages: $0) }
             .eraseToAnyPublisher()
     }
 
-    private func parseMessages(_ messages: [ChatMessage]) -> AnyPublisher<[ParsedChatMessage], Error> {
+    private func parseMessages(_ messages: [EncryptedChatMessage], key: ECCKeys) -> AnyPublisher<[ParsedChatMessage], Error> {
         messages.publisher
-            .compactMap { ParsedChatMessage(chatMessage: $0) }
+            .compactMap { ParsedChatMessage(chatMessage: $0, key: key) }
             .collect()
             .setFailureType(to: Error.self)
             .eraseToAnyPublisher()
     }
 
     private func deleteMessages(keyAndMessages: KeyAndParsedMessages) -> AnyPublisher<[ParsedChatMessage], Error> {
-        chatService.deleteInboxMessages(publicKey: keyAndMessages.key)
+        chatService.deleteInboxMessages(publicKey: keyAndMessages.key.publicKey)
             .map { _ in keyAndMessages.messages }
             .eraseToAnyPublisher()
     }
