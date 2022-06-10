@@ -132,12 +132,15 @@ final class RegisterNameAvatarViewModel: ViewModelType {
     private func setupActionBindings() {
         action
             .filter { $0 == .createUser }
-            .withUnretained(self)
-            .flatMap { owner, _ in
-                owner
-                    .userService
+            .flatMapLatest(with: self) { owner, _ -> AnyPublisher<String?, Never> in
+                guard let avatar = owner.avatar else { return Just<String?>(nil).eraseToAnyPublisher() }
+                return avatar.base64Publisher
+                    .track(activity: owner.primaryActivity)
+            }
+            .flatMapLatest(with: self) { owner, base64 in
+                owner.userService
                     .createUser(username: owner.username,
-                                avatar: owner.avatar?.base64)
+                                avatar: base64)
                     .track(activity: owner.primaryActivity)
                     .materialize()
                     .compactMap(\.value)
@@ -154,8 +157,7 @@ final class RegisterNameAvatarViewModel: ViewModelType {
 
         action
             .filter { $0 == .setUsername }
-            .withUnretained(self)
-            .flatMap { owner, _ in
+            .flatMapLatest(with: self) { owner, _ in
                 owner.userService
                     .validateUsername(username: owner.username)
                     .track(activity: owner.primaryActivity)
