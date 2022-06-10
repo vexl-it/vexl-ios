@@ -105,7 +105,7 @@ final class RegisterNameAvatarViewModel: ViewModelType {
 
         $currentState
             .filter { $0 == .phoneVerified }
-            .delay(for: .seconds(1), scheduler: RunLoop.main)
+            .delay(for: .seconds(3), scheduler: RunLoop.main)
             .withUnretained(self)
             .sink { owner, _ in
                 owner.currentState = .usernameInput

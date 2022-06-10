@@ -21,7 +21,7 @@ final class RequestAccessFacebookContactsViewModel: RequestAccessContactsViewMod
     }
 
     override var importButton: String {
-        L.registerContactsImportButton()
+        L.registerFacebookImportButton()
     }
 
     override var displaySkipButton: Bool {
