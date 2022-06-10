@@ -65,18 +65,19 @@ private struct RegistrationCardTitleView: View {
         VStack(alignment: .leading,
                spacing: Appearance.GridGuide.point) {
             Text(title)
-                .textStyle(.h2)
+                .textStyle(.h3)
                 .foregroundColor(Appearance.Colors.primaryText)
 
             HStack {
-
                 if let iconName = iconName {
                     Image(iconName)
                 }
 
                 Text(subtitle)
-                    .textStyle(.paragraph)
                     .foregroundColor(Appearance.Colors.gray2)
+                    .textStyle(.paragraph)
+                    .lineLimit(2)
+                    .minimumScaleFactor(0.5)
             }
             .padding(.top, Appearance.GridGuide.mediumPadding1)
         }

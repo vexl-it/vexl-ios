@@ -19,7 +19,8 @@ extension OnboardingView {
         var body: some View {
             HStack(alignment: .center) {
                 LargeSolidButton(title: L.skip(),
-                                 font: Appearance.TextStyle.h3.font.asFont,
+                                 padding: Appearance.GridGuide.mediumPadding1,
+                                 font: Appearance.TextStyle.titleSmallBold.font.asFont,
                                  style: .custom(color: .skip),
                                  isFullWidth: false,
                                  isEnabled: .constant(true),
@@ -28,7 +29,7 @@ extension OnboardingView {
                 })
 
                 LargeSolidButton(title: nextTitle,
-                                 font: Appearance.TextStyle.h3.font.asFont,
+                                 font: Appearance.TextStyle.titleSmallBold.font.asFont,
                                  style: .custom(color: .welcome),
                                  isFullWidth: true,
                                  isEnabled: .constant(true),

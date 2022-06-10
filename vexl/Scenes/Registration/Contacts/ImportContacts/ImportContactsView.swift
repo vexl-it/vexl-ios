@@ -19,7 +19,7 @@ struct ImportContactsView: View {
                 .padding(.vertical, Appearance.GridGuide.padding)
 
             LargeSolidButton(title: viewModel.actionTitle,
-                             font: Appearance.TextStyle.h3.font.asFont,
+                             font: Appearance.TextStyle.titleSmallBold.font.asFont,
                              style: .custom(color: viewModel.currentState == .success ? .success : .welcome),
                              isFullWidth: true,
                              isEnabled: .constant(true),

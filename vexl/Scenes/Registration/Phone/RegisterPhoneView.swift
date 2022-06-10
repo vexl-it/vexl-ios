@@ -36,7 +36,7 @@ struct RegisterPhoneView: View {
             Spacer()
 
             LargeSolidButton(title: viewModel.actionTitle,
-                             font: Appearance.TextStyle.h3.font.asFont,
+                             font: Appearance.TextStyle.titleSmallBold.font.asFont,
                              style: .custom(color: viewModel.actionColor),
                              isFullWidth: true,
                              isEnabled: $viewModel.isActionEnabled,

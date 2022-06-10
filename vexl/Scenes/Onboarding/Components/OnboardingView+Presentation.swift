@@ -41,7 +41,7 @@ extension OnboardingView {
 
                 Text(title.uppercased())
                     .foregroundColor(.white)
-                    .textStyle(.h2)
+                    .textStyle(.h3)
                     .transition(.opacity)
                     .id(presentationState.rawValue)
             }

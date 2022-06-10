@@ -34,14 +34,25 @@ struct LargeSolidButton: View {
     }
 
     let title: String
+    let padding: CGFloat
     let font: Font
     let style: Style
     let isFullWidth: Bool
     @Binding var isEnabled: Bool
     let action: () -> Void
 
+    init(title: String, padding: CGFloat = .zero, font: Font, style: Style, isFullWidth: Bool, isEnabled: Binding<Bool>, action: @escaping () -> Void) {
+        self.title = title
+        self.padding = padding
+        self.font = font
+        self.style = style
+        self.isFullWidth = isFullWidth
+        self._isEnabled = isEnabled
+        self.action = action
+    }
+
     var body: some View {
-        SolidButton(Text(title),
+        SolidButton(Text(title).padding(.horizontal, padding),
                     iconImage: nil,
                     isEnabled: $isEnabled,
                     isLoading: .constant(false),
