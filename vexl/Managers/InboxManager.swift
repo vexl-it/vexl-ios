@@ -155,7 +155,7 @@ final class InboxManager: InboxManagerType {
     private func saveFetchedMessages(keyAndMessages: KeyAndMessages) -> AnyPublisher<KeyAndParsedMessages, Error> {
         parseMessages(keyAndMessages.messages, key: keyAndMessages.key)
             .flatMapLatest(with: self) { owner, messages -> AnyPublisher<KeyAndParsedMessages, Error> in
-                owner.chatService.saveFetchedMessages(messages)
+                owner.chatService.saveFetchedMessages(messages, inboxPublicKey: keyAndMessages.key.publicKey)
                     .map { KeyAndParsedMessages(key: keyAndMessages.key, messages: messages) }
                     .eraseToAnyPublisher()
             }

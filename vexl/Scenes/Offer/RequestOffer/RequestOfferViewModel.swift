@@ -89,8 +89,9 @@ final class RequestOfferViewModel: ViewModelType, ObservableObject {
             .filter { $0 == .sendRequest }
             .withUnretained(self)
             .compactMap { owner, _ -> String? in
-                let messsage = ParsedChatMessage(inboxPublicKey: owner.offer.userPublicKey,
-                                                 type: .revealRequest,
+                let messsage = ParsedChatMessage(inboxPublicKey: owner.offer.offerPublicKey,
+                                                 messageType: .revealRequest,
+                                                 contentType: .communicationRequest,
                                                  text: owner.requestText,
                                                  senderKey: owner.userSecurity.userKeys.publicKey)
                 return messsage?.asString

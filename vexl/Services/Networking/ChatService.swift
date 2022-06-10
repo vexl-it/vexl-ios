@@ -21,8 +21,9 @@ protocol ChatServiceType {
     func pullInboxMessages(publicKey: String, signature: String) -> AnyPublisher<[EncryptedChatMessage], Error>
     func deleteInboxMessages(publicKey: String) -> AnyPublisher<Void, Error>
 
-    func saveFetchedMessages(_ messages: [ParsedChatMessage]) -> AnyPublisher<Void, Error>
+    func saveFetchedMessages(_ messages: [ParsedChatMessage], inboxPublicKey: String) -> AnyPublisher<Void, Error>
     func getInboxMessages() -> AnyPublisher<[ParsedChatMessage], Error>
+    func getRequestMessages() -> AnyPublisher<[ParsedChatMessage], Error>
 }
 
 final class ChatService: BaseService, ChatServiceType {
@@ -92,14 +93,41 @@ final class ChatService: BaseService, ChatServiceType {
             .eraseToAnyPublisher()
     }
 
-    func saveFetchedMessages(_ messages: [ParsedChatMessage]) -> AnyPublisher<Void, Error> {
+    func saveFetchedMessages(_ messages: [ParsedChatMessage], inboxPublicKey: String) -> AnyPublisher<Void, Error> {
         localStorageService.saveMessages(messages)
+            .flatMapLatest(with: self) { owner, _ -> AnyPublisher<Void, Error> in
+                owner.saveRequestsMessages(messages, inboxPublicKey: inboxPublicKey)
+            }
+            .eraseToAnyPublisher()
     }
 
     func getInboxMessages() -> AnyPublisher<[ParsedChatMessage], Error> {
+
+        // Will fetch data from the display messages / last messages
+
         Future { promise in
             promise(.success([]))
         }
         .eraseToAnyPublisher()
+    }
+
+    func getRequestMessages() -> AnyPublisher<[ParsedChatMessage], Error> {
+        localStorageService.getRequestMessages()
+    }
+
+    // MARK: - Helpers
+
+    private func saveRequestsMessages(_ messages: [ParsedChatMessage], inboxPublicKey: String) -> AnyPublisher<Void, Error> {
+        let request = messages
+            .first(where: { $0.messageType == .messagingRequest })
+
+        if let request = request {
+            return localStorageService.saveRequestMessage(request, inboxPublicKey: inboxPublicKey)
+                .asVoid()
+                .eraseToAnyPublisher()
+        } else {
+            return Just(()).setFailureType(to: Error.self)
+                .eraseToAnyPublisher()
+        }
     }
 }

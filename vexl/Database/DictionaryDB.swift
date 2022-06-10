@@ -24,10 +24,17 @@ final class DictionaryDB {
         }
     }
 
-    static private var requests: [ParsedChatMessage] = [] {
+    static private var requests: [String: ParsedChatMessage] = [:] {
         didSet {
-            guard let encodedData = try? JSONEncoder().encode(messages) else { return }
+            guard let encodedData = try? JSONEncoder().encode(requests) else { return }
             UserDefaults.standard.setValue(encodedData, forKey: "requests")
+        }
+    }
+
+    static private var displayMessage: [String: ParsedChatMessage] = [:] {
+        didSet {
+            guard let encodedData = try? JSONEncoder().encode(displayMessage) else { return }
+            UserDefaults.standard.setValue(encodedData, forKey: "displayMessage")
         }
     }
 
@@ -43,8 +50,13 @@ final class DictionaryDB {
         }
 
         if let requestsData = UserDefaults.standard.data(forKey: "requests"),
-           let savedRequests = try? JSONDecoder().decode([ParsedChatMessage].self, from: requestsData) {
+           let savedRequests = try? JSONDecoder().decode([String: ParsedChatMessage].self, from: requestsData) {
             requests = savedRequests
+        }
+
+        if let displayData = UserDefaults.standard.data(forKey: "displayMessage"),
+           let savedDisplayMessages = try? JSONDecoder().decode([String: ParsedChatMessage].self, from: displayData) {
+            displayMessage = savedDisplayMessages
         }
     }
 
@@ -78,13 +90,23 @@ final class DictionaryDB {
         self.messages
     }
 
-    static func saveRequests(_ requests: [ParsedChatMessage]) {
+    static func saveRequests(_ request: ParsedChatMessage, inboxPublicKey: String) {
         var content = self.requests
-        content.append(contentsOf: requests)
+        content[inboxPublicKey] = request
         self.requests = content
     }
 
-    static func getRequests() -> [ParsedChatMessage] {
+    static func getRequests() -> [String: ParsedChatMessage] {
         self.requests
+    }
+
+    static func saveDisplayMessages(_ request: ParsedChatMessage, inboxPublicKey: String) {
+        var content = self.displayMessage
+        content[inboxPublicKey] = request
+        self.requests = content
+    }
+
+    static func getDisplayMessages() -> [String: ParsedChatMessage] {
+        self.displayMessage
     }
 }
