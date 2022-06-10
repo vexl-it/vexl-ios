@@ -95,7 +95,7 @@ final class OfferService: BaseService, OfferServiceType {
         }
         .eraseToAnyPublisher()
     }
-    
+
     func getAllStoredOfferIds() -> AnyPublisher<[String], Never> {
         Future { promise in
             let storedOfferKeys: UserOfferKeys? = UserDefaults.standard.codable(forKey: .storedOfferKeys)

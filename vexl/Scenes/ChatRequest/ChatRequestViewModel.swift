@@ -55,8 +55,20 @@ final class ChatRequestViewModel: ViewModelType, ObservableObject {
     private let cancelBag: CancelBag = .init()
 
     init() {
+        setupActivity()
         setupActionBindings()
         setupDataBindings()
+    }
+
+    private func setupActivity() {
+        activityIndicator
+            .loading
+            .assign(to: &$isLoading)
+
+        errorIndicator
+            .errors
+            .asOptional()
+            .assign(to: &$error)
     }
 
     private func setupDataBindings() {
@@ -66,6 +78,7 @@ final class ChatRequestViewModel: ViewModelType, ObservableObject {
             .flatMapLatest(with: self) { owner, ids -> AnyPublisher<OfferIdsAndMessages, Error> in
                 owner.chatService
                     .getRequestMessages()
+                    .track(activity: owner.primaryActivity)
                     .materialize()
                     .compactMap(\.value)
                     .map { OfferIdsAndMessages(ids: ids, messages: $0) }
