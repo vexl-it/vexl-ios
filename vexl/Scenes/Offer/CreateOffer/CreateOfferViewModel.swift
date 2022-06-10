@@ -65,6 +65,10 @@ final class CreateOfferViewModel: ViewModelType, ObservableObject {
     @Published var selectedBTCOption: [OfferAdvancedBTCOption] = []
     @Published var selectedFriendDegreeOption: OfferAdvancedFriendDegreeOption = .firstDegree
 
+    // TODO: - get the real value from a picker when implemented
+
+    @Published var expiration: TimeInterval = Constants.expiration
+
     @Published var state: State = .initial
     @Published var error: Error?
 
@@ -278,7 +282,7 @@ final class CreateOfferViewModel: ViewModelType, ObservableObject {
             .withUnretained(self)
             .flatMap { owner, encryptedOffer in
                 owner.offerService
-                    .createOffer(encryptedOffers: encryptedOffer)
+                    .createOffer(encryptedOffers: encryptedOffer, expiration: owner.expiration)
                     .track(activity: owner.primaryActivity)
                     .materialize()
                     .compactMap(\.value)

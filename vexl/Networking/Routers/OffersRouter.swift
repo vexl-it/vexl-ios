@@ -9,7 +9,7 @@ import Foundation
 import Alamofire
 
 enum OffersRouter: ApiRouter {
-    case createOffer(offer: [EncryptedOffer])
+    case createOffer(offer: [EncryptedOffer], expiration: TimeInterval)
     case getOffers(pageLimit: Int?)
     case getUserOffers(offerIds: [String])
     case deleteOffers(offerIds: [String])
@@ -47,9 +47,10 @@ enum OffersRouter: ApiRouter {
             return ["limit": pageLimit]
         case let .getUserOffers(offerIds), let .deleteOffers(offerIds):
             return ["offerIds": offerIds.joined(separator: ",")]
-        case let .createOffer(offer):
+        case let .createOffer(offer, expiration):
             let offers = offer.map { $0.asJson }
-            return ["offerPrivateList": offers]
+            return ["offerPrivateList": offers,
+                    "expiration": expiration]
         }
     }
 

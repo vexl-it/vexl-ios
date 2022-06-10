@@ -70,4 +70,8 @@ struct Constants {
     static let bitcoinPollInterval: TimeInterval = 30
 
     static let notAvailable = "N/A"
+
+    // TODO: - remove when time picker is implemented value is 30 days atm
+
+    static let expiration: TimeInterval = 2_592_000
 }
