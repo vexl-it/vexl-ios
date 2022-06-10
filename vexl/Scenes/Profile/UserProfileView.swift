@@ -39,7 +39,7 @@ struct UserProfileView: View {
             avatarImage
 
             Text(viewModel.username)
-                .textStyle(.h1)
+                .textStyle(.h2)
                 .foregroundColor(.white)
                 .frame(maxWidth: .infinity, alignment: .leading)
         }

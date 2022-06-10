@@ -54,9 +54,12 @@ private struct SinglePortraitView: View {
             .padding(Appearance.GridGuide.point * 0.5)
 
             Text(name)
-                .textStyle(.h3)
+                .textStyle(.title)
                 .foregroundColor(textColor)
+                .lineLimit(2)
+                .minimumScaleFactor(0.5)
                 .padding(.bottom, Appearance.GridGuide.point)
+                .padding(.horizontal, Appearance.GridGuide.padding)
         }
         .background(color)
         .cornerRadius(portraitSize.height * 0.5, corners: [.topLeft, .topRight])

@@ -33,7 +33,7 @@ struct WelcomeView: View {
                     .padding(.top, Appearance.GridGuide.largePadding1)
 
                 LargeSolidButton(title: L.continue(),
-                                 font: Appearance.TextStyle.h3.font.asFont,
+                                 font: Appearance.TextStyle.titleSmallBold.font.asFont,
                                  style: .custom(color: .welcome),
                                  isFullWidth: true,
                                  isEnabled: $viewModel.hasAgreedTermsAndConditions,
@@ -47,10 +47,11 @@ struct WelcomeView: View {
 
     private var title: some View {
         Text(L.welcomeTitle())
-            .textStyle(.h2)
+            .textStyle(.h3)
             .multilineTextAlignment(.center)
             .foregroundColor(.white)
             .lineLimit(2)
+            .minimumScaleFactor(0.5)
     }
 }
 

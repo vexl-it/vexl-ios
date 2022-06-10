@@ -62,6 +62,6 @@ struct BitcoinData: Decodable {
             twoDecimalValue = String(format: decimalFormat, percentageChangeOneYearAgo)
         }
 
-        return "\(twoDecimalValue)%"
+        return "\(twoDecimalValue)"
     }
 }
