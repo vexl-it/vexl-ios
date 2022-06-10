@@ -25,8 +25,8 @@ extension RegisterNameAvatarView {
 
         private var nameInput: some View {
             BorderedTextField(placeholder: L.registerNameAvatarInputPlaceholder(),
+                              textStyle: .paragraphMedium,
                               text: $username)
-                .textStyle(.paragraph)
                 .transaction { $0.disablesAnimations = true }
         }
     }

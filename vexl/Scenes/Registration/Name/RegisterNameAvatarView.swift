@@ -72,7 +72,7 @@ struct RegisterNameAvatarView: View {
 
     @ViewBuilder private func actionButton(with action: @escaping () -> Void) -> some View {
         LargeSolidButton(title: L.continue(),
-                         font: Appearance.TextStyle.h3.font.asFont,
+                         font: Appearance.TextStyle.titleSmallBold.font.asFont,
                          style: .custom(color: .welcome),
                          isFullWidth: true,
                          isEnabled: $viewModel.isActionEnabled,

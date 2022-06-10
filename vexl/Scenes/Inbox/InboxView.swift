@@ -53,7 +53,7 @@ struct InboxView: View {
     private var header: some View {
         HStack(alignment: .center) {
             Text(L.chatMainTitle())
-                .textStyle(.h1)
+                .textStyle(.h2)
                 .foregroundColor(.white)
                 .frame(maxWidth: .infinity, alignment: .leading)
 

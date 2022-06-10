@@ -32,10 +32,9 @@ extension RegisterPhoneView {
 
         private var phoneInputView: some View {
             VStack {
-                BorderedTextField(placeholder: "", text: $code)
+                BorderedTextField(placeholder: "", textStyle: .paragraphMedium, text: $code)
                     .multilineTextAlignment(.center)
                     .foregroundColor(Appearance.Colors.primaryText)
-                    .textStyle(.h3)
                     .keyboardType(.numberPad)
                     .disabled(!isEnabled)
 
