@@ -165,11 +165,11 @@ final class RegisterNameAvatarViewModel: ViewModelType {
             }
             .withUnretained(self)
             .handleEvents(receiveOutput: { owner, response in
-                if !response.available {
+                if !response.isAvailable {
                     owner.error = UserError.unavailableUsername
                 }
             })
-            .filter { $0.1.available }
+            .filter { $0.1.isAvailable }
             .sink { owner, _ in
                 owner.currentState = .avatarInput
             }
