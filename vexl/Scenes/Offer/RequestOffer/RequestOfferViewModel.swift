@@ -10,8 +10,9 @@ import Cleevio
 import Combine
 
 final class RequestOfferViewModel: ViewModelType, ObservableObject {
-    
+
     @Inject var userSecurity: UserSecurityType
+    @Inject private var chatService: ChatServiceType
 
     enum State {
         case normal
@@ -53,7 +54,8 @@ final class RequestOfferViewModel: ViewModelType, ObservableObject {
 
     // MARK: - Variables
 
-    @Inject private var chatService: ChatServiceType
+    var username: String = Constants.randomName
+
     private let offer: Offer
     private let cancelBag: CancelBag = .init()
 

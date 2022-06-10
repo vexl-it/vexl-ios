@@ -70,4 +70,8 @@ struct Constants {
     static let bitcoinPollInterval: TimeInterval = 30
 
     static let notAvailable = "N/A"
+
+    // TODO: - remove when we have real random names
+
+    static let randomName = "Random Name"
 }

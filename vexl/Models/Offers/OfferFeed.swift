@@ -12,9 +12,6 @@ struct OfferFeed {
     let viewData: OfferDetailViewData
 
     static func mapToOfferFeed(usingOffer offer: Offer, isRequested: Bool) -> OfferFeed {
-//        let currencySymbol = Constants.currencySymbol
-//        let friendLevel = offer.friendLevel == .firstDegree ? L.marketplaceDetailFriendFirst() : L.marketplaceDetailFriendSecond()
-//        let formattedAmount = offer.maxAmount
         let viewData = OfferDetailViewData(offer: offer, isRequested: isRequested)
         return OfferFeed(offer: offer, viewData: viewData)
     }
@@ -22,7 +19,7 @@ struct OfferFeed {
 
 struct OfferDetailViewData: Identifiable, Hashable {
     let id: String
-    let username = "Enter random name"
+    let username: String = Constants.randomName
     let title: String
     let isRequested: Bool
     let friendLevel: String
@@ -38,7 +35,7 @@ struct OfferDetailViewData: Identifiable, Hashable {
         self.id = offer.offerId
         self.title = offer.description
         self.isRequested = isRequested
-        self.friendLevel = offer.friendLevel == .firstDegree ? L.marketplaceDetailFriendFirst() : L.marketplaceDetailFriendSecond()
+        self.friendLevel = offer.friendLevel.label
         self.amount = "\(formattedAmount)\(currencySymbol)"
         self.paymentMethods = offer.paymentMethods
         self.fee = offer.feeAmount > 0 ? "\(offer.feeAmount)%" : nil

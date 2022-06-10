@@ -27,9 +27,9 @@ final class InboxViewModel: ViewModelType, ObservableObject {
     @Published var primaryActivity: Activity = .init()
 
     @Published var chatItems: [InboxItem] = [
-        .init(avatar: nil, username: "Keichi", detail: "qwerty", time: "Yesterday", offerType: .buy),
-        .init(avatar: nil, username: "Keichi", detail: "qwerty", time: "Yesterday", offerType: .buy),
-        .init(avatar: nil, username: "Keichi", detail: "qwerty", time: "Yesterday", offerType: .sell)
+        .init(avatar: nil, username: Constants.randomName, detail: "qwerty", time: "Yesterday", offerType: .buy),
+        .init(avatar: nil, username: Constants.randomName, detail: "qwerty", time: "Yesterday", offerType: .buy),
+        .init(avatar: nil, username: Constants.randomName, detail: "qwerty", time: "Yesterday", offerType: .sell)
     ]
 
     // MARK: - Coordinator Bindings

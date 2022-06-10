@@ -11,18 +11,24 @@ import Combine
 
 private typealias OfferAndMessage = (offer: Offer, message: ParsedChatMessage)
 private typealias OfferIdsAndMessages = (ids: [String], messages: [ParsedChatMessage])
+private typealias OfferAndSenderKey = (offerPublicKey: String, senderPublicKey: String)
+private typealias OfferSenderAndViewData = (keys: OfferAndSenderKey, viewData: ChatRequestOfferViewData)
+private typealias KeyAndSignature = (keys: OfferAndSenderKey, signature: String)
 
 final class ChatRequestViewModel: ViewModelType, ObservableObject {
-    
+
     @Inject var userSecurity: UserSecurityType
     @Inject var chatService: ChatServiceType
     @Inject var offerService: OfferServiceType
+    @Inject var cryptoService: CryptoServiceType
 
     // MARK: - Action Binding
 
     enum UserAction: Equatable {
         case dismissTap
         case continueTap
+        case acceptTap(id: String)
+        case declineTap(id: String)
     }
 
     let action: ActionSubject<UserAction> = .init()
@@ -52,6 +58,7 @@ final class ChatRequestViewModel: ViewModelType, ObservableObject {
 
     // MARK: - Variables
 
+    private var offerAndSenderKeys: [OfferAndSenderKey] = []
     private let cancelBag: CancelBag = .init()
 
     init() {
@@ -111,23 +118,76 @@ final class ChatRequestViewModel: ViewModelType, ObservableObject {
             .withUnretained(self)
             .sink(receiveCompletion: { _ in },
                   receiveValue: { owner, offerAndMessages in
-                owner.offerRequests = offerAndMessages.map { offer, message -> ChatRequestOfferViewData in
+                let offerRequests = offerAndMessages.map { offer, message -> OfferSenderAndViewData in
                     let offerDetailViewData = OfferDetailViewData(offer: offer, isRequested: false)
-                    return ChatRequestOfferViewData(contactName: "Random name generator",
-                                                    contactFriendLevel: offer.friendLevelString,
-                                                    requestText: message.text ?? "",
-                                                    friends: [],
-                                                    offer: offerDetailViewData)
+                    let keys = OfferAndSenderKey(offerPublicKey: offer.offerPublicKey, senderPublicKey: message.key)
+                    let viewData = ChatRequestOfferViewData(contactName: Constants.randomName,
+                                                            contactFriendLevel: offer.friendLevel.label,
+                                                            requestText: message.text ?? "",
+                                                            friends: [],
+                                                            offer: offerDetailViewData)
+                    return (keys: keys, viewData: viewData)
                 }
+                owner.offerRequests = offerRequests.map { $0.viewData }
+                owner.offerAndSenderKeys = offerRequests.map { $0.keys }
             })
             .store(in: cancelBag)
     }
 
     private func setupActionBindings() {
+
+        let action = action
+            .share()
+
         action
             .filter { $0 == .dismissTap }
             .map { _ -> Route in .dismissTapped }
             .subscribe(route)
             .store(in: cancelBag)
+
+        action
+            .withUnretained(self)
+            .compactMap { owner, action -> Int? in
+                if case let .acceptTap(id) = action,
+                   let offerIndex = owner.offerRequests.firstIndex(where: { $0.offer.id == id }) {
+                    return offerIndex
+                }
+                return nil
+            }
+            .withUnretained(self)
+            .flatMap { owner, index in
+                owner.validateSignature(forOfferIndex: index)
+                    .track(activity: owner.primaryActivity)
+                    .materialize()
+                    .compactMap(\.value)
+                    .eraseToAnyPublisher()
+            }
+            .withUnretained(self)
+            .flatMap { owner, keyAndSignature in
+                owner.chatService
+                    .requestConfirmation(confirmation: true,
+                                         message: "",
+                                         inboxPublicKey: keyAndSignature.keys.offerPublicKey,
+                                         requesterPublicKey: keyAndSignature.keys.senderPublicKey,
+                                         signature: keyAndSignature.signature)
+                    .track(activity: owner.primaryActivity)
+                    .materialize()
+                    .compactMap(\.value)
+            }
+            .sink { _ in
+                print("FINISHED?!")
+            }
+            .store(in: cancelBag)
+    }
+
+    private func validateSignature(forOfferIndex index: Int) -> AnyPublisher<KeyAndSignature, Error> {
+        let keys = offerAndSenderKeys[index]
+        return chatService.requestChallenge(publicKey: keys.offerPublicKey)
+            .flatMapLatest(with: self) { owner, challenge in
+                owner.cryptoService.signECDSA(keys: ECCKeys(pubKey: keys.offerPublicKey, privKey: nil), message: challenge.challenge)
+                    .map { KeyAndSignature(keys: keys, signature: $0) }
+                    .eraseToAnyPublisher()
+            }
+            .eraseToAnyPublisher()
     }
 }
