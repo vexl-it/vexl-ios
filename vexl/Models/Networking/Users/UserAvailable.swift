@@ -8,5 +8,5 @@
 import Foundation
 
 struct UserAvailable: Decodable {
-    let available: Bool
+    let isAvailable: Bool
 }
