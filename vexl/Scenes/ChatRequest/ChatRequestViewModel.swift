@@ -14,6 +14,8 @@ private typealias OfferIdsAndMessages = (ids: [String], messages: [ParsedChatMes
 private typealias OfferAndSenderKey = (offerPublicKey: String, senderPublicKey: String)
 private typealias OfferSenderAndViewData = (keys: OfferAndSenderKey, viewData: ChatRequestOfferViewData)
 private typealias KeyAndSignature = (keys: OfferAndSenderKey, signature: String)
+private typealias IndexAndConfirmation = (index: Int, confirmation: Bool)
+private typealias KeySignatureAndConfirmation = (keys: OfferAndSenderKey, signature: String, confirmation: Bool)
 
 final class ChatRequestViewModel: ViewModelType, ObservableObject {
 
@@ -27,8 +29,7 @@ final class ChatRequestViewModel: ViewModelType, ObservableObject {
     enum UserAction: Equatable {
         case dismissTap
         case continueTap
-        case acceptTap(id: String)
-        case declineTap(id: String)
+        case confirmationTap(id: String, confirmation: Bool)
     }
 
     let action: ActionSubject<UserAction> = .init()
@@ -81,8 +82,8 @@ final class ChatRequestViewModel: ViewModelType, ObservableObject {
     private func setupDataBindings() {
         let offerIds = offerService
             .getAllStoredOfferIds()
-            .setFailureType(to: Error.self)
-            .flatMapLatest(with: self) { owner, ids -> AnyPublisher<OfferIdsAndMessages, Error> in
+            .withUnretained(self)
+            .flatMap { owner, ids -> AnyPublisher<OfferIdsAndMessages, Error> in
                 owner.chatService
                     .getRequestMessages()
                     .track(activity: owner.primaryActivity)
@@ -94,7 +95,8 @@ final class ChatRequestViewModel: ViewModelType, ObservableObject {
             }
 
         let getOffers = offerIds
-            .flatMapLatest(with: self) { owner, offerIdsAndMessages -> AnyPublisher<[OfferAndMessage], Error> in
+            .withUnretained(self)
+            .flatMap { owner, offerIdsAndMessages -> AnyPublisher<[OfferAndMessage], Error> in
                 owner.offerService
                     .getUserOffers(offerIds: offerIdsAndMessages.ids)
                     .track(activity: owner.primaryActivity)
@@ -147,29 +149,30 @@ final class ChatRequestViewModel: ViewModelType, ObservableObject {
 
         action
             .withUnretained(self)
-            .compactMap { owner, action -> Int? in
-                if case let .acceptTap(id) = action,
-                   let offerIndex = owner.offerRequests.firstIndex(where: { $0.offer.id == id }) {
-                    return offerIndex
+            .compactMap { owner, action -> IndexAndConfirmation? in
+                switch action {
+                case let .confirmationTap(id, confirmation):
+                    if let index = owner.offerRequests.firstIndex(where: { $0.offer.id == id }) {
+                        return IndexAndConfirmation(index: index, confirmation: confirmation)
+                    }
+                    return nil
+                default:
+                    return nil
                 }
-                return nil
             }
-            .withUnretained(self)
-            .flatMap { owner, index in
-                owner.validateSignature(forOfferIndex: index)
+            .flatMapLatest(with: self) { owner, indexAndConfirmation in
+                owner.validateSignature(forOfferIndex: indexAndConfirmation.index, confirmation: indexAndConfirmation.confirmation)
                     .track(activity: owner.primaryActivity)
                     .materialize()
                     .compactMap(\.value)
-                    .eraseToAnyPublisher()
             }
-            .withUnretained(self)
-            .flatMap { owner, keyAndSignature in
+            .flatMapLatest(with: self) { owner, keySignatureAndConfirmation in
                 owner.chatService
-                    .requestConfirmation(confirmation: true,
+                    .requestConfirmation(confirmation: keySignatureAndConfirmation.confirmation,
                                          message: "",
-                                         inboxPublicKey: keyAndSignature.keys.offerPublicKey,
-                                         requesterPublicKey: keyAndSignature.keys.senderPublicKey,
-                                         signature: keyAndSignature.signature)
+                                         inboxPublicKey: keySignatureAndConfirmation.keys.offerPublicKey,
+                                         requesterPublicKey: keySignatureAndConfirmation.keys.senderPublicKey,
+                                         signature: keySignatureAndConfirmation.signature)
                     .track(activity: owner.primaryActivity)
                     .materialize()
                     .compactMap(\.value)
@@ -180,7 +183,7 @@ final class ChatRequestViewModel: ViewModelType, ObservableObject {
             .store(in: cancelBag)
     }
 
-    private func validateSignature(forOfferIndex index: Int) -> AnyPublisher<KeyAndSignature, Error> {
+    private func validateSignature(forOfferIndex index: Int, confirmation: Bool) -> AnyPublisher<KeySignatureAndConfirmation, Error> {
         let keys = offerAndSenderKeys[index]
         return chatService.requestChallenge(publicKey: keys.offerPublicKey)
             .flatMapLatest(with: self) { owner, challenge in
@@ -188,6 +191,7 @@ final class ChatRequestViewModel: ViewModelType, ObservableObject {
                     .map { KeyAndSignature(keys: keys, signature: $0) }
                     .eraseToAnyPublisher()
             }
+            .map { KeySignatureAndConfirmation(keys: $0.keys, signature: $0.signature, confirmation: confirmation) }
             .eraseToAnyPublisher()
     }
 }
