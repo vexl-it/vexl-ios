@@ -41,7 +41,13 @@ struct LargeSolidButton: View {
     @Binding var isEnabled: Bool
     let action: () -> Void
 
-    init(title: String, padding: CGFloat = .zero, font: Font, style: Style, isFullWidth: Bool, isEnabled: Binding<Bool>, action: @escaping () -> Void) {
+    init(title: String,
+         padding: CGFloat = .zero,
+         font: Font,
+         style: Style,
+         isFullWidth: Bool,
+         isEnabled: Binding<Bool>,
+         action: @escaping () -> Void) {
         self.title = title
         self.padding = padding
         self.font = font

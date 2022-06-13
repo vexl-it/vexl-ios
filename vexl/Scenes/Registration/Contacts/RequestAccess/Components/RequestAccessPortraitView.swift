@@ -35,7 +35,6 @@ struct RequestAccessPortraitView: View {
 private struct SinglePortraitView: View {
 
     private let portraitSize = CGSize(width: 132.adjusted, height: 132.adjusted)
-    private let avatarSize = CGSize(width: 66.adjusted, height: 66.adjusted)
 
     let name: String
     let image: Data?
@@ -44,14 +43,8 @@ private struct SinglePortraitView: View {
 
     var body: some View {
         VStack {
-            ZStack {
-                Color.white.opacity(0.12)
-
-                displayedImage
-            }
-            .frame(width: portraitSize.height, height: portraitSize.width, alignment: .center)
-            .cornerRadius(portraitSize.height * 0.5)
-            .padding(Appearance.GridGuide.point * 0.5)
+            displayedImage
+                .padding(Appearance.GridGuide.point * 0.5)
 
             Text(name)
                 .textStyle(.title)
@@ -72,11 +65,20 @@ private struct SinglePortraitView: View {
                 .resizable()
                 .scaledToFill()
                 .clipShape(Circle())
+                .frame(size: portraitSize)
         } else {
-            Image(R.image.onboarding.emptyAvatar.name)
-                .resizable()
-                .frame(width: avatarSize.width, height: avatarSize.height, alignment: .center)
-                .clipShape(Circle())
+            ZStack {
+                Color.white.opacity(0.12)
+
+                Image(R.image.onboarding.emptyAvatar.name)
+                    .resizable()
+                    .scaledToFit()
+                    .clipShape(Circle())
+            }
+            .frame(maxWidth: portraitSize.width,
+                   maxHeight: portraitSize.height,
+                   alignment: .center)
+            .cornerRadius(portraitSize.height * 0.5)
         }
     }
 }
