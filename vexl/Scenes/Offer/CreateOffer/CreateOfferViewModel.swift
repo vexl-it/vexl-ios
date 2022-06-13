@@ -65,6 +65,9 @@ final class CreateOfferViewModel: ViewModelType, ObservableObject {
     @Published var selectedBTCOption: [OfferAdvancedBTCOption] = []
     @Published var selectedFriendDegreeOption: OfferAdvancedFriendDegreeOption = .firstDegree
 
+    @Published var deleteTimeUnit: OfferTriggerDeleteTimeUnit = .days
+    @Published var deleteTime: String = Constants.defaultDeleteTime
+
     @Published var state: State = .initial
     @Published var error: Error?
 
@@ -78,6 +81,20 @@ final class CreateOfferViewModel: ViewModelType, ObservableObject {
     var route: CoordinatingSubject<Route> = .init()
 
     // MARK: - Variables
+
+    var expiration: TimeInterval {
+
+        let time = Double(deleteTime) ?? 0
+
+        switch deleteTimeUnit {
+        case .days:
+            return time * Constants.daysToSecondsMultiplier
+        case .weeks:
+            return time * Constants.weeksToSecondsMultiplier
+        case .months:
+            return time * Constants.monthsToSecondsMultiplier
+        }
+    }
 
     var feeValue: Int {
         guard selectedFeeOption == .withFee else {
@@ -278,7 +295,7 @@ final class CreateOfferViewModel: ViewModelType, ObservableObject {
             .withUnretained(self)
             .flatMap { owner, encryptedOffer in
                 owner.offerService
-                    .createOffer(encryptedOffers: encryptedOffer)
+                    .createOffer(encryptedOffers: encryptedOffer, expiration: owner.expiration)
                     .track(activity: owner.primaryActivity)
                     .materialize()
                     .compactMap(\.value)
