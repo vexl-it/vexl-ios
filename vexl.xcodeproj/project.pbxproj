@@ -160,6 +160,7 @@
 		F13B2677281F43A10011F2FB /* Offer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F13B2676281F43A10011F2FB /* Offer.swift */; };
 		F13B2679281FC5A90011F2FB /* OfferLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F13B2678281FC5A90011F2FB /* OfferLocation.swift */; };
 		F13B267B281FF1680011F2FB /* UserOfferKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = F13B267A281FF1680011F2FB /* UserOfferKeys.swift */; };
+		F1483CBF2856CEBE0054B7A2 /* OfferTriggerDeleteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1483CBE2856CEBE0054B7A2 /* OfferTriggerDeleteView.swift */; };
 		F1485624284FD0FB003213D7 /* InboxViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F148561E284FD0FB003213D7 /* InboxViewModel.swift */; };
 		F1485625284FD0FB003213D7 /* InboxFilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1485620284FD0FB003213D7 /* InboxFilterView.swift */; };
 		F1485626284FD0FB003213D7 /* InboxItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1485621284FD0FB003213D7 /* InboxItemView.swift */; };
@@ -462,6 +463,7 @@
 		F13B2676281F43A10011F2FB /* Offer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Offer.swift; sourceTree = "<group>"; };
 		F13B2678281FC5A90011F2FB /* OfferLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferLocation.swift; sourceTree = "<group>"; };
 		F13B267A281FF1680011F2FB /* UserOfferKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserOfferKeys.swift; sourceTree = "<group>"; };
+		F1483CBE2856CEBE0054B7A2 /* OfferTriggerDeleteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferTriggerDeleteView.swift; sourceTree = "<group>"; };
 		F148561E284FD0FB003213D7 /* InboxViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InboxViewModel.swift; sourceTree = "<group>"; };
 		F1485620284FD0FB003213D7 /* InboxFilterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InboxFilterView.swift; sourceTree = "<group>"; };
 		F1485621284FD0FB003213D7 /* InboxItemView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InboxItemView.swift; sourceTree = "<group>"; };
@@ -1284,6 +1286,14 @@
 			path = Offers;
 			sourceTree = "<group>";
 		};
+		F1483CBD2856CEA80054B7A2 /* Triggers */ = {
+			isa = PBXGroup;
+			children = (
+				F1483CBE2856CEBE0054B7A2 /* OfferTriggerDeleteView.swift */,
+			);
+			path = Triggers;
+			sourceTree = "<group>";
+		};
 		F148561D284FD0FB003213D7 /* Inbox */ = {
 			isa = PBXGroup;
 			children = (
@@ -1454,6 +1464,7 @@
 		F188624F281170F200659786 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				F1483CBD2856CEA80054B7A2 /* Triggers */,
 				F13B265A281897890011F2FB /* Advanced */,
 				F18862502811710100659786 /* OfferStatusView.swift */,
 				4FBF620A283CE08800DDBE71 /* OfferAmountRangeView.swift */,
@@ -1888,7 +1899,7 @@
 		};
 		F1B5FCC627C6CF7F0018729B /* ACKLocalization */ = {
 			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 12;
+			buildActionMask = 8;
 			files = (
 			);
 			inputFileListPaths = (
@@ -1900,7 +1911,7 @@
 			);
 			outputPaths = (
 			);
-			runOnlyForDeploymentPostprocessing = 0;
+			runOnlyForDeploymentPostprocessing = 1;
 			shellPath = /bin/sh;
 			shellScript = "# Download the latest localized strings\nif [ \"${CONFIGURATION}\" == \"Debug\" ]\nthen\n    ./Pods/ACKLocalization/ACKLocalization\nfi\n";
 		};
@@ -2021,6 +2032,7 @@
 				F148563F284FD451003213D7 /* ChatActionView.swift in Sources */,
 				F12A150627E1A47D0096543E /* RequestAccessFacebookContactsViewModel.swift in Sources */,
 				F1485647284FD451003213D7 /* ChatHeaderView.swift in Sources */,
+				F1483CBF2856CEBE0054B7A2 /* OfferTriggerDeleteView.swift in Sources */,
 				F12A150427E1A4520096543E /* RequestAccessPhoneContactsViewModel.swift in Sources */,
 				F175AB8927E4F493000DAB15 /* Materialize.swift in Sources */,
 				F1485627284FD0FB003213D7 /* InboxCoordinator.swift in Sources */,

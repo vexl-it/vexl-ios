@@ -7,10 +7,40 @@
 
 import SwiftUI
 
-// TODO: - This view is out of the PoC so it will remain incomplete
-
 struct OfferTriggersView: View {
 
+    @State private var selectedOption: Option = .below
+    @State private var isActiveExpanded = true
+
+    private let options: [Option] = [.below, .above]
+    private let currency: String = Constants.currencySymbol
+
+    @Binding var deleteTime: String
+    @Binding var deleteTimeUnit: OfferTriggerDeleteTimeUnit
+
+    var body: some View {
+        VStack(alignment: .leading) {
+            HStack {
+                Image(systemName: "clock")
+
+                Text(L.offerCreateTriggerTitle())
+                    .textStyle(.title)
+
+                Spacer()
+
+                Image(systemName: "chevron.down")
+            }
+            .foregroundColor(Appearance.Colors.whiteText)
+
+            if isActiveExpanded {
+                OfferTriggerDeleteView(time: $deleteTime,
+                                       timeUnit: $deleteTimeUnit)
+            }
+        }
+    }
+}
+
+extension OfferTriggersView {
     enum Option {
         case below, above
 
@@ -23,88 +53,13 @@ struct OfferTriggersView: View {
             }
         }
     }
-
-    @State var selectedOption: Option = .below
-    @State var isActiveExpanded = true
-
-    @State var amount: String
-    let options: [Option] = [.below, .above]
-
-    let currency: String = "$"
-
-    var body: some View {
-        VStack(alignment: .leading) {
-            HStack {
-                Image(systemName: "clock")
-
-                Text(L.offerCreateTriggerTitle())
-                    .textStyle(.h3)
-
-                Spacer()
-
-                Image(systemName: "chevron.down")
-            }
-            .foregroundColor(Appearance.Colors.whiteText)
-
-            HStack {
-                Text(L.offerCreateTriggerActive())
-                    .textStyle(.paragraph)
-
-                Spacer()
-
-                Button {
-                    isActiveExpanded.toggle()
-                } label: {
-                    Image(systemName: isActiveExpanded ? "xmark" : "plus")
-                }
-            }
-            .padding(.top, Appearance.GridGuide.mediumPadding1)
-            .foregroundColor(Appearance.Colors.gray3)
-
-            if isActiveExpanded {
-                HStack {
-                    SingleOptionPickerView(selectedOption: $selectedOption,
-                                           options: options,
-                                           content: { option in
-                        Text(option.title)
-                    },
-                                           action: { index in
-                        print("index \(index)")
-                    })
-
-                    Spacer()
-
-                    VLine(color: Appearance.Colors.gray2,
-                          width: 2)
-
-                    Spacer()
-
-                    HStack(spacing: Appearance.GridGuide.tinyPadding) {
-                        Text(currency)
-                            .textStyle(.h3)
-                            .foregroundColor(Appearance.Colors.green100)
-
-                        TextField("", text: $amount)
-                            .textStyle(.h3)
-                            .foregroundColor(Appearance.Colors.green100)
-                            .keyboardType(.numberPad)
-                    }
-                    .frame(width: UIScreen.main.width * 0.33)
-                }
-                .padding(Appearance.GridGuide.point)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .background(Appearance.Colors.gray1)
-                .cornerRadius(Appearance.GridGuide.buttonCorner)
-            }
-        }
-    }
 }
 
 #if DEBUG || DEVEL
 struct OfferTriggersViewPreview: PreviewProvider {
     static var previews: some View {
-        OfferTriggersView(amount: "123")
-            .previewDevice("iPhone 11")
+        OfferTriggersView(deleteTime: .constant("30"),
+                          deleteTimeUnit: .constant(.days))
             .background(Color.black)
     }
 }

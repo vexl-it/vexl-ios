@@ -53,6 +53,10 @@ struct CreateOfferView: View {
                     OfferPaymentMethodView(selectedOptions: $viewModel.selectedPaymentMethodOptions)
                         .padding(.top, Appearance.GridGuide.largePadding1)
 
+                    OfferTriggersView(deleteTime: $viewModel.deleteTime,
+                                      deleteTimeUnit: $viewModel.deleteTimeUnit)
+                    .padding(.top, Appearance.GridGuide.mediumPadding2)
+
                     OfferAdvancedFilterView(
                         selectedTypeOptions: $viewModel.selectedBTCOption,
                         selectedFriendDegreeOption: $viewModel.selectedFriendDegreeOption

@@ -67,7 +67,8 @@ final class CreateOfferViewModel: ViewModelType, ObservableObject {
 
     // TODO: - get the real value from a picker when implemented
 
-    @Published var expiration: TimeInterval = Constants.expiration
+    @Published var deleteTimeUnit: OfferTriggerDeleteTimeUnit = .days
+    @Published var deleteTime: String = Constants.defaultDeleteTime
 
     @Published var state: State = .initial
     @Published var error: Error?
@@ -82,6 +83,20 @@ final class CreateOfferViewModel: ViewModelType, ObservableObject {
     var route: CoordinatingSubject<Route> = .init()
 
     // MARK: - Variables
+
+    var expiration: TimeInterval {
+
+        let time = Double(deleteTime) ?? 0
+
+        switch deleteTimeUnit {
+        case .days:
+            return time * Constants.daysToSecondsMultiplier
+        case .weeks:
+            return time * Constants.weeksToSecondsMultiplier
+        case .months:
+            return time * Constants.monthsToSecondsMultiplier
+        }
+    }
 
     var feeValue: Int {
         guard selectedFeeOption == .withFee else {

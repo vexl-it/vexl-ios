@@ -122,6 +122,11 @@
 "offer.create.trigger.below" = "below";
 "offer.create.trigger.above" = "above";
 "offer.createtrigger.btc.current" = "currently 1 BTC = $%f";
+"offer.create.trigger.delete" = "Delete offer after";
+"offer.create.trigger.delete.timeframe" = "Timeframe";
+"offer.create.trigger.delete.days" = "Days";
+"offer.create.trigger.delete.weeks" = "Weeks";
+"offer.create.trigger.delete.months" = "Months";
 "offer.create.status.pause" = "Pause";
 "offer.create.status.delete" = "Delete";
 "offer.create.status.active" = "Active";
