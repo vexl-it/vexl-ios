@@ -66,9 +66,9 @@ extension RegisterNameAvatarView {
                         if let image = image {
                             Image(uiImage: image)
                                 .resizable()
-                                .scaledToFill()
-                                .frame(size: defaultImageSize)
+                                .aspectRatio(contentMode: .fill)
                                 .clipShape(Circle())
+                                .frame(size: defaultImageSize)
                         } else {
                             Image(R.image.onboarding.addAvatar.name)
                         }
