@@ -66,7 +66,7 @@ extension RegisterNameAvatarView {
                         if let image = image {
                             Image(uiImage: image)
                                 .resizable()
-                                .aspectRatio(contentMode: .fill)
+                                .scaledToFill()
                                 .clipShape(Circle())
                                 .frame(size: defaultImageSize)
                         } else {
