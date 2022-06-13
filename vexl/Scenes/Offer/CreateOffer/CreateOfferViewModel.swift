@@ -65,8 +65,6 @@ final class CreateOfferViewModel: ViewModelType, ObservableObject {
     @Published var selectedBTCOption: [OfferAdvancedBTCOption] = []
     @Published var selectedFriendDegreeOption: OfferAdvancedFriendDegreeOption = .firstDegree
 
-    // TODO: - get the real value from a picker when implemented
-
     @Published var deleteTimeUnit: OfferTriggerDeleteTimeUnit = .days
     @Published var deleteTime: String = Constants.defaultDeleteTime
 
