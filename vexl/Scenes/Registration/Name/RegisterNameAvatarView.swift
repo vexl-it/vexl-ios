@@ -63,9 +63,12 @@ struct RegisterNameAvatarView: View {
                             .cancel()
                         ])
         })
-        .sheet(isPresented: $viewModel.showImagePicker) {
-            ImagePicker(sourceType: viewModel.imageSource == .photoAlbum ? .photoLibrary : .camera,
-                        selectedImage: $viewModel.avatar)
+        .fullScreenCover(isPresented: $viewModel.showImagePicker) {
+            ImagePicker(
+                sourceType: viewModel.imageSource == .photoAlbum ? .photoLibrary : .camera,
+                selectedImage: $viewModel.avatar
+            )
+            .background(Color.black.ignoresSafeArea())
         }
         .animation(.easeInOut(duration: 0.5), value: viewModel.currentState)
     }
