@@ -83,17 +83,20 @@ final class CreateOfferViewModel: ViewModelType, ObservableObject {
     // MARK: - Variables
 
     var expiration: TimeInterval {
-
         let time = Double(deleteTime) ?? 0
+        let currentTimestamp = Date().timeIntervalSince1970
+        var additionalSeconds: TimeInterval
 
         switch deleteTimeUnit {
         case .days:
-            return time * Constants.daysToSecondsMultiplier
+            additionalSeconds = time * Constants.daysToSecondsMultiplier
         case .weeks:
-            return time * Constants.weeksToSecondsMultiplier
+            additionalSeconds = time * Constants.weeksToSecondsMultiplier
         case .months:
-            return time * Constants.monthsToSecondsMultiplier
+            additionalSeconds = time * Constants.monthsToSecondsMultiplier
         }
+
+        return currentTimestamp + additionalSeconds
     }
 
     var feeValue: Int {
