@@ -22,6 +22,10 @@ enum MessageType: String {
     }
 }
 
+struct EncryptedChatMessageList: Codable {
+    let messages: [EncryptedChatMessage]
+}
+
 struct EncryptedChatMessage: Codable {
 
     let senderPublicKey: String

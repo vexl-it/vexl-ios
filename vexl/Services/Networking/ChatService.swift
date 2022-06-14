@@ -18,7 +18,7 @@ protocol ChatServiceType {
                              signature: String) -> AnyPublisher<Void, Error>
 
     func requestChallenge(publicKey: String) -> AnyPublisher<ChatChallenge, Error>
-    func pullInboxMessages(publicKey: String, signature: String) -> AnyPublisher<[EncryptedChatMessage], Error>
+    func pullInboxMessages(publicKey: String, signature: String) -> AnyPublisher<EncryptedChatMessageList, Error>
     func deleteInboxMessages(publicKey: String) -> AnyPublisher<Void, Error>
 
     func saveFetchedMessages(_ messages: [ParsedChatMessage], inboxPublicKey: String) -> AnyPublisher<Void, Error>
@@ -83,8 +83,8 @@ final class ChatService: BaseService, ChatServiceType {
             .eraseToAnyPublisher()
     }
 
-    func pullInboxMessages(publicKey: String, signature: String) -> AnyPublisher<[EncryptedChatMessage], Error> {
-        request(type: [EncryptedChatMessage].self, endpoint: ChatRouter.pullChat(publicKey: publicKey, signature: signature))
+    func pullInboxMessages(publicKey: String, signature: String) -> AnyPublisher<EncryptedChatMessageList, Error> {
+        request(type: EncryptedChatMessageList.self, endpoint: ChatRouter.pullChat(publicKey: publicKey, signature: signature))
             .eraseToAnyPublisher()
     }
 

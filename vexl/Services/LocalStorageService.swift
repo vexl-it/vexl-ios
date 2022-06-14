@@ -14,6 +14,10 @@ enum LocalStorageError: Error {
 }
 
 protocol LocalStorageServiceType {
+    func saveOffer(id: String, type: OfferType, key: ECCKeys) -> AnyPublisher<Void, Error>
+    func getOffersIds(forType offerType: OfferType) -> AnyPublisher<[String], Never>
+    func getAllOffersIds() -> AnyPublisher<[String], Never>
+    func getOfferKeys() -> AnyPublisher<[UserOfferKeys.OfferKey], Error>
     func saveInbox(_ inbox: OfferInbox) throws
     func getInboxes(ofType type: OfferInbox.InboxType) throws -> [OfferInbox]
     func saveMessages(_ messages: [ParsedChatMessage]) -> AnyPublisher<Void, Error>
@@ -25,6 +29,51 @@ protocol LocalStorageServiceType {
 }
 
 final class LocalStorageService: LocalStorageServiceType {
+
+    func saveOffer(id: String, type: OfferType, key: ECCKeys) -> AnyPublisher<Void, Error> {
+        Future { promise in
+            let storedOfferKeys: UserOfferKeys? = UserDefaults.standard.codable(forKey: .storedOfferKeys)
+            var currentOfferKeys = storedOfferKeys ?? .init(keys: [])
+            currentOfferKeys.keys.append(.init(id: id,
+                                               privateKey: key.privateKey,
+                                               publicKey: key.publicKey,
+                                               type: type.rawValue))
+            UserDefaults.standard.set(value: currentOfferKeys, forKey: .storedOfferKeys)
+            promise(.success(()))
+        }
+        .eraseToAnyPublisher()
+    }
+
+    func getOffersIds(forType offerType: OfferType) -> AnyPublisher<[String], Never> {
+        Future { promise in
+            let storedOfferKeys: UserOfferKeys? = UserDefaults.standard.codable(forKey: .storedOfferKeys)
+            let ids = storedOfferKeys?.keys
+                .filter { $0.offerType == offerType }
+                .map { $0.id }
+            promise(.success(ids ?? []))
+        }
+        .eraseToAnyPublisher()
+    }
+
+    func getAllOffersIds() -> AnyPublisher<[String], Never> {
+        Future { promise in
+            let storedOfferKeys: UserOfferKeys? = UserDefaults.standard.codable(forKey: .storedOfferKeys)
+            let ids = storedOfferKeys?.keys
+                .map { $0.id }
+            promise(.success(ids ?? []))
+        }
+        .eraseToAnyPublisher()
+    }
+    
+    func getOfferKeys() -> AnyPublisher<[UserOfferKeys.OfferKey], Error> {
+        Future { promise in
+            let storedOfferKeys: UserOfferKeys? = UserDefaults.standard.codable(forKey: .storedOfferKeys)
+            let offerKey = storedOfferKeys?.keys
+            promise(.success(offerKey ?? []))
+        }
+        .eraseToAnyPublisher()
+    }
+
     func saveInbox(_ inbox: OfferInbox) throws {
         switch inbox.type {
         case .created:

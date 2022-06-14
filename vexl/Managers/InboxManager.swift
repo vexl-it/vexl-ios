@@ -148,7 +148,7 @@ final class InboxManager: InboxManagerType {
 
     private func pullInboxMessage(keyAndSignature: KeyAndSignature) -> AnyPublisher<KeyAndMessages, Error> {
         chatService.pullInboxMessages(publicKey: keyAndSignature.key.publicKey, signature: keyAndSignature.signature)
-            .map { KeyAndMessages(key: keyAndSignature.key, messages: $0) }
+            .map { KeyAndMessages(key: keyAndSignature.key, messages: $0.messages) }
             .eraseToAnyPublisher()
     }
 
