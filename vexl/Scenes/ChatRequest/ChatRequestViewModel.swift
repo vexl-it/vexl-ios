@@ -106,7 +106,7 @@ final class ChatRequestViewModel: ViewModelType, ObservableObject {
                         var offerKeyAndMessages: [OfferKeyAndMessage] = []
                         let decryptedOffers = Offer.createOffers(from: encryptedOffers, withKey: owner.userSecurity.userKeys)
                         for message in offerKeysAndMessages.messages {
-                            if let decryptedOffer = decryptedOffers.first(where: { $0.offerPublicKey == message.from }),
+                            if let decryptedOffer = decryptedOffers.first(where: { $0.offerPublicKey == message.inboxKey }),
                                let key = offerKeysAndMessages.keys.first(where: { $0.id == decryptedOffer.offerId }) {
                                 offerKeyAndMessages.append(OfferKeyAndMessage(offer: decryptedOffer, key: key, message: message))
                             }
@@ -123,7 +123,7 @@ final class ChatRequestViewModel: ViewModelType, ObservableObject {
                   receiveValue: { owner, offerKeyAndMessages in
                 let offerRequests = offerKeyAndMessages.map { offer, key, message -> OfferSenderAndViewData in
                     let offerDetailViewData = OfferDetailViewData(offer: offer, isRequested: false)
-                    let keys = OfferKeyAndSenderKey(offerKey: key, senderPublicKey: message.key)
+                    let keys = OfferKeyAndSenderKey(offerKey: key, senderPublicKey: message.senderKey)
                     let viewData = ChatRequestOfferViewData(contactName: Constants.randomName,
                                                             contactFriendLevel: offer.friendLevel.label,
                                                             requestText: message.text ?? "",

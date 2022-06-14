@@ -33,15 +33,13 @@ struct ParsedChatMessage: Codable {
         }
     }
 
-    // TODO: - ask if FROM is needed to be send? maybe just set it from the local inbox when parsing.
-
-    let key: String // senderKey
+    let senderKey: String
+    let inboxKey: String
     let id: String
     let text: String?
     let image: String?
     let messageTypeValue: String // type send by the server
-    var contentTypeValue: String = "" // type for the content used locally by devices
-    let from: String
+    let contentTypeValue: String // type for the content used locally by devices
     let time: TimeInterval
     let user: ChatUser?
 
@@ -57,12 +55,10 @@ struct ParsedChatMessage: Codable {
 
     var previewText: String {
         switch contentType {
-        case .text:
+        case .text, .communicationRequestResponse:
             return text ?? ""
         case .image:
-            return "An image was shared"
-        case .communicationRequestResponse:
-            return "A conversation was started"
+            return L.chatMessageConversationImage()
         default:
             return ""
         }
@@ -70,11 +66,10 @@ struct ParsedChatMessage: Codable {
 
     /// Use this initializer for parsing the encrypted message from the Backend
 
-    init?(chatMessage: EncryptedChatMessage, key: ECCKeys) {
+    init?(chatMessage: EncryptedChatMessage, key: ECCKeys, inboxPublicKey: String) {
         guard let json = chatMessage.asJSON(with: key),
               let id = json["uuid"] as? String,
               let contentType = json["type"] as? String,
-              let from = json["from"] as? String,
               let time = json["time"] as? TimeInterval else {
                   return nil
               }
@@ -82,13 +77,13 @@ struct ParsedChatMessage: Codable {
         let text = json["text"] as? String
         let image = json["image"] as? String
 
-        self.key = chatMessage.senderPublicKey
+        self.senderKey = chatMessage.senderPublicKey
+        self.inboxKey = inboxPublicKey
         self.id = id
         self.text = text
         self.image = image
         self.contentTypeValue = contentType
         self.messageTypeValue = chatMessage.messageType
-        self.from = from
         self.time = time
         self.user = ChatUser(name: json["username"] as? String,
                              image: json["userAvatar"] as? String)
@@ -99,10 +94,10 @@ struct ParsedChatMessage: Codable {
 
     init?(inboxPublicKey: String, messageType: MessageType, contentType: ContentType, text: String, senderKey: String) {
         guard messageType != .invalid || messageType != .message else { return nil }
-        self.key = senderKey
+        self.senderKey = senderKey
         self.id = UUID().uuidString
         self.text = text
-        self.from = inboxPublicKey
+        self.inboxKey = inboxPublicKey
         self.messageTypeValue = messageType.rawValue
         self.contentTypeValue = contentType.rawValue
         self.time = Date().timeIntervalSince1970
@@ -114,7 +109,7 @@ struct ParsedChatMessage: Codable {
         ParsedChatMessage(inboxPublicKey: inboxPublicKey,
                           messageType: isConfirmed ? .messagingApproval : .messagingRejection,
                           contentType: .communicationRequestResponse,
-                          text: "A conversation was started",
+                          text: L.chatMessageConversationRequestAccepted(),
                           senderKey: senderKey)
     }
 
@@ -127,37 +122,13 @@ struct ParsedChatMessage: Codable {
     }
 
     func asString(withKey key: ECCKeys) -> String? {
-        var json: [String: Any] = [
-            "uuid": id,
-            "type": contentTypeValue,
-            "from": from,
-            "time": time
-        ]
-
-        if let text = text {
-            json["text"] = text
-        }
-
-        if let image = image {
-            json["image"] = image
-        }
-
-        if let user = user {
-            json["username"] = user.name
-            json["userAvatar"] = user.image
-        }
-
-        guard let data = try? JSONSerialization.data(withJSONObject: json, options: .prettyPrinted) else {
-            return nil
-        }
-        return try? String(data: data, encoding: .utf8)?.ecc.encrypt(publicKey: key.publicKey)
+        try? self.asString?.ecc.encrypt(publicKey: key.publicKey)
     }
 
     var asString: String? {
         var json: [String: Any] = [
             "uuid": id,
             "type": contentTypeValue,
-            "from": from,
             "time": time
         ]
 

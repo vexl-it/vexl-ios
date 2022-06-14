@@ -58,7 +58,7 @@ final class InboxViewModel: ViewModelType, ObservableObject {
                   receiveValue: { owner, messages in
                 owner.inboxItems = messages.map { message -> InboxItem in
                     InboxItem(avatar: nil,
-                              username: Constants.randomName + "inbox: \(message.from) sender: \(message.key)",
+                              username: Constants.randomName + "inbox: \(message.inboxKey) sender: \(message.senderKey)",
                               detail: message.previewText,
                               time: Formatters.chatDateFormatter.string(from: Date(timeIntervalSince1970: message.time)),
                               offerType: .buy)
