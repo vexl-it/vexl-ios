@@ -9,30 +9,6 @@ import Foundation
 
 struct ParsedChatMessage: Codable {
 
-    // TODO: - clean this type as some of them are not needed because of the MessageType that comes from the server.
-    
-    enum ContentType: String {
-        case text = "TEXT"
-        case image = "IMAGE"
-        case anonymousRequest = "ANON_REQUEST"
-        case anonymousRequestResponse = "ANON_REQUEST_RESPONSE"
-        case communicationRequest = "COMMUNICATION_REQUEST"
-        case communicationRequestResponse = "COMMUNICATION_REQUEST_RESPONSE"
-        case deleteChat = "DELETE_CHAT"
-        case none
-    }
-
-    struct ChatUser: Codable {
-        let name: String
-        let image: String
-
-        init?(name: String?, image: String?) {
-            guard let name = name, let image = image else { return nil }
-            self.name = name
-            self.image = image
-        }
-    }
-
     let senderKey: String
     let inboxKey: String
     let id: String
@@ -113,5 +89,32 @@ struct ParsedChatMessage: Codable {
             return nil
         }
         return String(data: data, encoding: .utf8)
+    }
+}
+
+extension ParsedChatMessage {
+
+    // TODO: - clean this type as some of them are not needed because of the MessageType that comes from the server.
+    
+    enum ContentType: String {
+        case text = "TEXT"
+        case image = "IMAGE"
+        case anonymousRequest = "ANON_REQUEST"
+        case anonymousRequestResponse = "ANON_REQUEST_RESPONSE"
+        case communicationRequest = "COMMUNICATION_REQUEST"
+        case communicationRequestResponse = "COMMUNICATION_REQUEST_RESPONSE"
+        case deleteChat = "DELETE_CHAT"
+        case none
+    }
+
+    struct ChatUser: Codable {
+        let name: String
+        let image: String
+
+        init?(name: String?, image: String?) {
+            guard let name = name, let image = image else { return nil }
+            self.name = name
+            self.image = image
+        }
     }
 }
