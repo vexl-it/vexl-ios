@@ -40,6 +40,49 @@ struct ParsedChatMessage: Codable {
         }
     }
 
+    var avatar: Data? {
+        nil
+    }
+
+    var username: String? {
+        user?.name ?? Constants.randomName
+    }
+
+    func asString(withKey key: ECCKeys) -> String? {
+        try? self.asString?.ecc.encrypt(publicKey: key.publicKey)
+    }
+
+    var asString: String? {
+        var json: [String: Any] = [
+            "uuid": id,
+            "type": contentTypeValue,
+            "time": time
+        ]
+
+        if let text = text {
+            json["text"] = text
+        }
+
+        if let image = image {
+            json["image"] = image
+        }
+
+        if let user = user {
+            json["username"] = user.name
+            json["userAvatar"] = user.image
+        }
+
+        guard let data = try? JSONSerialization.data(withJSONObject: json, options: .prettyPrinted) else {
+            return nil
+        }
+        return String(data: data, encoding: .utf8)
+    }
+}
+
+// MARK: - Initializers and helpers
+
+extension ParsedChatMessage {
+
     /// Use this initializer for parsing the encrypted message from the Backend
 
     init?(chatMessage: EncryptedChatMessage, key: ECCKeys, inboxPublicKey: String) {
@@ -96,37 +139,9 @@ struct ParsedChatMessage: Codable {
                           text: text,
                           senderKey: senderKey)
     }
-
-    func asString(withKey key: ECCKeys) -> String? {
-        try? self.asString?.ecc.encrypt(publicKey: key.publicKey)
-    }
-
-    var asString: String? {
-        var json: [String: Any] = [
-            "uuid": id,
-            "type": contentTypeValue,
-            "time": time
-        ]
-
-        if let text = text {
-            json["text"] = text
-        }
-
-        if let image = image {
-            json["image"] = image
-        }
-
-        if let user = user {
-            json["username"] = user.name
-            json["userAvatar"] = user.image
-        }
-
-        guard let data = try? JSONSerialization.data(withJSONObject: json, options: .prettyPrinted) else {
-            return nil
-        }
-        return String(data: data, encoding: .utf8)
-    }
 }
+
+// MARK: - Enum and Structs
 
 extension ParsedChatMessage {
 
