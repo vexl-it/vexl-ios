@@ -68,19 +68,7 @@ struct ParsedChatMessage: Codable {
         }
     }
 
-    // TODO: - Create static methods as helpers to have more verbosity
-
-    init?(approvalRequest: EncryptedChatMessage, inboxPublicKey: String) {
-        self.key = approvalRequest.senderPublicKey
-        self.from = inboxPublicKey
-        self.id = UUID().uuidString
-        self.time = Date().timeIntervalSince1970 // remove
-        self.messageTypeValue = MessageType.messagingApproval.rawValue
-        self.contentTypeValue = ContentType.communicationRequestResponse.rawValue
-        self.text = nil
-        self.image = nil
-        self.user = nil
-    }
+    /// Use this initializer for parsing the encrypted message from the Backend
 
     init?(chatMessage: EncryptedChatMessage, key: ECCKeys) {
         guard let json = chatMessage.asJSON(with: key),
@@ -106,6 +94,9 @@ struct ParsedChatMessage: Codable {
                              image: json["userAvatar"] as? String)
     }
 
+    /// Use this initializer to manually create a message,
+    /// although it is recommended to use one of the static methods that will set the correct MessageType
+
     init?(inboxPublicKey: String, messageType: MessageType, contentType: ContentType, text: String, senderKey: String) {
         guard messageType != .invalid || messageType != .message else { return nil }
         self.key = senderKey
@@ -117,6 +108,49 @@ struct ParsedChatMessage: Codable {
         self.time = Date().timeIntervalSince1970
         self.image = nil
         self.user = nil
+    }
+
+    static func createRequestConfirmation(isConfirmed: Bool, inboxPublicKey: String, senderKey: String) -> ParsedChatMessage? {
+        ParsedChatMessage(inboxPublicKey: inboxPublicKey,
+                          messageType: isConfirmed ? .messagingApproval : .messagingRejection,
+                          contentType: .communicationRequestResponse,
+                          text: "A conversation was started",
+                          senderKey: senderKey)
+    }
+
+    static func createMessagingRequest(inboxPublicKey: String, senderKey: String, text: String) -> ParsedChatMessage? {
+        ParsedChatMessage(inboxPublicKey: inboxPublicKey,
+                          messageType: .messagingRequest,
+                          contentType: .communicationRequest,
+                          text: text,
+                          senderKey: senderKey)
+    }
+
+    func asString(withKey key: ECCKeys) -> String? {
+        var json: [String: Any] = [
+            "uuid": id,
+            "type": contentTypeValue,
+            "from": from,
+            "time": time
+        ]
+
+        if let text = text {
+            json["text"] = text
+        }
+
+        if let image = image {
+            json["image"] = image
+        }
+
+        if let user = user {
+            json["username"] = user.name
+            json["userAvatar"] = user.image
+        }
+
+        guard let data = try? JSONSerialization.data(withJSONObject: json, options: .prettyPrinted) else {
+            return nil
+        }
+        return try? String(data: data, encoding: .utf8)?.ecc.encrypt(publicKey: key.publicKey)
     }
 
     var asString: String? {

@@ -64,7 +64,7 @@ final class LocalStorageService: LocalStorageServiceType {
         }
         .eraseToAnyPublisher()
     }
-    
+
     func getOfferKeys() -> AnyPublisher<[UserOfferKeys.OfferKey], Error> {
         Future { promise in
             let storedOfferKeys: UserOfferKeys? = UserDefaults.standard.codable(forKey: .storedOfferKeys)

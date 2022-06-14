@@ -22,5 +22,9 @@ struct UserOfferKeys: Codable {
         var offerType: OfferType? {
             OfferType(rawValue: type)
         }
+
+        var key: ECCKeys {
+            ECCKeys(pubKey: publicKey, privKey: privateKey)
+        }
     }
 }

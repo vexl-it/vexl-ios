@@ -167,16 +167,22 @@ final class ChatRequestViewModel: ViewModelType, ObservableObject {
                     .materialize()
                     .compactMap(\.value)
             }
-            .flatMapLatest(with: self) { owner, keySignatureAndConfirmation in
-                owner.chatService
+            .flatMapLatest(with: self) { owner, keySignatureAndConfirmation -> AnyPublisher<Void, Never> in
+
+                let message = ParsedChatMessage.createRequestConfirmation(isConfirmed: keySignatureAndConfirmation.confirmation,
+                                                                          inboxPublicKey: keySignatureAndConfirmation.keys.offerKey.publicKey,
+                                                                          senderKey: keySignatureAndConfirmation.keys.senderPublicKey)
+
+                return owner.chatService
                     .requestConfirmation(confirmation: keySignatureAndConfirmation.confirmation,
-                                         message: "",
+                                         message: message?.asString(withKey: keySignatureAndConfirmation.keys.offerKey.key) ?? "",
                                          inboxPublicKey: keySignatureAndConfirmation.keys.offerKey.publicKey,
                                          requesterPublicKey: keySignatureAndConfirmation.keys.senderPublicKey,
                                          signature: keySignatureAndConfirmation.signature)
                     .track(activity: owner.primaryActivity)
                     .materialize()
                     .compactMap(\.value)
+                    .eraseToAnyPublisher()
             }
             .sink { _ in
                 print("FINISHED?!")
@@ -188,7 +194,7 @@ final class ChatRequestViewModel: ViewModelType, ObservableObject {
         let keys = offerAndSenderKeys[index]
         return chatService.requestChallenge(publicKey: keys.offerKey.publicKey)
             .flatMapLatest(with: self) { owner, challenge in
-                owner.cryptoService.signECDSA(keys: ECCKeys(pubKey: keys.offerKey.publicKey, privKey: keys.offerKey.privateKey),
+                owner.cryptoService.signECDSA(keys: keys.offerKey.key,
                                               message: challenge.challenge)
                     .map { KeyAndSignature(keys: keys, signature: $0) }
                     .eraseToAnyPublisher()

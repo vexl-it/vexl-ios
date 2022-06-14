@@ -164,13 +164,7 @@ final class InboxManager: InboxManagerType {
 
     private func parseMessages(_ messages: [EncryptedChatMessage], key: ECCKeys) -> AnyPublisher<[ParsedChatMessage], Error> {
         messages.publisher
-            .compactMap { message -> ParsedChatMessage? in
-                if message.type == .messagingApproval {
-                    return ParsedChatMessage(approvalRequest: message, inboxPublicKey: key.publicKey)
-                } else {
-                    return ParsedChatMessage(chatMessage: message, key: key)
-                }
-            }
+            .compactMap { ParsedChatMessage(chatMessage: $0, key: key) }
             .collect()
             .setFailureType(to: Error.self)
             .eraseToAnyPublisher()
