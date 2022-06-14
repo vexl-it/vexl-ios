@@ -96,19 +96,13 @@ final class ChatService: BaseService, ChatServiceType {
     func saveFetchedMessages(_ messages: [ParsedChatMessage], inboxPublicKey: String) -> AnyPublisher<Void, Error> {
         localStorageService.saveMessages(messages)
             .flatMapLatest(with: self) { owner, _ -> AnyPublisher<Void, Error> in
-                owner.saveRequestsMessages(messages, inboxPublicKey: inboxPublicKey)
+                owner.prepareMessages(messages, inboxPublicKey: inboxPublicKey)
             }
             .eraseToAnyPublisher()
     }
 
     func getInboxMessages() -> AnyPublisher<[ParsedChatMessage], Error> {
-
-        // Will fetch data from the display messages / last messages
-
-        Future { promise in
-            promise(.success([]))
-        }
-        .eraseToAnyPublisher()
+        localStorageService.getInboxMessages()
     }
 
     func getRequestMessages() -> AnyPublisher<[ParsedChatMessage], Error> {
@@ -117,17 +111,56 @@ final class ChatService: BaseService, ChatServiceType {
 
     // MARK: - Helpers
 
-    private func saveRequestsMessages(_ messages: [ParsedChatMessage], inboxPublicKey: String) -> AnyPublisher<Void, Error> {
-        let request = messages
-            .first(where: { $0.messageType == .messagingRequest })
+    private func prepareMessages(_ messages: [ParsedChatMessage], inboxPublicKey: String) -> AnyPublisher<Void, Error> {
 
-        if let request = request {
-            return localStorageService.saveRequestMessage(request, inboxPublicKey: inboxPublicKey)
-                .asVoid()
-                .eraseToAnyPublisher()
-        } else {
-            return Just(()).setFailureType(to: Error.self)
-                .eraseToAnyPublisher()
-        }
+        let saveEachParticularMessage = messages.publisher
+            .withUnretained(self)
+            .flatMap { owner, message -> AnyPublisher<Void, Error> in
+                switch message.messageType {
+                case .messagingRequest:
+                    return owner.saveRequestMessage(message, inboxPublicKey: inboxPublicKey)
+                case .messagingApproval:
+                    return owner.saveAcceptedRequest(message, inboxPublicKey: inboxPublicKey)
+                case .messagingRejection:
+                    return owner.removeRejectedRequest(message, inboxPublicKey: inboxPublicKey)
+                case .deleteChat, .invalid, .message, .revealApproval, .revealRequest:
+                    return Just(()).setFailureType(to: Error.self)
+                        .eraseToAnyPublisher()
+                }
+            }
+            .collect()
+
+        let saveDisplayMessage = saveEachParticularMessage
+            .withUnretained(self)
+            .flatMap { owner, _ -> AnyPublisher<Void, Error> in
+                let displayMessage = messages
+                    .last { MessageType.displayableMessages.contains($0.messageType) }
+
+                guard let displayMessage = displayMessage else {
+                    return Just(()).setFailureType(to: Error.self)
+                        .eraseToAnyPublisher()
+                }
+
+                return owner.localStorageService.saveInboxMessage(displayMessage, inboxPublicKey: inboxPublicKey)
+            }
+
+        return saveDisplayMessage
+            .eraseToAnyPublisher()
+    }
+
+    private func saveRequestMessage(_ message: ParsedChatMessage, inboxPublicKey: String) -> AnyPublisher<Void, Error> {
+        localStorageService.saveRequestMessage(message, inboxPublicKey: inboxPublicKey)
+    }
+
+    private func saveAcceptedRequest(_ message: ParsedChatMessage, inboxPublicKey: String) -> AnyPublisher<Void, Error> {
+        localStorageService.saveInboxMessage(message, inboxPublicKey: inboxPublicKey)
+    }
+
+    // TODO: - What to do if the message is APPROVAL_REJECTED? delete from request inbox?
+
+    private func removeRejectedRequest(_ message: ParsedChatMessage, inboxPublicKey: String) -> AnyPublisher<Void, Error> {
+        Just(())
+            .setFailureType(to: Error.self)
+            .eraseToAnyPublisher()
     }
 }

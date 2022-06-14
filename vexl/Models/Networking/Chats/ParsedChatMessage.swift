@@ -10,7 +10,7 @@ import Foundation
 struct ParsedChatMessage: Codable {
 
     // TODO: - clean this type as some of them are not needed because of the MessageType that comes from the server.
-    
+
     enum ContentType: String {
         case text = "TEXT"
         case image = "IMAGE"
@@ -33,12 +33,14 @@ struct ParsedChatMessage: Codable {
         }
     }
 
+    // TODO: - ask if FROM is needed to be send? maybe just set it from the local inbox when parsing.
+
     let key: String // senderKey
     let id: String
     let text: String?
     let image: String?
     let messageTypeValue: String // type send by the server
-    let contentTypeValue: String // type for the content used locally by devices
+    var contentTypeValue: String = "" // type for the content used locally by devices
     let from: String
     let time: TimeInterval
     let user: ChatUser?
@@ -51,6 +53,33 @@ struct ParsedChatMessage: Codable {
 
     var messageType: MessageType {
         MessageType(rawValue: messageTypeValue) ?? .invalid
+    }
+
+    var previewText: String {
+        switch contentType {
+        case .text:
+            return text ?? ""
+        case .image:
+            return "An image was shared"
+        case .communicationRequestResponse:
+            return "A conversation was started"
+        default:
+            return ""
+        }
+    }
+
+    // TODO: - Create static methods as helpers to have more verbosity
+
+    init?(approvalRequest: EncryptedChatMessage, inboxPublicKey: String) {
+        self.key = approvalRequest.senderPublicKey
+        self.from = inboxPublicKey
+        self.id = UUID().uuidString
+        self.time = Date().timeIntervalSince1970 // remove
+        self.messageTypeValue = MessageType.messagingApproval.rawValue
+        self.contentTypeValue = ContentType.communicationRequestResponse.rawValue
+        self.text = nil
+        self.image = nil
+        self.user = nil
     }
 
     init?(chatMessage: EncryptedChatMessage, key: ECCKeys) {
@@ -69,8 +98,8 @@ struct ParsedChatMessage: Codable {
         self.id = id
         self.text = text
         self.image = image
-        self.messageTypeValue = chatMessage.messageType
         self.contentTypeValue = contentType
+        self.messageTypeValue = chatMessage.messageType
         self.from = from
         self.time = time
         self.user = ChatUser(name: json["username"] as? String,

@@ -14,7 +14,7 @@ protocol OfferServiceType {
 
     func getUserOffers(offerIds: [String]) -> AnyPublisher<[EncryptedOffer], Error>
     func getOffer(pageLimit: Int?) -> AnyPublisher<Paged<EncryptedOffer>, Error>
-    func createOffer(encryptedOffers: [EncryptedOffer]) -> AnyPublisher<EncryptedOffer, Error>
+    func createOffer(encryptedOffers: [EncryptedOffer], expiration: TimeInterval) -> AnyPublisher<EncryptedOffer, Error>
     func storeOfferKey(key: ECCKeys, withId id: String, offerType: OfferType) -> AnyPublisher<Void, Error>
     func getStoredOfferIds(forType offerType: OfferType) -> AnyPublisher<[String], Never>
     func getAllStoredOfferIds() -> AnyPublisher<[String], Never>
@@ -66,8 +66,8 @@ final class OfferService: BaseService, OfferServiceType {
             .eraseToAnyPublisher()
     }
 
-    func createOffer(encryptedOffers: [EncryptedOffer]) -> AnyPublisher<EncryptedOffer, Error> {
-        request(type: EncryptedOffer.self, endpoint: OffersRouter.createOffer(offer: encryptedOffers))
+    func createOffer(encryptedOffers: [EncryptedOffer], expiration: TimeInterval) -> AnyPublisher<EncryptedOffer, Error> {
+        request(type: EncryptedOffer.self, endpoint: OffersRouter.createOffer(offer: encryptedOffers, expiration: expiration))
             .eraseToAnyPublisher()
     }
 

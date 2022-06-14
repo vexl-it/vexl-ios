@@ -74,4 +74,12 @@ struct Constants {
     // TODO: - remove when we have real random names
 
     static let randomName = "Random Name"
+
+    // MARK: - Units used for converting time to seconds
+
+    static let daysToSecondsMultiplier: TimeInterval = 86_400
+    static let weeksToSecondsMultiplier: TimeInterval = 604_800
+    static let monthsToSecondsMultiplier: TimeInterval = 2_592_000
+
+    static let defaultDeleteTime = "7" // days will be selected as default too
 }

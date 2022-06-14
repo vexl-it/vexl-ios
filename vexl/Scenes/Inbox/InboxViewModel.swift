@@ -10,6 +10,8 @@ import Cleevio
 
 final class InboxViewModel: ViewModelType, ObservableObject {
 
+    @Inject var inboxManager: InboxManagerType
+
     // MARK: - Action Binding
 
     enum UserAction: Equatable {
@@ -26,11 +28,7 @@ final class InboxViewModel: ViewModelType, ObservableObject {
     @Published var filter: InboxFilterOption = .all
     @Published var primaryActivity: Activity = .init()
 
-    @Published var chatItems: [InboxItem] = [
-        .init(avatar: nil, username: Constants.randomName, detail: "qwerty", time: "Yesterday", offerType: .buy),
-        .init(avatar: nil, username: Constants.randomName, detail: "qwerty", time: "Yesterday", offerType: .buy),
-        .init(avatar: nil, username: Constants.randomName, detail: "qwerty", time: "Yesterday", offerType: .sell)
-    ]
+    @Published var inboxItems: [InboxItem] = []
 
     // MARK: - Coordinator Bindings
 
@@ -50,6 +48,23 @@ final class InboxViewModel: ViewModelType, ObservableObject {
     init(bitcoinViewModel: BitcoinViewModel) {
         self.bitcoinViewModel = bitcoinViewModel
         setupActionBindings()
+        setupInboxBindings()
+    }
+
+    private func setupInboxBindings() {
+        inboxManager.inboxMessages
+            .withUnretained(self)
+            .sink(receiveCompletion: { _ in },
+                  receiveValue: { owner, messages in
+                owner.inboxItems = messages.map { message -> InboxItem in
+                    InboxItem(avatar: nil,
+                              username: Constants.randomName + "inbox: \(message.from) sender: \(message.key)",
+                              detail: message.previewText,
+                              time: Formatters.chatDateFormatter.string(from: Date(timeIntervalSince1970: message.time)),
+                              offerType: .buy)
+                }
+            })
+            .store(in: cancelBag)
     }
 
     private func setupActionBindings() {
