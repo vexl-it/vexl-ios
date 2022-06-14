@@ -66,7 +66,7 @@ final class InboxManager: InboxManagerType {
 
         let saveMessages = pullChat
             .flatMapLatest(with: self) { owner, keyAndMessages -> AnyPublisher<KeyAndParsedMessages, Error> in
-                owner.saveFetchedMessages(keyAndMessages: keyAndMessages)
+                owner.saveFetchedMessages(keyAndMessages: keyAndMessages, inboxPublicKey: inbox.publicKey)
             }
 
         let deleteChat = saveMessages
@@ -152,8 +152,8 @@ final class InboxManager: InboxManagerType {
             .eraseToAnyPublisher()
     }
 
-    private func saveFetchedMessages(keyAndMessages: KeyAndMessages) -> AnyPublisher<KeyAndParsedMessages, Error> {
-        parseMessages(keyAndMessages.messages, key: keyAndMessages.key)
+    private func saveFetchedMessages(keyAndMessages: KeyAndMessages, inboxPublicKey: String) -> AnyPublisher<KeyAndParsedMessages, Error> {
+        parseMessages(keyAndMessages.messages, key: keyAndMessages.key, inboxPublicKey: inboxPublicKey)
             .flatMapLatest(with: self) { owner, messages -> AnyPublisher<KeyAndParsedMessages, Error> in
                 owner.chatService.saveFetchedMessages(messages, inboxPublicKey: keyAndMessages.key.publicKey)
                     .map { KeyAndParsedMessages(key: keyAndMessages.key, messages: messages) }
@@ -162,9 +162,9 @@ final class InboxManager: InboxManagerType {
             .eraseToAnyPublisher()
     }
 
-    private func parseMessages(_ messages: [EncryptedChatMessage], key: ECCKeys) -> AnyPublisher<[ParsedChatMessage], Error> {
+    private func parseMessages(_ messages: [EncryptedChatMessage], key: ECCKeys, inboxPublicKey: String) -> AnyPublisher<[ParsedChatMessage], Error> {
         messages.publisher
-            .compactMap { ParsedChatMessage(chatMessage: $0, key: key) }
+            .compactMap { ParsedChatMessage(chatMessage: $0, key: key, inboxPublicKey: inboxPublicKey) }
             .collect()
             .setFailureType(to: Error.self)
             .eraseToAnyPublisher()

@@ -97,7 +97,7 @@ final class ChatRequestViewModel: ViewModelType, ObservableObject {
                         var offerAndMessages: [OfferAndMessage] = []
                         let decryptedOffers = Offer.createOffers(from: encryptedOffers, withKey: owner.userSecurity.userKeys)
                         for message in offerIdsAndMessages.messages {
-                            if let decryptedOffer = decryptedOffers.first(where: { $0.offerPublicKey == message.from }) {
+                            if let decryptedOffer = decryptedOffers.first(where: { $0.offerPublicKey == message.inboxKey }) {
                                 offerAndMessages.append(OfferAndMessage(offer: decryptedOffer, message: message))
                             }
                         }
