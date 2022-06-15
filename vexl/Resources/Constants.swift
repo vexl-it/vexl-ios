@@ -72,7 +72,7 @@ struct Constants {
     static let notAvailable = "N/A"
 
     // TODO: - remove when we have real random names
-
+    static let pushNotificationToken = "03df25c845d460bcdad7802d2vf6fc1dfde97283bf75cc993eb6dca835ea2e2f"
     static let randomName = "Random Name"
 
     // MARK: - Units used for converting time to seconds
