@@ -33,11 +33,11 @@ struct ChatTextBubbleViewPreview: PreviewProvider {
         .frame(maxHeight: .infinity)
         .background(Color.black)
         .previewDevice("iPhone 11")
-        
+
         VStack {
             ChatImageBubbleView(image: R.image.onboarding.testAvatar()!,
                                 style: .contact)
-            
+
             ChatImageBubbleView(image: R.image.onboarding.testAvatar()!,
                                 style: .user)
         }

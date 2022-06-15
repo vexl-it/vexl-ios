@@ -95,6 +95,8 @@ struct ChatView: View {
                 blockView
             case .blockConfirmation:
                 blockConfirmationView
+            case .identityRevealConfirmation:
+                identityRevealConfirmationView
             case .none:
                 EmptyView()
             }
@@ -168,6 +170,19 @@ struct ChatView: View {
             }
         },
                                          dismiss: {
+            withAnimation {
+                viewModel.action.send(.dismissModal)
+            }
+        })
+    }
+
+    private var identityRevealConfirmationView: some View {
+        ChatRevealConfirmationView(mainAction: {
+            withAnimation {
+                viewModel.action.send(.revealConfirmedTap)
+            }
+        },
+                                   dismiss: {
             withAnimation {
                 viewModel.action.send(.dismissModal)
             }

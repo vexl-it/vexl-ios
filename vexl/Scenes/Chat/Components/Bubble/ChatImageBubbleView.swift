@@ -16,8 +16,8 @@ struct ChatImageBubbleView: View {
         ChatBubbleView(style: style) {
             Image(uiImage: image)
                 .resizable()
-                .frame(maxWidth: Appearance.GridGuide.chatImageFrame.width,
-                       maxHeight: Appearance.GridGuide.chatImageFrame.height)
+                .frame(maxWidth: Appearance.GridGuide.chatImageSize.width,
+                       maxHeight: Appearance.GridGuide.chatImageSize.height)
                 .padding(Appearance.GridGuide.smallPadding)
         }
     }

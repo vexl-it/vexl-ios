@@ -111,7 +111,8 @@ struct Appearance {
 
         static let scrollContentInset = UIEdgeInsets(top: 0, left: 0, bottom: Self.homeTabBarHeight, right: 0)
         static let chatTextFieldHeight: CGFloat = 44
-        static let chatImageFrame = CGSize(width: 100, height: 100)
+        static let chatImageSize = CGSize(width: 100, height: 100)
+        static let chatRequestAvatarSize = CGSize(width: 80, height: 80)
     }
 
     // MARK: - Global

@@ -18,6 +18,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
         case deleteConfirmation
         case block
         case blockConfirmation
+        case identityRevealConfirmation
     }
 
     // MARK: - Action Binding
@@ -33,6 +34,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
         case deleteConfirmedTap
         case blockTap
         case blockConfirmedTap
+        case revealConfirmedTap
     }
 
     let action: ActionSubject<UserAction> = .init()
