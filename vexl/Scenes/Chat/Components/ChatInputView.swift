@@ -59,6 +59,8 @@ struct ChatInputView: View {
     }
 }
 
+#if DEBUG || DEVEL
+
 struct ChatMessageInputViewPreview: PreviewProvider {
     static var previews: some View {
         VStack {
@@ -76,3 +78,5 @@ struct ChatMessageInputViewPreview: PreviewProvider {
         }
     }
 }
+
+#endif

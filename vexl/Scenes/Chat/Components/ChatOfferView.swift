@@ -47,6 +47,8 @@ struct ChatOfferView: View {
     }
 }
 
+#if DEBUG || DEVEL
+
 struct ChatOfferViewPreview: PreviewProvider {
     static var previews: some View {
         ChatOfferView(dismiss: { })
@@ -55,3 +57,5 @@ struct ChatOfferViewPreview: PreviewProvider {
             .previewDevice("iPhone 11")
     }
 }
+
+#endif

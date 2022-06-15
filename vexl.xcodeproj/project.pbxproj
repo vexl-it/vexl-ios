@@ -1294,6 +1294,14 @@
 			path = Triggers;
 			sourceTree = "<group>";
 		};
+		F1483CC0285A3DDA0054B7A2 /* Bubble */ = {
+			isa = PBXGroup;
+			children = (
+				F1485637284FD451003213D7 /* ChatBubbleView.swift */,
+			);
+			path = Bubble;
+			sourceTree = "<group>";
+		};
 		F148561D284FD0FB003213D7 /* Inbox */ = {
 			isa = PBXGroup;
 			children = (
@@ -1329,13 +1337,13 @@
 		F148562B284FD451003213D7 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				F1483CC0285A3DDA0054B7A2 /* Bubble */,
+				F1485632284FD451003213D7 /* CommonFriends */,
+				F148562E284FD451003213D7 /* Confirmation */,
 				F148562C284FD451003213D7 /* ChatActionView.swift */,
 				F148562D284FD451003213D7 /* ChatOfferView.swift */,
-				F148562E284FD451003213D7 /* Confirmation */,
-				F1485632284FD451003213D7 /* CommonFriends */,
 				F1485635284FD451003213D7 /* ChatConversationView.swift */,
 				F1485636284FD451003213D7 /* ChatHeaderView.swift */,
-				F1485637284FD451003213D7 /* ChatBubbleView.swift */,
 				F1485638284FD451003213D7 /* ChatDateView.swift */,
 				F1485639284FD451003213D7 /* ChatInputView.swift */,
 			);

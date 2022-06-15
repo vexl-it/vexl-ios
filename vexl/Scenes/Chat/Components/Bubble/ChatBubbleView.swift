@@ -50,6 +50,8 @@ extension ChatBubbleView {
     }
 }
 
+#if DEBUG || DEVEL
+
 struct ChatMessageBubbleViewPreview: PreviewProvider {
     static var previews: some View {
         VStack {
@@ -61,3 +63,5 @@ struct ChatMessageBubbleViewPreview: PreviewProvider {
         .previewDevice("iPhone 11")
     }
 }
+
+#endif
