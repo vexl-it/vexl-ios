@@ -18,7 +18,11 @@ struct ChatConversationView: View {
                     ChatDateView(date: messageGroup.date, isInitial: false)
 
                     ForEach(messageGroup.messages) { message in
-                        ChatBubbleView(text: message.text, style: message.isContact ? .contact : .user)
+                        if let imageData = message.image, let image = UIImage(data: imageData) {
+                            ChatImageBubbleView(image: image, style: message.isContact ? .contact : .user)
+                        } else {
+                            ChatTextBubbleView(text: message.text, style: message.isContact ? .contact : .user)
+                        }
                     }
                 }
             }

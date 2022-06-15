@@ -33,7 +33,8 @@ struct ChatView: View {
                 viewModel.action.send(.dismissTap)
             })
 
-            HLine(color: Appearance.Colors.whiteOpaque, height: 1)
+            HLine(color: Appearance.Colors.whiteOpaque,
+                  height: 1)
                 .padding(.top, Appearance.GridGuide.smallPadding)
 
             ChatActionView { chatAction in
@@ -174,6 +175,8 @@ struct ChatView: View {
     }
 }
 
+#if DEBUG || DEVEL
+
 struct ChatMessageViewPreview: PreviewProvider {
     static var previews: some View {
         ChatView(viewModel: .init())
@@ -181,3 +184,5 @@ struct ChatMessageViewPreview: PreviewProvider {
             .previewDevice("iPhone 11")
     }
 }
+
+#endif

@@ -99,7 +99,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
             .filter { $0 == .messageSend }
             .withUnretained(self)
             .sink { owner, _ in
-                owner.messages.appendMessage(.init(text: owner.currentMessage, isContact: false))
+                owner.messages.appendMessage(.init(text: owner.currentMessage, image: nil, isContact: false))
                 owner.currentMessage = ""
             }
             .store(in: cancelBag)

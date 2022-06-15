@@ -7,10 +7,10 @@
 
 import SwiftUI
 
-struct ChatBubbleView: View {
+struct ChatBubbleView<Content: View>: View {
 
-    let text: String
-    let style: Style
+    let style: ChatBubbleStyle
+    let content: () -> Content
 
     private var backgroundColor: Color {
         switch style {
@@ -31,10 +31,8 @@ struct ChatBubbleView: View {
     }
 
     var body: some View {
-        Text(text)
-            .textStyle(.paragraphSmallMedium)
+        content()
             .foregroundColor(textColor)
-            .padding(Appearance.GridGuide.smallPadding)
             .background(backgroundColor)
             .cornerRadius(Appearance.GridGuide.requestCorner)
             .frame(maxWidth: .infinity, alignment: style == .contact ? .leading : .trailing)
@@ -43,20 +41,19 @@ struct ChatBubbleView: View {
     }
 }
 
-extension ChatBubbleView {
-    enum Style {
-        case contact
-        case user
-    }
+enum ChatBubbleStyle {
+    case contact
+    case user
 }
 
 #if DEBUG || DEVEL
 
-struct ChatMessageBubbleViewPreview: PreviewProvider {
+struct ChatBubbleViewPreview: PreviewProvider {
     static var previews: some View {
         VStack {
-            ChatBubbleView(text: "qwertyyutwrewerwer qwer qwertyyutwrewerwer qwertyyutwrewerwer qwertyyutwrewerwer ", style: .contact)
-            ChatBubbleView(text: "qwererwer qwertyyrewewer qwetyyutwrewerwer qwertyyutwrewerwer qwer erew12312erwer ", style: .user)
+            ChatTextBubbleView(text: "qwerty", style: .contact)
+
+            ChatTextBubbleView(text: "qwerty", style: .user)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color.black)

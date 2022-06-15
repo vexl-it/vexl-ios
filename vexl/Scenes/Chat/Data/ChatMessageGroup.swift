@@ -16,6 +16,7 @@ struct ChatMessageGroup: Identifiable, Hashable {
     struct Message: Identifiable, Hashable {
         let id = UUID()
         let text: String
+        let image: Data?
         let isContact: Bool
     }
 
@@ -26,11 +27,20 @@ struct ChatMessageGroup: Identifiable, Hashable {
     static var stub: [ChatMessageGroup] {
         [
             .init(date: Date(), messages: [
-                .init(text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit", isContact: true),
-                .init(text: "Vivamus est justo, placerat aliquam velit vitae", isContact: false)
+                .init(text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+                      image: nil,
+                      isContact: true),
+                .init(text: "Vivamus est justo, placerat aliquam velit vitae",
+                      image: nil,
+                      isContact: false)
             ]),
             .init(date: Date(), messages: [
-                .init(text: "Morbi vitae velit ac ex congue molestie", isContact: false)
+                .init(text: "Morbi vitae velit ac ex congue molestie",
+                      image: nil,
+                      isContact: false),
+                .init(text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+                      image: R.image.onboarding.testAvatar()!.jpegData(compressionQuality: 1),
+                      isContact: true)
             ])
         ]
     }
