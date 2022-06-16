@@ -18,6 +18,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
         case deleteConfirmation
         case block
         case blockConfirmation
+        case identityRevealRequest
         case identityRevealConfirmation
     }
 
@@ -34,6 +35,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
         case deleteConfirmedTap
         case blockTap
         case blockConfirmedTap
+        case revealRequestTap
         case revealConfirmedTap
     }
 
@@ -101,7 +103,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
             .filter { $0 == .messageSend }
             .withUnretained(self)
             .sink { owner, _ in
-                owner.messages.appendMessage(.init(text: owner.currentMessage, image: nil, isContact: false))
+                owner.messages.appendMessage(.init(category: .text(text: owner.currentMessage), isContact: false))
                 owner.currentMessage = ""
             }
             .store(in: cancelBag)
@@ -112,37 +114,42 @@ final class ChatViewModel: ViewModelType, ObservableObject {
         let action = action
             .share()
 
-        let modalAction = action
+        let chatAction = action
             .compactMap { action -> ChatAction? in
                 if case let .chatActionTap(chatAction) = action { return chatAction }
                 return nil
             }
             .share()
 
-        action
-            .filter { $0 == .dismissModal }
-            .withUnretained(self)
-            .map { _ -> Modal in .none }
-            .assign(to: &$modal)
-
-        modalAction
+        chatAction
             .filter { $0 == .showOffer }
             .map { _ -> Modal in .offer }
             .assign(to: &$modal)
 
-        modalAction
+        chatAction
             .filter { $0 == .commonFriends }
             .map { _ -> Modal in .friends }
             .assign(to: &$modal)
 
-        modalAction
+        chatAction
             .filter { $0 == .deleteChat }
             .map { _ -> Modal in .delete }
             .assign(to: &$modal)
 
-        modalAction
+        chatAction
             .filter { $0 == .blockUser }
             .map { _ -> Modal in .block }
+            .assign(to: &$modal)
+
+        chatAction
+            .filter { $0 == .revealIdentity }
+            .map { _ -> Modal in .identityRevealRequest }
+            .assign(to: &$modal)
+
+        action
+            .filter { $0 == .dismissModal }
+            .withUnretained(self)
+            .map { _ -> Modal in .none }
             .assign(to: &$modal)
 
         action
@@ -163,6 +170,11 @@ final class ChatViewModel: ViewModelType, ObservableObject {
         action
             .filter { $0 == .blockConfirmedTap }
             .map { _ -> Modal in .none }
+            .assign(to: &$modal)
+
+        action
+            .filter { $0 == .revealConfirmedTap }
+            .map { _ -> Modal in .identityRevealConfirmation }
             .assign(to: &$modal)
     }
 }

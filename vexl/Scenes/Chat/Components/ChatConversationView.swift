@@ -10,6 +10,7 @@ import SwiftUI
 struct ChatConversationView: View {
 
     let messages: [ChatMessageGroup]
+    let revealAction: () -> Void
 
     var body: some View {
         ScrollView(showsIndicators: false) {
@@ -18,10 +19,26 @@ struct ChatConversationView: View {
                     ChatDateView(date: messageGroup.date, isInitial: false)
 
                     ForEach(messageGroup.messages) { message in
-                        if let imageData = message.image, let image = UIImage(data: imageData) {
-                            ChatImageBubbleView(image: image, style: message.isContact ? .contact : .user)
-                        } else {
-                            ChatTextBubbleView(text: message.text, style: message.isContact ? .contact : .user)
+                        switch message.category {
+                        case let .text(text):
+                            ChatTextBubbleView(text: text,
+                                               style: message.isContact ? .contact : .user)
+                        case let .image(image, text):
+                            if let data = image, let uiImage = UIImage(data: data) {
+                                ChatImageBubbleView(image: uiImage,
+                                                    text: text,
+                                                    style: message.isContact ? .contact : .user)
+                            }
+                        case .sendReveal:
+                            ChatRevealIdentityView(image: nil,
+                                                   isRequest: true,
+                                                   revealAction: nil)
+                        case .receiveReveal:
+                            ChatRevealIdentityView(image: nil,
+                                                   isRequest: false,
+                                                   revealAction: {
+                                revealAction()
+                            })
                         }
                     }
                 }

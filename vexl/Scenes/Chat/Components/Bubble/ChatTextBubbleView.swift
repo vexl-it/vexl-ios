@@ -26,9 +26,9 @@ struct ChatTextBubbleView: View {
 struct ChatTextBubbleViewPreview: PreviewProvider {
     static var previews: some View {
         VStack {
-            ChatTextBubbleView(text: "qwerty", style: .contact)
+            ChatTextBubbleView(text: "qwerty qwerty qwerty qwerty ", style: .contact)
 
-            ChatTextBubbleView(text: "qwerty", style: .user)
+            ChatTextBubbleView(text: "qwerty qwerty qwerty qwerty", style: .user)
         }
         .frame(maxHeight: .infinity)
         .background(Color.black)
@@ -36,9 +36,11 @@ struct ChatTextBubbleViewPreview: PreviewProvider {
 
         VStack {
             ChatImageBubbleView(image: R.image.onboarding.testAvatar()!,
+                                text: nil,
                                 style: .contact)
 
             ChatImageBubbleView(image: R.image.onboarding.testAvatar()!,
+                                text: nil,
                                 style: .user)
         }
         .frame(maxWidth: .infinity)

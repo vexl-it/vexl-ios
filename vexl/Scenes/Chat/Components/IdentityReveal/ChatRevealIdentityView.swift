@@ -11,6 +11,7 @@ struct ChatRevealIdentityView: View {
 
     let image: UIImage?
     let isRequest: Bool
+    let revealAction: (() -> Void)?
 
     private var title: String {
         isRequest ? L.chatMessageIdentityRevealRequestSent() : L.chatMessageIdentityRevealRequest()
@@ -76,19 +77,17 @@ struct ChatRevealIdentityView: View {
     }
 
     private var requestActionButton: some View {
-        Button(L.chatMessageIdentityRevealPendingOk()) {
-            print("123")
-        }
-        .textStyle(.paragraphSmall)
-        .foregroundColor(Appearance.Colors.primaryText)
-        .padding(Appearance.GridGuide.point)
-        .background(Appearance.Colors.gray6)
-        .cornerRadius(Appearance.GridGuide.point)
+        Text(L.chatMessageIdentityRevealPendingOk())
+            .textStyle(.paragraphSmall)
+            .foregroundColor(Appearance.Colors.gray2)
+            .padding(Appearance.GridGuide.point)
+            .background(Appearance.Colors.gray6)
+            .cornerRadius(Appearance.GridGuide.point)
     }
 
     private var responseActionButton: some View {
         Button {
-            print("123")
+            revealAction?()
         } label: {
             Image(systemName: "chevron.right")
                 .foregroundColor(Appearance.Colors.primaryText)
@@ -104,9 +103,13 @@ struct ChatRevealIdentityView: View {
 struct ChatIdentityRequestViewPreview: PreviewProvider {
     static var previews: some View {
         VStack {
-            ChatRevealIdentityView(image: R.image.onboarding.testAvatar()!, isRequest: true)
+            ChatRevealIdentityView(image: R.image.onboarding.testAvatar()!,
+                                   isRequest: true,
+                                   revealAction: nil)
 
-            ChatRevealIdentityView(image: nil, isRequest: false)
+            ChatRevealIdentityView(image: nil,
+                                   isRequest: false,
+                                   revealAction: nil)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color.black)

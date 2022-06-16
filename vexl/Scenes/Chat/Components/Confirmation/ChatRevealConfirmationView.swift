@@ -9,22 +9,31 @@ import SwiftUI
 
 struct ChatRevealConfirmationView: View {
 
+    let isRequest: Bool
     let mainAction: () -> Void
     let dismiss: () -> Void
 
     private var title: String {
-        L.chatMessageDeleteTitle()
+        isRequest ? L.chatMessageIdentityRequestTitle() : L.chatMessageIdentityConfirmationTitle()
     }
 
     private var subtitle: String {
-        L.chatMessageDeleteDescription()
+        isRequest ? L.chatMessageIdentityRequestSubtitle() : L.chatMessageIdentityConfirmationSubtitle()
+    }
+
+    private var actionTitle: String {
+        isRequest ? L.chatMessageIdentityRequestSend() : L.chatMessageIdentityConfirmationYes()
+    }
+
+    private var dismissTitle: String {
+        isRequest ? L.chatMessageIdentityRequestCancel() : L.chatMessageIdentityConfirmationCancel()
     }
 
     var body: some View {
-        ChatConfirmationView(title: L.chatMessageIdentityConfirmationTitle(),
-                             subtitle: L.chatMessageIdentityConfirmationSubtitle(),
-                             actionTitle: L.chatMessageIdentityConfirmationYes(),
-                             dismissTitle: L.chatMessageIdentityConfirmationCancel(),
+        ChatConfirmationView(title: title,
+                             subtitle: subtitle,
+                             actionTitle: actionTitle,
+                             dismissTitle: dismissTitle,
                              primaryColor: .main,
                              secondaryColor: .secondary,
                              mainAction: mainAction,

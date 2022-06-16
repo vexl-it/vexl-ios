@@ -12,28 +12,10 @@ struct ChatBubbleView<Content: View>: View {
     let style: ChatBubbleStyle
     let content: () -> Content
 
-    private var backgroundColor: Color {
-        switch style {
-        case .contact:
-            return Appearance.Colors.gray1
-        case .user:
-            return Appearance.Colors.yellow100
-        }
-    }
-
-    private var textColor: Color {
-        switch style {
-        case .contact:
-            return Appearance.Colors.whiteText
-        case .user:
-            return Appearance.Colors.primaryText
-        }
-    }
-
     var body: some View {
         content()
-            .foregroundColor(textColor)
-            .background(backgroundColor)
+            .foregroundColor(style.textColor)
+            .background(style.backgroundColor)
             .cornerRadius(Appearance.GridGuide.requestCorner)
             .frame(maxWidth: .infinity, alignment: style == .contact ? .leading : .trailing)
             .frame(minHeight: 40)
@@ -44,6 +26,24 @@ struct ChatBubbleView<Content: View>: View {
 enum ChatBubbleStyle {
     case contact
     case user
+
+    var backgroundColor: Color {
+        switch self {
+        case .contact:
+            return Appearance.Colors.gray1
+        case .user:
+            return Appearance.Colors.yellow100
+        }
+    }
+
+    var textColor: Color {
+        switch self {
+        case .contact:
+            return Appearance.Colors.whiteText
+        case .user:
+            return Appearance.Colors.primaryText
+        }
+    }
 }
 
 #if DEBUG || DEVEL

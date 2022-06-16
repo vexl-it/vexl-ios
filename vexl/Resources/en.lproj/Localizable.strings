@@ -200,7 +200,11 @@
 "chat.message.identity.reveal.pending" = "Pending...";
 "chat.message.identity.reveal.pending.ok" = "Got it!";
 "chat.message.identity.reveal.pending.tap" = "Tap to reveal or decline";
-"chat.message.identity.confirmation.title" = "";
-"chat.message.identity.confirmation.subtitle" = "";
+"chat.message.identity.confirmation.title" = "You want to reveal identity?";
+"chat.message.identity.confirmation.subtitle" = "If you reveal identity you will see identity of your counterparty too.";
 "chat.message.identity.confirmation.yes" = "Yes";
 "chat.message.identity.confirmation.cancel" = "No";
+"chat.message.identity.request.title" = "Send reveal identity request";
+"chat.message.identity.request.subtitle" = "By sending request you agree with revealing of your own identity too.";
+"chat.message.identity.request.send" = "Send request";
+"chat.message.identity.request.cancel" = "Back";

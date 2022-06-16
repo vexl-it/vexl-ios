@@ -43,7 +43,11 @@ struct ChatView: View {
                 }
             }
 
-            ChatConversationView(messages: viewModel.messages)
+            ChatConversationView(messages: viewModel.messages, revealAction: {
+                withAnimation {
+                    viewModel.action.send(.revealConfirmedTap)
+                }
+            })
                 .frame(maxHeight: .infinity)
 
             ChatInputView(text: $viewModel.currentMessage,
@@ -95,6 +99,8 @@ struct ChatView: View {
                 blockView
             case .blockConfirmation:
                 blockConfirmationView
+            case .identityRevealRequest:
+                identityRevealRequestView
             case .identityRevealConfirmation:
                 identityRevealConfirmationView
             case .none:
@@ -176,8 +182,23 @@ struct ChatView: View {
         })
     }
 
+    private var identityRevealRequestView: some View {
+        ChatRevealConfirmationView(isRequest: true ,
+                                   mainAction: {
+            withAnimation {
+                viewModel.action.send(.revealRequestTap)
+            }
+        },
+                                   dismiss: {
+            withAnimation {
+                viewModel.action.send(.dismissModal)
+            }
+        })
+    }
+
     private var identityRevealConfirmationView: some View {
-        ChatRevealConfirmationView(mainAction: {
+        ChatRevealConfirmationView(isRequest: false ,
+                                   mainAction: {
             withAnimation {
                 viewModel.action.send(.revealConfirmedTap)
             }
