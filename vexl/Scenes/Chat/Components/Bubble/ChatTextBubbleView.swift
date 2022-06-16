@@ -12,12 +12,16 @@ struct ChatTextBubbleView: View {
     let text: String
     let style: ChatBubbleStyle
 
+    @State private var width: CGFloat = .zero
+
     var body: some View {
         ChatBubbleView(style: style) {
             Text(text)
                 .textStyle(.paragraphSmallMedium)
                 .padding(Appearance.GridGuide.smallPadding)
         }
+        .padding(style == .contact ? .trailing : .leading,
+                 Appearance.GridGuide.mediumPadding2)
     }
 }
 
@@ -26,7 +30,7 @@ struct ChatTextBubbleView: View {
 struct ChatTextBubbleViewPreview: PreviewProvider {
     static var previews: some View {
         VStack {
-            ChatTextBubbleView(text: "qwerty qwerty qwerty qwerty ", style: .contact)
+            ChatTextBubbleView(text: "qwerty qwerty qwerty qwerty qwerty qwerty qwerty", style: .contact)
 
             ChatTextBubbleView(text: "qwerty qwerty qwerty qwerty", style: .user)
         }

@@ -15,19 +15,22 @@ struct ChatImageBubbleView: View {
 
     var body: some View {
         ChatBubbleView(style: style) {
-            VStack(alignment: style == .contact ? .leading : .trailing,
+            VStack(alignment: .center,
                    spacing: .zero) {
                 Image(data: image, placeholder: "")
                     .resizable()
                     .frame(maxWidth: Appearance.GridGuide.chatImageSize.width,
                            maxHeight: Appearance.GridGuide.chatImageSize.height)
                     .cornerRadius(Appearance.GridGuide.containerCorner)
-                    .padding(Appearance.GridGuide.smallPadding)
+                    .padding(Appearance.GridGuide.point)
 
                 if let text = text, !text.isEmpty {
                     Text(text)
                         .textStyle(.paragraphSmallMedium)
-                        .padding([.horizontal, .bottom], Appearance.GridGuide.smallPadding)
+                        .padding(.horizontal, Appearance.GridGuide.tinyPadding)
+                        .padding(.bottom, Appearance.GridGuide.point)
+                        .frame(width: Appearance.GridGuide.chatImageSize.width,
+                               alignment: style == .contact ? .leading : .trailing)
                 }
             }
         }
@@ -48,11 +51,11 @@ struct ChatImageBubbleViewPreview: PreviewProvider {
                                 style: .user)
 
             ChatImageBubbleView(image: R.image.onboarding.testAvatar()!.jpegData(compressionQuality: 0.25)!,
-                                text: "qwerty qwerty qwerty qwerty qwerty ",
+                                text: "qwerty qwerty qwerty qwerty qwerty qwerty",
                                 style: .contact)
 
             ChatImageBubbleView(image: R.image.onboarding.testAvatar()!.jpegData(compressionQuality: 0.25)!,
-                                text: "qwerty qwerty qwerty qwerty qwerty",
+                                text: "qwerty qwerty",
                                 style: .user)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)

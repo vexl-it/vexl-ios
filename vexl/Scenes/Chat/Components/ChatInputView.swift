@@ -19,7 +19,7 @@ struct ChatInputView: View {
         if image == nil {
             return Appearance.GridGuide.chatTextFieldHeight
         } else {
-            return Appearance.GridGuide.chatTextFieldHeight + Appearance.GridGuide.chatImageSize.height + Appearance.GridGuide.mediumPadding1
+            return Appearance.GridGuide.chatTextFieldHeight + Appearance.GridGuide.chatInputImageSize.height + Appearance.GridGuide.mediumPadding1
         }
     }
 
@@ -85,7 +85,7 @@ extension ChatInputView {
             ZStack(alignment: .topTrailing) {
                 Image(uiImage: image)
                     .resizable()
-                    .frame(size: Appearance.GridGuide.chatImageSize)
+                    .frame(size: Appearance.GridGuide.chatInputImageSize)
                     .cornerRadius(Appearance.GridGuide.containerCorner)
 
                 Button {

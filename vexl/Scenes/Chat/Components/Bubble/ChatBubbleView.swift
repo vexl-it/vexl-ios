@@ -19,7 +19,6 @@ struct ChatBubbleView<Content: View>: View {
             .cornerRadius(Appearance.GridGuide.requestCorner)
             .frame(maxWidth: .infinity, alignment: style == .contact ? .leading : .trailing)
             .frame(minHeight: 40)
-            .padding(style == .contact ? .trailing : .leading, Appearance.GridGuide.mediumPadding2)
     }
 }
 
@@ -44,6 +43,24 @@ enum ChatBubbleStyle {
             return Appearance.Colors.primaryText
         }
     }
+
+    var horizontalAlignment: HorizontalAlignment {
+        switch self {
+        case .contact:
+            return .leading
+        case .user:
+            return .trailing
+        }
+    }
+
+    var alignment: Alignment {
+        switch self {
+        case .contact:
+            return .leading
+        case .user:
+            return .trailing
+        }
+    }
 }
 
 #if DEBUG || DEVEL
@@ -51,9 +68,25 @@ enum ChatBubbleStyle {
 struct ChatBubbleViewPreview: PreviewProvider {
     static var previews: some View {
         VStack {
-            ChatTextBubbleView(text: "qwerty", style: .contact)
+            ChatTextBubbleView(text: "qwerty qwerty qwerty qwerty qwerty", style: .contact)
 
             ChatTextBubbleView(text: "qwerty", style: .user)
+            
+            ChatImageBubbleView(image: R.image.onboarding.testAvatar()!.jpegData(compressionQuality: 0.25)!,
+                                text: nil,
+                                style: .contact)
+
+            ChatImageBubbleView(image: R.image.onboarding.testAvatar()!.jpegData(compressionQuality: 0.25)!,
+                                text: nil,
+                                style: .user)
+
+            ChatImageBubbleView(image: R.image.onboarding.testAvatar()!.jpegData(compressionQuality: 0.25)!,
+                                text: "qwerty qwerty qwerty qwerty qwerty qwerty",
+                                style: .contact)
+
+            ChatImageBubbleView(image: R.image.onboarding.testAvatar()!.jpegData(compressionQuality: 0.25)!,
+                                text: "qwerty qwerty",
+                                style: .user)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color.black)

@@ -31,7 +31,6 @@ final class ChatViewModel: ViewModelType, ObservableObject {
 
     enum UserAction: Equatable {
         case dismissTap
-        case continueTap
         case chatActionTap(action: ChatAction)
         case messageSend
         case cameraTap
@@ -207,16 +206,6 @@ final class ChatViewModel: ViewModelType, ObservableObject {
             .assign(to: &$modal)
 
         action
-            .filter { $0 == .deleteTap }
-            .map { _ -> Modal in .deleteConfirmation }
-            .assign(to: &$modal)
-
-        action
-            .filter { $0 == .blockTap }
-            .map { _ -> Modal in .blockConfirmation }
-            .assign(to: &$modal)
-
-        action
             .filter { $0 == .deleteConfirmedTap }
             .map { _ -> Modal in .none }
             .assign(to: &$modal)
@@ -224,6 +213,16 @@ final class ChatViewModel: ViewModelType, ObservableObject {
         action
             .filter { $0 == .blockConfirmedTap }
             .map { _ -> Modal in .none }
+            .assign(to: &$modal)
+
+        action
+            .filter { $0 == .deleteTap }
+            .map { _ -> Modal in .deleteConfirmation }
+            .assign(to: &$modal)
+
+        action
+            .filter { $0 == .blockTap }
+            .map { _ -> Modal in .blockConfirmation }
             .assign(to: &$modal)
 
         action
