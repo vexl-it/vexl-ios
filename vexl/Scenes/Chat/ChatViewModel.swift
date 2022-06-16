@@ -117,11 +117,17 @@ final class ChatViewModel: ViewModelType, ObservableObject {
             .filter { $0 == .messageSend }
             .withUnretained(self)
             .sink { owner, _ in
-                if let selectedImage = owner.selectedImage, let imageData = selectedImage.jpegData(compressionQuality: 0.25) {
-                    owner.messages.appendMessage(.init(category: .image(image: imageData, text: owner.currentMessage), isContact: false))
+                if let selectedImage = owner.selectedImage {
+                    owner.messages.appendMessage(.init(category: .image,
+                                                       isContact: false,
+                                                       text: owner.currentMessage,
+                                                       image: selectedImage.jpegData(compressionQuality: 1),
+                                                       previewImage: selectedImage.jpegData(compressionQuality: 0.25)))
                     owner.selectedImage = nil
                 } else {
-                    owner.messages.appendMessage(.init(category: .text(text: owner.currentMessage), isContact: false))
+                    owner.messages.appendMessage(.init(category: .text,
+                                                       isContact: false,
+                                                       text: owner.currentMessage))
                 }
                 owner.currentMessage = ""
             }
@@ -132,7 +138,6 @@ final class ChatViewModel: ViewModelType, ObservableObject {
             .withUnretained(self)
             .sink { owner, _ in
                 owner.showImagePickerActionSheet = true
-                owner.currentMessage = ""
             }
             .store(in: cancelBag)
 

@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ChatImageBubbleView: View {
 
-    let image: UIImage
+    let image: Data?
     let text: String?
     let style: ChatBubbleStyle
 
@@ -17,7 +17,7 @@ struct ChatImageBubbleView: View {
         ChatBubbleView(style: style) {
             VStack(alignment: style == .contact ? .leading : .trailing,
                    spacing: .zero) {
-                Image(uiImage: image)
+                Image(data: image, placeholder: "")
                     .resizable()
                     .frame(maxWidth: Appearance.GridGuide.chatImageSize.width,
                            maxHeight: Appearance.GridGuide.chatImageSize.height)
@@ -39,19 +39,19 @@ struct ChatImageBubbleView: View {
 struct ChatImageBubbleViewPreview: PreviewProvider {
     static var previews: some View {
         VStack {
-            ChatImageBubbleView(image: R.image.onboarding.testAvatar()!,
+            ChatImageBubbleView(image: R.image.onboarding.testAvatar()!.jpegData(compressionQuality: 0.25)!,
                                 text: nil,
                                 style: .contact)
 
-            ChatImageBubbleView(image: R.image.onboarding.testAvatar()!,
+            ChatImageBubbleView(image: R.image.onboarding.testAvatar()!.jpegData(compressionQuality: 0.25)!,
                                 text: nil,
                                 style: .user)
 
-            ChatImageBubbleView(image: R.image.onboarding.testAvatar()!,
+            ChatImageBubbleView(image: R.image.onboarding.testAvatar()!.jpegData(compressionQuality: 0.25)!,
                                 text: "qwerty qwerty qwerty qwerty qwerty ",
                                 style: .contact)
 
-            ChatImageBubbleView(image: R.image.onboarding.testAvatar()!,
+            ChatImageBubbleView(image: R.image.onboarding.testAvatar()!.jpegData(compressionQuality: 0.25)!,
                                 text: "qwerty qwerty qwerty qwerty qwerty",
                                 style: .user)
         }

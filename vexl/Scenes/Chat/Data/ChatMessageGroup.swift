@@ -16,16 +16,28 @@ struct ChatMessageGroup: Identifiable, Hashable {
     struct Message: Identifiable, Hashable {
 
         let id = UUID()
+        let text: String?
+        let image: Data?
+        let previewImage: Data?
         let category: Category
         let isContact: Bool
 
+        init(category: Category, isContact: Bool, text: String? = nil, image: Data? = nil, previewImage: Data? = nil) {
+            self.text = text
+            self.image = image
+            self.category = category
+            self.isContact = isContact
+            self.previewImage = previewImage
+        }
+
+        // swiftlint: disable nesting
         enum Category: Equatable, Hashable {
-            case text(text: String)
-            case image(image: Data, text: String?)
+            case text
+            case image
             case sendReveal
             case receiveReveal
 
-            static func ==(lhs: Category, rhs: Category) -> Bool {
+            static func == (lhs: Category, rhs: Category) -> Bool {
                 switch (lhs, rhs) {
                 case (.text, .text):
                     return true
@@ -49,16 +61,20 @@ struct ChatMessageGroup: Identifiable, Hashable {
     static var stub: [ChatMessageGroup] {
         [
             .init(date: Date(), messages: [
-                .init(category: .text(text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit"),
-                      isContact: true),
-                .init(category: .text(text: "Vivamus est justo, placerat aliquam velit vitae"),
-                      isContact: false)
+                .init(category: .text,
+                      isContact: true,
+                      text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit"),
+                .init(category: .text,
+                      isContact: false,
+                      text: "Vivamus est justo, placerat aliquam velit vitae")
             ]),
             .init(date: Date(), messages: [
-                .init(category: .text(text: "Morbi vitae velit ac ex congue molestie"),
-                      isContact: false),
-                .init(category: .image(image: R.image.onboarding.testAvatar()!.jpegData(compressionQuality: 0.5)!, text: nil),
-                      isContact: true),
+                .init(category: .text,
+                      isContact: false,
+                      text: "Morbi vitae velit ac ex congue molestie" ),
+                .init(category: .image,
+                      isContact: true,
+                      image: R.image.onboarding.testAvatar()!.jpegData(compressionQuality: 0.25)!),
                 .init(category: .sendReveal, isContact: false),
                 .init(category: .receiveReveal, isContact: false)
             ])

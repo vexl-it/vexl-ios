@@ -95,14 +95,14 @@ struct RegisterContacts_PortraitViewPreview: PreviewProvider {
             .background(Color.black.edgesIgnoringSafeArea(.all))
 
         SinglePortraitView(name: "Diego",
-                           image: R.image.onboarding.testAvatar()?.jpegData(compressionQuality: 1),
+                           image: R.image.onboarding.testAvatar()?.jpegData(compressionQuality: 0.5),
                            color: Appearance.Colors.green100,
                            textColor: Appearance.Colors.green20)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color.black.edgesIgnoringSafeArea(.all))
 
         RequestAccessPortraitView(name: "Diego",
-                                  avatar: R.image.onboarding.testAvatar()?.jpegData(compressionQuality: 1),
+                                  avatar: R.image.onboarding.testAvatar()?.jpegData(compressionQuality: 0.5),
                                   color: Appearance.Colors.green100,
                                   textColor: Appearance.Colors.green20)
             .frame(maxWidth: .infinity, maxHeight: .infinity)

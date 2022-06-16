@@ -20,15 +20,13 @@ struct ChatConversationView: View {
 
                     ForEach(messageGroup.messages) { message in
                         switch message.category {
-                        case let .text(text):
-                            ChatTextBubbleView(text: text,
+                        case .text:
+                            ChatTextBubbleView(text: message.text ?? "",
                                                style: message.isContact ? .contact : .user)
-                        case let .image(image, text):
-                            if let data = image, let uiImage = UIImage(data: data) {
-                                ChatImageBubbleView(image: uiImage,
-                                                    text: text,
-                                                    style: message.isContact ? .contact : .user)
-                            }
+                        case .image:
+                            ChatImageBubbleView(image: message.previewImage,
+                                                text: message.text,
+                                                style: message.isContact ? .contact : .user)
                         case .sendReveal:
                             ChatRevealIdentityView(image: nil,
                                                    isRequest: true,

@@ -8,9 +8,12 @@
 import SwiftUI
 import UIKit
 
+/// ImagePicker will compress in 50% the image before returning it.
+
 struct ImagePicker: UIViewControllerRepresentable {
     @Environment(\.presentationMode) private var presentationMode
     var sourceType: UIImagePickerController.SourceType = .photoLibrary
+    /// The selected image is compressed by 50%
     @Binding var selectedImage: UIImage?
 
     func makeUIViewController(context: UIViewControllerRepresentableContext<ImagePicker>) -> UIImagePickerController {
@@ -37,8 +40,9 @@ struct ImagePicker: UIViewControllerRepresentable {
 
         func imagePickerController(_ picker: UIImagePickerController,
                                    didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
-            if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
-                parent.selectedImage = image
+            if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage,
+               let imageData = image.jpegData(compressionQuality: 0.5) {
+                parent.selectedImage = UIImage(data: imageData)
             }
 
             parent.presentationMode.wrappedValue.dismiss()
