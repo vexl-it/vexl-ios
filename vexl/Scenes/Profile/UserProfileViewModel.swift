@@ -48,7 +48,7 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
     }
 
     var avatar: Data? {
-        authenticationManager.currentUser?.avatarImage ?? R.image.onboarding.emptyAvatar()?.jpegData(compressionQuality: 1)
+        authenticationManager.currentUser?.avatarImage ?? R.image.onboarding.emptyAvatar()?.jpegData(compressionQuality: 0.5)
     }
 
     var options: [OptionGroup] {

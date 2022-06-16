@@ -43,6 +43,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
         case revealRequestConfirmationTap
         case revealResponseTap
         case revealResponseConfirmationTap
+        case deleteImageTap
     }
 
     let action: ActionSubject<UserAction> = .init()
@@ -99,6 +100,8 @@ final class ChatViewModel: ViewModelType, ObservableObject {
         setupModalBindings()
     }
 
+    // TODO: - Add post messages to the BE when tapping send/requests
+
     private func setupActionBindings() {
 
         let action = action
@@ -114,7 +117,12 @@ final class ChatViewModel: ViewModelType, ObservableObject {
             .filter { $0 == .messageSend }
             .withUnretained(self)
             .sink { owner, _ in
-                owner.messages.appendMessage(.init(category: .text(text: owner.currentMessage), isContact: false))
+                if let selectedImage = owner.selectedImage, let imageData = selectedImage.jpegData(compressionQuality: 0.25) {
+                    owner.messages.appendMessage(.init(category: .image(image: imageData, text: owner.currentMessage), isContact: false))
+                    owner.selectedImage = nil
+                } else {
+                    owner.messages.appendMessage(.init(category: .text(text: owner.currentMessage), isContact: false))
+                }
                 owner.currentMessage = ""
             }
             .store(in: cancelBag)
@@ -138,13 +146,10 @@ final class ChatViewModel: ViewModelType, ObservableObject {
             }
             .store(in: cancelBag)
 
-        $selectedImage
-            .removeDuplicates()
+        action
+            .filter { $0 == .deleteImageTap }
             .withUnretained(self)
-            .sink { owner, selectedImage in
-                if let image = selectedImage, let imageData = image.jpegData(compressionQuality: 1) {
-                    owner.messages.appendMessage(.init(category: .image(image: imageData, text: nil), isContact: false))
-                }
+            .sink { owner, _ in
                 owner.selectedImage = nil
             }
             .store(in: cancelBag)

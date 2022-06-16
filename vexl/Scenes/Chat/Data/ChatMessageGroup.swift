@@ -57,7 +57,7 @@ struct ChatMessageGroup: Identifiable, Hashable {
             .init(date: Date(), messages: [
                 .init(category: .text(text: "Morbi vitae velit ac ex congue molestie"),
                       isContact: false),
-                .init(category: .image(image: R.image.onboarding.testAvatar()!.jpegData(compressionQuality: 1)!, text: nil),
+                .init(category: .image(image: R.image.onboarding.testAvatar()!.jpegData(compressionQuality: 0.5)!, text: nil),
                       isContact: true),
                 .init(category: .sendReveal, isContact: false),
                 .init(category: .receiveReveal, isContact: false)

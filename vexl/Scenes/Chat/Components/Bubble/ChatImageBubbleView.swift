@@ -21,12 +21,13 @@ struct ChatImageBubbleView: View {
                     .resizable()
                     .frame(maxWidth: Appearance.GridGuide.chatImageSize.width,
                            maxHeight: Appearance.GridGuide.chatImageSize.height)
+                    .cornerRadius(Appearance.GridGuide.containerCorner)
                     .padding(Appearance.GridGuide.smallPadding)
 
-                if let text = text {
+                if let text = text, !text.isEmpty {
                     Text(text)
                         .textStyle(.paragraphSmallMedium)
-                        .padding(Appearance.GridGuide.smallPadding)
+                        .padding([.horizontal, .bottom], Appearance.GridGuide.smallPadding)
                 }
             }
         }
