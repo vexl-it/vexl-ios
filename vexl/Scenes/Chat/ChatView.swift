@@ -19,6 +19,28 @@ struct ChatView: View {
             modalView
                 .zIndex(1)
         }
+        .actionSheet(isPresented: $viewModel.showImagePickerActionSheet, content: {
+            ActionSheet(title: Text(L.registerNameAvatarImagePicker()),
+                        message: nil,
+                        buttons: [
+                            .default(Text(L.registerNameAvatarCamera())) {
+                                viewModel.showImagePicker = true
+                                viewModel.imageSource = .camera
+                            },
+                            .default(Text(L.registerNameAvatarPhotoAlbum())) {
+                                viewModel.showImagePicker = true
+                                viewModel.imageSource = .photoAlbum
+                            },
+                            .cancel()
+                        ])
+        })
+        .fullScreenCover(isPresented: $viewModel.showImagePicker) {
+            ImagePicker(
+                sourceType: viewModel.imageSource == .photoAlbum ? .photoLibrary : .camera,
+                selectedImage: $viewModel.selectedImage
+            )
+            .background(Color.black.ignoresSafeArea())
+        }
         .frame(maxWidth: .infinity)
         .background(Color.black.edgesIgnoringSafeArea(.all))
     }
@@ -43,18 +65,20 @@ struct ChatView: View {
                 }
             }
 
-            ChatConversationView(messages: viewModel.messages, revealAction: {
+            ChatConversationView(messages: viewModel.messages,
+                                 revealAction: {
                 withAnimation {
-                    viewModel.action.send(.revealConfirmedTap)
+                    viewModel.action.send(.revealResponseTap)
                 }
             })
                 .frame(maxHeight: .infinity)
+                .padding(.bottom, Appearance.GridGuide.point)
 
             ChatInputView(text: $viewModel.currentMessage,
                           sendAction: {
                 viewModel.action.send(.messageSend)
             },
-                                 cameraAction: {
+                          cameraAction: {
                 viewModel.action.send(.cameraTap)
             })
                 .padding([.horizontal, .bottom], Appearance.GridGuide.padding)
@@ -186,7 +210,7 @@ struct ChatView: View {
         ChatRevealConfirmationView(isRequest: true ,
                                    mainAction: {
             withAnimation {
-                viewModel.action.send(.revealRequestTap)
+                viewModel.action.send(.revealRequestConfirmationTap)
             }
         },
                                    dismiss: {
@@ -200,7 +224,7 @@ struct ChatView: View {
         ChatRevealConfirmationView(isRequest: false ,
                                    mainAction: {
             withAnimation {
-                viewModel.action.send(.revealConfirmedTap)
+                viewModel.action.send(.revealResponseConfirmationTap)
             }
         },
                                    dismiss: {

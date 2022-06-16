@@ -7,8 +7,13 @@
 
 import Foundation
 import Cleevio
+import SwiftUI
 
 final class ChatViewModel: ViewModelType, ObservableObject {
+
+    enum ImageSource {
+        case photoAlbum, camera
+    }
 
     enum Modal {
         case none
@@ -35,8 +40,9 @@ final class ChatViewModel: ViewModelType, ObservableObject {
         case deleteConfirmedTap
         case blockTap
         case blockConfirmedTap
-        case revealRequestTap
-        case revealConfirmedTap
+        case revealRequestConfirmationTap
+        case revealResponseTap
+        case revealResponseConfirmationTap
     }
 
     let action: ActionSubject<UserAction> = .init()
@@ -44,10 +50,13 @@ final class ChatViewModel: ViewModelType, ObservableObject {
     // MARK: - View Bindings
 
     @Published var currentMessage: String = ""
+    @Published var selectedImage: UIImage?
 
     @Published var primaryActivity: Activity = .init()
     @Published var isLoading = false
     @Published var error: Error?
+    @Published var showImagePicker = false
+    @Published var showImagePickerActionSheet = false
     @Published var modal = Modal.none
 
     var errorIndicator: ErrorIndicator {
@@ -70,8 +79,9 @@ final class ChatViewModel: ViewModelType, ObservableObject {
     let username: String = "Keichi"
     let avatar: UIImage? = nil
     let friends: [ChatCommonFriendViewData] = [.stub, .stub, .stub]
-    var messages: [ChatMessageGroup] = ChatMessageGroup.stub
     let offerType: OfferType = .buy
+    var messages: [ChatMessageGroup] = ChatMessageGroup.stub
+    var imageSource = ImageSource.photoAlbum
 
     var offerLabel: String {
         offerType == .buy ? L.marketplaceDetailUserBuy("") : L.marketplaceDetailUserSell("")
@@ -85,6 +95,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
 
     init() {
         setupActionBindings()
+        setupChatActionBindings()
         setupModalBindings()
     }
 
@@ -107,12 +118,39 @@ final class ChatViewModel: ViewModelType, ObservableObject {
                 owner.currentMessage = ""
             }
             .store(in: cancelBag)
+
+        action
+            .filter { $0 == .cameraTap }
+            .withUnretained(self)
+            .sink { owner, _ in
+                owner.showImagePickerActionSheet = true
+                owner.currentMessage = ""
+            }
+            .store(in: cancelBag)
+
+        action
+            .filter { $0 == .revealRequestConfirmationTap }
+            .withUnretained(self)
+            .sink { owner, _ in
+                owner.messages.appendMessage(.init(category: .sendReveal, isContact: false))
+                owner.modal = .none
+                owner.currentMessage = ""
+            }
+            .store(in: cancelBag)
+
+        $selectedImage
+            .removeDuplicates()
+            .withUnretained(self)
+            .sink { owner, selectedImage in
+                if let image = selectedImage, let imageData = image.jpegData(compressionQuality: 1) {
+                    owner.messages.appendMessage(.init(category: .image(image: imageData, text: nil), isContact: false))
+                }
+                owner.selectedImage = nil
+            }
+            .store(in: cancelBag)
     }
 
-    private func setupModalBindings() {
-
-        let action = action
-            .share()
+    private func setupChatActionBindings() {
 
         let chatAction = action
             .compactMap { action -> ChatAction? in
@@ -145,6 +183,12 @@ final class ChatViewModel: ViewModelType, ObservableObject {
             .filter { $0 == .revealIdentity }
             .map { _ -> Modal in .identityRevealRequest }
             .assign(to: &$modal)
+    }
+
+    private func setupModalBindings() {
+
+        let action = action
+            .share()
 
         action
             .filter { $0 == .dismissModal }
@@ -173,7 +217,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
             .assign(to: &$modal)
 
         action
-            .filter { $0 == .revealConfirmedTap }
+            .filter { $0 == .revealResponseTap }
             .map { _ -> Modal in .identityRevealConfirmation }
             .assign(to: &$modal)
     }
