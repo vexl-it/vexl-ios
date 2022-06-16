@@ -119,7 +119,7 @@ struct ChatMessageInputViewPreview: PreviewProvider {
                           deleteImageAction: {})
                 .background(Color.black)
                 .previewDevice("iPhone 11")
-            
+
             ChatInputView(text: .constant("Hello there"),
                           image: R.image.onboarding.testAvatar()!,
                           sendAction: {},
