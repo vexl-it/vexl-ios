@@ -17,6 +17,7 @@ enum ChatRouter: ApiRouter {
     case requestChallenge(publicKey: String)
     case pullChat(publicKey: String, signature: String)
     case deleteChat(publicKey: String)
+    case deleteChatMessages(publicKey: String)
 
     var method: HTTPMethod {
         switch self {
@@ -24,7 +25,7 @@ enum ChatRouter: ApiRouter {
             return .post
         case .pullChat:
             return .put
-        case .deleteChat:
+        case .deleteChat, .deleteChatMessages:
             return .delete
         }
     }
@@ -45,6 +46,8 @@ enum ChatRouter: ApiRouter {
             return "inboxes/messages"
         case let .deleteChat(publicKey):
             return "inboxes/\(publicKey)"
+        case let .deleteChatMessages(publicKey):
+            return "inboxes/\(publicKey)/messages"
         case .requestConfirmation:
             return "inboxes/approval/confirm"
         }
@@ -79,7 +82,7 @@ enum ChatRouter: ApiRouter {
                 "message": message,
                 "approve": confirmed
             ]
-        case .deleteChat:
+        case .deleteChat, .deleteChatMessages:
             return [:]
         }
     }

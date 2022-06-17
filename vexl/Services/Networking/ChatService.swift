@@ -89,7 +89,7 @@ final class ChatService: BaseService, ChatServiceType {
     }
 
     func deleteInboxMessages(publicKey: String) -> AnyPublisher<Void, Error> {
-        request(endpoint: ChatRouter.deleteChat(publicKey: publicKey))
+        request(endpoint: ChatRouter.deleteChatMessages(publicKey: publicKey))
             .eraseToAnyPublisher()
     }
 
