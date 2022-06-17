@@ -70,6 +70,10 @@ struct ChatView: View {
                 withAnimation {
                     viewModel.action.send(.revealResponseTap)
                 }
+            },
+                                 imageAction: { groupId, messageId in
+                viewModel.action.send(.expandImageTap(groupId: groupId,
+                                                      messageId: messageId))
             })
                 .frame(maxHeight: .infinity)
                 .padding(.bottom, Appearance.GridGuide.point)

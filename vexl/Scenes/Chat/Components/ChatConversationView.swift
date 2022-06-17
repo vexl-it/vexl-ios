@@ -11,6 +11,7 @@ struct ChatConversationView: View {
 
     let messages: [ChatMessageGroup]
     let revealAction: () -> Void
+    let imageAction: (String, String) -> Void
 
     var body: some View {
         ScrollView(showsIndicators: false) {
@@ -27,6 +28,9 @@ struct ChatConversationView: View {
                             ChatImageBubbleView(image: message.previewImage,
                                                 text: message.text,
                                                 style: message.isContact ? .contact : .user)
+                                .onTapGesture {
+                                    imageAction(messageGroup.id.uuidString, message.id.uuidString)
+                                }
                         case .sendReveal:
                             ChatRevealIdentityView(image: nil,
                                                    isRequest: true,

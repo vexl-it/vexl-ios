@@ -43,6 +43,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
         case revealResponseTap
         case revealResponseConfirmationTap
         case deleteImageTap
+        case expandImageTap(groupId: String, messageId: String)
     }
 
     let action: ActionSubject<UserAction> = .init()
@@ -70,6 +71,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
 
     enum Route: Equatable {
         case dismissTapped
+        case expandImageTapped(image: Data)
     }
 
     var route: CoordinatingSubject<Route> = .init()
@@ -156,6 +158,23 @@ final class ChatViewModel: ViewModelType, ObservableObject {
             .sink { owner, _ in
                 owner.selectedImage = nil
             }
+            .store(in: cancelBag)
+
+        action
+            .compactMap { action -> (groupId: String, messageId: String)? in
+                if case let .expandImageTap(groupId, messageId) = action { return (groupId: groupId, messageId: messageId) }
+                return nil
+            }
+            .withUnretained(self)
+            .compactMap { owner, ids -> Data? in
+                guard let messageGroup = owner.messages.first(where: { $0.id.uuidString == ids.groupId }),
+                      let message = messageGroup.messages.first(where: { $0.id.uuidString == ids.messageId }) else {
+                          return nil
+                      }
+                return message.image
+            }
+            .map { image -> Route in .expandImageTapped(image: image) }
+            .subscribe(route)
             .store(in: cancelBag)
     }
 

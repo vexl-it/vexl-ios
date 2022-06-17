@@ -253,9 +253,9 @@
 		F1BBC710283BE5570067F81B /* TT Satoshi Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = F1BBC70C283BE5570067F81B /* TT Satoshi Regular.otf */; };
 		F1BBC711283BE5570067F81B /* TT Satoshi Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = F1BBC70D283BE5570067F81B /* TT Satoshi Bold.otf */; };
 		F1BBC713283BE55F0067F81B /* PPMonumentExtended-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = F1BBC712283BE55F0067F81B /* PPMonumentExtended-Bold.otf */; };
-		F1BDC96F285BA31400F86581 /* ChatImagePreviewCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1BDC96E285BA31400F86581 /* ChatImagePreviewCoordinator.swift */; };
-		F1BDC971285BA32200F86581 /* ChatImagePreviewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1BDC970285BA32200F86581 /* ChatImagePreviewViewModel.swift */; };
-		F1BDC973285BA32A00F86581 /* ChatImagePreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1BDC972285BA32A00F86581 /* ChatImagePreviewView.swift */; };
+		F1BDC978285BF9D600F86581 /* ChatExpandedImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1BDC975285BF9D600F86581 /* ChatExpandedImageView.swift */; };
+		F1BDC979285BF9D600F86581 /* ChatExpandedImageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1BDC976285BF9D600F86581 /* ChatExpandedImageViewModel.swift */; };
+		F1BDC97A285BF9D600F86581 /* ChatExpandedImageCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1BDC977285BF9D600F86581 /* ChatExpandedImageCoordinator.swift */; };
 		F1BFA8D027FB31E800F4E745 /* FacebookUserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1BFA8CF27FB31E800F4E745 /* FacebookUserData.swift */; };
 		F1BFA956280223BD00F4E745 /* UserProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1BFA952280223BD00F4E745 /* UserProfileView.swift */; };
 		F1BFA957280223BD00F4E745 /* UserProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1BFA953280223BD00F4E745 /* UserProfileViewModel.swift */; };
@@ -563,9 +563,9 @@
 		F1BBC70C283BE5570067F81B /* TT Satoshi Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "TT Satoshi Regular.otf"; sourceTree = "<group>"; };
 		F1BBC70D283BE5570067F81B /* TT Satoshi Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "TT Satoshi Bold.otf"; sourceTree = "<group>"; };
 		F1BBC712283BE55F0067F81B /* PPMonumentExtended-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "PPMonumentExtended-Bold.otf"; sourceTree = "<group>"; };
-		F1BDC96E285BA31400F86581 /* ChatImagePreviewCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatImagePreviewCoordinator.swift; sourceTree = "<group>"; };
-		F1BDC970285BA32200F86581 /* ChatImagePreviewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatImagePreviewViewModel.swift; sourceTree = "<group>"; };
-		F1BDC972285BA32A00F86581 /* ChatImagePreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatImagePreviewView.swift; sourceTree = "<group>"; };
+		F1BDC975285BF9D600F86581 /* ChatExpandedImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatExpandedImageView.swift; sourceTree = "<group>"; };
+		F1BDC976285BF9D600F86581 /* ChatExpandedImageViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatExpandedImageViewModel.swift; sourceTree = "<group>"; };
+		F1BDC977285BF9D600F86581 /* ChatExpandedImageCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatExpandedImageCoordinator.swift; sourceTree = "<group>"; };
 		F1BFA8CF27FB31E800F4E745 /* FacebookUserData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookUserData.swift; sourceTree = "<group>"; };
 		F1BFA952280223BD00F4E745 /* UserProfileView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfileView.swift; sourceTree = "<group>"; };
 		F1BFA953280223BD00F4E745 /* UserProfileViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfileViewModel.swift; sourceTree = "<group>"; };
@@ -1349,9 +1349,9 @@
 		F1485629284FD451003213D7 /* Chat */ = {
 			isa = PBXGroup;
 			children = (
+				F1BDC974285BF9D600F86581 /* ChatExpandedImage */,
 				F148563C284FD451003213D7 /* Data */,
 				F148562B284FD451003213D7 /* Components */,
-				F1BDC96D285BA2E300F86581 /* ChatImagePreview */,
 				F148562A284FD451003213D7 /* ChatViewModel.swift */,
 				F148563A284FD451003213D7 /* ChatCoordinator.swift */,
 				F148563B284FD451003213D7 /* ChatView.swift */,
@@ -1622,14 +1622,14 @@
 			path = Fonts;
 			sourceTree = "<group>";
 		};
-		F1BDC96D285BA2E300F86581 /* ChatImagePreview */ = {
+		F1BDC974285BF9D600F86581 /* ChatExpandedImage */ = {
 			isa = PBXGroup;
 			children = (
-				F1BDC96E285BA31400F86581 /* ChatImagePreviewCoordinator.swift */,
-				F1BDC970285BA32200F86581 /* ChatImagePreviewViewModel.swift */,
-				F1BDC972285BA32A00F86581 /* ChatImagePreviewView.swift */,
+				F1BDC975285BF9D600F86581 /* ChatExpandedImageView.swift */,
+				F1BDC976285BF9D600F86581 /* ChatExpandedImageViewModel.swift */,
+				F1BDC977285BF9D600F86581 /* ChatExpandedImageCoordinator.swift */,
 			);
-			path = ChatImagePreview;
+			path = ChatExpandedImage;
 			sourceTree = "<group>";
 		};
 		F1BFA951280223BD00F4E745 /* Profile */ = {
@@ -2022,6 +2022,7 @@
 				4FBF61E2283BD12D00DDBE71 /* FilterViewModel.swift in Sources */,
 				F11441D1284681EC00307D39 /* PlaceholderTextField.swift in Sources */,
 				B0F206EF27AE8F6900A44E72 /* Publisher+.swift in Sources */,
+				F1BDC979285BF9D600F86581 /* ChatExpandedImageViewModel.swift in Sources */,
 				F1A9453627F686D1009B5AE3 /* CodeValidation.swift in Sources */,
 				F12A14E827D6A8690096543E /* RequestAccessContactsView.swift in Sources */,
 				F13B2675281EB23A0011F2FB /* ContactFriendLevel.swift in Sources */,
@@ -2039,6 +2040,7 @@
 				F1A9454427F81211009B5AE3 /* ContactsAvailable.swift in Sources */,
 				B0EEE11A27B14D3D0097031E /* WelcomeView.swift in Sources */,
 				F1BFA959280223BD00F4E745 /* UserProfileCoordinator.swift in Sources */,
+				F1BDC97A285BF9D600F86581 /* ChatExpandedImageCoordinator.swift in Sources */,
 				F18862492811551700659786 /* CreateOfferViewModel.swift in Sources */,
 				F1F5F19D283FE53A00968366 /* ChatRequestViewModel.swift in Sources */,
 				F148563E284FD451003213D7 /* ChatViewModel.swift in Sources */,
@@ -2059,7 +2061,6 @@
 				F12A14F727D9768E0096543E /* ImportContactListView.swift in Sources */,
 				B08F38DF27AE7110008B344F /* DIContainer.swift in Sources */,
 				4F700CBC2844C3260085139F /* TabBarNavigationController.swift in Sources */,
-				F1BDC971285BA32200F86581 /* ChatImagePreviewViewModel.swift in Sources */,
 				B08F391E27AE7112008B344F /* AppDelegate.swift in Sources */,
 				B08F394F27AE7112008B344F /* Localization.swift in Sources */,
 				B0E9BB2C2815C71E0012BF1D /* ECC.swift in Sources */,
@@ -2116,7 +2117,6 @@
 				B08F392627AE7112008B344F /* R.generated.swift in Sources */,
 				F1042BA527BEF0360048C2F0 /* OnboardingView+PageControl.swift in Sources */,
 				F1B5FCD627C703BF0018729B /* View+.swift in Sources */,
-				F1BDC96F285BA31400F86581 /* ChatImagePreviewCoordinator.swift in Sources */,
 				F114420128495E1900307D39 /* LargeSolidButton.swift in Sources */,
 				B08F396627AE7112008B344F /* Constants.swift in Sources */,
 				F13B265E281899250011F2FB /* OfferAdvancedFilterBTCNetworkView.swift in Sources */,
@@ -2176,7 +2176,7 @@
 				F1483CC4285A407C0054B7A2 /* ChatImageBubbleView.swift in Sources */,
 				F1B5321C28202B36009D4E0C /* OfferItemView.swift in Sources */,
 				F11441DE284681EC00307D39 /* SegmentedPickerView.swift in Sources */,
-				F1BDC973285BA32A00F86581 /* ChatImagePreviewView.swift in Sources */,
+				F1BDC978285BF9D600F86581 /* ChatExpandedImageView.swift in Sources */,
 				F11441DD284681EC00307D39 /* LoadingIndicatorView.swift in Sources */,
 				F1A9454627F81278009B5AE3 /* ContactInformation.swift in Sources */,
 				F1D2011F282960DC006DF4AB /* TabBarView.swift in Sources */,
