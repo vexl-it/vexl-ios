@@ -60,10 +60,6 @@ final class InboxManager: InboxManagerType {
                 owner.pullInboxMessage(keyAndSignature: keyAndSignature)
             }
 
-        // Store/Update messages in the Latest Message and Pending Requests Table
-        // - check if depending on the type it will always go 
-        // - if not first then get last. Logic should be in ChatService.
-
         let saveMessages = pullChat
             .flatMapLatest(with: self) { owner, keyAndMessages -> AnyPublisher<KeyAndParsedMessages, Error> in
                 owner.saveFetchedMessages(keyAndMessages: keyAndMessages, inboxPublicKey: inbox.publicKey)
@@ -99,10 +95,6 @@ final class InboxManager: InboxManagerType {
 
         let updateInboxMessages = syncInboxes
             .flatMapLatest(with: self) { owner, results -> AnyPublisher<[Result<[ParsedChatMessage], Error>], Error> in
-
-                // TODO: - Makes sense to have this in the queue? or should it be just a call and
-                // let it update after it finishes / dont worrying about it
-
                 owner.updateInboxMessages()
                     .map { results }
                     .eraseToAnyPublisher()

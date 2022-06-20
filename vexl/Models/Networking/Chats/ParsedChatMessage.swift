@@ -94,8 +94,6 @@ struct ParsedChatMessage: Codable {
 
 extension ParsedChatMessage {
 
-    // TODO: - clean this type as some of them are not needed because of the MessageType that comes from the server.
-    
     enum ContentType: String {
         case text = "TEXT"
         case image = "IMAGE"
