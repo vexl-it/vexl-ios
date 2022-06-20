@@ -119,6 +119,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
         !currentMessage.isEmpty || selectedImage != nil
     }
 
+    private let inboxKeys: ECCKeys = ECCKeys()
     private let senderKeys: ECCKeys = ECCKeys()
     private let receiverPublicKey: String = ""
     private let isBlocked = false
@@ -184,7 +185,8 @@ final class ChatViewModel: ViewModelType, ObservableObject {
             .compactMap { owner, image -> String? in
                 ParsedChatMessage.createEncryptedMessage(text: owner.currentMessage,
                                                          image: image,
-                                                         key: owner.senderKeys)
+                                                         inboxKey: owner.inboxKeys.publicKey,
+                                                         senderKey: owner.senderKeys.publicKey)
             }
 
         inputMessage

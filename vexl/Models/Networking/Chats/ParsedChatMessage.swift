@@ -52,7 +52,7 @@ struct ParsedChatMessage: Codable {
                              image: json["userAvatar"] as? String)
     }
 
-    init?(inboxPublicKey: String, messageType: MessageType, contentType: ContentType, text: String, senderKey: String) {
+    init?(inboxPublicKey: String, messageType: MessageType, contentType: ContentType, text: String, image: String? = nil, senderKey: String) {
         guard messageType != .invalid || messageType != .message else { return nil }
         self.senderKey = senderKey
         self.id = UUID().uuidString
@@ -61,7 +61,7 @@ struct ParsedChatMessage: Codable {
         self.messageTypeValue = messageType.rawValue
         self.contentTypeValue = contentType.rawValue
         self.time = Date().timeIntervalSince1970
-        self.image = nil
+        self.image = image
         self.user = nil
     }
 
@@ -91,8 +91,15 @@ struct ParsedChatMessage: Codable {
         return String(data: data, encoding: .utf8)
     }
 
-    static func createEncryptedMessage(text: String, image: String?, key: ECCKeys) -> String? {
-        return nil
+    static func createEncryptedMessage(text: String, image: String?, inboxKey: String, senderKey: String) -> String? {
+        let type: ParsedChatMessage.ContentType = image != nil ? .image : .text
+        let parsedMessage = ParsedChatMessage(inboxPublicKey: inboxKey,
+                                              messageType: .message,
+                                              contentType: type,
+                                              text: text,
+                                              image: image,
+                                              senderKey: senderKey)
+        return parsedMessage?.asString
     }
 }
 
