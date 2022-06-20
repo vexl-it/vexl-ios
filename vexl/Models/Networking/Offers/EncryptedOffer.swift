@@ -48,7 +48,11 @@ struct EncryptedOffer: Codable {
             "paymentMethod": paymentMethod,
             "btcNetwork": btcNetwork,
             "friendLevel": friendLevel,
-            "offerType": offerType
+            "offerType": offerType,
+            "activePriceState": "QWhvag==",
+            "activePriceValue": "QWhvag==",
+            "active": "QWhvag==",
+            "commonFriends": ["QWhvag==", "QWhvag=="]
         ]
     }
 }

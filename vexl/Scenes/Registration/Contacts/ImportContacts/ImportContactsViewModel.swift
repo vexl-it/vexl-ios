@@ -18,6 +18,7 @@ class ImportContactsViewModel: ObservableObject {
     @Inject var contactsService: ContactsServiceType
     @Inject var authenticationManager: AuthenticationManager
     @Inject var userService: UserServiceType
+    @Inject var cryptoService: CryptoServiceType
 
     // MARK: - View State
 
@@ -148,14 +149,20 @@ class ImportContactsViewModel: ObservableObject {
             }
             .store(in: cancelBag)
 
-        let importContact = action
+        let hashContacts = action
             .withUnretained(self)
             .filter { $0.0.currentState == .content && $0.0.hasSelectedItem && $0.1 == .importContacts }
             .map(\.0.selectedItems)
             .withUnretained(self)
             .flatMap { owner, contacts in
+                owner.hashContacts(identifiers: contacts.map(\.sourceIdentifier))
+            }
+
+        let importContact = hashContacts
+            .withUnretained(self)
+            .flatMap { owner, hashedContacts in
                 owner.contactsService
-                    .importContacts(contacts.map(\.sourceIdentifier))
+                    .importContacts(hashedContacts)
                     .track(activity: owner.primaryActivity)
                     .materialize()
                     .eraseToAnyPublisher()
@@ -175,6 +182,14 @@ class ImportContactsViewModel: ObservableObject {
                 owner.completed.send(())
             }
             .store(in: cancelBag)
+    }
+    
+    private func hashContacts(identifiers: [String]) -> AnyPublisher<[String], Error> {
+        identifiers.publisher
+            .withUnretained(self)
+            .flatMap { owner, identifier in
+                
+            }
     }
 
     private func select(_ isSelected: Bool, item: ContactInformation) {
