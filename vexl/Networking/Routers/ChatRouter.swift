@@ -11,11 +11,15 @@ import Alamofire
 enum ChatRouter: ApiRouter {
     case createInbox(offerPublicKey: String, pushToken: String)
     case request(inboxPublicKey: String, message: String)
+    case blockInbox(publicKey: String, publicKeyToBlock: String, signature: String, isBlocked: Bool)
+    case sendMessage(senderPublicKey: String, receiverPublicKey: String, message: String)
 
     var method: HTTPMethod {
         switch self {
-        case .createInbox, .request:
+        case .createInbox, .request, .sendMessage:
             return .post
+        case .blockInbox:
+            return .put
         }
     }
 
@@ -29,6 +33,10 @@ enum ChatRouter: ApiRouter {
             return "inboxes"
         case .request:
             return "inboxes/allowance/request"
+        case .blockInbox:
+            return "inboxes/block"
+        case .sendMessage:
+            return "inboxes/messages"
         }
     }
 
@@ -42,6 +50,20 @@ enum ChatRouter: ApiRouter {
         case let .request(inboxPublicKey, message):
             return [
                 "publicKey": inboxPublicKey,
+                "message": message
+            ]
+        case let .blockInbox(publicKey, publicKeyToBlock, signature, isBlocked):
+            return [
+                "publicKey": publicKey,
+                "publicKeyToBlock": publicKeyToBlock,
+                "signature": signature,
+                "block": isBlocked
+            ]
+        case let .sendMessage(senderPublicKey, receiverPublicKey, message):
+            return [
+                "senderPublicKey": senderPublicKey,
+                "receiverPublicKey": receiverPublicKey,
+                "messageType": "MESSAGE",
                 "message": message
             ]
         }

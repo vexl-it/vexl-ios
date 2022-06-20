@@ -11,6 +11,8 @@ import Combine
 protocol ChatServiceType {
     func createInbox(offerPublicKey: String, pushToken: String) -> AnyPublisher<Void, Error>
     func request(inboxPublicKey: String, message: String) -> AnyPublisher<Void, Error>
+    func blockInbox(inboxPublicKey: String, publicKeyToBlock: String, signature: String, isBlocked: Bool) -> AnyPublisher<Void, Error>
+    func sendMessage(senderPublicKey: String, receiverPublicKey: String, message: String) -> AnyPublisher<Void, Error>
 }
 
 final class ChatService: BaseService, ChatServiceType {
@@ -49,5 +51,18 @@ final class ChatService: BaseService, ChatServiceType {
             owner.request(endpoint: ChatRouter.request(inboxPublicKey: inboxPublicKey, message: encryptedMessage))
         }
         .eraseToAnyPublisher()
+    }
+
+    func blockInbox(inboxPublicKey: String, publicKeyToBlock: String, signature: String, isBlocked: Bool) -> AnyPublisher<Void, Error> {
+        request(endpoint: ChatRouter.blockInbox(publicKey: inboxPublicKey,
+                                                publicKeyToBlock: publicKeyToBlock,
+                                                signature: signature,
+                                                isBlocked: isBlocked))
+    }
+
+    func sendMessage(senderPublicKey: String, receiverPublicKey: String, message: String) -> AnyPublisher<Void, Error> {
+        request(endpoint: ChatRouter.sendMessage(senderPublicKey: senderPublicKey,
+                                                 receiverPublicKey: receiverPublicKey,
+                                                 message: message))
     }
 }
