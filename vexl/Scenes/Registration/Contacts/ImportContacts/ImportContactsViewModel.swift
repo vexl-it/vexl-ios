@@ -156,13 +156,14 @@ class ImportContactsViewModel: ObservableObject {
             .withUnretained(self)
             .flatMap { owner, contacts in
                 owner.hashContacts(identifiers: contacts.map(\.sourceIdentifier))
+                    .eraseToAnyPublisher()
             }
 
         let importContact = hashContacts
             .withUnretained(self)
-            .flatMap { owner, hashedContacts in
+            .flatMap { owner, contacts in
                 owner.contactsService
-                    .importContacts(hashedContacts)
+                    .importContacts(contacts)
                     .track(activity: owner.primaryActivity)
                     .materialize()
                     .eraseToAnyPublisher()
@@ -178,18 +179,22 @@ class ImportContactsViewModel: ObservableObject {
             })
             .filter { $0.0.currentState == .success }
             .delay(for: .seconds(1), scheduler: RunLoop.main)
-            .sink { owner, _ in
+            .sink(receiveCompletion: { _ in },
+                  receiveValue: { owner, _ in
                 owner.completed.send(())
-            }
+            })
             .store(in: cancelBag)
     }
-    
+
     private func hashContacts(identifiers: [String]) -> AnyPublisher<[String], Error> {
-        identifiers.publisher
+        let trimmedIdentifiers = identifiers.map { $0.removeWhitespaces() }
+        return trimmedIdentifiers.publisher
             .withUnretained(self)
             .flatMap { owner, identifier in
-                
+                owner.cryptoService.hashHMAC(password: Constants.contactsHashingPassword, message: identifier)
             }
+            .collect()
+            .eraseToAnyPublisher()
     }
 
     private func select(_ isSelected: Bool, item: ContactInformation) {
