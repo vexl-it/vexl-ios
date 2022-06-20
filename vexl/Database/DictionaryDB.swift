@@ -10,52 +10,56 @@ import Foundation
 // This is not for production, just to accelerate development. Later we should setup CoreData with proper security
 
 final class DictionaryDB {
+
+    static private let encoder = JSONEncoder()
+    static private let decoder = JSONDecoder()
+
     static private var inboxes: [String: [OfferInbox]] = ["created": [], "requested": []] {
         didSet {
-            guard let encodedData = try? JSONEncoder().encode(inboxes) else { return }
+            guard let encodedData = try? encoder.encode(inboxes) else { return }
             UserDefaults.standard.setValue(encodedData, forKey: "inboxes")
         }
     }
 
     static private var messages: [ParsedChatMessage] = [] {
         didSet {
-            guard let encodedData = try? JSONEncoder().encode(messages) else { return }
+            guard let encodedData = try? encoder.encode(messages) else { return }
             UserDefaults.standard.setValue(encodedData, forKey: "messages")
         }
     }
 
     static private var requests: [String: ParsedChatMessage] = [:] {
         didSet {
-            guard let encodedData = try? JSONEncoder().encode(requests) else { return }
+            guard let encodedData = try? encoder.encode(requests) else { return }
             UserDefaults.standard.setValue(encodedData, forKey: "requests")
         }
     }
 
     static private var displayMessage: [String: ParsedChatMessage] = [:] {
         didSet {
-            guard let encodedData = try? JSONEncoder().encode(displayMessage) else { return }
+            guard let encodedData = try? encoder.encode(displayMessage) else { return }
             UserDefaults.standard.setValue(encodedData, forKey: "displayMessage")
         }
     }
 
     static func setupDatabase() {
         if let inboxesData = UserDefaults.standard.data(forKey: "inboxes"),
-           let savedInboxes = try? JSONDecoder().decode([String: [OfferInbox]].self, from: inboxesData) {
+           let savedInboxes = try? decoder.decode([String: [OfferInbox]].self, from: inboxesData) {
             inboxes = savedInboxes
         }
 
         if let messagesData = UserDefaults.standard.data(forKey: "messages"),
-           let savedMessages = try? JSONDecoder().decode([ParsedChatMessage].self, from: messagesData) {
+           let savedMessages = try? decoder.decode([ParsedChatMessage].self, from: messagesData) {
             messages = savedMessages
         }
 
         if let requestsData = UserDefaults.standard.data(forKey: "requests"),
-           let savedRequests = try? JSONDecoder().decode([String: ParsedChatMessage].self, from: requestsData) {
+           let savedRequests = try? decoder.decode([String: ParsedChatMessage].self, from: requestsData) {
             requests = savedRequests
         }
 
         if let displayData = UserDefaults.standard.data(forKey: "displayMessage"),
-           let savedDisplayMessages = try? JSONDecoder().decode([String: ParsedChatMessage].self, from: displayData) {
+           let savedDisplayMessages = try? decoder.decode([String: ParsedChatMessage].self, from: displayData) {
             displayMessage = savedDisplayMessages
         }
     }
