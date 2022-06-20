@@ -30,6 +30,14 @@ struct ChatMessageGroup: Identifiable, Hashable {
             self.previewImage = previewImage
         }
 
+        static func createInput(text: String?, image: Data? = nil, previewImage: Data? = nil) -> Message {
+            Message(category: image != nil ? .image : .text,
+                    isContact: false,
+                    text: text,
+                    image: image,
+                    previewImage: previewImage)
+        }
+
         // swiftlint: disable nesting
         enum Category: Equatable, Hashable {
             case text

@@ -115,6 +115,10 @@ final class ChatViewModel: ViewModelType, ObservableObject {
             .eraseToAnyPublisher()
     }
 
+    private var isInputValid: Bool {
+        !currentMessage.isEmpty || selectedImage != nil
+    }
+
     private let senderKeys: ECCKeys = ECCKeys()
     private let receiverPublicKey: String = ""
     private let isBlocked = false
@@ -122,7 +126,9 @@ final class ChatViewModel: ViewModelType, ObservableObject {
     init() {
         setupActionBindings()
         setupChatInputBindings()
+        setupChatImageInputBindings()
         setupRevealIdentityRequestBindings()
+        setupRevealIdentityResponseBindings()
         setupBlockChatBindings()
         setupDeleteChatBindings()
         setupModalPresentationBindings()
@@ -130,32 +136,12 @@ final class ChatViewModel: ViewModelType, ObservableObject {
 
     // TODO: - Add post messages to the BE when tapping send/requests
 
-    private func setupChatInputBindings() {
+    private func setupChatImageInputBindings() {
         sharedAction
             .filter { $0 == .cameraTap }
             .withUnretained(self)
             .sink { owner, _ in
                 owner.showImagePickerActionSheet = true
-            }
-            .store(in: cancelBag)
-
-        sharedAction
-            .filter { $0 == .messageSend }
-            .withUnretained(self)
-            .sink { owner, _ in
-                if let selectedImage = owner.selectedImage {
-                    owner.messages.appendMessage(.init(category: .image,
-                                                       isContact: false,
-                                                       text: owner.currentMessage,
-                                                       image: selectedImage.jpegData(compressionQuality: 1),
-                                                       previewImage: selectedImage.jpegData(compressionQuality: 0.25)))
-                    owner.selectedImage = nil
-                } else {
-                    owner.messages.appendMessage(.init(category: .text,
-                                                       isContact: false,
-                                                       text: owner.currentMessage))
-                }
-                owner.currentMessage = ""
             }
             .store(in: cancelBag)
 
@@ -182,6 +168,45 @@ final class ChatViewModel: ViewModelType, ObservableObject {
             }
             .map { image -> Route in .expandImageTapped(image: image) }
             .subscribe(route)
+            .store(in: cancelBag)
+    }
+
+    private func setupChatInputBindings() {
+        let inputMessage = sharedAction
+            .withUnretained(self)
+            .filter { $0.1 == .messageSend && $0.0.isInputValid }
+            .flatMap { owner, _ -> AnyPublisher<String?, Never> in
+                guard let selectedImage = owner.selectedImage else { return Just<String?>(nil).eraseToAnyPublisher() }
+                return selectedImage.base64Publisher
+                    .track(activity: owner.primaryActivity)
+            }
+            .withUnretained(self)
+            .compactMap { owner, image -> String? in
+                ParsedChatMessage.createEncryptedMessage(text: owner.currentMessage,
+                                                         image: image,
+                                                         key: owner.senderKeys)
+            }
+
+        inputMessage
+            .withUnretained(self)
+            .flatMap { owner, message in
+                owner.chatService.sendMessage(senderPublicKey: owner.senderKeys.publicKey,
+                                              receiverPublicKey: owner.receiverPublicKey,
+                                              message: message,
+                                              messageType: .message)
+                    .track(activity: owner.primaryActivity)
+                    .materialize()
+                    .compactMap(\.value)
+                    .eraseToAnyPublisher()
+            }
+            .withUnretained(self)
+            .sink { owner, _ in
+                owner.messages.appendMessage(.createInput(text: owner.currentMessage,
+                                                          image: owner.selectedImage?.jpegData(compressionQuality: 1),
+                                                          previewImage: owner.selectedImage?.jpegData(compressionQuality: 0.25)))
+                owner.selectedImage = nil
+                owner.currentMessage = ""
+            }
             .store(in: cancelBag)
     }
 

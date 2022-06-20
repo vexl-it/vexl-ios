@@ -25,7 +25,7 @@ protocol ChatServiceType {
     func getInboxMessages() -> AnyPublisher<[ParsedChatMessage], Error>
     func getRequestMessages() -> AnyPublisher<[ParsedChatMessage], Error>
     func blockInbox(inboxPublicKey: String, publicKeyToBlock: String, signature: String, isBlocked: Bool) -> AnyPublisher<Void, Error>
-    func sendMessage(senderPublicKey: String, receiverPublicKey: String, message: String) -> AnyPublisher<Void, Error>
+    func sendMessage(senderPublicKey: String, receiverPublicKey: String, message: String, messageType: MessageType) -> AnyPublisher<Void, Error>
 }
 
 final class ChatService: BaseService, ChatServiceType {
@@ -124,10 +124,11 @@ final class ChatService: BaseService, ChatServiceType {
                                                 isBlocked: isBlocked))
     }
 
-    func sendMessage(senderPublicKey: String, receiverPublicKey: String, message: String) -> AnyPublisher<Void, Error> {
+    func sendMessage(senderPublicKey: String, receiverPublicKey: String, message: String, messageType: MessageType) -> AnyPublisher<Void, Error> {
         request(endpoint: ChatRouter.sendMessage(senderPublicKey: senderPublicKey,
                                                  receiverPublicKey: receiverPublicKey,
-                                                 message: message))
+                                                 message: message,
+                                                 messageType: messageType))
     }
 
     // MARK: - Helpers

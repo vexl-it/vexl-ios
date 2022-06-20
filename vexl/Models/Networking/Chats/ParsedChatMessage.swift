@@ -90,6 +90,10 @@ struct ParsedChatMessage: Codable {
         }
         return String(data: data, encoding: .utf8)
     }
+
+    static func createEncryptedMessage(text: String, image: String?, key: ECCKeys) -> String? {
+        return nil
+    }
 }
 
 extension ParsedChatMessage {
