@@ -91,14 +91,34 @@ struct ParsedChatMessage: Codable {
         return String(data: data, encoding: .utf8)
     }
 
-    static func createEncryptedMessage(text: String, image: String?, inboxKey: String, senderKey: String) -> String? {
+    static func createMessage(text: String, image: String?, inboxKey: ECCKeys) -> String? {
         let type: ParsedChatMessage.ContentType = image != nil ? .image : .text
-        let parsedMessage = ParsedChatMessage(inboxPublicKey: inboxKey,
+        let parsedMessage = ParsedChatMessage(inboxPublicKey: inboxKey.publicKey,
                                               messageType: .message,
                                               contentType: type,
                                               text: text,
                                               image: image,
-                                              senderKey: senderKey)
+                                              senderKey: "")
+        return parsedMessage?.asString
+    }
+
+    static func createIdentityRequest(inboxKey: ECCKeys) -> String? {
+        let parsedMessage = ParsedChatMessage(inboxPublicKey: inboxKey.publicKey,
+                                              messageType: .revealRequest,
+                                              contentType: .anonymousRequest,
+                                              text: "",
+                                              image: nil,
+                                              senderKey: "")
+        return parsedMessage?.asString
+    }
+
+    static func createDelete(inboxKey: ECCKeys) -> String? {
+        let parsedMessage = ParsedChatMessage(inboxPublicKey: inboxKey.publicKey,
+                                              messageType: .deleteChat,
+                                              contentType: .deleteChat,
+                                              text: "",
+                                              image: nil,
+                                              senderKey: "")
         return parsedMessage?.asString
     }
 }

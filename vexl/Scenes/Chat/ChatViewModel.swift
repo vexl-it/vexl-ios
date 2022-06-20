@@ -183,23 +183,15 @@ final class ChatViewModel: ViewModelType, ObservableObject {
             }
             .withUnretained(self)
             .compactMap { owner, image -> String? in
-                ParsedChatMessage.createEncryptedMessage(text: owner.currentMessage,
-                                                         image: image,
-                                                         inboxKey: owner.inboxKeys.publicKey,
-                                                         senderKey: owner.senderKeys.publicKey)
+                ParsedChatMessage.createMessage(text: owner.currentMessage,
+                                                image: image,
+                                                inboxKey: owner.inboxKeys)
             }
 
         inputMessage
             .withUnretained(self)
             .flatMap { owner, message in
-                owner.chatService.sendMessage(senderPublicKey: owner.senderKeys.publicKey,
-                                              receiverPublicKey: owner.receiverPublicKey,
-                                              message: message,
-                                              messageType: .message)
-                    .track(activity: owner.primaryActivity)
-                    .materialize()
-                    .compactMap(\.value)
-                    .eraseToAnyPublisher()
+                owner.sendMessage(type: .message, message: message)
             }
             .withUnretained(self)
             .sink { owner, _ in
@@ -226,11 +218,21 @@ final class ChatViewModel: ViewModelType, ObservableObject {
             .map { _ -> Modal in .identityRevealRequest }
             .assign(to: &$modal)
 
-        sharedAction
+        let requestConfirmed = sharedAction
             .filter { $0 == .revealRequestConfirmationTap }
             .withUnretained(self)
+            .compactMap { owner, _ -> String? in
+                ParsedChatMessage.createIdentityRequest(inboxKey: owner.inboxKeys)
+            }
+
+        requestConfirmed
+            .withUnretained(self)
+            .flatMap { owner, message in
+                owner.sendMessage(type: .revealRequest, message: message)
+            }
+            .withUnretained(self)
             .sink { owner, _ in
-                owner.messages.appendMessage(.init(category: .sendReveal, isContact: false))
+                owner.messages.appendMessage(.createIdentityRequest())
                 owner.modal = .none
                 owner.currentMessage = ""
             }
@@ -263,10 +265,24 @@ final class ChatViewModel: ViewModelType, ObservableObject {
             .map { _ -> Modal in .deleteConfirmation }
             .assign(to: &$modal)
 
-        sharedAction
+        let deleteMessages = sharedAction
             .filter { $0 == .deleteConfirmedTap }
-            .map { _ -> Modal in .none }
-            .assign(to: &$modal)
+            .withUnretained(self)
+            .compactMap { owner, _ -> String? in
+                ParsedChatMessage.createDelete(inboxKey: owner.inboxKeys)
+            }
+
+        deleteMessages
+            .withUnretained(self)
+            .flatMap { owner, message in
+                owner.sendMessage(type: .deleteChat, message: message)
+            }
+            .withUnretained(self)
+            .sink { owner, _ in
+                // TODO: - remove all the information locally
+                owner.modal = .none
+            }
+            .store(in: cancelBag)
     }
 
     private func setupBlockChatBindings() {
@@ -333,5 +349,18 @@ final class ChatViewModel: ViewModelType, ObservableObject {
             .filter { $0 == .commonFriends }
             .map { _ -> Modal in .friends }
             .assign(to: &$modal)
+    }
+
+    private func sendMessage(type: MessageType, message: String) -> AnyPublisher<Void, Never> {
+        chatService.sendMessage(inboxPublicKey: inboxKeys.publicKey,
+                                senderPublicKey: senderKeys.publicKey,
+                                receiverPublicKey: receiverPublicKey,
+                                message: message,
+                                messageType: type)
+            .track(activity: primaryActivity)
+            .materialize()
+            .compactMap(\.value)
+            .asVoid()
+            .eraseToAnyPublisher()
     }
 }

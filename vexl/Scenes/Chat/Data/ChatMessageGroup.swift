@@ -13,55 +13,6 @@ struct ChatMessageGroup: Identifiable, Hashable {
     let date: Date
     var messages: [Message]
 
-    struct Message: Identifiable, Hashable {
-
-        let id = UUID()
-        let text: String?
-        let image: Data?
-        let previewImage: Data?
-        let category: Category
-        let isContact: Bool
-
-        init(category: Category, isContact: Bool, text: String? = nil, image: Data? = nil, previewImage: Data? = nil) {
-            self.text = text
-            self.image = image
-            self.category = category
-            self.isContact = isContact
-            self.previewImage = previewImage
-        }
-
-        static func createInput(text: String?, image: Data? = nil, previewImage: Data? = nil) -> Message {
-            Message(category: image != nil ? .image : .text,
-                    isContact: false,
-                    text: text,
-                    image: image,
-                    previewImage: previewImage)
-        }
-
-        // swiftlint: disable nesting
-        enum Category: Equatable, Hashable {
-            case text
-            case image
-            case sendReveal
-            case receiveReveal
-
-            static func == (lhs: Category, rhs: Category) -> Bool {
-                switch (lhs, rhs) {
-                case (.text, .text):
-                    return true
-                case (.image, .image):
-                    return true
-                case (.sendReveal, .sendReveal):
-                    return true
-                case (.receiveReveal, .receiveReveal):
-                    return true
-                default:
-                    return false
-                }
-            }
-        }
-    }
-
     mutating func addMessage(_ message: Message) {
         self.messages.append(message)
     }
@@ -100,6 +51,65 @@ extension Array where Element == ChatMessageGroup {
             let newGroup = ChatMessageGroup(date: Date(),
                                             messages: [message])
             self.append(newGroup)
+        }
+    }
+}
+
+extension ChatMessageGroup {
+
+    struct Message: Identifiable, Hashable {
+        let id = UUID()
+        let text: String?
+        let image: Data?
+        let previewImage: Data?
+        let category: Category
+        let isContact: Bool
+
+        init(category: Category, isContact: Bool, text: String? = nil, image: Data? = nil, previewImage: Data? = nil) {
+            self.text = text
+            self.image = image
+            self.category = category
+            self.isContact = isContact
+            self.previewImage = previewImage
+        }
+
+        static func createInput(text: String?, image: Data? = nil, previewImage: Data? = nil) -> Message {
+            Message(category: image != nil ? .image : .text,
+                    isContact: false,
+                    text: text,
+                    image: image,
+                    previewImage: previewImage)
+        }
+
+        static func createIdentityRequest() -> Message {
+            Message(category: .sendReveal, isContact: false)
+        }
+
+        static func createIdentityResponse() -> Message {
+            Message(category: .receiveReveal, isContact: false)
+        }
+
+        // swiftlint: disable nesting
+        enum Category: Equatable, Hashable {
+            case text
+            case image
+            case sendReveal
+            case receiveReveal
+
+            static func == (lhs: Category, rhs: Category) -> Bool {
+                switch (lhs, rhs) {
+                case (.text, .text):
+                    return true
+                case (.image, .image):
+                    return true
+                case (.sendReveal, .sendReveal):
+                    return true
+                case (.receiveReveal, .receiveReveal):
+                    return true
+                default:
+                    return false
+                }
+            }
         }
     }
 }

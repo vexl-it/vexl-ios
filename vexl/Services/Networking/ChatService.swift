@@ -25,7 +25,11 @@ protocol ChatServiceType {
     func getInboxMessages() -> AnyPublisher<[ParsedChatMessage], Error>
     func getRequestMessages() -> AnyPublisher<[ParsedChatMessage], Error>
     func blockInbox(inboxPublicKey: String, publicKeyToBlock: String, signature: String, isBlocked: Bool) -> AnyPublisher<Void, Error>
-    func sendMessage(senderPublicKey: String, receiverPublicKey: String, message: String, messageType: MessageType) -> AnyPublisher<Void, Error>
+    func sendMessage(inboxPublicKey: String,
+                     senderPublicKey: String,
+                     receiverPublicKey: String,
+                     message: String,
+                     messageType: MessageType) -> AnyPublisher<Void, Error>
 }
 
 final class ChatService: BaseService, ChatServiceType {
@@ -124,11 +128,21 @@ final class ChatService: BaseService, ChatServiceType {
                                                 isBlocked: isBlocked))
     }
 
-    func sendMessage(senderPublicKey: String, receiverPublicKey: String, message: String, messageType: MessageType) -> AnyPublisher<Void, Error> {
-        request(endpoint: ChatRouter.sendMessage(senderPublicKey: senderPublicKey,
-                                                 receiverPublicKey: receiverPublicKey,
-                                                 message: message,
-                                                 messageType: messageType))
+    func sendMessage(inboxPublicKey: String,
+                     senderPublicKey: String,
+                     receiverPublicKey: String,
+                     message: String,
+                     messageType: MessageType) -> AnyPublisher<Void, Error> {
+        cryptoService
+            .encryptECIES(publicKey: inboxPublicKey, secret: message)
+            .withUnretained(self)
+            .flatMap { owner, encryptedMessage in
+                owner.request(endpoint: ChatRouter.sendMessage(senderPublicKey: senderPublicKey,
+                                                               receiverPublicKey: receiverPublicKey,
+                                                               message: encryptedMessage,
+                                                               messageType: messageType))
+            }
+            .eraseToAnyPublisher()
     }
 
     // MARK: - Helpers
