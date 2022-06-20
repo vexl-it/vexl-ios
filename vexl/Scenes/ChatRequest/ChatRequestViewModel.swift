@@ -13,7 +13,7 @@ private typealias OfferAndMessage = (offer: Offer, message: ParsedChatMessage)
 private typealias OfferIdsAndMessages = (ids: [String], messages: [ParsedChatMessage])
 
 final class ChatRequestViewModel: ViewModelType, ObservableObject {
-    
+
     @Inject var userSecurity: UserSecurityType
     @Inject var chatService: ChatServiceType
     @Inject var offerService: OfferServiceType
