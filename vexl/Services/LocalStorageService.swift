@@ -14,12 +14,16 @@ enum LocalStorageError: Error {
 }
 
 protocol LocalStorageServiceType {
-    func saveInbox(_ inbox: Inbox) throws
-    func getInboxes(ofType type: Inbox.InboxType) throws -> [Inbox]
+    func saveInbox(_ inbox: OfferInbox) throws
+    func getInboxes(ofType type: OfferInbox.InboxType) throws -> [OfferInbox]
+    func saveMessages(_ messages: [ParsedChatMessage]) -> AnyPublisher<Void, Error>
+    func getMessages() -> AnyPublisher<[ParsedChatMessage], Error>
+    func saveRequestMessage(_ message: ParsedChatMessage, inboxPublicKey: String) -> AnyPublisher<Void, Error>
+    func getRequestMessages() -> AnyPublisher<[ParsedChatMessage], Error>
 }
 
 final class LocalStorageService: LocalStorageServiceType {
-    func saveInbox(_ inbox: Inbox) throws {
+    func saveInbox(_ inbox: OfferInbox) throws {
         switch inbox.type {
         case .created:
             DictionaryDB.saveCreatedInbox(inbox)
@@ -28,12 +32,42 @@ final class LocalStorageService: LocalStorageServiceType {
         }
     }
 
-    func getInboxes(ofType type: Inbox.InboxType) throws -> [Inbox] {
+    func getInboxes(ofType type: OfferInbox.InboxType) throws -> [OfferInbox] {
         switch type {
         case .created:
             return DictionaryDB.getCreatedInboxes()
         case .requested:
             return DictionaryDB.getRequestedInboxes()
         }
+    }
+
+    func saveMessages(_ messages: [ParsedChatMessage]) -> AnyPublisher<Void, Error> {
+        Future { promise in
+            DictionaryDB.saveMessages(messages)
+            promise(.success(()))
+        }
+        .eraseToAnyPublisher()
+    }
+
+    func getMessages() -> AnyPublisher<[ParsedChatMessage], Error> {
+        Future { promise in
+            promise(.success((DictionaryDB.getMessages())))
+        }
+        .eraseToAnyPublisher()
+    }
+
+    func saveRequestMessage(_ messages: ParsedChatMessage, inboxPublicKey: String) -> AnyPublisher<Void, Error> {
+        Future { promise in
+            DictionaryDB.saveRequests(messages, inboxPublicKey: inboxPublicKey)
+            promise(.success(()))
+        }
+        .eraseToAnyPublisher()
+    }
+
+    func getRequestMessages() -> AnyPublisher<[ParsedChatMessage], Error> {
+        Future { promise in
+            promise(.success((DictionaryDB.getMessages())))
+        }
+        .eraseToAnyPublisher()
     }
 }

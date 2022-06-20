@@ -14,6 +14,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
 
     @Inject var chatService: ChatServiceType
     @Inject var cryptoService: CryptoServiceType
+    @Inject var inboxManager: InboxManagerType
 
     enum ImageSource {
         case photoAlbum, camera
@@ -114,8 +115,9 @@ final class ChatViewModel: ViewModelType, ObservableObject {
             .eraseToAnyPublisher()
     }
 
-    private let senderPublicKey: String = ""
+    private let senderKeys: ECCKeys = ECCKeys()
     private let receiverPublicKey: String = ""
+    private let isBlocked = false
 
     init() {
         setupActionBindings()
@@ -251,9 +253,41 @@ final class ChatViewModel: ViewModelType, ObservableObject {
             .map { _ -> Modal in .blockConfirmation }
             .assign(to: &$modal)
 
-        sharedAction
+        let signature = sharedAction
             .filter { $0 == .blockConfirmedTap }
             .withUnretained(self)
+            .flatMap { owner, _ in
+                owner.chatService.requestChallenge(publicKey: owner.senderKeys.publicKey)
+                    .track(activity: owner.primaryActivity)
+                    .materialize()
+                    .compactMap(\.value)
+                    .setFailureType(to: Error.self)
+                    .eraseToAnyPublisher()
+            }
+            .withUnretained(self)
+            .flatMap { owner, challenge in
+                owner.cryptoService.signECDSA(keys: owner.senderKeys, message: challenge.challenge)
+            }
+
+        signature
+            .withUnretained(self)
+            .flatMap { owner, signature in
+                owner.chatService.blockInbox(inboxPublicKey: owner.senderKeys.publicKey,
+                                             publicKeyToBlock: owner.receiverPublicKey,
+                                             signature: signature,
+                                             isBlocked: owner.isBlocked)
+                    .track(activity: owner.primaryActivity)
+                    .materialize()
+                    .compactMap(\.value)
+                    .asVoid()
+                    .eraseToAnyPublisher()
+            }
+            .withUnretained(self)
+            .sink(receiveCompletion: { _ in },
+                  receiveValue: { owner, _ in
+                owner.modal = .none
+            })
+            .store(in: cancelBag)
     }
 
     private func setupModalPresentationBindings() {

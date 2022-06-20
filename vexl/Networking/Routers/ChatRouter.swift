@@ -8,18 +8,26 @@
 import Foundation
 import Alamofire
 
+// swiftlint: disable enum_case_associated_values_count
 enum ChatRouter: ApiRouter {
     case createInbox(offerPublicKey: String, pushToken: String)
     case request(inboxPublicKey: String, message: String)
+    case requestConfirmation(confirmed: Bool, message: String, inboxPublicKey: String,
+                             requesterPublicKey: String, signature: String)
+    case requestChallenge(publicKey: String)
+    case pullChat(publicKey: String, signature: String)
+    case deleteChat(publicKey: String)
     case blockInbox(publicKey: String, publicKeyToBlock: String, signature: String, isBlocked: Bool)
     case sendMessage(senderPublicKey: String, receiverPublicKey: String, message: String)
 
     var method: HTTPMethod {
         switch self {
-        case .createInbox, .request, .sendMessage:
+        case .createInbox, .request, .requestChallenge, .requestConfirmation, .sendMessage:
             return .post
-        case .blockInbox:
+        case .pullChat, .blockInbox:
             return .put
+        case .deleteChat:
+            return .delete
         }
     }
 
@@ -32,7 +40,15 @@ enum ChatRouter: ApiRouter {
         case .createInbox:
             return "inboxes"
         case .request:
-            return "inboxes/allowance/request"
+            return "inboxes/approval/request"
+        case .requestChallenge:
+            return "challenges"
+        case .pullChat:
+            return "inboxes/messages"
+        case let .deleteChat(publicKey):
+            return "inboxes/\(publicKey)"
+        case .requestConfirmation:
+            return "inboxes/approval/confirm"
         case .blockInbox:
             return "inboxes/block"
         case .sendMessage:
@@ -52,6 +68,25 @@ enum ChatRouter: ApiRouter {
                 "publicKey": inboxPublicKey,
                 "message": message
             ]
+        case let .requestChallenge(publicKey):
+            return [
+                "publicKey": publicKey
+            ]
+        case let .pullChat(publicKey, signature):
+            return [
+                "publicKey": publicKey,
+                "signature": signature
+            ]
+        case let .requestConfirmation(confirmed, message, inboxPublicKey, requesterPublicKey, signature):
+            return [
+                "publicKey": inboxPublicKey,
+                "publicKeyToConfirm": requesterPublicKey,
+                "signature": signature,
+                "message": message,
+                "approve": confirmed
+            ]
+        case .deleteChat:
+            return [:]
         case let .blockInbox(publicKey, publicKeyToBlock, signature, isBlocked):
             return [
                 "publicKey": publicKey,
