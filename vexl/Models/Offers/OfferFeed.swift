@@ -12,9 +12,6 @@ struct OfferFeed {
     let viewData: OfferDetailViewData
 
     static func mapToOfferFeed(usingOffer offer: Offer, isRequested: Bool) -> OfferFeed {
-//        let currencySymbol = Constants.currencySymbol
-//        let friendLevel = offer.friendLevel == .firstDegree ? L.marketplaceDetailFriendFirst() : L.marketplaceDetailFriendSecond()
-//        let formattedAmount = offer.maxAmount
         let viewData = OfferDetailViewData(offer: offer, isRequested: isRequested)
         return OfferFeed(offer: offer, viewData: viewData)
     }
