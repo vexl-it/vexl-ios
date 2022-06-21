@@ -87,7 +87,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
     let avatar: UIImage? = nil
     let friends: [ChatCommonFriendViewData] = [.stub, .stub, .stub]
     let offerType: OfferType = .buy
-    var messages: [ChatMessageGroup] = ChatMessageGroup.stub
+    var messages: [ChatConversationSection] = ChatConversationSection.stub
     var imageSource = ImageSource.photoAlbum
 
     var offerLabel: String {
@@ -195,9 +195,9 @@ final class ChatViewModel: ViewModelType, ObservableObject {
             }
             .withUnretained(self)
             .sink { owner, _ in
-                owner.messages.appendMessage(.createInput(text: owner.currentMessage,
-                                                          image: owner.selectedImage?.jpegData(compressionQuality: 1),
-                                                          previewImage: owner.selectedImage?.jpegData(compressionQuality: 0.25)))
+                owner.messages.appendItem(.createInput(text: owner.currentMessage,
+                                                       image: owner.selectedImage?.jpegData(compressionQuality: 1),
+                                                       previewImage: owner.selectedImage?.jpegData(compressionQuality: 0.25)))
                 owner.selectedImage = nil
                 owner.currentMessage = ""
             }
@@ -232,7 +232,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
             }
             .withUnretained(self)
             .sink { owner, _ in
-                owner.messages.appendMessage(.createIdentityRequest())
+                owner.messages.appendItem(.createIdentityRequest())
                 owner.modal = .none
                 owner.currentMessage = ""
             }

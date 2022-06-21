@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ChatConversationView: View {
 
-    let messages: [ChatMessageGroup]
+    let messages: [ChatConversationSection]
     let revealAction: () -> Void
     let imageAction: (String, String) -> Void
 
@@ -20,7 +20,7 @@ struct ChatConversationView: View {
                     ChatDateView(date: messageGroup.date, isInitial: false)
 
                     ForEach(messageGroup.messages) { message in
-                        switch message.category {
+                        switch message.type {
                         case .text:
                             ChatTextBubbleView(text: message.text ?? "",
                                                style: message.isContact ? .contact : .user)
