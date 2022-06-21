@@ -85,6 +85,9 @@ final class ChatService: BaseService, ChatServiceType {
                                                                            requesterPublicKey: requesterPublicKey,
                                                                            signature: signature))
                 }
+                .flatMapLatest(with: self) { owner, _ in
+                    owner.localStorageService.deleteRequestMessage(withOfferId: inboxPublicKey)
+                }
                 .eraseToAnyPublisher()
         } else {
             return Just(()).setFailureType(to: Error.self)

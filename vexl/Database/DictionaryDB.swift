@@ -104,6 +104,11 @@ final class DictionaryDB {
         self.requests
     }
 
+    static func deleteRequest(with id: String) {
+        let newRequests = requests.filter { $0.inboxKey == id }
+        requests = newRequests
+    }
+
     static func saveInboxMessages(_ request: ParsedChatMessage, inboxPublicKey: String) {
         var content = self.inboxMessage
         content[inboxPublicKey] = request
