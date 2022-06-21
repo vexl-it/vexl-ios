@@ -11,8 +11,8 @@ import Foundation
 
 final class DictionaryDB {
 
-    static private let encoder = JSONEncoder()
-    static private let decoder = JSONDecoder()
+    static private let encoder = Constants.jsonEncoder
+    static private let decoder = Constants.jsonDecoder
 
     static private var inboxes: [String: [OfferInbox]] = ["created": [], "requested": []] {
         didSet {
