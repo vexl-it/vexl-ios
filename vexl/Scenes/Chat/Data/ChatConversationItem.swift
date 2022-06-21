@@ -19,7 +19,7 @@ struct ChatConversationItem: Identifiable, Hashable {
     let type: ItemType
     let isContact: Bool
 
-    private init(type: ItemType, isContact: Bool, text: String? = nil, image: Data? = nil, previewImage: Data? = nil) {
+    init(type: ItemType, isContact: Bool, text: String? = nil, image: Data? = nil, previewImage: Data? = nil) {
         self.text = text
         self.image = image
         self.type = type

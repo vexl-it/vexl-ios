@@ -115,28 +115,11 @@ struct ChatView: View {
     }
 
     private var modalSheet: some View {
-        Group {
-            switch viewModel.modal {
-            case .offer:
-                offerView
-            case .friends:
-                commonFriendView
-            case .delete:
-                deleteView
-            case .deleteConfirmation:
-                deleteConfirmationView
-            case .block:
-                blockView
-            case .blockConfirmation:
-                blockConfirmationView
-            case .identityRevealRequest:
-                identityRevealRequestView
-            case .identityRevealConfirmation:
-                identityRevealConfirmationView
-            case .none:
-                EmptyView()
-            }
-        }
+        ChatModalContainerView(modal: viewModel.modal,
+                               commonFriends: viewModel.friends,
+                               action: { userAction in
+            viewModel.action.send(userAction)
+        })
         .transition(.move(edge: .bottom))
     }
 

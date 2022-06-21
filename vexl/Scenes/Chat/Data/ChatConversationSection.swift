@@ -38,24 +38,24 @@ extension Array where Element == ChatConversationSection {
 extension ChatConversationSection {
     static var stub: [ChatConversationSection] {
         [
-//            .init(date: Date(), messages: [
-//                .init(type: .text,
-//                      isContact: true,
-//                      text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit"),
-//                .init(type: .text,
-//                      isContact: false,
-//                      text: "Vivamus est justo, placerat aliquam velit vitae")
-//            ]),
-//            .init(date: Date(), messages: [
-//                .init(type: .text,
-//                      isContact: false,
-//                      text: "Morbi vitae velit ac ex congue molestie" ),
-//                .init(type: .image,
-//                      isContact: true,
-//                      image: R.image.onboarding.testAvatar()!.jpegData(compressionQuality: 0.25)!),
-//                .init(type: .sendReveal, isContact: false),
-//                .init(type: .receiveReveal, isContact: false)
-//            ])
+            .init(date: Date(), messages: [
+                .init(type: .text,
+                      isContact: true,
+                      text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit"),
+                .init(type: .text,
+                      isContact: false,
+                      text: "Vivamus est justo, placerat aliquam velit vitae")
+            ]),
+            .init(date: Date(), messages: [
+                .init(type: .text,
+                      isContact: false,
+                      text: "Morbi vitae velit ac ex congue molestie" ),
+                .init(type: .image,
+                      isContact: true,
+                      image: R.image.onboarding.testAvatar()!.jpegData(compressionQuality: 1)!),
+                .init(type: .sendReveal, isContact: false),
+                .init(type: .receiveReveal, isContact: false)
+            ])
         ]
     }
 }

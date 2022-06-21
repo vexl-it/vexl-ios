@@ -279,6 +279,7 @@
 		F1D2012C282D4CD5006DF4AB /* DidSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D2012B282D4CD5006DF4AB /* DidSet.swift */; };
 		F1D2012E283401D7006DF4AB /* OfferSortView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D2012D283401D7006DF4AB /* OfferSortView.swift */; };
 		F1D204EB28613C44006A5671 /* ChatConversationItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D204EA28613C44006A5671 /* ChatConversationItem.swift */; };
+		F1D204ED2861543C006A5671 /* ChatModalContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D204EC2861543C006A5671 /* ChatModalContainerView.swift */; };
 		F1F5F194283E9FC500968366 /* OfferPaymentIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1F5F193283E9FC500968366 /* OfferPaymentIconView.swift */; };
 		F1F5F199283FE52D00968366 /* ChatRequestCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1F5F198283FE52D00968366 /* ChatRequestCoordinator.swift */; };
 		F1F5F19B283FE53300968366 /* ChatRequestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1F5F19A283FE53300968366 /* ChatRequestView.swift */; };
@@ -596,6 +597,7 @@
 		F1D2012B282D4CD5006DF4AB /* DidSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DidSet.swift; sourceTree = "<group>"; };
 		F1D2012D283401D7006DF4AB /* OfferSortView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferSortView.swift; sourceTree = "<group>"; };
 		F1D204EA28613C44006A5671 /* ChatConversationItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatConversationItem.swift; sourceTree = "<group>"; };
+		F1D204EC2861543C006A5671 /* ChatModalContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatModalContainerView.swift; sourceTree = "<group>"; };
 		F1F5F193283E9FC500968366 /* OfferPaymentIconView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferPaymentIconView.swift; sourceTree = "<group>"; };
 		F1F5F198283FE52D00968366 /* ChatRequestCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRequestCoordinator.swift; sourceTree = "<group>"; };
 		F1F5F19A283FE53300968366 /* ChatRequestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRequestView.swift; sourceTree = "<group>"; };
@@ -1386,6 +1388,7 @@
 				F1485636284FD451003213D7 /* ChatHeaderView.swift */,
 				F1485638284FD451003213D7 /* ChatDateView.swift */,
 				F1485639284FD451003213D7 /* ChatInputView.swift */,
+				F1D204EC2861543C006A5671 /* ChatModalContainerView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -2164,6 +2167,7 @@
 				B08F399C27AE7D8D008B344F /* OnboardingViewModel.swift in Sources */,
 				B08F397E27AE7112008B344F /* UIViewController+.swift in Sources */,
 				F1485625284FD0FB003213D7 /* InboxFilterView.swift in Sources */,
+				F1D204ED2861543C006A5671 /* ChatModalContainerView.swift in Sources */,
 				B08F396427AE7112008B344F /* UserError.swift in Sources */,
 				F1A9453727F686D1009B5AE3 /* PhoneVerification.swift in Sources */,
 				F1D2011A28292868006DF4AB /* TabBarCoordinator.swift in Sources */,
