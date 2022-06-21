@@ -78,4 +78,8 @@ struct Constants {
     static let monthsToSecondsMultiplier: TimeInterval = 2_592_000
 
     static let defaultDeleteTime = "7" // days will be selected as default too
+
+    // TODO: - change to real password when available
+    
+    static let contactsHashingPassword = "VexlVexl"
 }
