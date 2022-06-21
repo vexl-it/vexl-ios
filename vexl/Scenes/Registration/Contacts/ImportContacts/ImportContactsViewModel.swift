@@ -187,7 +187,17 @@ class ImportContactsViewModel: ObservableObject {
     }
 
     private func hashContacts(identifiers: [String]) -> AnyPublisher<[String], Error> {
-        let trimmedIdentifiers = identifiers.map { $0.removeWhitespaces() }
+        let phoneNumber = Formatters.phoneNumberFormatter
+        let countryCode = phoneNumber.countryCode(for: Locale.current.regionCode ?? "")
+
+        let trimmedIdentifiers = identifiers.map { identifier -> String in
+            let trimmedIdentifier = identifier.removeWhitespaces()
+            if let countryCode = countryCode, !trimmedIdentifier.contains("+") {
+                return "\(countryCode)\(trimmedIdentifier)"
+            }
+            return trimmedIdentifier
+        }
+
         return trimmedIdentifiers.publisher
             .withUnretained(self)
             .flatMap { owner, identifier in
