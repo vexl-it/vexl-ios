@@ -119,9 +119,11 @@ final class ChatViewModel: ViewModelType, ObservableObject {
         !currentMessage.isEmpty || selectedImage != nil
     }
 
-    private let inboxKeys: ECCKeys = ECCKeys()
-    private let senderKeys: ECCKeys = ECCKeys()
-    private let receiverPublicKey: String = ""
+    // TODO: - Pass real keys from the inbox + local storage service
+
+    private let inboxKeys: ECCKeys = ECCKeys() // offer key
+    private let senderKeys: ECCKeys = ECCKeys() // user key
+    private let receiverPublicKey: String = "" // user who is having the conversation with
     private let isBlocked = false
 
     init() {
