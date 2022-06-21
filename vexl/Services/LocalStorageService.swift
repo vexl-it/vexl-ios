@@ -117,7 +117,7 @@ final class LocalStorageService: LocalStorageServiceType {
 
     func getRequestMessages() -> AnyPublisher<[ParsedChatMessage], Error> {
         Future { promise in
-            promise(.success((DictionaryDB.getMessages())))
+            promise(.success((DictionaryDB.getRequests())))
         }
         .eraseToAnyPublisher()
     }

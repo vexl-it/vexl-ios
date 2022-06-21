@@ -48,10 +48,6 @@ struct ParsedChatMessage: Codable {
         user?.name ?? Constants.randomName
     }
 
-    func asString(withKey key: ECCKeys) -> String? {
-        try? self.asString?.ecc.encrypt(publicKey: key.publicKey)
-    }
-
     var asString: String? {
         var json: [String: Any] = [
             "uuid": id,
@@ -145,8 +141,6 @@ extension ParsedChatMessage {
 
 extension ParsedChatMessage {
 
-    // TODO: - clean this type as some of them are not needed because of the MessageType that comes from the server.
-    
     enum ContentType: String {
         case text = "TEXT"
         case image = "IMAGE"

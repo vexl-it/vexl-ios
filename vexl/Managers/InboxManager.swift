@@ -46,43 +46,6 @@ final class InboxManager: InboxManagerType {
     private var _inboxMessages = CurrentValueSubject<[ParsedChatMessage], Error>([])
     private var cancelBag = CancelBag()
 
-    private func syncInbox(_ inbox: OfferInbox) -> AnyPublisher<Result<[ParsedChatMessage], Error>, Error> {
-        let challenge = requestChallenge(key: inbox.key)
-            .subscribe(on: DispatchQueue.global(qos: .background))
-
-        let signature = challenge
-            .flatMapLatest(with: self) { owner, keyAndChallenge -> AnyPublisher<KeyAndSignature, Error> in
-                owner.signChallenge(keys: inbox.key, keyAndChallenge: keyAndChallenge)
-            }
-
-        let pullChat = signature
-            .flatMapLatest(with: self) { owner, keyAndSignature -> AnyPublisher<KeyAndMessages, Error> in
-                owner.pullInboxMessage(keyAndSignature: keyAndSignature)
-            }
-
-        // Store/Update messages in the Latest Message and Pending Requests Table
-        // - check if depending on the type it will always go 
-        // - if not first then get last. Logic should be in ChatService.
-
-        let saveMessages = pullChat
-            .flatMapLatest(with: self) { owner, keyAndMessages -> AnyPublisher<KeyAndParsedMessages, Error> in
-                owner.saveFetchedMessages(keyAndMessages: keyAndMessages, inboxPublicKey: inbox.publicKey)
-            }
-
-        let deleteChat = saveMessages
-            .flatMapLatest(with: self) { owner, keyAndMessages -> AnyPublisher<[ParsedChatMessage], Error> in
-                owner.deleteMessages(keyAndMessages: keyAndMessages)
-            }
-
-        return deleteChat
-            .map { .success($0) }
-            .catch { _ in
-                Just(.failure(InboxError.inboxSyncFailed)).setFailureType(to: Error.self)
-                    .eraseToAnyPublisher()
-            }
-            .eraseToAnyPublisher()
-    }
-
     func syncInboxes() {
         guard let createdInboxes = try? localStorageService.getInboxes(ofType: .created),
               let requestedInboxes = try? localStorageService.getInboxes(ofType: .requested) else {
@@ -99,11 +62,6 @@ final class InboxManager: InboxManagerType {
 
         let updateInboxMessages = syncInboxes
             .flatMapLatest(with: self) { owner, results -> AnyPublisher<[Result<[ParsedChatMessage], Error>], Error> in
-
-                // TODO: - Makes sense to have this in the queue? or should it be just a call and
-                // let it update after it finishes / dont worrying about it
-                // maybe it should be called in the sink?
-
                 owner.updateInboxMessages()
                     .map { results }
                     .eraseToAnyPublisher()
@@ -133,6 +91,42 @@ final class InboxManager: InboxManagerType {
             .store(in: cancelBag)
     }
 
+    private func syncInbox(_ inbox: OfferInbox) -> AnyPublisher<Result<[ParsedChatMessage], Error>, Error> {
+
+        let decryptionKey = inbox.type == .created ? inbox.key : userSecurity.userKeys
+
+        let challenge = requestChallenge(key: inbox.key)
+            .subscribe(on: DispatchQueue.global(qos: .background))
+
+        let signature = challenge
+            .flatMapLatest(with: self) { owner, keyAndChallenge -> AnyPublisher<KeyAndSignature, Error> in
+                owner.signChallenge(keys: inbox.key, keyAndChallenge: keyAndChallenge)
+            }
+
+        let pullChat = signature
+            .flatMapLatest(with: self) { owner, keyAndSignature -> AnyPublisher<KeyAndMessages, Error> in
+                owner.pullInboxMessage(keyAndSignature: keyAndSignature)
+            }
+
+        let saveMessages = pullChat
+            .flatMapLatest(with: self) { owner, keyAndMessages -> AnyPublisher<KeyAndParsedMessages, Error> in
+                owner.saveFetchedMessages(keyAndMessages: keyAndMessages, decryptionKey: decryptionKey, inboxPublicKey: inbox.publicKey)
+            }
+
+        let deleteChat = saveMessages
+            .flatMapLatest(with: self) { owner, keyAndMessages -> AnyPublisher<[ParsedChatMessage], Error> in
+                owner.deleteMessages(keyAndMessages: keyAndMessages)
+            }
+
+        return deleteChat
+            .map { .success($0) }
+            .catch { _ in
+                Just(.failure(InboxError.inboxSyncFailed)).setFailureType(to: Error.self)
+                    .eraseToAnyPublisher()
+            }
+            .eraseToAnyPublisher()
+    }
+
     // MARK: - Methods for syncing up the app messages with the server
 
     private func requestChallenge(key: ECCKeys) -> AnyPublisher<KeyAndChallenge, Error> {
@@ -153,8 +147,10 @@ final class InboxManager: InboxManagerType {
             .eraseToAnyPublisher()
     }
 
-    private func saveFetchedMessages(keyAndMessages: KeyAndMessages, inboxPublicKey: String) -> AnyPublisher<KeyAndParsedMessages, Error> {
-        parseMessages(keyAndMessages.messages, key: keyAndMessages.key, inboxPublicKey: inboxPublicKey)
+    private func saveFetchedMessages(keyAndMessages: KeyAndMessages,
+                                     decryptionKey: ECCKeys,
+                                     inboxPublicKey: String) -> AnyPublisher<KeyAndParsedMessages, Error> {
+        parseMessages(keyAndMessages.messages, key: decryptionKey, inboxPublicKey: inboxPublicKey)
             .flatMapLatest(with: self) { owner, messages -> AnyPublisher<KeyAndParsedMessages, Error> in
                 owner.chatService.saveFetchedMessages(messages, inboxPublicKey: keyAndMessages.key.publicKey)
                     .map { KeyAndParsedMessages(key: keyAndMessages.key, messages: messages) }

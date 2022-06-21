@@ -75,12 +75,21 @@ final class ChatService: BaseService, ChatServiceType {
                              inboxPublicKey: String,
                              requesterPublicKey: String,
                              signature: String) -> AnyPublisher<Void, Error> {
-        request(endpoint: ChatRouter.requestConfirmation(confirmed: confirmation,
-                                                         message: message,
-                                                         inboxPublicKey: inboxPublicKey,
-                                                         requesterPublicKey: requesterPublicKey,
-                                                         signature: signature))
-            .eraseToAnyPublisher()
+        if !message.isEmpty {
+            return cryptoService
+                .encryptECIES(publicKey: requesterPublicKey, secret: message)
+                .flatMapLatest(with: self) { owner, encryptedMessage in
+                    owner.request(endpoint: ChatRouter.requestConfirmation(confirmed: confirmation,
+                                                                           message: encryptedMessage,
+                                                                           inboxPublicKey: inboxPublicKey,
+                                                                           requesterPublicKey: requesterPublicKey,
+                                                                           signature: signature))
+                }
+                .eraseToAnyPublisher()
+        } else {
+            return Just(()).setFailureType(to: Error.self)
+                .eraseToAnyPublisher()
+        }
     }
 
     func pullInboxMessages(publicKey: String, signature: String) -> AnyPublisher<EncryptedChatMessageList, Error> {
