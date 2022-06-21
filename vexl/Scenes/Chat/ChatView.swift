@@ -56,14 +56,12 @@ struct ChatView: View {
         }
     }
 
-    private var modalView: some View {
-        Group {
-            if viewModel.isModalPresented {
-                dimmingView
-            }
-
-            modalSheet
+    @ViewBuilder private var modalView: some View {
+        if viewModel.isModalPresented {
+            dimmingView
         }
+
+        modalSheet
     }
 
     private var dimmingView: some View {

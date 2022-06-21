@@ -10,6 +10,8 @@ import Cleevio
 
 final class ChatViewModel: ViewModelType, ObservableObject {
 
+    @Inject var inboxManager: InboxManagerType
+
     enum Modal {
         case none
         case offer

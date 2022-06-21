@@ -14,6 +14,7 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
     @Inject private var offerService: OfferServiceType
     @Inject private var userSecurity: UserSecurityType
     @Inject private var localStorageService: LocalStorageServiceType
+    @Inject private var inboxManager: InboxManagerType
 
     // MARK: - Actions Bindings
 
@@ -101,6 +102,7 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
         self.userOfferKeys = UserDefaults.standard.codable(forKey: .storedOfferKeys)
         setupDataBindings()
         setupActionBindings()
+        setupInbox()
     }
 
     func applyFilter(_ filter: OfferFilter) {
@@ -126,6 +128,10 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
             sellOfferFilter.shouldShow(offer: item.offer)
         }
         filteredSellFeedItems = filteredItems
+    }
+
+    private func setupInbox() {
+        inboxManager.syncInboxes()
     }
 
     private func setupDataBindings() {
@@ -237,7 +243,7 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
             .store(in: cancelBag)
     }
 
-    private func getRequestedInboxes() -> [Inbox] {
+    private func getRequestedInboxes() -> [OfferInbox] {
         do {
             return try localStorageService.getInboxes(ofType: .requested)
         } catch {
