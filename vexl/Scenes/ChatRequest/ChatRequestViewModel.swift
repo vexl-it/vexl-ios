@@ -204,7 +204,7 @@ final class ChatRequestViewModel: ViewModelType, ObservableObject {
                 return owner.chatService
                     .communicationConfirmation(confirmation: isConfirmed,
                                                message: message,
-                                               inboxPublicKey: keys.offerKey.publicKey,
+                                               inboxKeys: keys.offerKey.key,
                                                requesterPublicKey: keys.senderPublicKey,
                                                signature: signature)
                     .track(activity: owner.primaryActivity)

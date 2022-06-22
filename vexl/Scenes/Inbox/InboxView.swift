@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Cleevio
 
 typealias InboxFilterOption = InboxFilterView.Option
 
@@ -50,6 +51,23 @@ struct InboxView: View {
         .cornerRadius(Appearance.GridGuide.buttonCorner)
     }
 
+    private var syncingView: some View {
+        VStack(spacing: .zero) {
+            Text("Syncing Messages")
+                .foregroundColor(Appearance.Colors.gray2)
+                .textStyle(.descriptionBold)
+                .padding(.top, 8)
+
+            LoadingView(spacing: 5,
+                        dotDiameter: 6,
+                        circleColor: Color.black)
+                .padding(.bottom, 4)
+        }
+        .frame(maxWidth: .infinity)
+        .frame(height: 50)
+        .background(Appearance.Colors.green100)
+    }
+
     private var header: some View {
         HStack(alignment: .center) {
             Text(L.chatMainTitle())
@@ -74,7 +92,18 @@ struct InboxView: View {
 
 struct InboxViewPreview: PreviewProvider {
     static var previews: some View {
-        InboxView(viewModel: .init(bitcoinViewModel: .init()))
+        let viewModel = InboxViewModel(bitcoinViewModel: .init())
+        viewModel.inboxItems = [.init(avatar: nil,
+                                      username: "Random 1",
+                                      detail: "Has started conversation",
+                                      time: "Date 1",
+                                      offerType: .buy),
+                                .init(avatar: nil,
+                                      username: "Random 2",
+                                      detail: "Has started conversation",
+                                      time: "Date 2",
+                                      offerType: .sell)]
+        return InboxView(viewModel: viewModel)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .previewDevice("iPhone 11")
     }

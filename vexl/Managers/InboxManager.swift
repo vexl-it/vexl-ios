@@ -10,7 +10,8 @@ import Combine
 import Cleevio
 
 protocol InboxManagerType {
-    var inboxMessages: AnyPublisher<[ParsedChatMessage], Error> { get }
+    var currentInboxMessages: [ChatInboxMessage] { get }
+    var inboxMessages: AnyPublisher<[ChatInboxMessage], Error> { get }
     var isSyncing: AnyPublisher<Bool, Never> { get }
     var completedSyncing: AnyPublisher<Result<[ParsedChatMessage], InboxError>, Never> { get }
 
@@ -32,13 +33,17 @@ final class InboxManager: InboxManagerType {
         _completedSyncing.eraseToAnyPublisher()
     }
 
-    var inboxMessages: AnyPublisher<[ParsedChatMessage], Error> {
+    var inboxMessages: AnyPublisher<[ChatInboxMessage], Error> {
         _inboxMessages.eraseToAnyPublisher()
+    }
+
+    var currentInboxMessages: [ChatInboxMessage] {
+        _inboxMessages.value
     }
 
     private var _completedSyncing = PassthroughSubject<Result<[ParsedChatMessage], InboxError>, Never>()
     private var _syncActivity = ActivityIndicator()
-    private var _inboxMessages = CurrentValueSubject<[ParsedChatMessage], Error>([])
+    private var _inboxMessages = CurrentValueSubject<[ChatInboxMessage], Error>([])
     private var cancelBag = CancelBag()
 
     func syncInboxes() {
@@ -144,7 +149,7 @@ final class InboxManager: InboxManagerType {
                                      inboxKeys: ECCKeys) -> AnyPublisher<[ParsedChatMessage], Error> {
         parseMessages(messages, key: inboxKeys, inboxPublicKey: inboxKeys.publicKey)
             .flatMapLatest(with: self) { owner, messages -> AnyPublisher<[ParsedChatMessage], Error> in
-                owner.chatService.saveFetchedMessages(messages, inboxPublicKey: inboxKeys.publicKey)
+                owner.chatService.saveFetchedMessages(messages, inboxKeys: inboxKeys)
                     .map { messages }
                     .eraseToAnyPublisher()
             }
@@ -169,8 +174,7 @@ final class InboxManager: InboxManagerType {
             .withUnretained(self)
             .subscribe(on: DispatchQueue.main)
             .handleEvents(receiveOutput: { owner, chatInboxMessages in
-                let messages = chatInboxMessages.map(\.message)
-                owner._inboxMessages.send(messages)
+                owner._inboxMessages.send(chatInboxMessages)
             })
             .asVoid()
             .eraseToAnyPublisher()

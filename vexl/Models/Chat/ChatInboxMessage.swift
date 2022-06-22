@@ -8,7 +8,7 @@
 import Foundation
 
 struct ChatInboxMessage: Codable {
-    let inbox: String
+    let inbox: ECCKeys
     let receiverInbox: String
     let message: ParsedChatMessage
 }
