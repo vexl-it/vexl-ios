@@ -49,6 +49,9 @@ target 'vexl' do
     pod 'FBSDKCoreKit', '~> 13.1'
     pod 'FBSDKLoginKit', '~> 13.1'
 
+    # Charts
+    pod 'SwiftUICharts', :git => 'https://github.com/willdale/SwiftUICharts.git', :tag => '2.10.1'
+
     target 'vexlTests' do
     end
 

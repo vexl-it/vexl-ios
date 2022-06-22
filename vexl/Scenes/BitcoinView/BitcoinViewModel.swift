@@ -8,6 +8,7 @@
 import Cleevio
 import SwiftUI
 import Combine
+import SwiftUICharts
 
 final class BitcoinViewModel: ViewModelType, ObservableObject {
     @Inject var cryptocurrencyManager: CryptocurrencyValueManagerType
@@ -16,15 +17,20 @@ final class BitcoinViewModel: ViewModelType, ObservableObject {
 
     enum UserAction: Equatable {
         case timelineTap(TimelineOption)
+        case toggleExpand
     }
 
     let action: ActionSubject<UserAction> = .init()
 
     // MARK: - View Bindings
 
-    @Published var isLoading: Bool = false
     @Published var timelineSelected: TimelineOption = .oneDayAgo
-    @Published private var bitcoinData: BitcoinData?
+    @Published var isExpanded: Bool = false
+    @Published private var coinDataState: ContentState<CoinData> = .loading
+    @Published private var coinChartDataState: ContentState<CoinChartData> = .loading
+
+    var isLoadingCoinData: Bool { coinDataState == .loading }
+    var isLoadingChartData: Bool { coinChartDataState == .loading }
 
     let timelineOptions: [TimelineOption] = TimelineOption.allCases
 
@@ -36,14 +42,23 @@ final class BitcoinViewModel: ViewModelType, ObservableObject {
         primaryActivity.indicator
     }
 
-    var bitcoinWithCurrency: String {
-        guard let value = bitcoinData?.priceUsd else { return "-" }
-        return "$ \(value)"
+    var chartDataPoints: [LineChartDataPoint] {
+        coinChartDataState.data?.prices
+            .map { $0[1] }
+            .map { LineChartDataPoint(value: $0) } ?? []
     }
 
-    var bitcoinIncreased: Bool { bitcoinData?.bitcoinIncreased(for: timelineSelected) ?? true }
+    var currency: Currency { cryptocurrencyManager.selectedCurrency.value }
+
+    var bitcoinValue: String {
+        guard let value = coinDataState.data?.priceUsd else { return "-" }
+        return "\(value)"
+    }
+
+    var bitcoinIncreased: Bool { coinDataState.data?.bitcoinIncreased(for: timelineSelected) ?? true }
     var bitcoinPercentageVariation: String { timelineSelected.variation(percentage: bitcoinPercentage) }
-    private var bitcoinPercentage: String { bitcoinData?.getPercentage(for: timelineSelected) ?? "-" }
+
+    private var bitcoinPercentage: String { coinDataState.data?.getPercentage(for: timelineSelected) ?? "-" }
 
     // MARK: - Coordinator Bindings
 
@@ -55,6 +70,7 @@ final class BitcoinViewModel: ViewModelType, ObservableObject {
 
     var primaryActivity: Activity = .init()
     private let cancelBag: CancelBag = .init()
+    private var enableNextChartAnimation: Bool = false
 
     init() {
         setupActionBindings()
@@ -63,22 +79,56 @@ final class BitcoinViewModel: ViewModelType, ObservableObject {
 
     private func setupActionBindings() {
         action
-            .compactMap { if case let .timelineTap(option) = $0 { return option } else { return nil } }
-            .assign(to: &$timelineSelected)
+            .compactMap { action -> TimelineOption? in if case let .timelineTap(option) = action { return option } else { return nil } }
+            .withUnretained(self)
+            .sink(receiveValue: { owner, option in
+                owner.cryptocurrencyManager.fetchChart(option: option)
+            })
+            .store(in: cancelBag)
+
+        action
+            .filter { $0 == .toggleExpand }
+            .withUnretained(self)
+            .sink { owner, _ in
+                owner.enableNextChartAnimation = true
+                owner.cryptocurrencyManager.toggleExpand()
+            }
+            .store(in: cancelBag)
     }
 
     private func setupDataBindings() {
         cryptocurrencyManager
-            .currentValue
-            .filter { !$0.priceUsd.isZero }
-            .asOptional()
-            .assign(to: &$bitcoinData)
+            .currentCoinData
+            .withUnretained(self)
+            .sink(receiveValue: { owner, state in
+                owner.coinDataState = state
+                owner.objectWillChange.send()
+            })
+            .store(in: cancelBag)
 
         cryptocurrencyManager
-            .isFetching
+            .currentCoinChartData
             .withUnretained(self)
-            .sink { owner, isFetching in
-                owner.isLoading = isFetching
+            .sink(receiveValue: { owner, state in
+                owner.coinChartDataState = state
+                owner.objectWillChange.send()
+            })
+            .store(in: cancelBag)
+
+        cryptocurrencyManager
+            .currentTimeline
+            .withUnretained(self)
+            .sink(receiveValue: { owner, timeline in
+                owner.timelineSelected = timeline
+                owner.objectWillChange.send()
+            })
+            .store(in: cancelBag)
+
+        cryptocurrencyManager
+            .chartIsExpanded
+            .withUnretained(self)
+            .sink { owner, expand in
+                owner.isExpanded = expand
             }
             .store(in: cancelBag)
     }

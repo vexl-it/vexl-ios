@@ -7,6 +7,11 @@
 
 import Foundation
 
+enum HorizontalPosition {
+    case left
+    case right
+}
+
 enum Currency: String, Codable {
     case eur = "EUR"
     case usd = "USD"
@@ -20,6 +25,17 @@ enum Currency: String, Codable {
             return "$"
         case .czk:
             return "Kč"
+        }
+    }
+
+    var position: HorizontalPosition {
+        switch self {
+        case .eur:
+            return .left
+        case .usd:
+            return .left
+        case .czk:
+            return .right
         }
     }
 }
