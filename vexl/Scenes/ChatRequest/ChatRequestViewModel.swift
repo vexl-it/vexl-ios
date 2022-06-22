@@ -81,7 +81,7 @@ final class ChatRequestViewModel: ViewModelType, ObservableObject {
 
     private func setupDataBindings() {
         let offerKeys = offerService
-            .getOfferKeys()
+            .getStoredOfferKeys()
             .withUnretained(self)
             .flatMap { owner, keys -> AnyPublisher<OfferKeysAndMessages, Error> in
                 owner.chatService
