@@ -35,10 +35,10 @@ final class DictionaryDB {
         }
     }
 
-    static private var inboxMessage: [String: ParsedChatMessage] = [:] {
+    static private var inboxMessage: [ParsedChatMessage] = [] {
         didSet {
             guard let encodedData = try? encoder.encode(inboxMessage) else { return }
-            UserDefaults.standard.setValue(encodedData, forKey: "displayMessage")
+            UserDefaults.standard.setValue(encodedData, forKey: "inboxMessages")
         }
     }
 
@@ -58,9 +58,9 @@ final class DictionaryDB {
             requests = savedRequests
         }
 
-        if let displayData = UserDefaults.standard.data(forKey: "displayMessage"),
-           let savedDisplayMessages = try? decoder.decode([String: ParsedChatMessage].self, from: displayData) {
-            inboxMessage = savedDisplayMessages
+        if let inboxMessagesData = UserDefaults.standard.data(forKey: "inboxMessages"),
+           let savedInboxMessages = try? decoder.decode([ParsedChatMessage].self, from: inboxMessagesData) {
+            inboxMessage = savedInboxMessages
         }
     }
 
@@ -105,17 +105,17 @@ final class DictionaryDB {
     }
 
     static func deleteRequest(with id: String) {
-        let newRequests = requests.filter { $0.inboxKey == id }
+        let newRequests = requests.filter { $0.inboxKey != id }
         requests = newRequests
     }
 
     static func saveInboxMessages(_ request: ParsedChatMessage, inboxPublicKey: String) {
         var content = self.inboxMessage
-        content[inboxPublicKey] = request
+        content.append(request)
         self.inboxMessage = content
     }
 
     static func getInboxMessages() -> [ParsedChatMessage] {
-        Array(inboxMessage.values)
+        self.inboxMessage
     }
 }

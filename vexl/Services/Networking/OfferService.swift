@@ -95,7 +95,7 @@ final class OfferService: BaseService, OfferServiceType {
             .withUnretained(self)
             .flatMap { owner, offerIds -> AnyPublisher<Void, Error> in
                 if !offerIds.isEmpty {
-                    //TODO: - clean from the localstorage too
+                    // TODO: - clean from the localstorage too
                     return owner.request(endpoint: OffersRouter.deleteOffers(offerIds: offerIds))
                 } else {
                     return Just(()).setFailureType(to: Error.self)

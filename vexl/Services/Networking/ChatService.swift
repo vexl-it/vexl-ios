@@ -135,29 +135,27 @@ final class ChatService: BaseService, ChatServiceType {
                     return owner.saveAcceptedRequest(message, inboxPublicKey: inboxPublicKey)
                 case .messagingRejection:
                     return owner.removeRejectedRequest(message, inboxPublicKey: inboxPublicKey)
-                case .deleteChat, .invalid, .message, .revealApproval, .revealRequest:
+                case .message:
+                    return owner.saveLastMessageForInbox(messages, inboxPublicKey: inboxPublicKey)
+                case .deleteChat, .invalid, .revealApproval, .revealRequest:
                     return Just(()).setFailureType(to: Error.self)
                         .eraseToAnyPublisher()
                 }
             }
             .collect()
 
-        let saveDisplayMessage = saveEachParticularMessage
-            .withUnretained(self)
-            .flatMap { owner, _ -> AnyPublisher<Void, Error> in
-                let displayMessage = messages
-                    .last { MessageType.displayableMessages.contains($0.messageType) }
-
-                guard let displayMessage = displayMessage else {
-                    return Just(()).setFailureType(to: Error.self)
-                        .eraseToAnyPublisher()
-                }
-
-                return owner.localStorageService.saveInboxMessage(displayMessage, inboxPublicKey: inboxPublicKey)
-            }
-
-        return saveDisplayMessage
+        return saveEachParticularMessage
+            .asVoid()
             .eraseToAnyPublisher()
+    }
+
+    private func saveLastMessageForInbox(_ messages: [ParsedChatMessage], inboxPublicKey: String) -> AnyPublisher<Void, Error> {
+        guard let displayMessage = messages.last else {
+            return Just(()).setFailureType(to: Error.self)
+                .eraseToAnyPublisher()
+        }
+
+        return localStorageService.saveInboxMessage(displayMessage, inboxPublicKey: inboxPublicKey)
     }
 
     private func saveRequestMessage(_ message: ParsedChatMessage, inboxPublicKey: String) -> AnyPublisher<Void, Error> {

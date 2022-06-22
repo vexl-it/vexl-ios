@@ -47,12 +47,10 @@ final class InboxManager: InboxManagerType {
     private var cancelBag = CancelBag()
 
     func syncInboxes() {
-        guard let createdInboxes = try? localStorageService.getInboxes(ofType: .created),
-              let requestedInboxes = try? localStorageService.getInboxes(ofType: .requested) else {
-                  return
-              }
+        guard let inboxes = try? localStorageService.getInboxes(ofType: .created) else {
+            return
+        }
 
-        let inboxes = createdInboxes + requestedInboxes
         let inboxPublishers = inboxes.map { inbox in
             self.syncInbox(inbox)
         }
@@ -92,9 +90,6 @@ final class InboxManager: InboxManagerType {
     }
 
     private func syncInbox(_ inbox: OfferInbox) -> AnyPublisher<Result<[ParsedChatMessage], Error>, Error> {
-
-        let decryptionKey = inbox.type == .created ? inbox.key : userSecurity.userKeys
-
         let challenge = requestChallenge(key: inbox.key)
             .subscribe(on: DispatchQueue.global(qos: .background))
 
@@ -110,7 +105,7 @@ final class InboxManager: InboxManagerType {
 
         let saveMessages = pullChat
             .flatMapLatest(with: self) { owner, keyAndMessages -> AnyPublisher<KeyAndParsedMessages, Error> in
-                owner.saveFetchedMessages(keyAndMessages: keyAndMessages, decryptionKey: decryptionKey, inboxPublicKey: inbox.publicKey)
+                owner.saveFetchedMessages(keyAndMessages: keyAndMessages, decryptionKey: inbox.key, inboxPublicKey: inbox.publicKey)
             }
 
         let deleteChat = saveMessages

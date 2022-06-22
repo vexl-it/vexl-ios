@@ -23,7 +23,6 @@ final class ChatRequestViewModel: ViewModelType, ObservableObject {
     @Inject var chatService: ChatServiceType
     @Inject var offerService: OfferServiceType
     @Inject var cryptoService: CryptoServiceType
-    @Inject var localStorageService: LocalStorageService
 
     // MARK: - Action Binding
 
