@@ -9,7 +9,7 @@ import Foundation
 import Cleevio
 import Combine
 
-private typealias OfferKeyAndSenderKey = (offerKey: UserOfferKeys.OfferKey, senderPublicKey: String)
+private typealias OfferAndSenderKeys = (offerKey: UserOfferKeys.OfferKey, senderPublicKey: String)
 private typealias IndexAndConfirmation = (index: Int, confirmation: Bool)
 private typealias OfferAndMessage = (offer: Offer, message: ParsedChatMessage)
 
@@ -27,7 +27,6 @@ final class ChatRequestViewModel: ViewModelType, ObservableObject {
         case continueTap
         case acceptTap(id: String)
         case rejectTap(id: String)
-        case confirmationTap(id: String, confirmation: Bool)
     }
 
     let action: ActionSubject<UserAction> = .init()
@@ -57,9 +56,7 @@ final class ChatRequestViewModel: ViewModelType, ObservableObject {
 
     // MARK: - Variables
 
-    private var offerAndSenderKeys: [OfferKeyAndSenderKey] = []
-    private var storedOfferKeys: [UserOfferKeys.OfferKey] = []
-    private var offerAndMessage: [String: OfferAndMessage] = [:]
+    private var offerAndSenderKeys: [OfferAndSenderKeys] = []
     private let cancelBag: CancelBag = .init()
 
     init() {
@@ -80,66 +77,13 @@ final class ChatRequestViewModel: ViewModelType, ObservableObject {
     }
 
     private func setupDataBindings() {
-        let communicationRequests = offerService
+        offerService
             .getStoredOfferKeys()
             .withUnretained(self)
-            .handleEvents(receiveOutput: { owner, keys in
-                owner.storedOfferKeys = keys
-            })
-            .flatMap { owner, _ -> AnyPublisher<[ParsedChatMessage], Never> in
-                owner.chatService
-                    .getRequestMessages()
-                    .track(activity: owner.primaryActivity)
-                    .materialize()
-                    .compactMap(\.value)
-                    .eraseToAnyPublisher()
+            .flatMap { owner, keys -> AnyPublisher<Void, Never> in
+                owner.prepareRequestedMessages(storedOfferKeys: keys)
             }
-
-        let getOffers = communicationRequests
-            .withUnretained(self)
-            .flatMap { owner, parsedMessages -> AnyPublisher<Void, Never> in
-                owner.offerService
-                    .getUserOffers(offerIds: owner.storedOfferKeys.map { $0.id })
-                    .track(activity: owner.primaryActivity)
-                    .materialize()
-                    .compactMap(\.value)
-                    .map { Offer.createOffers(from: $0, withKey: owner.userSecurity.userKeys) }
-                    .handleEvents(receiveOutput: { offers in
-                        for message in parsedMessages {
-                            if let offer = offers.first(where: { $0.offerPublicKey == message.inboxKey }),
-                               let key = owner.storedOfferKeys.first(where: { $0.id == offer.offerId }) {
-                                owner.offerAndMessage[key.id] = OfferAndMessage(offer: offer, message: message)
-                            }
-                        }
-                    })
-                    .asVoid()
-                    .eraseToAnyPublisher()
-            }
-
-        getOffers
-            .withUnretained(self)
-            .sink(receiveCompletion: { _ in },
-                  receiveValue: { owner, _ in
-
-                var offerRequestViewData: [ChatRequestOfferViewData] = []
-                var offerAndSender: [OfferKeyAndSenderKey] = []
-
-                owner.offerAndMessage.forEach { key, value in
-                    if let offerKey = owner.storedOfferKeys.first(where: { key == $0.id }) {
-                        let senderPublicKey = value.message.senderInboxKey
-                        let viewData = ChatRequestOfferViewData(contactName: Constants.randomName,
-                                                                contactFriendLevel: value.offer.friendLevel.label,
-                                                                requestText: value.message.text ?? "",
-                                                                friends: [],
-                                                                offer: .init(offer: value.offer, isRequested: false))
-                        offerRequestViewData.append(viewData)
-                        offerAndSender.append(OfferKeyAndSenderKey(offerKey: offerKey, senderPublicKey: senderPublicKey))
-                    }
-                }
-
-                owner.offerRequests = offerRequestViewData
-                owner.offerAndSenderKeys = offerAndSender
-            })
+            .sink()
             .store(in: cancelBag)
     }
 
@@ -184,6 +128,66 @@ final class ChatRequestViewModel: ViewModelType, ObservableObject {
             .store(in: cancelBag)
     }
 
+    // MARK: - Helper methods for presenting the request that are pending of approval/rejection
+
+    private func prepareRequestedMessages(storedOfferKeys: [UserOfferKeys.OfferKey]) -> AnyPublisher<Void, Never> {
+        chatService
+            .getRequestMessages()
+            .track(activity: primaryActivity)
+            .materialize()
+            .compactMap(\.value)
+            .flatMapLatest(with: self) { owner, parsedMessages -> AnyPublisher<(offers: [Offer], messages: [ParsedChatMessage]), Never> in
+                owner.fetchUserOffers(offerKeys: storedOfferKeys)
+                    .map { (offers: $0, messages: parsedMessages) }
+                    .eraseToAnyPublisher()
+            }
+            .withUnretained(self)
+            .handleEvents(receiveOutput: { owner, offersAndMessages in
+                owner.saveRequestedOffers(offersAndMessages.offers,
+                                          offerKeys: storedOfferKeys,
+                                          parsedMessages: offersAndMessages.messages)
+            })
+            .asVoid()
+            .eraseToAnyPublisher()
+    }
+
+    private func fetchUserOffers(offerKeys: [UserOfferKeys.OfferKey]) -> AnyPublisher<[Offer], Never> {
+        offerService
+            .getUserOffers(offerIds: offerKeys.map(\.id))
+            .track(activity: primaryActivity)
+            .materialize()
+            .compactMap(\.value)
+            .map { Offer.createOffers(from: $0, withKey: self.userSecurity.userKeys) }
+            .eraseToAnyPublisher()
+    }
+
+    private func saveRequestedOffers(_ offers: [Offer], offerKeys: [UserOfferKeys.OfferKey], parsedMessages: [ParsedChatMessage]) {
+
+        var offerRequestViewData: [ChatRequestOfferViewData] = []
+        var offerAndSender: [OfferAndSenderKeys] = []
+
+        for message in parsedMessages {
+            if let offer = offers.first(where: { $0.offerPublicKey == message.inboxKey }),
+               let key = offerKeys.first(where: { $0.id == offer.offerId }) {
+
+                let senderPublicKey = message.senderInboxKey
+                let viewData = ChatRequestOfferViewData(contactName: Constants.randomName,
+                                                        contactFriendLevel: offer.friendLevel.label,
+                                                        requestText: message.text ?? "",
+                                                        friends: [],
+                                                        offer: .init(offer: offer, isRequested: false))
+
+                offerRequestViewData.append(viewData)
+                offerAndSender.append(OfferAndSenderKeys(offerKey: key, senderPublicKey: senderPublicKey))
+            }
+        }
+
+        offerRequests = offerRequestViewData
+        offerAndSenderKeys = offerAndSender
+    }
+
+    // MARK: - Helper methods for sending the confirmation request to the BE
+
     private func communicationRequest(index: Int, isConfirmed: Bool) -> AnyPublisher<IndexAndConfirmation, Never> {
         let keys = offerAndSenderKeys[index]
         let generateSignature = validateSignature(forOfferIndex: index, confirmation: isConfirmed, withInboxKey: keys.offerKey.key)
@@ -215,12 +219,6 @@ final class ChatRequestViewModel: ViewModelType, ObservableObject {
             .eraseToAnyPublisher()
     }
 
-    private func removeConfirmedRequest(atIndex index: Int) {
-        var offers = offerRequests
-        offers.remove(at: index)
-        offerRequests = offers
-    }
-
     private func validateSignature(forOfferIndex index: Int,
                                    confirmation: Bool,
                                    withInboxKey offerKeys: ECCKeys) -> AnyPublisher<String, Error> {
@@ -231,5 +229,11 @@ final class ChatRequestViewModel: ViewModelType, ObservableObject {
                     .eraseToAnyPublisher()
             }
             .eraseToAnyPublisher()
+    }
+
+    private func removeConfirmedRequest(atIndex index: Int) {
+        var offers = offerRequests
+        offers.remove(at: index)
+        offerRequests = offers
     }
 }
