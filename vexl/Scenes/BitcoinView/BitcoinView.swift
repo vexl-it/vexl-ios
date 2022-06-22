@@ -13,7 +13,7 @@ struct BitcoinView: View {
 
     private let headerHeight: Double = 38
     private let expandedInfoHeight: Double = 342
-    private let chartBigHeight: Double = 282
+    private let chartBigHeight: Double = 150
     private let chartSmallHeight: Double = 130
 
     private var chartData: LineChartData {
@@ -43,10 +43,12 @@ struct BitcoinView: View {
             if viewModel.isExpanded {
                 bigGraph
 
-                HLine(color: Appearance.Colors.gray1,
+                timeline
+
+                HLine(color: Appearance.Colors.whiteText.opacity(0.1),
                       height: 2)
 
-                timeline
+                timelineOptions
             }
         }
         .padding(Appearance.GridGuide.padding)
@@ -172,11 +174,26 @@ struct BitcoinView: View {
                     strokeStyle: StrokeStyle(lineWidth: 2)
                 )
                 .frame(height: chartBigHeight)
+                .padding(.horizontal, Appearance.GridGuide.padding)
                 .allowsHitTesting(false)
         }
     }
 
     private var timeline: some View {
+        HStack {
+            ForEach(viewModel.timelineSelected.timeline) { timeline in
+                Text(timeline)
+                    .foregroundColor(Appearance.Colors.whiteText)
+                    .opacity(0.5)
+                    .textStyle(.description)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.5)
+                    .frame(maxWidth: .infinity)
+            }
+        }
+    }
+
+    private var timelineOptions: some View {
         HStack {
             ForEach(viewModel.timelineOptions) { option in
                 Button(
@@ -200,7 +217,7 @@ struct BitcoinView: View {
     }
 
     private func opacity(for option: TimelineOption) -> CGFloat {
-        viewModel.timelineSelected == option ? 1.0 : 0.15
+        viewModel.timelineSelected == option ? 1.0 : 0.5
     }
 
     private func backgroundColor(for option: TimelineOption) -> Color {
