@@ -40,7 +40,7 @@ final class ChatService: BaseService, ChatServiceType {
     func createInbox(offerKey: ECCKeys, pushToken: String) -> AnyPublisher<Void, Error> {
         Future<Void, Error> { [localStorageService] promise in
             do {
-                try localStorageService.saveInbox(OfferInbox(key: offerKey, type: .created))
+                try localStorageService.saveInbox(ChatInbox(key: offerKey, type: .created))
                 promise(.success(()))
             } catch {
                 promise(.failure(LocalStorageError.saveFailed))
@@ -55,7 +55,7 @@ final class ChatService: BaseService, ChatServiceType {
     func requestCommunication(inboxPublicKey: String, message: String) -> AnyPublisher<Void, Error> {
         Future<Void, Error> { [localStorageService] promise in
             do {
-                try localStorageService.saveInbox(OfferInbox(publicKey: inboxPublicKey, type: .requested))
+                try localStorageService.saveInbox(ChatInbox(publicKey: inboxPublicKey, type: .requested))
                 promise(.success(()))
             } catch {
                 promise(.failure(LocalStorageError.saveFailed))

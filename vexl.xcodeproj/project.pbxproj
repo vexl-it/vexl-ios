@@ -10,7 +10,7 @@
 		0AA456AF4C162D9C8AF6AB30 /* Pods_vexl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57B3CAA27CF4369A28B748A7 /* Pods_vexl.framework */; };
 		4F24169E2848CF4300B4A437 /* LocalStorageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F24169D2848CF4300B4A437 /* LocalStorageService.swift */; };
 		4F2416A12848F2F100B4A437 /* DictionaryDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2416A02848F2F100B4A437 /* DictionaryDB.swift */; };
-		4F2416A328490B3C00B4A437 /* OfferInbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2416A228490B3C00B4A437 /* OfferInbox.swift */; };
+		4F2416A328490B3C00B4A437 /* ChatInbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2416A228490B3C00B4A437 /* ChatInbox.swift */; };
 		4F481E7228466B320051D3B9 /* TimelineOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F481E7128466B320051D3B9 /* TimelineOption.swift */; };
 		4F481E76284767480051D3B9 /* ChatRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F481E75284767480051D3B9 /* ChatRouter.swift */; };
 		4F481E78284768840051D3B9 /* ChatService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F481E77284768840051D3B9 /* ChatService.swift */; };
@@ -303,7 +303,7 @@
 		41AF8987CFFD44F9E45C3897 /* Pods-vexl-vexlTests.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-vexl-vexlTests.staging.xcconfig"; path = "Target Support Files/Pods-vexl-vexlTests/Pods-vexl-vexlTests.staging.xcconfig"; sourceTree = "<group>"; };
 		4F24169D2848CF4300B4A437 /* LocalStorageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalStorageService.swift; sourceTree = "<group>"; };
 		4F2416A02848F2F100B4A437 /* DictionaryDB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryDB.swift; sourceTree = "<group>"; };
-		4F2416A228490B3C00B4A437 /* OfferInbox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferInbox.swift; sourceTree = "<group>"; };
+		4F2416A228490B3C00B4A437 /* ChatInbox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatInbox.swift; sourceTree = "<group>"; };
 		4F481E61284504050051D3B9 /* RangePickerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RangePickerView.swift; sourceTree = "<group>"; };
 		4F481E63284504050051D3B9 /* OptionPickerItemView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OptionPickerItemView.swift; sourceTree = "<group>"; };
 		4F481E64284504050051D3B9 /* SingleOptionPickerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SingleOptionPickerView.swift; sourceTree = "<group>"; };
@@ -695,7 +695,7 @@
 			isa = PBXGroup;
 			children = (
 				4FBF623A283F8C3800DDBE71 /* OfferFeed.swift */,
-				4F2416A228490B3C00B4A437 /* OfferInbox.swift */,
+				4F2416A228490B3C00B4A437 /* ChatInbox.swift */,
 			);
 			path = Offers;
 			sourceTree = "<group>";
@@ -2160,7 +2160,7 @@
 				F188627028169A3700659786 /* MarketplaceCoordinator.swift in Sources */,
 				4F2416A12848F2F100B4A437 /* DictionaryDB.swift in Sources */,
 				B08F391927AE7112008B344F /* User.swift in Sources */,
-				4F2416A328490B3C00B4A437 /* OfferInbox.swift in Sources */,
+				4F2416A328490B3C00B4A437 /* ChatInbox.swift in Sources */,
 				F1485640284FD451003213D7 /* ChatOfferView.swift in Sources */,
 				F148564F284FD5E2003213D7 /* InboxManager.swift in Sources */,
 				F1D200A628252C44006DF4AB /* TabBarController.swift in Sources */,

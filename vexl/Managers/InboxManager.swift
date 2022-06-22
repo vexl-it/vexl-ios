@@ -89,7 +89,7 @@ final class InboxManager: InboxManagerType {
             .store(in: cancelBag)
     }
 
-    private func syncInbox(_ inbox: OfferInbox) -> AnyPublisher<Result<[ParsedChatMessage], Error>, Error> {
+    private func syncInbox(_ inbox: ChatInbox) -> AnyPublisher<Result<[ParsedChatMessage], Error>, Error> {
         let challenge = requestChallenge(key: inbox.key)
             .subscribe(on: DispatchQueue.global(qos: .background))
 
