@@ -13,6 +13,7 @@ enum UserDefaultKey: String {
     case storedUser
     case storedSecurity
     case storedOfferKeys
+    case selectedCurrency
 }
 
 struct UserDefaultsConfig {

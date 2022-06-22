@@ -38,7 +38,7 @@ class ManagerAssembly: Assembly {
         .inObjectScope(.container)
 
         container.register(CryptocurrencyValueManagerType.self) { _ in
-            CryptocurrencyValueManager()
+            CryptocurrencyValueManager(option: .oneDayAgo)
         }
         .inObjectScope(.container)
     }
