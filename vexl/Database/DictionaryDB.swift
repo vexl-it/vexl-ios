@@ -12,14 +12,14 @@ import Foundation
 final class DictionaryDB {
     static private var inboxes: [String: [Inbox]] = ["created": [], "requested": []] {
         didSet {
-            guard let encodedData = try? JSONEncoder().encode(inboxes) else { return }
+            guard let encodedData = try? Constants.jsonEncoder.encode(inboxes) else { return }
             UserDefaults.standard.setValue(encodedData, forKey: "inboxes")
         }
     }
 
     static func setupDatabase() {
         guard let inboxesData = UserDefaults.standard.data(forKey: "inboxes"),
-              let savedInboxes = try? JSONDecoder().decode([String: [Inbox]].self, from: inboxesData) else { return }
+              let savedInboxes = try? Constants.jsonDecoder.decode([String: [Inbox]].self, from: inboxesData) else { return }
 
         inboxes = savedInboxes
     }
