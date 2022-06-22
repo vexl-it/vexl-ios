@@ -86,13 +86,7 @@ final class ChatService: BaseService, ChatServiceType {
                                                                            signature: signature))
                 }
                 .flatMapLatest(with: self) { owner, _ in
-                    owner.localStorageService.saveMessages([parsedMessage])
-                }
-                .flatMapLatest(with: self) { owner, _ in
-                    owner.localStorageService.saveInboxMessage(parsedMessage, inboxPublicKey: inboxPublicKey)
-                }
-                .flatMapLatest(with: self) { owner, _ in
-                    owner.localStorageService.deleteRequestMessage(withOfferId: inboxPublicKey)
+                    owner.saveCommunicationResponse(parsedMessage, inboxPublicKey: inboxPublicKey, isConfirmed: confirmation)
                 }
                 .eraseToAnyPublisher()
         } else {
@@ -136,7 +130,7 @@ final class ChatService: BaseService, ChatServiceType {
             .flatMap { owner, message -> AnyPublisher<Void, Error> in
                 switch message.messageType {
                 case .messagingRequest:
-                    return owner.saveRequestMessage(message, inboxPublicKey: inboxPublicKey)
+                    return owner.saveCommunicationRequest(message, inboxPublicKey: inboxPublicKey)
                 case .messagingApproval:
                     return owner.saveAcceptedRequest(message, inboxPublicKey: inboxPublicKey)
                 case .messagingRejection:
@@ -164,8 +158,29 @@ final class ChatService: BaseService, ChatServiceType {
         return localStorageService.saveInboxMessage(displayMessage, inboxPublicKey: inboxPublicKey)
     }
 
-    private func saveRequestMessage(_ message: ParsedChatMessage, inboxPublicKey: String) -> AnyPublisher<Void, Error> {
+    private func saveCommunicationRequest(_ message: ParsedChatMessage, inboxPublicKey: String) -> AnyPublisher<Void, Error> {
         localStorageService.saveRequestMessage(message, inboxPublicKey: inboxPublicKey)
+    }
+
+    private func saveCommunicationResponse(_ message: ParsedChatMessage, inboxPublicKey: String, isConfirmed: Bool) -> AnyPublisher<Void, Error> {
+        localStorageService.deleteRequestMessage(withOfferId: inboxPublicKey)
+            .flatMapLatest(with: self) { owner, _ -> AnyPublisher<Void, Error> in
+                if isConfirmed {
+                    return owner.localStorageService.saveMessages([message])
+                } else {
+                    return Just(()).setFailureType(to: Error.self)
+                        .eraseToAnyPublisher()
+                }
+            }
+            .flatMapLatest(with: self) { owner, _ -> AnyPublisher<Void, Error> in
+                if isConfirmed {
+                    return owner.localStorageService.saveInboxMessage(message, inboxPublicKey: inboxPublicKey)
+                } else {
+                    return Just(()).setFailureType(to: Error.self)
+                        .eraseToAnyPublisher()
+                }
+            }
+            .eraseToAnyPublisher()
     }
 
     private func saveAcceptedRequest(_ message: ParsedChatMessage, inboxPublicKey: String) -> AnyPublisher<Void, Error> {
