@@ -177,7 +177,7 @@ final class ChatRequestViewModel: ViewModelType, ObservableObject {
 
                     return owner.chatService
                         .requestConfirmation(confirmation: indexKeySignatureConfirmation.confirmation,
-                                             message: message?.asString ?? "",
+                                             message: message,
                                              inboxPublicKey: indexKeySignatureConfirmation.keys.offerKey.publicKey,
                                              requesterPublicKey: indexKeySignatureConfirmation.keys.senderPublicKey,
                                              signature: indexKeySignatureConfirmation.signature)

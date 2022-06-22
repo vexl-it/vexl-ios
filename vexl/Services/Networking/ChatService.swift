@@ -12,7 +12,7 @@ protocol ChatServiceType {
     func createInbox(offerKey: ECCKeys, pushToken: String) -> AnyPublisher<Void, Error>
     func request(inboxPublicKey: String, message: String) -> AnyPublisher<Void, Error>
     func requestConfirmation(confirmation: Bool,
-                             message: String,
+                             message: ParsedChatMessage?,
                              inboxPublicKey: String,
                              requesterPublicKey: String,
                              signature: String) -> AnyPublisher<Void, Error>
@@ -71,19 +71,25 @@ final class ChatService: BaseService, ChatServiceType {
     }
 
     func requestConfirmation(confirmation: Bool,
-                             message: String,
+                             message: ParsedChatMessage?,
                              inboxPublicKey: String,
                              requesterPublicKey: String,
                              signature: String) -> AnyPublisher<Void, Error> {
-        if !message.isEmpty {
+        if let parsedMessage = message, let messageAsString = parsedMessage.asString {
             return cryptoService
-                .encryptECIES(publicKey: requesterPublicKey, secret: message)
+                .encryptECIES(publicKey: requesterPublicKey, secret: messageAsString)
                 .flatMapLatest(with: self) { owner, encryptedMessage in
                     owner.request(endpoint: ChatRouter.requestConfirmation(confirmed: confirmation,
                                                                            message: encryptedMessage,
                                                                            inboxPublicKey: inboxPublicKey,
                                                                            requesterPublicKey: requesterPublicKey,
                                                                            signature: signature))
+                }
+                .flatMapLatest(with: self) { owner, _ in
+                    owner.localStorageService.saveMessages([parsedMessage])
+                }
+                .flatMapLatest(with: self) { owner, _ in
+                    owner.localStorageService.saveInboxMessage(parsedMessage, inboxPublicKey: inboxPublicKey)
                 }
                 .flatMapLatest(with: self) { owner, _ in
                     owner.localStorageService.deleteRequestMessage(withOfferId: inboxPublicKey)
