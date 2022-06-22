@@ -26,9 +26,7 @@ struct ParsedChatMessage: Codable {
     let user: ChatUser?
 
     var contentType: ContentType {
-        guard text != nil && contentTypeValue == ContentType.text.rawValue else { return .none }
-        guard image != nil && contentTypeValue == ContentType.image.rawValue else { return .none }
-        return ContentType(rawValue: contentTypeValue) ?? .none
+        ContentType(rawValue: contentTypeValue) ?? .none
     }
 
     var messageType: MessageType {

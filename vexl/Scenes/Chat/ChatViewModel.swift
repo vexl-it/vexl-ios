@@ -87,7 +87,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
     let avatar: UIImage? = nil
     let friends: [ChatCommonFriendViewData] = [.stub, .stub, .stub]
     let offerType: OfferType = .buy
-    var messages: [ChatConversationSection] = ChatConversationSection.stub
+    var messages: [ChatConversationSection] = []
     var imageSource = ImageSource.photoAlbum
 
     var offerLabel: String {
