@@ -52,7 +52,7 @@ final class BitcoinViewModel: ViewModelType, ObservableObject {
 
     var bitcoinValue: String {
         guard let value = coinDataState.data?.priceUsd else { return "-" }
-        return "\(value)"
+        return Formatters.numberFormatter.string(for: value) ?? "-"
     }
 
     var bitcoinIncreased: Bool { coinDataState.data?.bitcoinIncreased(for: timelineSelected) ?? true }

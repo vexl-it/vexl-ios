@@ -50,12 +50,21 @@ struct Formatters {
 
     static let phoneNumberFormatter = PhoneNumberKit()
 
-    static let numberFormatter: NumberFormatter = {
+    static let currencyFormatter: NumberFormatter = {
         let formatter = NumberFormatter()
         formatter.maximumFractionDigits = 2
         formatter.minimumFractionDigits = 0
         formatter.currencyCode = "USD"
         formatter.numberStyle = .currency
+        return formatter
+    }()
+
+    static let numberFormatter: NumberFormatter = {
+        let formatter = NumberFormatter()
+        formatter.maximumFractionDigits = 2
+        formatter.minimumFractionDigits = 0
+        formatter.groupingSeparator = " "
+        formatter.numberStyle = .decimal
         return formatter
     }()
 }
