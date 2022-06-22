@@ -52,5 +52,6 @@ extension ChatConversationItem {
         case image
         case sendReveal
         case receiveReveal
+        case start
     }
 }

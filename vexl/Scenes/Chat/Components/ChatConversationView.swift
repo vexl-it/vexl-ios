@@ -21,6 +21,9 @@ struct ChatConversationView: View {
 
                     ForEach(messageGroup.messages) { message in
                         switch message.type {
+                        case .start:
+                            ChatStartTextView()
+                                .padding(.bottom, Appearance.GridGuide.padding)
                         case .text:
                             ChatTextBubbleView(text: message.text ?? "",
                                                style: message.isContact ? .contact : .user)
@@ -50,3 +53,17 @@ struct ChatConversationView: View {
         .padding([.horizontal, .top], Appearance.GridGuide.point)
     }
 }
+
+#if DEBUG || DEVEL
+
+struct ChatConversationViewPreview: PreviewProvider {
+    static var previews: some View {
+        ChatConversationView(messages: ChatConversationSection.stub,
+                             revealAction: {},
+                             imageAction: { _, _ in })
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .previewDevice("iPhone 11")
+    }
+}
+
+#endif
