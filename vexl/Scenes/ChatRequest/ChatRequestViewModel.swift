@@ -123,7 +123,7 @@ final class ChatRequestViewModel: ViewModelType, ObservableObject {
                   receiveValue: { owner, offerKeyAndMessages in
                 let offerRequests = offerKeyAndMessages.map { offer, key, message -> OfferSenderAndViewData in
                     let offerDetailViewData = OfferDetailViewData(offer: offer, isRequested: false)
-                    let keys = OfferKeyAndSenderKey(offerKey: key, senderPublicKey: message.senderKey)
+                    let keys = OfferKeyAndSenderKey(offerKey: key, senderPublicKey: message.senderInboxKey)
                     let viewData = ChatRequestOfferViewData(contactName: Constants.randomName,
                                                             contactFriendLevel: offer.friendLevel.label,
                                                             requestText: message.text ?? "",
@@ -171,9 +171,9 @@ final class ChatRequestViewModel: ViewModelType, ObservableObject {
             generateSignature
                 .flatMapLatest(with: self) { owner, indexKeySignatureConfirmation -> AnyPublisher<IndexAndConfirmation, Never> in
 
-                    let message = ParsedChatMessage.createRequestConfirmation(isConfirmed: indexKeySignatureConfirmation.confirmation,
-                                                                              inboxPublicKey: indexKeySignatureConfirmation.keys.offerKey.publicKey,
-                                                                              senderKey: indexKeySignatureConfirmation.keys.senderPublicKey)
+                    let message = ParsedChatMessage
+                        .createCommunicationConfirmation(isConfirmed: indexKeySignatureConfirmation.confirmation,
+                                                         inboxPublicKey: indexKeySignatureConfirmation.keys.offerKey.publicKey)
 
                     return owner.chatService
                         .requestConfirmation(confirmation: indexKeySignatureConfirmation.confirmation,

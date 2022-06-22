@@ -51,7 +51,7 @@ struct EncryptedChatMessage: Codable {
     init?(chatMessage: ParsedChatMessage, type: MessageType) {
         guard type != .invalid else { return nil }
         guard let value = chatMessage.asString else { return nil }
-        self.senderPublicKey = chatMessage.senderKey
+        self.senderPublicKey = chatMessage.senderInboxKey
         self.message = value
         self.messageType = type.rawValue
     }

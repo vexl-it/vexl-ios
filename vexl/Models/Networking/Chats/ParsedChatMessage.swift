@@ -11,7 +11,9 @@ import Foundation
 /// This will be stored in the databased and used for populating the Inbox and Chat user interfaces.
 struct ParsedChatMessage: Codable {
 
-    let senderKey: String
+    /// Inbox that sent the message
+    let senderInboxKey: String
+    /// Inbox receiving the message
     let inboxKey: String
     /// Id used for internal purposes
     let id: String
@@ -24,6 +26,8 @@ struct ParsedChatMessage: Codable {
     let time: TimeInterval
     /// Information of the sender, will contain data once the identity reveal is accepted.
     let user: ChatUser?
+
+    var isFromContact = true
 
     var contentType: ContentType {
         guard text != nil && contentTypeValue == ContentType.text.rawValue else { return .none }
@@ -105,7 +109,7 @@ extension ParsedChatMessage {
         let text = json["text"] as? String
         let image = json["image"] as? String
 
-        self.senderKey = chatMessage.senderPublicKey
+        self.senderInboxKey = chatMessage.senderPublicKey
         self.inboxKey = inboxPublicKey
         self.id = id
         self.text = text
@@ -127,7 +131,7 @@ extension ParsedChatMessage {
                   image: String? = nil,
                   senderKey: String = "") {
         guard messageType != .invalid else { return nil }
-        self.senderKey = senderKey
+        self.senderInboxKey = senderKey
         self.id = UUID().uuidString
         self.text = text
         self.inboxKey = inboxPublicKey
@@ -135,65 +139,55 @@ extension ParsedChatMessage {
         self.contentTypeValue = contentType.rawValue
         self.time = Date().timeIntervalSince1970
         self.image = image
+        self.isFromContact = false
         self.user = nil
     }
 }
 
-// MARK: - Helper methods for transforming `ParsedChatMessage` to String or ParsedChatMessage
+// MARK: - Helper methods for creating ParsedChatMessage of different types
 
 extension ParsedChatMessage {
 
-    static func createRequestConfirmation(isConfirmed: Bool, inboxPublicKey: String, senderKey: String) -> ParsedChatMessage? {
+    static func createCommunicationConfirmation(isConfirmed: Bool, inboxPublicKey: String) -> ParsedChatMessage? {
         ParsedChatMessage(inboxPublicKey: inboxPublicKey,
                           messageType: isConfirmed ? .messagingApproval : .messagingRejection,
                           contentType: .communicationRequestResponse,
-                          text: L.chatMessageConversationRequestAccepted(),
-                          senderKey: senderKey)
+                          text: L.chatMessageConversationRequestAccepted())
     }
 
-    static func createMessagingRequest(inboxPublicKey: String, senderKey: String, text: String) -> ParsedChatMessage? {
+    static func createCommunicationRequest(inboxPublicKey: String, text: String) -> ParsedChatMessage? {
         ParsedChatMessage(inboxPublicKey: inboxPublicKey,
                           messageType: .messagingRequest,
                           contentType: .communicationRequest,
-                          text: text,
-                          senderKey: senderKey)
+                          text: text)
     }
 
-    static func createMessagingRequest(inboxPublicKey: String, text: String, senderKey: String) -> String? {
-        let parsedMessage = ParsedChatMessage(inboxPublicKey: inboxPublicKey,
-                                              messageType: .messagingRequest,
-                                              contentType: .communicationRequest,
-                                              text: text,
-                                              senderKey: senderKey)
-        return parsedMessage?.asString
-    }
-
-    static func createMessage(text: String, image: String?, inboxKey: ECCKeys) -> String? {
+    static func createMessage(text: String, image: String?, inboxPublicKey: String) -> ParsedChatMessage? {
         let type: ParsedChatMessage.ContentType = image != nil ? .image : .text
-        let parsedMessage = ParsedChatMessage(inboxPublicKey: inboxKey.publicKey,
+        let parsedMessage = ParsedChatMessage(inboxPublicKey: inboxPublicKey,
                                               messageType: .message,
                                               contentType: type,
                                               text: text,
                                               image: image)
-        return parsedMessage?.asString
+        return parsedMessage
     }
 
-    static func createIdentityRequest(inboxKey: ECCKeys) -> String? {
-        let parsedMessage = ParsedChatMessage(inboxPublicKey: inboxKey.publicKey,
+    static func createIdentityRequest(inboxPublicKey: String) -> ParsedChatMessage? {
+        let parsedMessage = ParsedChatMessage(inboxPublicKey: inboxPublicKey,
                                               messageType: .revealRequest,
                                               contentType: .anonymousRequest,
                                               text: "",
                                               image: nil)
-        return parsedMessage?.asString
+        return parsedMessage
     }
 
-    static func createDelete(inboxKey: ECCKeys) -> String? {
-        let parsedMessage = ParsedChatMessage(inboxPublicKey: inboxKey.publicKey,
+    static func createDelete(inboxPublicKey: String) -> ParsedChatMessage? {
+        let parsedMessage = ParsedChatMessage(inboxPublicKey: inboxPublicKey,
                                               messageType: .deleteChat,
                                               contentType: .deleteChat,
                                               text: "",
                                               image: nil)
-        return parsedMessage?.asString
+        return parsedMessage
     }
 }
 // MARK: - Enum and Structs

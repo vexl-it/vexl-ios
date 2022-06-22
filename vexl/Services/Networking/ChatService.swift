@@ -10,7 +10,7 @@ import Combine
 
 protocol ChatServiceType {
     func createInbox(offerKey: ECCKeys, pushToken: String) -> AnyPublisher<Void, Error>
-    func request(inboxPublicKey: String, message: String) -> AnyPublisher<Void, Error>
+    func requestCommunication(inboxPublicKey: String, message: String) -> AnyPublisher<Void, Error>
     func requestConfirmation(confirmation: Bool,
                              message: ParsedChatMessage?,
                              inboxPublicKey: String,
@@ -52,7 +52,7 @@ final class ChatService: BaseService, ChatServiceType {
         .eraseToAnyPublisher()
     }
 
-    func request(inboxPublicKey: String, message: String) -> AnyPublisher<Void, Error> {
+    func requestCommunication(inboxPublicKey: String, message: String) -> AnyPublisher<Void, Error> {
         Future<Void, Error> { [localStorageService] promise in
             do {
                 try localStorageService.saveInbox(OfferInbox(publicKey: inboxPublicKey, type: .requested))
