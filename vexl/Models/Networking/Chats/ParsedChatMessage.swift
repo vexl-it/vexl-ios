@@ -148,18 +148,18 @@ extension ParsedChatMessage {
 
 extension ParsedChatMessage {
 
-    static func createCommunicationConfirmation(isConfirmed: Bool, inboxPublicKey: String) -> ParsedChatMessage? {
-        ParsedChatMessage(inboxPublicKey: inboxPublicKey,
-                          messageType: isConfirmed ? .messagingApproval : .messagingRejection,
-                          contentType: .communicationRequestResponse,
-                          text: L.chatMessageConversationRequestAccepted())
-    }
-
-    static func createCommunicationRequest(inboxPublicKey: String, text: String) -> ParsedChatMessage? {
+    static func communicationRequest(inboxPublicKey: String, text: String) -> ParsedChatMessage? {
         ParsedChatMessage(inboxPublicKey: inboxPublicKey,
                           messageType: .messagingRequest,
                           contentType: .communicationRequest,
                           text: text)
+    }
+
+    static func communicationConfirmation(isConfirmed: Bool, inboxPublicKey: String) -> ParsedChatMessage? {
+        ParsedChatMessage(inboxPublicKey: inboxPublicKey,
+                          messageType: isConfirmed ? .messagingApproval : .messagingRejection,
+                          contentType: .communicationRequestResponse,
+                          text: L.chatMessageConversationRequestAccepted())
     }
 
     static func createMessage(text: String, image: String?, inboxPublicKey: String) -> ParsedChatMessage? {

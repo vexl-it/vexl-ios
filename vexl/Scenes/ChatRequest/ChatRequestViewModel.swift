@@ -172,15 +172,15 @@ final class ChatRequestViewModel: ViewModelType, ObservableObject {
                 .flatMapLatest(with: self) { owner, indexKeySignatureConfirmation -> AnyPublisher<IndexAndConfirmation, Never> in
 
                     let message = ParsedChatMessage
-                        .createCommunicationConfirmation(isConfirmed: indexKeySignatureConfirmation.confirmation,
-                                                         inboxPublicKey: indexKeySignatureConfirmation.keys.offerKey.publicKey)
+                        .communicationConfirmation(isConfirmed: indexKeySignatureConfirmation.confirmation,
+                                                   inboxPublicKey: indexKeySignatureConfirmation.keys.offerKey.publicKey)
 
                     return owner.chatService
-                        .requestConfirmation(confirmation: indexKeySignatureConfirmation.confirmation,
-                                             message: message,
-                                             inboxPublicKey: indexKeySignatureConfirmation.keys.offerKey.publicKey,
-                                             requesterPublicKey: indexKeySignatureConfirmation.keys.senderPublicKey,
-                                             signature: indexKeySignatureConfirmation.signature)
+                        .communicationConfirmation(confirmation: indexKeySignatureConfirmation.confirmation,
+                                                   message: message,
+                                                   inboxPublicKey: indexKeySignatureConfirmation.keys.offerKey.publicKey,
+                                                   requesterPublicKey: indexKeySignatureConfirmation.keys.senderPublicKey,
+                                                   signature: indexKeySignatureConfirmation.signature)
                         .track(activity: owner.primaryActivity)
                         .materialize()
                         .compactMap(\.value)

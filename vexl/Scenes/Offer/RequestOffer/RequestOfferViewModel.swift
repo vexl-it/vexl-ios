@@ -92,8 +92,8 @@ final class RequestOfferViewModel: ViewModelType, ObservableObject {
             .withUnretained(self)
             .compactMap { owner, _ -> String? in
                 ParsedChatMessage
-                    .createCommunicationRequest(inboxPublicKey: owner.offer.offerPublicKey,
-                                                text: owner.requestText)?
+                    .communicationRequest(inboxPublicKey: owner.offer.offerPublicKey,
+                                          text: owner.requestText)?
                     .asString
             }
             .flatMapLatest(with: self) { owner, message -> AnyPublisher<Void, Never> in
