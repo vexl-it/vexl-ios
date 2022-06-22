@@ -26,7 +26,7 @@ protocol LocalStorageServiceType {
     func getRequestMessages() -> AnyPublisher<[ParsedChatMessage], Error>
     func deleteRequestMessage(withOfferId id: String) -> AnyPublisher<Void, Error>
     func saveInboxMessage(_ message: ParsedChatMessage, inboxPublicKey: String) -> AnyPublisher<Void, Error>
-    func getInboxMessages() -> AnyPublisher<[ParsedChatMessage], Error>
+    func getInboxMessages() -> AnyPublisher<[ChatInboxMessage], Error>
 }
 
 final class LocalStorageService: LocalStorageServiceType {
@@ -125,13 +125,13 @@ final class LocalStorageService: LocalStorageServiceType {
 
     func saveInboxMessage(_ message: ParsedChatMessage, inboxPublicKey: String) -> AnyPublisher<Void, Error> {
         Future { promise in
-            DictionaryDB.saveInboxMessages(message, inboxPublicKey: inboxPublicKey)
+            DictionaryDB.saveInboxMessages(message, inboxPublicKey: inboxPublicKey, receiverInboxPublicKey: message.senderInboxKey)
             promise(.success(()))
         }
         .eraseToAnyPublisher()
     }
 
-    func getInboxMessages() -> AnyPublisher<[ParsedChatMessage], Error> {
+    func getInboxMessages() -> AnyPublisher<[ChatInboxMessage], Error> {
         Future { promise in
             promise(.success(DictionaryDB.getInboxMessages()))
         }

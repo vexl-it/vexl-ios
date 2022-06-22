@@ -168,7 +168,8 @@ final class InboxManager: InboxManagerType {
         chatService.getInboxMessages()
             .withUnretained(self)
             .subscribe(on: DispatchQueue.main)
-            .handleEvents(receiveOutput: { owner, messages in
+            .handleEvents(receiveOutput: { owner, chatInboxMessages in
+                let messages = chatInboxMessages.map(\.message)
                 owner._inboxMessages.send(messages)
             })
             .asVoid()

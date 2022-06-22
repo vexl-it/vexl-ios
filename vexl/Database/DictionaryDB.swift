@@ -35,7 +35,7 @@ final class DictionaryDB {
         }
     }
 
-    static private var inboxMessage: [ParsedChatMessage] = [] {
+    static private var inboxMessage: [ChatInboxMessage] = [] {
         didSet {
             guard let encodedData = try? encoder.encode(inboxMessage) else { return }
             UserDefaults.standard.setValue(encodedData, forKey: "inboxMessages")
@@ -59,7 +59,7 @@ final class DictionaryDB {
         }
 
         if let inboxMessagesData = UserDefaults.standard.data(forKey: "inboxMessages"),
-           let savedInboxMessages = try? decoder.decode([ParsedChatMessage].self, from: inboxMessagesData) {
+           let savedInboxMessages = try? decoder.decode([ChatInboxMessage].self, from: inboxMessagesData) {
             inboxMessage = savedInboxMessages
         }
     }
@@ -109,13 +109,24 @@ final class DictionaryDB {
         requests = newRequests
     }
 
-    static func saveInboxMessages(_ request: ParsedChatMessage, inboxPublicKey: String) {
+    static func saveInboxMessages(_ message: ParsedChatMessage, inboxPublicKey: String, receiverInboxPublicKey: String) {
         var content = self.inboxMessage
-        content.append(request)
+        content.append(.init(inbox: inboxPublicKey, receiverInbox: receiverInboxPublicKey, message: message))
         self.inboxMessage = content
     }
+    
+    static func updateInboxMessage(_ message: ParsedChatMessage, inboxPublicKey: String, receiverInboxPublicKey: String) {
+        guard let index = self.inboxMessage.firstIndex(where: { $0.inbox == inboxPublicKey && $0.receiverInbox == receiverInboxPublicKey }) else {
+            return
+        }
 
-    static func getInboxMessages() -> [ParsedChatMessage] {
+        let newChatInboxMessage = ChatInboxMessage(inbox: inboxPublicKey,
+                                                   receiverInbox: receiverInboxPublicKey,
+                                                   message: message)
+        self.inboxMessage[index] = newChatInboxMessage
+    }
+
+    static func getInboxMessages() -> [ChatInboxMessage] {
         self.inboxMessage
     }
 }

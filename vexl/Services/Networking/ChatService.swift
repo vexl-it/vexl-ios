@@ -22,7 +22,7 @@ protocol ChatServiceType {
     func deleteInboxMessages(publicKey: String) -> AnyPublisher<Void, Error>
 
     func saveFetchedMessages(_ messages: [ParsedChatMessage], inboxPublicKey: String) -> AnyPublisher<Void, Error>
-    func getInboxMessages() -> AnyPublisher<[ParsedChatMessage], Error>
+    func getInboxMessages() -> AnyPublisher<[ChatInboxMessage], Error>
     func getRequestMessages() -> AnyPublisher<[ParsedChatMessage], Error>
     func blockInbox(inboxPublicKey: String, publicKeyToBlock: String, signature: String, isBlocked: Bool) -> AnyPublisher<Void, Error>
     func sendMessage(inboxPublicKey: String,
@@ -121,7 +121,7 @@ final class ChatService: BaseService, ChatServiceType {
             .eraseToAnyPublisher()
     }
 
-    func getInboxMessages() -> AnyPublisher<[ParsedChatMessage], Error> {
+    func getInboxMessages() -> AnyPublisher<[ChatInboxMessage], Error> {
         localStorageService.getInboxMessages()
     }
 
