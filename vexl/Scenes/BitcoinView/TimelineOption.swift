@@ -34,6 +34,32 @@ enum TimelineOption: CaseIterable, Identifiable {
         }
     }
 
+    var chartEndpointRange: (from: Int, to: Int) {
+        let today = Date()
+        let todayFormatted = today.timeIntervalSince1970
+        let optionTimeInterval: TimeInterval = {
+            let day: TimeInterval = 86_400 // 60 * 60 * 24
+            switch self {
+            case .oneDayAgo:
+                return day
+            case .oneWeekAgo:
+                return day * 7
+            case .oneMonthAgo:
+                return day * 30
+            case .threeMonthsAgo:
+                return day * 30 * 3
+            case .sixMonthsAgo:
+                return day * 30 * 6
+            case .oneYearAgo:
+                return day * 365
+            }
+        }()
+
+        let fromDate = today.addingTimeInterval(-optionTimeInterval)
+        let fromFormatted = fromDate.timeIntervalSince1970
+        return (from: Int(fromFormatted), to: Int(todayFormatted))
+    }
+
     func variation(percentage: String) -> String {
         switch self {
         case .oneDayAgo:
