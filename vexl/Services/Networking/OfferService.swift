@@ -18,10 +18,13 @@ protocol OfferServiceType {
     func storeOfferKey(key: ECCKeys, withId id: String, offerType: OfferType) -> AnyPublisher<Void, Error>
     func getStoredOfferIds(forType offerType: OfferType) -> AnyPublisher<[String], Never>
     func getAllStoredOfferIds() -> AnyPublisher<[String], Never>
+    func getOfferKeys() -> AnyPublisher<[UserOfferKeys.OfferKey], Error>
     func deleteOffers() -> AnyPublisher<Void, Error>
 }
 
 final class OfferService: BaseService, OfferServiceType {
+
+    @Inject var localStorageService: LocalStorageServiceType
 
     func getInitialOfferData() -> AnyPublisher<OfferInitialData, Error> {
         Future { promise in
@@ -72,38 +75,19 @@ final class OfferService: BaseService, OfferServiceType {
     }
 
     func storeOfferKey(key: ECCKeys, withId id: String, offerType: OfferType) -> AnyPublisher<Void, Error> {
-        Future { promise in
-            let storedOfferKeys: UserOfferKeys? = UserDefaults.standard.codable(forKey: .storedOfferKeys)
-            var currentOfferKeys = storedOfferKeys ?? .init(keys: [])
-            currentOfferKeys.keys.append(.init(id: id,
-                                               privateKey: key.privateKey,
-                                               publicKey: key.publicKey,
-                                               type: offerType.rawValue))
-            UserDefaults.standard.set(value: currentOfferKeys, forKey: .storedOfferKeys)
-            promise(.success(()))
-        }
-        .eraseToAnyPublisher()
+        localStorageService.saveOffer(id: id, type: offerType, key: key)
     }
 
     func getStoredOfferIds(forType offerType: OfferType) -> AnyPublisher<[String], Never> {
-        Future { promise in
-            let storedOfferKeys: UserOfferKeys? = UserDefaults.standard.codable(forKey: .storedOfferKeys)
-            let ids = storedOfferKeys?.keys
-                .filter { $0.offerType == offerType }
-                .map { $0.id }
-            promise(.success(ids ?? []))
-        }
-        .eraseToAnyPublisher()
+        localStorageService.getOffersIds(forType: offerType)
     }
 
     func getAllStoredOfferIds() -> AnyPublisher<[String], Never> {
-        Future { promise in
-            let storedOfferKeys: UserOfferKeys? = UserDefaults.standard.codable(forKey: .storedOfferKeys)
-            let ids = storedOfferKeys?.keys
-                .map { $0.id }
-            promise(.success(ids ?? []))
-        }
-        .eraseToAnyPublisher()
+        localStorageService.getAllOffersIds()
+    }
+
+    func getOfferKeys() -> AnyPublisher<[UserOfferKeys.OfferKey], Error> {
+        localStorageService.getOfferKeys()
     }
 
     func deleteOffers() -> AnyPublisher<Void, Error> {
@@ -111,11 +95,10 @@ final class OfferService: BaseService, OfferServiceType {
             .withUnretained(self)
             .flatMap { owner, offerIds -> AnyPublisher<Void, Error> in
                 if !offerIds.isEmpty {
+                    // TODO: - clean from the localstorage too
                     return owner.request(endpoint: OffersRouter.deleteOffers(offerIds: offerIds))
                 } else {
-                    return Future { promise in
-                        promise(.success(()))
-                    }
+                    return Just(()).setFailureType(to: Error.self)
                     .eraseToAnyPublisher()
                 }
             }

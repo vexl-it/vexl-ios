@@ -62,6 +62,15 @@ extension OfferAdvanceFilterFriendDegreeView {
                 return R.image.offer.secondDegree.name
             }
         }
+
+        var label: String {
+            switch self {
+            case .firstDegree:
+                return L.marketplaceDetailFriendFirst()
+            case .secondDegree:
+                return L.marketplaceDetailFriendSecond()
+            }
+        }
     }
 }
 

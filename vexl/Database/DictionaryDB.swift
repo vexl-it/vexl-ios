@@ -10,53 +10,57 @@ import Foundation
 // This is not for production, just to accelerate development. Later we should setup CoreData with proper security
 
 final class DictionaryDB {
+
+    static private let encoder = Constants.jsonEncoder
+    static private let decoder = Constants.jsonDecoder
+
     static private var inboxes: [String: [OfferInbox]] = ["created": [], "requested": []] {
         didSet {
-            guard let encodedData = try? JSONEncoder().encode(inboxes) else { return }
+            guard let encodedData = try? encoder.encode(inboxes) else { return }
             UserDefaults.standard.setValue(encodedData, forKey: "inboxes")
         }
     }
 
     static private var messages: [ParsedChatMessage] = [] {
         didSet {
-            guard let encodedData = try? JSONEncoder().encode(messages) else { return }
+            guard let encodedData = try? encoder.encode(messages) else { return }
             UserDefaults.standard.setValue(encodedData, forKey: "messages")
         }
     }
 
-    static private var requests: [String: ParsedChatMessage] = [:] {
+    static private var requests: [ParsedChatMessage] = [] {
         didSet {
-            guard let encodedData = try? JSONEncoder().encode(requests) else { return }
+            guard let encodedData = try? encoder.encode(requests) else { return }
             UserDefaults.standard.setValue(encodedData, forKey: "requests")
         }
     }
 
-    static private var displayMessage: [String: ParsedChatMessage] = [:] {
+    static private var inboxMessage: [ParsedChatMessage] = [] {
         didSet {
-            guard let encodedData = try? JSONEncoder().encode(displayMessage) else { return }
-            UserDefaults.standard.setValue(encodedData, forKey: "displayMessage")
+            guard let encodedData = try? encoder.encode(inboxMessage) else { return }
+            UserDefaults.standard.setValue(encodedData, forKey: "inboxMessages")
         }
     }
 
     static func setupDatabase() {
         if let inboxesData = UserDefaults.standard.data(forKey: "inboxes"),
-           let savedInboxes = try? JSONDecoder().decode([String: [OfferInbox]].self, from: inboxesData) {
+           let savedInboxes = try? decoder.decode([String: [OfferInbox]].self, from: inboxesData) {
             inboxes = savedInboxes
         }
 
         if let messagesData = UserDefaults.standard.data(forKey: "messages"),
-           let savedMessages = try? JSONDecoder().decode([ParsedChatMessage].self, from: messagesData) {
+           let savedMessages = try? decoder.decode([ParsedChatMessage].self, from: messagesData) {
             messages = savedMessages
         }
 
         if let requestsData = UserDefaults.standard.data(forKey: "requests"),
-           let savedRequests = try? JSONDecoder().decode([String: ParsedChatMessage].self, from: requestsData) {
+           let savedRequests = try? decoder.decode([ParsedChatMessage].self, from: requestsData) {
             requests = savedRequests
         }
 
-        if let displayData = UserDefaults.standard.data(forKey: "displayMessage"),
-           let savedDisplayMessages = try? JSONDecoder().decode([String: ParsedChatMessage].self, from: displayData) {
-            displayMessage = savedDisplayMessages
+        if let inboxMessagesData = UserDefaults.standard.data(forKey: "inboxMessages"),
+           let savedInboxMessages = try? decoder.decode([ParsedChatMessage].self, from: inboxMessagesData) {
+            inboxMessage = savedInboxMessages
         }
     }
 
@@ -92,21 +96,26 @@ final class DictionaryDB {
 
     static func saveRequests(_ request: ParsedChatMessage, inboxPublicKey: String) {
         var content = self.requests
-        content[inboxPublicKey] = request
+        content.append(request)
         self.requests = content
     }
 
-    static func getRequests() -> [String: ParsedChatMessage] {
+    static func getRequests() -> [ParsedChatMessage] {
         self.requests
     }
 
-    static func saveDisplayMessages(_ request: ParsedChatMessage, inboxPublicKey: String) {
-        var content = self.displayMessage
-        content[inboxPublicKey] = request
-        self.requests = content
+    static func deleteRequest(with id: String) {
+        let newRequests = requests.filter { $0.inboxKey != id }
+        requests = newRequests
     }
 
-    static func getDisplayMessages() -> [String: ParsedChatMessage] {
-        self.displayMessage
+    static func saveInboxMessages(_ request: ParsedChatMessage, inboxPublicKey: String) {
+        var content = self.inboxMessage
+        content.append(request)
+        self.inboxMessage = content
+    }
+
+    static func getInboxMessages() -> [ParsedChatMessage] {
+        self.inboxMessage
     }
 }

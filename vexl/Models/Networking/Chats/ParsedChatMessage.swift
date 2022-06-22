@@ -35,54 +35,23 @@ struct ParsedChatMessage: Codable {
         MessageType(rawValue: messageTypeValue) ?? .invalid
     }
 
-    /**
-        Initializer using an Encrypted message as parameter, also requires a the key used for encryption and the inboxPublicKey.
-     
-        - Paremeters:
-            - chatMessage: an Encrypted message sent by the Backend
-            - key: the key that will be used to decrypt the message
-            - inboxPublicKey: the key of the inbox this message is part from
-     */
-
-    init?(chatMessage: EncryptedChatMessage, key: ECCKeys, inboxPublicKey: String) {
-        guard let json = chatMessage.asJSON(with: key),
-              let id = json["uuid"] as? String,
-              let contentType = json["type"] as? String,
-              let time = json["time"] as? TimeInterval else {
-                  return nil
-              }
-
-        let text = json["text"] as? String
-        let image = json["image"] as? String
-
-        self.senderKey = chatMessage.senderPublicKey
-        self.inboxKey = inboxPublicKey
-        self.id = id
-        self.text = text
-        self.image = image
-        self.messageTypeValue = chatMessage.messageType
-        self.contentTypeValue = contentType
-        self.time = time
-        self.user = ChatUser(name: json["username"] as? String,
-                             image: json["userAvatar"] as? String)
+    var previewText: String {
+        switch contentType {
+        case .text, .communicationRequestResponse:
+            return text ?? ""
+        case .image:
+            return L.chatMessageConversationImage()
+        default:
+            return ""
+        }
     }
 
-    private init?(inboxPublicKey: String,
-                  messageType: MessageType,
-                  contentType: ContentType,
-                  text: String,
-                  image: String? = nil,
-                  senderKey: String = "") {
-        guard messageType != .invalid || messageType != .message else { return nil }
-        self.senderKey = senderKey
-        self.id = UUID().uuidString
-        self.text = text
-        self.inboxKey = inboxPublicKey
-        self.messageTypeValue = messageType.rawValue
-        self.contentTypeValue = contentType.rawValue
-        self.time = Date().timeIntervalSince1970
-        self.image = image
-        self.user = nil
+    var avatar: Data? {
+        nil
+    }
+
+    var username: String? {
+        user?.name ?? Constants.randomName
     }
 
     var asString: String? {
@@ -112,9 +81,83 @@ struct ParsedChatMessage: Codable {
     }
 }
 
-// MARK: - Helper methods for transforming `ParsedChatMessage` to String
+// MARK: - Initializers and helpers
 
 extension ParsedChatMessage {
+
+    /**
+        Initializer using an Encrypted message as parameter, also requires a the key used for encryption and the inboxPublicKey.
+     
+        - Paremeters:
+            - chatMessage: an Encrypted message sent by the Backend
+            - key: the key that will be used to decrypt the message
+            - inboxPublicKey: the key of the inbox this message is part from
+     */
+
+    init?(chatMessage: EncryptedChatMessage, key: ECCKeys, inboxPublicKey: String) {
+        guard let json = chatMessage.asJSON(with: key),
+              let id = json["uuid"] as? String,
+              let contentType = json["type"] as? String,
+              let time = json["time"] as? TimeInterval else {
+                  return nil
+              }
+
+        let text = json["text"] as? String
+        let image = json["image"] as? String
+
+        self.senderKey = chatMessage.senderPublicKey
+        self.inboxKey = inboxPublicKey
+        self.id = id
+        self.text = text
+        self.image = image
+        self.contentTypeValue = contentType
+        self.messageTypeValue = chatMessage.messageType
+        self.time = time
+        self.user = ChatUser(name: json["username"] as? String,
+                             image: json["userAvatar"] as? String)
+    }
+
+    /// Use this initializer to manually create a message,
+    /// although it is recommended to use one of the static methods that will set the correct MessageType
+
+    private init?(inboxPublicKey: String,
+                  messageType: MessageType,
+                  contentType: ContentType,
+                  text: String,
+                  image: String? = nil,
+                  senderKey: String = "") {
+        guard messageType != .invalid else { return nil }
+        self.senderKey = senderKey
+        self.id = UUID().uuidString
+        self.text = text
+        self.inboxKey = inboxPublicKey
+        self.messageTypeValue = messageType.rawValue
+        self.contentTypeValue = contentType.rawValue
+        self.time = Date().timeIntervalSince1970
+        self.image = image
+        self.user = nil
+    }
+}
+
+// MARK: - Helper methods for transforming `ParsedChatMessage` to String or ParsedChatMessage
+
+extension ParsedChatMessage {
+
+    static func createRequestConfirmation(isConfirmed: Bool, inboxPublicKey: String, senderKey: String) -> ParsedChatMessage? {
+        ParsedChatMessage(inboxPublicKey: inboxPublicKey,
+                          messageType: isConfirmed ? .messagingApproval : .messagingRejection,
+                          contentType: .communicationRequestResponse,
+                          text: L.chatMessageConversationRequestAccepted(),
+                          senderKey: senderKey)
+    }
+
+    static func createMessagingRequest(inboxPublicKey: String, senderKey: String, text: String) -> ParsedChatMessage? {
+        ParsedChatMessage(inboxPublicKey: inboxPublicKey,
+                          messageType: .messagingRequest,
+                          contentType: .communicationRequest,
+                          text: text,
+                          senderKey: senderKey)
+    }
 
     static func createMessagingRequest(inboxPublicKey: String, text: String, senderKey: String) -> String? {
         let parsedMessage = ParsedChatMessage(inboxPublicKey: inboxPublicKey,
@@ -153,6 +196,7 @@ extension ParsedChatMessage {
         return parsedMessage?.asString
     }
 }
+// MARK: - Enum and Structs
 
 extension ParsedChatMessage {
 

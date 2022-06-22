@@ -17,6 +17,14 @@ enum MessageType: String {
     case messagingRejection = "DISAPPROVE_MESSAGING"
     case deleteChat = "DELETE_CHAT"
     case invalid
+
+    static var displayableMessages: [MessageType] {
+        [.message, .revealRequest, .revealApproval, .messagingApproval]
+    }
+}
+
+struct EncryptedChatMessageList: Codable {
+    let messages: [EncryptedChatMessage]
 }
 
 /// Message that comes from the backend and that contains the payload encrypted as a string.
