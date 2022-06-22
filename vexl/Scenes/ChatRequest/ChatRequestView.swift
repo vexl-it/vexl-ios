@@ -24,10 +24,10 @@ struct ChatRequestView: View {
                 ForEach(viewModel.offerRequests) { request in
                     ChatRequestOfferView(data: request,
                                          accept: { id in
-                        viewModel.action.send(.confirmationTap(id: id, confirmation: true))
+                        viewModel.action.send(.acceptTap(id: id))
                     },
                                          decline: { id in
-                        viewModel.action.send(.confirmationTap(id: id, confirmation: false))
+                        viewModel.action.send(.rejectTap(id: id))
                     })
                         .padding(.horizontal, Appearance.GridGuide.padding)
                 }
