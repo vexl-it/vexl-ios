@@ -18,8 +18,8 @@ protocol LocalStorageServiceType {
     func getOffersIds(forType offerType: OfferType) -> AnyPublisher<[String], Never>
     func getAllOffersIds() -> AnyPublisher<[String], Never>
     func getOfferKeys() -> AnyPublisher<[UserOfferKeys.OfferKey], Error>
-    func saveInbox(_ inbox: OfferInbox) throws
-    func getInboxes(ofType type: OfferInbox.InboxType) throws -> [OfferInbox]
+    func saveInbox(_ inbox: ChatInbox) throws
+    func getInboxes(ofType type: ChatInbox.InboxType) throws -> [ChatInbox]
     func saveMessages(_ messages: [ParsedChatMessage]) -> AnyPublisher<Void, Error>
     func getMessages() -> AnyPublisher<[ParsedChatMessage], Error>
     func saveRequestMessage(_ message: ParsedChatMessage, inboxPublicKey: String) -> AnyPublisher<Void, Error>
@@ -75,7 +75,7 @@ final class LocalStorageService: LocalStorageServiceType {
         .eraseToAnyPublisher()
     }
 
-    func saveInbox(_ inbox: OfferInbox) throws {
+    func saveInbox(_ inbox: ChatInbox) throws {
         switch inbox.type {
         case .created:
             DictionaryDB.saveCreatedInbox(inbox)
@@ -84,7 +84,7 @@ final class LocalStorageService: LocalStorageServiceType {
         }
     }
 
-    func getInboxes(ofType type: OfferInbox.InboxType) throws -> [OfferInbox] {
+    func getInboxes(ofType type: ChatInbox.InboxType) throws -> [ChatInbox] {
         switch type {
         case .created:
             return DictionaryDB.getCreatedInboxes()

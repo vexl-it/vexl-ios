@@ -185,9 +185,11 @@ final class ChatViewModel: ViewModelType, ObservableObject {
             }
             .withUnretained(self)
             .compactMap { owner, image -> String? in
-                ParsedChatMessage.createMessage(text: owner.currentMessage,
-                                                image: image,
-                                                inboxKey: owner.inboxKeys)
+                ParsedChatMessage
+                    .createMessage(text: owner.currentMessage,
+                                   image: image,
+                                   inboxPublicKey: owner.inboxKeys.publicKey)?
+                    .asString
             }
 
         inputMessage
@@ -224,7 +226,9 @@ final class ChatViewModel: ViewModelType, ObservableObject {
             .filter { $0 == .revealRequestConfirmationTap }
             .withUnretained(self)
             .compactMap { owner, _ -> String? in
-                ParsedChatMessage.createIdentityRequest(inboxKey: owner.inboxKeys)
+                ParsedChatMessage
+                    .createIdentityRequest(inboxPublicKey: owner.inboxKeys.publicKey)?
+                    .asString
             }
 
         requestConfirmed
@@ -271,7 +275,9 @@ final class ChatViewModel: ViewModelType, ObservableObject {
             .filter { $0 == .deleteConfirmedTap }
             .withUnretained(self)
             .compactMap { owner, _ -> String? in
-                ParsedChatMessage.createDelete(inboxKey: owner.inboxKeys)
+                ParsedChatMessage
+                    .createDelete(inboxPublicKey: owner.inboxKeys.publicKey)?
+                    .asString
             }
 
         deleteMessages
