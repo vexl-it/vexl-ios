@@ -71,7 +71,7 @@ struct ChatBubbleViewPreview: PreviewProvider {
             ChatTextBubbleView(text: "qwerty qwerty qwerty qwerty qwerty", style: .contact)
 
             ChatTextBubbleView(text: "qwerty", style: .user)
-            
+
             ChatImageBubbleView(image: R.image.onboarding.testAvatar()!.jpegData(compressionQuality: 0.25)!,
                                 text: nil,
                                 style: .contact)
