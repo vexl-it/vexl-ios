@@ -46,9 +46,9 @@ enum ChatRouter: ApiRouter {
             return "challenges"
         case .pullChat:
             return "inboxes/messages"
-        case let .deleteChat:
+        case .deleteChat:
             return "inboxes"
-        case let .deleteChatMessages:
+        case .deleteChatMessages:
             return "inboxes/messages"
         case .requestConfirmation:
             return "inboxes/approval/confirm"
