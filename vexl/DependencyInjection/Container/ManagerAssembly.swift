@@ -42,6 +42,11 @@ class ManagerAssembly: Assembly {
         }
         .inObjectScope(.container)
 
+        container.register(SyncInboxManagerType.self) { _ in
+            SyncInboxManager()
+        }
+        .inObjectScope(.container)
+
         container.register(InboxManagerType.self) { _ in
             InboxManager()
         }

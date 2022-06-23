@@ -69,6 +69,7 @@ struct Constants {
     static let pageMaxLimit = 1_000
 
     static let bitcoinPollInterval: TimeInterval = 30
+    static let inboxSyncPollInterval: TimeInterval = 5
 
     static let notAvailable = "N/A"
 
@@ -85,6 +86,6 @@ struct Constants {
     static let defaultDeleteTime = "7" // days will be selected as default too
 
     // TODO: - change to real password when available
-    
+
     static let contactsHashingPassword = "VexlVexl"
 }
