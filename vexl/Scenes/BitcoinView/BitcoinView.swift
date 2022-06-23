@@ -117,30 +117,26 @@ struct BitcoinView: View {
         } else {
             HStack(alignment: .top) {
                 if viewModel.currency.position == .left {
-                    Text(viewModel.currency.sign)
-                        .textStyle(.micro)
-                        .foregroundColor(viewModel.isExpanded ? Appearance.Colors.yellow100 : Appearance.Colors.yellow60)
-                        .minimumScaleFactor(0.5)
-                        .lineLimit(1)
-                        .padding(.top, Appearance.GridGuide.tinyPadding)
+                    currencyText
                 }
                 Text(viewModel.bitcoinValue)
                     .textStyle(.h2)
-                    .foregroundColor(viewModel.isExpanded ? Appearance.Colors.yellow100 : Appearance.Colors.yellow60)
-                    .minimumScaleFactor(0.5)
-                    .lineLimit(1)
                     .frame(maxHeight: .infinity)
 
                 if viewModel.currency.position == .right {
-                    Text(viewModel.currency.sign)
-                        .textStyle(.micro)
-                        .foregroundColor(viewModel.isExpanded ? Appearance.Colors.yellow100 : Appearance.Colors.yellow60)
-                        .minimumScaleFactor(0.5)
-                        .lineLimit(1)
-                        .padding(.top, Appearance.GridGuide.tinyPadding)
+                    currencyText
                 }
             }
+            .foregroundColor(viewModel.isExpanded ? Appearance.Colors.yellow100 : Appearance.Colors.yellow60)
+            .minimumScaleFactor(0.5)
+            .lineLimit(1)
         }
+    }
+
+    @ViewBuilder private var currencyText: some View {
+        Text(viewModel.currency.sign)
+            .textStyle(.micro)
+            .padding(.top, Appearance.GridGuide.tinyPadding)
     }
 
     @ViewBuilder private var smallGraph: some View {
