@@ -57,6 +57,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
 
     @Published var currentMessage: String = ""
     @Published var selectedImage: UIImage?
+    @Published var messages: [ChatConversationSection] = []
 
     @Published var primaryActivity: Activity = .init()
     @Published var isLoading = false
@@ -87,7 +88,6 @@ final class ChatViewModel: ViewModelType, ObservableObject {
     let avatar: UIImage? = nil
     let friends: [ChatCommonFriendViewData] = [.stub, .stub, .stub]
     let offerType: OfferType = .buy
-    var messages: [ChatConversationSection] = []
     var imageSource = ImageSource.photoAlbum
 
     var offerLabel: String {
@@ -126,6 +126,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
     init(inboxKeys: ECCKeys, receiverPublicKey: String) {
         self.inboxKeys = inboxKeys
         self.receiverPublicKey = receiverPublicKey
+        delete_forceSync()
         setupActionBindings()
         setupChatInputBindings()
         setupChatImageInputBindings()
@@ -134,6 +135,37 @@ final class ChatViewModel: ViewModelType, ObservableObject {
         setupBlockChatBindings()
         setupDeleteChatBindings()
         setupModalPresentationBindings()
+        setupInboxManagerBinding()
+    }
+
+    private func setupInboxManagerBinding() {
+        chatService
+            .getStoredChatMessages(inboxPublicKey: inboxKeys.publicKey, receiverPublicKey: receiverPublicKey)
+            .track(activity: primaryActivity)
+            .materialize()
+            .compactMap(\.value)
+            .withUnretained(self)
+            .sink { owner, messages in
+                owner.showChatMessages(messages)
+            }
+            .store(in: cancelBag)
+
+        inboxManager
+            .completedSyncing
+            .withUnretained(self)
+            .sink { owner, result in
+                switch result {
+                case let .success(messages):
+                    let messagesForInbox = messages.filter {
+                        $0.inboxKey == owner.inboxKeys.publicKey && $0.senderInboxKey == owner.receiverPublicKey
+                    }
+                    owner.showChatMessages(messagesForInbox)
+                case .failure:
+                    // TODO: - show some alert
+                    break
+                }
+            }
+            .store(in: cancelBag)
     }
 
     // TODO: - Add post messages to the BE when tapping send/requests
@@ -183,18 +215,18 @@ final class ChatViewModel: ViewModelType, ObservableObject {
                     .track(activity: owner.primaryActivity)
             }
             .withUnretained(self)
-            .compactMap { owner, image -> String? in
+            .compactMap { owner, image -> ParsedChatMessage? in
                 ParsedChatMessage
                     .createMessage(text: owner.currentMessage,
                                    image: image,
-                                   inboxPublicKey: owner.inboxKeys.publicKey)?
-                    .asString
+                                   inboxPublicKey: owner.inboxKeys.publicKey,
+                                   senderPublicKey: owner.receiverPublicKey)
             }
 
         inputMessage
             .withUnretained(self)
             .flatMap { owner, message in
-                owner.sendMessage(type: .message, message: message)
+                owner.sendMessage(type: .message, parsedMessage: message)
             }
             .withUnretained(self)
             .sink { owner, _ in
@@ -358,15 +390,52 @@ final class ChatViewModel: ViewModelType, ObservableObject {
             .assign(to: &$modal)
     }
 
-    private func sendMessage(type: MessageType, message: String) -> AnyPublisher<Void, Never> {
-        chatService.sendMessage(inboxKeys: inboxKeys,
-                                receiverPublicKey: receiverPublicKey,
-                                message: message,
-                                messageType: type)
-            .track(activity: primaryActivity)
-            .materialize()
-            .compactMap(\.value)
-            .asVoid()
-            .eraseToAnyPublisher()
+    private func sendMessage(type: MessageType, parsedMessage: ParsedChatMessage?) -> AnyPublisher<Void, Never> {
+        if let parsedMessage = parsedMessage, let message = parsedMessage.asString {
+            return chatService.sendMessage(inboxKeys: inboxKeys,
+                                           receiverPublicKey: receiverPublicKey,
+                                           message: message,
+                                           messageType: type)
+                .track(activity: primaryActivity)
+                .materialize()
+                .compactMap(\.value)
+                .withUnretained(self)
+                .flatMap { owner, _ in
+                    owner.chatService.saveParsedMessages([parsedMessage], inboxKeys: owner.inboxKeys)
+                        .track(activity: owner.primaryActivity)
+                        .materialize()
+                        .compactMap(\.value)
+                }
+                .asVoid()
+                .eraseToAnyPublisher()
+        } else {
+            return Just(())
+                .eraseToAnyPublisher()
+        }
+    }
+
+    private func showChatMessages(_ messages: [ParsedChatMessage]) {
+        let conversationItems = messages.map { message in
+            ChatConversationItem(type: .text,
+                                 isContact: message.isFromContact,
+                                 text: message.text,
+                                 image: message.image?.dataFromBase64,
+                                 previewImage: message.image?.dataFromBase64) // TODO: - set preview/smaller version
+        }
+        let conversationSection = ChatConversationSection(date: Date(),
+                                                          messages: conversationItems)
+        self.messages.append(conversationSection)
+    }
+
+    // TODO: - DELETE
+
+    func delete_forceSync() {
+        sharedChatAction
+            .filter { $0 == .forceSync }
+            .withUnretained(self)
+            .sink { owner, _ in
+                owner.inboxManager.syncInboxes()
+            }
+            .store(in: cancelBag)
     }
 }

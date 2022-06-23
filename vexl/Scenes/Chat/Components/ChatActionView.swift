@@ -38,6 +38,7 @@ extension ChatActionView {
 
         var id: ChatAction { self }
 
+        case forceSync
         case revealIdentity
         case showOffer
         case commonFriends
@@ -56,6 +57,8 @@ extension ChatActionView {
                 return L.chatMessageDeleteChat()
             case .blockUser:
                 return L.chatMessageBlockUser()
+            case .forceSync:
+                return "Sync Chat"
             }
         }
     }

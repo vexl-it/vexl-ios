@@ -149,7 +149,7 @@ final class InboxManager: InboxManagerType {
                                      inboxKeys: ECCKeys) -> AnyPublisher<[ParsedChatMessage], Error> {
         parseMessages(messages, key: inboxKeys, inboxPublicKey: inboxKeys.publicKey)
             .flatMapLatest(with: self) { owner, messages -> AnyPublisher<[ParsedChatMessage], Error> in
-                owner.chatService.saveFetchedMessages(messages, inboxKeys: inboxKeys)
+                owner.chatService.saveParsedMessages(messages, inboxKeys: inboxKeys)
                     .map { messages }
                     .eraseToAnyPublisher()
             }

@@ -199,7 +199,8 @@ final class ChatRequestViewModel: ViewModelType, ObservableObject {
             .flatMapLatest(with: self) { owner, signature -> AnyPublisher<IndexAndConfirmation, Never> in
                 let message = ParsedChatMessage
                     .communicationConfirmation(isConfirmed: isConfirmed,
-                                               inboxPublicKey: keys.offerKey.publicKey)
+                                               inboxPublicKey: keys.offerKey.publicKey,
+                                               senderPublicKey: keys.senderPublicKey)
 
                 return owner.chatService
                     .communicationConfirmation(confirmation: isConfirmed,

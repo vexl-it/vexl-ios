@@ -21,7 +21,7 @@ protocol ChatServiceType {
     func pullInboxMessages(publicKey: String, signature: String) -> AnyPublisher<EncryptedChatMessageList, Error>
     func deleteInboxMessages(publicKey: String) -> AnyPublisher<Void, Error>
 
-    func saveFetchedMessages(_ messages: [ParsedChatMessage], inboxKeys: ECCKeys) -> AnyPublisher<Void, Error>
+    func saveParsedMessages(_ messages: [ParsedChatMessage], inboxKeys: ECCKeys) -> AnyPublisher<Void, Error>
     func getInboxMessages() -> AnyPublisher<[ChatInboxMessage], Error>
     func getRequestMessages() -> AnyPublisher<[ParsedChatMessage], Error>
     func blockInbox(inboxPublicKey: String, publicKeyToBlock: String, signature: String, isBlocked: Bool) -> AnyPublisher<Void, Error>
@@ -29,6 +29,7 @@ protocol ChatServiceType {
                      receiverPublicKey: String,
                      message: String,
                      messageType: MessageType) -> AnyPublisher<Void, Error>
+    func getStoredChatMessages(inboxPublicKey: String, receiverPublicKey: String) -> AnyPublisher<[ParsedChatMessage], Error>
 }
 
 final class ChatService: BaseService, ChatServiceType {
@@ -112,7 +113,7 @@ final class ChatService: BaseService, ChatServiceType {
             .eraseToAnyPublisher()
     }
 
-    func saveFetchedMessages(_ messages: [ParsedChatMessage], inboxKeys: ECCKeys) -> AnyPublisher<Void, Error> {
+    func saveParsedMessages(_ messages: [ParsedChatMessage], inboxKeys: ECCKeys) -> AnyPublisher<Void, Error> {
         localStorageService.saveMessages(messages)
             .flatMapLatest(with: self) { owner, _ -> AnyPublisher<Void, Error> in
                 owner.prepareMessages(messages, inboxKeys: inboxKeys)
@@ -141,14 +142,17 @@ final class ChatService: BaseService, ChatServiceType {
                      messageType: MessageType) -> AnyPublisher<Void, Error> {
         cryptoService
             .encryptECIES(publicKey: receiverPublicKey, secret: message)
-            .withUnretained(self)
-            .flatMap { owner, encryptedMessage in
+            .flatMapLatest(with: self) { owner, encryptedMessage in
                 owner.request(endpoint: ChatRouter.sendMessage(senderPublicKey: inboxKeys.publicKey,
                                                                receiverPublicKey: receiverPublicKey,
                                                                message: encryptedMessage,
                                                                messageType: messageType))
             }
             .eraseToAnyPublisher()
+    }
+
+    func getStoredChatMessages(inboxPublicKey: String, receiverPublicKey: String) -> AnyPublisher<[ParsedChatMessage], Error> {
+        localStorageService.getChatMessages(inboxPublicKey: inboxPublicKey, receiverInboxKey: receiverPublicKey)
     }
 
     // MARK: - Helpers
