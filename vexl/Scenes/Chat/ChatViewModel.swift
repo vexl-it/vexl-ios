@@ -231,8 +231,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
             .withUnretained(self)
             .sink { owner, _ in
                 owner.messages.appendItem(.createInput(text: owner.currentMessage,
-                                                       image: owner.selectedImage?.jpegData(compressionQuality: 1),
-                                                       previewImage: owner.selectedImage?.jpegData(compressionQuality: 0.25)))
+                                                       image: owner.selectedImage?.base64))
                 owner.selectedImage = nil
                 owner.currentMessage = ""
             }
@@ -440,8 +439,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
             return ChatConversationItem(type: itemType,
                                         isContact: message.isFromContact,
                                         text: message.text,
-                                        image: message.image?.dataFromBase64,
-                                        previewImage: message.image?.dataFromBase64) // TODO: - set preview/smaller version
+                                        image: message.image)
         }
         let conversationSection = ChatConversationSection(date: Date(),
                                                           messages: conversationItems)
