@@ -15,6 +15,8 @@ struct BitcoinView: View {
     private let expandedInfoHeight: Double = 342
     private let chartBigHeight: Double = 150
     private let chartSmallHeight: Double = 130
+    private let backgroundGradientPaddingTop: Double = -44
+    private let backgroundGradientPaddingBottom: Double = -20
 
     private var chartData: LineChartData {
         LineChartData(
@@ -69,8 +71,8 @@ struct BitcoinView: View {
             startPoint: .top,
             endPoint: .bottom
         )
-        .padding(.top, -44)
-        .padding(.bottom, -20)
+        .padding(.top, backgroundGradientPaddingTop)
+        .padding(.bottom, backgroundGradientPaddingBottom)
     }
 
     private var header: some View {
