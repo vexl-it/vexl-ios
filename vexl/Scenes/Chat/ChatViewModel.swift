@@ -65,7 +65,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
 
     // MARK: - Variables
 
-    let username: String = "Keichi"
+    let username: String = Constants.randomName
     let avatar: UIImage? = nil
     let friends: [ChatCommonFriendViewData] = [.stub, .stub, .stub]
     var messages: [ChatMessageGroup] = ChatMessageGroup.stub

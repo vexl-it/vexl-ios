@@ -16,6 +16,14 @@ enum MessageType: String {
     case messagingRejection = "DISAPPROVE_MESSAGING"
     case deleteChat = "DELETE_CHAT"
     case invalid
+
+    static var displayableMessages: [MessageType] {
+        [.message, .revealRequest, .revealApproval, .messagingApproval]
+    }
+}
+
+struct EncryptedChatMessageList: Codable {
+    let messages: [EncryptedChatMessage]
 }
 
 struct EncryptedChatMessage: Codable {

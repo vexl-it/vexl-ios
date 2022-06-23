@@ -10,8 +10,9 @@ import Cleevio
 import Combine
 
 final class RequestOfferViewModel: ViewModelType, ObservableObject {
-    
+
     @Inject var userSecurity: UserSecurityType
+    @Inject private var chatService: ChatServiceType
 
     enum State {
         case normal
@@ -53,7 +54,8 @@ final class RequestOfferViewModel: ViewModelType, ObservableObject {
 
     // MARK: - Variables
 
-    @Inject private var chatService: ChatServiceType
+    var username: String = Constants.randomName
+
     private let offer: Offer
     private let cancelBag: CancelBag = .init()
 
@@ -89,12 +91,10 @@ final class RequestOfferViewModel: ViewModelType, ObservableObject {
             .filter { $0 == .sendRequest }
             .withUnretained(self)
             .compactMap { owner, _ -> String? in
-                let messsage = ParsedChatMessage(inboxPublicKey: owner.offer.offerPublicKey,
-                                                 messageType: .revealRequest,
-                                                 contentType: .communicationRequest,
-                                                 text: owner.requestText,
-                                                 senderKey: owner.userSecurity.userKeys.publicKey)
-                return messsage?.asString
+                let message = ParsedChatMessage.createMessagingRequest(inboxPublicKey: owner.offer.offerPublicKey,
+                                                                       senderKey: owner.userSecurity.userKeys.publicKey,
+                                                                       text: owner.requestText)
+                return message?.asString
             }
             .flatMapLatest(with: self) { owner, message -> AnyPublisher<Void, Never> in
                 owner.state = .requesting

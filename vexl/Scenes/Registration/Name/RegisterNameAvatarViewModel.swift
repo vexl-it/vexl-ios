@@ -13,6 +13,8 @@ import Cleevio
 final class RegisterNameAvatarViewModel: ViewModelType {
 
     @Inject var userService: UserServiceType
+    @Inject var chatService: ChatServiceType
+    @Inject var userSecurity: UserSecurityType
 
     enum ImageSource {
         case photoAlbum, camera
@@ -141,6 +143,15 @@ final class RegisterNameAvatarViewModel: ViewModelType {
                 owner.userService
                     .createUser(username: owner.username,
                                 avatar: base64)
+                    .track(activity: owner.primaryActivity)
+                    .materialize()
+                    .compactMap(\.value)
+                    .eraseToAnyPublisher()
+            }
+            .flatMapLatest(with: self) { owner, _ in
+                owner.chatService
+                    .createInbox(offerKey: owner.userSecurity.userKeys,
+                                 pushToken: Constants.pushNotificationToken)
                     .track(activity: owner.primaryActivity)
                     .materialize()
                     .compactMap(\.value)

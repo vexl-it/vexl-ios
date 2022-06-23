@@ -9,20 +9,27 @@ import Foundation
 import Cleevio
 import Combine
 
-private typealias OfferAndMessage = (offer: Offer, message: ParsedChatMessage)
-private typealias OfferIdsAndMessages = (ids: [String], messages: [ParsedChatMessage])
+private typealias OfferKeyAndMessage = (offer: Offer, key: UserOfferKeys.OfferKey, message: ParsedChatMessage)
+private typealias OfferKeysAndMessages = (keys: [UserOfferKeys.OfferKey], messages: [ParsedChatMessage])
+private typealias OfferKeyAndSenderKey = (offerKey: UserOfferKeys.OfferKey, senderPublicKey: String)
+private typealias OfferSenderAndViewData = (keys: OfferKeyAndSenderKey, viewData: ChatRequestOfferViewData)
+private typealias KeyAndSignature = (keys: OfferKeyAndSenderKey, signature: String)
+private typealias IndexAndConfirmation = (index: Int, confirmation: Bool)
+private typealias IndexKeySignatureAndConfirmation = (index: Int, keys: OfferKeyAndSenderKey, signature: String, confirmation: Bool)
 
 final class ChatRequestViewModel: ViewModelType, ObservableObject {
-    
+
     @Inject var userSecurity: UserSecurityType
     @Inject var chatService: ChatServiceType
     @Inject var offerService: OfferServiceType
+    @Inject var cryptoService: CryptoServiceType
 
     // MARK: - Action Binding
 
     enum UserAction: Equatable {
         case dismissTap
         case continueTap
+        case confirmationTap(id: String, confirmation: Bool)
     }
 
     let action: ActionSubject<UserAction> = .init()
@@ -52,6 +59,7 @@ final class ChatRequestViewModel: ViewModelType, ObservableObject {
 
     // MARK: - Variables
 
+    private var offerAndSenderKeys: [OfferKeyAndSenderKey] = []
     private let cancelBag: CancelBag = .init()
 
     init() {
@@ -72,36 +80,38 @@ final class ChatRequestViewModel: ViewModelType, ObservableObject {
     }
 
     private func setupDataBindings() {
-        let offerIds = offerService
-            .getAllStoredOfferIds()
-            .setFailureType(to: Error.self)
-            .flatMapLatest(with: self) { owner, ids -> AnyPublisher<OfferIdsAndMessages, Error> in
+        let offerKeys = offerService
+            .getOfferKeys()
+            .withUnretained(self)
+            .flatMap { owner, keys -> AnyPublisher<OfferKeysAndMessages, Error> in
                 owner.chatService
                     .getRequestMessages()
                     .track(activity: owner.primaryActivity)
                     .materialize()
                     .compactMap(\.value)
-                    .map { OfferIdsAndMessages(ids: ids, messages: $0) }
+                    .map { OfferKeysAndMessages(keys: keys, messages: $0) }
                     .setFailureType(to: Error.self)
                     .eraseToAnyPublisher()
             }
 
-        let getOffers = offerIds
-            .flatMapLatest(with: self) { owner, offerIdsAndMessages -> AnyPublisher<[OfferAndMessage], Error> in
+        let getOffers = offerKeys
+            .withUnretained(self)
+            .flatMap { owner, offerKeysAndMessages -> AnyPublisher<[OfferKeyAndMessage], Error> in
                 owner.offerService
-                    .getUserOffers(offerIds: offerIdsAndMessages.ids)
+                    .getUserOffers(offerIds: offerKeysAndMessages.keys.map { $0.id })
                     .track(activity: owner.primaryActivity)
                     .materialize()
                     .compactMap(\.value)
-                    .map { encryptedOffers -> [OfferAndMessage] in
-                        var offerAndMessages: [OfferAndMessage] = []
+                    .map { encryptedOffers -> [OfferKeyAndMessage] in
+                        var offerKeyAndMessages: [OfferKeyAndMessage] = []
                         let decryptedOffers = Offer.createOffers(from: encryptedOffers, withKey: owner.userSecurity.userKeys)
-                        for message in offerIdsAndMessages.messages {
-                            if let decryptedOffer = decryptedOffers.first(where: { $0.offerPublicKey == message.inboxKey }) {
-                                offerAndMessages.append(OfferAndMessage(offer: decryptedOffer, message: message))
+                        for message in offerKeysAndMessages.messages {
+                            if let decryptedOffer = decryptedOffers.first(where: { $0.offerPublicKey == message.inboxKey }),
+                               let key = offerKeysAndMessages.keys.first(where: { $0.id == decryptedOffer.offerId }) {
+                                offerKeyAndMessages.append(OfferKeyAndMessage(offer: decryptedOffer, key: key, message: message))
                             }
                         }
-                        return offerAndMessages
+                        return offerKeyAndMessages
                     }
                     .setFailureType(to: Error.self)
                     .eraseToAnyPublisher()
@@ -110,24 +120,95 @@ final class ChatRequestViewModel: ViewModelType, ObservableObject {
         getOffers
             .withUnretained(self)
             .sink(receiveCompletion: { _ in },
-                  receiveValue: { owner, offerAndMessages in
-                owner.offerRequests = offerAndMessages.map { offer, message -> ChatRequestOfferViewData in
+                  receiveValue: { owner, offerKeyAndMessages in
+                let offerRequests = offerKeyAndMessages.map { offer, key, message -> OfferSenderAndViewData in
                     let offerDetailViewData = OfferDetailViewData(offer: offer, isRequested: false)
-                    return ChatRequestOfferViewData(contactName: "Random name generator",
-                                                    contactFriendLevel: offer.friendLevelString,
-                                                    requestText: message.text ?? "",
-                                                    friends: [],
-                                                    offer: offerDetailViewData)
+                    let keys = OfferKeyAndSenderKey(offerKey: key, senderPublicKey: message.senderKey)
+                    let viewData = ChatRequestOfferViewData(contactName: Constants.randomName,
+                                                            contactFriendLevel: offer.friendLevel.label,
+                                                            requestText: message.text ?? "",
+                                                            friends: [],
+                                                            offer: offerDetailViewData)
+                    return (keys: keys, viewData: viewData)
                 }
+                owner.offerRequests = offerRequests.map { $0.viewData }
+                owner.offerAndSenderKeys = offerRequests.map { $0.keys }
             })
             .store(in: cancelBag)
     }
 
     private func setupActionBindings() {
+
+        let action = action
+            .share()
+
         action
             .filter { $0 == .dismissTap }
             .map { _ -> Route in .dismissTapped }
             .subscribe(route)
             .store(in: cancelBag)
+
+        let generateSignature = action
+            .withUnretained(self)
+            .compactMap { owner, action -> IndexAndConfirmation? in
+                switch action {
+                case let .confirmationTap(id, confirmation):
+                    if let index = owner.offerRequests.firstIndex(where: { $0.id == id }) {
+                        return IndexAndConfirmation(index: index, confirmation: confirmation)
+                    }
+                    return nil
+                default:
+                    return nil
+                }
+            }
+            .flatMapLatest(with: self) { owner, indexAndConfirmation in
+                owner.validateSignature(forOfferIndex: indexAndConfirmation.index, confirmation: indexAndConfirmation.confirmation)
+                    .track(activity: owner.primaryActivity)
+                    .materialize()
+                    .compactMap(\.value)
+            }
+
+            generateSignature
+                .flatMapLatest(with: self) { owner, indexKeySignatureConfirmation -> AnyPublisher<IndexAndConfirmation, Never> in
+
+                    let message = ParsedChatMessage.createRequestConfirmation(isConfirmed: indexKeySignatureConfirmation.confirmation,
+                                                                              inboxPublicKey: indexKeySignatureConfirmation.keys.offerKey.publicKey,
+                                                                              senderKey: indexKeySignatureConfirmation.keys.senderPublicKey)
+
+                    return owner.chatService
+                        .requestConfirmation(confirmation: indexKeySignatureConfirmation.confirmation,
+                                             message: message,
+                                             inboxPublicKey: indexKeySignatureConfirmation.keys.offerKey.publicKey,
+                                             requesterPublicKey: indexKeySignatureConfirmation.keys.senderPublicKey,
+                                             signature: indexKeySignatureConfirmation.signature)
+                        .track(activity: owner.primaryActivity)
+                        .materialize()
+                        .compactMap(\.value)
+                        .map {
+                            IndexAndConfirmation(index: indexKeySignatureConfirmation.index,
+                                                 confirmation: indexKeySignatureConfirmation.confirmation)
+                        }
+                        .eraseToAnyPublisher()
+                }
+                .withUnretained(self)
+                .sink { owner, indexAndConfirmation in
+                    var offers = owner.offerRequests
+                    offers.remove(at: indexAndConfirmation.index)
+                    owner.offerRequests = offers
+                }
+                .store(in: cancelBag)
+    }
+
+    private func validateSignature(forOfferIndex index: Int, confirmation: Bool) -> AnyPublisher<IndexKeySignatureAndConfirmation, Error> {
+        let keys = offerAndSenderKeys[index]
+        return chatService.requestChallenge(publicKey: keys.offerKey.publicKey)
+            .flatMapLatest(with: self) { owner, challenge in
+                owner.cryptoService.signECDSA(keys: keys.offerKey.key,
+                                              message: challenge.challenge)
+                    .map { KeyAndSignature(keys: keys, signature: $0) }
+                    .eraseToAnyPublisher()
+            }
+            .map { IndexKeySignatureAndConfirmation(index: index, keys: $0.keys, signature: $0.signature, confirmation: confirmation) }
+            .eraseToAnyPublisher()
     }
 }

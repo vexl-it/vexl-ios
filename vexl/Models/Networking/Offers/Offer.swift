@@ -158,8 +158,8 @@ struct Offer {
         Formatters.dateApiFormatter.date(from: modifiedAt)
     }
 
-    // MARK: - Helper static methods for creating
-    
+    // MARK: - Helper static methods for creating list of offers
+
     static func createOffers(from encryptedOffers: [EncryptedOffer], withKey key: ECCKeys) -> [Offer] {
         var offers: [Offer] = []
         for encryptedOffer in encryptedOffers {

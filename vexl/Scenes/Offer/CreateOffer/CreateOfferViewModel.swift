@@ -315,7 +315,7 @@ final class CreateOfferViewModel: ViewModelType, ObservableObject {
             .flatMapLatest(with: self) { owner, _ in
                 // TODO: setup firebase notifications to get a proper token
                 owner.chatService.createInbox(offerKey: owner.offerKey,
-                                              pushToken: "03df25c845d460bcdad7802d2vf6fc1dfde97283bf75cc993eb6dca835ea2e2f")
+                                              pushToken: Constants.pushNotificationToken)
                     .track(activity: owner.primaryActivity)
                     .materialize()
                     .compactMap(\.value)
