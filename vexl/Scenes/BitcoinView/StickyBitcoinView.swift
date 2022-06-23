@@ -75,6 +75,8 @@ struct StickyBitcoinViewViewPreview: PreviewProvider {
             },
             stickyHeader: { EmptyView() }
         )
+        .background(Color.black.ignoresSafeArea())
+        .previewDevice("iPhone 11")
     }
 }
 #endif

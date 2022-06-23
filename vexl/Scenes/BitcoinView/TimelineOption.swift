@@ -50,4 +50,49 @@ enum TimelineOption: CaseIterable, Identifiable {
             return L.marketplaceCurrencyVariation1year(percentage)
         }
     }
+
+    var chartEndpointRange: (from: Int, to: Int) {
+        let today = Date()
+        let todayFormatted = today.timeIntervalSince1970
+        let optionTimeInterval: TimeInterval = {
+            let day: TimeInterval = 86_400 // 60 * 60 * 24
+            switch self {
+            case .oneDayAgo:
+                return day
+            case .oneWeekAgo:
+                return day * 7
+            case .oneMonthAgo:
+                return day * 30
+            case .threeMonthsAgo:
+                return day * 30 * 3
+            case .sixMonthsAgo:
+                return day * 30 * 6
+            case .oneYearAgo:
+                return day * 365
+            }
+        }()
+
+        let fromDate = today.addingTimeInterval(-optionTimeInterval)
+        let fromFormatted = fromDate.timeIntervalSince1970
+        return (from: Int(fromFormatted), to: Int(todayFormatted))
+    }
+
+    var timeline: [String] {
+        let dates = getDateIntervals(by: self == .oneWeekAgo ? 7 : 5)
+
+        if self == .oneDayAgo {
+            return dates.map { Formatters.hourFormatter.string(from: $0) }
+        } else {
+            return dates.map { Formatters.shortDateFormatter.string(from: $0) }
+        }
+    }
+
+    private func getDateIntervals(by count: Int) -> [Date] {
+        let range = chartEndpointRange
+        let step = (range.to - range.from) / count
+
+        return (0..<count)
+            .map { range.from + ($0 * step) }
+            .map { Date(timeIntervalSince1970: Double($0)) }
+    }
 }
