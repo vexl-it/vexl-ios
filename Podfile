@@ -50,7 +50,7 @@ target 'vexl' do
     pod 'FBSDKLoginKit', '~> 13.1'
 
     # Charts
-    pod 'SwiftUICharts', :git => 'https://github.com/willdale/SwiftUICharts.git', :tag => '2.10.1'
+    pod 'SwiftUICharts', :git => 'https://github.com/willdale/SwiftUICharts.git', :tag => '2.9.9'
 
     target 'vexlTests' do
     end
