@@ -16,6 +16,7 @@ protocol InboxManagerType {
     var completedSyncing: AnyPublisher<Result<[ParsedChatMessage], InboxError>, Never> { get }
 
     func syncInboxes()
+    func updateInboxMessages() -> AnyPublisher<Void, Error>
 }
 
 final class InboxManager: InboxManagerType {
@@ -169,7 +170,7 @@ final class InboxManager: InboxManagerType {
             .eraseToAnyPublisher()
     }
 
-    private func updateInboxMessages() -> AnyPublisher<Void, Error> {
+    func updateInboxMessages() -> AnyPublisher<Void, Error> {
         chatService.getInboxMessages()
             .withUnretained(self)
             .subscribe(on: DispatchQueue.main)

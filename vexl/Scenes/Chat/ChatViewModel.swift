@@ -399,10 +399,14 @@ final class ChatViewModel: ViewModelType, ObservableObject {
                 .track(activity: primaryActivity)
                 .materialize()
                 .compactMap(\.value)
-                .withUnretained(self)
-                .flatMap { owner, _ in
+                .flatMapLatest(with: self) { owner, _ in
                     owner.chatService.saveParsedMessages([parsedMessage], inboxKeys: owner.inboxKeys)
                         .track(activity: owner.primaryActivity)
+                        .materialize()
+                        .compactMap(\.value)
+                }
+                .flatMapLatest(with: self) { owner, _ in
+                    owner.inboxManager.updateInboxMessages()
                         .materialize()
                         .compactMap(\.value)
                 }
@@ -415,12 +419,29 @@ final class ChatViewModel: ViewModelType, ObservableObject {
     }
 
     private func showChatMessages(_ messages: [ParsedChatMessage]) {
-        let conversationItems = messages.map { message in
-            ChatConversationItem(type: .text,
-                                 isContact: message.isFromContact,
-                                 text: message.text,
-                                 image: message.image?.dataFromBase64,
-                                 previewImage: message.image?.dataFromBase64) // TODO: - set preview/smaller version
+        let conversationItems = messages.map { message -> ChatConversationItem in
+            var itemType: ChatConversationItem.ItemType
+
+            switch message.contentType {
+            case .text:
+                itemType = .text
+            case .image:
+                itemType = .image
+            case .communicationRequestResponse:
+                itemType = .start
+            case .anonymousRequest:
+                itemType = .sendReveal
+            case .anonymousRequestResponse:
+                itemType = .receiveReveal
+            case .deleteChat, .communicationRequest, .none:
+                itemType = .text // create a none case
+            }
+
+            return ChatConversationItem(type: itemType,
+                                        isContact: message.isFromContact,
+                                        text: message.text,
+                                        image: message.image?.dataFromBase64,
+                                        previewImage: message.image?.dataFromBase64) // TODO: - set preview/smaller version
         }
         let conversationSection = ChatConversationSection(date: Date(),
                                                           messages: conversationItems)

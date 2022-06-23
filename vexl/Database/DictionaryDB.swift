@@ -110,22 +110,20 @@ final class DictionaryDB {
     }
 
     static func saveInboxMessages(_ message: ParsedChatMessage, inboxKeys: ECCKeys, receiverInboxPublicKey: String) {
-        var content = self.inboxMessage
-        content.append(.init(inbox: inboxKeys, receiverInbox: receiverInboxPublicKey, message: message))
-        self.inboxMessage = content
-    }
+        let inboxIndex = self.inboxMessage.firstIndex(where: {
+            $0.inbox.publicKey == inboxKeys.publicKey && $0.receiverInbox == receiverInboxPublicKey
+        })
 
-    static func updateInboxMessage(_ message: ParsedChatMessage, inboxPublicKeys: ECCKeys, receiverInboxPublicKey: String) {
-        guard let index = self.inboxMessage.firstIndex(where: {
-            $0.inbox.publicKey == inboxPublicKeys.publicKey && $0.receiverInbox == receiverInboxPublicKey
-        }) else {
-            return
+        if let index = inboxIndex {
+            let newChatInboxMessage = ChatInboxMessage(inbox: inboxKeys,
+                                                       receiverInbox: receiverInboxPublicKey,
+                                                       message: message)
+            self.inboxMessage[index] = newChatInboxMessage
+        } else {
+            var content = self.inboxMessage
+            content.append(.init(inbox: inboxKeys, receiverInbox: receiverInboxPublicKey, message: message))
+            self.inboxMessage = content
         }
-
-        let newChatInboxMessage = ChatInboxMessage(inbox: inboxPublicKeys,
-                                                   receiverInbox: receiverInboxPublicKey,
-                                                   message: message)
-        self.inboxMessage[index] = newChatInboxMessage
     }
 
     static func getInboxMessages() -> [ChatInboxMessage] {
