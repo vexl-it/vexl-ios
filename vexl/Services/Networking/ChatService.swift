@@ -158,8 +158,7 @@ final class ChatService: BaseService, ChatServiceType {
     // MARK: - Helpers
 
     private func prepareMessages(_ messages: [ParsedChatMessage], inboxKeys: ECCKeys) -> AnyPublisher<Void, Error> {
-
-        let saveEachParticularMessage = messages.publisher
+        messages.publisher
             .withUnretained(self)
             .flatMap { owner, message -> AnyPublisher<Void, Error> in
                 switch message.messageType {
@@ -167,18 +166,14 @@ final class ChatService: BaseService, ChatServiceType {
                     return owner.saveCommunicationRequest(message, inboxPublicKey: inboxKeys.publicKey)
                 case .messagingApproval:
                     return owner.saveAcceptedRequest(message, inboxKeys: inboxKeys)
-                case .messagingRejection:
-                    return owner.removeRejectedRequest(message, inboxPublicKey: inboxKeys.publicKey)
                 case .message:
                     return owner.saveLastMessageForInbox(messages, inboxKeys: inboxKeys)
-                case .deleteChat, .invalid, .revealApproval, .revealRequest:
+                case .deleteChat, .invalid, .revealApproval, .revealRequest, .messagingRejection:
                     return Just(()).setFailureType(to: Error.self)
                         .eraseToAnyPublisher()
                 }
             }
             .collect()
-
-        return saveEachParticularMessage
             .asVoid()
             .eraseToAnyPublisher()
     }
@@ -219,13 +214,5 @@ final class ChatService: BaseService, ChatServiceType {
 
     private func saveAcceptedRequest(_ message: ParsedChatMessage, inboxKeys: ECCKeys) -> AnyPublisher<Void, Error> {
         localStorageService.saveInboxMessage(message, inboxKeys: inboxKeys)
-    }
-
-    // TODO: - What to do if the message is APPROVAL_REJECTED? delete from request inbox?
-
-    private func removeRejectedRequest(_ message: ParsedChatMessage, inboxPublicKey: String) -> AnyPublisher<Void, Error> {
-        Just(())
-            .setFailureType(to: Error.self)
-            .eraseToAnyPublisher()
     }
 }
