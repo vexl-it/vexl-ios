@@ -56,7 +56,7 @@ final class CryptocurrencyValueManager: CryptocurrencyValueManagerType {
     }
 
     func startPollingCoinData() {
-        if coinDataSubscription == nil {
+        if coinDataSubscription != nil {
             stopPollingCoinData()
         }
         coinDataSubscription = Timer.publish(every: Constants.bitcoinPollInterval, on: RunLoop.main, in: .default)
@@ -82,7 +82,7 @@ final class CryptocurrencyValueManager: CryptocurrencyValueManagerType {
     }
 
     func fetchChart(option: TimelineOption) {
-        if coinDataSubscription == nil {
+        if coinDataSubscription != nil {
             stopFetchingChartData()
         }
         currentTimeline.send(option)
