@@ -44,10 +44,10 @@ enum ChatRouter: ApiRouter {
             return "challenges"
         case .pullChat:
             return "inboxes/messages"
-        case let .deleteChat(publicKey):
-            return "inboxes/\(publicKey)"
-        case let .deleteChatMessages(publicKey):
-            return "inboxes/\(publicKey)/messages"
+        case .deleteChat:
+            return "inboxes"
+        case .deleteChatMessages:
+            return "inboxes/messages"
         case .requestConfirmation:
             return "inboxes/approval/confirm"
         }
@@ -82,8 +82,10 @@ enum ChatRouter: ApiRouter {
                 "message": message,
                 "approve": confirmed
             ]
-        case .deleteChat, .deleteChatMessages:
-            return [:]
+        case let .deleteChat(publicKey):
+            return ["publicKey": publicKey]
+        case let .deleteChatMessages(publicKey):
+            return ["publicKey": publicKey]
         }
     }
 
