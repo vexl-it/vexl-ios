@@ -102,7 +102,6 @@ final class BitcoinViewModel: ViewModelType, ObservableObject {
             .withUnretained(self)
             .sink(receiveValue: { owner, state in
                 owner.coinDataState = state
-                owner.objectWillChange.send()
             })
             .store(in: cancelBag)
 
@@ -111,7 +110,6 @@ final class BitcoinViewModel: ViewModelType, ObservableObject {
             .withUnretained(self)
             .sink(receiveValue: { owner, state in
                 owner.coinChartDataState = state
-                owner.objectWillChange.send()
             })
             .store(in: cancelBag)
 
@@ -120,7 +118,6 @@ final class BitcoinViewModel: ViewModelType, ObservableObject {
             .withUnretained(self)
             .sink(receiveValue: { owner, timeline in
                 owner.timelineSelected = timeline
-                owner.objectWillChange.send()
             })
             .store(in: cancelBag)
 
