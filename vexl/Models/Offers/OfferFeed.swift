@@ -12,26 +12,14 @@ struct OfferFeed {
     let viewData: OfferDetailViewData
 
     static func mapToOfferFeed(usingOffer offer: Offer, isRequested: Bool) -> OfferFeed {
-        let currencySymbol = Constants.currencySymbol
-        let friendLevel = offer.friendLevel == .firstDegree ? L.marketplaceDetailFriendFirst() : L.marketplaceDetailFriendSecond()
-        let formattedAmount = offer.maxAmount
-        let viewData = OfferDetailViewData(
-            id: offer.offerId,
-            title: offer.description,
-            isRequested: isRequested,
-            friendLevel: friendLevel,
-            amount: "\(formattedAmount)\(currencySymbol)",
-            paymentMethods: offer.paymentMethods,
-            fee: offer.feeAmount > 0 ? "\(offer.feeAmount)%" : nil,
-            offerType: offer.type
-        )
+        let viewData = OfferDetailViewData(offer: offer, isRequested: isRequested)
         return OfferFeed(offer: offer, viewData: viewData)
     }
 }
 
 struct OfferDetailViewData: Identifiable, Hashable {
     let id: String
-    let username = "Murakami"
+    let username: String = Constants.randomName
     let title: String
     let isRequested: Bool
     let friendLevel: String
@@ -39,6 +27,20 @@ struct OfferDetailViewData: Identifiable, Hashable {
     let paymentMethods: [OfferPaymentMethodOption]
     let fee: String?
     let offerType: OfferType
+
+    init(offer: Offer, isRequested: Bool) {
+        let currencySymbol = Constants.currencySymbol
+        let formattedAmount = offer.maxAmount
+
+        self.id = offer.offerId
+        self.title = offer.description
+        self.isRequested = isRequested
+        self.friendLevel = offer.friendLevel.label
+        self.amount = "\(formattedAmount)\(currencySymbol)"
+        self.paymentMethods = offer.paymentMethods
+        self.fee = offer.feeAmount > 0 ? "\(offer.feeAmount)%" : nil
+        self.offerType = offer.type
+    }
 
     var paymentIcons: [String] {
         paymentMethods.map(\.iconName)
@@ -57,15 +59,6 @@ struct OfferDetailViewData: Identifiable, Hashable {
     }
 
     static var stub: OfferDetailViewData {
-        OfferDetailViewData(
-            id: "2",
-            title: "I’ll be wearing a red hat, Don’t text me before 9am — I love to sleep...",
-            isRequested: false,
-            friendLevel: "Friend",
-            amount: "$10k",
-            paymentMethods: [.revolut],
-            fee: nil,
-            offerType: .buy
-        )
+        OfferDetailViewData(offer: .stub, isRequested: true)
     }
 }

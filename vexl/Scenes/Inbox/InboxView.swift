@@ -34,7 +34,7 @@ struct InboxView: View {
 
             ScrollView {
                 Group {
-                    ForEach(viewModel.chatItems) { chatItem in
+                    ForEach(viewModel.inboxItems) { chatItem in
                         InboxItemView(data: chatItem)
                             .padding(.bottom, Appearance.GridGuide.mediumPadding1)
                             .onTapGesture {

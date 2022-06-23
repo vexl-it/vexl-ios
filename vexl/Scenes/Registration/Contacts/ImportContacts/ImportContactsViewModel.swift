@@ -18,6 +18,7 @@ class ImportContactsViewModel: ObservableObject {
     @Inject var contactsService: ContactsServiceType
     @Inject var authenticationManager: AuthenticationManager
     @Inject var userService: UserServiceType
+    @Inject var cryptoService: CryptoServiceType
 
     // MARK: - View State
 
@@ -148,14 +149,21 @@ class ImportContactsViewModel: ObservableObject {
             }
             .store(in: cancelBag)
 
-        let importContact = action
+        let hashContacts = action
             .withUnretained(self)
             .filter { $0.0.currentState == .content && $0.0.hasSelectedItem && $0.1 == .importContacts }
             .map(\.0.selectedItems)
             .withUnretained(self)
             .flatMap { owner, contacts in
+                owner.hashContacts(identifiers: contacts.map(\.sourceIdentifier))
+                    .eraseToAnyPublisher()
+            }
+
+        let importContact = hashContacts
+            .withUnretained(self)
+            .flatMap { owner, contacts in
                 owner.contactsService
-                    .importContacts(contacts.map(\.sourceIdentifier))
+                    .importContacts(contacts)
                     .track(activity: owner.primaryActivity)
                     .materialize()
                     .eraseToAnyPublisher()
@@ -171,10 +179,32 @@ class ImportContactsViewModel: ObservableObject {
             })
             .filter { $0.0.currentState == .success }
             .delay(for: .seconds(1), scheduler: RunLoop.main)
-            .sink { owner, _ in
+            .sink(receiveCompletion: { _ in },
+                  receiveValue: { owner, _ in
                 owner.completed.send(())
-            }
+            })
             .store(in: cancelBag)
+    }
+
+    private func hashContacts(identifiers: [String]) -> AnyPublisher<[String], Error> {
+        let phoneNumber = Formatters.phoneNumberFormatter
+        let countryCode = phoneNumber.countryCode(for: Locale.current.regionCode ?? "")
+
+        let trimmedIdentifiers = identifiers.map { identifier -> String in
+            let trimmedIdentifier = identifier.removeWhitespaces()
+            if let countryCode = countryCode, !trimmedIdentifier.contains("+") {
+                return "\(countryCode)\(trimmedIdentifier)"
+            }
+            return trimmedIdentifier
+        }
+
+        return trimmedIdentifiers.publisher
+            .withUnretained(self)
+            .flatMap { owner, identifier in
+                owner.cryptoService.hashHMAC(password: Constants.contactsHashingPassword, message: identifier)
+            }
+            .collect()
+            .eraseToAnyPublisher()
     }
 
     private func select(_ isSelected: Bool, item: ContactInformation) {

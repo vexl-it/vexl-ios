@@ -41,27 +41,8 @@ struct MarketplaceFeedView: View {
 #if DEBUG || DEVEL
 struct MarketplaceFeedViewViewPreview: PreviewProvider {
     static var previews: some View {
-        let data = OfferDetailViewData(
-            id: "1",
-            title: "I’ll be wearing a red hat, Don’t text me before 9am — I love to sleep...",
-            isRequested: false,
-            friendLevel: "Friend",
-            amount: "$10k",
-            paymentMethods: [.revolut, .bank],
-            fee: nil,
-            offerType: .sell
-        )
-
-        let data2 = OfferDetailViewData(
-            id: "2",
-            title: "I’ll be wearing a red hat, Don’t text me before 9am — I love to sleep...",
-            isRequested: true,
-            friendLevel: "Friend",
-            amount: "$10k",
-            paymentMethods: [.revolut],
-            fee: nil,
-            offerType: .buy
-        )
+        let data = OfferDetailViewData(offer: .stub, isRequested: false)
+        let data2 = OfferDetailViewData(offer: .stub2, isRequested: true)
 
         return ZStack {
             Color.black

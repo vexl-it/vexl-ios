@@ -158,6 +158,18 @@ struct Offer {
         Formatters.dateApiFormatter.date(from: modifiedAt)
     }
 
+    // MARK: - Helper static methods for creating list of offers
+
+    static func createOffers(from encryptedOffers: [EncryptedOffer], withKey key: ECCKeys) -> [Offer] {
+        var offers: [Offer] = []
+        for encryptedOffer in encryptedOffers {
+            if let offer = try? Offer(encryptedOffer: encryptedOffer, keys: key) {
+                offers.append(offer)
+            }
+        }
+        return offers
+    }
+
     // MARK: - Helper methods for array generation
 
     private static func getPaymentMethods(_ paymentMethods: [String], withKeys keys: ECCKeys) -> [OfferPaymentMethodOption] {
@@ -236,6 +248,19 @@ extension Offer {
         feeAmount: 0,
         locationState: .online,
         paymentMethods: [.bank],
+        btcNetwork: [.lightning],
+        friendLevel: .firstDegree,
+        type: .buy
+    )
+
+    static var stub2: Offer = Offer(
+        minAmount: 1000,
+        maxAmount: 3000,
+        description: "Offer stub 2",
+        feeState: .withoutFee,
+        feeAmount: 0,
+        locationState: .online,
+        paymentMethods: [.revolut],
         btcNetwork: [.lightning],
         friendLevel: .firstDegree,
         type: .buy

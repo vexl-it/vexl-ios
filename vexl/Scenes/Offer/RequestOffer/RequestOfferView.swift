@@ -15,6 +15,15 @@ struct RequestOfferView: View {
         Appearance.GridGuide.baseHeight + Appearance.GridGuide.padding * 2
     }
 
+    private var avatarTitle: String {
+        switch viewModel.offerFeed.offerType {
+        case .sell:
+            return L.marketplaceDetailUserSell(viewModel.username)
+        case .buy:
+            return L.marketplaceDetailUserBuy(viewModel.username)
+        }
+    }
+
     var body: some View {
         VStack(spacing: 0) {
             header
@@ -115,7 +124,7 @@ struct RequestOfferView: View {
 
             ContactAvatarInfo(
                 isAvatarWithOpacity: false,
-                title: "Murakami is selling",
+                title: avatarTitle,
                 subtitle: viewModel.offerFeed.friendLevel
             )
         }

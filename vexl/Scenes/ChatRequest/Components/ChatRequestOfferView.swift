@@ -12,6 +12,8 @@ typealias ChatRequestOfferViewData = ChatRequestOfferView.ViewData
 struct ChatRequestOfferView: View {
 
     let data: ChatRequestOfferViewData
+    let accept: (String) -> Void
+    let decline: (String) -> Void
 
     var body: some View {
         VStack(alignment: .center, spacing: .zero) {
@@ -35,9 +37,11 @@ struct ChatRequestOfferView: View {
                 .padding([.horizontal, .top], Appearance.GridGuide.mediumPadding1)
                 .textStyle(.titleSmallMedium)
 
-            ChatRequestFriendsView(data: data.friends)
-                .padding(.horizontal, Appearance.GridGuide.point)
-                .padding(.top, Appearance.GridGuide.padding)
+            if !data.friends.isEmpty {
+                ChatRequestFriendsView(data: data.friends)
+                    .padding(.horizontal, Appearance.GridGuide.point)
+                    .padding(.top, Appearance.GridGuide.padding)
+            }
 
             ChatRequestOfferInformationView(data: data.offer)
                 .background(Appearance.Colors.gray6)
@@ -54,14 +58,14 @@ struct ChatRequestOfferView: View {
             actionButton(title: L.chatRequestDecline(),
                          backgroundColor: Appearance.Colors.yellow20,
                          action: {
-                print("Declined")
+                decline(data.id)
             })
                 .foregroundColor(Appearance.Colors.yellow100)
 
             actionButton(title: L.chatRequestAccept(),
                          backgroundColor: Appearance.Colors.yellow100,
                          action: {
-                print("Accept")
+                accept(data.id)
             })
                 .foregroundColor(Appearance.Colors.primaryText)
         }
@@ -83,7 +87,7 @@ struct ChatRequestOfferView: View {
 extension ChatRequestOfferView {
 
     struct ViewData: Identifiable, Hashable {
-        let id = UUID()
+        let id = UUID().uuidString
         let contactName: String
         let contactFriendLevel: String
         let requestText: String
