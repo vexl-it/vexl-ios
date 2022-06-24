@@ -153,7 +153,8 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
         deleteOffers
             .withUnretained(self)
             .sink { owner, _ in
-                owner.cryptocurrencyValueManager.stopFetchingCurrency()
+                owner.cryptocurrencyValueManager.stopPollingCoinData()
+                owner.cryptocurrencyValueManager.stopFetchingChartData()
                 owner.syncInboxManager.stopSyncingInboxes()
                 owner.authenticationManager.logoutUser()
             }

@@ -30,8 +30,11 @@
 		4FBF6242283FBF6B00DDBE71 /* RequestOfferViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FBF6241283FBF6B00DDBE71 /* RequestOfferViewModel.swift */; };
 		4FBF6244283FBF7200DDBE71 /* RequestOfferView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FBF6243283FBF7200DDBE71 /* RequestOfferView.swift */; };
 		4FBF624C2840D31C00DDBE71 /* ToggleKeyboardBaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FBF624B2840D31B00DDBE71 /* ToggleKeyboardBaseViewController.swift */; };
-		4FD8E3E02821B922003B165E /* BitcoinData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FD8E3DF2821B922003B165E /* BitcoinData.swift */; };
+		4FD8E3E02821B922003B165E /* CoinData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FD8E3DF2821B922003B165E /* CoinData.swift */; };
+		B01C01E62860B2C400A29F85 /* CoinChartData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B01C01E52860B2C400A29F85 /* CoinChartData.swift */; };
+		B01C01E92860D2CD00A29F85 /* ContentState.swift in Sources */ = {isa = PBXBuildFile; fileRef = B01C01E82860D2CD00A29F85 /* ContentState.swift */; };
 		B01C01EB2861F9D900A29F85 /* vexl-crypto.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = B01C01EA2861F9D900A29F85 /* vexl-crypto.xcframework */; };
+		B01C01ED2862F06D00A29F85 /* Currency.swift in Sources */ = {isa = PBXBuildFile; fileRef = B01C01EC2862F06D00A29F85 /* Currency.swift */; };
 		B05A22132812BF2700BF8D58 /* Publisher+Crypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = B05A22122812BF2700BF8D58 /* Publisher+Crypto.swift */; };
 		B08F38DF27AE7110008B344F /* DIContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B08F38DE27AE7110008B344F /* DIContainer.swift */; };
 		B08F38E227AE7110008B344F /* Inject.swift in Sources */ = {isa = PBXBuildFile; fileRef = B08F38E127AE7110008B344F /* Inject.swift */; };
@@ -334,13 +337,16 @@
 		4FBF6241283FBF6B00DDBE71 /* RequestOfferViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestOfferViewModel.swift; sourceTree = "<group>"; };
 		4FBF6243283FBF7200DDBE71 /* RequestOfferView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestOfferView.swift; sourceTree = "<group>"; };
 		4FBF624B2840D31B00DDBE71 /* ToggleKeyboardBaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToggleKeyboardBaseViewController.swift; sourceTree = "<group>"; };
-		4FD8E3DF2821B922003B165E /* BitcoinData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BitcoinData.swift; sourceTree = "<group>"; };
+		4FD8E3DF2821B922003B165E /* CoinData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinData.swift; sourceTree = "<group>"; };
 		57B3CAA27CF4369A28B748A7 /* Pods_vexl.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_vexl.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		625779B2774E3C48F23BBA21 /* Pods-vexl.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-vexl.release.xcconfig"; path = "Target Support Files/Pods-vexl/Pods-vexl.release.xcconfig"; sourceTree = "<group>"; };
 		62F22E6F56C7BEA94D7B5F5D /* Pods-vexl.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-vexl.staging.xcconfig"; path = "Target Support Files/Pods-vexl/Pods-vexl.staging.xcconfig"; sourceTree = "<group>"; };
 		7F8C3B1F22E20D7D5005290C /* Pods-vexl-vexlTests.devel.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-vexl-vexlTests.devel.xcconfig"; path = "Target Support Files/Pods-vexl-vexlTests/Pods-vexl-vexlTests.devel.xcconfig"; sourceTree = "<group>"; };
 		937D63D507F1C9FE14E50FA2 /* Pods-vexl.appstore.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-vexl.appstore.xcconfig"; path = "Target Support Files/Pods-vexl/Pods-vexl.appstore.xcconfig"; sourceTree = "<group>"; };
+		B01C01E52860B2C400A29F85 /* CoinChartData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinChartData.swift; sourceTree = "<group>"; };
+		B01C01E82860D2CD00A29F85 /* ContentState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentState.swift; sourceTree = "<group>"; };
 		B01C01EA2861F9D900A29F85 /* vexl-crypto.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = "vexl-crypto.xcframework"; sourceTree = "<group>"; };
+		B01C01EC2862F06D00A29F85 /* Currency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Currency.swift; sourceTree = "<group>"; };
 		B021E2F327FF5AA300D186EC /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		B021E2F527FF5AD100D186EC /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		B021E2F727FF5B0B00D186EC /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -722,6 +728,15 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		B01C01E72860B58500A29F85 /* Coin */ = {
+			isa = PBXGroup;
+			children = (
+				4FD8E3DF2821B922003B165E /* CoinData.swift */,
+				B01C01E52860B2C400A29F85 /* CoinChartData.swift */,
+			);
+			path = Coin;
+			sourceTree = "<group>";
+		};
 		B021E2F027FF59F600D186EC /* Staging */ = {
 			isa = PBXGroup;
 			children = (
@@ -869,10 +884,12 @@
 				4FBF6239283F8C2E00DDBE71 /* Offers */,
 				4FBF620C283CE3F100DDBE71 /* Filter */,
 				F175AB8227E4CBFE000DAB15 /* Networking */,
+				B01C01E72860B58500A29F85 /* Coin */,
 				B08F391827AE7112008B344F /* User.swift */,
 				F1A9454527F81278009B5AE3 /* ContactInformation.swift */,
 				B0FE5248280E93D200A77EC3 /* ECCKeys.swift */,
-				4FD8E3DF2821B922003B165E /* BitcoinData.swift */,
+				B01C01E82860D2CD00A29F85 /* ContentState.swift */,
+				B01C01EC2862F06D00A29F85 /* Currency.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1770,6 +1787,8 @@
 			dependencies = (
 			);
 			name = vexl;
+			packageProductDependencies = (
+			);
 			productName = vexl;
 			productReference = B08F38BD27AE7110008B344F /* vexl.app */;
 			productType = "com.apple.product-type.application";
@@ -1823,6 +1842,8 @@
 				Base,
 			);
 			mainGroup = B08F38B027AE7110008B344F;
+			packageReferences = (
+			);
 			productRefGroup = B08F38BE27AE7110008B344F /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -2079,6 +2100,7 @@
 				F1BDC979285BF9D600F86581 /* ChatExpandedImageViewModel.swift in Sources */,
 				F1A9453627F686D1009B5AE3 /* CodeValidation.swift in Sources */,
 				F12A14E827D6A8690096543E /* RequestAccessContactsView.swift in Sources */,
+				B01C01E62860B2C400A29F85 /* CoinChartData.swift in Sources */,
 				F13B2675281EB23A0011F2FB /* ContactFriendLevel.swift in Sources */,
 				B0E9BB302815C7310012BF1D /* SHA.swift in Sources */,
 				F1483CC9285A77CA0054B7A2 /* ChatRevealConfirmationView.swift in Sources */,
@@ -2125,6 +2147,7 @@
 				B08F397227AE7112008B344F /* Formatters.swift in Sources */,
 				F11441DF284681EC00307D39 /* Line.swift in Sources */,
 				F11441CF284681EC00307D39 /* ExpandingTextView.swift in Sources */,
+				B01C01ED2862F06D00A29F85 /* Currency.swift in Sources */,
 				B0F206F127AE94C400A44E72 /* InitialScreenManager.swift in Sources */,
 				F12A14E027D6774C0096543E /* RegisterContactsView.swift in Sources */,
 				4F481E76284767480051D3B9 /* ChatRouter.swift in Sources */,
@@ -2215,7 +2238,7 @@
 				B08F38E227AE7110008B344F /* Inject.swift in Sources */,
 				B08F395727AE7112008B344F /* ApiRouter.swift in Sources */,
 				F188627428169A3700659786 /* MarketplaceFeedFooterView.swift in Sources */,
-				4FD8E3E02821B922003B165E /* BitcoinData.swift in Sources */,
+				4FD8E3E02821B922003B165E /* CoinData.swift in Sources */,
 				F1042BA227BEADB70048C2F0 /* WelcomeView+Agreement.swift in Sources */,
 				B08F394D27AE7112008B344F /* AppCoordinator.swift in Sources */,
 				F13B2671281D4AB00011F2FB /* ContactKey.swift in Sources */,
@@ -2255,6 +2278,7 @@
 				B0E9BB2A2815C7190012BF1D /* AES.swift in Sources */,
 				F1F5F199283FE52D00968366 /* ChatRequestCoordinator.swift in Sources */,
 				F1D2012C282D4CD5006DF4AB /* DidSet.swift in Sources */,
+				B01C01E92860D2CD00A29F85 /* ContentState.swift in Sources */,
 				F13B2679281FC5A90011F2FB /* OfferLocation.swift in Sources */,
 				B0EEE11627B14D320097031E /* WelcomeCoordinator.swift in Sources */,
 				F1485641284FD451003213D7 /* ChatConfirmationView.swift in Sources */,
@@ -2417,7 +2441,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 66;
+				CURRENT_PROJECT_VERSION = 68;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = SHD6TUKSPH;
 				ENABLE_PREVIEWS = YES;
@@ -2448,7 +2472,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 66;
+				CURRENT_PROJECT_VERSION = 68;
 				DEVELOPMENT_TEAM = SHD6TUKSPH;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
@@ -2531,7 +2555,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 66;
+				CURRENT_PROJECT_VERSION = 68;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = SHD6TUKSPH;
 				ENABLE_PREVIEWS = YES;
@@ -2563,7 +2587,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 66;
+				CURRENT_PROJECT_VERSION = 68;
 				DEVELOPMENT_TEAM = SHD6TUKSPH;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
@@ -2705,7 +2729,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 66;
+				CURRENT_PROJECT_VERSION = 68;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = SHD6TUKSPH;
 				ENABLE_BITCODE = YES;
@@ -2738,7 +2762,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 66;
+				CURRENT_PROJECT_VERSION = 68;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
@@ -2770,7 +2794,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 66;
+				CURRENT_PROJECT_VERSION = 68;
 				DEVELOPMENT_TEAM = SHD6TUKSPH;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
@@ -2789,7 +2813,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 66;
+				CURRENT_PROJECT_VERSION = 68;
 				DEVELOPMENT_TEAM = SHD6TUKSPH;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;

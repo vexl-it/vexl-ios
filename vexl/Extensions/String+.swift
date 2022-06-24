@@ -55,6 +55,10 @@ extension String {
     }
 }
 
+extension String: Identifiable {
+    public var id: Int { hashValue }
+}
+
 extension NSMutableAttributedString {
     func setAsLink(textToFind: String,
                    linkURL: String,
