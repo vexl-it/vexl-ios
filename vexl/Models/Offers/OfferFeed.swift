@@ -27,6 +27,7 @@ struct OfferDetailViewData: Identifiable, Hashable {
     let paymentMethods: [OfferPaymentMethodOption]
     let fee: String?
     let offerType: OfferType
+    let createdDate: Date
 
     init(offer: Offer, isRequested: Bool) {
         let currencySymbol = Constants.currencySymbol
@@ -40,6 +41,7 @@ struct OfferDetailViewData: Identifiable, Hashable {
         self.paymentMethods = offer.paymentMethods
         self.fee = offer.feeAmount > 0 ? "\(offer.feeAmount)%" : nil
         self.offerType = offer.type
+        self.createdDate = offer.createdDate
     }
 
     var paymentIcons: [String] {

@@ -26,6 +26,13 @@ struct Formatters {
         return formatter
     }()
 
+    static let userOfferDateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd.MM.yyyy"
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        return formatter
+    }()
+
     static let phoneNumberFormatter = PhoneNumberKit()
 
     static let numberFormatter: NumberFormatter = {
