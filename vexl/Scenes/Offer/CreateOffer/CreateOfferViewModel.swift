@@ -284,7 +284,7 @@ final class CreateOfferViewModel: ViewModelType, ObservableObject {
                 let contactsWithoutDuplicates = Array(Set(contacts))
                 return OfferData(offer: offer, contacts: contactsWithoutDuplicates)
             }
-            .subscribe(on: DispatchQueue.global(qos: .background))
+            .subscribe(on: DispatchQueue.global(qos: .userInitiated))
             .withUnretained(self)
             .flatMap { owner, offerData in
                 owner.offerService
