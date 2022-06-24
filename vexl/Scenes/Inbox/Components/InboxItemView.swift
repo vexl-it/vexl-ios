@@ -11,15 +11,6 @@ typealias InboxItem = InboxItemView.ViewData
 
 struct InboxItemView: View {
 
-    struct ViewData: Identifiable, Hashable {
-        let id = UUID()
-        let avatar: UIImage?
-        let username: String
-        let detail: String
-        let time: String
-        let offerType: OfferType
-    }
-
     var data: ViewData
 
     private var offerLabel: String {
@@ -41,10 +32,6 @@ struct InboxItemView: View {
                     Text(data.username)
                         .foregroundColor(Appearance.Colors.whiteText)
                         .textStyle(.paragraphSmallBold)
-
-                    Text(offerLabel)
-                        .foregroundColor(data.offerType == .buy ? Appearance.Colors.green100 : Appearance.Colors.pink100)
-                        .textStyle(.paragraphSmallBold)
                 }
 
                 Text(data.detail)
@@ -60,5 +47,16 @@ struct InboxItemView: View {
                 .textStyle(.micro)
         }
         .padding(.horizontal, Appearance.GridGuide.padding)
+    }
+}
+
+extension InboxItemView {
+    struct ViewData: Identifiable, Hashable {
+        let id = UUID()
+        let avatar: UIImage?
+        let username: String
+        let detail: String
+        let time: String
+        let offerType: OfferType
     }
 }

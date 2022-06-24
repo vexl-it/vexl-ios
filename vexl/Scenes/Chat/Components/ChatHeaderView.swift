@@ -28,9 +28,6 @@ struct ChatHeaderView: View {
                 HStack(spacing: .zero) {
                     Text(username)
                         .foregroundColor(Appearance.Colors.whiteText)
-
-                    Text(offerLabel)
-                        .foregroundColor(Appearance.Colors.whiteText)
                 }
                 .frame(maxWidth: .infinity)
             }

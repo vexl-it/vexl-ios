@@ -17,8 +17,6 @@ struct ChatConversationView: View {
         ScrollView(showsIndicators: false) {
             LazyVStack {
                 ForEach(messages) { messageGroup in
-                    ChatDateView(date: messageGroup.date, isInitial: false)
-
                     ForEach(messageGroup.messages) { message in
                         switch message.type {
                         case .start:

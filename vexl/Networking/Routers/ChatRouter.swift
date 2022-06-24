@@ -106,10 +106,6 @@ enum ChatRouter: ApiRouter {
                 "messageType": messageType.rawValue,
                 "message": message
             ]
-        case let .deleteChat(publicKey):
-            return ["publicKey": publicKey]
-        case let .deleteChatMessages(publicKey):
-            return ["publicKey": publicKey]
         }
     }
 
