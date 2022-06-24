@@ -19,10 +19,11 @@ enum UserRouter: ApiRouter {
     case facebookSignature(id: String)
     case validateUsername(username: String)
     case bitcoin
+    case bitcoinChart(option: TimelineOption)
 
     var method: HTTPMethod {
         switch self {
-        case .me, .facebookSignature, .bitcoin:
+        case .me, .facebookSignature, .bitcoin, .bitcoinChart:
             return .get
         case .createUser, .confirmPhone, .validateCode, .validateChallenge, .validateUsername:
             return .post
@@ -33,7 +34,7 @@ enum UserRouter: ApiRouter {
 
     var additionalHeaders: [Header] {
         switch self {
-        case .createUser, .validateUsername, .facebookSignature, .bitcoin, .deleteUser:
+        case .createUser, .validateUsername, .facebookSignature, .bitcoin, .deleteUser, .bitcoinChart:
             return securityHeader
         default:
             return []
@@ -58,6 +59,8 @@ enum UserRouter: ApiRouter {
             return "user/signature/\(id)"
         case .bitcoin:
             return "cryptocurrencies/bitcoin/"
+        case .bitcoinChart:
+            return "cryptocurrencies/bitcoin/market_chart"
         }
     }
 
@@ -82,6 +85,9 @@ enum UserRouter: ApiRouter {
             return ["id": id,
                     "code": code,
                     "userPublicKey": key]
+        case let .bitcoinChart(option):
+            let range = option.chartEndpointRange
+            return ["from": range.from, "to": range.to]
         }
     }
 

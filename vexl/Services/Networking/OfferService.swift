@@ -18,7 +18,7 @@ protocol OfferServiceType {
     func storeOfferKey(key: ECCKeys, withId id: String, offerType: OfferType) -> AnyPublisher<Void, Error>
     func getStoredOfferIds(forType offerType: OfferType) -> AnyPublisher<[String], Never>
     func getAllStoredOfferIds() -> AnyPublisher<[String], Never>
-    func getOfferKeys() -> AnyPublisher<[UserOfferKeys.OfferKey], Error>
+    func getOfferKeys() -> AnyPublisher<[UserOfferKeys.OfferKey], Never>
     func deleteOffers() -> AnyPublisher<Void, Error>
 }
 
@@ -79,14 +79,24 @@ final class OfferService: BaseService, OfferServiceType {
     }
 
     func getStoredOfferIds(forType offerType: OfferType) -> AnyPublisher<[String], Never> {
-        localStorageService.getOffersIds(forType: offerType)
+        localStorageService.getOfferKeys()
+            .map { keys in
+                keys
+                    .filter { $0.offerType == offerType }
+                    .map(\.id)
+            }
+            .eraseToAnyPublisher()
     }
 
     func getAllStoredOfferIds() -> AnyPublisher<[String], Never> {
-        localStorageService.getAllOffersIds()
+        localStorageService.getOfferKeys()
+            .map { keys in
+                keys.map(\.id)
+            }
+            .eraseToAnyPublisher()
     }
 
-    func getOfferKeys() -> AnyPublisher<[UserOfferKeys.OfferKey], Error> {
+    func getOfferKeys() -> AnyPublisher<[UserOfferKeys.OfferKey], Never> {
         localStorageService.getOfferKeys()
     }
 
