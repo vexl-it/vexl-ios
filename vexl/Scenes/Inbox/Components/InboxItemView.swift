@@ -32,6 +32,9 @@ struct InboxItemView: View {
                     Text(data.username)
                         .foregroundColor(Appearance.Colors.whiteText)
                         .textStyle(.paragraphSmallBold)
+                    
+                    // TODO: - add offer type here
+
                 }
 
                 Text(data.detail)

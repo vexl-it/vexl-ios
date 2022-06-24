@@ -17,6 +17,9 @@ struct ChatConversationView: View {
         ScrollView(showsIndicators: false) {
             LazyVStack {
                 ForEach(messages) { messageGroup in
+
+                    // TODO: - add date display when its clear how it will be grouped
+
                     ForEach(messageGroup.messages) { message in
                         switch message.type {
                         case .start:
