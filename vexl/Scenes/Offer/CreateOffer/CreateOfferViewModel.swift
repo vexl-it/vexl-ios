@@ -277,10 +277,12 @@ final class CreateOfferViewModel: ViewModelType, ObservableObject {
                                   type: owner.offerType)
 
                 // Adding owner publicKey to the list so that it can be decrypted, displayed and modified
+                // Also we remove the duplicate keys that can arrive because of the 2nd level friend
 
                 var contacts = contacts.phone.items + contacts.facebook.items
                 contacts.append(ContactKey(publicKey: owner.userSecurity.userKeys.publicKey))
-                return OfferData(offer: offer, contacts: contacts)
+                let contactsWithoutDuplicates = Array(Set(contacts))
+                return OfferData(offer: offer, contacts: contactsWithoutDuplicates)
             }
             .subscribe(on: DispatchQueue.global(qos: .background))
             .withUnretained(self)
