@@ -15,9 +15,7 @@ enum LocalStorageError: Error {
 
 protocol LocalStorageServiceType {
     func saveOffer(id: String, type: OfferType, key: ECCKeys) -> AnyPublisher<Void, Error>
-    func getOffersIds(forType offerType: OfferType) -> AnyPublisher<[String], Never>
-    func getAllOffersIds() -> AnyPublisher<[String], Never>
-    func getOfferKeys() -> AnyPublisher<[UserOfferKeys.OfferKey], Error>
+    func getOfferKeys() -> AnyPublisher<[UserOfferKeys.OfferKey], Never>
     func saveInbox(_ inbox: ChatInbox) throws
     func getInboxes(ofType type: ChatInbox.InboxType) throws -> [ChatInbox]
     func saveMessages(_ messages: [ParsedChatMessage]) -> AnyPublisher<Void, Error>
@@ -45,28 +43,7 @@ final class LocalStorageService: LocalStorageServiceType {
         .eraseToAnyPublisher()
     }
 
-    func getOffersIds(forType offerType: OfferType) -> AnyPublisher<[String], Never> {
-        Future { promise in
-            let storedOfferKeys: UserOfferKeys? = UserDefaults.standard.codable(forKey: .storedOfferKeys)
-            let ids = storedOfferKeys?.keys
-                .filter { $0.offerType == offerType }
-                .map { $0.id }
-            promise(.success(ids ?? []))
-        }
-        .eraseToAnyPublisher()
-    }
-
-    func getAllOffersIds() -> AnyPublisher<[String], Never> {
-        Future { promise in
-            let storedOfferKeys: UserOfferKeys? = UserDefaults.standard.codable(forKey: .storedOfferKeys)
-            let ids = storedOfferKeys?.keys
-                .map { $0.id }
-            promise(.success(ids ?? []))
-        }
-        .eraseToAnyPublisher()
-    }
-
-    func getOfferKeys() -> AnyPublisher<[UserOfferKeys.OfferKey], Error> {
+    func getOfferKeys() -> AnyPublisher<[UserOfferKeys.OfferKey], Never> {
         Future { promise in
             let storedOfferKeys: UserOfferKeys? = UserDefaults.standard.codable(forKey: .storedOfferKeys)
             let offerKey = storedOfferKeys?.keys

@@ -19,7 +19,7 @@ protocol OfferServiceType {
 
     func getStoredOfferIds(forType offerType: OfferType) -> AnyPublisher<[String], Never>
     func getAllStoredOfferIds() -> AnyPublisher<[String], Never>
-    func getStoredOfferKeys() -> AnyPublisher<[UserOfferKeys.OfferKey], Error>
+    func getStoredOfferKeys() -> AnyPublisher<[UserOfferKeys.OfferKey], Never>
 }
 
 final class OfferService: BaseService, OfferServiceType {
@@ -79,14 +79,24 @@ final class OfferService: BaseService, OfferServiceType {
     }
 
     func getStoredOfferIds(forType offerType: OfferType) -> AnyPublisher<[String], Never> {
-        localStorageService.getOffersIds(forType: offerType)
+        localStorageService.getOfferKeys()
+            .map { keys in
+                keys
+                    .filter { $0.offerType == offerType }
+                    .map(\.id)
+            }
+            .eraseToAnyPublisher()
     }
 
     func getAllStoredOfferIds() -> AnyPublisher<[String], Never> {
-        localStorageService.getAllOffersIds()
+        localStorageService.getOfferKeys()
+            .map { keys in
+                keys.map(\.id)
+            }
+            .eraseToAnyPublisher()
     }
 
-    func getStoredOfferKeys() -> AnyPublisher<[UserOfferKeys.OfferKey], Error> {
+    func getStoredOfferKeys() -> AnyPublisher<[UserOfferKeys.OfferKey], Never> {
         localStorageService.getOfferKeys()
     }
 

@@ -17,8 +17,7 @@ struct ChatBubbleView<Content: View>: View {
             .foregroundColor(style.textColor)
             .background(style.backgroundColor)
             .cornerRadius(Appearance.GridGuide.requestCorner)
-            .frame(maxWidth: .infinity, alignment: style == .contact ? .leading : .trailing)
-            .frame(minHeight: 40)
+            .frame(maxWidth: .infinity, minHeight: 40, alignment: style == .contact ? .leading : .trailing)
     }
 }
 
@@ -71,7 +70,7 @@ struct ChatBubbleViewPreview: PreviewProvider {
             ChatTextBubbleView(text: "qwerty qwerty qwerty qwerty qwerty", style: .contact)
 
             ChatTextBubbleView(text: "qwerty", style: .user)
-            
+
             ChatImageBubbleView(image: R.image.onboarding.testAvatar()!.jpegData(compressionQuality: 0.25)!,
                                 text: nil,
                                 style: .contact)

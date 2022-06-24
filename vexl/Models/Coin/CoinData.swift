@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct BitcoinData: Decodable {
+struct CoinData: Decodable {
     let priceUsd: Decimal
     let percentageChangeOneDayAgo: Double
     let percentageChangeOneWeekAgo: Double

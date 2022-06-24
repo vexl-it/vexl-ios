@@ -114,7 +114,7 @@
 "filter.apply" = "Apply filter";
 "filter.offers" = "Filter offers";
 "offer.create.fee.none" = "Without fee";
-"offer.create.fee.ok" = "Fee OK";
+"offer.create.fee.ok" = "With fee";
 "offer.create.trade.style.online" = "Online OK";
 "offer.create.trade.style.personal" = "Only in person";
 "offer.create.trigger.active" = "Active when price is";

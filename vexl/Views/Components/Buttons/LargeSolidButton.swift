@@ -41,7 +41,7 @@ struct LargeSolidButton: View {
     @Binding var isEnabled: Bool
     let action: () -> Void
 
-    // swiftlint: disable function_default_parameter_at_end
+    // swiftlint:disable:next function_default_parameter_at_end
     init(title: String,
          padding: CGFloat = .zero,
          font: Font,

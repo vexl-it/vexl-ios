@@ -104,7 +104,7 @@ final class ApiService: ApiServiceType {
 
         if !(ApiService.StatusCode.success ~= httpResponse.statusCode),
             let data = response.data,
-            let errorPayload = try? JSONDecoder().decode(ErrorPayload.self, from: data),
+            let errorPayload = try? Constants.jsonDecoder.decode(ErrorPayload.self, from: data),
             let code = errorPayload.code,
             let codeNumber = Int(code), codeNumber != 0 {
             throw APIError.clientError(.parse(code: codeNumber), message: errorPayload.message?.first)
