@@ -7,6 +7,6 @@
 
 import Foundation
 
-struct ContactKey: Codable {
+struct ContactKey: Codable, Hashable {
     let publicKey: String
 }

@@ -36,7 +36,7 @@ final class TabBarButton: UIButton {
 
     override var isSelected: Bool {
         didSet {
-            backgroundColor = isSelected ? R.color.purple1() : .clear
+            backgroundColor = isSelected ? R.color.yellow20() : .clear
         }
     }
 
