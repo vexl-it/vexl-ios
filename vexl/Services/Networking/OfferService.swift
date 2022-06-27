@@ -11,15 +11,15 @@ import Combine
 protocol OfferServiceType {
     func getInitialOfferData() -> AnyPublisher<OfferInitialData, Error>
     func encryptOffer(withContactKey publicKeys: [String], offerKey: ECCKeys, offer: Offer) -> AnyPublisher<[EncryptedOffer], Error>
-
     func getUserOffers(offerIds: [String]) -> AnyPublisher<[EncryptedOffer], Error>
     func getOffer(pageLimit: Int?) -> AnyPublisher<Paged<EncryptedOffer>, Error>
     func createOffer(encryptedOffers: [EncryptedOffer], expiration: TimeInterval) -> AnyPublisher<EncryptedOffer, Error>
     func storeOfferKey(key: ECCKeys, withId id: String, offerType: OfferType) -> AnyPublisher<Void, Error>
+    func deleteOffers() -> AnyPublisher<Void, Error>
+
     func getStoredOfferIds(forType offerType: OfferType) -> AnyPublisher<[String], Never>
     func getAllStoredOfferIds() -> AnyPublisher<[String], Never>
-    func getOfferKeys() -> AnyPublisher<[UserOfferKeys.OfferKey], Never>
-    func deleteOffers() -> AnyPublisher<Void, Error>
+    func getStoredOfferKeys() -> AnyPublisher<[UserOfferKeys.OfferKey], Never>
 }
 
 final class OfferService: BaseService, OfferServiceType {
@@ -96,7 +96,7 @@ final class OfferService: BaseService, OfferServiceType {
             .eraseToAnyPublisher()
     }
 
-    func getOfferKeys() -> AnyPublisher<[UserOfferKeys.OfferKey], Never> {
+    func getStoredOfferKeys() -> AnyPublisher<[UserOfferKeys.OfferKey], Never> {
         localStorageService.getOfferKeys()
     }
 

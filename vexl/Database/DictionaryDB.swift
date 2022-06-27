@@ -14,7 +14,7 @@ final class DictionaryDB {
     static private let encoder = Constants.jsonEncoder
     static private let decoder = Constants.jsonDecoder
 
-    static private var inboxes: [String: [OfferInbox]] = ["created": [], "requested": []] {
+    static private var inboxes: [String: [ChatInbox]] = ["created": [], "requested": []] {
         didSet {
             guard let encodedData = try? encoder.encode(inboxes) else { return }
             UserDefaults.standard.setValue(encodedData, forKey: "inboxes")
@@ -44,7 +44,7 @@ final class DictionaryDB {
 
     static func setupDatabase() {
         if let inboxesData = UserDefaults.standard.data(forKey: "inboxes"),
-           let savedInboxes = try? decoder.decode([String: [OfferInbox]].self, from: inboxesData) {
+           let savedInboxes = try? decoder.decode([String: [ChatInbox]].self, from: inboxesData) {
             inboxes = savedInboxes
         }
 
@@ -64,23 +64,23 @@ final class DictionaryDB {
         }
     }
 
-    static func saveCreatedInbox(_ inbox: OfferInbox) {
+    static func saveCreatedInbox(_ inbox: ChatInbox) {
         var content = inboxes["created"] ?? []
         content.append(inbox)
         inboxes["created"] = content
     }
 
-    static func saveRequestedInbox(_ inbox: OfferInbox) {
+    static func saveRequestedInbox(_ inbox: ChatInbox) {
         var content = inboxes["requested"] ?? []
         content.append(inbox)
         inboxes["requested"] = content
     }
 
-    static func getCreatedInboxes() -> [OfferInbox] {
+    static func getCreatedInboxes() -> [ChatInbox] {
         inboxes["created"] ?? []
     }
 
-    static func getRequestedInboxes() -> [OfferInbox] {
+    static func getRequestedInboxes() -> [ChatInbox] {
         inboxes["requested"] ?? []
     }
 

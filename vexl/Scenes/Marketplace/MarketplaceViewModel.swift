@@ -243,7 +243,7 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
             .store(in: cancelBag)
     }
 
-    private func getRequestedInboxes() -> [OfferInbox] {
+    private func getRequestedInboxes() -> [ChatInbox] {
         do {
             return try localStorageService.getInboxes(ofType: .requested)
         } catch {

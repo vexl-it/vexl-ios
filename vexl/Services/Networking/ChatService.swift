@@ -10,12 +10,12 @@ import Combine
 
 protocol ChatServiceType {
     func createInbox(offerKey: ECCKeys, pushToken: String) -> AnyPublisher<Void, Error>
-    func request(inboxPublicKey: String, message: String) -> AnyPublisher<Void, Error>
-    func requestConfirmation(confirmation: Bool,
-                             message: ParsedChatMessage?,
-                             inboxPublicKey: String,
-                             requesterPublicKey: String,
-                             signature: String) -> AnyPublisher<Void, Error>
+    func requestCommunication(inboxPublicKey: String, message: String) -> AnyPublisher<Void, Error>
+    func communicationConfirmation(confirmation: Bool,
+                                   message: ParsedChatMessage?,
+                                   inboxPublicKey: String,
+                                   requesterPublicKey: String,
+                                   signature: String) -> AnyPublisher<Void, Error>
 
     func requestChallenge(publicKey: String) -> AnyPublisher<ChatChallenge, Error>
     func pullInboxMessages(publicKey: String, signature: String) -> AnyPublisher<EncryptedChatMessageList, Error>
@@ -40,7 +40,7 @@ final class ChatService: BaseService, ChatServiceType {
     func createInbox(offerKey: ECCKeys, pushToken: String) -> AnyPublisher<Void, Error> {
         Future<Void, Error> { [localStorageService] promise in
             do {
-                try localStorageService.saveInbox(OfferInbox(key: offerKey, type: .created))
+                try localStorageService.saveInbox(ChatInbox(key: offerKey, type: .created))
                 promise(.success(()))
             } catch {
                 promise(.failure(LocalStorageError.saveFailed))
@@ -52,10 +52,10 @@ final class ChatService: BaseService, ChatServiceType {
         .eraseToAnyPublisher()
     }
 
-    func request(inboxPublicKey: String, message: String) -> AnyPublisher<Void, Error> {
+    func requestCommunication(inboxPublicKey: String, message: String) -> AnyPublisher<Void, Error> {
         Future<Void, Error> { [localStorageService] promise in
             do {
-                try localStorageService.saveInbox(OfferInbox(publicKey: inboxPublicKey, type: .requested))
+                try localStorageService.saveInbox(ChatInbox(publicKey: inboxPublicKey, type: .requested))
                 promise(.success(()))
             } catch {
                 promise(.failure(LocalStorageError.saveFailed))
@@ -71,16 +71,18 @@ final class ChatService: BaseService, ChatServiceType {
         .eraseToAnyPublisher()
     }
 
+    // TODO: - add expiration handling so that it is not requested everytime, find a way to cache the challenge for 30m
+
     func requestChallenge(publicKey: String) -> AnyPublisher<ChatChallenge, Error> {
         request(type: ChatChallenge.self, endpoint: ChatRouter.requestChallenge(publicKey: publicKey))
             .eraseToAnyPublisher()
     }
 
-    func requestConfirmation(confirmation: Bool,
-                             message: ParsedChatMessage?,
-                             inboxPublicKey: String,
-                             requesterPublicKey: String,
-                             signature: String) -> AnyPublisher<Void, Error> {
+    func communicationConfirmation(confirmation: Bool,
+                                   message: ParsedChatMessage?,
+                                   inboxPublicKey: String,
+                                   requesterPublicKey: String,
+                                   signature: String) -> AnyPublisher<Void, Error> {
         if let parsedMessage = message, let messageAsString = parsedMessage.asString {
             return cryptoService
                 .encryptECIES(publicKey: requesterPublicKey, secret: messageAsString)

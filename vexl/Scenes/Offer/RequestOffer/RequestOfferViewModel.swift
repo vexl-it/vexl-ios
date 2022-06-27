@@ -91,13 +91,15 @@ final class RequestOfferViewModel: ViewModelType, ObservableObject {
             .filter { $0 == .sendRequest }
             .withUnretained(self)
             .compactMap { owner, _ -> String? in
-                ParsedChatMessage.createMessagingRequest(inboxPublicKey: owner.offer.offerPublicKey,
-                                                         text: owner.requestText,
-                                                         senderKey: owner.userSecurity.userKeys.publicKey)
+                ParsedChatMessage
+                    .communicationRequest(inboxPublicKey: owner.offer.offerPublicKey,
+                                          text: owner.requestText)?
+                    .asString
             }
             .flatMapLatest(with: self) { owner, message -> AnyPublisher<Void, Never> in
                 owner.state = .requesting
-                return owner.chatService.request(inboxPublicKey: owner.offer.offerPublicKey, message: message)
+                return owner.chatService
+                    .requestCommunication(inboxPublicKey: owner.offer.offerPublicKey, message: message)
                     .trackError(owner.primaryActivity.error)
             }
             .map { _ in Route.requestSent }
