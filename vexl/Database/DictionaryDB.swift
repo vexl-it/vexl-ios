@@ -146,15 +146,13 @@ final class DictionaryDB {
         storedOffer["fetched"] ?? []
     }
 
-    static func saveCreatedOffer(_ offer: StoredOffer) {
+    static func saveCreatedOffers(_ offers: [StoredOffer]) {
         var content = storedOffer["created"] ?? []
-        content.append(offer)
+        content.append(contentsOf: offers)
         storedOffer["created"] = content
     }
 
-    static func saveFetchedOffer(_ offer: StoredOffer) {
-        var content = storedOffer["fetched"] ?? []
-        content.append(offer)
-        storedOffer["fetched"] = content
+    static func saveFetchedOffers(_ offers: [StoredOffer]) {
+        storedOffer["fetched"] = offers
     }
 }

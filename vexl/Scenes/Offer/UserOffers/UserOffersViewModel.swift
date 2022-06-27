@@ -52,7 +52,6 @@ final class UserOffersViewModel: ViewModelType, ObservableObject {
 
     private let offerType: OfferType
     private let cancelBag: CancelBag = .init()
-    private var userOfferKeys: [StoredOffer.Keys] = []
 
     var offerTitle: String {
         switch offerType {
@@ -128,17 +127,6 @@ final class UserOffersViewModel: ViewModelType, ObservableObject {
 
     private func fetchOffers() {
         Just(())
-            .flatMapLatest(with: self) { owner, _ in
-                owner.offerService
-                    .getStoredOfferKeys()
-                    .track(activity: owner.primaryActivity)
-                    .materialize()
-                    .compactMap(\.value)
-            }
-            .withUnretained(self)
-            .handleEvents(receiveOutput: { owner, keys in
-                owner.userOfferKeys = keys
-            })
             .flatMapLatest(with: self) { owner, _ in
                 owner.offerService
                     .getStoredOfferIds(forType: owner.offerType)

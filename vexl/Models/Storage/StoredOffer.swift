@@ -10,7 +10,7 @@ import Foundation
 // TODO: - delete this when the CoreData Offer is created
 
 struct StoredOffer: Codable {
-    
+
     struct Keys {
         let id: String
         let publicKey: String
@@ -42,12 +42,12 @@ struct StoredOffer: Codable {
     var keys: ECCKeys {
         ECCKeys(pubKey: publicKey, privKey: privateKey)
     }
-    
+
     init(offer: Offer, id: String, keys: ECCKeys) {
         self.id = id
         self.publicKey = keys.publicKey
         self.privateKey = keys.privateKey
-        
+
         self.minAmount = offer.minAmount
         self.maxAmount = offer.maxAmount
         self.description = offer.description
@@ -58,7 +58,7 @@ struct StoredOffer: Codable {
         self.friendLevel = offer.friendLevelString
         self.type = offer.offerTypeString
     }
-    
+
     func getIdWithKeys() -> Keys {
         Keys(id: id, publicKey: publicKey, privateKey: privateKey)
     }

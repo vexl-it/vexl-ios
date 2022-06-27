@@ -137,7 +137,7 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
         Publishers.Merge(refresh, Just(()))
             .flatMapLatest(with: self) { owner, _ in
                 owner.offerService
-                    .getStoredOfferKeys()
+                    .getCreatedStoredOfferKeys()
                     .track(activity: owner.primaryActivity)
                     .materialize()
                     .compactMap(\.value)
@@ -163,18 +163,28 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
 
         $offerItems
             .withUnretained(self)
+            .map { owner, offers -> [Offer] in
+                offers.filter { offer in
+                    !owner.userOfferKeys.contains(where: { $0.id == offer.offerId })
+                }
+            }
+            .withUnretained(self)
+            .flatMap { owner, offers in
+                owner.offerService
+                    .saveFetchedOffers(offers: offers)
+                    .track(activity: owner.primaryActivity)
+                    .materialize()
+                    .compactMap(\.value)
+                    .map { offers }
+                    .eraseToAnyPublisher()
+            }
+            .withUnretained(self)
             .sink { owner, offers in
+                let requestedInboxes = owner.getRequestedInboxes()
                 owner.buyFeedItems.removeAll()
                 owner.sellFeedItems.removeAll()
-                let requestedInboxes = owner.getRequestedInboxes()
-
-                let offerKeys = owner.userOfferKeys
 
                 for offer in offers {
-                    guard !offerKeys.contains(where: { $0.id == offer.offerId }) else {
-                        continue
-                    }
-
                     let isRequested = requestedInboxes.contains(where: { $0.publicKey == offer.offerPublicKey })
                     let marketplaceItem = OfferFeed.mapToOfferFeed(usingOffer: offer, isRequested: isRequested)
                     switch offer.type {

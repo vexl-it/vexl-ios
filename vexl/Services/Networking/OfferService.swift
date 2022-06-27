@@ -16,10 +16,13 @@ protocol OfferServiceType {
     func createOffer(encryptedOffers: [EncryptedOffer], expiration: TimeInterval) -> AnyPublisher<EncryptedOffer, Error>
     func deleteOffers() -> AnyPublisher<Void, Error>
 
+    func saveFetchedOffers(offers: [Offer]) -> AnyPublisher<Void, Error>
     func saveOffer(id: String, offer: Offer, keys: ECCKeys, isCreated: Bool) -> AnyPublisher<Void, Error>
     func getStoredOfferIds(forType offerType: OfferType) -> AnyPublisher<[String], Error>
     func getAllStoredOfferIds() -> AnyPublisher<[String], Error>
     func getStoredOfferKeys() -> AnyPublisher<[StoredOffer.Keys], Error>
+    func getCreatedStoredOfferKeys() -> AnyPublisher<[StoredOffer.Keys], Error>
+    func getFetchedStoredOfferKeys() -> AnyPublisher<[StoredOffer.Keys], Error>
 }
 
 final class OfferService: BaseService, OfferServiceType {
@@ -76,7 +79,14 @@ final class OfferService: BaseService, OfferServiceType {
 
     func saveOffer(id: String, offer: Offer, keys: ECCKeys, isCreated: Bool) -> AnyPublisher<Void, Error> {
         let storedOffer = StoredOffer(offer: offer, id: id, keys: keys)
-        return localStorageService.saveOffer(storedOffer, isCreated: isCreated)
+        return localStorageService.saveOffers([storedOffer], isCreated: isCreated)
+    }
+
+    func saveFetchedOffers(offers: [Offer]) -> AnyPublisher<Void, Error> {
+        let storedOffers = offers.map {
+            StoredOffer(offer: $0, id: $0.offerId, keys: ECCKeys(pubKey: $0.offerPublicKey, privKey: nil))
+        }
+        return localStorageService.saveOffers(storedOffers, isCreated: false)
     }
 
     func getStoredOfferIds(forType offerType: OfferType) -> AnyPublisher<[String], Error> {
@@ -99,6 +109,18 @@ final class OfferService: BaseService, OfferServiceType {
 
     func getStoredOfferKeys() -> AnyPublisher<[StoredOffer.Keys], Error> {
         localStorageService.getOffers()
+            .map { $0.map { $0.getIdWithKeys() } }
+            .eraseToAnyPublisher()
+    }
+
+    func getCreatedStoredOfferKeys() -> AnyPublisher<[StoredOffer.Keys], Error> {
+        localStorageService.getCreatedOffers()
+            .map { $0.map { $0.getIdWithKeys() } }
+            .eraseToAnyPublisher()
+    }
+
+    func getFetchedStoredOfferKeys() -> AnyPublisher<[StoredOffer.Keys], Error> {
+        localStorageService.getFetchedOffers()
             .map { $0.map { $0.getIdWithKeys() } }
             .eraseToAnyPublisher()
     }

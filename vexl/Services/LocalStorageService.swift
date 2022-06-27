@@ -14,8 +14,10 @@ enum LocalStorageError: Error {
 }
 
 protocol LocalStorageServiceType {
-    func saveOffer(_ storedOffer: StoredOffer, isCreated: Bool) -> AnyPublisher<Void, Error>
+    func saveOffers(_ storedOffer: [StoredOffer], isCreated: Bool) -> AnyPublisher<Void, Error>
     func getOffers() -> AnyPublisher<[StoredOffer], Error>
+    func getCreatedOffers() -> AnyPublisher<[StoredOffer], Error>
+    func getFetchedOffers() -> AnyPublisher<[StoredOffer], Error>
     func saveInbox(_ inbox: ChatInbox) throws
     func getInboxes(ofType type: ChatInbox.InboxType) throws -> [ChatInbox]
     func saveMessages(_ messages: [ParsedChatMessage]) -> AnyPublisher<Void, Error>
@@ -30,12 +32,12 @@ protocol LocalStorageServiceType {
 
 final class LocalStorageService: LocalStorageServiceType {
 
-    func saveOffer(_ storedOffer: StoredOffer, isCreated: Bool) -> AnyPublisher<Void, Error> {
+    func saveOffers(_ storedOffer: [StoredOffer], isCreated: Bool) -> AnyPublisher<Void, Error> {
         Future { promise in
             if isCreated {
-                DictionaryDB.saveCreatedOffer(storedOffer)
+                DictionaryDB.saveCreatedOffers(storedOffer)
             } else {
-                DictionaryDB.saveFetchedOffer(storedOffer)
+                DictionaryDB.saveFetchedOffers(storedOffer)
             }
             promise(.success(()))
         }
@@ -47,6 +49,20 @@ final class LocalStorageService: LocalStorageServiceType {
             let createdOffers = DictionaryDB.getCreatedOffers()
             let fetchedOffers = DictionaryDB.getFetchedOffers()
             promise(.success(createdOffers + fetchedOffers))
+        }
+        .eraseToAnyPublisher()
+    }
+
+    func getCreatedOffers() -> AnyPublisher<[StoredOffer], Error> {
+        Future { promise in
+            promise(.success(DictionaryDB.getCreatedOffers()))
+        }
+        .eraseToAnyPublisher()
+    }
+
+    func getFetchedOffers() -> AnyPublisher<[StoredOffer], Error> {
+        Future { promise in
+            promise(.success(DictionaryDB.getFetchedOffers()))
         }
         .eraseToAnyPublisher()
     }
