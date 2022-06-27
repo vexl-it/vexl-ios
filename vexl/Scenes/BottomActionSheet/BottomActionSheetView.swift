@@ -56,7 +56,7 @@ struct BottomActionSheetView<ViewModel: BottomActionSheetViewModelProtocol>: Vie
             .opacity(Appearance.dimmingViewOpacity)
             .edgesIgnoringSafeArea(.all)
             .onTapGesture {
-                viewModel.dismissPublisher.send()
+                dismiss()
             }
     }
 
