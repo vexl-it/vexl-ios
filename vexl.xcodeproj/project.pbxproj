@@ -31,6 +31,7 @@
 		4FBF6244283FBF7200DDBE71 /* RequestOfferView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FBF6243283FBF7200DDBE71 /* RequestOfferView.swift */; };
 		4FBF624C2840D31C00DDBE71 /* ToggleKeyboardBaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FBF624B2840D31B00DDBE71 /* ToggleKeyboardBaseViewController.swift */; };
 		4FD8E3E02821B922003B165E /* CoinData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FD8E3DF2821B922003B165E /* CoinData.swift */; };
+		B007A72C2864FEBA00CFA5C9 /* BottomActionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = B007A72B2864FEBA00CFA5C9 /* BottomActionSheet.swift */; };
 		B01C01E62860B2C400A29F85 /* CoinChartData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B01C01E52860B2C400A29F85 /* CoinChartData.swift */; };
 		B01C01E92860D2CD00A29F85 /* ContentState.swift in Sources */ = {isa = PBXBuildFile; fileRef = B01C01E82860D2CD00A29F85 /* ContentState.swift */; };
 		B01C01EB2861F9D900A29F85 /* vexl-crypto.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = B01C01EA2861F9D900A29F85 /* vexl-crypto.xcframework */; };
@@ -331,6 +332,7 @@
 		62F22E6F56C7BEA94D7B5F5D /* Pods-vexl.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-vexl.staging.xcconfig"; path = "Target Support Files/Pods-vexl/Pods-vexl.staging.xcconfig"; sourceTree = "<group>"; };
 		7F8C3B1F22E20D7D5005290C /* Pods-vexl-vexlTests.devel.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-vexl-vexlTests.devel.xcconfig"; path = "Target Support Files/Pods-vexl-vexlTests/Pods-vexl-vexlTests.devel.xcconfig"; sourceTree = "<group>"; };
 		937D63D507F1C9FE14E50FA2 /* Pods-vexl.appstore.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-vexl.appstore.xcconfig"; path = "Target Support Files/Pods-vexl/Pods-vexl.appstore.xcconfig"; sourceTree = "<group>"; };
+		B007A72B2864FEBA00CFA5C9 /* BottomActionSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomActionSheet.swift; sourceTree = "<group>"; };
 		B01C01E52860B2C400A29F85 /* CoinChartData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinChartData.swift; sourceTree = "<group>"; };
 		B01C01E82860D2CD00A29F85 /* ContentState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentState.swift; sourceTree = "<group>"; };
 		B01C01EA2861F9D900A29F85 /* vexl-crypto.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = "vexl-crypto.xcframework"; sourceTree = "<group>"; };
@@ -895,6 +897,7 @@
 		B08F38FB27AE7110008B344F /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
+				B007A72F286598CD00CFA5C9 /* BottomActionSheet */,
 				F1485629284FD451003213D7 /* Chat */,
 				F1F5F197283FE51F00968366 /* ChatRequest */,
 				F148561D284FD0FB003213D7 /* Inbox */,
@@ -1120,6 +1123,7 @@
 				F11441A5284681EC00307D39 /* Modifiers */,
 				F11441A7284681EC00307D39 /* HeaderTitleView.swift */,
 				F11441C6284681EC00307D39 /* InfoBarView.swift */,
+				B007A72B2864FEBA00CFA5C9 /* BottomActionSheet.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -2188,6 +2192,7 @@
 				F14D29C727BFD93C00D1CD85 /* ButtonStyle.swift in Sources */,
 				B08F394527AE7112008B344F /* ReusableView.swift in Sources */,
 				F11441D0284681EC00307D39 /* BorderedTextField.swift in Sources */,
+				B007A72C2864FEBA00CFA5C9 /* BottomActionSheet.swift in Sources */,
 				B08F395B27AE7112008B344F /* Appearance.swift in Sources */,
 				B0F206F327AEA4C800A44E72 /* WindowCoordinator.swift in Sources */,
 				B0E9BB2A2815C7190012BF1D /* AES.swift in Sources */,
