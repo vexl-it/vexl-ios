@@ -18,8 +18,8 @@ protocol UserServiceType {
     func createUser(username: String, avatar: String?) -> AnyPublisher<User, Error>
     func deleteUser() -> AnyPublisher<Void, Error>
     func facebookSignature(id: String) -> AnyPublisher<ChallengeValidation, Error>
-    func getBitcoinData() -> AnyPublisher<CoinData, Error>
-    func getBitcoinChartData(option: TimelineOption) -> AnyPublisher<CoinChartData, Error>
+    func getBitcoinData(currency: Currency) -> AnyPublisher<CoinData, Error>
+    func getBitcoinChartData(currency: Currency, option: TimelineOption) -> AnyPublisher<CoinChartData, Error>
 }
 
 final class UserService: BaseService, UserServiceType {
@@ -84,13 +84,13 @@ final class UserService: BaseService, UserServiceType {
             .eraseToAnyPublisher()
     }
 
-    func getBitcoinData() -> AnyPublisher<CoinData, Error> {
-        request(type: CoinData.self, endpoint: UserRouter.bitcoin)
+    func getBitcoinData(currency: Currency) -> AnyPublisher<CoinData, Error> {
+        request(type: CoinData.self, endpoint: UserRouter.bitcoin(currency: currency))
             .eraseToAnyPublisher()
     }
 
-    func getBitcoinChartData(option: TimelineOption) -> AnyPublisher<CoinChartData, Error> {
-        request(type: CoinChartData.self, endpoint: UserRouter.bitcoinChart(option: option))
+    func getBitcoinChartData(currency: Currency, option: TimelineOption) -> AnyPublisher<CoinChartData, Error> {
+        request(type: CoinChartData.self, endpoint: UserRouter.bitcoinChart(currency: currency, option: option))
             .eraseToAnyPublisher()
     }
 }

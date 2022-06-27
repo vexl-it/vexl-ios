@@ -64,7 +64,7 @@ final class CryptocurrencyValueManager: CryptocurrencyValueManagerType {
             .prepend(Date())
             .flatMapLatest(with: self) { owner, _ -> AnyPublisher<ContentState<CoinData>, Never> in
                 owner.userService
-                    .getBitcoinData()
+                    .getBitcoinData(currency: owner.selectedCurrency.value)
                     .map { data -> ContentState<CoinData> in
                         .content(data)
                     }
@@ -88,7 +88,7 @@ final class CryptocurrencyValueManager: CryptocurrencyValueManagerType {
         currentTimeline.send(option)
         currentCoinChartData.send(.loading)
         coinChartSubscription = userService
-            .getBitcoinChartData(option: option)
+            .getBitcoinChartData(currency: selectedCurrency.value, option: option)
             .map { chartData in
                 if chartData.prices.count > Self.maxSampleCount {
                     let reduction = Int(chartData.prices.count / Self.maxSampleCount)
