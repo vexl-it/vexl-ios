@@ -33,7 +33,32 @@ final class UserProfileCoordinator: BaseCoordinator<Void> {
             .$isLoading
             .assign(to: &viewController.$isLoading)
 
+        viewModel
+            .route
+            .receive(on: RunLoop.main)
+            .filter { $0 == .selectCurrency }
+            .flatMapLatest(with: self) { owner, _ -> CoordinatingResult<RouterResult<Void>> in
+                let router = ModalRouter(parentViewController: viewController, presentationStyle: .overFullScreen, transitionStyle: .crossDissolve)
+                return owner.presentCurrencySelect(router: router)
+            }
+            .sink()
+            .store(in: cancelBag)
+
         return Empty(completeImmediately: false)
             .eraseToAnyPublisher()
+    }
+}
+
+extension UserProfileCoordinator {
+    private func presentCurrencySelect(router: Router) -> CoordinatingResult<RouterResult<Void>> {
+        coordinate(to: BottomActionSheetCoordinator(router: router, viewModel: CurrencySelectViewModel()))
+        .flatMap { result -> CoordinatingResult<RouterResult<Void>> in
+            guard result != .dismissedByRouter else {
+                return Just(result).eraseToAnyPublisher()
+            }
+            return router.dismiss(animated: true, returning: result)
+        }
+        .prefix(1)
+        .eraseToAnyPublisher()
     }
 }
