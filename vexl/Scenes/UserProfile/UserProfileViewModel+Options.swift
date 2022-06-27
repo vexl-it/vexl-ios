@@ -55,7 +55,7 @@ extension UserProfileViewModel {
             case .logout:
                 return L.userProfileLogout()
             case .currency:
-                return "Currency"
+                return L.userProfileCurrencyTitle()
             }
         }
 

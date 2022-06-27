@@ -12,11 +12,6 @@ import Combine
 
 final class UserProfileViewModel: ViewModelType, ObservableObject {
 
-    enum Modal {
-        case none
-        case selectCurrency
-    }
-
     @Inject var authenticationManager: AuthenticationManagerType
     @Inject var userService: UserServiceType
     @Inject var offerService: OfferServiceType
@@ -40,7 +35,6 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
     @Published var primaryActivity: Activity = .init()
     @Published var isLoading = false
     @Published var error: Error?
-    @Published var modal: Modal = .none
 
     var errorIndicator: ErrorIndicator {
         primaryActivity.error
@@ -62,20 +56,11 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
         Option.groupedOptions
     }
 
-    var currencySelectViewModel: CurrencySelectViewModel {
-
-        .init()
-//        .init(dismiss: { [weak self] in
-//            withAnimation {
-//                self?.modal = .none
-//            }
-//        })
-    }
-
     // MARK: - Coordinator Bindings
 
     enum Route: Equatable {
         case dismissTapped
+        case selectCurrency
     }
 
     var route: CoordinatingSubject<Route> = .init()
@@ -145,9 +130,7 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
             .filter { $0 == .currency }
             .withUnretained(self)
             .sink { owner, _ in
-                withAnimation {
-                    owner.modal = .selectCurrency
-                }
+                owner.route.send(.selectCurrency)
             }
             .store(in: cancelBag)
 
