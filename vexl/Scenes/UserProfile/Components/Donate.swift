@@ -17,11 +17,6 @@ class DonateViewModel: BottomActionSheetViewModelProtocol {
     var content: DonateContent {
         DonateContent(viewModel: self)
     }
-
-    @Published var selectedCurrency: Currency!
-    lazy var allCurrencies: [Currency] = Currency.allCases
-
-    init() { }
 }
 
 struct DonateContent: View {

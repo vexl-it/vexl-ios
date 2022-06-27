@@ -19,8 +19,6 @@ class JoinVexlViewModel: BottomActionSheetViewModelProtocol {
     var content: JoinVexlContent {
         JoinVexlContent(viewModel: self)
     }
-
-    init() { }
 }
 
 struct JoinVexlContent: View {
