@@ -192,9 +192,7 @@ final class ChatRequestViewModel: ViewModelType, ObservableObject {
                 }
                 .withUnretained(self)
                 .sink { owner, indexAndConfirmation in
-                    var offers = owner.offerRequests
-                    offers.remove(at: indexAndConfirmation.index)
-                    owner.offerRequests = offers
+                    owner.offerRequests.remove(at: indexAndConfirmation.index)
                 }
                 .store(in: cancelBag)
     }

@@ -65,6 +65,8 @@ extension ChatConfirmationView {
     }
 }
 
+#if DEBUG || DEVEL
+
 struct ChatMessageConfirmationViewPreview: PreviewProvider {
     static var previews: some View {
         ChatConfirmationView(title: "Delete chat?",
@@ -92,3 +94,5 @@ struct ChatMessageConfirmationViewPreview: PreviewProvider {
             .previewDevice("iPhone 11")
     }
 }
+
+#endif

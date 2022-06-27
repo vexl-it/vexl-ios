@@ -9,13 +9,9 @@ import UIKit
 import Combine
 
 extension UIImage {
-    var base64: String? {
-        jpegData(compressionQuality: 0.5)?.base64EncodedString()
-    }
-
     var base64Publisher: AnyPublisher<String?, Never> {
         Future { [weak self] promise in
-            let data = self?.jpegData(compressionQuality: 0.5)?.base64EncodedString()
+            let data = self?.jpegData(compressionQuality: 1)?.base64EncodedString()
             promise(.success(data))
         }
         .eraseToAnyPublisher()

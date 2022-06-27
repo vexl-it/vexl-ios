@@ -9,7 +9,9 @@ import SwiftUI
 
 struct ChatConversationView: View {
 
-    let messages: [ChatMessageGroup]
+    let messages: [ChatConversationSection]
+    let revealAction: () -> Void
+    let imageAction: (String, String) -> Void
 
     var body: some View {
         ScrollView(showsIndicators: false) {
@@ -18,7 +20,31 @@ struct ChatConversationView: View {
                     ChatDateView(date: messageGroup.date, isInitial: false)
 
                     ForEach(messageGroup.messages) { message in
-                        ChatBubbleView(text: message.text, style: message.isContact ? .contact : .user)
+                        switch message.type {
+                        case .start:
+                            ChatStartTextView()
+                                .padding(.bottom, Appearance.GridGuide.padding)
+                        case .text:
+                            ChatTextBubbleView(text: message.text ?? "",
+                                               style: message.isContact ? .contact : .user)
+                        case .image:
+                            ChatImageBubbleView(image: message.imageView,
+                                                text: message.text,
+                                                style: message.isContact ? .contact : .user)
+                                .onTapGesture {
+                                    imageAction(messageGroup.id.uuidString, message.id.uuidString)
+                                }
+                        case .sendReveal:
+                            ChatRevealIdentityView(image: nil,
+                                                   isRequest: true,
+                                                   revealAction: nil)
+                        case .receiveReveal:
+                            ChatRevealIdentityView(image: nil,
+                                                   isRequest: false,
+                                                   revealAction: {
+                                revealAction()
+                            })
+                        }
                     }
                 }
             }
@@ -27,3 +53,17 @@ struct ChatConversationView: View {
         .padding([.horizontal, .top], Appearance.GridGuide.point)
     }
 }
+
+#if DEBUG || DEVEL
+
+struct ChatConversationViewPreview: PreviewProvider {
+    static var previews: some View {
+        ChatConversationView(messages: ChatConversationSection.stub,
+                             revealAction: {},
+                             imageAction: { _, _ in })
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .previewDevice("iPhone 11")
+    }
+}
+
+#endif

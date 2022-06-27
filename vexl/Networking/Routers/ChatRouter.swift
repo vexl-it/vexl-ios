@@ -17,13 +17,15 @@ enum ChatRouter: ApiRouter {
     case requestChallenge(publicKey: String)
     case pullChat(publicKey: String, signature: String)
     case deleteChat(publicKey: String)
+    case blockInbox(publicKey: String, publicKeyToBlock: String, signature: String, isBlocked: Bool)
+    case sendMessage(senderPublicKey: String, receiverPublicKey: String, message: String, messageType: MessageType)
     case deleteChatMessages(publicKey: String)
 
     var method: HTTPMethod {
         switch self {
-        case .createInbox, .request, .requestChallenge, .requestConfirmation:
+        case .createInbox, .request, .requestChallenge, .requestConfirmation, .sendMessage:
             return .post
-        case .pullChat:
+        case .pullChat, .blockInbox:
             return .put
         case .deleteChat, .deleteChatMessages:
             return .delete
@@ -50,6 +52,10 @@ enum ChatRouter: ApiRouter {
             return "inboxes/messages"
         case .requestConfirmation:
             return "inboxes/approval/confirm"
+        case .blockInbox:
+            return "inboxes/block"
+        case .sendMessage:
+            return "inboxes/messages"
         }
     }
 
@@ -81,6 +87,20 @@ enum ChatRouter: ApiRouter {
                 "signature": signature,
                 "message": message,
                 "approve": confirmed
+            ]
+        case let .blockInbox(publicKey, publicKeyToBlock, signature, isBlocked):
+            return [
+                "publicKey": publicKey,
+                "publicKeyToBlock": publicKeyToBlock,
+                "signature": signature,
+                "block": isBlocked
+            ]
+        case let .sendMessage(senderPublicKey, receiverPublicKey, message, messageType):
+            return [
+                "senderPublicKey": senderPublicKey,
+                "receiverPublicKey": receiverPublicKey,
+                "messageType": messageType.rawValue,
+                "message": message
             ]
         case let .deleteChat(publicKey):
             return ["publicKey": publicKey]

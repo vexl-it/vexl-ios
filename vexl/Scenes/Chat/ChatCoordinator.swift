@@ -27,6 +27,20 @@ final class ChatCoordinator: BaseCoordinator<RouterResult<Void>> {
 
         router.present(viewController, animated: animated)
 
+        viewModel
+            .route
+            .compactMap { action -> Data? in
+                if case let .expandImageTapped(image) = action { return image }
+                return nil
+            }
+            .withUnretained(self)
+            .flatMap { owner, image -> CoordinatingResult<RouterResult<Void>> in
+                let router = ModalRouter(parentViewController: viewController, presentationStyle: .fullScreen, transitionStyle: .coverVertical)
+                return owner.showChatExpandedImage(router: router, image: image)
+            }
+            .sink()
+            .store(in: cancelBag)
+
         let dismiss = viewModel
             .route
             .filter { $0 == .dismissTapped }
@@ -34,5 +48,19 @@ final class ChatCoordinator: BaseCoordinator<RouterResult<Void>> {
 
         return dismiss
             .eraseToAnyPublisher()
+    }
+}
+
+extension ChatCoordinator {
+    private func showChatExpandedImage(router: Router, image: Data) -> CoordinatingResult<RouterResult<Void>> {
+        coordinate(to: ChatExpandedImageCoordinator(image: image, router: router, animated: animated))
+        .flatMap { result -> CoordinatingResult<RouterResult<Void>> in
+            guard result != .dismissedByRouter else {
+                return Just(result).eraseToAnyPublisher()
+            }
+            return router.dismiss(animated: true, returning: result)
+        }
+        .prefix(1)
+        .eraseToAnyPublisher()
     }
 }

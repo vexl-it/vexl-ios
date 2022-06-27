@@ -91,10 +91,9 @@ final class RequestOfferViewModel: ViewModelType, ObservableObject {
             .filter { $0 == .sendRequest }
             .withUnretained(self)
             .compactMap { owner, _ -> String? in
-                let message = ParsedChatMessage.createMessagingRequest(inboxPublicKey: owner.offer.offerPublicKey,
-                                                                       senderKey: owner.userSecurity.userKeys.publicKey,
-                                                                       text: owner.requestText)
-                return message?.asString
+                ParsedChatMessage.createMessagingRequest(inboxPublicKey: owner.offer.offerPublicKey,
+                                                         text: owner.requestText,
+                                                         senderKey: owner.userSecurity.userKeys.publicKey)
             }
             .flatMapLatest(with: self) { owner, message -> AnyPublisher<Void, Never> in
                 owner.state = .requesting

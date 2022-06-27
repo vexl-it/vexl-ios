@@ -19,6 +19,28 @@ struct ChatView: View {
             modalView
                 .zIndex(1)
         }
+        .actionSheet(isPresented: $viewModel.showImagePickerActionSheet, content: {
+            ActionSheet(title: Text(L.registerNameAvatarImagePicker()),
+                        message: nil,
+                        buttons: [
+                            .default(Text(L.registerNameAvatarCamera())) {
+                                viewModel.showImagePicker = true
+                                viewModel.imageSource = .camera
+                            },
+                            .default(Text(L.registerNameAvatarPhotoAlbum())) {
+                                viewModel.showImagePicker = true
+                                viewModel.imageSource = .photoAlbum
+                            },
+                            .cancel()
+                        ])
+        })
+        .fullScreenCover(isPresented: $viewModel.showImagePicker) {
+            ImagePicker(
+                sourceType: viewModel.imageSource == .photoAlbum ? .photoLibrary : .camera,
+                selectedImage: $viewModel.selectedImage
+            )
+            .background(Color.black.ignoresSafeArea())
+        }
         .frame(maxWidth: .infinity)
         .background(Color.black.edgesIgnoringSafeArea(.all))
     }
@@ -33,7 +55,8 @@ struct ChatView: View {
                 viewModel.action.send(.dismissTap)
             })
 
-            HLine(color: Appearance.Colors.whiteOpaque, height: 1)
+            HLine(color: Appearance.Colors.whiteOpaque,
+                  height: 1)
                 .padding(.top, Appearance.GridGuide.smallPadding)
 
             ChatActionView { chatAction in
@@ -42,15 +65,29 @@ struct ChatView: View {
                 }
             }
 
-            ChatConversationView(messages: viewModel.messages)
+            ChatConversationView(messages: viewModel.messages,
+                                 revealAction: {
+                withAnimation {
+                    viewModel.action.send(.revealResponseTap)
+                }
+            },
+                                 imageAction: { groupId, messageId in
+                viewModel.action.send(.expandImageTap(groupId: groupId,
+                                                      messageId: messageId))
+            })
                 .frame(maxHeight: .infinity)
+                .padding(.bottom, Appearance.GridGuide.point)
 
             ChatInputView(text: $viewModel.currentMessage,
+                          image: viewModel.selectedImageData,
                           sendAction: {
                 viewModel.action.send(.messageSend)
             },
-                                 cameraAction: {
+                          cameraAction: {
                 viewModel.action.send(.cameraTap)
+            },
+                          deleteImageAction: {
+                viewModel.action.send(.deleteImageTap)
             })
                 .padding([.horizontal, .bottom], Appearance.GridGuide.padding)
         }
@@ -78,99 +115,16 @@ struct ChatView: View {
     }
 
     private var modalSheet: some View {
-        Group {
-            switch viewModel.modal {
-            case .offer:
-                offerView
-            case .friends:
-                commonFriendView
-            case .delete:
-                deleteView
-            case .deleteConfirmation:
-                deleteConfirmationView
-            case .block:
-                blockView
-            case .blockConfirmation:
-                blockConfirmationView
-            case .none:
-                EmptyView()
-            }
-        }
+        ChatModalContainerView(modal: viewModel.modal,
+                               commonFriends: viewModel.friends,
+                               action: { userAction in
+            viewModel.action.send(userAction)
+        })
         .transition(.move(edge: .bottom))
     }
-
-    private var offerView: some View {
-        ChatOfferView {
-            withAnimation {
-                viewModel.action.send(.dismissModal)
-            }
-        }
-    }
-
-    private var commonFriendView: some View {
-        ChatCommonFriendsView(friends: viewModel.friends) {
-            withAnimation {
-                viewModel.action.send(.dismissModal)
-            }
-        }
-    }
-
-    private var deleteView: some View {
-        ChatDeleteConfirmationView(style: .regular,
-                                   mainAction: {
-            withAnimation {
-                viewModel.action.send(.deleteTap)
-            }
-        },
-                                          dismiss: {
-            withAnimation {
-                viewModel.action.send(.dismissModal)
-            }
-        })
-    }
-
-    private var deleteConfirmationView: some View {
-        ChatDeleteConfirmationView(style: .confirmation,
-                                   mainAction: {
-            withAnimation {
-                viewModel.action.send(.deleteConfirmedTap)
-            }
-        },
-                                          dismiss: {
-            withAnimation {
-                viewModel.action.send(.dismissModal)
-            }
-        })
-    }
-
-    private var blockView: some View {
-        ChatBlockConfirmationView(style: .regular,
-                                  mainAction: {
-            withAnimation {
-                viewModel.action.send(.blockTap)
-            }
-        },
-                                         dismiss: {
-            withAnimation {
-                viewModel.action.send(.dismissModal)
-            }
-        })
-    }
-
-    private var blockConfirmationView: some View {
-        ChatBlockConfirmationView(style: .confirmation,
-                                  mainAction: {
-            withAnimation {
-                viewModel.action.send(.blockConfirmedTap)
-            }
-        },
-                                         dismiss: {
-            withAnimation {
-                viewModel.action.send(.dismissModal)
-            }
-        })
-    }
 }
+
+#if DEBUG || DEVEL
 
 struct ChatMessageViewPreview: PreviewProvider {
     static var previews: some View {
@@ -179,3 +133,5 @@ struct ChatMessageViewPreview: PreviewProvider {
             .previewDevice("iPhone 11")
     }
 }
+
+#endif
