@@ -88,7 +88,7 @@ final class CryptocurrencyValueManager: CryptocurrencyValueManagerType {
         currentTimeline.send(option)
         currentCoinChartData.send(.loading)
         coinChartSubscription = userService
-            .getBitcoinChartData(option: option)
+            .getBitcoinChartData(currency: selectedCurrency.value, option: option)
             .map { chartData in
                 if chartData.prices.count > Self.maxSampleCount {
                     let reduction = Int(chartData.prices.count / Self.maxSampleCount)
@@ -119,11 +119,8 @@ final class CryptocurrencyValueManager: CryptocurrencyValueManagerType {
 
     func select(currency: Currency) {
         selectedCurrency.send(currency)
-        currentCoinData.send(.loading)
         currentCoinChartData.send(.loading)
         fetchChart(option: currentTimeline.value)
-        stopPollingCoinData()
-        startPollingCoinData()
     }
 
     func toggleExpand() {

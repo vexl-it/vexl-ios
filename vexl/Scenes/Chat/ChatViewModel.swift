@@ -98,6 +98,10 @@ final class ChatViewModel: ViewModelType, ObservableObject {
         modal != .none
     }
 
+    var selectedImageData: Data? {
+        selectedImage?.jpegData(compressionQuality: 1)
+    }
+
     private let cancelBag: CancelBag = .init()
 
     private var sharedAction: AnyPublisher<UserAction, Never> {

@@ -12,10 +12,12 @@ enum HorizontalPosition {
     case right
 }
 
-enum Currency: String, Codable {
+enum Currency: String, Codable, CaseIterable, Identifiable {
+    var id: Int { self.rawValue.hashValue }
+
+    case czk = "CZK"
     case eur = "EUR"
     case usd = "USD"
-    case czk = "CZK"
 
     var sign: String {
         switch self {
@@ -36,6 +38,17 @@ enum Currency: String, Codable {
             return .left
         case .czk:
             return .right
+        }
+    }
+
+    var title: String {
+        switch self {
+        case .eur:
+            return L.userProfileCurrencyEur()
+        case .usd:
+            return L.userProfileCurrencyUsd()
+        case .czk:
+            return L.userProfileCurrencyCzk()
         }
     }
 }

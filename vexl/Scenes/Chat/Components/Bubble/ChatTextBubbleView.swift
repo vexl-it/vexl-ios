@@ -39,11 +39,11 @@ struct ChatTextBubbleViewPreview: PreviewProvider {
         .previewDevice("iPhone 11")
 
         VStack {
-            ChatImageBubbleView(image: R.image.onboarding.testAvatar()!.jpegData(compressionQuality: 0.25)!,
+            ChatImageBubbleView(image: Image(uiImage: R.image.onboarding.testAvatar()!),
                                 text: nil,
                                 style: .contact)
 
-            ChatImageBubbleView(image: R.image.onboarding.testAvatar()!.jpegData(compressionQuality: 0.25)!,
+            ChatImageBubbleView(image: Image(uiImage: R.image.onboarding.testAvatar()!),
                                 text: nil,
                                 style: .user)
         }

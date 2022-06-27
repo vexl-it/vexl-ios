@@ -10,7 +10,7 @@ import SwiftUI
 struct ChatInputView: View {
 
     @Binding var text: String
-    let image: UIImage?
+    let image: Data?
     let sendAction: () -> Void
     let cameraAction: () -> Void
     let deleteImageAction: () -> Void
@@ -78,12 +78,12 @@ extension ChatInputView {
 
     struct SelectedImageView: View {
 
-        let image: UIImage
+        let image: Data
         let deleteAction: () -> Void
 
         var body: some View {
             ZStack(alignment: .topTrailing) {
-                Image(uiImage: image)
+                Image(data: image, placeholder: "")
                     .resizable()
                     .frame(size: Appearance.GridGuide.chatInputImageSize)
                     .cornerRadius(Appearance.GridGuide.containerCorner)
@@ -121,7 +121,7 @@ struct ChatMessageInputViewPreview: PreviewProvider {
                 .previewDevice("iPhone 11")
 
             ChatInputView(text: .constant("Hello there"),
-                          image: R.image.onboarding.testAvatar()!,
+                          image: R.image.onboarding.testAvatar()!.jpegData(compressionQuality: 0.25)!,
                           sendAction: {},
                           cameraAction: {},
                           deleteImageAction: {})

@@ -71,19 +71,19 @@ struct ChatBubbleViewPreview: PreviewProvider {
 
             ChatTextBubbleView(text: "qwerty", style: .user)
 
-            ChatImageBubbleView(image: R.image.onboarding.testAvatar()!.jpegData(compressionQuality: 0.25)!,
+            ChatImageBubbleView(image: Image(uiImage: R.image.onboarding.testAvatar()!),
                                 text: nil,
                                 style: .contact)
 
-            ChatImageBubbleView(image: R.image.onboarding.testAvatar()!.jpegData(compressionQuality: 0.25)!,
+            ChatImageBubbleView(image: Image(uiImage: R.image.onboarding.testAvatar()!),
                                 text: nil,
                                 style: .user)
 
-            ChatImageBubbleView(image: R.image.onboarding.testAvatar()!.jpegData(compressionQuality: 0.25)!,
+            ChatImageBubbleView(image: Image(uiImage: R.image.onboarding.testAvatar()!),
                                 text: "qwerty qwerty qwerty qwerty qwerty qwerty",
                                 style: .contact)
 
-            ChatImageBubbleView(image: R.image.onboarding.testAvatar()!.jpegData(compressionQuality: 0.25)!,
+            ChatImageBubbleView(image: Image(uiImage: R.image.onboarding.testAvatar()!),
                                 text: "qwerty qwerty",
                                 style: .user)
         }

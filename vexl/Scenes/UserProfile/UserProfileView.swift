@@ -13,55 +13,78 @@ struct UserProfileView: View {
 
     @ObservedObject var viewModel: UserProfileViewModel
 
+    private let headerHeight: Double = 56
+
     var body: some View {
         VStack(spacing: .zero) {
             BitcoinView(viewModel: viewModel.bitcoinViewModel)
 
             content
+                .background(Color.black)
+                .cornerRadius(Appearance.GridGuide.buttonCorner)
         }
         .background(Color.black.edgesIgnoringSafeArea(.all))
         .navigationBarHidden(true)
     }
 
     private var content: some View {
-        VStack {
+        VStack(spacing: 0) {
             header
-
-            HLine(color: Color.white, height: 3)
-                .padding(.horizontal, Appearance.GridGuide.point)
 
             profileItems
         }
     }
 
     private var header: some View {
-        HStack(spacing: Appearance.GridGuide.padding) {
+        HStack {
+            Button(
+                action: { viewModel.action.send(.donate) },
+                label: { Image(R.image.profile.donate.name) }
+            )
+            .frame(width: headerHeight, height: headerHeight)
+            Spacer()
+            Button(
+                action: { viewModel.action.send(.joinVexl) },
+                label: { Image(R.image.profile.qrCode.name) }
+            )
+            .frame(width: headerHeight, height: headerHeight)
+        }
+        .padding()
+        .frame(height: headerHeight)
+    }
+
+    private var profile: some View {
+        VStack(alignment: .center, spacing: Appearance.GridGuide.padding) {
             avatarImage
 
             Text(viewModel.username)
                 .textStyle(.h2)
                 .foregroundColor(.white)
-                .frame(maxWidth: .infinity, alignment: .leading)
+                .frame(maxWidth: .infinity, alignment: .center)
         }
-        .padding(.horizontal, Appearance.GridGuide.padding)
-        .padding(.vertical, Appearance.GridGuide.mediumPadding2)
+        .padding(.bottom, Appearance.GridGuide.padding)
     }
 
     private var avatarImage: some View {
         Image(data: viewModel.avatar, placeholder: R.image.onboarding.emptyAvatar.name)
             .resizable()
-            .frame(width: Appearance.GridGuide.baseHeight, height: Appearance.GridGuide.baseHeight)
+            .frame(size: Appearance.GridGuide.largeIconSize)
             .cornerRadius(Appearance.GridGuide.baseHeight * 0.5, corners: .allCorners)
     }
 
     @ViewBuilder private var profileItems: some View {
         List {
+            Section {
+                profile
+                    .listRowBackground(Color.black)
+            }
             ForEach(viewModel.options) { group in
                 Section {
                     ForEach(group.options) { item in
                         Item(title: item.title,
                              subtitle: viewModel.subtitle(for: item),
-                             icon: item.iconName)
+                             icon: item.iconName,
+                             isDestructive: item == .logout)
                         .onTapGesture {
                             viewModel.send(action: .itemTap(option: item))
                         }

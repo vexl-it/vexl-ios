@@ -51,7 +51,7 @@ final class BitcoinViewModel: ViewModelType, ObservableObject {
     var currency: Currency { cryptocurrencyManager.selectedCurrency.value }
 
     var bitcoinValue: String {
-        guard let value = coinDataState.data?.priceUsd else { return "-" }
+        guard let value = coinDataState.data?.price(for: currency) else { return "-" }
         return Formatters.numberFormatter.string(for: value) ?? "-"
     }
 
