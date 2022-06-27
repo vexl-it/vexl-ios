@@ -42,6 +42,13 @@ final class DictionaryDB {
         }
     }
 
+    static private var storedOffer: [String: [StoredOffer]] = ["created": [], "fetched": []] {
+        didSet {
+            guard let encodedData = try? encoder.encode(inboxMessage) else { return }
+            UserDefaults.standard.setValue(encodedData, forKey: "storedOffer")
+        }
+    }
+
     static func setupDatabase() {
         if let inboxesData = UserDefaults.standard.data(forKey: "inboxes"),
            let savedInboxes = try? decoder.decode([String: [ChatInbox]].self, from: inboxesData) {
@@ -61,6 +68,11 @@ final class DictionaryDB {
         if let inboxMessagesData = UserDefaults.standard.data(forKey: "inboxMessages"),
            let savedInboxMessages = try? decoder.decode([ChatInboxMessage].self, from: inboxMessagesData) {
             inboxMessage = savedInboxMessages
+        }
+
+        if let storedOfferData = UserDefaults.standard.data(forKey: "storedOffer"),
+           let savedStoredOffer = try? decoder.decode([String: [StoredOffer]].self, from: storedOfferData) {
+            storedOffer = savedStoredOffer
         }
     }
 
@@ -85,9 +97,7 @@ final class DictionaryDB {
     }
 
     static func saveMessages(_ messages: [ParsedChatMessage]) {
-        var content = self.messages
-        content.append(contentsOf: messages)
-        self.messages = content
+        self.messages.append(contentsOf: messages)
     }
 
     static func getMessages() -> [ParsedChatMessage] {
@@ -95,9 +105,7 @@ final class DictionaryDB {
     }
 
     static func saveRequests(_ request: ParsedChatMessage, inboxPublicKey: String) {
-        var content = self.requests
-        content.append(request)
-        self.requests = content
+        self.requests.append(request)
     }
 
     static func getRequests() -> [ParsedChatMessage] {
@@ -128,5 +136,25 @@ final class DictionaryDB {
 
     static func getInboxMessages() -> [ChatInboxMessage] {
         self.inboxMessage
+    }
+
+    static func getCreatedOffers() -> [StoredOffer] {
+        storedOffer["created"] ?? []
+    }
+
+    static func getFetchedOffers() -> [StoredOffer] {
+        storedOffer["fetched"] ?? []
+    }
+
+    static func saveCreatedOffer(_ offer: StoredOffer) {
+        var content = storedOffer["created"] ?? []
+        content.append(offer)
+        storedOffer["created"] = content
+    }
+
+    static func saveFetchedOffer(_ offer: StoredOffer) {
+        var content = storedOffer["fetched"] ?? []
+        content.append(offer)
+        storedOffer["fetched"] = content
     }
 }

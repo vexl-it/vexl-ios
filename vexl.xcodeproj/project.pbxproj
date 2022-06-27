@@ -262,6 +262,7 @@
 		F1B5FCD127C6F7EF0018729B /* RegisterPhoneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B5FCD027C6F7EF0018729B /* RegisterPhoneView.swift */; };
 		F1B5FCD627C703BF0018729B /* View+.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B5FCD527C703BF0018729B /* View+.swift */; };
 		F1B5FCD827C7040C0018729B /* RoundedCorners.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B5FCD727C7040C0018729B /* RoundedCorners.swift */; };
+		F1B93ED0286A2102008DAA90 /* StoredOffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B93ECF286A2102008DAA90 /* StoredOffer.swift */; };
 		F1BBC7052835C2960067F81B /* ContactsCount.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1BBC7042835C2960067F81B /* ContactsCount.swift */; };
 		F1BBC70E283BE5570067F81B /* TT Satoshi SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = F1BBC70A283BE5570067F81B /* TT Satoshi SemiBold.otf */; };
 		F1BBC70F283BE5570067F81B /* TT Satoshi Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = F1BBC70B283BE5570067F81B /* TT Satoshi Medium.otf */; };
@@ -593,6 +594,7 @@
 		F1B5FCD027C6F7EF0018729B /* RegisterPhoneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterPhoneView.swift; sourceTree = "<group>"; };
 		F1B5FCD527C703BF0018729B /* View+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+.swift"; sourceTree = "<group>"; };
 		F1B5FCD727C7040C0018729B /* RoundedCorners.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedCorners.swift; sourceTree = "<group>"; };
+		F1B93ECF286A2102008DAA90 /* StoredOffer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoredOffer.swift; sourceTree = "<group>"; };
 		F1BBC7042835C2960067F81B /* ContactsCount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsCount.swift; sourceTree = "<group>"; };
 		F1BBC70A283BE5570067F81B /* TT Satoshi SemiBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "TT Satoshi SemiBold.otf"; sourceTree = "<group>"; };
 		F1BBC70B283BE5570067F81B /* TT Satoshi Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "TT Satoshi Medium.otf"; sourceTree = "<group>"; };
@@ -909,6 +911,7 @@
 				F1D204F02863A282006A5671 /* Chat */,
 				4FBF6239283F8C2E00DDBE71 /* Offers */,
 				4FBF620C283CE3F100DDBE71 /* Filter */,
+				F1B93ECE286A20F9008DAA90 /* Storage */,
 				F175AB8227E4CBFE000DAB15 /* Networking */,
 				B01C01E72860B58500A29F85 /* Coin */,
 				B08F391827AE7112008B344F /* User.swift */,
@@ -1692,6 +1695,14 @@
 			path = Phone;
 			sourceTree = "<group>";
 		};
+		F1B93ECE286A20F9008DAA90 /* Storage */ = {
+			isa = PBXGroup;
+			children = (
+				F1B93ECF286A2102008DAA90 /* StoredOffer.swift */,
+			);
+			path = Storage;
+			sourceTree = "<group>";
+		};
 		F1BBC709283BE5430067F81B /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
@@ -2365,6 +2376,7 @@
 				F151A2A727C962CC000D7242 /* RegisterNameAvatarView+NameInput.swift in Sources */,
 				F11441D9284681EC00307D39 /* SingleOptionPickerView.swift in Sources */,
 				F1F5F19B283FE53300968366 /* ChatRequestView.swift in Sources */,
+				F1B93ED0286A2102008DAA90 /* StoredOffer.swift in Sources */,
 				F11441E7284682B200307D39 /* ChatRequestOfferInformationView.swift in Sources */,
 				B08F399527AE7D29008B344F /* SplashScreenViewModel.swift in Sources */,
 				F11441CE284681EC00307D39 /* OffsetScrollView.swift in Sources */,
