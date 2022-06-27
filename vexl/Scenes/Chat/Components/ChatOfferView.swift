@@ -51,7 +51,7 @@ struct ChatOfferViewPreview: PreviewProvider {
     static var previews: some View {
         ChatOfferView(dismiss: { })
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(Color.blue)
+            .background(Color.black)
             .previewDevice("iPhone 11")
     }
 }
