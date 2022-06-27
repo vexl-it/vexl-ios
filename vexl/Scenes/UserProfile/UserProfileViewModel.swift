@@ -23,7 +23,6 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
         case dismissTap
         case continueTap
         case itemTap(option: Option)
-        case dismissModal
     }
 
     let action: ActionSubject<UserAction> = .init()
@@ -110,15 +109,6 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
     }
 
     private func setupBindings() {
-        action
-            .filter { $0 == .dismissModal }
-            .withUnretained(self)
-            .sink { owner, _ in
-                withAnimation {
-                    owner.modal = .none
-                }
-            }
-            .store(in: cancelBag)
 
         let option = action
             .compactMap { action -> Option? in
