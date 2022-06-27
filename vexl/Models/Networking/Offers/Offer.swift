@@ -254,8 +254,8 @@ extension Offer {
     )
 
     static var stub2: Offer = Offer(
-        minAmount: 1000,
-        maxAmount: 3000,
+        minAmount: 1_000,
+        maxAmount: 3_000,
         description: "Offer stub 2",
         feeState: .withoutFee,
         feeAmount: 0,
