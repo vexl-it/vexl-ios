@@ -129,9 +129,11 @@ final class UserOffersViewModel: ViewModelType, ObservableObject {
     private func fetchOffers() {
         offerService
             .getStoredOfferIds(forType: offerType)
+            .track(activity: primaryActivity)
+            .materialize()
+            .compactMap(\.value)
             .filter { !$0.isEmpty }
-            .withUnretained(self)
-            .flatMap { owner, ids in
+            .flatMapLatest(with: self) { owner, ids in
                 owner.offerService
                     .getUserOffers(offerIds: ids)
                     .track(activity: owner.primaryActivity)

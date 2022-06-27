@@ -14,12 +14,12 @@ protocol OfferServiceType {
     func getUserOffers(offerIds: [String]) -> AnyPublisher<[EncryptedOffer], Error>
     func getOffer(pageLimit: Int?) -> AnyPublisher<Paged<EncryptedOffer>, Error>
     func createOffer(encryptedOffers: [EncryptedOffer], expiration: TimeInterval) -> AnyPublisher<EncryptedOffer, Error>
-    func storeOfferKey(key: ECCKeys, withId id: String, offerType: OfferType) -> AnyPublisher<Void, Error>
     func deleteOffers() -> AnyPublisher<Void, Error>
 
-    func getStoredOfferIds(forType offerType: OfferType) -> AnyPublisher<[String], Never>
-    func getAllStoredOfferIds() -> AnyPublisher<[String], Never>
-    func getStoredOfferKeys() -> AnyPublisher<[UserOfferKeys.OfferKey], Never>
+    func saveOffer(id: String, offer: Offer, keys: ECCKeys, isCreated: Bool) -> AnyPublisher<Void, Error>
+    func getStoredOfferIds(forType offerType: OfferType) -> AnyPublisher<[String], Error>
+    func getAllStoredOfferIds() -> AnyPublisher<[String], Error>
+    func getStoredOfferKeys() -> AnyPublisher<[StoredOffer.Keys], Error>
 }
 
 final class OfferService: BaseService, OfferServiceType {
@@ -74,12 +74,13 @@ final class OfferService: BaseService, OfferServiceType {
             .eraseToAnyPublisher()
     }
 
-    func storeOfferKey(key: ECCKeys, withId id: String, offerType: OfferType) -> AnyPublisher<Void, Error> {
-        localStorageService.saveOffer(id: id, type: offerType, key: key)
+    func saveOffer(id: String, offer: Offer, keys: ECCKeys, isCreated: Bool) -> AnyPublisher<Void, Error> {
+        let storedOffer = StoredOffer(offer: offer, id: id, keys: keys)
+        return localStorageService.saveOffer(storedOffer, isCreated: isCreated)
     }
 
-    func getStoredOfferIds(forType offerType: OfferType) -> AnyPublisher<[String], Never> {
-        localStorageService.getOfferKeys()
+    func getStoredOfferIds(forType offerType: OfferType) -> AnyPublisher<[String], Error> {
+        localStorageService.getOffers()
             .map { keys in
                 keys
                     .filter { $0.offerType == offerType }
@@ -88,16 +89,18 @@ final class OfferService: BaseService, OfferServiceType {
             .eraseToAnyPublisher()
     }
 
-    func getAllStoredOfferIds() -> AnyPublisher<[String], Never> {
-        localStorageService.getOfferKeys()
+    func getAllStoredOfferIds() -> AnyPublisher<[String], Error> {
+        localStorageService.getOffers()
             .map { keys in
                 keys.map(\.id)
             }
             .eraseToAnyPublisher()
     }
 
-    func getStoredOfferKeys() -> AnyPublisher<[UserOfferKeys.OfferKey], Never> {
-        localStorageService.getOfferKeys()
+    func getStoredOfferKeys() -> AnyPublisher<[StoredOffer.Keys], Error> {
+        localStorageService.getOffers()
+            .map { $0.map { $0.getIdWithKeys() } }
+            .eraseToAnyPublisher()
     }
 
     func deleteOffers() -> AnyPublisher<Void, Error> {

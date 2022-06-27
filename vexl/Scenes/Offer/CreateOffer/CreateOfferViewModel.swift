@@ -8,10 +8,13 @@
 import Foundation
 import Cleevio
 import SwiftUI
+import Combine
+
+typealias OfferData = (offer: Offer, contacts: [ContactKey])
+typealias OfferAndEncryptedOffers = (offer: Offer, encryptedOffers: [EncryptedOffer])
+typealias OfferAndEncryptedOffer = (offer: Offer, encryptedOffer: EncryptedOffer)
 
 final class CreateOfferViewModel: ViewModelType, ObservableObject {
-
-    typealias OfferData = (offer: Offer, contacts: [ContactKey])
 
     enum UserAction: Equatable {
         case pause
@@ -294,22 +297,29 @@ final class CreateOfferViewModel: ViewModelType, ObservableObject {
                     .track(activity: owner.primaryActivity)
                     .materialize()
                     .compactMap(\.value)
+                    .map { OfferAndEncryptedOffers(offer: offerData.offer, encryptedOffers: $0) }
+                    .eraseToAnyPublisher()
             }
 
         let createOffer = encryptOffer
             .withUnretained(self)
-            .flatMap { owner, encryptedOffer in
+            .flatMap { owner, offerAndEncryptedOffers in
                 owner.offerService
-                    .createOffer(encryptedOffers: encryptedOffer, expiration: owner.expiration)
+                    .createOffer(encryptedOffers: offerAndEncryptedOffers.encryptedOffers, expiration: owner.expiration)
                     .track(activity: owner.primaryActivity)
                     .materialize()
                     .compactMap(\.value)
+                    .map { OfferAndEncryptedOffer(offer: offerAndEncryptedOffers.offer, encryptedOffer: $0) }
+                    .eraseToAnyPublisher()
             }
 
         createOffer
-            .flatMapLatest(with: self) { owner, response in
+            .flatMapLatest(with: self) { owner, offerAndEncryptedOffer in
                 owner.offerService
-                    .storeOfferKey(key: owner.offerKey, withId: response.offerId, offerType: owner.offerType)
+                    .saveOffer(id: offerAndEncryptedOffer.encryptedOffer.offerId,
+                               offer: offerAndEncryptedOffer.offer,
+                               keys: owner.offerKey,
+                               isCreated: true)
                     .track(activity: owner.primaryActivity)
                     .materialize()
                     .compactMap(\.value)

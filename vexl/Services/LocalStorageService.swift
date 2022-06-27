@@ -14,9 +14,7 @@ enum LocalStorageError: Error {
 }
 
 protocol LocalStorageServiceType {
-    func saveOffer(id: String, type: OfferType, key: ECCKeys) -> AnyPublisher<Void, Error>
-    func getOfferKeys() -> AnyPublisher<[UserOfferKeys.OfferKey], Never>
-    func saveOffer(id: String, offer: Offer, keys: ECCKeys, isCreated: Bool) -> AnyPublisher<Void, Error>
+    func saveOffer(_ storedOffer: StoredOffer, isCreated: Bool) -> AnyPublisher<Void, Error>
     func getOffers() -> AnyPublisher<[StoredOffer], Error>
     func saveInbox(_ inbox: ChatInbox) throws
     func getInboxes(ofType type: ChatInbox.InboxType) throws -> [ChatInbox]
@@ -32,9 +30,8 @@ protocol LocalStorageServiceType {
 
 final class LocalStorageService: LocalStorageServiceType {
 
-    func saveOffer(id: String, offer: Offer, keys: ECCKeys, isCreated: Bool) -> AnyPublisher<Void, Error> {
+    func saveOffer(_ storedOffer: StoredOffer, isCreated: Bool) -> AnyPublisher<Void, Error> {
         Future { promise in
-            let storedOffer = StoredOffer(offer: offer, id: id, keys: keys)
             if isCreated {
                 DictionaryDB.saveCreatedOffer(storedOffer)
             } else {

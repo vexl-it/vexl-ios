@@ -9,7 +9,7 @@ import Foundation
 import Cleevio
 import Combine
 
-private typealias OfferAndSenderKeys = (offerKey: UserOfferKeys.OfferKey, senderPublicKey: String)
+private typealias OfferAndSenderKeys = (offerKey: StoredOffer.Keys, senderPublicKey: String)
 private typealias IndexAndConfirmation = (index: Int, confirmation: Bool)
 private typealias OfferAndMessage = (offer: Offer, message: ParsedChatMessage)
 
@@ -79,8 +79,9 @@ final class ChatRequestViewModel: ViewModelType, ObservableObject {
     private func setupDataBindings() {
         offerService
             .getStoredOfferKeys()
+            .track(activity: primaryActivity)
             .withUnretained(self)
-            .flatMap { owner, keys -> AnyPublisher<Void, Never> in
+            .flatMap { owner, keys in
                 owner.prepareRequestedMessages(storedOfferKeys: keys)
             }
             .sink()
@@ -130,7 +131,7 @@ final class ChatRequestViewModel: ViewModelType, ObservableObject {
 
     // MARK: - Helper methods for presenting the request that are pending of approval/rejection
 
-    private func prepareRequestedMessages(storedOfferKeys: [UserOfferKeys.OfferKey]) -> AnyPublisher<Void, Never> {
+    private func prepareRequestedMessages(storedOfferKeys: [StoredOffer.Keys]) -> AnyPublisher<Void, Never> {
         chatService
             .getRequestMessages()
             .track(activity: primaryActivity)
@@ -151,7 +152,7 @@ final class ChatRequestViewModel: ViewModelType, ObservableObject {
             .eraseToAnyPublisher()
     }
 
-    private func fetchUserOffers(offerKeys: [UserOfferKeys.OfferKey]) -> AnyPublisher<[Offer], Never> {
+    private func fetchUserOffers(offerKeys: [StoredOffer.Keys]) -> AnyPublisher<[Offer], Never> {
         offerService
             .getUserOffers(offerIds: offerKeys.map(\.id))
             .track(activity: primaryActivity)
@@ -161,7 +162,7 @@ final class ChatRequestViewModel: ViewModelType, ObservableObject {
             .eraseToAnyPublisher()
     }
 
-    private func saveRequestedOffers(_ offers: [Offer], offerKeys: [UserOfferKeys.OfferKey], parsedMessages: [ParsedChatMessage]) {
+    private func saveRequestedOffers(_ offers: [Offer], offerKeys: [StoredOffer.Keys], parsedMessages: [ParsedChatMessage]) {
 
         var offerRequestViewData: [ChatRequestOfferViewData] = []
         var offerAndSender: [OfferAndSenderKeys] = []
@@ -190,7 +191,7 @@ final class ChatRequestViewModel: ViewModelType, ObservableObject {
 
     private func communicationRequest(index: Int, isConfirmed: Bool) -> AnyPublisher<IndexAndConfirmation, Never> {
         let keys = offerAndSenderKeys[index]
-        let generateSignature = validateSignature(forOfferIndex: index, confirmation: isConfirmed, withInboxKey: keys.offerKey.key)
+        let generateSignature = validateSignature(forOfferIndex: index, confirmation: isConfirmed, withInboxKey: keys.offerKey.keys)
             .track(activity: primaryActivity)
             .materialize()
             .compactMap(\.value)
@@ -205,7 +206,7 @@ final class ChatRequestViewModel: ViewModelType, ObservableObject {
                 return owner.chatService
                     .communicationConfirmation(confirmation: isConfirmed,
                                                message: message,
-                                               inboxKeys: keys.offerKey.key,
+                                               inboxKeys: keys.offerKey.keys,
                                                requesterPublicKey: keys.senderPublicKey,
                                                signature: signature)
                     .track(activity: owner.primaryActivity)
