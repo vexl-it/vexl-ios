@@ -31,6 +31,14 @@
 		4FBF6244283FBF7200DDBE71 /* RequestOfferView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FBF6243283FBF7200DDBE71 /* RequestOfferView.swift */; };
 		4FBF624C2840D31C00DDBE71 /* ToggleKeyboardBaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FBF624B2840D31B00DDBE71 /* ToggleKeyboardBaseViewController.swift */; };
 		4FD8E3E02821B922003B165E /* CoinData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FD8E3DF2821B922003B165E /* CoinData.swift */; };
+		B007A72A2864FE4A00CFA5C9 /* CurrencySelect.swift in Sources */ = {isa = PBXBuildFile; fileRef = B007A7292864FE4A00CFA5C9 /* CurrencySelect.swift */; };
+		B007A72C2864FEBA00CFA5C9 /* BottomActionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = B007A72B2864FEBA00CFA5C9 /* BottomActionSheet.swift */; };
+		B007A72E2865072900CFA5C9 /* RadioButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B007A72D2865072900CFA5C9 /* RadioButton.swift */; };
+		B007A73128659A8700CFA5C9 /* BottomActionSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B007A73028659A8700CFA5C9 /* BottomActionSheetView.swift */; };
+		B007A73328659AC100CFA5C9 /* BottomActionSheetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B007A73228659AC100CFA5C9 /* BottomActionSheetViewModel.swift */; };
+		B007A73528659AD900CFA5C9 /* BottomActionSheetCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B007A73428659AD900CFA5C9 /* BottomActionSheetCoordinator.swift */; };
+		B007A73A2868B66500CFA5C9 /* JoinVexl.swift in Sources */ = {isa = PBXBuildFile; fileRef = B007A7392868B66500CFA5C9 /* JoinVexl.swift */; };
+		B007A73C2868B69E00CFA5C9 /* Donate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B007A73B2868B69E00CFA5C9 /* Donate.swift */; };
 		B01C01E62860B2C400A29F85 /* CoinChartData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B01C01E52860B2C400A29F85 /* CoinChartData.swift */; };
 		B01C01E92860D2CD00A29F85 /* ContentState.swift in Sources */ = {isa = PBXBuildFile; fileRef = B01C01E82860D2CD00A29F85 /* ContentState.swift */; };
 		B01C01EB2861F9D900A29F85 /* vexl-crypto.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = B01C01EA2861F9D900A29F85 /* vexl-crypto.xcframework */; };
@@ -343,6 +351,14 @@
 		62F22E6F56C7BEA94D7B5F5D /* Pods-vexl.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-vexl.staging.xcconfig"; path = "Target Support Files/Pods-vexl/Pods-vexl.staging.xcconfig"; sourceTree = "<group>"; };
 		7F8C3B1F22E20D7D5005290C /* Pods-vexl-vexlTests.devel.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-vexl-vexlTests.devel.xcconfig"; path = "Target Support Files/Pods-vexl-vexlTests/Pods-vexl-vexlTests.devel.xcconfig"; sourceTree = "<group>"; };
 		937D63D507F1C9FE14E50FA2 /* Pods-vexl.appstore.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-vexl.appstore.xcconfig"; path = "Target Support Files/Pods-vexl/Pods-vexl.appstore.xcconfig"; sourceTree = "<group>"; };
+		B007A7292864FE4A00CFA5C9 /* CurrencySelect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencySelect.swift; sourceTree = "<group>"; };
+		B007A72B2864FEBA00CFA5C9 /* BottomActionSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomActionSheet.swift; sourceTree = "<group>"; };
+		B007A72D2865072900CFA5C9 /* RadioButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadioButton.swift; sourceTree = "<group>"; };
+		B007A73028659A8700CFA5C9 /* BottomActionSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomActionSheetView.swift; sourceTree = "<group>"; };
+		B007A73228659AC100CFA5C9 /* BottomActionSheetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomActionSheetViewModel.swift; sourceTree = "<group>"; };
+		B007A73428659AD900CFA5C9 /* BottomActionSheetCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomActionSheetCoordinator.swift; sourceTree = "<group>"; };
+		B007A7392868B66500CFA5C9 /* JoinVexl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinVexl.swift; sourceTree = "<group>"; };
+		B007A73B2868B69E00CFA5C9 /* Donate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Donate.swift; sourceTree = "<group>"; };
 		B01C01E52860B2C400A29F85 /* CoinChartData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinChartData.swift; sourceTree = "<group>"; };
 		B01C01E82860D2CD00A29F85 /* ContentState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentState.swift; sourceTree = "<group>"; };
 		B01C01EA2861F9D900A29F85 /* vexl-crypto.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = "vexl-crypto.xcframework"; sourceTree = "<group>"; };
@@ -728,6 +744,16 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		B007A72F286598CD00CFA5C9 /* BottomActionSheet */ = {
+			isa = PBXGroup;
+			children = (
+				B007A73428659AD900CFA5C9 /* BottomActionSheetCoordinator.swift */,
+				B007A73228659AC100CFA5C9 /* BottomActionSheetViewModel.swift */,
+				B007A73028659A8700CFA5C9 /* BottomActionSheetView.swift */,
+			);
+			path = BottomActionSheet;
+			sourceTree = "<group>";
+		};
 		B01C01E72860B58500A29F85 /* Coin */ = {
 			isa = PBXGroup;
 			children = (
@@ -920,6 +946,7 @@
 			isa = PBXGroup;
 			children = (
 				F1BDC974285BF9D600F86581 /* ChatExpandedImage */,
+				B007A72F286598CD00CFA5C9 /* BottomActionSheet */,
 				F1485629284FD451003213D7 /* Chat */,
 				F1F5F197283FE51F00968366 /* ChatRequest */,
 				F148561D284FD0FB003213D7 /* Inbox */,
@@ -928,7 +955,7 @@
 				F188626628169A3700659786 /* Marketplace */,
 				F188621D2810587100659786 /* Offer */,
 				F1D200A428251C4E006DF4AB /* Tabbar */,
-				F1BFA951280223BD00F4E745 /* Profile */,
+				F1BFA951280223BD00F4E745 /* UserProfile */,
 				B08F399127AE7CEC008B344F /* SplashScreen */,
 				B08F399827AE7D4B008B344F /* Onboarding */,
 				B0EEE11427B14D0B0097031E /* Welcome */,
@@ -1145,6 +1172,7 @@
 				F11441A5284681EC00307D39 /* Modifiers */,
 				F11441A7284681EC00307D39 /* HeaderTitleView.swift */,
 				F11441C6284681EC00307D39 /* InfoBarView.swift */,
+				B007A72B2864FEBA00CFA5C9 /* BottomActionSheet.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1221,6 +1249,7 @@
 			children = (
 				F11441B9284681EC00307D39 /* RangePickerView.swift */,
 				F11441BA284681EC00307D39 /* OptionPicker */,
+				B007A72D2865072900CFA5C9 /* RadioButton.swift */,
 			);
 			path = Pickers;
 			sourceTree = "<group>";
@@ -1685,7 +1714,7 @@
 			path = ChatExpandedImage;
 			sourceTree = "<group>";
 		};
-		F1BFA951280223BD00F4E745 /* Profile */ = {
+		F1BFA951280223BD00F4E745 /* UserProfile */ = {
 			isa = PBXGroup;
 			children = (
 				F1BFA96F2803A59F00F4E745 /* Components */,
@@ -1694,13 +1723,16 @@
 				F1BFA953280223BD00F4E745 /* UserProfileViewModel.swift */,
 				F1BFA954280223BD00F4E745 /* UserProfileViewModel+Options.swift */,
 			);
-			path = Profile;
+			path = UserProfile;
 			sourceTree = "<group>";
 		};
 		F1BFA96F2803A59F00F4E745 /* Components */ = {
 			isa = PBXGroup;
 			children = (
 				F1BFA96D2803A49300F4E745 /* UserProfileView+Item.swift */,
+				B007A7292864FE4A00CFA5C9 /* CurrencySelect.swift */,
+				B007A7392868B66500CFA5C9 /* JoinVexl.swift */,
+				B007A73B2868B69E00CFA5C9 /* Donate.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -2065,6 +2097,7 @@
 				B08F392C27AE7112008B344F /* ApiInterceptor.swift in Sources */,
 				F1B5FCCF27C6F7E80018729B /* RegisterPhoneViewModel.swift in Sources */,
 				F12A14DE27D677420096543E /* RegisterContactsViewModel.swift in Sources */,
+				B007A72A2864FE4A00CFA5C9 /* CurrencySelect.swift in Sources */,
 				F1A9453C27F7E01D009B5AE3 /* ChallengeValidation.swift in Sources */,
 				F18862512811710100659786 /* OfferStatusView.swift in Sources */,
 				B08F399A27AE7D87008B344F /* OnboardingCoordinator.swift in Sources */,
@@ -2083,10 +2116,12 @@
 				F175AB9727ECC159000DAB15 /* SecurityHeader.swift in Sources */,
 				F12A14DC27D677340096543E /* RegisterContactsCoordinator.swift in Sources */,
 				F1485644284FD451003213D7 /* ChatCommonFriendItemView.swift in Sources */,
+				B007A73128659A8700CFA5C9 /* BottomActionSheetView.swift in Sources */,
 				F188625D2811E3E700659786 /* OfferTradeLocationPickerView.swift in Sources */,
 				F11441F328468B5600307D39 /* CloseButton.swift in Sources */,
 				F151A29727C8667A000D7242 /* RegisterNameAvatarCoordinator.swift in Sources */,
 				F13B267B281FF1680011F2FB /* UserOfferKeys.swift in Sources */,
+				B007A73A2868B66500CFA5C9 /* JoinVexl.swift in Sources */,
 				B08F399727AE7D33008B344F /* SplashScreenView.swift in Sources */,
 				F175ABAA27F4FC3F000DAB15 /* ImportPhoneContactsViewModel.swift in Sources */,
 				F188624B2811551E00659786 /* CreateOfferView.swift in Sources */,
@@ -2155,6 +2190,7 @@
 				F188626128129ED600659786 /* OfferTriggersView.swift in Sources */,
 				F1BFA958280223BD00F4E745 /* UserProfileViewModel+Options.swift in Sources */,
 				F11441E2284681EC00307D39 /* InfoBarView.swift in Sources */,
+				B007A73328659AC100CFA5C9 /* BottomActionSheetViewModel.swift in Sources */,
 				F13B266028189F580011F2FB /* OfferService.swift in Sources */,
 				F148563F284FD451003213D7 /* ChatActionView.swift in Sources */,
 				F12A150627E1A47D0096543E /* RequestAccessFacebookContactsViewModel.swift in Sources */,
@@ -2197,6 +2233,7 @@
 				F151A29227C807DD000D7242 /* RegisterPhoneView+CodeInput.swift in Sources */,
 				B08F392627AE7112008B344F /* R.generated.swift in Sources */,
 				F1042BA527BEF0360048C2F0 /* OnboardingView+PageControl.swift in Sources */,
+				B007A73528659AD900CFA5C9 /* BottomActionSheetCoordinator.swift in Sources */,
 				F1B5FCD627C703BF0018729B /* View+.swift in Sources */,
 				F114420128495E1900307D39 /* LargeSolidButton.swift in Sources */,
 				B08F396627AE7112008B344F /* Constants.swift in Sources */,
@@ -2273,6 +2310,7 @@
 				F14D29C727BFD93C00D1CD85 /* ButtonStyle.swift in Sources */,
 				B08F394527AE7112008B344F /* ReusableView.swift in Sources */,
 				F11441D0284681EC00307D39 /* BorderedTextField.swift in Sources */,
+				B007A72C2864FEBA00CFA5C9 /* BottomActionSheet.swift in Sources */,
 				B08F395B27AE7112008B344F /* Appearance.swift in Sources */,
 				B0F206F327AEA4C800A44E72 /* WindowCoordinator.swift in Sources */,
 				B0E9BB2A2815C7190012BF1D /* AES.swift in Sources */,
@@ -2284,9 +2322,11 @@
 				F1485641284FD451003213D7 /* ChatConfirmationView.swift in Sources */,
 				F1485626284FD0FB003213D7 /* InboxItemView.swift in Sources */,
 				B08F393227AE7112008B344F /* SceneDelegate.swift in Sources */,
+				B007A72E2865072900CFA5C9 /* RadioButton.swift in Sources */,
 				F13B266D281C8FC80011F2FB /* EncryptionError.swift in Sources */,
 				B0EEE11827B14D360097031E /* WelcomeViewModel.swift in Sources */,
 				F151A2AB27CE818C000D7242 /* RegisterNameAvatarView+PhoneVerification.swift in Sources */,
+				B007A73C2868B69E00CFA5C9 /* Donate.swift in Sources */,
 				F1BFA956280223BD00F4E745 /* UserProfileView.swift in Sources */,
 				F1B5FCBE27C68EA70018729B /* OnboardingView+BottomButtons.swift in Sources */,
 				F1886255281185E900659786 /* OfferFeePickerView.swift in Sources */,
@@ -2441,7 +2481,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 68;
+				CURRENT_PROJECT_VERSION = 70;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = SHD6TUKSPH;
 				ENABLE_PREVIEWS = YES;
@@ -2472,7 +2512,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 68;
+				CURRENT_PROJECT_VERSION = 70;
 				DEVELOPMENT_TEAM = SHD6TUKSPH;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
@@ -2555,7 +2595,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 68;
+				CURRENT_PROJECT_VERSION = 70;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = SHD6TUKSPH;
 				ENABLE_PREVIEWS = YES;
@@ -2587,7 +2627,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 68;
+				CURRENT_PROJECT_VERSION = 70;
 				DEVELOPMENT_TEAM = SHD6TUKSPH;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
@@ -2729,7 +2769,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 68;
+				CURRENT_PROJECT_VERSION = 70;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = SHD6TUKSPH;
 				ENABLE_BITCODE = YES;
@@ -2762,7 +2802,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 68;
+				CURRENT_PROJECT_VERSION = 70;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
@@ -2794,7 +2834,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 68;
+				CURRENT_PROJECT_VERSION = 70;
 				DEVELOPMENT_TEAM = SHD6TUKSPH;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
@@ -2813,7 +2853,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 68;
+				CURRENT_PROJECT_VERSION = 70;
 				DEVELOPMENT_TEAM = SHD6TUKSPH;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;

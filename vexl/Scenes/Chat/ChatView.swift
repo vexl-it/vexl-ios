@@ -79,7 +79,7 @@ struct ChatView: View {
                 .padding(.bottom, Appearance.GridGuide.point)
 
             ChatInputView(text: $viewModel.currentMessage,
-                          image: viewModel.selectedImage,
+                          image: viewModel.selectedImageData,
                           sendAction: {
                 viewModel.action.send(.messageSend)
             },

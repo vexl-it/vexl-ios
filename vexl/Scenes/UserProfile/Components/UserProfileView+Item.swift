@@ -13,6 +13,7 @@ extension UserProfileView {
         let title: String
         let subtitle: String?
         let icon: String
+        let isDestructive: Bool
 
         var body: some View {
             HStack(spacing: Appearance.GridGuide.mediumPadding1) {
@@ -22,9 +23,13 @@ extension UserProfileView {
                     .frame(size: Appearance.GridGuide.iconSize)
 
                 VStack(alignment: .leading) {
-                    Text(title)
-                        .textStyle(.paragraph)
-                        .foregroundColor(.white)
+                    if !isDestructive {
+                        titleView
+                            .foregroundColor(.white)
+                    } else {
+                        titleView
+                            .foregroundColor(Appearance.Colors.red100)
+                    }
 
                     if let subtitle = subtitle {
                         Text(subtitle)
@@ -36,6 +41,11 @@ extension UserProfileView {
             .listRowBackground(Appearance.Colors.black1)
             .frame(height: Appearance.GridGuide.largeButtonHeight)
             .padding(.vertical, 0)
+        }
+
+        private var titleView: some View {
+            Text(title)
+                .textStyle(.paragraph)
         }
     }
 }

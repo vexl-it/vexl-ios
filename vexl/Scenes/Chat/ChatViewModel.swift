@@ -98,6 +98,10 @@ final class ChatViewModel: ViewModelType, ObservableObject {
         modal != .none
     }
 
+    var selectedImageData: Data? {
+        selectedImage?.jpegData(compressionQuality: 1)
+    }
+
     private let cancelBag: CancelBag = .init()
 
     private var sharedAction: AnyPublisher<UserAction, Never> {
@@ -126,7 +130,6 @@ final class ChatViewModel: ViewModelType, ObservableObject {
     init(inboxKeys: ECCKeys, receiverPublicKey: String) {
         self.inboxKeys = inboxKeys
         self.receiverPublicKey = receiverPublicKey
-        delete_forceSync()
         setupActionBindings()
         setupChatInputBindings()
         setupChatImageInputBindings()
@@ -444,17 +447,5 @@ final class ChatViewModel: ViewModelType, ObservableObject {
         let conversationSection = ChatConversationSection(date: Date(),
                                                           messages: conversationItems)
         self.messages.append(conversationSection)
-    }
-
-    // TODO: - DELETE
-
-    func delete_forceSync() {
-        sharedChatAction
-            .filter { $0 == .forceSync }
-            .withUnretained(self)
-            .sink { owner, _ in
-                owner.inboxManager.syncInboxes()
-            }
-            .store(in: cancelBag)
     }
 }

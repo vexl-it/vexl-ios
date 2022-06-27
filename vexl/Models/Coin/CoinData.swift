@@ -9,6 +9,8 @@ import Foundation
 
 struct CoinData: Decodable {
     let priceUsd: Decimal
+    let priceEur: Decimal
+    let priceCzk: Decimal
     let percentageChangeOneDayAgo: Double
     let percentageChangeOneWeekAgo: Double
     let percentageChangeOneMonthAgo: Double
@@ -18,12 +20,25 @@ struct CoinData: Decodable {
 
     enum CodingKeys: String, CodingKey {
         case priceUsd
+        case priceEur
+        case priceCzk
         case percentageChangeOneDayAgo = "priceChangePercentage24h"
         case percentageChangeOneWeekAgo = "priceChangePercentage7d"
         case percentageChangeOneMonthAgo = "priceChangePercentage30d"
         case percentageChangeThreeMonthsAgo = "priceChangePercentage60d"
         case percentageChangeSixMonthsAgo = "priceChangePercentage200d"
         case percentageChangeOneYearAgo = "priceChangePercentage1y"
+    }
+
+    func price(for currency: Currency) -> Decimal {
+        switch currency {
+        case .czk:
+            return priceCzk
+        case .eur:
+            return priceEur
+        case .usd:
+            return priceUsd
+        }
     }
 
     func bitcoinIncreased(for option: TimelineOption) -> Bool {
