@@ -33,7 +33,7 @@
 		4FD8E3E02821B922003B165E /* CoinData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FD8E3DF2821B922003B165E /* CoinData.swift */; };
 		B007A72A2864FE4A00CFA5C9 /* CurrencySelect.swift in Sources */ = {isa = PBXBuildFile; fileRef = B007A7292864FE4A00CFA5C9 /* CurrencySelect.swift */; };
 		B007A72C2864FEBA00CFA5C9 /* BottomActionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = B007A72B2864FEBA00CFA5C9 /* BottomActionSheet.swift */; };
-		B007A72E2865072900CFA5C9 /* CheckBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = B007A72D2865072900CFA5C9 /* CheckBox.swift */; };
+		B007A72E2865072900CFA5C9 /* RadioButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B007A72D2865072900CFA5C9 /* RadioButton.swift */; };
 		B007A73128659A8700CFA5C9 /* BottomActionSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B007A73028659A8700CFA5C9 /* BottomActionSheetView.swift */; };
 		B007A73328659AC100CFA5C9 /* BottomActionSheetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B007A73228659AC100CFA5C9 /* BottomActionSheetViewModel.swift */; };
 		B007A73528659AD900CFA5C9 /* BottomActionSheetCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B007A73428659AD900CFA5C9 /* BottomActionSheetCoordinator.swift */; };
@@ -341,7 +341,7 @@
 		937D63D507F1C9FE14E50FA2 /* Pods-vexl.appstore.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-vexl.appstore.xcconfig"; path = "Target Support Files/Pods-vexl/Pods-vexl.appstore.xcconfig"; sourceTree = "<group>"; };
 		B007A7292864FE4A00CFA5C9 /* CurrencySelect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencySelect.swift; sourceTree = "<group>"; };
 		B007A72B2864FEBA00CFA5C9 /* BottomActionSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomActionSheet.swift; sourceTree = "<group>"; };
-		B007A72D2865072900CFA5C9 /* CheckBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckBox.swift; sourceTree = "<group>"; };
+		B007A72D2865072900CFA5C9 /* RadioButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadioButton.swift; sourceTree = "<group>"; };
 		B007A73028659A8700CFA5C9 /* BottomActionSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomActionSheetView.swift; sourceTree = "<group>"; };
 		B007A73228659AC100CFA5C9 /* BottomActionSheetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomActionSheetViewModel.swift; sourceTree = "<group>"; };
 		B007A73428659AD900CFA5C9 /* BottomActionSheetCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomActionSheetCoordinator.swift; sourceTree = "<group>"; };
@@ -1224,7 +1224,7 @@
 			children = (
 				F11441B9284681EC00307D39 /* RangePickerView.swift */,
 				F11441BA284681EC00307D39 /* OptionPicker */,
-				B007A72D2865072900CFA5C9 /* CheckBox.swift */,
+				B007A72D2865072900CFA5C9 /* RadioButton.swift */,
 			);
 			path = Pickers;
 			sourceTree = "<group>";
@@ -2237,7 +2237,7 @@
 				F1485641284FD451003213D7 /* ChatConfirmationView.swift in Sources */,
 				F1485626284FD0FB003213D7 /* InboxItemView.swift in Sources */,
 				B08F393227AE7112008B344F /* SceneDelegate.swift in Sources */,
-				B007A72E2865072900CFA5C9 /* CheckBox.swift in Sources */,
+				B007A72E2865072900CFA5C9 /* RadioButton.swift in Sources */,
 				F13B266D281C8FC80011F2FB /* EncryptionError.swift in Sources */,
 				B0EEE11827B14D360097031E /* WelcomeViewModel.swift in Sources */,
 				F151A2AB27CE818C000D7242 /* RegisterNameAvatarView+PhoneVerification.swift in Sources */,

@@ -138,9 +138,8 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
         option
             .filter { $0 == .currency }
             .withUnretained(self)
-            .sink { owner, _ in
-                owner.route.send(.selectCurrency)
-            }
+            .map { _ in .selectCurrency }
+            .subscribe(route)
             .store(in: cancelBag)
 
         option

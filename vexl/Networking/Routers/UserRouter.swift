@@ -18,7 +18,7 @@ enum UserRouter: ApiRouter {
     case validateChallenge(signature: String, key: String)
     case facebookSignature(id: String)
     case validateUsername(username: String)
-    case bitcoin(currency: Currency)
+    case bitcoin
     case bitcoinChart(currency: Currency, option: TimelineOption)
 
     var method: HTTPMethod {
@@ -66,7 +66,7 @@ enum UserRouter: ApiRouter {
 
     var parameters: Parameters {
         switch self {
-        case .me, .facebookSignature, .deleteUser:
+        case .me, .facebookSignature, .bitcoin, .deleteUser:
             return [:]
         case let .createUser(username, avatar, imageExtension):
             guard let avatar = avatar else {
@@ -85,8 +85,6 @@ enum UserRouter: ApiRouter {
             return ["id": id,
                     "code": code,
                     "userPublicKey": key]
-        case let .bitcoin(currency ):
-            return ["currency": currency.rawValue]
         case let .bitcoinChart(currency, option):
             let range = option.chartEndpointRange
             return ["from": range.from, "to": range.to, "currency": currency.rawValue]

@@ -64,7 +64,7 @@ final class CryptocurrencyValueManager: CryptocurrencyValueManagerType {
             .prepend(Date())
             .flatMapLatest(with: self) { owner, _ -> AnyPublisher<ContentState<CoinData>, Never> in
                 owner.userService
-                    .getBitcoinData(currency: owner.selectedCurrency.value)
+                    .getBitcoinData()
                     .map { data -> ContentState<CoinData> in
                         .content(data)
                     }
@@ -119,11 +119,8 @@ final class CryptocurrencyValueManager: CryptocurrencyValueManagerType {
 
     func select(currency: Currency) {
         selectedCurrency.send(currency)
-        currentCoinData.send(.loading)
         currentCoinChartData.send(.loading)
         fetchChart(option: currentTimeline.value)
-        stopPollingCoinData()
-        startPollingCoinData()
     }
 
     func toggleExpand() {

@@ -12,8 +12,8 @@ struct BottomActionSheetView<ViewModel: BottomActionSheetViewModelProtocol>: Vie
 
     @ObservedObject var viewModel: ViewModel
 
-    @State var isVisible: Bool = false
-    @State var dragOffset: Double = .zero
+    @State private var isVisible: Bool = false
+    @State private var dragOffset: Double = .zero
 
     private var onAppearAnimation: Animation {
         .spring(response: 0.4, dampingFraction: 0.7, blendDuration: 0)

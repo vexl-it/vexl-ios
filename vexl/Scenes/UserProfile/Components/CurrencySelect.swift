@@ -41,7 +41,7 @@ struct CurrencySelectContent: View {
             ForEach(viewModel.allCurrencies) { currency in
                 HStack(spacing: Appearance.GridGuide.point) {
                     let isSelected = currency == viewModel.selectedCurrency
-                    CheckBox(isChecked: isSelected)
+                    RadioButton(isChecked: isSelected)
                         .padding(.horizontal, Appearance.GridGuide.tinyPadding)
                     Text(currency.title)
                         .textStyle(.paragraph)
