@@ -25,11 +25,6 @@ extension UserProfileViewModel {
 
         case pinFaceId
         case currency
-//        case allowScreenshots
-
-//        case termsAndPrivacy
-//        case faq
-//        case reportIssue
 
         case requestData
         case logout
@@ -93,8 +88,7 @@ extension UserProfileViewModel {
             [
                 OptionGroup(id: 1, options: [.profilePicture, .editName]),
                 OptionGroup(id: 2, options: [.contacts, .facebook]),
-                OptionGroup(id: 3, options: [.pinFaceId, .currency]), // , .allowScreenshots]),
-                // OptionGroup(id: 4, options: [.termsAndPrivacy, .faq, .reportIssue]),
+                OptionGroup(id: 3, options: [.pinFaceId, .currency]),
                 OptionGroup(id: 5, options: [.requestData]),
                 OptionGroup(id: 6, options: [.logout])
             ]
