@@ -23,6 +23,8 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
         case dismissTap
         case continueTap
         case itemTap(option: Option)
+        case donate
+        case joinVexl
     }
 
     let action: ActionSubject<UserAction> = .init()
@@ -60,6 +62,8 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
     enum Route: Equatable {
         case dismissTapped
         case selectCurrency
+        case donate
+        case joinVexl
     }
 
     var route: CoordinatingSubject<Route> = .init()
@@ -109,6 +113,21 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
     }
 
     private func setupBindings() {
+        action
+            .filter { $0 == .joinVexl }
+            .withUnretained(self)
+            .sink { owner, _ in
+                owner.route.send(.joinVexl)
+            }
+            .store(in: cancelBag)
+
+        action
+            .filter { $0 == .donate }
+            .withUnretained(self)
+            .sink { owner, _ in
+                owner.route.send(.donate)
+            }
+            .store(in: cancelBag)
 
         let option = action
             .compactMap { action -> Option? in

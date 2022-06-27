@@ -44,6 +44,28 @@ final class UserProfileCoordinator: BaseCoordinator<Void> {
             .sink()
             .store(in: cancelBag)
 
+        viewModel
+            .route
+            .receive(on: RunLoop.main)
+            .filter { $0 == .joinVexl }
+            .flatMapLatest(with: self) { owner, _ -> CoordinatingResult<RouterResult<Void>> in
+                let router = ModalRouter(parentViewController: viewController, presentationStyle: .overFullScreen, transitionStyle: .crossDissolve)
+                return owner.presentJoinVexl(router: router)
+            }
+            .sink()
+            .store(in: cancelBag)
+
+        viewModel
+            .route
+            .receive(on: RunLoop.main)
+            .filter { $0 == .donate }
+            .flatMapLatest(with: self) { owner, _ -> CoordinatingResult<RouterResult<Void>> in
+                let router = ModalRouter(parentViewController: viewController, presentationStyle: .overFullScreen, transitionStyle: .crossDissolve)
+                return owner.presentDonate(router: router)
+            }
+            .sink()
+            .store(in: cancelBag)
+
         return Empty(completeImmediately: false)
             .eraseToAnyPublisher()
     }
@@ -52,6 +74,30 @@ final class UserProfileCoordinator: BaseCoordinator<Void> {
 extension UserProfileCoordinator {
     private func presentCurrencySelect(router: Router) -> CoordinatingResult<RouterResult<Void>> {
         coordinate(to: BottomActionSheetCoordinator(router: router, viewModel: CurrencySelectViewModel()))
+        .flatMap { result -> CoordinatingResult<RouterResult<Void>> in
+            guard result != .dismissedByRouter else {
+                return Just(result).eraseToAnyPublisher()
+            }
+            return router.dismiss(animated: true, returning: result)
+        }
+        .prefix(1)
+        .eraseToAnyPublisher()
+    }
+
+    private func presentDonate(router: Router) -> CoordinatingResult<RouterResult<Void>> {
+        coordinate(to: BottomActionSheetCoordinator(router: router, viewModel: DonateViewModel()))
+        .flatMap { result -> CoordinatingResult<RouterResult<Void>> in
+            guard result != .dismissedByRouter else {
+                return Just(result).eraseToAnyPublisher()
+            }
+            return router.dismiss(animated: true, returning: result)
+        }
+        .prefix(1)
+        .eraseToAnyPublisher()
+    }
+
+    private func presentJoinVexl(router: Router) -> CoordinatingResult<RouterResult<Void>> {
+        coordinate(to: BottomActionSheetCoordinator(router: router, viewModel: JoinVexlViewModel()))
         .flatMap { result -> CoordinatingResult<RouterResult<Void>> in
             guard result != .dismissedByRouter else {
                 return Just(result).eraseToAnyPublisher()
