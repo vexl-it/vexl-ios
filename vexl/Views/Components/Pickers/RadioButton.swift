@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct CheckBox: View {
+struct RadioButton: View {
     var isChecked: Bool
 
     var checkedColor: Color = Appearance.Colors.yellow100
@@ -33,8 +33,8 @@ struct CheckBox: View {
 struct CheckBox_Previews: PreviewProvider {
     static var previews: some View {
         HStack {
-            CheckBox(isChecked: true)
-            CheckBox(isChecked: false)
+            RadioButton(isChecked: true)
+            RadioButton(isChecked: false)
         }
     }
 }
