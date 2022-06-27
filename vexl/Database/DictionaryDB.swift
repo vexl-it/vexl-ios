@@ -44,7 +44,7 @@ final class DictionaryDB {
 
     static private var storedOffer: [String: [StoredOffer]] = ["created": [], "fetched": []] {
         didSet {
-            guard let encodedData = try? encoder.encode(inboxMessage) else { return }
+            guard let encodedData = try? encoder.encode(storedOffer) else { return }
             UserDefaults.standard.setValue(encodedData, forKey: "storedOffer")
         }
     }

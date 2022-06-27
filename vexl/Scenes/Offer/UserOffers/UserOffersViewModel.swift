@@ -7,6 +7,7 @@
 
 import Foundation
 import Cleevio
+import Combine
 
 final class UserOffersViewModel: ViewModelType, ObservableObject {
 
@@ -51,7 +52,7 @@ final class UserOffersViewModel: ViewModelType, ObservableObject {
 
     private let offerType: OfferType
     private let cancelBag: CancelBag = .init()
-    private var userOfferKeys: UserOfferKeys?
+    private var userOfferKeys: [StoredOffer.Keys] = []
 
     var offerTitle: String {
         switch offerType {
@@ -77,7 +78,6 @@ final class UserOffersViewModel: ViewModelType, ObservableObject {
 
     init(offerType: OfferType) {
         self.offerType = offerType
-        self.userOfferKeys = UserDefaults.standard.codable(forKey: .storedOfferKeys)
         setupActivityBindings()
         setupBindings()
         setupDataBindings()
@@ -127,11 +127,25 @@ final class UserOffersViewModel: ViewModelType, ObservableObject {
     }
 
     private func fetchOffers() {
-        offerService
-            .getStoredOfferIds(forType: offerType)
-            .track(activity: primaryActivity)
-            .materialize()
-            .compactMap(\.value)
+        Just(())
+            .flatMapLatest(with: self) { owner, _ in
+                owner.offerService
+                    .getStoredOfferKeys()
+                    .track(activity: owner.primaryActivity)
+                    .materialize()
+                    .compactMap(\.value)
+            }
+            .withUnretained(self)
+            .handleEvents(receiveOutput: { owner, keys in
+                owner.userOfferKeys = keys
+            })
+            .flatMapLatest(with: self) { owner, _ in
+                owner.offerService
+                    .getStoredOfferIds(forType: owner.offerType)
+                    .track(activity: owner.primaryActivity)
+                    .materialize()
+                    .compactMap(\.value)
+            }
             .filter { !$0.isEmpty }
             .flatMapLatest(with: self) { owner, ids in
                 owner.offerService

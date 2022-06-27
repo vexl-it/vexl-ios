@@ -94,12 +94,11 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
     private var sellOfferFilter = OfferFilter(type: .sell)
     private var buyFeedItems: [OfferFeed] = []
     private var sellFeedItems: [OfferFeed] = []
-    private let userOfferKeys: UserOfferKeys?
+    private var userOfferKeys: [StoredOffer.Keys] = []
     private let cancelBag: CancelBag = .init()
 
     init(bitcoinViewModel: BitcoinViewModel) {
         self.bitcoinViewModel = bitcoinViewModel
-        self.userOfferKeys = UserDefaults.standard.codable(forKey: .storedOfferKeys)
         setupDataBindings()
         setupActionBindings()
         setupInbox()
@@ -138,6 +137,17 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
         Publishers.Merge(refresh, Just(()))
             .flatMapLatest(with: self) { owner, _ in
                 owner.offerService
+                    .getStoredOfferKeys()
+                    .track(activity: owner.primaryActivity)
+                    .materialize()
+                    .compactMap(\.value)
+            }
+            .withUnretained(self)
+            .handleEvents(receiveOutput: { owner, keys in
+                owner.userOfferKeys = keys
+            })
+            .flatMapLatest(with: self) { owner, _ in
+                owner.offerService
                     .getOffer(pageLimit: Constants.pageMaxLimit)
                     .track(activity: owner.primaryActivity)
                     .materialize()
@@ -158,10 +168,10 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
                 owner.sellFeedItems.removeAll()
                 let requestedInboxes = owner.getRequestedInboxes()
 
-                let offerKeys = owner.userOfferKeys?.keys ?? []
+                let offerKeys = owner.userOfferKeys
 
                 for offer in offers {
-                    guard !offerKeys.contains(where: { $0.publicKey == offer.offerPublicKey }) else {
+                    guard !offerKeys.contains(where: { $0.id == offer.offerId }) else {
                         continue
                     }
 
