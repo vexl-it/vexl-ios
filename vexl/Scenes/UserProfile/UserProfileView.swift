@@ -61,7 +61,8 @@ struct UserProfileView: View {
                     ForEach(group.options) { item in
                         Item(title: item.title,
                              subtitle: viewModel.subtitle(for: item),
-                             icon: item.iconName)
+                             icon: item.iconName,
+                             isDestructive: item == .logout)
                         .onTapGesture {
                             viewModel.send(action: .itemTap(option: item))
                         }
@@ -76,6 +77,34 @@ struct UserProfileView: View {
         }
         .padding(.horizontal, -Appearance.GridGuide.point)
     }
+
+//    @ViewBuilder private var modalSheet: some View {
+//        if viewModel.modal != .none {
+//            dimmingView
+//        }
+//        Group {
+//            switch viewModel.modal {
+//            case .selectCurrency:
+//                CurrencySelectView(viewModel: viewModel.currencySelectViewModel)
+//            case .none:
+//                EmptyView()
+//            }
+//        }
+//        .transition(.move(edge: .bottom))
+//    }
+
+//    private var dimmingView: some View {
+//        Color.black
+//            .opacity(Appearance.dimmingViewOpacity)
+//            .animation(.easeInOut(duration: 0.25), value: viewModel.modal)
+//            .edgesIgnoringSafeArea(.all)
+//            .onTapGesture {
+//                withAnimation {
+//                    viewModel.action.send(.dismissModal)
+//                }
+//            }
+//            .edgesIgnoringSafeArea(.all)
+//    }
 }
 
 struct UserProfileViewPreview: PreviewProvider {

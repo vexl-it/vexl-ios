@@ -19,10 +19,17 @@ extension UserProfileViewModel {
 
         case profilePicture = 0
         case editName
-        case pinFaceId
 
         case contacts
         case facebook
+
+        case pinFaceId
+        case currency
+//        case allowScreenshots
+
+//        case termsAndPrivacy
+//        case faq
+//        case reportIssue
 
         case requestData
         case logout
@@ -47,6 +54,8 @@ extension UserProfileViewModel {
                 return L.userProfileRequestData()
             case .logout:
                 return L.userProfileLogout()
+            case .currency:
+                return "Currency"
             }
         }
 
@@ -74,16 +83,20 @@ extension UserProfileViewModel {
             case .requestData:
                 return R.image.profile.requestData.name
             case .logout:
-                return R.image.profile.logout.name
+                return R.image.profile.trash.name
+            case .currency:
+                return R.image.profile.coins.name
             }
         }
 
         static var groupedOptions: [OptionGroup] {
             [
-                OptionGroup(id: 1, options: [.profilePicture, .editName, .pinFaceId]),
+                OptionGroup(id: 1, options: [.profilePicture, .editName]),
                 OptionGroup(id: 2, options: [.contacts, .facebook]),
-                OptionGroup(id: 3, options: [.requestData]),
-                OptionGroup(id: 4, options: [.logout])
+                OptionGroup(id: 3, options: [.pinFaceId, .currency]), // , .allowScreenshots]),
+                // OptionGroup(id: 4, options: [.termsAndPrivacy, .faq, .reportIssue]),
+                OptionGroup(id: 5, options: [.requestData]),
+                OptionGroup(id: 6, options: [.logout])
             ]
         }
     }

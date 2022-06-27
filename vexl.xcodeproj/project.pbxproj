@@ -903,7 +903,7 @@
 				F188626628169A3700659786 /* Marketplace */,
 				F188621D2810587100659786 /* Offer */,
 				F1D200A428251C4E006DF4AB /* Tabbar */,
-				F1BFA951280223BD00F4E745 /* Profile */,
+				F1BFA951280223BD00F4E745 /* UserProfile */,
 				B08F399127AE7CEC008B344F /* SplashScreen */,
 				B08F399827AE7D4B008B344F /* Onboarding */,
 				B0EEE11427B14D0B0097031E /* Welcome */,
@@ -1627,7 +1627,7 @@
 			path = Fonts;
 			sourceTree = "<group>";
 		};
-		F1BFA951280223BD00F4E745 /* Profile */ = {
+		F1BFA951280223BD00F4E745 /* UserProfile */ = {
 			isa = PBXGroup;
 			children = (
 				F1BFA96F2803A59F00F4E745 /* Components */,
@@ -1636,7 +1636,7 @@
 				F1BFA953280223BD00F4E745 /* UserProfileViewModel.swift */,
 				F1BFA954280223BD00F4E745 /* UserProfileViewModel+Options.swift */,
 			);
-			path = Profile;
+			path = UserProfile;
 			sourceTree = "<group>";
 		};
 		F1BFA96F2803A59F00F4E745 /* Components */ = {

@@ -12,6 +12,11 @@ import Combine
 
 final class UserProfileViewModel: ViewModelType, ObservableObject {
 
+    enum Modal {
+        case none
+        case selectCurrency
+    }
+
     @Inject var authenticationManager: AuthenticationManagerType
     @Inject var userService: UserServiceType
     @Inject var offerService: OfferServiceType
@@ -23,6 +28,7 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
         case dismissTap
         case continueTap
         case itemTap(option: Option)
+        case dismissModal
     }
 
     let action: ActionSubject<UserAction> = .init()
@@ -34,6 +40,7 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
     @Published var primaryActivity: Activity = .init()
     @Published var isLoading = false
     @Published var error: Error?
+    @Published var modal: Modal = .none
 
     var errorIndicator: ErrorIndicator {
         primaryActivity.error
@@ -53,6 +60,16 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
 
     var options: [OptionGroup] {
         Option.groupedOptions
+    }
+
+    var currencySelectViewModel: CurrencySelectViewModel {
+
+        .init()
+//        .init(dismiss: { [weak self] in
+//            withAnimation {
+//                self?.modal = .none
+//            }
+//        })
     }
 
     // MARK: - Coordinator Bindings
@@ -109,10 +126,33 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
 
     private func setupBindings() {
         action
+            .filter { $0 == .dismissModal }
+            .withUnretained(self)
+            .sink { owner, _ in
+                withAnimation {
+                    owner.modal = .none
+                }
+            }
+            .store(in: cancelBag)
+
+        let option = action
             .compactMap { action -> Option? in
-                if case let .itemTap(option) = action, option == .logout { return option }
+                if case let .itemTap(option) = action { return option }
                 return nil
             }
+
+        option
+            .filter { $0 == .currency }
+            .withUnretained(self)
+            .sink { owner, _ in
+                withAnimation {
+                    owner.modal = .selectCurrency
+                }
+            }
+            .store(in: cancelBag)
+
+        option
+            .filter { $0 == .logout }
             .withUnretained(self)
             .sink { owner, _ in
                 owner.logoutUser()
