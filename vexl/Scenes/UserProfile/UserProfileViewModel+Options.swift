@@ -25,11 +25,11 @@ extension UserProfileViewModel {
 
         case pinFaceId
         case currency
-//        case allowScreenshots
+        case allowScreenshots
 
-//        case termsAndPrivacy
-//        case faq
-//        case reportIssue
+        case termsAndPrivacy
+        case faq
+        case reportIssue
 
         case requestData
         case logout
@@ -56,6 +56,14 @@ extension UserProfileViewModel {
                 return L.userProfileLogout()
             case .currency:
                 return L.userProfileCurrencyTitle()
+            case .allowScreenshots:
+                return L.userProfileAllowScreenshots()
+            case .termsAndPrivacy:
+                return L.userProfileTermsAndPrivacy()
+            case .faq:
+                return L.userProfileFaq()
+            case .reportIssue:
+                return L.userProfileReportIssue()
             }
         }
 
@@ -86,6 +94,14 @@ extension UserProfileViewModel {
                 return R.image.profile.trash.name
             case .currency:
                 return R.image.profile.coins.name
+            case .allowScreenshots:
+                return R.image.profile.allowScreenshot.name
+            case .termsAndPrivacy:
+                return R.image.profile.termsAndPrivacy.name
+            case .faq:
+                return R.image.profile.faQ.name
+            case .reportIssue:
+                return R.image.profile.reportIssue.name
             }
         }
 
@@ -93,8 +109,8 @@ extension UserProfileViewModel {
             [
                 OptionGroup(id: 1, options: [.profilePicture, .editName]),
                 OptionGroup(id: 2, options: [.contacts, .facebook]),
-                OptionGroup(id: 3, options: [.pinFaceId, .currency]), // , .allowScreenshots]),
-                // OptionGroup(id: 4, options: [.termsAndPrivacy, .faq, .reportIssue]),
+                OptionGroup(id: 3, options: [.pinFaceId, .currency, .allowScreenshots]),
+                OptionGroup(id: 4, options: [.termsAndPrivacy, .faq, .reportIssue]),
                 OptionGroup(id: 5, options: [.requestData]),
                 OptionGroup(id: 6, options: [.logout])
             ]
