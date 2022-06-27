@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 /// Individual conversation element that will be displayed in the Chat.
 /// It will be a bubble containing a text, image or be the request/response for identity reveal
@@ -19,12 +20,15 @@ struct ChatConversationItem: Identifiable, Hashable {
     let type: ItemType
     let isContact: Bool
 
+    let imageView: Image
+
     init(type: ItemType, isContact: Bool, text: String? = nil, image: Data? = nil, previewImage: Data? = nil) {
         self.text = text
         self.image = image
         self.type = type
         self.isContact = isContact
         self.previewImage = previewImage
+        self.imageView = Image(data: previewImage, placeholder: "")
     }
 
     // MARK: - initializer helpers
@@ -43,6 +47,12 @@ struct ChatConversationItem: Identifiable, Hashable {
 
     static func createIdentityResponse() -> ChatConversationItem {
         ChatConversationItem(type: .receiveReveal, isContact: false)
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+        hasher.combine(text)
+        hasher.combine(image)
     }
 }
 

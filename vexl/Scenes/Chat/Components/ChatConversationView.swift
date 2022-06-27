@@ -28,7 +28,7 @@ struct ChatConversationView: View {
                             ChatTextBubbleView(text: message.text ?? "",
                                                style: message.isContact ? .contact : .user)
                         case .image:
-                            ChatImageBubbleView(image: message.previewImage,
+                            ChatImageBubbleView(image: message.imageView,
                                                 text: message.text,
                                                 style: message.isContact ? .contact : .user)
                                 .onTapGesture {
