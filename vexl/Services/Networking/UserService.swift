@@ -18,7 +18,7 @@ protocol UserServiceType {
     func createUser(username: String, avatar: String?) -> AnyPublisher<User, Error>
     func deleteUser() -> AnyPublisher<Void, Error>
     func facebookSignature(id: String) -> AnyPublisher<ChallengeValidation, Error>
-    func getBitcoinData(currency: Currency) -> AnyPublisher<CoinData, Error>
+    func getBitcoinData() -> AnyPublisher<CoinData, Error>
     func getBitcoinChartData(currency: Currency, option: TimelineOption) -> AnyPublisher<CoinChartData, Error>
 }
 
@@ -84,8 +84,8 @@ final class UserService: BaseService, UserServiceType {
             .eraseToAnyPublisher()
     }
 
-    func getBitcoinData(currency: Currency) -> AnyPublisher<CoinData, Error> {
-        request(type: CoinData.self, endpoint: UserRouter.bitcoin(currency: currency))
+    func getBitcoinData() -> AnyPublisher<CoinData, Error> {
+        request(type: CoinData.self, endpoint: UserRouter.bitcoin)
             .eraseToAnyPublisher()
     }
 
