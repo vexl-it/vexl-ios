@@ -122,6 +122,7 @@ extension ParsedChatMessage {
     /// Use this initializer to manually create a message,
     /// although it is recommended to use one of the static methods that will set the correct MessageType
 
+    // swiftlint: disable function_default_parameter_at_end
     private init?(inboxPublicKey: String,
                   messageType: MessageType,
                   contentType: ContentType,

@@ -133,7 +133,7 @@ final class ChatRequestViewModel: ViewModelType, ObservableObject {
 
     private func prepareRequestedMessages(storedOfferKeys: [StoredOffer.Keys]) -> AnyPublisher<Void, Never> {
         chatService
-            .getRequestMessages()
+            .getStoredRequestMessages()
             .track(activity: primaryActivity)
             .materialize()
             .compactMap(\.value)

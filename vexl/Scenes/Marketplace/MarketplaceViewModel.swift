@@ -133,6 +133,7 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
         inboxManager.syncInboxes()
     }
 
+    // swiftlint: disable function_body_length
     private func setupDataBindings() {
         Publishers.Merge(refresh, Just(()))
             .flatMapLatest(with: self) { owner, _ in
@@ -171,7 +172,7 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
             .withUnretained(self)
             .flatMap { owner, offers in
                 owner.offerService
-                    .saveFetchedOffers(offers: offers)
+                    .storeFetchedOffers(offers: offers)
                     .track(activity: owner.primaryActivity)
                     .materialize()
                     .compactMap(\.value)

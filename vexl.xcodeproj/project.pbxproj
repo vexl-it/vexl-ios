@@ -936,6 +936,8 @@
 		B08F38F527AE7110008B344F /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				4F481E77284768840051D3B9 /* ChatService.swift */,
+				F13B265F28189F580011F2FB /* OfferService.swift */,
 				4F24169D2848CF4300B4A437 /* LocalStorageService.swift */,
 				B0FE523E280E822400A77EC3 /* CryptoService.swift */,
 				B08F391A27AE7112008B344F /* Networking */,
@@ -1009,8 +1011,6 @@
 				B08F391B27AE7112008B344F /* BaseService.swift */,
 				B08F392D27AE7112008B344F /* UserService.swift */,
 				F175AB9827F0D2D8000DAB15 /* ContactsService.swift */,
-				F13B265F28189F580011F2FB /* OfferService.swift */,
-				4F481E77284768840051D3B9 /* ChatService.swift */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
