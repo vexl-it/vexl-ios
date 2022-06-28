@@ -45,6 +45,8 @@ struct ChatConversationView: View {
                                                    revealAction: {
                                 revealAction()
                             })
+                        case .none:
+                            EmptyView()
                         }
                     }
                 }
