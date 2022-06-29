@@ -234,7 +234,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
             .withUnretained(self)
             .sink { owner, _ in
                 owner.messages.appendItem(.createInput(text: owner.currentMessage,
-                                                       image: owner.selectedImage?.base64))
+                                                       image: owner.selectedImage?.base64EncodedString))
                 owner.selectedImage = nil
                 owner.currentMessage = ""
             }
@@ -357,7 +357,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
             case .anonymousRequestResponse:
                 itemType = .receiveReveal
             case .deleteChat, .communicationRequest, .none:
-                itemType = .none // create a none case
+                itemType = .noContent
             }
 
             return ChatConversationItem(type: itemType,

@@ -23,7 +23,6 @@ final class SyncInboxManager: SyncInboxManagerType {
             .autoconnect()
             .withUnretained(self)
             .sink(receiveValue: { owner, _ in
-                print("SYNCING INBOXES")
                 owner.inboxManager.syncInboxes()
             })
     }
