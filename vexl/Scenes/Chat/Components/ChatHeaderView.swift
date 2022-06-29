@@ -12,7 +12,7 @@ struct ChatHeaderView: View {
     let username: String
     let offerLabel: String
     let avatar: UIImage?
-    let offerType: OfferType
+    let offerType: OfferType?
     let closeAction: () -> Void
 
     var body: some View {
@@ -27,9 +27,14 @@ struct ChatHeaderView: View {
 
                 HStack(spacing: .zero) {
                     Text(username)
+                        .textStyle(.paragraphSmallBold)
                         .foregroundColor(Appearance.Colors.whiteText)
 
-                    // TODO: - add offer type here
+                    if let offerType = offerType {
+                        Text(offerLabel)
+                            .textStyle(.paragraphSmallBold)
+                            .foregroundColor(offerType == .sell ? Appearance.Colors.pink100 : Appearance.Colors.green100)
+                    }
                 }
                 .frame(maxWidth: .infinity)
             }

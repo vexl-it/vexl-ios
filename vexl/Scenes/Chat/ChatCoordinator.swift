@@ -13,18 +13,20 @@ final class ChatCoordinator: BaseCoordinator<RouterResult<Void>> {
 
     private let inboxKeys: ECCKeys
     private let receiverPublicKey: String
+    private let offerType: OfferType?
     private let router: Router
     private let animated: Bool
 
-    init(inboxKeys: ECCKeys, receiverPublicKey: String, router: Router, animated: Bool) {
+    init(inboxKeys: ECCKeys, receiverPublicKey: String, offerType: OfferType?, router: Router, animated: Bool) {
         self.inboxKeys = inboxKeys
         self.receiverPublicKey = receiverPublicKey
+        self.offerType = offerType
         self.router = router
         self.animated = animated
     }
 
     override func start() -> CoordinatingResult<RouterResult<Void>> {
-        let viewModel = ChatViewModel(inboxKeys: inboxKeys, receiverPublicKey: receiverPublicKey)
+        let viewModel = ChatViewModel(inboxKeys: inboxKeys, receiverPublicKey: receiverPublicKey, offerType: offerType)
         let viewController = BaseViewController(rootView: ChatView(viewModel: viewModel))
 
         router.present(viewController, animated: animated)

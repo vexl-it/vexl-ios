@@ -40,7 +40,7 @@ final class InboxViewModel: ViewModelType, ObservableObject {
     enum Route: Equatable {
         case dismissTapped
         case requestTapped
-        case messageTapped(inboxKeys: ECCKeys, recieverPublicKey: String)
+        case conversationTapped(inboxKeys: ECCKeys, recieverPublicKey: String, offerType: OfferType?)
     }
 
     var route: CoordinatingSubject<Route> = .init()
@@ -122,7 +122,10 @@ final class InboxViewModel: ViewModelType, ObservableObject {
                     return
                 }
                 let chatInboxMessage = owner.inboxManager.currentInboxMessages[index]
-                owner.route.send(.messageTapped(inboxKeys: chatInboxMessage.inbox, recieverPublicKey: chatInboxMessage.receiverInbox))
+                let offerType = owner.inboxItems[index].offerType
+                owner.route.send(.conversationTapped(inboxKeys: chatInboxMessage.inbox,
+                                                     recieverPublicKey: chatInboxMessage.receiverInbox,
+                                                     offerType: offerType))
             })
             .store(in: cancelBag)
     }
