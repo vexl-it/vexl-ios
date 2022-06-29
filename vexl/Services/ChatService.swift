@@ -9,6 +9,9 @@ import Foundation
 import Combine
 
 protocol ChatServiceType {
+
+    // MARK: - Create inbox and request messaging permission
+
     func createInbox(offerKey: ECCKeys, pushToken: String) -> AnyPublisher<Void, Error>
     func requestCommunication(inboxPublicKey: String, message: String) -> AnyPublisher<Void, Error>
     func communicationConfirmation(confirmation: Bool,
@@ -17,18 +20,25 @@ protocol ChatServiceType {
                                    requesterPublicKey: String,
                                    signature: String) -> AnyPublisher<Void, Error>
 
+    // MARK: - Sync up inboxes
+
     func requestChallenge(publicKey: String) -> AnyPublisher<ChatChallenge, Error>
     func pullInboxMessages(publicKey: String, signature: String) -> AnyPublisher<EncryptedChatMessageList, Error>
     func deleteInboxMessages(publicKey: String) -> AnyPublisher<Void, Error>
-
     func saveParsedMessages(_ messages: [ParsedChatMessage], inboxKeys: ECCKeys) -> AnyPublisher<Void, Error>
-    func getInboxMessages() -> AnyPublisher<[ChatInboxMessage], Error>
-    func getRequestMessages() -> AnyPublisher<[ParsedChatMessage], Error>
-    func blockInbox(inboxPublicKey: String, publicKeyToBlock: String, signature: String, isBlocked: Bool) -> AnyPublisher<Void, Error>
+
+    // MARK: - Chat functionalities
+
     func sendMessage(inboxKeys: ECCKeys,
                      receiverPublicKey: String,
                      message: String,
                      messageType: MessageType) -> AnyPublisher<Void, Error>
+    func blockInbox(inboxPublicKey: String, publicKeyToBlock: String, signature: String, isBlocked: Bool) -> AnyPublisher<Void, Error>
+
+    // MARK: - Storage
+
+    func getStoredInboxMessages() -> AnyPublisher<[ChatInboxMessage], Error>
+    func getStoredRequestMessages() -> AnyPublisher<[ParsedChatMessage], Error>
     func getStoredChatMessages(inboxPublicKey: String, receiverPublicKey: String) -> AnyPublisher<[ParsedChatMessage], Error>
 }
 
@@ -36,6 +46,8 @@ final class ChatService: BaseService, ChatServiceType {
 
     @Inject private var cryptoService: CryptoServiceType
     @Inject private var localStorageService: LocalStorageServiceType
+
+    // MARK: - Create inbox and request messaging permission
 
     func createInbox(offerKey: ECCKeys, pushToken: String) -> AnyPublisher<Void, Error> {
         Future<Void, Error> { [localStorageService] promise in
@@ -71,13 +83,6 @@ final class ChatService: BaseService, ChatServiceType {
         .eraseToAnyPublisher()
     }
 
-    // TODO: - add expiration handling so that it is not requested everytime, find a way to cache the challenge for 30m
-
-    func requestChallenge(publicKey: String) -> AnyPublisher<ChatChallenge, Error> {
-        request(type: ChatChallenge.self, endpoint: ChatRouter.requestChallenge(publicKey: publicKey))
-            .eraseToAnyPublisher()
-    }
-
     func communicationConfirmation(confirmation: Bool,
                                    message: ParsedChatMessage?,
                                    inboxKeys: ECCKeys,
@@ -103,6 +108,14 @@ final class ChatService: BaseService, ChatServiceType {
         }
     }
 
+    // MARK: - Sync up inboxes
+
+    func requestChallenge(publicKey: String) -> AnyPublisher<ChatChallenge, Error> {
+        // TODO: - add expiration handling so that it is not requested everytime, find a way to cache the challenge for 30m
+        request(type: ChatChallenge.self, endpoint: ChatRouter.requestChallenge(publicKey: publicKey))
+            .eraseToAnyPublisher()
+    }
+
     func pullInboxMessages(publicKey: String, signature: String) -> AnyPublisher<EncryptedChatMessageList, Error> {
         request(type: EncryptedChatMessageList.self, endpoint: ChatRouter.pullChat(publicKey: publicKey, signature: signature))
             .eraseToAnyPublisher()
@@ -121,20 +134,7 @@ final class ChatService: BaseService, ChatServiceType {
             .eraseToAnyPublisher()
     }
 
-    func getInboxMessages() -> AnyPublisher<[ChatInboxMessage], Error> {
-        localStorageService.getInboxMessages()
-    }
-
-    func getRequestMessages() -> AnyPublisher<[ParsedChatMessage], Error> {
-        localStorageService.getRequestMessages()
-    }
-
-    func blockInbox(inboxPublicKey: String, publicKeyToBlock: String, signature: String, isBlocked: Bool) -> AnyPublisher<Void, Error> {
-        request(endpoint: ChatRouter.blockInbox(publicKey: inboxPublicKey,
-                                                publicKeyToBlock: publicKeyToBlock,
-                                                signature: signature,
-                                                isBlocked: isBlocked))
-    }
+    // MARK: - Chat functionalities
 
     func sendMessage(inboxKeys: ECCKeys,
                      receiverPublicKey: String,
@@ -151,12 +151,31 @@ final class ChatService: BaseService, ChatServiceType {
             .eraseToAnyPublisher()
     }
 
+    func blockInbox(inboxPublicKey: String, publicKeyToBlock: String, signature: String, isBlocked: Bool) -> AnyPublisher<Void, Error> {
+        request(endpoint: ChatRouter.blockInbox(publicKey: inboxPublicKey,
+                                                publicKeyToBlock: publicKeyToBlock,
+                                                signature: signature,
+                                                isBlocked: isBlocked))
+    }
+
+    // MARK: - Storage
+
+    func getStoredInboxMessages() -> AnyPublisher<[ChatInboxMessage], Error> {
+        localStorageService.getInboxMessages()
+    }
+
+    func getStoredRequestMessages() -> AnyPublisher<[ParsedChatMessage], Error> {
+        localStorageService.getRequestMessages()
+    }
+
     func getStoredChatMessages(inboxPublicKey: String, receiverPublicKey: String) -> AnyPublisher<[ParsedChatMessage], Error> {
         localStorageService.getChatMessages(inboxPublicKey: inboxPublicKey, receiverInboxKey: receiverPublicKey)
     }
+}
 
-    // MARK: - Helpers
+// MARK: - Helpers
 
+extension ChatService {
     private func prepareMessages(_ messages: [ParsedChatMessage], inboxKeys: ECCKeys) -> AnyPublisher<Void, Error> {
         messages.publisher
             .withUnretained(self)

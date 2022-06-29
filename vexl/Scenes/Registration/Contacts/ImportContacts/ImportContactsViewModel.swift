@@ -114,8 +114,8 @@ class ImportContactsViewModel: ObservableObject {
             .assign(to: &$error)
     }
 
+    // swiftlint: disable function_body_length
     private func setupActions() {
-
         action
             .filter { action in
                 ![UserAction.unselectAll, .importContacts].contains(action)

@@ -131,6 +131,7 @@ final class RegisterNameAvatarViewModel: ViewModelType {
             .store(in: cancelBag)
     }
 
+    // swiftlint: disable function_body_length
     private func setupActionBindings() {
         action
             .filter { $0 == .createUser }

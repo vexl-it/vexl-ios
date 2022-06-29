@@ -16,7 +16,7 @@ struct RequestOfferView: View {
     }
 
     private var avatarTitle: String {
-        switch viewModel.offerFeed.offerType {
+        switch viewModel.offerViewData.offerType {
         case .sell:
             return L.marketplaceDetailUserSell(viewModel.username)
         case .buy:
@@ -117,7 +117,7 @@ struct RequestOfferView: View {
     private var offer: some View {
         VStack(spacing: Appearance.GridGuide.point) {
             OfferInformationDetailView(
-                data: viewModel.offerFeed,
+                data: viewModel.offerViewData,
                 useInnerPadding: true,
                 showBackground: true
             )
@@ -125,7 +125,7 @@ struct RequestOfferView: View {
             ContactAvatarInfo(
                 isAvatarWithOpacity: false,
                 title: avatarTitle,
-                subtitle: viewModel.offerFeed.friendLevel
+                subtitle: viewModel.offerViewData.friendLevel
             )
         }
         .padding(.top, Appearance.GridGuide.padding)
