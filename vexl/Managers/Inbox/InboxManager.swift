@@ -171,7 +171,7 @@ final class InboxManager: InboxManagerType {
     }
 
     func updateInboxMessages() -> AnyPublisher<Void, Error> {
-        chatService.getInboxMessages()
+        chatService.getStoredInboxMessages()
             .withUnretained(self)
             .subscribe(on: DispatchQueue.main)
             .handleEvents(receiveOutput: { owner, chatInboxMessages in

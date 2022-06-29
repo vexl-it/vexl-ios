@@ -9,15 +9,23 @@ import Foundation
 import Combine
 
 protocol OfferServiceType {
-    func getInitialOfferData() -> AnyPublisher<OfferInitialData, Error>
-    func encryptOffer(withContactKey publicKeys: [String], offerKey: ECCKeys, offer: Offer) -> AnyPublisher<[EncryptedOffer], Error>
+
+    // MARK: - Offer Fetching
+
     func getUserOffers(offerIds: [String]) -> AnyPublisher<[EncryptedOffer], Error>
     func getOffer(pageLimit: Int?) -> AnyPublisher<Paged<EncryptedOffer>, Error>
+
+    // MARK: - Offer Creation
+
+    func getInitialOfferData() -> AnyPublisher<OfferInitialData, Error>
+    func encryptOffer(withContactKey publicKeys: [String], offerKey: ECCKeys, offer: Offer) -> AnyPublisher<[EncryptedOffer], Error>
     func createOffer(encryptedOffers: [EncryptedOffer], expiration: TimeInterval) -> AnyPublisher<EncryptedOffer, Error>
     func deleteOffers() -> AnyPublisher<Void, Error>
 
-    func saveFetchedOffers(offers: [Offer]) -> AnyPublisher<Void, Error>
-    func saveOffer(id: String, offer: Offer, keys: ECCKeys, isCreated: Bool) -> AnyPublisher<Void, Error>
+    // MARK: - Storage
+
+    func storeFetchedOffers(offers: [Offer]) -> AnyPublisher<Void, Error>
+    func storeOffer(id: String, offer: Offer, keys: ECCKeys, isCreated: Bool) -> AnyPublisher<Void, Error>
     func getStoredOfferIds(forType offerType: OfferType) -> AnyPublisher<[String], Error>
     func getAllStoredOfferIds() -> AnyPublisher<[String], Error>
     func getStoredOfferKeys() -> AnyPublisher<[StoredOffer.Keys], Error>
@@ -28,6 +36,20 @@ protocol OfferServiceType {
 final class OfferService: BaseService, OfferServiceType {
 
     @Inject var localStorageService: LocalStorageServiceType
+
+    // MARK: - Offer Fetching
+
+    func getUserOffers(offerIds: [String]) -> AnyPublisher<[EncryptedOffer], Error> {
+        request(type: [EncryptedOffer].self, endpoint: OffersRouter.getUserOffers(offerIds: offerIds))
+            .eraseToAnyPublisher()
+    }
+
+    func getOffer(pageLimit: Int?) -> AnyPublisher<Paged<EncryptedOffer>, Error> {
+        request(type: Paged<EncryptedOffer>.self, endpoint: OffersRouter.getOffers(pageLimit: pageLimit))
+            .eraseToAnyPublisher()
+    }
+
+    // MARK: - Offer Creation
 
     func getInitialOfferData() -> AnyPublisher<OfferInitialData, Error> {
         Future { promise in
@@ -62,27 +84,19 @@ final class OfferService: BaseService, OfferServiceType {
         .eraseToAnyPublisher()
     }
 
-    func getUserOffers(offerIds: [String]) -> AnyPublisher<[EncryptedOffer], Error> {
-        request(type: [EncryptedOffer].self, endpoint: OffersRouter.getUserOffers(offerIds: offerIds))
-            .eraseToAnyPublisher()
-    }
-
-    func getOffer(pageLimit: Int?) -> AnyPublisher<Paged<EncryptedOffer>, Error> {
-        request(type: Paged<EncryptedOffer>.self, endpoint: OffersRouter.getOffers(pageLimit: pageLimit))
-            .eraseToAnyPublisher()
-    }
-
     func createOffer(encryptedOffers: [EncryptedOffer], expiration: TimeInterval) -> AnyPublisher<EncryptedOffer, Error> {
         request(type: EncryptedOffer.self, endpoint: OffersRouter.createOffer(offer: encryptedOffers, expiration: expiration))
             .eraseToAnyPublisher()
     }
 
-    func saveOffer(id: String, offer: Offer, keys: ECCKeys, isCreated: Bool) -> AnyPublisher<Void, Error> {
+    // MARK: - Storage
+
+    func storeOffer(id: String, offer: Offer, keys: ECCKeys, isCreated: Bool) -> AnyPublisher<Void, Error> {
         let storedOffer = StoredOffer(offer: offer, id: id, keys: keys)
         return localStorageService.saveOffers([storedOffer], isCreated: isCreated)
     }
 
-    func saveFetchedOffers(offers: [Offer]) -> AnyPublisher<Void, Error> {
+    func storeFetchedOffers(offers: [Offer]) -> AnyPublisher<Void, Error> {
         let storedOffers = offers.map {
             StoredOffer(offer: $0, id: $0.offerId, keys: ECCKeys(pubKey: $0.offerPublicKey, privKey: nil))
         }

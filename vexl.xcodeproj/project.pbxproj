@@ -25,7 +25,6 @@
 		4FBF620B283CE08800DDBE71 /* OfferAmountRangeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FBF620A283CE08800DDBE71 /* OfferAmountRangeView.swift */; };
 		4FBF620E283CE3FB00DDBE71 /* OfferFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FBF620D283CE3FB00DDBE71 /* OfferFilter.swift */; };
 		4FBF6213283CF54400DDBE71 /* FilterHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FBF6212283CF54400DDBE71 /* FilterHeaderView.swift */; };
-		4FBF623B283F8C3800DDBE71 /* OfferFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FBF623A283F8C3800DDBE71 /* OfferFeed.swift */; };
 		4FBF6240283FBF6000DDBE71 /* RequestOfferCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FBF623F283FBF6000DDBE71 /* RequestOfferCoordinator.swift */; };
 		4FBF6242283FBF6B00DDBE71 /* RequestOfferViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FBF6241283FBF6B00DDBE71 /* RequestOfferViewModel.swift */; };
 		4FBF6244283FBF7200DDBE71 /* RequestOfferView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FBF6243283FBF7200DDBE71 /* RequestOfferView.swift */; };
@@ -170,7 +169,6 @@
 		F13B2675281EB23A0011F2FB /* ContactFriendLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F13B2674281EB2390011F2FB /* ContactFriendLevel.swift */; };
 		F13B2677281F43A10011F2FB /* Offer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F13B2676281F43A10011F2FB /* Offer.swift */; };
 		F13B2679281FC5A90011F2FB /* OfferLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F13B2678281FC5A90011F2FB /* OfferLocation.swift */; };
-		F13B267B281FF1680011F2FB /* UserOfferKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = F13B267A281FF1680011F2FB /* UserOfferKeys.swift */; };
 		F1483CBF2856CEBE0054B7A2 /* OfferTriggerDeleteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1483CBE2856CEBE0054B7A2 /* OfferTriggerDeleteView.swift */; };
 		F1483CC2285A3E6F0054B7A2 /* ChatTextBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1483CC1285A3E6F0054B7A2 /* ChatTextBubbleView.swift */; };
 		F1483CC4285A407C0054B7A2 /* ChatImageBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1483CC3285A407C0054B7A2 /* ChatImageBubbleView.swift */; };
@@ -341,7 +339,6 @@
 		4FBF620A283CE08800DDBE71 /* OfferAmountRangeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferAmountRangeView.swift; sourceTree = "<group>"; };
 		4FBF620D283CE3FB00DDBE71 /* OfferFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferFilter.swift; sourceTree = "<group>"; };
 		4FBF6212283CF54400DDBE71 /* FilterHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterHeaderView.swift; sourceTree = "<group>"; };
-		4FBF623A283F8C3800DDBE71 /* OfferFeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferFeed.swift; sourceTree = "<group>"; };
 		4FBF623F283FBF6000DDBE71 /* RequestOfferCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestOfferCoordinator.swift; sourceTree = "<group>"; };
 		4FBF6241283FBF6B00DDBE71 /* RequestOfferViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestOfferViewModel.swift; sourceTree = "<group>"; };
 		4FBF6243283FBF7200DDBE71 /* RequestOfferView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestOfferView.swift; sourceTree = "<group>"; };
@@ -502,7 +499,6 @@
 		F13B2674281EB2390011F2FB /* ContactFriendLevel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactFriendLevel.swift; sourceTree = "<group>"; };
 		F13B2676281F43A10011F2FB /* Offer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Offer.swift; sourceTree = "<group>"; };
 		F13B2678281FC5A90011F2FB /* OfferLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferLocation.swift; sourceTree = "<group>"; };
-		F13B267A281FF1680011F2FB /* UserOfferKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserOfferKeys.swift; sourceTree = "<group>"; };
 		F1483CBE2856CEBE0054B7A2 /* OfferTriggerDeleteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferTriggerDeleteView.swift; sourceTree = "<group>"; };
 		F1483CC1285A3E6F0054B7A2 /* ChatTextBubbleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatTextBubbleView.swift; sourceTree = "<group>"; };
 		F1483CC3285A407C0054B7A2 /* ChatImageBubbleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatImageBubbleView.swift; sourceTree = "<group>"; };
@@ -722,7 +718,7 @@
 		4FBF6239283F8C2E00DDBE71 /* Offers */ = {
 			isa = PBXGroup;
 			children = (
-				4FBF623A283F8C3800DDBE71 /* OfferFeed.swift */,
+				F13B2676281F43A10011F2FB /* Offer.swift */,
 			);
 			path = Offers;
 			sourceTree = "<group>";
@@ -938,6 +934,8 @@
 		B08F38F527AE7110008B344F /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				4F481E77284768840051D3B9 /* ChatService.swift */,
+				F13B265F28189F580011F2FB /* OfferService.swift */,
 				4F24169D2848CF4300B4A437 /* LocalStorageService.swift */,
 				B0FE523E280E822400A77EC3 /* CryptoService.swift */,
 				B08F391A27AE7112008B344F /* Networking */,
@@ -1011,8 +1009,6 @@
 				B08F391B27AE7112008B344F /* BaseService.swift */,
 				B08F392D27AE7112008B344F /* UserService.swift */,
 				F175AB9827F0D2D8000DAB15 /* ContactsService.swift */,
-				F13B265F28189F580011F2FB /* OfferService.swift */,
-				4F481E77284768840051D3B9 /* ChatService.swift */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -1365,9 +1361,7 @@
 			children = (
 				F13B266428192BBF0011F2FB /* OfferInitialData.swift */,
 				F13B2672281D81060011F2FB /* EncryptedOffer.swift */,
-				F13B2676281F43A10011F2FB /* Offer.swift */,
 				F13B2678281FC5A90011F2FB /* OfferLocation.swift */,
-				F13B267A281FF1680011F2FB /* UserOfferKeys.swift */,
 			);
 			path = Offers;
 			sourceTree = "<group>";
@@ -1483,7 +1477,6 @@
 			children = (
 				F1485651284FD5FD003213D7 /* EncryptedChatMessage.swift */,
 				F1485652284FD5FD003213D7 /* ChatChallenge.swift */,
-				F1C734762852CB6D00B3F327 /* ParsedChatMessage.swift */,
 			);
 			path = Chats;
 			sourceTree = "<group>";
@@ -1781,6 +1774,7 @@
 		F1D204F02863A282006A5671 /* Chat */ = {
 			isa = PBXGroup;
 			children = (
+				F1C734762852CB6D00B3F327 /* ParsedChatMessage.swift */,
 				4F2416A228490B3C00B4A437 /* ChatInbox.swift */,
 				F1D204F12863A578006A5671 /* ChatInboxMessage.swift */,
 			);
@@ -2131,7 +2125,6 @@
 				F188625D2811E3E700659786 /* OfferTradeLocationPickerView.swift in Sources */,
 				F11441F328468B5600307D39 /* CloseButton.swift in Sources */,
 				F151A29727C8667A000D7242 /* RegisterNameAvatarCoordinator.swift in Sources */,
-				F13B267B281FF1680011F2FB /* UserOfferKeys.swift in Sources */,
 				B007A73A2868B66500CFA5C9 /* JoinVexl.swift in Sources */,
 				B08F399727AE7D33008B344F /* SplashScreenView.swift in Sources */,
 				F175ABAA27F4FC3F000DAB15 /* ImportPhoneContactsViewModel.swift in Sources */,
@@ -2222,7 +2215,6 @@
 				F148564B284FD452003213D7 /* ChatCoordinator.swift in Sources */,
 				F175AB9B27F1432E000DAB15 /* ContactsRouter.swift in Sources */,
 				B0E9BB272815C5750012BF1D /* String+Crypto.swift in Sources */,
-				4FBF623B283F8C3800DDBE71 /* OfferFeed.swift in Sources */,
 				F151A2A927C9646A000D7242 /* RegisterNameAvatarView+AvatarInput.swift in Sources */,
 				B08F395927AE7112008B344F /* ClientAPIError.swift in Sources */,
 				F188627328169A3700659786 /* MarketplaceFeedView.swift in Sources */,

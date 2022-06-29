@@ -8,8 +8,10 @@
 import Foundation
 import SwiftUI
 
+typealias OfferDetailViewData = OfferInformationDetailView.ViewData
+
 struct OfferInformationDetailView: View {
-    let data: OfferDetailViewData
+    let data: ViewData
     let useInnerPadding: Bool
     let showBackground: Bool
     @State private var lineSize: CGSize = .zero
@@ -102,6 +104,57 @@ extension OfferInformationDetailView {
                     .foregroundColor(Appearance.Colors.gray3)
                     .padding(.top, Appearance.GridGuide.point)
             }
+        }
+    }
+}
+
+extension OfferInformationDetailView {
+
+    struct ViewData: Identifiable, Hashable {
+        let id: String
+        let username: String = Constants.randomName // TODO: - use random name generator when available
+        let title: String
+        let isRequested: Bool
+        let friendLevel: String
+        let amount: String
+        let paymentMethods: [OfferPaymentMethodOption]
+        let fee: String?
+        let offerType: OfferType
+        let createdDate: Date
+
+        init(offer: Offer, isRequested: Bool) {
+            let currencySymbol = Constants.currencySymbol
+            let formattedAmount = offer.maxAmount
+
+            self.id = offer.offerId
+            self.title = offer.description
+            self.isRequested = isRequested
+            self.friendLevel = offer.friendLevel.label
+            self.amount = "\(formattedAmount)\(currencySymbol)"
+            self.paymentMethods = offer.paymentMethods
+            self.fee = offer.feeAmount > 0 ? "\(offer.feeAmount)%" : nil
+            self.offerType = offer.type
+            self.createdDate = offer.createdDate
+        }
+
+        var paymentIcons: [String] {
+            paymentMethods.map(\.iconName)
+        }
+
+        var paymentLabel: String {
+            guard let label = paymentMethods.first?.title else {
+                return Constants.notAvailable
+            }
+
+            if paymentMethods.count > 1 {
+                return "\(label) +(\(paymentMethods.count - 1))"
+            }
+
+            return label
+        }
+
+        static var stub: OfferDetailViewData {
+            OfferDetailViewData(offer: .stub, isRequested: true)
         }
     }
 }
