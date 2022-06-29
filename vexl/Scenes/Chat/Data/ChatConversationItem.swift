@@ -62,6 +62,6 @@ extension ChatConversationItem {
         case sendReveal
         case receiveReveal
         case start
-        case none
+        case noContent
     }
 }

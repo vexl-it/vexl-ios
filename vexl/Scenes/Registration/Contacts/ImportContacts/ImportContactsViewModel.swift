@@ -101,6 +101,7 @@ class ImportContactsViewModel: ObservableObject {
     init() {
         setupActivity()
         setupActions()
+        setupImportAction()
     }
 
     private func setupActivity() {
@@ -114,7 +115,6 @@ class ImportContactsViewModel: ObservableObject {
             .assign(to: &$error)
     }
 
-    // swiftlint: disable function_body_length
     private func setupActions() {
         action
             .filter { action in
@@ -148,7 +148,9 @@ class ImportContactsViewModel: ObservableObject {
                 owner.completed.send(())
             }
             .store(in: cancelBag)
-
+    }
+    
+    private func setupImportAction() {
         let hashContacts = action
             .withUnretained(self)
             .filter { $0.0.currentState == .content && $0.0.hasSelectedItem && $0.1 == .importContacts }

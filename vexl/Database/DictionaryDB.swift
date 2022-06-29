@@ -128,9 +128,7 @@ final class DictionaryDB {
                                                        message: message)
             self.inboxMessage[index] = newChatInboxMessage
         } else {
-            var content = self.inboxMessage
-            content.append(.init(inbox: inboxKeys, receiverInbox: receiverInboxPublicKey, message: message))
-            self.inboxMessage = content
+            self.inboxMessage.append(.init(inbox: inboxKeys, receiverInbox: receiverInboxPublicKey, message: message))
         }
     }
 

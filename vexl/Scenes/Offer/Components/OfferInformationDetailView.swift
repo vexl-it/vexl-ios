@@ -112,7 +112,7 @@ extension OfferInformationDetailView {
 
     struct ViewData: Identifiable, Hashable {
         let id: String
-        let username: String = Constants.randomName
+        let username: String = Constants.randomName // TODO: - use random name generator when available
         let title: String
         let isRequested: Bool
         let friendLevel: String
