@@ -314,15 +314,18 @@ final class CreateOfferViewModel: ViewModelType, ObservableObject {
             }
 
         createOffer
-            .flatMapLatest(with: self) { owner, offerAndEncryptedOffer in
-                owner.offerService
-                    .storeCreatedOffer(id: offerAndEncryptedOffer.encryptedOffer.offerId,
-                                       offer: offerAndEncryptedOffer.offer,
-                                       keys: owner.offerKey,
-                                       isCreated: true)
+            .flatMapLatest(with: self) { owner, offerAndEncryptedOffer -> AnyPublisher<Void, Never> in
+                var newOffer = offerAndEncryptedOffer.offer
+                newOffer.offerId = offerAndEncryptedOffer.encryptedOffer.offerId
+                newOffer.offerPublicKey = owner.offerKey.publicKey
+                newOffer.offerPrivateKey = owner.offerKey.privateKey
+
+                return owner.offerService
+                    .storeOffers(offers: [newOffer], areCreated: true)
                     .track(activity: owner.primaryActivity)
                     .materialize()
                     .compactMap(\.value)
+                    .eraseToAnyPublisher()
             }
             .flatMapLatest(with: self) { owner, _ in
                 // TODO: setup firebase notifications to get a proper token

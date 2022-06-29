@@ -175,7 +175,7 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
             .withUnretained(self)
             .flatMap { owner, offers in
                 owner.offerService
-                    .storeFetchedOffers(offers: offers)
+                    .storeOffers(offers: offers, areCreated: false)
                     .track(activity: owner.primaryActivity)
                     .materialize()
                     .compactMap(\.value)
