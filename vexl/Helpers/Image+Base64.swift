@@ -9,7 +9,7 @@ import UIKit
 import Combine
 
 extension UIImage {
-    var base64: String? {
+    var base64EncodedString: String? {
         jpegData(compressionQuality: 1)?.base64EncodedString()
     }
 

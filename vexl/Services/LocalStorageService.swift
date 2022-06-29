@@ -128,8 +128,11 @@ final class LocalStorageService: LocalStorageServiceType {
         Future { promise in
             let messages = DictionaryDB.getMessages()
             let filteredMessages = messages
-                .filter { $0.inboxKey == inboxPublicKey && $0.senderInboxKey == receiverInboxKey }
-                .filter { MessageType.displayableMessages.contains($0.messageType) }
+                .filter {
+                    $0.inboxKey == inboxPublicKey
+                    && $0.senderInboxKey == receiverInboxKey
+                    && MessageType.displayableMessages.contains($0.messageType)
+                }
             promise(.success(filteredMessages))
         }
         .eraseToAnyPublisher()

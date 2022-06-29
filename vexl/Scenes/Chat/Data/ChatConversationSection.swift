@@ -55,7 +55,7 @@ extension ChatConversationSection {
                       text: "Morbi vitae velit ac ex congue molestie" ),
                 .init(type: .image,
                       isContact: true,
-                      image: R.image.onboarding.testAvatar()!.base64!),
+                      image: R.image.onboarding.testAvatar()!.base64EncodedString!),
                 .init(type: .sendReveal, isContact: false),
                 .init(type: .receiveReveal, isContact: false)
             ])
