@@ -88,6 +88,10 @@ enum ChatRouter: ApiRouter {
                 "message": message,
                 "approve": confirmed
             ]
+        case let .deleteChat(publicKey):
+            return ["publicKey": publicKey]
+        case let .deleteChatMessages(publicKey):
+            return ["publicKey": publicKey]
         case let .blockInbox(publicKey, publicKeyToBlock, signature, isBlocked):
             return [
                 "publicKey": publicKey,
@@ -102,10 +106,6 @@ enum ChatRouter: ApiRouter {
                 "messageType": messageType.rawValue,
                 "message": message
             ]
-        case let .deleteChat(publicKey):
-            return ["publicKey": publicKey]
-        case let .deleteChatMessages(publicKey):
-            return ["publicKey": publicKey]
         }
     }
 

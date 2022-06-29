@@ -30,6 +30,12 @@ struct Formatters {
         return formatter
     }()
 
+    static let userOfferDateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd.MM.yyyy"
+        return formatter
+    }()
+
     /// format: d. MMM
     /// example: 12. Jun
     static let shortDateFormatter: DateFormatter = {

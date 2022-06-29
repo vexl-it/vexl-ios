@@ -60,6 +60,7 @@ struct Constants {
     }()
 
     static let jpegFormat = "jpeg"
+    static let imageCompressionQuality: CGFloat = 0.25
 
     static let elipticCurve: Curve = .init(rawValue: UInt32(10))
 
@@ -68,6 +69,7 @@ struct Constants {
     static let pageMaxLimit = 1_000
 
     static let bitcoinPollInterval: TimeInterval = 30
+    static let inboxSyncPollInterval: TimeInterval = 5
 
     static let notAvailable = "N/A"
 

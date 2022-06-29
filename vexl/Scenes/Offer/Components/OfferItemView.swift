@@ -37,7 +37,7 @@ struct OfferItemView: View {
             ContactAvatarInfo(
                 isAvatarWithOpacity: false,
                 title: L.offerMine(),
-                subtitle: L.offerAdded("12. 7. 2022")
+                subtitle: L.offerAdded(Formatters.userOfferDateFormatter.string(from: data.createdDate))
             )
 
             Button(action: editOfferAction, label: {

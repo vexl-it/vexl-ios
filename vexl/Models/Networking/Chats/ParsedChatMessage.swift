@@ -30,9 +30,7 @@ struct ParsedChatMessage: Codable {
     var isFromContact = true
 
     var contentType: ContentType {
-        guard text != nil && contentTypeValue == ContentType.text.rawValue else { return .none }
-        guard image != nil && contentTypeValue == ContentType.image.rawValue else { return .none }
-        return ContentType(rawValue: contentTypeValue) ?? .none
+        ContentType(rawValue: contentTypeValue) ?? .none
     }
 
     var messageType: MessageType {
@@ -129,7 +127,7 @@ extension ParsedChatMessage {
                   contentType: ContentType,
                   text: String,
                   image: String? = nil,
-                  senderKey: String = "") {
+                  senderKey: String) {
         guard messageType != .invalid else { return nil }
         self.senderInboxKey = senderKey
         self.id = UUID().uuidString
@@ -148,45 +146,50 @@ extension ParsedChatMessage {
 
 extension ParsedChatMessage {
 
-    static func communicationRequest(inboxPublicKey: String, text: String) -> ParsedChatMessage? {
+    static func communicationRequest(inboxPublicKey: String, text: String, senderPublicKey: String) -> ParsedChatMessage? {
         ParsedChatMessage(inboxPublicKey: inboxPublicKey,
                           messageType: .messagingRequest,
                           contentType: .communicationRequest,
-                          text: text)
+                          text: text,
+                          senderKey: senderPublicKey)
     }
 
-    static func communicationConfirmation(isConfirmed: Bool, inboxPublicKey: String) -> ParsedChatMessage? {
+    static func communicationConfirmation(isConfirmed: Bool, inboxPublicKey: String, senderPublicKey: String) -> ParsedChatMessage? {
         ParsedChatMessage(inboxPublicKey: inboxPublicKey,
                           messageType: isConfirmed ? .messagingApproval : .messagingRejection,
                           contentType: .communicationRequestResponse,
-                          text: L.chatMessageConversationRequestAccepted())
+                          text: L.chatMessageConversationRequestAccepted(),
+                          senderKey: senderPublicKey)
     }
 
-    static func createMessage(text: String, image: String?, inboxPublicKey: String) -> ParsedChatMessage? {
+    static func createMessage(text: String, image: String?, inboxPublicKey: String, senderPublicKey: String) -> ParsedChatMessage? {
         let type: ParsedChatMessage.ContentType = image != nil ? .image : .text
         let parsedMessage = ParsedChatMessage(inboxPublicKey: inboxPublicKey,
                                               messageType: .message,
                                               contentType: type,
                                               text: text,
-                                              image: image)
+                                              image: image,
+                                              senderKey: senderPublicKey)
         return parsedMessage
     }
 
-    static func createIdentityRequest(inboxPublicKey: String) -> ParsedChatMessage? {
+    static func createIdentityRequest(inboxPublicKey: String, senderPublicKey: String) -> ParsedChatMessage? {
         let parsedMessage = ParsedChatMessage(inboxPublicKey: inboxPublicKey,
                                               messageType: .revealRequest,
                                               contentType: .anonymousRequest,
                                               text: "",
-                                              image: nil)
+                                              image: nil,
+                                              senderKey: senderPublicKey)
         return parsedMessage
     }
 
-    static func createDelete(inboxPublicKey: String) -> ParsedChatMessage? {
+    static func createDelete(inboxPublicKey: String, senderPublicKey: String) -> ParsedChatMessage? {
         let parsedMessage = ParsedChatMessage(inboxPublicKey: inboxPublicKey,
                                               messageType: .deleteChat,
                                               contentType: .deleteChat,
                                               text: "",
-                                              image: nil)
+                                              image: nil,
+                                              senderKey: senderPublicKey)
         return parsedMessage
     }
 }

@@ -35,7 +35,7 @@ final class DictionaryDB {
         }
     }
 
-    static private var inboxMessage: [ParsedChatMessage] = [] {
+    static private var inboxMessage: [ChatInboxMessage] = [] {
         didSet {
             guard let encodedData = try? encoder.encode(inboxMessage) else { return }
             UserDefaults.standard.setValue(encodedData, forKey: "inboxMessages")
@@ -59,7 +59,7 @@ final class DictionaryDB {
         }
 
         if let inboxMessagesData = UserDefaults.standard.data(forKey: "inboxMessages"),
-           let savedInboxMessages = try? decoder.decode([ParsedChatMessage].self, from: inboxMessagesData) {
+           let savedInboxMessages = try? decoder.decode([ChatInboxMessage].self, from: inboxMessagesData) {
             inboxMessage = savedInboxMessages
         }
     }
@@ -109,13 +109,22 @@ final class DictionaryDB {
         requests = newRequests
     }
 
-    static func saveInboxMessages(_ request: ParsedChatMessage, inboxPublicKey: String) {
-        var content = self.inboxMessage
-        content.append(request)
-        self.inboxMessage = content
+    static func saveInboxMessages(_ message: ParsedChatMessage, inboxKeys: ECCKeys, receiverInboxPublicKey: String) {
+        let inboxIndex = self.inboxMessage.firstIndex(where: {
+            $0.inbox.publicKey == inboxKeys.publicKey && $0.receiverInbox == receiverInboxPublicKey
+        })
+
+        if let index = inboxIndex {
+            let newChatInboxMessage = ChatInboxMessage(inbox: inboxKeys,
+                                                       receiverInbox: receiverInboxPublicKey,
+                                                       message: message)
+            self.inboxMessage[index] = newChatInboxMessage
+        } else {
+            self.inboxMessage.append(.init(inbox: inboxKeys, receiverInbox: receiverInboxPublicKey, message: message))
+        }
     }
 
-    static func getInboxMessages() -> [ParsedChatMessage] {
+    static func getInboxMessages() -> [ChatInboxMessage] {
         self.inboxMessage
     }
 }

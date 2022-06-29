@@ -292,6 +292,8 @@
 		F1D204EB28613C44006A5671 /* ChatConversationItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D204EA28613C44006A5671 /* ChatConversationItem.swift */; };
 		F1D204ED2861543C006A5671 /* ChatModalContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D204EC2861543C006A5671 /* ChatModalContainerView.swift */; };
 		F1D204EF2862AECB006A5671 /* ChatStartTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D204EE2862AECB006A5671 /* ChatStartTextView.swift */; };
+		F1D204F22863A578006A5671 /* ChatInboxMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D204F12863A578006A5671 /* ChatInboxMessage.swift */; };
+		F1D204F72864FADC006A5671 /* SyncInboxManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D204F62864FADC006A5671 /* SyncInboxManager.swift */; };
 		F1F5F194283E9FC500968366 /* OfferPaymentIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1F5F193283E9FC500968366 /* OfferPaymentIconView.swift */; };
 		F1F5F199283FE52D00968366 /* ChatRequestCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1F5F198283FE52D00968366 /* ChatRequestCoordinator.swift */; };
 		F1F5F19B283FE53300968366 /* ChatRequestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1F5F19A283FE53300968366 /* ChatRequestView.swift */; };
@@ -622,6 +624,8 @@
 		F1D204EA28613C44006A5671 /* ChatConversationItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatConversationItem.swift; sourceTree = "<group>"; };
 		F1D204EC2861543C006A5671 /* ChatModalContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatModalContainerView.swift; sourceTree = "<group>"; };
 		F1D204EE2862AECB006A5671 /* ChatStartTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatStartTextView.swift; sourceTree = "<group>"; };
+		F1D204F12863A578006A5671 /* ChatInboxMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatInboxMessage.swift; sourceTree = "<group>"; };
+		F1D204F62864FADC006A5671 /* SyncInboxManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncInboxManager.swift; sourceTree = "<group>"; };
 		F1F5F193283E9FC500968366 /* OfferPaymentIconView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferPaymentIconView.swift; sourceTree = "<group>"; };
 		F1F5F198283FE52D00968366 /* ChatRequestCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRequestCoordinator.swift; sourceTree = "<group>"; };
 		F1F5F19A283FE53300968366 /* ChatRequestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRequestView.swift; sourceTree = "<group>"; };
@@ -717,7 +721,6 @@
 			isa = PBXGroup;
 			children = (
 				4FBF623A283F8C3800DDBE71 /* OfferFeed.swift */,
-				4F2416A228490B3C00B4A437 /* ChatInbox.swift */,
 			);
 			path = Offers;
 			sourceTree = "<group>";
@@ -903,6 +906,7 @@
 		B08F38EF27AE7110008B344F /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				F1D204F02863A282006A5671 /* Chat */,
 				4FBF6239283F8C2E00DDBE71 /* Offers */,
 				4FBF620C283CE3F100DDBE71 /* Filter */,
 				F175AB8227E4CBFE000DAB15 /* Networking */,
@@ -919,7 +923,7 @@
 		B08F38F227AE7110008B344F /* Managers */ = {
 			isa = PBXGroup;
 			children = (
-				F148564E284FD5E2003213D7 /* InboxManager.swift */,
+				F1D204F52864FABB006A5671 /* Inbox */,
 				B08F391627AE7112008B344F /* AuthenticationManager.swift */,
 				B0F206F027AE94C400A44E72 /* InitialScreenManager.swift */,
 				F175AB9C27F147B5000DAB15 /* ContactsManager.swift */,
@@ -1763,6 +1767,24 @@
 			path = Components;
 			sourceTree = "<group>";
 		};
+		F1D204F02863A282006A5671 /* Chat */ = {
+			isa = PBXGroup;
+			children = (
+				4F2416A228490B3C00B4A437 /* ChatInbox.swift */,
+				F1D204F12863A578006A5671 /* ChatInboxMessage.swift */,
+			);
+			path = Chat;
+			sourceTree = "<group>";
+		};
+		F1D204F52864FABB006A5671 /* Inbox */ = {
+			isa = PBXGroup;
+			children = (
+				F148564E284FD5E2003213D7 /* InboxManager.swift */,
+				F1D204F62864FADC006A5671 /* SyncInboxManager.swift */,
+			);
+			path = Inbox;
+			sourceTree = "<group>";
+		};
 		F1F5F197283FE51F00968366 /* ChatRequest */ = {
 			isa = PBXGroup;
 			children = (
@@ -2310,8 +2332,10 @@
 				F1886255281185E900659786 /* OfferFeePickerView.swift in Sources */,
 				4FBF624C2840D31C00DDBE71 /* ToggleKeyboardBaseViewController.swift in Sources */,
 				F11441DC284681EC00307D39 /* ContactAvatarView.swift in Sources */,
+				F1D204F22863A578006A5671 /* ChatInboxMessage.swift in Sources */,
 				F13B26622818A7EC0011F2FB /* OfferDescriptionView.swift in Sources */,
 				F151A29927C86683000D7242 /* RegisterNameAvatarViewModel.swift in Sources */,
+				F1D204F72864FADC006A5671 /* SyncInboxManager.swift in Sources */,
 				F1A9454227F81200009B5AE3 /* ContactsImported.swift in Sources */,
 				B0FE5249280E93D200A77EC3 /* ECCKeys.swift in Sources */,
 				B08F394127AE7112008B344F /* Shortcuts.swift in Sources */,

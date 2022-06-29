@@ -9,6 +9,10 @@ import UIKit
 import Combine
 
 extension UIImage {
+    var base64EncodedString: String? {
+        jpegData(compressionQuality: 1)?.base64EncodedString()
+    }
+
     var base64Publisher: AnyPublisher<String?, Never> {
         Future { [weak self] promise in
             let data = self?.jpegData(compressionQuality: 1)?.base64EncodedString()
@@ -28,5 +32,9 @@ extension String {
 
     var dataFromBase64: Data? {
         Data(base64Encoded: self, options: .ignoreUnknownCharacters)
+    }
+
+    func dataFromBase64(withCompression compression: CGFloat) -> Data? {
+        imageFromBase64?.jpegData(compressionQuality: compression)
     }
 }

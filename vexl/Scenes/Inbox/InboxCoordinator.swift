@@ -37,14 +37,14 @@ final class InboxCoordinator: BaseCoordinator<Void> {
 
         viewModel
             .route
-            .compactMap { route -> String? in
-                if case let .messageTapped(id) = route { return id }
+            .compactMap { route -> (inboxKeys: ECCKeys, recieverKey: String)? in
+                if case let .messageTapped(inboxKeys, receiverKey) = route { return (inboxKeys: inboxKeys, recieverKey: receiverKey) }
                 return nil
             }
             .withUnretained(self)
-            .flatMap { owner, id -> CoordinatingResult<RouterResult<Void>> in
+            .flatMap { owner, keys -> CoordinatingResult<RouterResult<Void>> in
                 let modalRouter = ModalRouter(parentViewController: viewController, presentationStyle: .fullScreen)
-                return owner.showChatMessage(router: modalRouter, id: id)
+                return owner.showChatMessage(router: modalRouter, inboxKeys: keys.inboxKeys, receiverPublicKey: keys.recieverKey)
             }
             .sink()
             .store(in: cancelBag)
@@ -67,8 +67,8 @@ extension InboxCoordinator {
         .eraseToAnyPublisher()
     }
 
-    private func showChatMessage(router: Router, id: String) -> CoordinatingResult<RouterResult<Void>> {
-        coordinate(to: ChatCoordinator(id: id, router: router, animated: animated))
+    private func showChatMessage(router: Router, inboxKeys: ECCKeys, receiverPublicKey: String) -> CoordinatingResult<RouterResult<Void>> {
+        coordinate(to: ChatCoordinator(inboxKeys: inboxKeys, receiverPublicKey: receiverPublicKey, router: router, animated: animated))
         .flatMap { result -> CoordinatingResult<RouterResult<Void>> in
             guard result != .dismissedByRouter else {
                 return Just(result).eraseToAnyPublisher()

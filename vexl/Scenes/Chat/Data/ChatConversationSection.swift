@@ -39,7 +39,7 @@ extension ChatConversationSection {
     static var stub: [ChatConversationSection] {
         [
             .init(date: Date(), messages: [
-                .init(type: .start, isContact: false, text: nil, image: nil, previewImage: nil)
+                .init(type: .start, isContact: false, text: nil, image: nil)
             ]),
             .init(date: Date(), messages: [
                 .init(type: .text,
@@ -55,8 +55,7 @@ extension ChatConversationSection {
                       text: "Morbi vitae velit ac ex congue molestie" ),
                 .init(type: .image,
                       isContact: true,
-                      image: R.image.onboarding.testAvatar()!.jpegData(compressionQuality: 1)!,
-                      previewImage: R.image.onboarding.testAvatar()!.jpegData(compressionQuality: 0.25)!),
+                      image: R.image.onboarding.testAvatar()!.base64EncodedString!),
                 .init(type: .sendReveal, isContact: false),
                 .init(type: .receiveReveal, isContact: false)
             ])

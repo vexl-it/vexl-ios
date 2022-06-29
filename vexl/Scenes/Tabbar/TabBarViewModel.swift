@@ -11,6 +11,7 @@ import Cleevio
 final class TabBarViewModel: ViewModelType {
 
     @Inject var cryptocurrencyManager: CryptocurrencyValueManagerType
+    @Inject var syncInboxManager: SyncInboxManagerType
 
     // MARK: - Actions Bindings
 
@@ -35,5 +36,6 @@ final class TabBarViewModel: ViewModelType {
     init() {
         cryptocurrencyManager.startPollingCoinData()
         cryptocurrencyManager.fetchChart(option: cryptocurrencyManager.currentTimeline.value)
+        syncInboxManager.startSyncingInboxes(every: Constants.inboxSyncPollInterval)
     }
 }

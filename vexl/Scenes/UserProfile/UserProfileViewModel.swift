@@ -16,6 +16,8 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
     @Inject var userService: UserServiceType
     @Inject var offerService: OfferServiceType
     @Inject var contactService: ContactsServiceType
+    @Inject var syncInboxManager: SyncInboxManagerType
+    @Inject var cryptocurrencyValueManager: CryptocurrencyValueManagerType
 
     // MARK: - Action Binding
 
@@ -182,6 +184,9 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
         deleteOffers
             .withUnretained(self)
             .sink { owner, _ in
+                owner.cryptocurrencyValueManager.stopPollingCoinData()
+                owner.cryptocurrencyValueManager.stopFetchingChartData()
+                owner.syncInboxManager.stopSyncingInboxes()
                 owner.authenticationManager.logoutUser()
             }
             .store(in: cancelBag)

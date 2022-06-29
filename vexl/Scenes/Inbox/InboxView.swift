@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Cleevio
 
 typealias InboxFilterOption = InboxFilterView.Option
 
@@ -74,7 +75,18 @@ struct InboxView: View {
 
 struct InboxViewPreview: PreviewProvider {
     static var previews: some View {
-        InboxView(viewModel: .init(bitcoinViewModel: .init()))
+        let viewModel = InboxViewModel(bitcoinViewModel: .init())
+        viewModel.inboxItems = [.init(avatar: nil,
+                                      username: "Random 1",
+                                      detail: "Has started conversation",
+                                      time: "Date 1",
+                                      offerType: .buy),
+                                .init(avatar: nil,
+                                      username: "Random 2",
+                                      detail: "Has started conversation",
+                                      time: "Date 2",
+                                      offerType: .sell)]
+        return InboxView(viewModel: viewModel)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .previewDevice("iPhone 11")
     }

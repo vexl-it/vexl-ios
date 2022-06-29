@@ -22,23 +22,22 @@ struct ChatConversationItem: Identifiable, Hashable {
 
     let imageView: Image
 
-    init(type: ItemType, isContact: Bool, text: String? = nil, image: Data? = nil, previewImage: Data? = nil) {
+    init(type: ItemType, isContact: Bool, text: String? = nil, image: String? = nil) {
         self.text = text
-        self.image = image
         self.type = type
         self.isContact = isContact
-        self.previewImage = previewImage
+        self.image = image?.dataFromBase64
+        self.previewImage = image?.dataFromBase64(withCompression: Constants.imageCompressionQuality)
         self.imageView = Image(data: previewImage, placeholder: "")
     }
 
     // MARK: - initializer helpers
 
-    static func createInput(text: String?, image: Data? = nil, previewImage: Data? = nil) -> ChatConversationItem {
+    static func createInput(text: String?, image: String? = nil) -> ChatConversationItem {
         ChatConversationItem(type: image != nil ? .image : .text,
                              isContact: false,
                              text: text,
-                             image: image,
-                             previewImage: previewImage)
+                             image: image)
     }
 
     static func createIdentityRequest() -> ChatConversationItem {
@@ -63,5 +62,6 @@ extension ChatConversationItem {
         case sendReveal
         case receiveReveal
         case start
+        case noContent
     }
 }

@@ -35,7 +35,7 @@ final class InboxViewModel: ViewModelType, ObservableObject {
     enum Route: Equatable {
         case dismissTapped
         case requestTapped
-        case messageTapped(id: String)
+        case messageTapped(inboxKeys: ECCKeys, recieverPublicKey: String)
     }
 
     var route: CoordinatingSubject<Route> = .init()
@@ -55,12 +55,12 @@ final class InboxViewModel: ViewModelType, ObservableObject {
         inboxManager.inboxMessages
             .withUnretained(self)
             .sink(receiveCompletion: { _ in },
-                  receiveValue: { owner, messages in
-                owner.inboxItems = messages.map { message -> InboxItem in
+                  receiveValue: { owner, chatInboxMessages in
+                owner.inboxItems = chatInboxMessages.map { chatInbox -> InboxItem in
                     InboxItem(avatar: nil,
                               username: Constants.randomName,
-                              detail: message.previewText,
-                              time: Formatters.chatDateFormatter.string(from: Date(timeIntervalSince1970: message.time)),
+                              detail: chatInbox.message.previewText,
+                              time: Formatters.chatDateFormatter.string(from: Date(timeIntervalSince1970: chatInbox.message.time)),
                               offerType: .buy)
                 }
             })
@@ -90,8 +90,14 @@ final class InboxViewModel: ViewModelType, ObservableObject {
                 if case let .selectMessage(id) = action { return id }
                 return nil
             }
-            .map { id -> Route in .messageTapped(id: id) }
-            .subscribe(route)
+            .withUnretained(self)
+            .sink(receiveValue: { owner, id in
+                guard let index = owner.inboxItems.firstIndex(where: { $0.id.uuidString == id }) else {
+                    return
+                }
+                let chatInboxMessage = owner.inboxManager.currentInboxMessages[index]
+                owner.route.send(.messageTapped(inboxKeys: chatInboxMessage.inbox, recieverPublicKey: chatInboxMessage.receiverInbox))
+            })
             .store(in: cancelBag)
     }
 }

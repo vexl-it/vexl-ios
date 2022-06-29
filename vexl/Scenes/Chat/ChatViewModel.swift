@@ -57,6 +57,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
 
     @Published var currentMessage: String = ""
     @Published var selectedImage: UIImage?
+    @Published var messages: [ChatConversationSection] = []
 
     @Published var primaryActivity: Activity = .init()
     @Published var isLoading = false
@@ -87,7 +88,6 @@ final class ChatViewModel: ViewModelType, ObservableObject {
     let avatar: UIImage? = nil
     let friends: [ChatCommonFriendViewData] = [.stub, .stub, .stub]
     let offerType: OfferType = .buy
-    var messages: [ChatConversationSection] = ChatConversationSection.stub
     var imageSource = ImageSource.photoAlbum
 
     var offerLabel: String {
@@ -123,14 +123,13 @@ final class ChatViewModel: ViewModelType, ObservableObject {
         !currentMessage.isEmpty || selectedImage != nil
     }
 
-    // TODO: - Pass real keys from the inbox + local storage service
-
-    private let inboxKeys: ECCKeys = ECCKeys() // offer key
-    private let senderKeys: ECCKeys = ECCKeys() // user key
-    private let receiverPublicKey: String = "" // user who is having the conversation with
+    private let inboxKeys: ECCKeys
+    private let receiverPublicKey: String
     private let isBlocked = false
 
-    init() {
+    init(inboxKeys: ECCKeys, receiverPublicKey: String) {
+        self.inboxKeys = inboxKeys
+        self.receiverPublicKey = receiverPublicKey
         setupActionBindings()
         setupChatInputBindings()
         setupChatImageInputBindings()
@@ -139,6 +138,37 @@ final class ChatViewModel: ViewModelType, ObservableObject {
         setupBlockChatBindings()
         setupDeleteChatBindings()
         setupModalPresentationBindings()
+        setupInboxManagerBinding()
+    }
+
+    private func setupInboxManagerBinding() {
+        chatService
+            .getStoredChatMessages(inboxPublicKey: inboxKeys.publicKey, receiverPublicKey: receiverPublicKey)
+            .track(activity: primaryActivity)
+            .materialize()
+            .compactMap(\.value)
+            .withUnretained(self)
+            .sink { owner, messages in
+                owner.showChatMessages(messages)
+            }
+            .store(in: cancelBag)
+
+        inboxManager
+            .completedSyncing
+            .withUnretained(self)
+            .sink { owner, result in
+                switch result {
+                case let .success(messages):
+                    let messagesForInbox = messages.filter {
+                        $0.inboxKey == owner.inboxKeys.publicKey && $0.senderInboxKey == owner.receiverPublicKey
+                    }
+                    owner.showChatMessages(messagesForInbox)
+                case .failure:
+                    // TODO: - show some alert
+                    break
+                }
+            }
+            .store(in: cancelBag)
     }
 
     // TODO: - Add post messages to the BE when tapping send/requests
@@ -188,24 +218,23 @@ final class ChatViewModel: ViewModelType, ObservableObject {
                     .track(activity: owner.primaryActivity)
             }
             .withUnretained(self)
-            .compactMap { owner, image -> String? in
+            .compactMap { owner, image -> ParsedChatMessage? in
                 ParsedChatMessage
                     .createMessage(text: owner.currentMessage,
                                    image: image,
-                                   inboxPublicKey: owner.inboxKeys.publicKey)?
-                    .asString
+                                   inboxPublicKey: owner.inboxKeys.publicKey,
+                                   senderPublicKey: owner.receiverPublicKey)
             }
 
         inputMessage
             .withUnretained(self)
             .flatMap { owner, message in
-                owner.sendMessage(type: .message, message: message)
+                owner.sendMessage(type: .message, parsedMessage: message)
             }
             .withUnretained(self)
             .sink { owner, _ in
                 owner.messages.appendItem(.createInput(text: owner.currentMessage,
-                                                       image: owner.selectedImage?.jpegData(compressionQuality: 1),
-                                                       previewImage: owner.selectedImage?.jpegData(compressionQuality: 0.25)))
+                                                       image: owner.selectedImage?.base64EncodedString))
                 owner.selectedImage = nil
                 owner.currentMessage = ""
             }
@@ -225,28 +254,6 @@ final class ChatViewModel: ViewModelType, ObservableObject {
             .filter { $0 == .revealIdentity }
             .map { _ -> Modal in .identityRevealRequest }
             .assign(to: &$modal)
-
-        let requestConfirmed = sharedAction
-            .filter { $0 == .revealRequestConfirmationTap }
-            .withUnretained(self)
-            .compactMap { owner, _ -> String? in
-                ParsedChatMessage
-                    .createIdentityRequest(inboxPublicKey: owner.inboxKeys.publicKey)?
-                    .asString
-            }
-
-        requestConfirmed
-            .withUnretained(self)
-            .flatMap { owner, message in
-                owner.sendMessage(type: .revealRequest, message: message)
-            }
-            .withUnretained(self)
-            .sink { owner, _ in
-                owner.messages.appendItem(.createIdentityRequest())
-                owner.modal = .none
-                owner.currentMessage = ""
-            }
-            .store(in: cancelBag)
     }
 
     private func setupRevealIdentityResponseBindings() {
@@ -274,27 +281,6 @@ final class ChatViewModel: ViewModelType, ObservableObject {
             .filter { $0 == .deleteTap }
             .map { _ -> Modal in .deleteConfirmation }
             .assign(to: &$modal)
-
-        let deleteMessages = sharedAction
-            .filter { $0 == .deleteConfirmedTap }
-            .withUnretained(self)
-            .compactMap { owner, _ -> String? in
-                ParsedChatMessage
-                    .createDelete(inboxPublicKey: owner.inboxKeys.publicKey)?
-                    .asString
-            }
-
-        deleteMessages
-            .withUnretained(self)
-            .flatMap { owner, message in
-                owner.sendMessage(type: .deleteChat, message: message)
-            }
-            .withUnretained(self)
-            .sink { owner, _ in
-                // TODO: - remove all the information locally
-                owner.modal = .none
-            }
-            .store(in: cancelBag)
     }
 
     private func setupBlockChatBindings() {
@@ -307,42 +293,6 @@ final class ChatViewModel: ViewModelType, ObservableObject {
             .filter { $0 == .blockTap }
             .map { _ -> Modal in .blockConfirmation }
             .assign(to: &$modal)
-
-        let signature = sharedAction
-            .filter { $0 == .blockConfirmedTap }
-            .withUnretained(self)
-            .flatMap { owner, _ in
-                owner.chatService.requestChallenge(publicKey: owner.senderKeys.publicKey)
-                    .track(activity: owner.primaryActivity)
-                    .materialize()
-                    .compactMap(\.value)
-                    .setFailureType(to: Error.self)
-                    .eraseToAnyPublisher()
-            }
-            .withUnretained(self)
-            .flatMap { owner, challenge in
-                owner.cryptoService.signECDSA(keys: owner.senderKeys, message: challenge.challenge)
-            }
-
-        signature
-            .withUnretained(self)
-            .flatMap { owner, signature in
-                owner.chatService.blockInbox(inboxPublicKey: owner.senderKeys.publicKey,
-                                             publicKeyToBlock: owner.receiverPublicKey,
-                                             signature: signature,
-                                             isBlocked: owner.isBlocked)
-                    .track(activity: owner.primaryActivity)
-                    .materialize()
-                    .compactMap(\.value)
-                    .asVoid()
-                    .eraseToAnyPublisher()
-            }
-            .withUnretained(self)
-            .sink(receiveCompletion: { _ in },
-                  receiveValue: { owner, _ in
-                owner.modal = .none
-            })
-            .store(in: cancelBag)
     }
 
     private func setupModalPresentationBindings() {
@@ -363,16 +313,60 @@ final class ChatViewModel: ViewModelType, ObservableObject {
             .assign(to: &$modal)
     }
 
-    private func sendMessage(type: MessageType, message: String) -> AnyPublisher<Void, Never> {
-        chatService.sendMessage(inboxPublicKey: inboxKeys.publicKey,
-                                senderPublicKey: senderKeys.publicKey,
-                                receiverPublicKey: receiverPublicKey,
-                                message: message,
-                                messageType: type)
-            .track(activity: primaryActivity)
-            .materialize()
-            .compactMap(\.value)
-            .asVoid()
-            .eraseToAnyPublisher()
+    private func sendMessage(type: MessageType, parsedMessage: ParsedChatMessage?) -> AnyPublisher<Void, Never> {
+        if let parsedMessage = parsedMessage, let message = parsedMessage.asString {
+            return chatService.sendMessage(inboxKeys: inboxKeys,
+                                           receiverPublicKey: receiverPublicKey,
+                                           message: message,
+                                           messageType: type)
+                .track(activity: primaryActivity)
+                .materialize()
+                .compactMap(\.value)
+                .flatMapLatest(with: self) { owner, _ in
+                    owner.chatService.saveParsedMessages([parsedMessage], inboxKeys: owner.inboxKeys)
+                        .track(activity: owner.primaryActivity)
+                        .materialize()
+                        .compactMap(\.value)
+                }
+                .flatMapLatest(with: self) { owner, _ in
+                    owner.inboxManager.updateInboxMessages()
+                        .materialize()
+                        .compactMap(\.value)
+                }
+                .asVoid()
+                .eraseToAnyPublisher()
+        } else {
+            return Just(())
+                .eraseToAnyPublisher()
+        }
+    }
+
+    private func showChatMessages(_ messages: [ParsedChatMessage]) {
+        let conversationItems = messages.map { message -> ChatConversationItem in
+            var itemType: ChatConversationItem.ItemType
+
+            switch message.contentType {
+            case .text:
+                itemType = .text
+            case .image:
+                itemType = .image
+            case .communicationRequestResponse:
+                itemType = .start
+            case .anonymousRequest:
+                itemType = .sendReveal
+            case .anonymousRequestResponse:
+                itemType = .receiveReveal
+            case .deleteChat, .communicationRequest, .none:
+                itemType = .noContent
+            }
+
+            return ChatConversationItem(type: itemType,
+                                        isContact: message.isFromContact,
+                                        text: message.text,
+                                        image: message.image)
+        }
+        let conversationSection = ChatConversationSection(date: Date(),
+                                                          messages: conversationItems)
+        self.messages.append(conversationSection)
     }
 }

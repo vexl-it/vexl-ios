@@ -29,8 +29,7 @@ struct ChatHeaderView: View {
                     Text(username)
                         .foregroundColor(Appearance.Colors.whiteText)
 
-                    Text(offerLabel)
-                        .foregroundColor(Appearance.Colors.whiteText)
+                    // TODO: - add offer type here
                 }
                 .frame(maxWidth: .infinity)
             }
