@@ -18,6 +18,8 @@ struct BitcoinView: View {
     private let backgroundGradientPaddingTop: Double = -44
     private let backgroundGradientPaddingBottom: Double = -20
 
+    @Namespace private var chartAnimationNamespace
+
     private var chartData: LineChartData {
         LineChartData(
             dataSets: LineDataSet(
@@ -153,6 +155,7 @@ struct BitcoinView: View {
                     lineColour: ColourStyle(colour: Appearance.Colors.yellow60),
                     strokeStyle: StrokeStyle(lineWidth: 2)
                 )
+                .matchedGeometryEffect(id: "chart", in: chartAnimationNamespace)
         }
     }
 
@@ -171,6 +174,7 @@ struct BitcoinView: View {
                     lineColour: ColourStyle(colour: Appearance.Colors.yellow100),
                     strokeStyle: StrokeStyle(lineWidth: 2)
                 )
+                .matchedGeometryEffect(id: "chart", in: chartAnimationNamespace)
                 .frame(height: chartBigHeight)
                 .padding(.horizontal, Appearance.GridGuide.padding)
                 .allowsHitTesting(false)
