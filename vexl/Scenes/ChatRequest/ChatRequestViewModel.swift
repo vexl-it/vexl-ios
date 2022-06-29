@@ -9,7 +9,7 @@ import Foundation
 import Cleevio
 import Combine
 
-private typealias OfferAndSenderKeys = (offerKey: StoredOffer.Keys, senderPublicKey: String)
+private typealias OfferAndSenderKeys = (offerKey: OfferKeys, senderPublicKey: String)
 private typealias IndexAndConfirmation = (index: Int, confirmation: Bool)
 private typealias OfferAndMessage = (offer: Offer, message: ParsedChatMessage)
 
@@ -131,7 +131,7 @@ final class ChatRequestViewModel: ViewModelType, ObservableObject {
 
     // MARK: - Helper methods for presenting the request that are pending of approval/rejection
 
-    private func prepareRequestedMessages(storedOfferKeys: [StoredOffer.Keys]) -> AnyPublisher<Void, Never> {
+    private func prepareRequestedMessages(storedOfferKeys: [OfferKeys]) -> AnyPublisher<Void, Never> {
         chatService
             .getStoredRequestMessages()
             .track(activity: primaryActivity)
@@ -152,7 +152,7 @@ final class ChatRequestViewModel: ViewModelType, ObservableObject {
             .eraseToAnyPublisher()
     }
 
-    private func fetchUserOffers(offerKeys: [StoredOffer.Keys]) -> AnyPublisher<[Offer], Never> {
+    private func fetchUserOffers(offerKeys: [OfferKeys]) -> AnyPublisher<[Offer], Never> {
         offerService
             .getUserOffers(offerIds: offerKeys.map(\.id))
             .track(activity: primaryActivity)
@@ -162,7 +162,7 @@ final class ChatRequestViewModel: ViewModelType, ObservableObject {
             .eraseToAnyPublisher()
     }
 
-    private func saveRequestedOffers(_ offers: [Offer], offerKeys: [StoredOffer.Keys], parsedMessages: [ParsedChatMessage]) {
+    private func saveRequestedOffers(_ offers: [Offer], offerKeys: [OfferKeys], parsedMessages: [ParsedChatMessage]) {
 
         var offerRequestViewData: [ChatRequestOfferViewData] = []
         var offerAndSender: [OfferAndSenderKeys] = []

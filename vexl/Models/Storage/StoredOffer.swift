@@ -31,6 +31,7 @@ struct StoredOffer: Codable {
     var feeState: String
     var feeAmount: Double
     var locationState: String
+    var paymentMethods: [String]
     var btcNetwork: [String]
     var friendLevel: String
     var type: String
@@ -55,6 +56,7 @@ struct StoredOffer: Codable {
         self.feeAmount = offer.feeAmount
         self.locationState = offer.locationStateString
         self.btcNetwork = offer.btcNetworkList
+        self.paymentMethods = offer.paymentMethodsList
         self.friendLevel = offer.friendLevelString
         self.type = offer.offerTypeString
     }

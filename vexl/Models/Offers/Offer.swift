@@ -7,6 +7,16 @@
 
 import Foundation
 
+struct OfferKeys {
+    let id: String
+    let publicKey: String
+    let privateKey: String?
+
+    var keys: ECCKeys {
+        ECCKeys(pubKey: publicKey, privKey: privateKey)
+    }
+}
+
 enum OfferType: String {
     case sell = "SELL"
     case buy = "BUY"
@@ -24,6 +34,7 @@ enum OfferType: String {
 struct Offer {
     var offerId: String = ""
     var offerPublicKey: String = ""
+    var offerPrivateKey: String?
     var userPublicKey: String = ""
     var createdAt: String = ""
     var modifiedAt: String = ""
@@ -59,6 +70,29 @@ struct Offer {
         self.btcNetwork = btcNetwork
         self.friendLevel = friendLevel
         self.type = type
+    }
+
+    init?(storedOffer: StoredOffer) {
+        guard let feeState = OfferFeeOption(rawValue: storedOffer.feeState),
+              let locationState = OfferTradeLocationOption(rawValue: storedOffer.locationState),
+              let friendLevel = OfferAdvancedFriendDegreeOption(rawValue: storedOffer.friendLevel),
+              let type = OfferType(rawValue: storedOffer.type) else {
+                  return nil
+              }
+
+        self.offerId = storedOffer.id
+        self.minAmount = storedOffer.minAmount
+        self.maxAmount = storedOffer.maxAmount
+        self.description = storedOffer.description
+        self.feeState = feeState
+        self.feeAmount = storedOffer.feeAmount
+        self.locationState = locationState
+        self.paymentMethods = Self.generatePaymentMethods(storedOffer.paymentMethods)
+        self.btcNetwork = Self.generateBTCNetwork(storedOffer.btcNetwork)
+        self.friendLevel = friendLevel
+        self.type = type
+        self.offerPrivateKey = storedOffer.privateKey
+        self.offerPublicKey = storedOffer.publicKey
     }
 
     init?(encryptedOffer: EncryptedOffer, keys: ECCKeys) throws {
@@ -156,6 +190,10 @@ struct Offer {
 
     var modifiedDate: Date? {
         Formatters.dateApiFormatter.date(from: modifiedAt)
+    }
+
+    var keysWithId: OfferKeys {
+        OfferKeys(id: offerId, publicKey: offerPublicKey, privateKey: offerPrivateKey)
     }
 
     // MARK: - Helper static methods for creating list of offers

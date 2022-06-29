@@ -316,10 +316,10 @@ final class CreateOfferViewModel: ViewModelType, ObservableObject {
         createOffer
             .flatMapLatest(with: self) { owner, offerAndEncryptedOffer in
                 owner.offerService
-                    .storeOffer(id: offerAndEncryptedOffer.encryptedOffer.offerId,
-                                offer: offerAndEncryptedOffer.offer,
-                                keys: owner.offerKey,
-                                isCreated: true)
+                    .storeCreatedOffer(id: offerAndEncryptedOffer.encryptedOffer.offerId,
+                                       offer: offerAndEncryptedOffer.offer,
+                                       keys: owner.offerKey,
+                                       isCreated: true)
                     .track(activity: owner.primaryActivity)
                     .materialize()
                     .compactMap(\.value)

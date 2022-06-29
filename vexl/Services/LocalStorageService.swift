@@ -14,10 +14,10 @@ enum LocalStorageError: Error {
 }
 
 protocol LocalStorageServiceType {
-    func saveOffers(_ storedOffer: [StoredOffer], isCreated: Bool) -> AnyPublisher<Void, Error>
-    func getOffers() -> AnyPublisher<[StoredOffer], Error>
-    func getCreatedOffers() -> AnyPublisher<[StoredOffer], Error>
-    func getFetchedOffers() -> AnyPublisher<[StoredOffer], Error>
+    func saveOffers(_ offers: [Offer], areCreated: Bool) -> AnyPublisher<Void, Error>
+    func getOffers() -> AnyPublisher<[Offer], Error>
+    func getCreatedOffers() -> AnyPublisher<[Offer], Error>
+    func getFetchedOffers() -> AnyPublisher<[Offer], Error>
     func saveInbox(_ inbox: ChatInbox) throws
     func getInboxes(ofType type: ChatInbox.InboxType) throws -> [ChatInbox]
     func saveMessages(_ messages: [ParsedChatMessage]) -> AnyPublisher<Void, Error>
@@ -32,37 +32,48 @@ protocol LocalStorageServiceType {
 
 final class LocalStorageService: LocalStorageServiceType {
 
-    func saveOffers(_ storedOffer: [StoredOffer], isCreated: Bool) -> AnyPublisher<Void, Error> {
+    func saveOffers(_ offers: [Offer], areCreated: Bool) -> AnyPublisher<Void, Error> {
         Future { promise in
-            if isCreated {
-                DictionaryDB.saveCreatedOffers(storedOffer)
-            } else {
-                DictionaryDB.saveFetchedOffers(storedOffer)
+            let storedOffers = offers.map {
+                StoredOffer(offer: $0, id: $0.offerId, keys: ECCKeys(pubKey: $0.offerPublicKey, privKey: nil))
             }
+
+            if areCreated {
+                DictionaryDB.saveCreatedOffers(storedOffers)
+            } else {
+                DictionaryDB.saveFetchedOffers(storedOffers)
+            }
+
             promise(.success(()))
         }
         .eraseToAnyPublisher()
     }
 
-    func getOffers() -> AnyPublisher<[StoredOffer], Error> {
+    func getOffers() -> AnyPublisher<[Offer], Error> {
         Future { promise in
             let createdOffers = DictionaryDB.getCreatedOffers()
             let fetchedOffers = DictionaryDB.getFetchedOffers()
-            promise(.success(createdOffers + fetchedOffers))
+            let storedOffers = createdOffers + fetchedOffers
+            let offers = Self.convertStoredOffers(storedOffers)
+            promise(.success(offers))
         }
         .eraseToAnyPublisher()
     }
 
-    func getCreatedOffers() -> AnyPublisher<[StoredOffer], Error> {
+    func getCreatedOffers() -> AnyPublisher<[Offer], Error> {
         Future { promise in
-            promise(.success(DictionaryDB.getCreatedOffers()))
+            let storedOffers = DictionaryDB.getCreatedOffers()
+            let offers = Self.convertStoredOffers(storedOffers)
+            promise(.success(offers))
         }
         .eraseToAnyPublisher()
     }
 
-    func getFetchedOffers() -> AnyPublisher<[StoredOffer], Error> {
+    func getFetchedOffers() -> AnyPublisher<[Offer], Error> {
         Future { promise in
-            promise(.success(DictionaryDB.getFetchedOffers()))
+            let storedOffers = DictionaryDB.getFetchedOffers()
+            let offers = Self.convertStoredOffers(storedOffers)
+            promise(.success(offers))
         }
         .eraseToAnyPublisher()
     }
@@ -150,5 +161,17 @@ final class LocalStorageService: LocalStorageServiceType {
             promise(.success(filteredMessages))
         }
         .eraseToAnyPublisher()
+    }
+
+    // TODO: - helper method, remove when core data is implemented
+
+    private static func convertStoredOffers(_ storedOffers: [StoredOffer]) -> [Offer] {
+        var offers: [Offer] = []
+        storedOffers.forEach { item in
+            if let storedOffer = Offer(storedOffer: item) {
+                offers.append(storedOffer)
+            }
+        }
+        return offers
     }
 }

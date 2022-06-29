@@ -89,7 +89,7 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
     private var sellOfferFilter = OfferFilter(type: .sell)
     private var buyFeedItems: [OfferDetailViewData] = []
     private var sellFeedItems: [OfferDetailViewData] = []
-    private var userOfferKeys: [StoredOffer.Keys] = []
+    private var userOfferKeys: [OfferKeys] = []
     private let cancelBag: CancelBag = .init()
 
     init(bitcoinViewModel: BitcoinViewModel) {
