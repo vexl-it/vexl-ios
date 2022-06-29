@@ -26,6 +26,7 @@ protocol OfferServiceType {
 
     func storeFetchedOffers(offers: [Offer]) -> AnyPublisher<Void, Error>
     func storeOffer(id: String, offer: Offer, keys: ECCKeys, isCreated: Bool) -> AnyPublisher<Void, Error>
+    func getStoredOffers() -> AnyPublisher<[StoredOffer], Error>
     func getStoredOfferIds(forType offerType: OfferType) -> AnyPublisher<[String], Error>
     func getAllStoredOfferIds() -> AnyPublisher<[String], Error>
     func getStoredOfferKeys() -> AnyPublisher<[StoredOffer.Keys], Error>
@@ -101,6 +102,10 @@ final class OfferService: BaseService, OfferServiceType {
             StoredOffer(offer: $0, id: $0.offerId, keys: ECCKeys(pubKey: $0.offerPublicKey, privKey: nil))
         }
         return localStorageService.saveOffers(storedOffers, isCreated: false)
+    }
+
+    func getStoredOffers() -> AnyPublisher<[StoredOffer], Error> {
+        localStorageService.getOffers()
     }
 
     func getStoredOfferIds(forType offerType: OfferType) -> AnyPublisher<[String], Error> {

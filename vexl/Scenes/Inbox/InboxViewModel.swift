@@ -7,10 +7,15 @@
 
 import Foundation
 import Cleevio
+import Combine
+
+private typealias OfferKeyAndType = (offerKey: String, offerType: OfferType)
+private typealias OfferAndMessage = (offers: [OfferKeyAndType], messages: [ChatInboxMessage])
 
 final class InboxViewModel: ViewModelType, ObservableObject {
 
     @Inject var inboxManager: InboxManagerType
+    @Inject var offerService: OfferServiceType
 
     // MARK: - Action Binding
 
@@ -54,14 +59,35 @@ final class InboxViewModel: ViewModelType, ObservableObject {
     private func setupInboxBindings() {
         inboxManager.inboxMessages
             .withUnretained(self)
+            .flatMap { owner, chatInboxMessages in
+                owner.offerService
+                    .getStoredOffers()
+                    .materialize()
+                    .compactMap(\.value)
+                    .map { offers -> OfferAndMessage in
+                        let offerKeyAndTypes = offers.map { offer in
+                            OfferKeyAndType(offerKey: offer.publicKey, offerType: offer.offerType ?? .buy)
+                        }
+                        return OfferAndMessage(offers: offerKeyAndTypes, messages: chatInboxMessages)
+                    }
+                    .eraseToAnyPublisher()
+            }
+            .withUnretained(self)
             .sink(receiveCompletion: { _ in },
-                  receiveValue: { owner, chatInboxMessages in
+                  receiveValue: { owner, offerAndMessages in
+                let chatInboxMessages = offerAndMessages.messages
+                let offerKeyAndTypes = offerAndMessages.offers
+
                 owner.inboxItems = chatInboxMessages.map { chatInbox -> InboxItem in
-                    InboxItem(avatar: nil,
-                              username: Constants.randomName,
-                              detail: chatInbox.message.previewText,
-                              time: Formatters.chatDateFormatter.string(from: Date(timeIntervalSince1970: chatInbox.message.time)),
-                              offerType: .buy)
+                    let offerType = offerKeyAndTypes.first(where: {
+                        $0.offerKey == chatInbox.message.inboxKey || $0.offerKey == chatInbox.message.senderInboxKey
+                    })?.offerType
+
+                    return InboxItem(avatar: nil,
+                                     username: Constants.randomName,
+                                     detail: chatInbox.message.previewText,
+                                     time: Formatters.chatDateFormatter.string(from: Date(timeIntervalSince1970: chatInbox.message.time)),
+                                     offerType: offerType)
                 }
             })
             .store(in: cancelBag)
