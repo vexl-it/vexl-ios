@@ -34,8 +34,8 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
     @Published var primaryActivity: Activity = .init()
     @Published var selectedOption: OfferType = .buy
     @Published var offerItems: [Offer] = []
-    @Published private var filteredBuyFeedItems: [OfferDetailViewData] = []
-    @Published private var filteredSellFeedItems: [OfferDetailViewData] = []
+    @Published private var displayedBuyFeedItems: [OfferDetailViewData] = []
+    @Published private var displayedSellFeedItems: [OfferDetailViewData] = []
 
     // MARK: - Coordinator Bindings
 
@@ -62,9 +62,7 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
             type: .filter,
             action: { [action] in action.send(.showBuyFilters) }
         )
-        return [
-            openFilter
-        ]
+        return [openFilter]
     }
 
     var sellFilters: [MarketplaceFilterData] {
@@ -73,17 +71,15 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
             type: .filter,
             action: { [action] in action.send(.showSellFilters) }
         )
-        return [
-            openFilter
-        ]
+        return [openFilter]
     }
 
     var marketplaceFeedItems: [OfferDetailViewData] {
         switch selectedOption {
         case .sell:
-            return filteredSellFeedItems
+            return displayedSellFeedItems
         case .buy:
-            return filteredBuyFeedItems
+            return displayedBuyFeedItems
         }
     }
 
@@ -121,7 +117,7 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
             }
             return false
         }
-        filteredBuyFeedItems = filteredItems
+        displayedBuyFeedItems = filteredItems
     }
 
     private func filterSellOffers() {
@@ -131,7 +127,7 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
             }
             return false
         }
-        filteredSellFeedItems = filteredItems
+        displayedSellFeedItems = filteredItems
     }
 
     private func setupInbox() {
@@ -201,8 +197,8 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
                     }
                 }
 
-                owner.filteredBuyFeedItems = owner.buyFeedItems
-                owner.filteredSellFeedItems = owner.sellFeedItems
+                owner.displayedBuyFeedItems = owner.buyFeedItems
+                owner.displayedSellFeedItems = owner.sellFeedItems
             }
             .store(in: cancelBag)
     }
@@ -254,18 +250,6 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
             }
             .map { offer in Route.showRequestOffer(offer) }
             .subscribe(route)
-            .store(in: cancelBag)
-
-        userAction
-            .compactMap { action -> String? in
-                if case let .offerDetailTapped(id) = action { return id }
-                return nil
-            }
-            .withUnretained(self)
-            .sink { owner, id in
-                print("\(owner) will present the detail of the offer")
-                print("id selected: \(id)")
-            }
             .store(in: cancelBag)
     }
 
