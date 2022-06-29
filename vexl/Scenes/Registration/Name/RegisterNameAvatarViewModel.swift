@@ -75,6 +75,7 @@ final class RegisterNameAvatarViewModel: ViewModelType {
         setupActivity()
         setupStateBinding()
         setupActionBindings()
+        setupCreateUserBindings()
     }
 
     func updateToPreviousState() {
@@ -131,42 +132,7 @@ final class RegisterNameAvatarViewModel: ViewModelType {
             .store(in: cancelBag)
     }
 
-    // swiftlint: disable function_body_length
     private func setupActionBindings() {
-        action
-            .filter { $0 == .createUser }
-            .flatMapLatest(with: self) { owner, _ -> AnyPublisher<String?, Never> in
-                guard let avatar = owner.avatar else { return Just<String?>(nil).eraseToAnyPublisher() }
-                return avatar.base64Publisher
-                    .track(activity: owner.primaryActivity)
-            }
-            .flatMapLatest(with: self) { owner, base64 in
-                owner.userService
-                    .createUser(username: owner.username,
-                                avatar: base64)
-                    .track(activity: owner.primaryActivity)
-                    .materialize()
-                    .compactMap(\.value)
-                    .eraseToAnyPublisher()
-            }
-            .flatMapLatest(with: self) { owner, _ in
-                owner.chatService
-                    .createInbox(offerKey: owner.userSecurity.userKeys,
-                                 pushToken: Constants.pushNotificationToken)
-                    .track(activity: owner.primaryActivity)
-                    .materialize()
-                    .compactMap(\.value)
-                    .eraseToAnyPublisher()
-            }
-            .withUnretained(self)
-            .sink { owner, _ in
-                owner.route.send(.continueTapped)
-                owner.currentState = .usernameInput
-                owner.username = ""
-                owner.avatar = nil
-            }
-            .store(in: cancelBag)
-
         action
             .filter { $0 == .setUsername }
             .flatMapLatest(with: self) { owner, _ in
@@ -202,6 +168,42 @@ final class RegisterNameAvatarViewModel: ViewModelType {
             .withUnretained(self)
             .sink { owner, _ in
                 owner.showImagePickerActionSheet = true
+            }
+            .store(in: cancelBag)
+    }
+
+    private func setupCreateUserBindings() {
+        action
+            .filter { $0 == .createUser }
+            .flatMapLatest(with: self) { owner, _ -> AnyPublisher<String?, Never> in
+                guard let avatar = owner.avatar else { return Just<String?>(nil).eraseToAnyPublisher() }
+                return avatar.base64Publisher
+                    .track(activity: owner.primaryActivity)
+            }
+            .flatMapLatest(with: self) { owner, base64 in
+                owner.userService
+                    .createUser(username: owner.username,
+                                avatar: base64)
+                    .track(activity: owner.primaryActivity)
+                    .materialize()
+                    .compactMap(\.value)
+                    .eraseToAnyPublisher()
+            }
+            .flatMapLatest(with: self) { owner, _ in
+                owner.chatService
+                    .createInbox(offerKey: owner.userSecurity.userKeys,
+                                 pushToken: Constants.pushNotificationToken)
+                    .track(activity: owner.primaryActivity)
+                    .materialize()
+                    .compactMap(\.value)
+                    .eraseToAnyPublisher()
+            }
+            .withUnretained(self)
+            .sink { owner, _ in
+                owner.route.send(.continueTapped)
+                owner.currentState = .usernameInput
+                owner.username = ""
+                owner.avatar = nil
             }
             .store(in: cancelBag)
     }

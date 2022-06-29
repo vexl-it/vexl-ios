@@ -96,6 +96,7 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
         self.bitcoinViewModel = bitcoinViewModel
         setupDataBindings()
         setupActionBindings()
+        setupOfferItemBindings()
         setupInbox()
     }
 
@@ -111,8 +112,8 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
     }
 
     private func filterBuyOffers() {
-        let filteredItems = buyFeedItems.filter { [weak self] item in
-            if let owner = self, let offer = owner.offerItems.first(where: { $0.offerId == item.id }) {
+        let filteredItems = buyFeedItems.filter { item in
+            if let offer = self.offerItems.first(where: { $0.offerId == item.id }) {
                 return buyOfferFilter.shouldShow(offer: offer)
             }
             return false
@@ -121,8 +122,8 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
     }
 
     private func filterSellOffers() {
-        let filteredItems = sellFeedItems.filter { [weak self] item in
-            if let owner = self, let offer = owner.offerItems.first(where: { $0.offerId == item.id }) {
+        let filteredItems = sellFeedItems.filter { item in
+            if let offer = self.offerItems.first(where: { $0.offerId == item.id }) {
                 return sellOfferFilter.shouldShow(offer: offer)
             }
             return false
@@ -134,7 +135,6 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
         inboxManager.syncInboxes()
     }
 
-    // swiftlint: disable function_body_length
     private func setupDataBindings() {
         Publishers.Merge(refresh, Just(()))
             .flatMapLatest(with: self) { owner, _ in
@@ -162,7 +162,9 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
             }
             .replaceError(with: [])
             .assign(to: &$offerItems)
+    }
 
+    private func setupOfferItemBindings() {
         $offerItems
             .withUnretained(self)
             .map { owner, offers -> [Offer] in

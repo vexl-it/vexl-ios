@@ -33,7 +33,7 @@ protocol ChatServiceType {
                      receiverPublicKey: String,
                      message: String,
                      messageType: MessageType) -> AnyPublisher<Void, Error>
-    func blockInbox(inboxPublicKey: String, publicKeyToBlock: String, signature: String, isBlocked: Bool) -> AnyPublisher<Void, Error>
+    func setInboxBlock(inboxPublicKey: String, publicKeyToBlock: String, signature: String, isBlocked: Bool) -> AnyPublisher<Void, Error>
 
     // MARK: - Storage
 
@@ -151,7 +151,7 @@ final class ChatService: BaseService, ChatServiceType {
             .eraseToAnyPublisher()
     }
 
-    func blockInbox(inboxPublicKey: String, publicKeyToBlock: String, signature: String, isBlocked: Bool) -> AnyPublisher<Void, Error> {
+    func setInboxBlock(inboxPublicKey: String, publicKeyToBlock: String, signature: String, isBlocked: Bool) -> AnyPublisher<Void, Error> {
         request(endpoint: ChatRouter.blockInbox(publicKey: inboxPublicKey,
                                                 publicKeyToBlock: publicKeyToBlock,
                                                 signature: signature,
