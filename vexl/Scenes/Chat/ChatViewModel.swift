@@ -254,28 +254,6 @@ final class ChatViewModel: ViewModelType, ObservableObject {
             .filter { $0 == .revealIdentity }
             .map { _ -> Modal in .identityRevealRequest }
             .assign(to: &$modal)
-
-//        let requestConfirmed = sharedAction
-//            .filter { $0 == .revealRequestConfirmationTap }
-//            .withUnretained(self)
-//            .compactMap { owner, _ -> String? in
-//                ParsedChatMessage
-//                    .createIdentityRequest(inboxPublicKey: owner.inboxKeys.publicKey)?
-//                    .asString
-//            }
-//
-//        requestConfirmed
-//            .withUnretained(self)
-//            .flatMap { owner, message in
-//                owner.sendMessage(type: .revealRequest, message: message)
-//            }
-//            .withUnretained(self)
-//            .sink { owner, _ in
-//                owner.messages.appendItem(.createIdentityRequest())
-//                owner.modal = .none
-//                owner.currentMessage = ""
-//            }
-//            .store(in: cancelBag)
     }
 
     private func setupRevealIdentityResponseBindings() {
@@ -303,27 +281,6 @@ final class ChatViewModel: ViewModelType, ObservableObject {
             .filter { $0 == .deleteTap }
             .map { _ -> Modal in .deleteConfirmation }
             .assign(to: &$modal)
-
-//        let deleteMessages = sharedAction
-//            .filter { $0 == .deleteConfirmedTap }
-//            .withUnretained(self)
-//            .compactMap { owner, _ -> String? in
-//                ParsedChatMessage
-//                    .createDelete(inboxPublicKey: owner.inboxKeys.publicKey)?
-//                    .asString
-//            }
-//
-//        deleteMessages
-//            .withUnretained(self)
-//            .flatMap { owner, message in
-//                owner.sendMessage(type: .deleteChat, message: message)
-//            }
-//            .withUnretained(self)
-//            .sink { owner, _ in
-//                // TODO: - remove all the information locally
-//                owner.modal = .none
-//            }
-//            .store(in: cancelBag)
     }
 
     private func setupBlockChatBindings() {
@@ -336,42 +293,6 @@ final class ChatViewModel: ViewModelType, ObservableObject {
             .filter { $0 == .blockTap }
             .map { _ -> Modal in .blockConfirmation }
             .assign(to: &$modal)
-
-//        let signature = sharedAction
-//            .filter { $0 == .blockConfirmedTap }
-//            .withUnretained(self)
-//            .flatMap { owner, _ in
-//                owner.chatService.requestChallenge(publicKey: owner.inboxKeys.publicKey)
-//                    .track(activity: owner.primaryActivity)
-//                    .materialize()
-//                    .compactMap(\.value)
-//                    .setFailureType(to: Error.self)
-//                    .eraseToAnyPublisher()
-//            }
-//            .withUnretained(self)
-//            .flatMap { owner, challenge in
-//                owner.cryptoService.signECDSA(keys: owner.inboxKeys, message: challenge.challenge)
-//            }
-//
-//        signature
-//            .withUnretained(self)
-//            .flatMap { owner, signature in
-//                owner.chatService.blockInbox(inboxPublicKey: owner.inboxKeys.publicKey,
-//                                             publicKeyToBlock: owner.receiverPublicKey,
-//                                             signature: signature,
-//                                             isBlocked: owner.isBlocked)
-//                    .track(activity: owner.primaryActivity)
-//                    .materialize()
-//                    .compactMap(\.value)
-//                    .asVoid()
-//                    .eraseToAnyPublisher()
-//            }
-//            .withUnretained(self)
-//            .sink(receiveCompletion: { _ in },
-//                  receiveValue: { owner, _ in
-//                owner.modal = .none
-//            })
-//            .store(in: cancelBag)
     }
 
     private func setupModalPresentationBindings() {
@@ -436,7 +357,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
             case .anonymousRequestResponse:
                 itemType = .receiveReveal
             case .deleteChat, .communicationRequest, .none:
-                itemType = .text // create a none case
+                itemType = .none // create a none case
             }
 
             return ChatConversationItem(type: itemType,

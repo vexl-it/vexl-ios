@@ -51,23 +51,6 @@ struct InboxView: View {
         .cornerRadius(Appearance.GridGuide.buttonCorner)
     }
 
-    private var syncingView: some View {
-        VStack(spacing: .zero) {
-            Text("Syncing Messages")
-                .foregroundColor(Appearance.Colors.gray2)
-                .textStyle(.descriptionBold)
-                .padding(.top, 8)
-
-            LoadingView(spacing: 5,
-                        dotDiameter: 6,
-                        circleColor: Color.black)
-                .padding(.bottom, 4)
-        }
-        .frame(maxWidth: .infinity)
-        .frame(height: 50)
-        .background(Appearance.Colors.green100)
-    }
-
     private var header: some View {
         HStack(alignment: .center) {
             Text(L.chatMainTitle())
