@@ -14,8 +14,10 @@ enum LocalStorageError: Error {
 }
 
 protocol LocalStorageServiceType {
-    func saveOffer(id: String, type: OfferType, key: ECCKeys) -> AnyPublisher<Void, Error>
-    func getOfferKeys() -> AnyPublisher<[UserOfferKeys.OfferKey], Never>
+    func saveOffers(_ storedOffer: [StoredOffer], isCreated: Bool) -> AnyPublisher<Void, Error>
+    func getOffers() -> AnyPublisher<[StoredOffer], Error>
+    func getCreatedOffers() -> AnyPublisher<[StoredOffer], Error>
+    func getFetchedOffers() -> AnyPublisher<[StoredOffer], Error>
     func saveInbox(_ inbox: ChatInbox) throws
     func getInboxes(ofType type: ChatInbox.InboxType) throws -> [ChatInbox]
     func saveMessages(_ messages: [ParsedChatMessage]) -> AnyPublisher<Void, Error>
@@ -30,25 +32,37 @@ protocol LocalStorageServiceType {
 
 final class LocalStorageService: LocalStorageServiceType {
 
-    func saveOffer(id: String, type: OfferType, key: ECCKeys) -> AnyPublisher<Void, Error> {
+    func saveOffers(_ storedOffer: [StoredOffer], isCreated: Bool) -> AnyPublisher<Void, Error> {
         Future { promise in
-            let storedOfferKeys: UserOfferKeys? = UserDefaults.standard.codable(forKey: .storedOfferKeys)
-            var currentOfferKeys = storedOfferKeys ?? .init(keys: [])
-            currentOfferKeys.keys.append(.init(id: id,
-                                               privateKey: key.privateKey,
-                                               publicKey: key.publicKey,
-                                               type: type.rawValue))
-            UserDefaults.standard.set(value: currentOfferKeys, forKey: .storedOfferKeys)
+            if isCreated {
+                DictionaryDB.saveCreatedOffers(storedOffer)
+            } else {
+                DictionaryDB.saveFetchedOffers(storedOffer)
+            }
             promise(.success(()))
         }
         .eraseToAnyPublisher()
     }
 
-    func getOfferKeys() -> AnyPublisher<[UserOfferKeys.OfferKey], Never> {
+    func getOffers() -> AnyPublisher<[StoredOffer], Error> {
         Future { promise in
-            let storedOfferKeys: UserOfferKeys? = UserDefaults.standard.codable(forKey: .storedOfferKeys)
-            let offerKey = storedOfferKeys?.keys
-            promise(.success(offerKey ?? []))
+            let createdOffers = DictionaryDB.getCreatedOffers()
+            let fetchedOffers = DictionaryDB.getFetchedOffers()
+            promise(.success(createdOffers + fetchedOffers))
+        }
+        .eraseToAnyPublisher()
+    }
+
+    func getCreatedOffers() -> AnyPublisher<[StoredOffer], Error> {
+        Future { promise in
+            promise(.success(DictionaryDB.getCreatedOffers()))
+        }
+        .eraseToAnyPublisher()
+    }
+
+    func getFetchedOffers() -> AnyPublisher<[StoredOffer], Error> {
+        Future { promise in
+            promise(.success(DictionaryDB.getFetchedOffers()))
         }
         .eraseToAnyPublisher()
     }
