@@ -25,7 +25,6 @@
 		4FBF620B283CE08800DDBE71 /* OfferAmountRangeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FBF620A283CE08800DDBE71 /* OfferAmountRangeView.swift */; };
 		4FBF620E283CE3FB00DDBE71 /* OfferFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FBF620D283CE3FB00DDBE71 /* OfferFilter.swift */; };
 		4FBF6213283CF54400DDBE71 /* FilterHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FBF6212283CF54400DDBE71 /* FilterHeaderView.swift */; };
-		4FBF623B283F8C3800DDBE71 /* OfferFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FBF623A283F8C3800DDBE71 /* OfferFeed.swift */; };
 		4FBF6240283FBF6000DDBE71 /* RequestOfferCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FBF623F283FBF6000DDBE71 /* RequestOfferCoordinator.swift */; };
 		4FBF6242283FBF6B00DDBE71 /* RequestOfferViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FBF6241283FBF6B00DDBE71 /* RequestOfferViewModel.swift */; };
 		4FBF6244283FBF7200DDBE71 /* RequestOfferView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FBF6243283FBF7200DDBE71 /* RequestOfferView.swift */; };
@@ -340,7 +339,6 @@
 		4FBF620A283CE08800DDBE71 /* OfferAmountRangeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferAmountRangeView.swift; sourceTree = "<group>"; };
 		4FBF620D283CE3FB00DDBE71 /* OfferFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferFilter.swift; sourceTree = "<group>"; };
 		4FBF6212283CF54400DDBE71 /* FilterHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterHeaderView.swift; sourceTree = "<group>"; };
-		4FBF623A283F8C3800DDBE71 /* OfferFeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferFeed.swift; sourceTree = "<group>"; };
 		4FBF623F283FBF6000DDBE71 /* RequestOfferCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestOfferCoordinator.swift; sourceTree = "<group>"; };
 		4FBF6241283FBF6B00DDBE71 /* RequestOfferViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestOfferViewModel.swift; sourceTree = "<group>"; };
 		4FBF6243283FBF7200DDBE71 /* RequestOfferView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestOfferView.swift; sourceTree = "<group>"; };
@@ -720,7 +718,7 @@
 		4FBF6239283F8C2E00DDBE71 /* Offers */ = {
 			isa = PBXGroup;
 			children = (
-				4FBF623A283F8C3800DDBE71 /* OfferFeed.swift */,
+				F13B2676281F43A10011F2FB /* Offer.swift */,
 			);
 			path = Offers;
 			sourceTree = "<group>";
@@ -1363,7 +1361,6 @@
 			children = (
 				F13B266428192BBF0011F2FB /* OfferInitialData.swift */,
 				F13B2672281D81060011F2FB /* EncryptedOffer.swift */,
-				F13B2676281F43A10011F2FB /* Offer.swift */,
 				F13B2678281FC5A90011F2FB /* OfferLocation.swift */,
 			);
 			path = Offers;
@@ -1480,7 +1477,6 @@
 			children = (
 				F1485651284FD5FD003213D7 /* EncryptedChatMessage.swift */,
 				F1485652284FD5FD003213D7 /* ChatChallenge.swift */,
-				F1C734762852CB6D00B3F327 /* ParsedChatMessage.swift */,
 			);
 			path = Chats;
 			sourceTree = "<group>";
@@ -1778,6 +1774,7 @@
 		F1D204F02863A282006A5671 /* Chat */ = {
 			isa = PBXGroup;
 			children = (
+				F1C734762852CB6D00B3F327 /* ParsedChatMessage.swift */,
 				4F2416A228490B3C00B4A437 /* ChatInbox.swift */,
 				F1D204F12863A578006A5671 /* ChatInboxMessage.swift */,
 			);
@@ -2218,7 +2215,6 @@
 				F148564B284FD452003213D7 /* ChatCoordinator.swift in Sources */,
 				F175AB9B27F1432E000DAB15 /* ContactsRouter.swift in Sources */,
 				B0E9BB272815C5750012BF1D /* String+Crypto.swift in Sources */,
-				4FBF623B283F8C3800DDBE71 /* OfferFeed.swift in Sources */,
 				F151A2A927C9646A000D7242 /* RegisterNameAvatarView+AvatarInput.swift in Sources */,
 				B08F395927AE7112008B344F /* ClientAPIError.swift in Sources */,
 				F188627328169A3700659786 /* MarketplaceFeedView.swift in Sources */,

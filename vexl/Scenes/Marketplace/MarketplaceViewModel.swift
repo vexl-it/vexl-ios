@@ -33,10 +33,9 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
 
     @Published var primaryActivity: Activity = .init()
     @Published var selectedOption: OfferType = .buy
-    @Published private var filteredBuyFeedItems: [OfferFeed] = []
-    @Published private var filteredSellFeedItems: [OfferFeed] = []
-
     @Published var offerItems: [Offer] = []
+    @Published private var filteredBuyFeedItems: [OfferDetailViewData] = []
+    @Published private var filteredSellFeedItems: [OfferDetailViewData] = []
 
     // MARK: - Coordinator Bindings
 
@@ -82,9 +81,9 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
     var marketplaceFeedItems: [OfferDetailViewData] {
         switch selectedOption {
         case .sell:
-            return filteredSellFeedItems.map(\.viewData)
+            return filteredSellFeedItems
         case .buy:
-            return filteredBuyFeedItems.map(\.viewData)
+            return filteredBuyFeedItems
         }
     }
 
@@ -92,8 +91,8 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
     let bitcoinViewModel: BitcoinViewModel
     private var buyOfferFilter = OfferFilter(type: .buy)
     private var sellOfferFilter = OfferFilter(type: .sell)
-    private var buyFeedItems: [OfferFeed] = []
-    private var sellFeedItems: [OfferFeed] = []
+    private var buyFeedItems: [OfferDetailViewData] = []
+    private var sellFeedItems: [OfferDetailViewData] = []
     private var userOfferKeys: [StoredOffer.Keys] = []
     private let cancelBag: CancelBag = .init()
 
@@ -116,15 +115,21 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
     }
 
     private func filterBuyOffers() {
-        let filteredItems = buyFeedItems.filter { item in
-            buyOfferFilter.shouldShow(offer: item.offer)
+        let filteredItems = buyFeedItems.filter { [weak self] item in
+            if let owner = self, let offer = owner.offerItems.first(where: { $0.offerId == item.id }) {
+                return buyOfferFilter.shouldShow(offer: offer)
+            }
+            return false
         }
         filteredBuyFeedItems = filteredItems
     }
 
     private func filterSellOffers() {
-        let filteredItems = sellFeedItems.filter { item in
-            sellOfferFilter.shouldShow(offer: item.offer)
+        let filteredItems = sellFeedItems.filter { [weak self] item in
+            if let owner = self, let offer = owner.offerItems.first(where: { $0.offerId == item.id }) {
+                return sellOfferFilter.shouldShow(offer: offer)
+            }
+            return false
         }
         filteredSellFeedItems = filteredItems
     }
@@ -187,12 +192,12 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
 
                 for offer in offers {
                     let isRequested = requestedInboxes.contains(where: { $0.publicKey == offer.offerPublicKey })
-                    let marketplaceItem = OfferFeed.mapToOfferFeed(usingOffer: offer, isRequested: isRequested)
+                    let viewData = OfferDetailViewData(offer: offer, isRequested: isRequested)
                     switch offer.type {
                     case .buy:
-                        owner.buyFeedItems.append(marketplaceItem)
+                        owner.buyFeedItems.append(viewData)
                     case .sell:
-                        owner.sellFeedItems.append(marketplaceItem)
+                        owner.sellFeedItems.append(viewData)
                     }
                 }
 
