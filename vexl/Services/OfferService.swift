@@ -26,7 +26,7 @@ protocol OfferServiceType {
 
     func storeOffers(offers: [Offer], areCreated: Bool) -> AnyPublisher<Void, Error>
     func getStoredOfferIds(fromType option: OfferTypeOption) -> AnyPublisher<[String], Error>
-    func getStoredOfferkeys(fromSource option: OfferSourceOption) -> AnyPublisher<[OfferKeys], Error>
+    func getStoredOfferKeys(fromSource option: OfferSourceOption) -> AnyPublisher<[OfferKeys], Error>
 }
 
 final class OfferService: BaseService, OfferServiceType {
