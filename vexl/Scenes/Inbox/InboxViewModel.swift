@@ -66,7 +66,7 @@ final class InboxViewModel: ViewModelType, ObservableObject {
                     .compactMap(\.value)
                     .map { offers -> OfferAndMessage in
                         let offerKeyAndTypes = offers.map { offer in
-                            OfferKeyAndType(offerKey: offer.publicKey, offerType: offer.offerType ?? .buy)
+                            OfferKeyAndType(offerKey: offer.offerPublicKey, offerType: offer.type)
                         }
                         return OfferAndMessage(offers: offerKeyAndTypes, messages: chatInboxMessages)
                     }
