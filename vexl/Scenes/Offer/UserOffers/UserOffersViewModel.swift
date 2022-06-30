@@ -129,7 +129,7 @@ final class UserOffersViewModel: ViewModelType, ObservableObject {
         Just(())
             .flatMapLatest(with: self) { owner, _ in
                 owner.offerService
-                    .getStoredOfferIds(forType: owner.offerType)
+                    .getStoredOfferIds(fromType: owner.offerType == .buy ? .buy : .sell)
                     .track(activity: owner.primaryActivity)
                     .materialize()
                     .compactMap(\.value)
@@ -145,7 +145,7 @@ final class UserOffersViewModel: ViewModelType, ObservableObject {
             .withUnretained(self)
             .sink { owner, encryptedOffers in
                 owner.userOffers = encryptedOffers.compactMap {
-                    try? Offer(encryptedOffer: $0, keys: owner.userSecurity.userKeys)
+                    try? Offer(encryptedOffer: $0, keys: owner.userSecurity.userKeys, source: .created)
                 }
                 owner.sortOffers(withOption: owner.offerSortingOption)
             }
