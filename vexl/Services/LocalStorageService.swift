@@ -46,7 +46,7 @@ final class LocalStorageService: LocalStorageServiceType {
             let storedOffers = offers.map {
                 StoredOffer(offer: $0,
                             id: $0.offerId,
-                            keys: ECCKeys(pubKey: $0.offerPublicKey, privKey: nil),
+                            keys: ECCKeys(pubKey: $0.offerPublicKey, privKey: $0.offerPrivateKey),
                             source: areCreated ? .created : .fetched)
             }
 
