@@ -16,8 +16,6 @@ struct ChatModalContainerView: View {
 
     var body: some View {
         switch modal {
-        case .offer:
-            offerView
         case .friends:
             commonFriendView
         case .delete:
@@ -33,18 +31,6 @@ struct ChatModalContainerView: View {
         case .identityRevealConfirmation:
             identityRevealConfirmationView
         case .none:
-            EmptyView()
-        }
-    }
-
-    @ViewBuilder private var offerView: some View {
-        if let data = offerDetailViewData {
-            ChatOfferView(data: data) {
-                withAnimation {
-                    action(.dismissModal)
-                }
-            }
-        } else {
             EmptyView()
         }
     }

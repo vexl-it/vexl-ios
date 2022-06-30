@@ -23,7 +23,6 @@ final class ChatViewModel: ViewModelType, ObservableObject {
 
     enum Modal {
         case none
-        case offer
         case friends
         case delete
         case deleteConfirmation
