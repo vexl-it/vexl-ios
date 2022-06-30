@@ -10,6 +10,7 @@ import SwiftUI
 struct ChatModalContainerView: View {
 
     let modal: ChatViewModel.Modal
+    let offerDetailViewData: OfferDetailViewData?
     let commonFriends: [ChatCommonFriendViewData]
     let action: (ChatViewModel.UserAction) -> Void
 
@@ -36,11 +37,15 @@ struct ChatModalContainerView: View {
         }
     }
 
-    private var offerView: some View {
-        ChatOfferView {
-            withAnimation {
-                action(.dismissModal)
+    @ViewBuilder private var offerView: some View {
+        if let data = offerDetailViewData {
+            ChatOfferView(data: data) {
+                withAnimation {
+                    action(.dismissModal)
+                }
             }
+        } else {
+            EmptyView()
         }
     }
 

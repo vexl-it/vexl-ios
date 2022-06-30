@@ -12,6 +12,7 @@ import Combine
 
 final class ChatViewModel: ViewModelType, ObservableObject {
 
+    @Inject var offerService: OfferServiceType
     @Inject var chatService: ChatServiceType
     @Inject var cryptoService: CryptoServiceType
     @Inject var inboxManager: InboxManagerType
@@ -88,6 +89,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
     let avatar: UIImage? = nil
     let friends: [ChatCommonFriendViewData] = [.stub, .stub, .stub]
     let offerType: OfferType?
+    var offer: Offer?
     var imageSource = ImageSource.photoAlbum
 
     var offerLabel: String {
@@ -96,6 +98,11 @@ final class ChatViewModel: ViewModelType, ObservableObject {
 
     var isModalPresented: Bool {
         modal != .none
+    }
+
+    var offerViewData: OfferDetailViewData? {
+        guard let offer = offer else { return nil }
+        return OfferDetailViewData(offer: offer, isRequested: false)
     }
 
     var selectedImageData: Data? {
@@ -140,6 +147,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
         setupDeleteChatBindings()
         setupModalPresentationBindings()
         setupInboxManagerBinding()
+        setupOfferBindings()
     }
 
     private func setupInboxManagerBinding() {
@@ -168,6 +176,22 @@ final class ChatViewModel: ViewModelType, ObservableObject {
                     // TODO: - show some alert
                     break
                 }
+            }
+            .store(in: cancelBag)
+    }
+
+    private func setupOfferBindings() {
+        offerService
+            .getStoredOffers()
+            .materialize()
+            .compactMap(\.value)
+            .withUnretained(self)
+            .compactMap { owner, offers -> Offer? in
+                offers.first { $0.offerPublicKey == owner.inboxKeys.publicKey }
+            }
+            .withUnretained(self)
+            .sink { owner, offer in
+                owner.offer = offer
             }
             .store(in: cancelBag)
     }
@@ -304,7 +328,10 @@ final class ChatViewModel: ViewModelType, ObservableObject {
             .assign(to: &$modal)
 
         sharedChatAction
-            .filter { $0 == .showOffer }
+            .withUnretained(self)
+            .filter { owner, action in
+                action == .showOffer && owner.offer != nil
+            }
             .map { _ -> Modal in .offer }
             .assign(to: &$modal)
 

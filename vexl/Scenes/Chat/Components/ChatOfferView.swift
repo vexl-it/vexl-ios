@@ -10,6 +10,7 @@ import Cleevio
 
 struct ChatOfferView: View {
 
+    let data: OfferDetailViewData
     let dismiss: () -> Void
 
     var body: some View {
@@ -20,7 +21,7 @@ struct ChatOfferView: View {
                     .foregroundColor(Appearance.Colors.primaryText)
                     .padding(.horizontal, Appearance.GridGuide.point)
 
-                OfferInformationDetailView(data: .stub,
+                OfferInformationDetailView(data: data,
                                            useInnerPadding: true,
                                            showBackground: false)
                     .background(Appearance.Colors.gray6)
@@ -51,7 +52,7 @@ struct ChatOfferView: View {
 
 struct ChatOfferViewPreview: PreviewProvider {
     static var previews: some View {
-        ChatOfferView(dismiss: { })
+        ChatOfferView(data: .stub, dismiss: { })
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color.black)
             .previewDevice("iPhone 11")

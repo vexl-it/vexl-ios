@@ -116,6 +116,7 @@ struct ChatView: View {
 
     private var modalSheet: some View {
         ChatModalContainerView(modal: viewModel.modal,
+                               offerDetailViewData: viewModel.offerViewData,
                                commonFriends: viewModel.friends,
                                action: { userAction in
             viewModel.action.send(userAction)
