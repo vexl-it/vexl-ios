@@ -277,7 +277,8 @@ final class CreateOfferViewModel: ViewModelType, ObservableObject {
                                   paymentMethods: owner.selectedPaymentMethodOptions,
                                   btcNetwork: owner.selectedBTCOption,
                                   friendLevel: owner.selectedFriendDegreeOption,
-                                  type: owner.offerType)
+                                  type: owner.offerType,
+                                  source: .created)
 
                 // Adding owner publicKey to the list so that it can be decrypted, displayed and modified
                 // Also we remove the duplicate keys that can arrive because of the 2nd level friend

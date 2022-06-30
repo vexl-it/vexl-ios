@@ -14,28 +14,40 @@ enum LocalStorageError: Error {
 }
 
 protocol LocalStorageServiceType {
+
+    // MARK: - Offer
+
     func saveOffers(_ offers: [Offer], areCreated: Bool) -> AnyPublisher<Void, Error>
     func getOffers() -> AnyPublisher<[Offer], Error>
-    func getCreatedOffers() -> AnyPublisher<[Offer], Error>
-    func getFetchedOffers() -> AnyPublisher<[Offer], Error>
+
+    // MARK: - Inbox and Message cache
+
     func saveInbox(_ inbox: ChatInbox) throws
     func getInboxes(ofType type: ChatInbox.InboxType) throws -> [ChatInbox]
+    func saveInboxMessage(_ message: ParsedChatMessage, inboxKeys: ECCKeys) -> AnyPublisher<Void, Error>
+    func getInboxMessages() -> AnyPublisher<[ChatInboxMessage], Error>
+
+    // MARK - Messages
+
     func saveMessages(_ messages: [ParsedChatMessage]) -> AnyPublisher<Void, Error>
     func getMessages() -> AnyPublisher<[ParsedChatMessage], Error>
     func saveRequestMessage(_ message: ParsedChatMessage, inboxPublicKey: String) -> AnyPublisher<Void, Error>
     func getRequestMessages() -> AnyPublisher<[ParsedChatMessage], Error>
     func deleteRequestMessage(withOfferId id: String) -> AnyPublisher<Void, Error>
-    func saveInboxMessage(_ message: ParsedChatMessage, inboxKeys: ECCKeys) -> AnyPublisher<Void, Error>
-    func getInboxMessages() -> AnyPublisher<[ChatInboxMessage], Error>
     func getChatMessages(inboxPublicKey: String, receiverInboxKey: String) -> AnyPublisher<[ParsedChatMessage], Error>
 }
 
 final class LocalStorageService: LocalStorageServiceType {
 
+    // MARK: - Offer
+
     func saveOffers(_ offers: [Offer], areCreated: Bool) -> AnyPublisher<Void, Error> {
         Future { promise in
             let storedOffers = offers.map {
-                StoredOffer(offer: $0, id: $0.offerId, keys: ECCKeys(pubKey: $0.offerPublicKey, privKey: nil))
+                StoredOffer(offer: $0,
+                            id: $0.offerId,
+                            keys: ECCKeys(pubKey: $0.offerPublicKey, privKey: nil),
+                            source: areCreated ? .created : .fetched)
             }
 
             if areCreated {
@@ -60,23 +72,7 @@ final class LocalStorageService: LocalStorageServiceType {
         .eraseToAnyPublisher()
     }
 
-    func getCreatedOffers() -> AnyPublisher<[Offer], Error> {
-        Future { promise in
-            let storedOffers = DictionaryDB.getCreatedOffers()
-            let offers = Self.convertStoredOffers(storedOffers)
-            promise(.success(offers))
-        }
-        .eraseToAnyPublisher()
-    }
-
-    func getFetchedOffers() -> AnyPublisher<[Offer], Error> {
-        Future { promise in
-            let storedOffers = DictionaryDB.getFetchedOffers()
-            let offers = Self.convertStoredOffers(storedOffers)
-            promise(.success(offers))
-        }
-        .eraseToAnyPublisher()
-    }
+    // MARK: - Inbox and Message cache
 
     func saveInbox(_ inbox: ChatInbox) throws {
         switch inbox.type {
@@ -95,6 +91,23 @@ final class LocalStorageService: LocalStorageServiceType {
             return DictionaryDB.getRequestedInboxes()
         }
     }
+
+    func saveInboxMessage(_ message: ParsedChatMessage, inboxKeys: ECCKeys) -> AnyPublisher<Void, Error> {
+        Future { promise in
+            DictionaryDB.saveInboxMessages(message, inboxKeys: inboxKeys, receiverInboxPublicKey: message.senderInboxKey)
+            promise(.success(()))
+        }
+        .eraseToAnyPublisher()
+    }
+
+    func getInboxMessages() -> AnyPublisher<[ChatInboxMessage], Error> {
+        Future { promise in
+            promise(.success(DictionaryDB.getInboxMessages()))
+        }
+        .eraseToAnyPublisher()
+    }
+
+    // MARK - Messages
 
     func saveMessages(_ messages: [ParsedChatMessage]) -> AnyPublisher<Void, Error> {
         Future { promise in
@@ -122,21 +135,6 @@ final class LocalStorageService: LocalStorageServiceType {
     func getRequestMessages() -> AnyPublisher<[ParsedChatMessage], Error> {
         Future { promise in
             promise(.success((DictionaryDB.getRequests())))
-        }
-        .eraseToAnyPublisher()
-    }
-
-    func saveInboxMessage(_ message: ParsedChatMessage, inboxKeys: ECCKeys) -> AnyPublisher<Void, Error> {
-        Future { promise in
-            DictionaryDB.saveInboxMessages(message, inboxKeys: inboxKeys, receiverInboxPublicKey: message.senderInboxKey)
-            promise(.success(()))
-        }
-        .eraseToAnyPublisher()
-    }
-
-    func getInboxMessages() -> AnyPublisher<[ChatInboxMessage], Error> {
-        Future { promise in
-            promise(.success(DictionaryDB.getInboxMessages()))
         }
         .eraseToAnyPublisher()
     }

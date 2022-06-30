@@ -7,30 +7,6 @@
 
 import Foundation
 
-struct OfferKeys {
-    let id: String
-    let publicKey: String
-    let privateKey: String?
-
-    var keys: ECCKeys {
-        ECCKeys(pubKey: publicKey, privKey: privateKey)
-    }
-}
-
-enum OfferType: String {
-    case sell = "SELL"
-    case buy = "BUY"
-
-    var title: String {
-        switch self {
-        case .sell:
-            return L.marketplaceSell()
-        case .buy:
-            return L.marketplaceBuy()
-        }
-    }
-}
-
 struct Offer {
     var offerId: String = ""
     var offerPublicKey: String = ""
@@ -49,6 +25,7 @@ struct Offer {
     let btcNetwork: [OfferAdvancedBTCOption]
     let friendLevel: OfferAdvancedFriendDegreeOption
     let type: OfferType
+    let source: OfferSource
 
     init(minAmount: Int,
          maxAmount: Int,
@@ -59,7 +36,8 @@ struct Offer {
          paymentMethods: [OfferPaymentMethodOption],
          btcNetwork: [OfferAdvancedBTCOption],
          friendLevel: OfferAdvancedFriendDegreeOption,
-         type: OfferType) {
+         type: OfferType,
+         source: OfferSource) {
         self.minAmount = minAmount
         self.maxAmount = maxAmount
         self.description = description
@@ -70,13 +48,15 @@ struct Offer {
         self.btcNetwork = btcNetwork
         self.friendLevel = friendLevel
         self.type = type
+        self.source = source
     }
 
     init?(storedOffer: StoredOffer) {
         guard let feeState = OfferFeeOption(rawValue: storedOffer.feeState),
               let locationState = OfferTradeLocationOption(rawValue: storedOffer.locationState),
               let friendLevel = OfferAdvancedFriendDegreeOption(rawValue: storedOffer.friendLevel),
-              let type = OfferType(rawValue: storedOffer.type) else {
+              let type = OfferType(rawValue: storedOffer.type),
+              let source = OfferSource(rawValue: storedOffer.source) else {
                   return nil
               }
 
@@ -93,9 +73,10 @@ struct Offer {
         self.type = type
         self.offerPrivateKey = storedOffer.privateKey
         self.offerPublicKey = storedOffer.publicKey
+        self.source = source
     }
 
-    init?(encryptedOffer: EncryptedOffer, keys: ECCKeys) throws {
+    init?(encryptedOffer: EncryptedOffer, keys: ECCKeys, source: OfferSource) throws {
         do {
             let minAmountString = try encryptedOffer.amountBottomLimit.ecc.decrypt(keys: keys)
             let maxAmountString = try encryptedOffer.amountTopLimit.ecc.decrypt(keys: keys)
@@ -129,6 +110,7 @@ struct Offer {
             self.createdAt = encryptedOffer.createdAt
             self.modifiedAt = encryptedOffer.modifiedAt
             self.userPublicKey = encryptedOffer.userPublicKey
+            self.source = source
 
             self.minAmount = minAmount
             self.maxAmount = maxAmount
@@ -198,10 +180,10 @@ struct Offer {
 
     // MARK: - Helper static methods for creating list of offers
 
-    static func createOffers(from encryptedOffers: [EncryptedOffer], withKey key: ECCKeys) -> [Offer] {
+    static func createOffers(from encryptedOffers: [EncryptedOffer], withKey key: ECCKeys, source: OfferSource) -> [Offer] {
         var offers: [Offer] = []
         for encryptedOffer in encryptedOffers {
-            if let offer = try? Offer(encryptedOffer: encryptedOffer, keys: key) {
+            if let offer = try? Offer(encryptedOffer: encryptedOffer, keys: key, source: source) {
                 offers.append(offer)
             }
         }
@@ -288,7 +270,8 @@ extension Offer {
         paymentMethods: [.bank],
         btcNetwork: [.lightning],
         friendLevel: .firstDegree,
-        type: .buy
+        type: .buy,
+        source: .fetched
     )
 
     static var stub2: Offer = Offer(
@@ -301,6 +284,7 @@ extension Offer {
         paymentMethods: [.revolut],
         btcNetwork: [.lightning],
         friendLevel: .firstDegree,
-        type: .buy
+        type: .buy,
+        source: .created
     )
 }

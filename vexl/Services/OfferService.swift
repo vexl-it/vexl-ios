@@ -25,11 +25,8 @@ protocol OfferServiceType {
     // MARK: - Storage
 
     func storeOffers(offers: [Offer], areCreated: Bool) -> AnyPublisher<Void, Error>
-    func getStoredOfferIds(forType offerType: OfferType) -> AnyPublisher<[String], Error>
-    func getAllStoredOfferIds() -> AnyPublisher<[String], Error>
-    func getStoredOfferKeys() -> AnyPublisher<[OfferKeys], Error>
-    func getCreatedStoredOfferKeys() -> AnyPublisher<[OfferKeys], Error>
-    func getFetchedStoredOfferKeys() -> AnyPublisher<[OfferKeys], Error>
+    func getStoredOfferIds(fromType option: OfferTypeOption) -> AnyPublisher<[String], Error>
+    func getStoredOfferkeys(fromSource option: OfferSourceOption) -> AnyPublisher<[OfferKeys], Error>
 }
 
 final class OfferService: BaseService, OfferServiceType {
@@ -94,44 +91,52 @@ final class OfferService: BaseService, OfferServiceType {
         localStorageService.saveOffers(offers, areCreated: areCreated)
     }
 
-    func getStoredOfferIds(forType offerType: OfferType) -> AnyPublisher<[String], Error> {
+    func getStoredOfferIds(fromType option: OfferTypeOption) -> AnyPublisher<[String], Error> {
         localStorageService.getOffers()
-            .map { keys in
-                keys
-                    .filter { $0.type == offerType }
-                    .map(\.offerId)
+            .map { offers -> [String] in
+                guard !option.contains(.all) && !option.contains([.buy, .sell]) else {
+                    return offers.map(\.offerId)
+                }
+
+                if option.contains(.buy) {
+                    return offers
+                        .filter { $0.type == .buy }
+                        .map(\.offerId)
+                } else if option.contains(.sell) {
+                    return offers
+                        .filter { $0.type == .sell }
+                        .map(\.offerId)
+                }
+
+                return []
             }
             .eraseToAnyPublisher()
     }
 
-    func getAllStoredOfferIds() -> AnyPublisher<[String], Error> {
+    func getStoredOfferkeys(fromSource option: OfferSourceOption) -> AnyPublisher<[OfferKeys], Error> {
         localStorageService.getOffers()
-            .map { keys in
-                keys.map(\.offerId)
+            .map { offers -> [OfferKeys] in
+                guard !option.contains(.all) && !option.contains([.created, .fetched]) else {
+                    return offers.map(\.keysWithId)
+                }
+
+                if option.contains(.created) {
+                    return offers
+                        .filter { $0.source == .created }
+                        .map(\.keysWithId)
+                } else if option.contains(.fetched) {
+                    return offers
+                        .filter { $0.source == .fetched }
+                        .map(\.keysWithId)
+                }
+
+                return []
             }
-            .eraseToAnyPublisher()
-    }
-
-    func getStoredOfferKeys() -> AnyPublisher<[OfferKeys], Error> {
-        localStorageService.getOffers()
-            .map { $0.map { $0.keysWithId } }
-            .eraseToAnyPublisher()
-    }
-
-    func getCreatedStoredOfferKeys() -> AnyPublisher<[OfferKeys], Error> {
-        localStorageService.getCreatedOffers()
-            .map { $0.map { $0.keysWithId } }
-            .eraseToAnyPublisher()
-    }
-
-    func getFetchedStoredOfferKeys() -> AnyPublisher<[OfferKeys], Error> {
-        localStorageService.getFetchedOffers()
-            .map { $0.map { $0.keysWithId } }
             .eraseToAnyPublisher()
     }
 
     func deleteOffers() -> AnyPublisher<Void, Error> {
-        Publishers.Merge(getStoredOfferIds(forType: .buy), getStoredOfferIds(forType: .sell))
+        getStoredOfferIds(fromType: .all)
             .withUnretained(self)
             .flatMap { owner, offerIds -> AnyPublisher<Void, Error> in
                 if !offerIds.isEmpty {
