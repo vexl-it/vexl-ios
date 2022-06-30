@@ -705,14 +705,6 @@
 			path = Filters;
 			sourceTree = "<group>";
 		};
-		4FBF620C283CE3F100DDBE71 /* Filter */ = {
-			isa = PBXGroup;
-			children = (
-				4FBF620D283CE3FB00DDBE71 /* OfferFilter.swift */,
-			);
-			path = Filter;
-			sourceTree = "<group>";
-		};
 		4FBF6211283CF53C00DDBE71 /* Components */ = {
 			isa = PBXGroup;
 			children = (
@@ -724,6 +716,7 @@
 		4FBF6239283F8C2E00DDBE71 /* Offers */ = {
 			isa = PBXGroup;
 			children = (
+				4FBF620D283CE3FB00DDBE71 /* OfferFilter.swift */,
 				F13B2676281F43A10011F2FB /* Offer.swift */,
 				F1B93ED2286D12C6008DAA90 /* OfferKeys.swift */,
 				F1B93ED4286D12D7008DAA90 /* OfferType.swift */,
@@ -915,7 +908,6 @@
 			children = (
 				F1D204F02863A282006A5671 /* Chat */,
 				4FBF6239283F8C2E00DDBE71 /* Offers */,
-				4FBF620C283CE3F100DDBE71 /* Filter */,
 				F1B93ECE286A20F9008DAA90 /* Storage */,
 				F175AB8227E4CBFE000DAB15 /* Networking */,
 				B01C01E72860B58500A29F85 /* Coin */,
