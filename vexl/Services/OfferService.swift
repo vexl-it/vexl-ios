@@ -94,7 +94,7 @@ final class OfferService: BaseService, OfferServiceType {
     func getStoredOfferIds(fromType option: OfferTypeOption) -> AnyPublisher<[String], Error> {
         localStorageService.getOffers()
             .map { offers -> [String] in
-                guard !option.contains(.all) && !option.contains([.buy, .sell]) else {
+                guard !option.contains(.all) else {
                     return offers.map(\.offerId)
                 }
 
@@ -116,7 +116,7 @@ final class OfferService: BaseService, OfferServiceType {
     func getStoredOfferKeys(fromSource option: OfferSourceOption) -> AnyPublisher<[OfferKeys], Error> {
         localStorageService.getOffers()
             .map { offers -> [OfferKeys] in
-                guard !option.contains(.all) && !option.contains([.created, .fetched]) else {
+                guard !option.contains(.all) else {
                     return offers.map(\.keysWithId)
                 }
 
