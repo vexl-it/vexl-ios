@@ -94,21 +94,17 @@ final class OfferService: BaseService, OfferServiceType {
     func getStoredOfferIds(fromType option: OfferTypeOption) -> AnyPublisher<[String], Error> {
         localStorageService.getOffers()
             .map { offers -> [String] in
-                guard !option.contains(.all) else {
-                    return offers.map(\.offerId)
-                }
+                var filteredOffers: [Offer] = []
 
                 if option.contains(.buy) {
-                    return offers
-                        .filter { $0.type == .buy }
-                        .map(\.offerId)
-                } else if option.contains(.sell) {
-                    return offers
-                        .filter { $0.type == .sell }
-                        .map(\.offerId)
+                    filteredOffers.append(contentsOf: offers.filter { $0.type == .buy })
                 }
 
-                return []
+                if option.contains(.sell) {
+                    filteredOffers.append(contentsOf: offers.filter { $0.type == .sell })
+                }
+
+                return filteredOffers.map(\.offerId)
             }
             .eraseToAnyPublisher()
     }
@@ -116,21 +112,17 @@ final class OfferService: BaseService, OfferServiceType {
     func getStoredOfferKeys(fromSource option: OfferSourceOption) -> AnyPublisher<[OfferKeys], Error> {
         localStorageService.getOffers()
             .map { offers -> [OfferKeys] in
-                guard !option.contains(.all) else {
-                    return offers.map(\.keysWithId)
-                }
+                var filteredOffers: [Offer] = []
 
                 if option.contains(.created) {
-                    return offers
-                        .filter { $0.source == .created }
-                        .map(\.keysWithId)
-                } else if option.contains(.fetched) {
-                    return offers
-                        .filter { $0.source == .fetched }
-                        .map(\.keysWithId)
+                    filteredOffers.append(contentsOf: offers.filter { $0.source == .created })
                 }
 
-                return []
+                if option.contains(.fetched) {
+                    filteredOffers.append(contentsOf: offers.filter { $0.source == .fetched })
+                }
+
+                return filteredOffers.map(\.keysWithId)
             }
             .eraseToAnyPublisher()
     }
