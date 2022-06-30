@@ -1,21 +1,28 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="19574" systemVersion="21C52" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="20086" systemVersion="21E258" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="CommunicationRequest" representedClassName="CommunicationRequest" syncable="YES" codeGenerationType="class">
         <attribute name="id" optional="YES" attributeType="String"/>
         <attribute name="isAccepted" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
-        <relationship name="message" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Message"/>
+        <relationship name="message" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ManagedMessage" inverseName="communicationRequest" inverseEntity="ManagedMessage"/>
     </entity>
-    <entity name="Inbox" representedClassName="Inbox" syncable="YES" codeGenerationType="class">
-        <attribute name="privateKey" optional="YES" attributeType="String"/>
-        <attribute name="publicKey" optional="YES" attributeType="String"/>
+    <entity name="ManagedChat" representedClassName="ManagedChat" syncable="YES" codeGenerationType="class">
+        <relationship name="inbox" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ManagedInbox" inverseName="chats" inverseEntity="ManagedInbox"/>
+        <relationship name="messages" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ManagedMessage" inverseName="chat" inverseEntity="ManagedMessage"/>
+        <relationship name="receiverPublicKey" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ManagedPublicKey" inverseName="chat" inverseEntity="ManagedPublicKey"/>
+    </entity>
+    <entity name="ManagedCurrentUser" representedClassName="ManagedCurrentUser" syncable="YES" codeGenerationType="class">
+        <relationship name="inbox" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ManagedInbox" inverseName="user" inverseEntity="ManagedInbox"/>
+        <relationship name="offers" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ManagedOffer" inverseName="user" inverseEntity="ManagedOffer"/>
+        <relationship name="profile" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ManagedProfile" inverseName="currentUser" inverseEntity="ManagedProfile"/>
+    </entity>
+    <entity name="ManagedInbox" representedClassName="ManagedInbox" syncable="YES" codeGenerationType="class">
         <attribute name="type" optional="YES" attributeType="String"/>
+        <relationship name="chats" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ManagedChat" inverseName="inbox" inverseEntity="ManagedChat"/>
+        <relationship name="offer" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ManagedOffer" inverseName="inbox" inverseEntity="ManagedOffer"/>
+        <relationship name="publicKey" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ManagedPublicKey" inverseName="inbox" inverseEntity="ManagedPublicKey"/>
+        <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ManagedCurrentUser" inverseName="inbox" inverseEntity="ManagedCurrentUser"/>
     </entity>
-    <entity name="InboxMessages" representedClassName="InboxMessages" syncable="YES" codeGenerationType="class">
-        <attribute name="receiverInbox" optional="YES" attributeType="String"/>
-        <relationship name="inbox" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Inbox"/>
-        <relationship name="message" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Message"/>
-    </entity>
-    <entity name="Message" representedClassName="Message" syncable="YES" codeGenerationType="class">
+    <entity name="ManagedMessage" representedClassName="ManagedMessage" syncable="YES" codeGenerationType="class">
         <attribute name="contentType" optional="YES" attributeType="String"/>
         <attribute name="id" optional="YES" attributeType="String"/>
         <attribute name="image" optional="YES" attributeType="String"/>
@@ -24,17 +31,38 @@
         <attribute name="time" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="userAvatar" optional="YES" attributeType="String"/>
         <attribute name="username" optional="YES" attributeType="String"/>
+        <relationship name="chat" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ManagedChat" inverseName="messages" inverseEntity="ManagedChat"/>
+        <relationship name="communicationRequest" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="CommunicationRequest" inverseName="message" inverseEntity="CommunicationRequest"/>
     </entity>
-    <entity name="Offer" representedClassName="Offer" syncable="YES" codeGenerationType="class">
+    <entity name="ManagedOffer" representedClassName="ManagedOffer" syncable="YES" codeGenerationType="class">
         <attribute name="id" optional="YES" attributeType="String"/>
         <attribute name="maxAmount" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="minAmount" optional="YES" attributeType="Integer 16" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <relationship name="inbox" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ManagedInbox" inverseName="offer" inverseEntity="ManagedInbox"/>
+        <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ManagedCurrentUser" inverseName="offers" inverseEntity="ManagedCurrentUser"/>
+    </entity>
+    <entity name="ManagedProfile" representedClassName="ManagedProfile" syncable="YES" codeGenerationType="class">
+        <attribute name="avatar" optional="YES" attributeType="Binary"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="phoneNumber" optional="YES" attributeType="String"/>
+        <attribute name="phoneNumberHmac" optional="YES" attributeType="String"/>
+        <relationship name="currentUser" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ManagedCurrentUser" inverseName="profile" inverseEntity="ManagedCurrentUser"/>
+        <relationship name="publicKey" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ManagedPublicKey" inverseName="profile" inverseEntity="ManagedPublicKey"/>
+    </entity>
+    <entity name="ManagedPublicKey" representedClassName="ManagedPublicKey" syncable="YES" codeGenerationType="class">
+        <attribute name="publicKey" optional="YES" attributeType="String"/>
+        <relationship name="chat" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ManagedChat" inverseName="receiverPublicKey" inverseEntity="ManagedChat"/>
+        <relationship name="inbox" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ManagedInbox" inverseName="publicKey" inverseEntity="ManagedInbox"/>
+        <relationship name="profile" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ManagedProfile" inverseName="publicKey" inverseEntity="ManagedProfile"/>
     </entity>
     <elements>
-        <element name="Message" positionX="-465.359375" positionY="-324.3984375" width="128" height="28"/>
-        <element name="Offer" positionX="-599" positionY="-55.03125" width="128" height="14"/>
-        <element name="Inbox" positionX="-40.99609375" positionY="-302.83203125" width="128" height="14"/>
-        <element name="CommunicationRequest" positionX="-769.3984375" positionY="-78.5390625" width="128" height="14"/>
-        <element name="InboxMessages" positionX="-258.1953125" positionY="-101.80078125" width="162.57421875" height="14"/>
+        <element name="ManagedInbox" positionX="-562.71484375" positionY="-370.265625" width="128" height="118"/>
+        <element name="ManagedChat" positionX="-375.078125" positionY="-370.49609375" width="162.57421875" height="88"/>
+        <element name="ManagedMessage" positionX="-157.73828125" positionY="-369.1796875" width="128" height="193"/>
+        <element name="ManagedOffer" positionX="-791.71484375" positionY="-379.46875" width="128" height="118"/>
+        <element name="CommunicationRequest" positionX="14.86328125" positionY="-368.40234375" width="128" height="88"/>
+        <element name="ManagedCurrentUser" positionX="-696.265625" positionY="-569.69140625" width="165.6171875" height="88"/>
+        <element name="ManagedPublicKey" positionX="-471.55078125" positionY="-586.1796875" width="128" height="103"/>
+        <element name="ManagedProfile" positionX="-558.296875" positionY="-772.95703125" width="128" height="133"/>
     </elements>
 </model>
