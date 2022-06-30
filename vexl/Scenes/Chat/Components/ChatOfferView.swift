@@ -14,37 +14,12 @@ struct ChatOfferView: View {
     let dismiss: () -> Void
 
     var body: some View {
-        VStack {
-            VStack(alignment: .leading) {
-                Text(L.chatMessageOffer())
-                    .textStyle(.h2)
-                    .foregroundColor(Appearance.Colors.primaryText)
-                    .padding(.horizontal, Appearance.GridGuide.point)
-
-                OfferInformationDetailView(data: data,
-                                           useInnerPadding: true,
-                                           showBackground: false)
-                    .background(Appearance.Colors.gray6)
-                    .cornerRadius(Appearance.GridGuide.buttonCorner)
-                    .padding(.bottom, Appearance.GridGuide.point)
-            }
-            .padding(.top, Appearance.GridGuide.mediumPadding1)
-            .padding(.horizontal, Appearance.GridGuide.point)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .background(Appearance.Colors.whiteText)
+        OfferInformationDetailView(data: data,
+                                   useInnerPadding: true,
+                                   showBackground: false)
+            .background(Appearance.Colors.gray6)
             .cornerRadius(Appearance.GridGuide.buttonCorner)
-
-            LargeSolidButton(title: L.buttonGotIt(),
-                             font: Appearance.TextStyle.titleSmallSemiBold.font.asFont,
-                             style: .main,
-                             isFullWidth: true,
-                             isEnabled: .constant(true),
-                             action: {
-                dismiss()
-            })
-        }
-        .padding(Appearance.GridGuide.point)
-        .frame(maxHeight: .infinity, alignment: .bottom)
+            .padding(.bottom, Appearance.GridGuide.point)
     }
 }
 

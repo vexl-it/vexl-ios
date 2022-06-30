@@ -79,6 +79,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
     enum Route: Equatable {
         case dismissTapped
         case expandImageTapped(image: Data)
+        case showOfferTapped(offer: Offer?)
     }
 
     var route: CoordinatingSubject<Route> = .init()
@@ -332,8 +333,9 @@ final class ChatViewModel: ViewModelType, ObservableObject {
             .filter { owner, action in
                 action == .showOffer && owner.offer != nil
             }
-            .map { _ -> Modal in .offer }
-            .assign(to: &$modal)
+            .map { owner, _ -> Route in .showOfferTapped(offer: owner.offer) }
+            .subscribe(route)
+            .store(in: cancelBag)
 
         sharedChatAction
             .filter { $0 == .commonFriends }
