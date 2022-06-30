@@ -78,7 +78,7 @@ final class ChatRequestViewModel: ViewModelType, ObservableObject {
 
     private func setupDataBindings() {
         offerService
-            .getStoredOfferkeys(fromSource: .all)
+            .getStoredOfferKeys(fromSource: .all)
             .track(activity: primaryActivity)
             .withUnretained(self)
             .flatMap { owner, keys in

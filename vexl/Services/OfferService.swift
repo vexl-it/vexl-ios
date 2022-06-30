@@ -113,7 +113,7 @@ final class OfferService: BaseService, OfferServiceType {
             .eraseToAnyPublisher()
     }
 
-    func getStoredOfferkeys(fromSource option: OfferSourceOption) -> AnyPublisher<[OfferKeys], Error> {
+    func getStoredOfferKeys(fromSource option: OfferSourceOption) -> AnyPublisher<[OfferKeys], Error> {
         localStorageService.getOffers()
             .map { offers -> [OfferKeys] in
                 guard !option.contains(.all) && !option.contains([.created, .fetched]) else {
