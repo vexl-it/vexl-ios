@@ -83,6 +83,7 @@ final class InboxViewModel: ViewModelType, ObservableObject {
                         $0.offerKey == chatInbox.message.inboxKey || $0.offerKey == chatInbox.message.senderInboxKey
                     })?.offerType
 
+                    // TODO: - Set real values when available
                     return InboxItem(avatar: nil,
                                      username: Constants.randomName,
                                      detail: chatInbox.message.previewText,
