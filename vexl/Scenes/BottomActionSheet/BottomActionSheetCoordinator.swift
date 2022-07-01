@@ -16,7 +16,7 @@ enum BottomActionSheetActionType {
     case secondary
 }
 
-final class BottomActionSheetCoordinator<ViewModel: BottomActionSheetViewModelProtocol>: BaseCoordinator<RouterResult<Void>> {
+final class BottomActionSheetCoordinator<ViewModel: BottomActionSheetViewModelProtocol>: BaseCoordinator<RouterResult<BottomActionSheetActionType>> {
 
     private let router: Router
 
@@ -30,7 +30,7 @@ final class BottomActionSheetCoordinator<ViewModel: BottomActionSheetViewModelPr
         self.viewModel = viewModel
     }
 
-    override func start() -> CoordinatingResult<RouterResult<Void>> {
+    override func start() -> CoordinatingResult<RouterResult<BottomActionSheetActionType>> {
         let viewController = BaseViewController(rootView: BottomActionSheetView(viewModel: viewModel))
         viewController.view.backgroundColor = .clear
 
@@ -39,16 +39,16 @@ final class BottomActionSheetCoordinator<ViewModel: BottomActionSheetViewModelPr
         let primary = viewModel
             .primaryActionPublisher
             .eraseToAnyPublisher()
-            .map { _ -> RouterResult<Void> in .finished(()) }
+            .map { _ -> RouterResult<BottomActionSheetActionType> in .finished(.primary) }
 
         let secondary = viewModel
             .secondaryActionPublisher
             .eraseToAnyPublisher()
-            .map { _ -> RouterResult<Void> in .finished(()) }
+            .map { _ -> RouterResult<BottomActionSheetActionType> in .finished(.secondary) }
 
         let dismiss = viewModel
             .dismissPublisher
-            .map { _ -> RouterResult<Void> in .dismiss }
+            .map { _ -> RouterResult<BottomActionSheetActionType> in .dismiss }
 
         return Publishers.Merge3(primary, secondary, dismiss)
             .eraseToAnyPublisher()
