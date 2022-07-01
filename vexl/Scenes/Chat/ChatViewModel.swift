@@ -87,7 +87,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
     let username: String = Constants.randomName
     let avatar: UIImage? = nil
     let friends: [ChatCommonFriendViewData] = [.stub, .stub, .stub]
-    let offerType: OfferType = .buy
+    let offerType: OfferType?
     var imageSource = ImageSource.photoAlbum
 
     var offerLabel: String {
@@ -127,9 +127,10 @@ final class ChatViewModel: ViewModelType, ObservableObject {
     private let receiverPublicKey: String
     private let isBlocked = false
 
-    init(inboxKeys: ECCKeys, receiverPublicKey: String) {
+    init(inboxKeys: ECCKeys, receiverPublicKey: String, offerType: OfferType?) {
         self.inboxKeys = inboxKeys
         self.receiverPublicKey = receiverPublicKey
+        self.offerType = offerType
         setupActionBindings()
         setupChatInputBindings()
         setupChatImageInputBindings()

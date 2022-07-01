@@ -24,6 +24,7 @@ protocol OfferServiceType {
 
     // MARK: - Storage
 
+    func getStoredOffers() -> AnyPublisher<[Offer], Error>
     func storeOffers(offers: [Offer], areCreated: Bool) -> AnyPublisher<Void, Error>
     func getStoredOfferIds(fromType option: OfferTypeOption) -> AnyPublisher<[String], Error>
     func getStoredOfferKeys(fromSource option: OfferSourceOption) -> AnyPublisher<[OfferKeys], Error>
@@ -86,6 +87,10 @@ final class OfferService: BaseService, OfferServiceType {
     }
 
     // MARK: - Storage
+
+    func getStoredOffers() -> AnyPublisher<[Offer], Error> {
+        localStorageService.getOffers()
+    }
 
     func storeOffers(offers: [Offer], areCreated: Bool) -> AnyPublisher<Void, Error> {
         localStorageService.saveOffers(offers, areCreated: areCreated)
