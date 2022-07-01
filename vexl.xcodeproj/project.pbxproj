@@ -181,7 +181,6 @@
 		F1485628284FD0FB003213D7 /* InboxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1485623284FD0FB003213D7 /* InboxView.swift */; };
 		F148563E284FD451003213D7 /* ChatViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F148562A284FD451003213D7 /* ChatViewModel.swift */; };
 		F148563F284FD451003213D7 /* ChatActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F148562C284FD451003213D7 /* ChatActionView.swift */; };
-		F1485640284FD451003213D7 /* ChatOfferView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F148562D284FD451003213D7 /* ChatOfferView.swift */; };
 		F1485641284FD451003213D7 /* ChatConfirmationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F148562F284FD451003213D7 /* ChatConfirmationView.swift */; };
 		F1485642284FD451003213D7 /* ChatBlockConfirmationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1485630284FD451003213D7 /* ChatBlockConfirmationView.swift */; };
 		F1485643284FD451003213D7 /* ChatDeleteConfirmationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1485631284FD451003213D7 /* ChatDeleteConfirmationView.swift */; };
@@ -264,6 +263,7 @@
 		F1B93ED3286D12C6008DAA90 /* OfferKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B93ED2286D12C6008DAA90 /* OfferKeys.swift */; };
 		F1B93ED5286D12D7008DAA90 /* OfferType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B93ED4286D12D7008DAA90 /* OfferType.swift */; };
 		F1B93ED7286D15D5008DAA90 /* OfferSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B93ED6286D15D5008DAA90 /* OfferSource.swift */; };
+		F1B93EDE286E372D008DAA90 /* ChatOfferActionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B93EDD286E372D008DAA90 /* ChatOfferActionSheet.swift */; };
 		F1BBC7052835C2960067F81B /* ContactsCount.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1BBC7042835C2960067F81B /* ContactsCount.swift */; };
 		F1BBC70E283BE5570067F81B /* TT Satoshi SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = F1BBC70A283BE5570067F81B /* TT Satoshi SemiBold.otf */; };
 		F1BBC70F283BE5570067F81B /* TT Satoshi Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = F1BBC70B283BE5570067F81B /* TT Satoshi Medium.otf */; };
@@ -514,7 +514,6 @@
 		F1485623284FD0FB003213D7 /* InboxView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InboxView.swift; sourceTree = "<group>"; };
 		F148562A284FD451003213D7 /* ChatViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatViewModel.swift; sourceTree = "<group>"; };
 		F148562C284FD451003213D7 /* ChatActionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatActionView.swift; sourceTree = "<group>"; };
-		F148562D284FD451003213D7 /* ChatOfferView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatOfferView.swift; sourceTree = "<group>"; };
 		F148562F284FD451003213D7 /* ChatConfirmationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatConfirmationView.swift; sourceTree = "<group>"; };
 		F1485630284FD451003213D7 /* ChatBlockConfirmationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatBlockConfirmationView.swift; sourceTree = "<group>"; };
 		F1485631284FD451003213D7 /* ChatDeleteConfirmationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatDeleteConfirmationView.swift; sourceTree = "<group>"; };
@@ -597,6 +596,7 @@
 		F1B93ED2286D12C6008DAA90 /* OfferKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferKeys.swift; sourceTree = "<group>"; };
 		F1B93ED4286D12D7008DAA90 /* OfferType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferType.swift; sourceTree = "<group>"; };
 		F1B93ED6286D15D5008DAA90 /* OfferSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferSource.swift; sourceTree = "<group>"; };
+		F1B93EDD286E372D008DAA90 /* ChatOfferActionSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatOfferActionSheet.swift; sourceTree = "<group>"; };
 		F1BBC7042835C2960067F81B /* ContactsCount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsCount.swift; sourceTree = "<group>"; };
 		F1BBC70A283BE5570067F81B /* TT Satoshi SemiBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "TT Satoshi SemiBold.otf"; sourceTree = "<group>"; };
 		F1BBC70B283BE5570067F81B /* TT Satoshi Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "TT Satoshi Medium.otf"; sourceTree = "<group>"; };
@@ -1429,12 +1429,12 @@
 		F148562B284FD451003213D7 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				F1B93EDB286E353B008DAA90 /* ActionSheets */,
 				F1483CC7285A4D1A0054B7A2 /* IdentityReveal */,
 				F1483CC0285A3DDA0054B7A2 /* Bubble */,
 				F148562E284FD451003213D7 /* Confirmation */,
 				F1485632284FD451003213D7 /* CommonFriends */,
 				F148562C284FD451003213D7 /* ChatActionView.swift */,
-				F148562D284FD451003213D7 /* ChatOfferView.swift */,
 				F1485635284FD451003213D7 /* ChatConversationView.swift */,
 				F1485636284FD451003213D7 /* ChatHeaderView.swift */,
 				F1485638284FD451003213D7 /* ChatDateView.swift */,
@@ -1695,6 +1695,14 @@
 				F1B93ECF286A2102008DAA90 /* StoredOffer.swift */,
 			);
 			path = Storage;
+			sourceTree = "<group>";
+		};
+		F1B93EDB286E353B008DAA90 /* ActionSheets */ = {
+			isa = PBXGroup;
+			children = (
+				F1B93EDD286E372D008DAA90 /* ChatOfferActionSheet.swift */,
+			);
+			path = ActionSheets;
 			sourceTree = "<group>";
 		};
 		F1BBC709283BE5430067F81B /* Fonts */ = {
@@ -2137,6 +2145,7 @@
 				4FBF61E2283BD12D00DDBE71 /* FilterViewModel.swift in Sources */,
 				F11441D1284681EC00307D39 /* PlaceholderTextField.swift in Sources */,
 				B0F206EF27AE8F6900A44E72 /* Publisher+.swift in Sources */,
+				F1B93EDE286E372D008DAA90 /* ChatOfferActionSheet.swift in Sources */,
 				F1BDC979285BF9D600F86581 /* ChatExpandedImageViewModel.swift in Sources */,
 				F1A9453627F686D1009B5AE3 /* CodeValidation.swift in Sources */,
 				F12A14E827D6A8690096543E /* RequestAccessContactsView.swift in Sources */,
@@ -2248,7 +2257,6 @@
 				4F2416A12848F2F100B4A437 /* DictionaryDB.swift in Sources */,
 				B08F391927AE7112008B344F /* User.swift in Sources */,
 				4F2416A328490B3C00B4A437 /* ChatInbox.swift in Sources */,
-				F1485640284FD451003213D7 /* ChatOfferView.swift in Sources */,
 				F148564F284FD5E2003213D7 /* InboxManager.swift in Sources */,
 				F1D200A628252C44006DF4AB /* TabBarController.swift in Sources */,
 				F175AB9927F0D2D8000DAB15 /* ContactsService.swift in Sources */,

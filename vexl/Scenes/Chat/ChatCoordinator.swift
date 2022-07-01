@@ -45,6 +45,22 @@ final class ChatCoordinator: BaseCoordinator<RouterResult<Void>> {
             .sink()
             .store(in: cancelBag)
 
+        viewModel
+            .route
+            .compactMap { action -> Offer? in
+                if case let .showOfferTapped(offer) = action { return offer }
+                return nil
+            }
+            .withUnretained(self)
+            .flatMap { owner, offer -> CoordinatingResult<RouterResult<Void>> in
+                let router = ModalRouter(parentViewController: viewController,
+                                         presentationStyle: .overFullScreen,
+                                         transitionStyle: .crossDissolve)
+                return owner.presentOfferSheet(router: router, offer: offer)
+            }
+            .sink()
+            .store(in: cancelBag)
+
         let dismiss = viewModel
             .route
             .filter { $0 == .dismissTapped }
@@ -56,6 +72,18 @@ final class ChatCoordinator: BaseCoordinator<RouterResult<Void>> {
 }
 
 extension ChatCoordinator {
+    private func presentOfferSheet(router: Router, offer: Offer) -> CoordinatingResult<RouterResult<Void>> {
+        coordinate(to: BottomActionSheetCoordinator(router: router, viewModel: ChatOfferViewModel(offer: offer)))
+        .flatMap { result -> CoordinatingResult<RouterResult<Void>> in
+            guard result != .dismissedByRouter else {
+                return Just(result).eraseToAnyPublisher()
+            }
+            return router.dismiss(animated: true, returning: result)
+        }
+        .prefix(1)
+        .eraseToAnyPublisher()
+    }
+
     private func showChatExpandedImage(router: Router, image: Data) -> CoordinatingResult<RouterResult<Void>> {
         coordinate(to: ChatExpandedImageCoordinator(image: image, router: router, animated: animated))
         .flatMap { result -> CoordinatingResult<RouterResult<Void>> in
