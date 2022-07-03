@@ -16,7 +16,6 @@ class ChatDeleteViewModel: BottomActionSheetViewModelProtocol {
     var actionPublisher: PassthroughSubject<BottomActionSheetActionType, Never> = .init()
     var dismissPublisher: PassthroughSubject<Void, Never> = .init()
     var colorScheme: BottomActionSheet<ChatDeleteActionSheetContent>.ColorScheme = .main
-    var sheetIsVisible: ((Bool) -> Void)?
     var content: ChatDeleteActionSheetContent {
         ChatDeleteActionSheetContent()
     }
