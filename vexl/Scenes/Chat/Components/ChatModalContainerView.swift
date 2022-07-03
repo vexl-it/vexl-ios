@@ -18,10 +18,6 @@ struct ChatModalContainerView: View {
         switch modal {
         case .friends:
             commonFriendView
-        case .delete:
-            deleteView
-        case .deleteConfirmation:
-            deleteConfirmationView
         case .block:
             blockView
         case .blockConfirmation:
@@ -41,34 +37,6 @@ struct ChatModalContainerView: View {
                 action(.dismissModal)
             }
         }
-    }
-
-    private var deleteView: some View {
-        ChatDeleteConfirmationView(style: .regular,
-                                   mainAction: {
-            withAnimation {
-                action(.deleteTap)
-            }
-        },
-                                   dismiss: {
-            withAnimation {
-                action(.dismissModal)
-            }
-        })
-    }
-
-    private var deleteConfirmationView: some View {
-        ChatDeleteConfirmationView(style: .confirmation,
-                                   mainAction: {
-            withAnimation {
-                action(.deleteConfirmedTap)
-            }
-        },
-                                   dismiss: {
-            withAnimation {
-                action(.dismissModal)
-            }
-        })
     }
 
     private var blockView: some View {

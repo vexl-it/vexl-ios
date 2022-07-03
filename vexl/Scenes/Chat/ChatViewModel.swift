@@ -24,8 +24,6 @@ final class ChatViewModel: ViewModelType, ObservableObject {
     enum Modal {
         case none
         case friends
-        case delete
-        case deleteConfirmation
         case block
         case blockConfirmation
         case identityRevealRequest
@@ -41,7 +39,6 @@ final class ChatViewModel: ViewModelType, ObservableObject {
         case cameraTap
         case dismissModal
         case deleteTap
-        case deleteConfirmedTap
         case blockTap
         case blockConfirmedTap
         case revealRequestConfirmationTap
@@ -304,11 +301,6 @@ final class ChatViewModel: ViewModelType, ObservableObject {
             .map { _ -> Route in .showDeleteTapped }
             .subscribe(route)
             .store(in: cancelBag)
-
-        sharedAction
-            .filter { $0 == .deleteTap }
-            .map { _ -> Modal in .deleteConfirmation }
-            .assign(to: &$modal)
     }
 
     private func setupBlockChatBindings() {
