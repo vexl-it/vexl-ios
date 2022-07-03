@@ -108,6 +108,9 @@ final class DictionaryDB {
         self.messages.removeAll { message in
             message.inboxKey == inboxPublicKey && message.senderInboxKey == senderPublicKey
         }
+        self.inboxMessage.removeAll { message in
+            message.inbox.publicKey == inboxPublicKey && message.receiverInbox == senderPublicKey
+        }
     }
 
     static func saveRequests(_ request: ParsedChatMessage, inboxPublicKey: String) {

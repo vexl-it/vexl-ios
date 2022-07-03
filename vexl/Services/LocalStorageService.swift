@@ -161,10 +161,11 @@ final class LocalStorageService: LocalStorageServiceType {
         }
         .eraseToAnyPublisher()
     }
-    
+
     func deleteChatMessages(forInbox inboxPublicKey: String, senderPublicKey: String) -> AnyPublisher<Void, Error> {
         Future { promise in
-            
+            DictionaryDB.deleteMessages(inboxPublicKey: inboxPublicKey, senderPublicKey: senderPublicKey)
+            promise(.success(()))
         }
         .eraseToAnyPublisher()
     }

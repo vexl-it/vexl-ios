@@ -40,6 +40,7 @@ protocol ChatServiceType {
     func getStoredInboxMessages() -> AnyPublisher<[ChatInboxMessage], Error>
     func getStoredRequestMessages() -> AnyPublisher<[ParsedChatMessage], Error>
     func getStoredChatMessages(inboxPublicKey: String, receiverPublicKey: String) -> AnyPublisher<[ParsedChatMessage], Error>
+    func deleteMessages(inboxPublicKey: String, senderPublicKey: String) -> AnyPublisher<Void, Error>
 }
 
 final class ChatService: BaseService, ChatServiceType {
@@ -170,6 +171,10 @@ final class ChatService: BaseService, ChatServiceType {
 
     func getStoredChatMessages(inboxPublicKey: String, receiverPublicKey: String) -> AnyPublisher<[ParsedChatMessage], Error> {
         localStorageService.getChatMessages(inboxPublicKey: inboxPublicKey, receiverInboxKey: receiverPublicKey)
+    }
+
+    func deleteMessages(inboxPublicKey: String, senderPublicKey: String) -> AnyPublisher<Void, Error> {
+        localStorageService.deleteChatMessages(forInbox: inboxPublicKey, senderPublicKey: senderPublicKey)
     }
 }
 

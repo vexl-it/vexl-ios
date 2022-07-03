@@ -15,24 +15,25 @@ protocol ChatRepositoryType {
     func deleteChat(senderKey: ECCKeys, receiverPublicKey: String) -> AnyPublisher<Void, Error>
 }
 
-final class ChatRepository {
+final class ChatRepository: ChatRepositoryType {
 
-    @Inject var chatService: ChatServiceType
-    @Inject var cryptoService: CryptoServiceType
-    @Inject var inboxManager: InboxManagerType
+    @Inject private var chatService: ChatServiceType
+    @Inject private var cryptoService: CryptoServiceType
+    @Inject private var inboxManager: InboxManagerType
+
+    var dismissAction: ActionSubject<Void> = .init()
 
     func deleteChat(senderKey: ECCKeys, receiverPublicKey: String) -> AnyPublisher<Void, Error> {
         let deleteMessage = ParsedChatMessage.createDelete(inboxPublicKey: receiverPublicKey,
                                                            senderPublicKey: senderKey.publicKey)
 
-        return Just(deleteMessage)
+        let sendMessage = Just(deleteMessage)
             .setFailureType(to: Error.self)
             .compactMap { $0?.asString }
             .withUnretained(self)
             .flatMap { owner, message in
                 owner.cryptoService
                     .encryptECIES(publicKey: receiverPublicKey, secret: message)
-                    .eraseToAnyPublisher()
             }
             .withUnretained(self)
             .flatMap { owner, _ in
@@ -41,6 +42,22 @@ final class ChatRepository {
                                   type: .deleteChat,
                                   parsedMessage: deleteMessage)
             }
+
+        return sendMessage
+            .withUnretained(self)
+            .flatMap { owner, _ in
+                owner.chatService
+                    .deleteMessages(inboxPublicKey: senderKey.publicKey, senderPublicKey: receiverPublicKey)
+            }
+            .withUnretained(self)
+            .flatMap { owner, _ in
+                owner.inboxManager.updateInboxMessages()
+            }
+            .withUnretained(self)
+            .handleEvents(receiveOutput: { owner, _ in
+                owner.dismissAction.send(())
+            })
+            .asVoid()
             .eraseToAnyPublisher()
     }
 
