@@ -36,21 +36,16 @@ final class BottomActionSheetCoordinator<ViewModel: BottomActionSheetViewModelPr
 
         router.present(viewController, animated: true)
 
-        let primary = viewModel
-            .primaryActionPublisher
+        let action = viewModel
+            .actionPublisher
             .eraseToAnyPublisher()
-            .map { _ -> RouterResult<BottomActionSheetActionType> in .finished(.primary) }
-
-        let secondary = viewModel
-            .secondaryActionPublisher
-            .eraseToAnyPublisher()
-            .map { _ -> RouterResult<BottomActionSheetActionType> in .finished(.secondary) }
+            .map { type -> RouterResult<BottomActionSheetActionType> in .finished(type) }
 
         let dismiss = viewModel
             .dismissPublisher
             .map { _ -> RouterResult<BottomActionSheetActionType> in .dismiss }
 
-        return Publishers.Merge3(primary, secondary, dismiss)
+        return Publishers.Merge(action, dismiss)
             .eraseToAnyPublisher()
     }
 }

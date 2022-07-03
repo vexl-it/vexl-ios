@@ -10,30 +10,24 @@ import Combine
 
 class ChatDeleteViewModel: BottomActionSheetViewModelProtocol {
 
-    var title: String = L.chatMessageOffer()
-    var primaryAction: BottomActionSheet<ChatDeleteActionSheetContent>.Action = .init(title: L.buttonGotIt(), isDismissAction: true)
-    var secondaryAction: BottomActionSheet<ChatDeleteActionSheetContent>.Action?
+    var title: String = L.chatMessageDeleteTitle()
+    var primaryAction: BottomActionSheet<ChatDeleteActionSheetContent>.Action = .init(title: L.chatMessageDeleteAction(), isDismissAction: true)
+    var secondaryAction: BottomActionSheet<ChatDeleteActionSheetContent>.Action? = .init(title: L.chatMessageDeleteBack(), isDismissAction: true)
+    var actionPublisher: PassthroughSubject<BottomActionSheetActionType, Never> = .init()
     var dismissPublisher: PassthroughSubject<Void, Never> = .init()
     var colorScheme: BottomActionSheet<ChatDeleteActionSheetContent>.ColorScheme = .main
+    var sheetIsVisible: ((Bool) -> Void)?
     var content: ChatDeleteActionSheetContent {
-        ChatDeleteActionSheetContent(data: OfferDetailViewData(offer: .stub,
-                                                               isRequested: false),
-                                     dismiss: {})
+        ChatDeleteActionSheetContent()
     }
 }
 
 struct ChatDeleteActionSheetContent: View {
-
-    let data: OfferDetailViewData
-    let dismiss: () -> Void
-
     var body: some View {
-        OfferInformationDetailView(data: data,
-                                   useInnerPadding: true,
-                                   showBackground: false)
-            .background(Appearance.Colors.gray6)
-            .cornerRadius(Appearance.GridGuide.buttonCorner)
-            .padding(.bottom, Appearance.GridGuide.point)
+        Text(L.chatMessageDeleteDescription())
+            .textStyle(.paragraph)
+            .foregroundColor(Appearance.Colors.gray3)
+            .padding(.vertical, Appearance.GridGuide.padding)
     }
 }
 
@@ -41,7 +35,7 @@ struct ChatDeleteActionSheetContent: View {
 
 struct ChatDeleteActionSheetContentPreview: PreviewProvider {
     static var previews: some View {
-        ChatDeleteActionSheetContent(data: .stub, dismiss: { })
+        ChatDeleteActionSheetContent()
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color.black)
             .previewDevice("iPhone 11")

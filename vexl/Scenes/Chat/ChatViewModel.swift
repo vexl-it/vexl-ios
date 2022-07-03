@@ -79,6 +79,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
         case dismissTapped
         case expandImageTapped(image: Data)
         case showOfferTapped(offer: Offer?)
+        case showDeleteTapped
     }
 
     var route: CoordinatingSubject<Route> = .init()
@@ -299,8 +300,9 @@ final class ChatViewModel: ViewModelType, ObservableObject {
     private func setupDeleteChatBindings() {
         sharedChatAction
             .filter { $0 == .deleteChat }
-            .map { _ -> Modal in .delete }
-            .assign(to: &$modal)
+            .map { _ -> Route in .showDeleteTapped }
+            .subscribe(route)
+            .store(in: cancelBag)
 
         sharedAction
             .filter { $0 == .deleteTap }
@@ -397,5 +399,9 @@ final class ChatViewModel: ViewModelType, ObservableObject {
         let conversationSection = ChatConversationSection(date: Date(),
                                                           messages: conversationItems)
         self.messages.append(conversationSection)
+    }
+
+    func deleteMessages() {
+        print("DELETE WILL GO HERE")
     }
 }

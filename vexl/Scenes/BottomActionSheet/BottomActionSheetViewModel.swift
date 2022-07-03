@@ -17,8 +17,7 @@ protocol BottomActionSheetViewModelProtocol: ObservableObject {
     var titleAlignment: Alignment { get }
     var primaryAction: BottomActionSheet<ContentView>.Action { get }
     var secondaryAction: BottomActionSheet<ContentView>.Action? { get }
-    var primaryActionPublisher: PassthroughSubject<Void, Never> { get }
-    var secondaryActionPublisher: PassthroughSubject<Void, Never> { get }
+    var actionPublisher: PassthroughSubject<BottomActionSheetActionType, Never> { get }
     var dismissPublisher: PassthroughSubject<Void, Never> { get }
     var colorScheme: BottomActionSheet<ContentView>.ColorScheme { get }
     @ViewBuilder var content: ContentView { get }
@@ -27,17 +26,18 @@ protocol BottomActionSheetViewModelProtocol: ObservableObject {
 extension BottomActionSheetViewModelProtocol {
     var imageName: String? { nil }
     var titleAlignment: Alignment { .leading }
-    var primaryActionPublisher: PassthroughSubject<Void, Never> { .init() }
-    var secondaryActionPublisher: PassthroughSubject<Void, Never> { .init() }
+    var actionPublisher: PassthroughSubject<BottomActionSheetActionType, Never> { .init() }
 
-    func primaryAction(dismiss: @escaping () -> Void) -> BottomActionSheet<ContentView>.Action {
+    func primaryAction(dismiss: @escaping (BottomActionSheetActionType) -> Void) -> BottomActionSheet<ContentView>.Action {
         var action = primaryAction
+        action.type = .primary
         action.inject(dismissAction: dismiss)
         return action
     }
 
-    func secondaryAction(dismiss: @escaping () -> Void) -> BottomActionSheet<ContentView>.Action? {
+    func secondaryAction(dismiss: @escaping (BottomActionSheetActionType) -> Void) -> BottomActionSheet<ContentView>.Action? {
         var action = secondaryAction
+        action?.type = .secondary
         action?.inject(dismissAction: dismiss)
         return action
     }
