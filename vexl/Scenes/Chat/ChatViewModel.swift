@@ -134,6 +134,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
     private let inboxKeys: ECCKeys
     private let receiverPublicKey: String
     private let isBlocked = false
+    private let chatRepository = ChatRepository()
 
     init(inboxKeys: ECCKeys, receiverPublicKey: String, offerType: OfferType?) {
         self.inboxKeys = inboxKeys
@@ -402,6 +403,9 @@ final class ChatViewModel: ViewModelType, ObservableObject {
     }
 
     func deleteMessages() {
-        print("DELETE WILL GO HERE")
+        chatRepository
+            .deleteChat(senderKey: inboxKeys, receiverPublicKey: receiverPublicKey)
+            .sink()
+            .store(in: cancelBag)
     }
 }
