@@ -7,8 +7,11 @@
 
 import Foundation
 import Combine
+import Cleevio
 
 protocol ChatRepositoryType {
+    var dismissAction: ActionSubject<Void> { get set }
+
     func deleteChat(senderKey: ECCKeys, receiverPublicKey: String) -> AnyPublisher<Void, Error>
 }
 

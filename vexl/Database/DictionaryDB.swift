@@ -104,6 +104,12 @@ final class DictionaryDB {
         self.messages
     }
 
+    static func deleteMessages(inboxPublicKey: String, senderPublicKey: String) {
+        self.messages.removeAll { message in
+            message.inboxKey == inboxPublicKey && message.senderInboxKey == senderPublicKey
+        }
+    }
+
     static func saveRequests(_ request: ParsedChatMessage, inboxPublicKey: String) {
         self.requests.append(request)
     }
