@@ -8,7 +8,7 @@
 import SwiftUI
 import Combine
 
-class ChatOfferViewModel: BottomActionSheetViewModelProtocol {
+final class ChatOfferViewModel: BottomActionSheetViewModelProtocol {
 
     var title: String = L.chatMessageOffer()
     var primaryAction: BottomActionSheet<ChatOfferActionSheetContent>.Action = .init(title: L.buttonGotIt(), isDismissAction: true)
