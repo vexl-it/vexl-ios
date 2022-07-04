@@ -40,6 +40,7 @@ protocol ChatServiceType {
     func getStoredInboxMessages() -> AnyPublisher<[ChatInboxMessage], Error>
     func getStoredRequestMessages() -> AnyPublisher<[ParsedChatMessage], Error>
     func getStoredChatMessages(inboxPublicKey: String, receiverPublicKey: String) -> AnyPublisher<[ParsedChatMessage], Error>
+    func deleteMessages(inboxPublicKey: String, senderPublicKey: String) -> AnyPublisher<Void, Error>
 }
 
 final class ChatService: BaseService, ChatServiceType {
@@ -171,6 +172,10 @@ final class ChatService: BaseService, ChatServiceType {
     func getStoredChatMessages(inboxPublicKey: String, receiverPublicKey: String) -> AnyPublisher<[ParsedChatMessage], Error> {
         localStorageService.getChatMessages(inboxPublicKey: inboxPublicKey, receiverInboxKey: receiverPublicKey)
     }
+
+    func deleteMessages(inboxPublicKey: String, senderPublicKey: String) -> AnyPublisher<Void, Error> {
+        localStorageService.deleteChatMessages(forInbox: inboxPublicKey, senderPublicKey: senderPublicKey)
+    }
 }
 
 // MARK: - Helpers
@@ -187,7 +192,9 @@ extension ChatService {
                     return owner.saveAcceptedRequest(message, inboxKeys: inboxKeys)
                 case .message:
                     return owner.saveLastMessageForInbox(messages, inboxKeys: inboxKeys)
-                case .deleteChat, .invalid, .revealApproval, .revealRequest, .messagingRejection:
+                case .deleteChat:
+                    return owner.deleteMessageRequest(messages, inboxKey: inboxKeys)
+                case .invalid, .revealApproval, .revealRequest, .messagingRejection:
                     return Just(()).setFailureType(to: Error.self)
                         .eraseToAnyPublisher()
                 }
@@ -233,5 +240,14 @@ extension ChatService {
 
     private func saveAcceptedRequest(_ message: ParsedChatMessage, inboxKeys: ECCKeys) -> AnyPublisher<Void, Error> {
         localStorageService.saveInboxMessage(message, inboxKeys: inboxKeys)
+    }
+
+    private func deleteMessageRequest(_ messages: [ParsedChatMessage], inboxKey: ECCKeys) -> AnyPublisher<Void, Error> {
+        guard let message = messages.first else {
+            return Just(()).setFailureType(to: Error.self)
+                .eraseToAnyPublisher()
+        }
+
+        return deleteMessages(inboxPublicKey: inboxKey.publicKey, senderPublicKey: message.senderInboxKey)
     }
 }

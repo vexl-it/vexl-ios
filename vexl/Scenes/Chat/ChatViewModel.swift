@@ -16,6 +16,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
     @Inject var chatService: ChatServiceType
     @Inject var cryptoService: CryptoServiceType
     @Inject var inboxManager: InboxManagerType
+    @Inject var chatRepository: ChatRepositoryType
 
     enum ImageSource {
         case photoAlbum, camera
@@ -24,8 +25,6 @@ final class ChatViewModel: ViewModelType, ObservableObject {
     enum Modal {
         case none
         case friends
-        case delete
-        case deleteConfirmation
         case block
         case blockConfirmation
         case identityRevealRequest
@@ -41,7 +40,6 @@ final class ChatViewModel: ViewModelType, ObservableObject {
         case cameraTap
         case dismissModal
         case deleteTap
-        case deleteConfirmedTap
         case blockTap
         case blockConfirmedTap
         case revealRequestConfirmationTap
@@ -79,6 +77,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
         case dismissTapped
         case expandImageTapped(image: Data)
         case showOfferTapped(offer: Offer?)
+        case showDeleteTapped
     }
 
     var route: CoordinatingSubject<Route> = .init()
@@ -272,6 +271,12 @@ final class ChatViewModel: ViewModelType, ObservableObject {
             .map { _ -> Route in .dismissTapped }
             .subscribe(route)
             .store(in: cancelBag)
+
+        chatRepository
+            .dismissAction
+            .map { _ -> Route in .dismissTapped }
+            .subscribe(route)
+            .store(in: cancelBag)
     }
 
     private func setupRevealIdentityRequestBindings() {
@@ -299,13 +304,9 @@ final class ChatViewModel: ViewModelType, ObservableObject {
     private func setupDeleteChatBindings() {
         sharedChatAction
             .filter { $0 == .deleteChat }
-            .map { _ -> Modal in .delete }
-            .assign(to: &$modal)
-
-        sharedAction
-            .filter { $0 == .deleteTap }
-            .map { _ -> Modal in .deleteConfirmation }
-            .assign(to: &$modal)
+            .map { _ -> Route in .showDeleteTapped }
+            .subscribe(route)
+            .store(in: cancelBag)
     }
 
     private func setupBlockChatBindings() {
@@ -397,5 +398,12 @@ final class ChatViewModel: ViewModelType, ObservableObject {
         let conversationSection = ChatConversationSection(date: Date(),
                                                           messages: conversationItems)
         self.messages.append(conversationSection)
+    }
+
+    func deleteMessages() {
+        chatRepository
+            .deleteChat(senderKey: inboxKeys, receiverPublicKey: receiverPublicKey)
+            .sink()
+            .store(in: cancelBag)
     }
 }

@@ -13,7 +13,8 @@ class DIContainer {
 
     let assembler = Assembler([
         ManagerAssembly(),
-        ServiceAssembly()
+        ServiceAssembly(),
+        RepositoryAssembly()
     ])
 
     private lazy var resolver: Resolver? = {

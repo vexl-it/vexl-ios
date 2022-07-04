@@ -12,14 +12,16 @@ struct BottomActionSheet<ContentView: View>: View {
     struct Action {
         var title: String
         var imageName: String?
+        var type: BottomActionSheetActionType = .primary
         var isDismissAction: Bool
         var action: (() -> Void)?
 
-        mutating func inject(dismissAction: @escaping () -> Void) {
+        mutating func inject(dismissAction: @escaping (BottomActionSheetActionType) -> Void) {
             guard isDismissAction else { return }
             let prevAction = self.action
+            let prevType = self.type
             self.action = {
-                dismissAction()
+                dismissAction(prevType)
                 prevAction?()
             }
         }
