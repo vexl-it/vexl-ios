@@ -78,6 +78,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
         case expandImageTapped(image: Data)
         case showOfferTapped(offer: Offer?)
         case showDeleteTapped
+        case showRevealIdentityTapped
     }
 
     var route: CoordinatingSubject<Route> = .init()
@@ -186,7 +187,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
             .compactMap(\.value)
             .withUnretained(self)
             .compactMap { owner, offers -> Offer? in
-                offers.first { $0.offerPublicKey == owner.inboxKeys.publicKey }
+                offers.first { $0.offerPublicKey == owner.inboxKeys.publicKey || $0.offerPublicKey == owner.receiverPublicKey }
             }
             .withUnretained(self)
             .sink { owner, offer in
@@ -282,8 +283,9 @@ final class ChatViewModel: ViewModelType, ObservableObject {
     private func setupRevealIdentityRequestBindings() {
         sharedChatAction
             .filter { $0 == .revealIdentity }
-            .map { _ -> Modal in .identityRevealRequest }
-            .assign(to: &$modal)
+            .map { _ -> Route in .showRevealIdentityTapped }
+            .subscribe(route)
+            .store(in: cancelBag)
     }
 
     private func setupRevealIdentityResponseBindings() {

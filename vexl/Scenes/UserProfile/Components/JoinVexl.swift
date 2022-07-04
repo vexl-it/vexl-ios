@@ -14,6 +14,7 @@ class JoinVexlViewModel: BottomActionSheetViewModelProtocol {
     var titleAlignment: Alignment = .center
     var primaryAction: BottomActionSheet<JoinVexlContent>.Action = .init(title: L.userProfileJoinVexlButtonTitle(), isDismissAction: true)
     var secondaryAction: BottomActionSheet<JoinVexlContent>.Action?
+    var actionPublisher: PassthroughSubject<BottomActionSheetActionType, Never> = .init()
     var dismissPublisher: PassthroughSubject<Void, Never> = .init()
     var colorScheme: BottomActionSheet<JoinVexlContent>.ColorScheme = .main
     var content: JoinVexlContent {
