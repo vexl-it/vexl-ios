@@ -59,7 +59,8 @@ final class ChatRepository: ChatRepositoryType {
     }
 
     func requestIdentityReveal(senderKey: ECCKeys, receiverPublicKey: String) -> AnyPublisher<Void, Error> {
-        let requestIdentity = ParsedChatMessage.createIdentityRequest(inboxPublicKey: receiverPublicKey, senderPublicKey: senderKey.publicKey)
+        let requestIdentity = ParsedChatMessage.createIdentityRequest(inboxPublicKey: receiverPublicKey,
+                                                                      senderPublicKey: senderKey.publicKey)
 
         return encryptMessage(requestIdentity, publicKey: receiverPublicKey)
             .withUnretained(self)
