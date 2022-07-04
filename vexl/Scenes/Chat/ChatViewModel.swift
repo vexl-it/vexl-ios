@@ -271,6 +271,12 @@ final class ChatViewModel: ViewModelType, ObservableObject {
             .map { _ -> Route in .dismissTapped }
             .subscribe(route)
             .store(in: cancelBag)
+
+        chatRepository
+            .dismissAction
+            .map { _ -> Route in .dismissTapped }
+            .subscribe(route)
+            .store(in: cancelBag)
     }
 
     private func setupRevealIdentityRequestBindings() {
