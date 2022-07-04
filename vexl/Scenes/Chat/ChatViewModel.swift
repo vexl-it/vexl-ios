@@ -16,6 +16,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
     @Inject var chatService: ChatServiceType
     @Inject var cryptoService: CryptoServiceType
     @Inject var inboxManager: InboxManagerType
+    @Inject var chatRepository: ChatRepositoryType
 
     enum ImageSource {
         case photoAlbum, camera
@@ -131,7 +132,6 @@ final class ChatViewModel: ViewModelType, ObservableObject {
     private let inboxKeys: ECCKeys
     private let receiverPublicKey: String
     private let isBlocked = false
-    private let chatRepository = ChatRepository()
 
     init(inboxKeys: ECCKeys, receiverPublicKey: String, offerType: OfferType?) {
         self.inboxKeys = inboxKeys
