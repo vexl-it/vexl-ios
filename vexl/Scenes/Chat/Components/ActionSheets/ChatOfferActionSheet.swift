@@ -10,11 +10,13 @@ import Combine
 
 final class ChatOfferViewModel: BottomActionSheetViewModelProtocol {
 
+    typealias OfferBottomActionSheet = BottomActionSheet<ChatOfferActionSheetContent>
+
     var title: String = L.chatMessageOffer()
-    var primaryAction: BottomActionSheet<ChatOfferActionSheetContent>.Action = .init(title: L.buttonGotIt(), isDismissAction: true)
-    var secondaryAction: BottomActionSheet<ChatOfferActionSheetContent>.Action?
+    var primaryAction: OfferBottomActionSheet.Action = .init(title: L.buttonGotIt(), isDismissAction: true)
+    var secondaryAction: OfferBottomActionSheet.Action?
     var dismissPublisher: PassthroughSubject<Void, Never> = .init()
-    var colorScheme: BottomActionSheet<ChatOfferActionSheetContent>.ColorScheme = .main
+    var colorScheme: OfferBottomActionSheet.ColorScheme = .main
     var content: ChatOfferActionSheetContent {
         ChatOfferActionSheetContent(data: OfferDetailViewData(offer: self.offer,
                                                               isRequested: false),

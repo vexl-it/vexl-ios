@@ -8,16 +8,18 @@
 import SwiftUI
 import Combine
 
-class ChatDeleteConfirmationViewModel: BottomActionSheetViewModelProtocol {
+final class ChatDeleteConfirmationViewModel: BottomActionSheetViewModelProtocol {
+
+    typealias DeleteActionBottomSheet = BottomActionSheet<ChatDeleteConfirmationActionSheetContent>
 
     var title: String = L.chatMessageDeleteConfirmTitle()
-    var primaryAction: BottomActionSheet<ChatDeleteConfirmationActionSheetContent>.Action = .init(title: L.chatMessageDeleteAction(),
-                                                                                                  isDismissAction: true)
-    var secondaryAction: BottomActionSheet<ChatDeleteConfirmationActionSheetContent>.Action? = .init(title: L.chatMessageDeleteBack(),
-                                                                                                     isDismissAction: true)
+    var primaryAction: DeleteActionBottomSheet.Action = .init(title: L.chatMessageDeleteAction(),
+                                                              isDismissAction: true)
+    var secondaryAction: DeleteActionBottomSheet.Action? = .init(title: L.chatMessageDeleteBack(),
+                                                                 isDismissAction: true)
     var actionPublisher: PassthroughSubject<BottomActionSheetActionType, Never> = .init()
     var dismissPublisher: PassthroughSubject<Void, Never> = .init()
-    var colorScheme: BottomActionSheet<ChatDeleteConfirmationActionSheetContent>.ColorScheme = .main
+    var colorScheme: DeleteActionBottomSheet.ColorScheme = .main
     var content: ChatDeleteConfirmationActionSheetContent {
         ChatDeleteConfirmationActionSheetContent()
     }
