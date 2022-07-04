@@ -49,6 +49,13 @@ final class DictionaryDB {
         }
     }
 
+    static private var storedChatUser: [StoredChatUser] = [] {
+        didSet {
+            guard let encodedData = try? encoder.encode(storedChatUser) else { return }
+            UserDefaults.standard.setValue(encodedData, forKey: "storedChatUser")
+        }
+    }
+
     static func setupDatabase() {
         if let inboxesData = UserDefaults.standard.data(forKey: "inboxes"),
            let savedInboxes = try? decoder.decode([String: [ChatInbox]].self, from: inboxesData) {

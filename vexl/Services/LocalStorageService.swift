@@ -27,7 +27,7 @@ protocol LocalStorageServiceType {
     func saveInboxMessage(_ message: ParsedChatMessage, inboxKeys: ECCKeys) -> AnyPublisher<Void, Error>
     func getInboxMessages() -> AnyPublisher<[ChatInboxMessage], Error>
 
-    // MARK - Messages
+    // MARK: - Messages
 
     func saveMessages(_ messages: [ParsedChatMessage]) -> AnyPublisher<Void, Error>
     func getMessages() -> AnyPublisher<[ParsedChatMessage], Error>
@@ -108,7 +108,7 @@ final class LocalStorageService: LocalStorageServiceType {
         .eraseToAnyPublisher()
     }
 
-    // MARK - Messages
+    // MARK: - Messages
 
     func saveMessages(_ messages: [ParsedChatMessage]) -> AnyPublisher<Void, Error> {
         Future { promise in

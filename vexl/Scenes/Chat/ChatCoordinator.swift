@@ -65,7 +65,7 @@ final class ChatCoordinator: BaseCoordinator<RouterResult<Void>> {
                 let router = ModalRouter(parentViewController: viewController,
                                          presentationStyle: .overFullScreen,
                                          transitionStyle: .crossDissolve)
-                return owner.presentDeleteSheet(router: router)
+                return owner.presentActionSheet(router: router, viewModel: ChatDeleteViewModel())
             }
             .filter { result in
                 if case let .finished(actionType) = result { return actionType == .primary }
@@ -76,7 +76,7 @@ final class ChatCoordinator: BaseCoordinator<RouterResult<Void>> {
                 let router = ModalRouter(parentViewController: viewController,
                                          presentationStyle: .overFullScreen,
                                          transitionStyle: .crossDissolve)
-                return owner.presentDeleteConfirmationSheet(router: router)
+                return owner.presentActionSheet(router: router, viewModel: ChatDeleteConfirmationViewModel())
             }
             .filter { result in
                 if case let .finished(actionType) = result { return actionType == .primary }
@@ -90,6 +90,21 @@ final class ChatCoordinator: BaseCoordinator<RouterResult<Void>> {
 }
 
 extension ChatCoordinator {
+
+    //swiftlint: disable line_length
+    private func presentActionSheet<ViewModel: BottomActionSheetViewModelProtocol>(router: Router,
+                                                                                   viewModel: ViewModel) -> CoordinatingResult<RouterResult<BottomActionSheetActionType>> {
+        coordinate(to: BottomActionSheetCoordinator(router: router, viewModel: viewModel))
+        .flatMap { result -> CoordinatingResult<RouterResult<BottomActionSheetActionType>> in
+            guard result != .dismissedByRouter else {
+                return Just(result).eraseToAnyPublisher()
+            }
+            return router.dismiss(animated: true, returning: result)
+        }
+        .prefix(1)
+        .eraseToAnyPublisher()
+    }
+
     private func presentDeleteSheet(router: Router) -> CoordinatingResult<RouterResult<BottomActionSheetActionType>> {
         coordinate(to: BottomActionSheetCoordinator(router: router, viewModel: ChatDeleteViewModel()))
         .flatMap { result -> CoordinatingResult<RouterResult<BottomActionSheetActionType>> in

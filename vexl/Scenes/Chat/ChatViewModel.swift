@@ -403,6 +403,15 @@ final class ChatViewModel: ViewModelType, ObservableObject {
     func deleteMessages() {
         chatRepository
             .deleteChat(senderKey: inboxKeys, receiverPublicKey: receiverPublicKey)
+            .track(activity: primaryActivity)
+            .sink()
+            .store(in: cancelBag)
+    }
+
+    func requestIdentityReveal() {
+        chatRepository
+            .requestIdentityReveal(senderKey: inboxKeys, receiverPublicKey: receiverPublicKey)
+            .track(activity: primaryActivity)
             .sink()
             .store(in: cancelBag)
     }
