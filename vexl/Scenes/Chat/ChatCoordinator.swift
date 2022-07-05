@@ -71,11 +71,27 @@ final class ChatCoordinator: BaseCoordinator<RouterResult<Void>> {
                 let router = ModalRouter(parentViewController: viewController,
                                          presentationStyle: .overFullScreen,
                                          transitionStyle: .crossDissolve)
-                return owner.presentActionSheet(router: router, viewModel: ChatRequestIdentityViewModel())
+                return owner.presentActionSheet(router: router, viewModel: ChatIdentityRequestViewModel())
             }
             .filter(Self.filterPrimaryAction)
             .sink { _ in
                 viewModel.requestIdentityReveal()
+            }
+            .store(in: cancelBag)
+
+        viewModel
+            .route
+            .filter { $0 == .showRevealIdentityResponseTapped }
+            .withUnretained(self)
+            .flatMap { owner, _ -> CoordinatingResult<RouterResult<BottomActionSheetActionType>> in
+                let router = ModalRouter(parentViewController: viewController,
+                                         presentationStyle: .overFullScreen,
+                                         transitionStyle: .crossDissolve)
+                return owner.presentActionSheet(router: router, viewModel: ChatIdentityResponseViewModel())
+            }
+            .filter(Self.filterPrimaryAction)
+            .sink { _ in
+                viewModel.respondIdentityReveal(isAccepted: true)
             }
             .store(in: cancelBag)
 

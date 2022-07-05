@@ -8,24 +8,24 @@
 import SwiftUI
 import Combine
 
-final class ChatRequestIdentityViewModel: BottomActionSheetViewModelProtocol {
+final class ChatIdentityRequestViewModel: BottomActionSheetViewModelProtocol {
 
-    typealias RequestIdentityBottomActionSheet = BottomActionSheet<ChatRequestIdentityActionSheetContent>
+    typealias IdentityRequestBottomActionSheet = BottomActionSheet<ChatIdentityRequestActionSheetContent>
 
     var title: String = L.chatMessageIdentityRequestTitle()
-    var primaryAction: RequestIdentityBottomActionSheet.Action = .init(title: L.chatMessageIdentityRequestSend(),
+    var primaryAction: IdentityRequestBottomActionSheet.Action = .init(title: L.chatMessageIdentityRequestSend(),
                                                                        isDismissAction: true)
-    var secondaryAction: RequestIdentityBottomActionSheet.Action? = .init(title: L.chatMessageIdentityRequestCancel(),
+    var secondaryAction: IdentityRequestBottomActionSheet.Action? = .init(title: L.chatMessageIdentityRequestCancel(),
                                                                           isDismissAction: true)
     var actionPublisher: PassthroughSubject<BottomActionSheetActionType, Never> = .init()
     var dismissPublisher: PassthroughSubject<Void, Never> = .init()
-    var colorScheme: RequestIdentityBottomActionSheet.ColorScheme = .main
-    var content: ChatRequestIdentityActionSheetContent {
-        ChatRequestIdentityActionSheetContent()
+    var colorScheme: IdentityRequestBottomActionSheet.ColorScheme = .main
+    var content: ChatIdentityRequestActionSheetContent {
+        ChatIdentityRequestActionSheetContent()
     }
 }
 
-struct ChatRequestIdentityActionSheetContent: View {
+struct ChatIdentityRequestActionSheetContent: View {
     var body: some View {
         Text(L.chatMessageIdentityRequestSubtitle())
             .textStyle(.paragraph)

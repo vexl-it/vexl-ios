@@ -27,8 +27,6 @@ final class ChatViewModel: ViewModelType, ObservableObject {
         case friends
         case block
         case blockConfirmation
-        case identityRevealRequest
-        case identityRevealConfirmation
     }
 
     // MARK: - Action Binding
@@ -42,7 +40,6 @@ final class ChatViewModel: ViewModelType, ObservableObject {
         case deleteTap
         case blockTap
         case blockConfirmedTap
-        case revealRequestConfirmationTap
         case revealResponseTap
         case revealResponseConfirmationTap
         case deleteImageTap
@@ -79,6 +76,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
         case showOfferTapped(offer: Offer?)
         case showDeleteTapped
         case showRevealIdentityTapped
+        case showRevealIdentityResponseTapped
     }
 
     var route: CoordinatingSubject<Route> = .init()
@@ -196,8 +194,6 @@ final class ChatViewModel: ViewModelType, ObservableObject {
             .store(in: cancelBag)
     }
 
-    // TODO: - Add post messages to the BE when tapping send/requests
-
     private func setupChatImageInputBindings() {
         sharedAction
             .filter { $0 == .cameraTap }
@@ -291,15 +287,8 @@ final class ChatViewModel: ViewModelType, ObservableObject {
     private func setupRevealIdentityResponseBindings() {
         sharedAction
             .filter { $0 == .revealResponseTap }
-            .map { _ -> Modal in .identityRevealConfirmation }
-            .assign(to: &$modal)
-
-        sharedAction
-            .filter { $0 == .revealResponseConfirmationTap }
-            .withUnretained(self)
-            .sink { owner, _ in
-                owner.modal = .none
-            }
+            .map { _ -> Route in .showRevealIdentityResponseTapped }
+            .subscribe(route)
             .store(in: cancelBag)
     }
 
@@ -414,5 +403,9 @@ final class ChatViewModel: ViewModelType, ObservableObject {
             .track(activity: primaryActivity)
             .sink()
             .store(in: cancelBag)
+    }
+
+    func respondIdentityReveal(isAccepted: Bool) {
+        print("will respond identity reveal")
     }
 }

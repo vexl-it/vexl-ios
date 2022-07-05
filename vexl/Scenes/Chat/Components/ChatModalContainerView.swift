@@ -22,10 +22,6 @@ struct ChatModalContainerView: View {
             blockView
         case .blockConfirmation:
             blockConfirmationView
-        case .identityRevealRequest:
-            identityRevealRequestView
-        case .identityRevealConfirmation:
-            identityRevealConfirmationView
         case .none:
             EmptyView()
         }
@@ -61,34 +57,6 @@ struct ChatModalContainerView: View {
             }
         },
                                   dismiss: {
-            withAnimation {
-                action(.dismissModal)
-            }
-        })
-    }
-
-    private var identityRevealRequestView: some View {
-        ChatRevealConfirmationView(isRequest: true ,
-                                   mainAction: {
-            withAnimation {
-                action(.revealRequestConfirmationTap)
-            }
-        },
-                                   dismiss: {
-            withAnimation {
-                action(.dismissModal)
-            }
-        })
-    }
-
-    private var identityRevealConfirmationView: some View {
-        ChatRevealConfirmationView(isRequest: false ,
-                                   mainAction: {
-            withAnimation {
-                action(.revealResponseConfirmationTap)
-            }
-        },
-                                   dismiss: {
             withAnimation {
                 action(.dismissModal)
             }
