@@ -104,12 +104,12 @@ final class DictionaryDB {
         self.messages
     }
 
-    static func deleteMessages(inboxPublicKey: String, senderPublicKey: String) {
+    static func deleteMessages(inboxPublicKey: String, contactPublicKey: String) {
         self.messages.removeAll { message in
-            message.inboxKey == inboxPublicKey && message.contactInboxKey == senderPublicKey
+            message.inboxKey == inboxPublicKey && message.contactInboxKey == contactPublicKey
         }
         self.inboxMessage.removeAll { message in
-            message.inbox.publicKey == inboxPublicKey && message.receiverInbox == senderPublicKey
+            message.inbox.publicKey == inboxPublicKey && message.contactInbox == contactPublicKey
         }
     }
 
@@ -126,18 +126,18 @@ final class DictionaryDB {
         requests = newRequests
     }
 
-    static func saveInboxMessages(_ message: ParsedChatMessage, inboxKeys: ECCKeys, receiverInboxPublicKey: String) {
+    static func saveInboxMessages(_ message: ParsedChatMessage, inboxKeys: ECCKeys, contactPublicKey: String) {
         let inboxIndex = self.inboxMessage.firstIndex(where: {
-            $0.inbox.publicKey == inboxKeys.publicKey && $0.receiverInbox == receiverInboxPublicKey
+            $0.inbox.publicKey == inboxKeys.publicKey && $0.contactInbox == contactPublicKey
         })
 
         if let index = inboxIndex {
             let newChatInboxMessage = ChatInboxMessage(inbox: inboxKeys,
-                                                       receiverInbox: receiverInboxPublicKey,
+                                                       contactInbox: contactPublicKey,
                                                        message: message)
             self.inboxMessage[index] = newChatInboxMessage
         } else {
-            self.inboxMessage.append(.init(inbox: inboxKeys, receiverInbox: receiverInboxPublicKey, message: message))
+            self.inboxMessage.append(.init(inbox: inboxKeys, contactInbox: contactPublicKey, message: message))
         }
     }
 

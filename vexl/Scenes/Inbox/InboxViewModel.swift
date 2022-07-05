@@ -125,7 +125,7 @@ final class InboxViewModel: ViewModelType, ObservableObject {
                 let chatInboxMessage = owner.inboxManager.currentInboxMessages[index]
                 let offerType = owner.inboxItems[index].offerType
                 owner.route.send(.conversationTapped(inboxKeys: chatInboxMessage.inbox,
-                                                     recieverPublicKey: chatInboxMessage.receiverInbox,
+                                                     recieverPublicKey: chatInboxMessage.contactInbox,
                                                      offerType: offerType))
             })
             .store(in: cancelBag)

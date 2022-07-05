@@ -170,11 +170,11 @@ final class ChatService: BaseService, ChatServiceType {
     }
 
     func getStoredChatMessages(inboxPublicKey: String, contactPublicKey: String) -> AnyPublisher<[ParsedChatMessage], Error> {
-        localStorageService.getChatMessages(inboxPublicKey: inboxPublicKey, receiverInboxKey: contactPublicKey)
+        localStorageService.getChatMessages(inboxPublicKey: inboxPublicKey, contactPublicKey: contactPublicKey)
     }
 
     func deleteMessages(inboxPublicKey: String, contactPublicKey: String) -> AnyPublisher<Void, Error> {
-        localStorageService.deleteChatMessages(forInbox: inboxPublicKey, senderPublicKey: contactPublicKey)
+        localStorageService.deleteChatMessages(forInbox: inboxPublicKey, contactPublicKey: contactPublicKey)
     }
 }
 
