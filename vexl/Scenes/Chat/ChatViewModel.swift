@@ -385,10 +385,8 @@ final class ChatViewModel: ViewModelType, ObservableObject {
             case .communicationRequestResponse:
                 itemType = .start
             case .anonymousRequest:
-                itemType = .receiveReveal
-            case .anonymousRequestResponse:
-                itemType = .sendReveal
-            case .deleteChat, .communicationRequest, .none:
+                itemType = message.isFromContact ? .receiveReveal : .sendReveal
+            case .deleteChat, .communicationRequest, .none, .anonymousRequestResponse:
                 itemType = .noContent
             }
 
