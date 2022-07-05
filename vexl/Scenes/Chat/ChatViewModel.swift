@@ -151,7 +151,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
 
     private func setupInboxManagerBinding() {
         chatService
-            .getStoredChatMessages(inboxPublicKey: inboxKeys.publicKey, receiverPublicKey: receiverPublicKey)
+            .getStoredChatMessages(inboxPublicKey: inboxKeys.publicKey, contactPublicKey: receiverPublicKey)
             .track(activity: primaryActivity)
             .materialize()
             .compactMap(\.value)
@@ -168,7 +168,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
                 switch result {
                 case let .success(messages):
                     let messagesForInbox = messages.filter {
-                        $0.inboxKey == owner.inboxKeys.publicKey && $0.senderInboxKey == owner.receiverPublicKey
+                        $0.inboxKey == owner.inboxKeys.publicKey && $0.contactInboxKey == owner.receiverPublicKey
                     }
                     owner.showChatMessages(messagesForInbox)
                 case .failure:
@@ -247,7 +247,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
                     .createMessage(text: owner.currentMessage,
                                    image: image,
                                    inboxPublicKey: owner.inboxKeys.publicKey,
-                                   senderPublicKey: owner.receiverPublicKey)
+                                   contactInboxKey: owner.receiverPublicKey)
             }
 
         inputMessage
@@ -402,7 +402,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
 
     func deleteMessages() {
         chatRepository
-            .deleteChat(senderKey: inboxKeys, receiverPublicKey: receiverPublicKey)
+            .deleteChat(inboxKeys: inboxKeys, contactPublicKey: receiverPublicKey)
             .sink()
             .store(in: cancelBag)
     }

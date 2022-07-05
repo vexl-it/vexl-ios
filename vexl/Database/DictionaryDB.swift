@@ -106,7 +106,7 @@ final class DictionaryDB {
 
     static func deleteMessages(inboxPublicKey: String, senderPublicKey: String) {
         self.messages.removeAll { message in
-            message.inboxKey == inboxPublicKey && message.senderInboxKey == senderPublicKey
+            message.inboxKey == inboxPublicKey && message.contactInboxKey == senderPublicKey
         }
         self.inboxMessage.removeAll { message in
             message.inbox.publicKey == inboxPublicKey && message.receiverInbox == senderPublicKey

@@ -80,7 +80,7 @@ final class InboxViewModel: ViewModelType, ObservableObject {
 
                 owner.inboxItems = chatInboxMessages.map { chatInbox -> InboxItem in
                     let offerType = offerKeyAndTypes.first(where: {
-                        $0.offerKey == chatInbox.message.inboxKey || $0.offerKey == chatInbox.message.senderInboxKey
+                        $0.offerKey == chatInbox.message.inboxKey || $0.offerKey == chatInbox.message.contactInboxKey
                     })?.offerType
 
                     // TODO: - Set real values when available

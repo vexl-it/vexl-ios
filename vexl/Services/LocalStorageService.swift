@@ -95,7 +95,7 @@ final class LocalStorageService: LocalStorageServiceType {
 
     func saveInboxMessage(_ message: ParsedChatMessage, inboxKeys: ECCKeys) -> AnyPublisher<Void, Error> {
         Future { promise in
-            DictionaryDB.saveInboxMessages(message, inboxKeys: inboxKeys, receiverInboxPublicKey: message.senderInboxKey)
+            DictionaryDB.saveInboxMessages(message, inboxKeys: inboxKeys, receiverInboxPublicKey: message.contactInboxKey)
             promise(.success(()))
         }
         .eraseToAnyPublisher()
@@ -154,7 +154,7 @@ final class LocalStorageService: LocalStorageServiceType {
             let filteredMessages = messages
                 .filter {
                     $0.inboxKey == inboxPublicKey
-                    && $0.senderInboxKey == receiverInboxKey
+                    && $0.contactInboxKey == receiverInboxKey
                     && MessageType.displayableMessages.contains($0.messageType)
                 }
             promise(.success(filteredMessages))
