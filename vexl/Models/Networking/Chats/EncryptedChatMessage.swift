@@ -42,21 +42,6 @@ struct EncryptedChatMessage: Codable {
     }
 
     /**
-        Initializer for creating an encrypted message using the `ParsedChatMessage` as the base
-     
-        - Parameters:
-            - chatMessage: the message content inside a `ParsedChatMessage`
-            - type: the message type accepted by the backend
-     */
-    init?(chatMessage: ParsedChatMessage, type: MessageType) {
-        guard type != .invalid else { return nil }
-        guard let value = chatMessage.asString else { return nil }
-        self.senderPublicKey = chatMessage.senderInboxKey
-        self.message = value
-        self.messageType = type.rawValue
-    }
-
-    /**
         Method used for decrypting the message string and returning it as a Dictionary
      
         - Parameters:

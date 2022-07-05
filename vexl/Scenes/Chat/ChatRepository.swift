@@ -12,8 +12,8 @@ import Cleevio
 protocol ChatRepositoryType {
     var dismissAction: ActionSubject<Void> { get set }
 
-    func deleteChat(senderKey: ECCKeys, receiverPublicKey: String) -> AnyPublisher<Void, Error>
-    func requestIdentityReveal(senderKey: ECCKeys, receiverPublicKey: String) -> AnyPublisher<Void, Error>
+    func deleteChat(inboxKeys: ECCKeys, contactPublicKey: String) -> AnyPublisher<Void, Error>
+    func requestIdentityReveal(inboxKeys: ECCKeys, contactPublicKey: String) -> AnyPublisher<Void, Error>
 }
 
 final class ChatRepository: ChatRepositoryType {
@@ -24,16 +24,16 @@ final class ChatRepository: ChatRepositoryType {
 
     var dismissAction: ActionSubject<Void> = .init()
 
-    func deleteChat(senderKey: ECCKeys, receiverPublicKey: String) -> AnyPublisher<Void, Error> {
-        let deleteMessage = ParsedChatMessage.createDelete(inboxPublicKey: receiverPublicKey,
-                                                           senderPublicKey: senderKey.publicKey)
+    func deleteChat(inboxKeys: ECCKeys, contactPublicKey: String) -> AnyPublisher<Void, Error> {
+        let deleteMessage = ParsedChatMessage.createDelete(inboxPublicKey: inboxKeys.publicKey,
+                                                           contactInboxKey: contactPublicKey)
 
         let sendMessage = encryptMessage(deleteMessage,
-                                         publicKey: receiverPublicKey)
+                                         publicKey: contactPublicKey)
             .withUnretained(self)
             .flatMap { owner, _ in
-                owner.sendMessage(inboxKeys: senderKey,
-                                  receiverPublicKey: receiverPublicKey,
+                owner.sendMessage(inboxKeys: inboxKeys,
+                                  receiverPublicKey: contactPublicKey,
                                   type: .deleteChat,
                                   parsedMessage: deleteMessage,
                                   updateInbox: false)
@@ -43,8 +43,7 @@ final class ChatRepository: ChatRepositoryType {
             .withUnretained(self)
             .flatMap { owner, _ in
                 owner.chatService
-                    .deleteMessages(inboxPublicKey: senderKey.publicKey,
-                                    senderPublicKey: receiverPublicKey)
+                    .deleteMessages(inboxPublicKey: inboxKeys.publicKey, contactPublicKey: contactPublicKey)
             }
             .withUnretained(self)
             .flatMap { owner, _ in
@@ -58,15 +57,15 @@ final class ChatRepository: ChatRepositoryType {
             .eraseToAnyPublisher()
     }
 
-    func requestIdentityReveal(senderKey: ECCKeys, receiverPublicKey: String) -> AnyPublisher<Void, Error> {
-        let requestIdentity = ParsedChatMessage.createIdentityRequest(inboxPublicKey: senderKey.publicKey,
-                                                                      senderPublicKey: receiverPublicKey)
+    func requestIdentityReveal(inboxKeys: ECCKeys, contactPublicKey: String) -> AnyPublisher<Void, Error> {
+        let requestIdentity = ParsedChatMessage.createIdentityRequest(inboxPublicKey: inboxKeys.publicKey,
+                                                                      contactInboxKey: contactPublicKey)
 
-        return encryptMessage(requestIdentity, publicKey: receiverPublicKey)
+        return encryptMessage(requestIdentity, publicKey: contactPublicKey)
             .withUnretained(self)
             .flatMap { owner, _ in
-                owner.sendMessage(inboxKeys: senderKey,
-                                  receiverPublicKey: receiverPublicKey,
+                owner.sendMessage(inboxKeys: inboxKeys,
+                                  receiverPublicKey: contactPublicKey,
                                   type: .revealRequest,
                                   parsedMessage: requestIdentity,
                                   updateInbox: true)

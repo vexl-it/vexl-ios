@@ -37,9 +37,9 @@ final class InboxCoordinator: BaseCoordinator<Void> {
 
         viewModel
             .route
-            .compactMap { route -> (inboxKeys: ECCKeys, recieverKey: String, offerType: OfferType?)? in
+            .compactMap { route -> (inboxKeys: ECCKeys, receiverKey: String, offerType: OfferType?)? in
                 if case let .conversationTapped(inboxKeys, receiverKey, offerType) = route {
-                    return (inboxKeys: inboxKeys, recieverKey: receiverKey, offerType: offerType)
+                    return (inboxKeys: inboxKeys, receiverKey: receiverKey, offerType: offerType)
                 }
                 return nil
             }
@@ -48,7 +48,7 @@ final class InboxCoordinator: BaseCoordinator<Void> {
                 let modalRouter = ModalRouter(parentViewController: viewController, presentationStyle: .fullScreen)
                 return owner.showChatMessage(router: modalRouter,
                                              inboxKeys: keysAndOffer.inboxKeys,
-                                             receiverPublicKey: keysAndOffer.recieverKey,
+                                             receiverPublicKey: keysAndOffer.receiverKey,
                                              offerType: keysAndOffer.offerType)
             }
             .sink()
