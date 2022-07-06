@@ -60,6 +60,8 @@ final class ChatViewModel: ViewModelType, ObservableObject {
     @Published var showImagePicker = false
     @Published var showImagePickerActionSheet = false
     @Published var modal = Modal.none
+    @Published var username: String = Constants.randomName
+    @Published var avatar: UIImage? = nil
 
     var errorIndicator: ErrorIndicator {
         primaryActivity.error
@@ -82,9 +84,6 @@ final class ChatViewModel: ViewModelType, ObservableObject {
     var route: CoordinatingSubject<Route> = .init()
 
     // MARK: - Variables
-
-    let username: String = Constants.randomName
-    let avatar: UIImage? = nil
     let friends: [ChatCommonFriendViewData] = [.stub, .stub, .stub]
     let offerType: OfferType?
     var offer: Offer?
@@ -149,6 +148,16 @@ final class ChatViewModel: ViewModelType, ObservableObject {
     }
 
     private func setupInboxManagerBinding() {
+        chatRepository
+            .getContactIdentity(inboxKeys: inboxKeys, contactPublicKey: receiverPublicKey)
+            .withUnretained(self)
+            .sink(receiveCompletion: { _ in },
+                  receiveValue: { owner, user in
+                owner.username = user.username
+                owner.avatar = user.avatar?.imageFromBase64
+            })
+            .store(in: cancelBag)
+
         chatService
             .getStoredChatMessages(inboxPublicKey: inboxKeys.publicKey, contactPublicKey: receiverPublicKey)
             .track(activity: primaryActivity)
@@ -170,6 +179,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
                         $0.inboxKey == owner.inboxKeys.publicKey && $0.contactInboxKey == owner.receiverPublicKey
                     }
                     owner.showChatMessages(messagesForInbox)
+                    // TODO: - add update image after
                 case .failure:
                     // TODO: - show some alert
                     break

@@ -181,6 +181,9 @@ final class ChatService: BaseService, ChatServiceType {
 // MARK: - Helpers
 
 extension ChatService {
+
+    // TODO: - Consider moving this to the inbox manager that will process received messages
+
     private func prepareMessages(_ messages: [ParsedChatMessage], inboxKeys: ECCKeys) -> AnyPublisher<Void, Error> {
         messages.publisher
             .withUnretained(self)
@@ -194,7 +197,9 @@ extension ChatService {
                     return owner.saveLastMessageForInbox(messages, inboxKeys: inboxKeys)
                 case .deleteChat:
                     return owner.deleteMessageRequest(messages, inboxKey: inboxKeys)
-                case .invalid, .revealApproval, .revealRequest, .messagingRejection:
+                case .revealApproval:
+                    return owner.saveRevealedUserMessage(message, inboxKeys: inboxKeys)
+                case .invalid, .revealRequest, .messagingRejection:
                     return Just(()).setFailureType(to: Error.self)
                         .eraseToAnyPublisher()
                 }
@@ -202,6 +207,14 @@ extension ChatService {
             .collect()
             .asVoid()
             .eraseToAnyPublisher()
+    }
+
+    private func saveRevealedUserMessage(_ message: ParsedChatMessage, inboxKeys: ECCKeys) -> AnyPublisher<Void, Error> {
+        guard let chatUser = message.user else {
+            return Just(()).setFailureType(to: Error.self)
+                .eraseToAnyPublisher()
+        }
+        return localStorageService.saveRevealedUser(chatUser, inboxPublicKey: inboxKeys.publicKey, contactPublicKey: message.contactInboxKey)
     }
 
     private func saveLastMessageForInbox(_ messages: [ParsedChatMessage], inboxKeys: ECCKeys) -> AnyPublisher<Void, Error> {

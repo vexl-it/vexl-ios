@@ -36,6 +36,10 @@ protocol LocalStorageServiceType {
     func deleteRequestMessage(withOfferId id: String) -> AnyPublisher<Void, Error>
     func deleteChatMessages(forInbox inboxPublicKey: String, contactPublicKey: String) -> AnyPublisher<Void, Error>
     func getChatMessages(inboxPublicKey: String, contactPublicKey: String) -> AnyPublisher<[ParsedChatMessage], Error>
+    
+    // MARK: - Reveal Identity
+    func saveRevealedUser(_ chatUser: ParsedChatMessage.ChatUser, inboxPublicKey: String, contactPublicKey: String) -> AnyPublisher<Void, Error>
+    func getRevealedUser(inboxPublicKey: String, contactPublicKey: String) -> AnyPublisher<ParsedChatMessage.ChatUser?, Error>
 }
 
 final class LocalStorageService: LocalStorageServiceType {
@@ -166,6 +170,24 @@ final class LocalStorageService: LocalStorageServiceType {
         Future { promise in
             DictionaryDB.deleteMessages(inboxPublicKey: inboxPublicKey, contactPublicKey: contactPublicKey)
             promise(.success(()))
+        }
+        .eraseToAnyPublisher()
+    }
+
+    func saveRevealedUser(_ chatUser: ParsedChatMessage.ChatUser,
+                          inboxPublicKey: String,
+                          contactPublicKey: String) -> AnyPublisher<Void, Error> {
+        Future { promise in
+            DictionaryDB.saveChatUser(chatUser, inboxPublicKey: inboxPublicKey, contactPublicKey: contactPublicKey)
+            promise(.success(()))
+        }
+        .eraseToAnyPublisher()
+    }
+
+    func getRevealedUser(inboxPublicKey: String, contactPublicKey: String) -> AnyPublisher<ParsedChatMessage.ChatUser?, Error> {
+        Future { promise in
+            let storedChatUser = DictionaryDB.getChatUser(inboxPublicKey: inboxPublicKey, contactPublicKey: contactPublicKey)
+            promise(.success(storedChatUser))
         }
         .eraseToAnyPublisher()
     }

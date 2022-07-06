@@ -12,6 +12,7 @@ import Cleevio
 protocol ChatRepositoryType {
     var dismissAction: ActionSubject<Void> { get set }
 
+    func getContactIdentity(inboxKeys: ECCKeys, contactPublicKey: String) -> AnyPublisher<(username: String, avatar: String?), Error>
     func deleteChat(inboxKeys: ECCKeys, contactPublicKey: String) -> AnyPublisher<Void, Error>
     func requestIdentityReveal(inboxKeys: ECCKeys, contactPublicKey: String) -> AnyPublisher<Void, Error>
     func identityRevealResponse(inboxKeys: ECCKeys, contactPublicKey: String, isAccepted: Bool) -> AnyPublisher<Void, Error>
@@ -23,8 +24,20 @@ final class ChatRepository: ChatRepositoryType {
     @Inject private var cryptoService: CryptoServiceType
     @Inject private var inboxManager: InboxManagerType
     @Inject private var authenticationManager: AuthenticationManagerType
+    @Inject private var localStorageService: LocalStorageServiceType
 
     var dismissAction: ActionSubject<Void> = .init()
+
+    func getContactIdentity(inboxKeys: ECCKeys, contactPublicKey: String) -> AnyPublisher<(username: String, avatar: String?), Error> {
+        localStorageService.getRevealedUser(inboxPublicKey: inboxKeys.publicKey, contactPublicKey: contactPublicKey)
+            .compactMap { user -> (username: String, avatar: String?)? in
+                guard let user = user else {
+                    return nil
+                }
+                return (username: user.name, avatar: user.image)
+            }
+            .eraseToAnyPublisher()
+    }
 
     func deleteChat(inboxKeys: ECCKeys, contactPublicKey: String) -> AnyPublisher<Void, Error> {
         let deleteMessage = ParsedChatMessage.createDelete(inboxPublicKey: inboxKeys.publicKey,

@@ -11,7 +11,7 @@ import Foundation
 
 struct StoredChatUser: Codable {
     let inboxPublicKey: String
-    let senderPublicKey: String
+    let contactPublicKey: String
     let username: String
     let avatar: String?
 }

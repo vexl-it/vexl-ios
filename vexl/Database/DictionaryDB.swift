@@ -81,6 +81,11 @@ final class DictionaryDB {
            let savedStoredOffer = try? decoder.decode([String: [StoredOffer]].self, from: storedOfferData) {
             storedOffer = savedStoredOffer
         }
+
+        if let storedChatUserData = UserDefaults.standard.data(forKey: "storedChatUser"),
+           let savedChatUser = try? decoder.decode([StoredChatUser].self, from: storedChatUserData) {
+            storedChatUser = savedChatUser
+        }
     }
 
     static func saveCreatedInbox(_ inbox: ChatInbox) {
@@ -168,5 +173,20 @@ final class DictionaryDB {
 
     static func saveFetchedOffers(_ offers: [StoredOffer]) {
         storedOffer["fetched"] = offers
+    }
+
+    static func saveChatUser(_ chatUser: ParsedChatMessage.ChatUser, inboxPublicKey: String, contactPublicKey: String) {
+        let storedChatUser = StoredChatUser(inboxPublicKey: inboxPublicKey,
+                                            contactPublicKey: contactPublicKey,
+                                            username: chatUser.name,
+                                            avatar: chatUser.image)
+        self.storedChatUser.append(storedChatUser)
+    }
+
+    static func getChatUser(inboxPublicKey: String, contactPublicKey: String) -> ParsedChatMessage.ChatUser? {
+        guard let storedChatUser = storedChatUser.first(where: { $0.inboxPublicKey == inboxPublicKey && $0.contactPublicKey == contactPublicKey }) else {
+            return nil
+        }
+        return ParsedChatMessage.ChatUser(name: storedChatUser.username, image: storedChatUser.avatar)
     }
 }
