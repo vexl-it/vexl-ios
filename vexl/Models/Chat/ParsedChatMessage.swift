@@ -128,7 +128,8 @@ extension ParsedChatMessage {
                   contentType: ContentType,
                   text: String,
                   image: String? = nil,
-                  contactInboxKey: String) {
+                  contactInboxKey: String,
+                  user: ChatUser? = nil) {
         guard messageType != .invalid else { return nil }
         self.contactInboxKey = contactInboxKey
         self.id = UUID().uuidString
@@ -139,7 +140,7 @@ extension ParsedChatMessage {
         self.time = Date().timeIntervalSince1970
         self.image = image
         self.isFromContact = false
-        self.user = nil
+        self.user = user
     }
 }
 
@@ -184,6 +185,22 @@ extension ParsedChatMessage {
         return parsedMessage
     }
 
+    static func createIdentityResponse(inboxPublicKey: String,
+                                       contactInboxKey: String,
+                                       isAccepted: Bool,
+                                       username: String?,
+                                       avatar: String?) -> ParsedChatMessage? {
+        let chatUser = ChatUser(name: username, image: avatar)
+        let parsedMessage = ParsedChatMessage(inboxPublicKey: inboxPublicKey,
+                                              messageType: isAccepted ? .revealApproval : .revealApproval,
+                                              contentType: .anonymousRequestResponse,
+                                              text: "",
+                                              image: nil,
+                                              contactInboxKey: contactInboxKey,
+                                              user: chatUser)
+        return parsedMessage
+    }
+
     static func createDelete(inboxPublicKey: String, contactInboxKey: String) -> ParsedChatMessage? {
         let parsedMessage = ParsedChatMessage(inboxPublicKey: inboxPublicKey,
                                               messageType: .deleteChat,
@@ -211,10 +228,10 @@ extension ParsedChatMessage {
 
     struct ChatUser: Codable {
         let name: String
-        let image: String
+        let image: String?
 
         init?(name: String?, image: String?) {
-            guard let name = name, let image = image else { return nil }
+            guard let name = name else { return nil }
             self.name = name
             self.image = image
         }

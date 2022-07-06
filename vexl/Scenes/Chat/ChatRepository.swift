@@ -14,6 +14,7 @@ protocol ChatRepositoryType {
 
     func deleteChat(inboxKeys: ECCKeys, contactPublicKey: String) -> AnyPublisher<Void, Error>
     func requestIdentityReveal(inboxKeys: ECCKeys, contactPublicKey: String) -> AnyPublisher<Void, Error>
+    func identityRevealResponse(inboxKeys: ECCKeys, contactPublicKey: String, isAccepted: Bool) -> AnyPublisher<Void, Error>
 }
 
 final class ChatRepository: ChatRepositoryType {
@@ -21,6 +22,7 @@ final class ChatRepository: ChatRepositoryType {
     @Inject private var chatService: ChatServiceType
     @Inject private var cryptoService: CryptoServiceType
     @Inject private var inboxManager: InboxManagerType
+    @Inject private var authenticationManager: AuthenticationManagerType
 
     var dismissAction: ActionSubject<Void> = .init()
 
@@ -28,16 +30,11 @@ final class ChatRepository: ChatRepositoryType {
         let deleteMessage = ParsedChatMessage.createDelete(inboxPublicKey: inboxKeys.publicKey,
                                                            contactInboxKey: contactPublicKey)
 
-        let sendMessage = encryptMessage(deleteMessage,
-                                         publicKey: contactPublicKey)
-            .withUnretained(self)
-            .flatMap { owner, _ in
-                owner.sendMessage(inboxKeys: inboxKeys,
-                                  receiverPublicKey: contactPublicKey,
-                                  type: .deleteChat,
-                                  parsedMessage: deleteMessage,
-                                  updateInbox: false)
-            }
+        let sendMessage = sendMessage(inboxKeys: inboxKeys,
+                                      receiverPublicKey: contactPublicKey,
+                                      type: .deleteChat,
+                                      parsedMessage: deleteMessage,
+                                      updateInbox: false)
 
         return sendMessage
             .withUnretained(self)
@@ -61,15 +58,28 @@ final class ChatRepository: ChatRepositoryType {
         let requestIdentity = ParsedChatMessage.createIdentityRequest(inboxPublicKey: inboxKeys.publicKey,
                                                                       contactInboxKey: contactPublicKey)
 
-        return encryptMessage(requestIdentity, publicKey: contactPublicKey)
-            .withUnretained(self)
-            .flatMap { owner, _ in
-                owner.sendMessage(inboxKeys: inboxKeys,
-                                  receiverPublicKey: contactPublicKey,
-                                  type: .revealRequest,
-                                  parsedMessage: requestIdentity,
-                                  updateInbox: true)
-            }
+        return sendMessage(inboxKeys: inboxKeys,
+                           receiverPublicKey: contactPublicKey,
+                           type: .revealRequest,
+                           parsedMessage: requestIdentity,
+                           updateInbox: true)
+            .setFailureType(to: Error.self)
+            .eraseToAnyPublisher()
+    }
+
+    func identityRevealResponse(inboxKeys: ECCKeys, contactPublicKey: String, isAccepted: Bool) -> AnyPublisher<Void, Error> {
+        let identityResponse = ParsedChatMessage.createIdentityResponse(inboxPublicKey: inboxKeys.publicKey,
+                                                                        contactInboxKey: contactPublicKey,
+                                                                        isAccepted: isAccepted,
+                                                                        username: authenticationManager.currentUser?.username,
+                                                                        avatar: authenticationManager.currentUser?.avatar)
+
+        return sendMessage(inboxKeys: inboxKeys,
+                           receiverPublicKey: contactPublicKey,
+                           type: isAccepted ? .revealApproval : .revealApproval,
+                           parsedMessage: identityResponse,
+                           updateInbox: true)
+            .setFailureType(to: Error.self)
             .eraseToAnyPublisher()
     }
 

@@ -405,7 +405,10 @@ final class ChatViewModel: ViewModelType, ObservableObject {
             .store(in: cancelBag)
     }
 
-    func respondIdentityReveal(isAccepted: Bool) {
-        print("will respond identity reveal")
+    func identityRevealResponse(isAccepted: Bool) {
+        chatRepository
+            .identityRevealResponse(inboxKeys: inboxKeys, contactPublicKey: receiverPublicKey, isAccepted: isAccepted)
+            .sink()
+            .store(in: cancelBag)
     }
 }

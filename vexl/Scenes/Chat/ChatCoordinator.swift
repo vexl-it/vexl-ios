@@ -89,9 +89,12 @@ final class ChatCoordinator: BaseCoordinator<RouterResult<Void>> {
                                          transitionStyle: .crossDissolve)
                 return owner.presentActionSheet(router: router, viewModel: ChatIdentityResponseViewModel())
             }
-            .filter(Self.filterPrimaryAction)
-            .sink { _ in
-                viewModel.respondIdentityReveal(isAccepted: true)
+            .compactMap { result -> BottomActionSheetActionType? in
+                if case let .finished(actionType) = result { return actionType }
+                return nil
+            }
+            .sink { action in
+                viewModel.identityRevealResponse(isAccepted: action == .primary)
             }
             .store(in: cancelBag)
 
