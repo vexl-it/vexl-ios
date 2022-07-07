@@ -34,6 +34,12 @@ struct EncryptedOffer: Codable {
     var createdAt: String = ""
     var modifiedAt: String = ""
 
+    var activePriceState: String
+    var activePriceValue: String
+    var active: String
+
+    var commonFriends: [String]
+
     // TODO: - add real values for commonFriends, active, activePriceValu, activePriceState when components are implemented
 
     var asJson: [String: Any] {
@@ -51,10 +57,10 @@ struct EncryptedOffer: Codable {
             "btcNetwork": btcNetwork,
             "friendLevel": friendLevel,
             "offerType": offerType,
-            "activePriceState": "QWhvag==",
-            "activePriceValue": "QWhvag==",
-            "active": "QWhvag==",
-            "commonFriends": ["QWhvag==", "QWhvag=="]
+            "activePriceState": activePriceState,
+            "activePriceValue": activePriceValue,
+            "active": active,
+            "commonFriends": commonFriends
         ]
     }
 }
