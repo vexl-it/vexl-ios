@@ -116,6 +116,7 @@ struct ChatView: View {
 
     private var modalSheet: some View {
         ChatModalContainerView(modal: viewModel.modal,
+                               offerDetailViewData: viewModel.offerViewData,
                                commonFriends: viewModel.friends,
                                action: { userAction in
             viewModel.action.send(userAction)
@@ -128,7 +129,7 @@ struct ChatView: View {
 
 struct ChatMessageViewPreview: PreviewProvider {
     static var previews: some View {
-        ChatView(viewModel: .init(inboxKeys: ECCKeys(), receiverPublicKey: "234"))
+        ChatView(viewModel: .init(inboxKeys: ECCKeys(), receiverPublicKey: "234", offerType: .buy))
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .previewDevice("iPhone 11")
     }

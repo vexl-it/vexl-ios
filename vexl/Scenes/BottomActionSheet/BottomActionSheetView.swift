@@ -26,8 +26,8 @@ struct BottomActionSheetView<ViewModel: BottomActionSheetViewModelProtocol>: Vie
                 imageName: viewModel.imageName,
                 title: viewModel.title,
                 titleAlignment: viewModel.titleAlignment,
-                primaryAction: viewModel.primaryAction(dismiss: dismiss),
-                secondaryAction: viewModel.secondaryAction(dismiss: dismiss),
+                primaryAction: viewModel.primaryAction(dismiss: dismissAction),
+                secondaryAction: viewModel.secondaryAction(dismiss: dismissAction),
                 colorScheme: viewModel.colorScheme,
                 content: { viewModel.content }
             )
@@ -64,6 +64,13 @@ struct BottomActionSheetView<ViewModel: BottomActionSheetViewModelProtocol>: Vie
         withAnimation(onAppearAnimation) {
             isVisible = false
             viewModel.dismissPublisher.send()
+        }
+    }
+
+    private func dismissAction(type: BottomActionSheetActionType) {
+        withAnimation(onAppearAnimation) {
+            isVisible = false
+            viewModel.actionPublisher.send(type)
         }
     }
 }

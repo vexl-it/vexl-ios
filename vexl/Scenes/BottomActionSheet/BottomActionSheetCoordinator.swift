@@ -9,28 +9,43 @@ import SwiftUI
 import Cleevio
 import Combine
 
-final class BottomActionSheetCoordinator<ViewModel: BottomActionSheetViewModelProtocol>: BaseCoordinator<RouterResult<Void>> {
+typealias BottonActionSheetRouterResult = RouterResult<BottomActionSheetActionType>
+
+enum BottomActionSheetActionType {
+    case primary
+    case secondary
+}
+
+final class BottomActionSheetCoordinator<ViewModel: BottomActionSheetViewModelProtocol>: BaseCoordinator<RouterResult<BottomActionSheetActionType>> {
 
     private let router: Router
 
     private let viewModel: ViewModel
+
+    private var primaryAction = ActionSubject<Void>()
+    private var secondaryAction = ActionSubject<Void>()
 
     init(router: Router, viewModel: ViewModel) {
         self.router = router
         self.viewModel = viewModel
     }
 
-    override func start() -> CoordinatingResult<RouterResult<Void>> {
+    override func start() -> CoordinatingResult<RouterResult<BottomActionSheetActionType>> {
         let viewController = BaseViewController(rootView: BottomActionSheetView(viewModel: viewModel))
         viewController.view.backgroundColor = .clear
 
         router.present(viewController, animated: true)
 
+        let action = viewModel
+            .actionPublisher
+            .eraseToAnyPublisher()
+            .map { type -> RouterResult<BottomActionSheetActionType> in .finished(type) }
+
         let dismiss = viewModel
             .dismissPublisher
-            .map { _ -> RouterResult<Void> in .dismiss }
+            .map { _ -> RouterResult<BottomActionSheetActionType> in .dismiss }
 
-        return dismiss
+        return Publishers.Merge(action, dismiss)
             .eraseToAnyPublisher()
     }
 }

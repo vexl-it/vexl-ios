@@ -11,29 +11,21 @@ import Foundation
 
 struct StoredOffer: Codable {
 
-    struct Keys {
-        let id: String
-        let publicKey: String
-        let privateKey: String?
-
-        var keys: ECCKeys {
-            ECCKeys(pubKey: publicKey, privKey: privateKey)
-        }
-    }
-
     let id: String
     let privateKey: String?
     let publicKey: String
 
-    var minAmount: Int
-    var maxAmount: Int
+    var minAmount: Double
+    var maxAmount: Double
     var description: String
     var feeState: String
     var feeAmount: Double
     var locationState: String
+    var paymentMethods: [String]
     var btcNetwork: [String]
     var friendLevel: String
     var type: String
+    var source: String
 
     var offerType: OfferType? {
         OfferType(rawValue: type)
@@ -43,7 +35,7 @@ struct StoredOffer: Codable {
         ECCKeys(pubKey: publicKey, privKey: privateKey)
     }
 
-    init(offer: Offer, id: String, keys: ECCKeys) {
+    init(offer: Offer, id: String, keys: ECCKeys, source: OfferSource) {
         self.id = id
         self.publicKey = keys.publicKey
         self.privateKey = keys.privateKey
@@ -55,11 +47,9 @@ struct StoredOffer: Codable {
         self.feeAmount = offer.feeAmount
         self.locationState = offer.locationStateString
         self.btcNetwork = offer.btcNetworkList
+        self.paymentMethods = offer.paymentMethodsList
         self.friendLevel = offer.friendLevelString
         self.type = offer.offerTypeString
-    }
-
-    func getIdWithKeys() -> Keys {
-        Keys(id: id, publicKey: publicKey, privateKey: privateKey)
+        self.source = source.rawValue
     }
 }

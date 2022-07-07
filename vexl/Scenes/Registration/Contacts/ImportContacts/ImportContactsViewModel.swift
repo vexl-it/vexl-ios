@@ -149,7 +149,7 @@ class ImportContactsViewModel: ObservableObject {
             }
             .store(in: cancelBag)
     }
-    
+
     private func setupImportAction() {
         let hashContacts = action
             .withUnretained(self)

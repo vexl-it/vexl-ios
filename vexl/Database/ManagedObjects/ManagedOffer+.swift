@@ -33,5 +33,4 @@ extension ManagedOffer {
     var type: OfferType? {
         offerTypeRawType.flatMap(OfferType.init)
     }
-
 }

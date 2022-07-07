@@ -10,19 +10,14 @@ import SwiftUI
 struct ChatModalContainerView: View {
 
     let modal: ChatViewModel.Modal
+    let offerDetailViewData: OfferDetailViewData?
     let commonFriends: [ChatCommonFriendViewData]
     let action: (ChatViewModel.UserAction) -> Void
 
     var body: some View {
         switch modal {
-        case .offer:
-            offerView
         case .friends:
             commonFriendView
-        case .delete:
-            deleteView
-        case .deleteConfirmation:
-            deleteConfirmationView
         case .block:
             blockView
         case .blockConfirmation:
@@ -36,48 +31,12 @@ struct ChatModalContainerView: View {
         }
     }
 
-    private var offerView: some View {
-        ChatOfferView {
-            withAnimation {
-                action(.dismissModal)
-            }
-        }
-    }
-
     private var commonFriendView: some View {
         ChatCommonFriendsView(friends: commonFriends) {
             withAnimation {
                 action(.dismissModal)
             }
         }
-    }
-
-    private var deleteView: some View {
-        ChatDeleteConfirmationView(style: .regular,
-                                   mainAction: {
-            withAnimation {
-                action(.deleteTap)
-            }
-        },
-                                   dismiss: {
-            withAnimation {
-                action(.dismissModal)
-            }
-        })
-    }
-
-    private var deleteConfirmationView: some View {
-        ChatDeleteConfirmationView(style: .confirmation,
-                                   mainAction: {
-            withAnimation {
-                action(.deleteConfirmedTap)
-            }
-        },
-                                   dismiss: {
-            withAnimation {
-                action(.dismissModal)
-            }
-        })
     }
 
     private var blockView: some View {

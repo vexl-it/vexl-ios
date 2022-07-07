@@ -37,14 +37,19 @@ final class InboxCoordinator: BaseCoordinator<Void> {
 
         viewModel
             .route
-            .compactMap { route -> (inboxKeys: ECCKeys, recieverKey: String)? in
-                if case let .messageTapped(inboxKeys, receiverKey) = route { return (inboxKeys: inboxKeys, recieverKey: receiverKey) }
+            .compactMap { route -> (inboxKeys: ECCKeys, receiverKey: String, offerType: OfferType?)? in
+                if case let .conversationTapped(inboxKeys, receiverKey, offerType) = route {
+                    return (inboxKeys: inboxKeys, receiverKey: receiverKey, offerType: offerType)
+                }
                 return nil
             }
             .withUnretained(self)
-            .flatMap { owner, keys -> CoordinatingResult<RouterResult<Void>> in
+            .flatMap { owner, keysAndOffer -> CoordinatingResult<RouterResult<Void>> in
                 let modalRouter = ModalRouter(parentViewController: viewController, presentationStyle: .fullScreen)
-                return owner.showChatMessage(router: modalRouter, inboxKeys: keys.inboxKeys, receiverPublicKey: keys.recieverKey)
+                return owner.showChatMessage(router: modalRouter,
+                                             inboxKeys: keysAndOffer.inboxKeys,
+                                             receiverPublicKey: keysAndOffer.receiverKey,
+                                             offerType: keysAndOffer.offerType)
             }
             .sink()
             .store(in: cancelBag)
@@ -67,8 +72,15 @@ extension InboxCoordinator {
         .eraseToAnyPublisher()
     }
 
-    private func showChatMessage(router: Router, inboxKeys: ECCKeys, receiverPublicKey: String) -> CoordinatingResult<RouterResult<Void>> {
-        coordinate(to: ChatCoordinator(inboxKeys: inboxKeys, receiverPublicKey: receiverPublicKey, router: router, animated: animated))
+    private func showChatMessage(router: Router,
+                                 inboxKeys: ECCKeys,
+                                 receiverPublicKey: String,
+                                 offerType: OfferType?) -> CoordinatingResult<RouterResult<Void>> {
+        coordinate(to: ChatCoordinator(inboxKeys: inboxKeys,
+                                       receiverPublicKey: receiverPublicKey,
+                                       offerType: offerType,
+                                       router: router,
+                                       animated: animated))
         .flatMap { result -> CoordinatingResult<RouterResult<Void>> in
             guard result != .dismissedByRouter else {
                 return Just(result).eraseToAnyPublisher()

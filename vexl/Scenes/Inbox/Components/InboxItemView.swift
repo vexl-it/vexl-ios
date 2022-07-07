@@ -14,7 +14,11 @@ struct InboxItemView: View {
     var data: ViewData
 
     private var offerLabel: String {
-        switch data.offerType {
+        guard let offerType = data.offerType else {
+            return ""
+        }
+
+        switch offerType {
         case .buy:
             return L.marketplaceDetailUserBuy("")
         case .sell:
@@ -32,7 +36,12 @@ struct InboxItemView: View {
                     Text(data.username)
                         .foregroundColor(Appearance.Colors.whiteText)
                         .textStyle(.paragraphSmallBold)
-                    // TODO: - add offer type here
+
+                    if let offerType = data.offerType {
+                        Text(offerLabel)
+                            .textStyle(.paragraphSmallBold)
+                            .foregroundColor(offerType == .sell ? Appearance.Colors.pink100 : Appearance.Colors.green100)
+                    }
                 }
 
                 Text(data.detail)
@@ -58,6 +67,6 @@ extension InboxItemView {
         let username: String
         let detail: String
         let time: String
-        let offerType: OfferType
+        let offerType: OfferType?
     }
 }
