@@ -38,6 +38,21 @@
 		B007A73528659AD900CFA5C9 /* BottomActionSheetCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B007A73428659AD900CFA5C9 /* BottomActionSheetCoordinator.swift */; };
 		B007A73A2868B66500CFA5C9 /* JoinVexl.swift in Sources */ = {isa = PBXBuildFile; fileRef = B007A7392868B66500CFA5C9 /* JoinVexl.swift */; };
 		B007A73C2868B69E00CFA5C9 /* Donate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B007A73B2868B69E00CFA5C9 /* Donate.swift */; };
+		B007A74B2871EB2900CFA5C9 /* UserRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = B007A74A2871EB2900CFA5C9 /* UserRepository.swift */; };
+		B007A7502872267400CFA5C9 /* ManagedOffer+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B007A74F2872267400CFA5C9 /* ManagedOffer+.swift */; };
+		B007A7522872268E00CFA5C9 /* ManagedInbox+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B007A7512872268E00CFA5C9 /* ManagedInbox+.swift */; };
+		B007A7542872269B00CFA5C9 /* ManagedUser+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B007A7532872269B00CFA5C9 /* ManagedUser+.swift */; };
+		B007A756287226AA00CFA5C9 /* ManagedProfile+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B007A755287226AA00CFA5C9 /* ManagedProfile+.swift */; };
+		B007A758287226B500CFA5C9 /* ManagedPublicKey+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B007A757287226B500CFA5C9 /* ManagedPublicKey+.swift */; };
+		B007A75A287226D000CFA5C9 /* ManagedChat+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B007A759287226D000CFA5C9 /* ManagedChat+.swift */; };
+		B007A75C287226DC00CFA5C9 /* ManagedMessage+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B007A75B287226DC00CFA5C9 /* ManagedMessage+.swift */; };
+		B007A76128722A1F00CFA5C9 /* NSManagedObject+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B007A76028722A1F00CFA5C9 /* NSManagedObject+.swift */; };
+		B007A76328730BDF00CFA5C9 /* Fetched.swift in Sources */ = {isa = PBXBuildFile; fileRef = B007A76228730BDF00CFA5C9 /* Fetched.swift */; };
+		B007A7652873514400CFA5C9 /* RepositoryAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = B007A7642873514400CFA5C9 /* RepositoryAssembly.swift */; };
+		B007A7672873520800CFA5C9 /* PersistenceManagerAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = B007A7662873520800CFA5C9 /* PersistenceManagerAssembly.swift */; };
+		B007A7882874BDAE00CFA5C9 /* PersistenceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = B007A7872874BDAE00CFA5C9 /* PersistenceError.swift */; };
+		B007A78A2874C25500CFA5C9 /* PersistenceStoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B007A7892874C25500CFA5C9 /* PersistenceStoreManager.swift */; };
+		B007A78C2875970D00CFA5C9 /* NSManagedObjectContext+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B007A78B2875970C00CFA5C9 /* NSManagedObjectContext+.swift */; };
 		B01C01E62860B2C400A29F85 /* CoinChartData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B01C01E52860B2C400A29F85 /* CoinChartData.swift */; };
 		B01C01E92860D2CD00A29F85 /* ContentState.swift in Sources */ = {isa = PBXBuildFile; fileRef = B01C01E82860D2CD00A29F85 /* ContentState.swift */; };
 		B01C01EB2861F9D900A29F85 /* vexl-crypto.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = B01C01EA2861F9D900A29F85 /* vexl-crypto.xcframework */; };
@@ -358,6 +373,21 @@
 		B007A73428659AD900CFA5C9 /* BottomActionSheetCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomActionSheetCoordinator.swift; sourceTree = "<group>"; };
 		B007A7392868B66500CFA5C9 /* JoinVexl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinVexl.swift; sourceTree = "<group>"; };
 		B007A73B2868B69E00CFA5C9 /* Donate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Donate.swift; sourceTree = "<group>"; };
+		B007A74A2871EB2900CFA5C9 /* UserRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRepository.swift; sourceTree = "<group>"; };
+		B007A74F2872267400CFA5C9 /* ManagedOffer+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ManagedOffer+.swift"; sourceTree = "<group>"; };
+		B007A7512872268E00CFA5C9 /* ManagedInbox+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "ManagedInbox+.swift"; path = "/Users/madahilas/source/cleevio/vexl-ios/vexl/Database/ManagedObjects/ManagedInbox+.swift"; sourceTree = "<absolute>"; };
+		B007A7532872269B00CFA5C9 /* ManagedUser+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ManagedUser+.swift"; sourceTree = "<group>"; };
+		B007A755287226AA00CFA5C9 /* ManagedProfile+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ManagedProfile+.swift"; sourceTree = "<group>"; };
+		B007A757287226B500CFA5C9 /* ManagedPublicKey+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ManagedPublicKey+.swift"; sourceTree = "<group>"; };
+		B007A759287226D000CFA5C9 /* ManagedChat+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ManagedChat+.swift"; sourceTree = "<group>"; };
+		B007A75B287226DC00CFA5C9 /* ManagedMessage+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ManagedMessage+.swift"; sourceTree = "<group>"; };
+		B007A76028722A1F00CFA5C9 /* NSManagedObject+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSManagedObject+.swift"; sourceTree = "<group>"; };
+		B007A76228730BDF00CFA5C9 /* Fetched.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fetched.swift; sourceTree = "<group>"; };
+		B007A7642873514400CFA5C9 /* RepositoryAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepositoryAssembly.swift; sourceTree = "<group>"; };
+		B007A7662873520800CFA5C9 /* PersistenceManagerAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceManagerAssembly.swift; sourceTree = "<group>"; };
+		B007A7872874BDAE00CFA5C9 /* PersistenceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceError.swift; sourceTree = "<group>"; };
+		B007A7892874C25500CFA5C9 /* PersistenceStoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceStoreManager.swift; sourceTree = "<group>"; };
+		B007A78B2875970C00CFA5C9 /* NSManagedObjectContext+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSManagedObjectContext+.swift"; sourceTree = "<group>"; };
 		B01C01E52860B2C400A29F85 /* CoinChartData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinChartData.swift; sourceTree = "<group>"; };
 		B01C01E82860D2CD00A29F85 /* ContentState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentState.swift; sourceTree = "<group>"; };
 		B01C01EA2861F9D900A29F85 /* vexl-crypto.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = "vexl-crypto.xcframework"; sourceTree = "<group>"; };
@@ -674,8 +704,14 @@
 		4F24169F2848F27E00B4A437 /* Database */ = {
 			isa = PBXGroup;
 			children = (
+				B007A75F28722A1300CFA5C9 /* Extensions */,
+				B007A74D2872264B00CFA5C9 /* ManagedObjects */,
+				B007A7492871E9A300CFA5C9 /* Repositories */,
 				4F2416A02848F2F100B4A437 /* DictionaryDB.swift */,
+				B007A7892874C25500CFA5C9 /* PersistenceStoreManager.swift */,
 				F1B93ED8286D6671008DAA90 /* VexlDataModel.xcdatamodeld */,
+				B007A76228730BDF00CFA5C9 /* Fetched.swift */,
+				B007A7872874BDAE00CFA5C9 /* PersistenceError.swift */,
 			);
 			path = Database;
 			sourceTree = "<group>";
@@ -753,6 +789,37 @@
 				B007A73028659A8700CFA5C9 /* BottomActionSheetView.swift */,
 			);
 			path = BottomActionSheet;
+			sourceTree = "<group>";
+		};
+		B007A7492871E9A300CFA5C9 /* Repositories */ = {
+			isa = PBXGroup;
+			children = (
+				B007A74A2871EB2900CFA5C9 /* UserRepository.swift */,
+			);
+			path = Repositories;
+			sourceTree = "<group>";
+		};
+		B007A74D2872264B00CFA5C9 /* ManagedObjects */ = {
+			isa = PBXGroup;
+			children = (
+				B007A7532872269B00CFA5C9 /* ManagedUser+.swift */,
+				B007A755287226AA00CFA5C9 /* ManagedProfile+.swift */,
+				B007A757287226B500CFA5C9 /* ManagedPublicKey+.swift */,
+				B007A74F2872267400CFA5C9 /* ManagedOffer+.swift */,
+				B007A7512872268E00CFA5C9 /* ManagedInbox+.swift */,
+				B007A759287226D000CFA5C9 /* ManagedChat+.swift */,
+				B007A75B287226DC00CFA5C9 /* ManagedMessage+.swift */,
+			);
+			path = ManagedObjects;
+			sourceTree = "<group>";
+		};
+		B007A75F28722A1300CFA5C9 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				B007A76028722A1F00CFA5C9 /* NSManagedObject+.swift */,
+				B007A78B2875970C00CFA5C9 /* NSManagedObjectContext+.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		B01C01E72860B58500A29F85 /* Coin */ = {
@@ -841,6 +908,8 @@
 				B08F38DE27AE7110008B344F /* DIContainer.swift */,
 				B08F391227AE7112008B344F /* ManagerAssembly.swift */,
 				B08F392927AE7112008B344F /* ServiceAssembly.swift */,
+				B007A7642873514400CFA5C9 /* RepositoryAssembly.swift */,
+				B007A7662873520800CFA5C9 /* PersistenceManagerAssembly.swift */,
 			);
 			path = Container;
 			sourceTree = "<group>";
@@ -2105,6 +2174,7 @@
 				B08F392C27AE7112008B344F /* ApiInterceptor.swift in Sources */,
 				F1B5FCCF27C6F7E80018729B /* RegisterPhoneViewModel.swift in Sources */,
 				F12A14DE27D677420096543E /* RegisterContactsViewModel.swift in Sources */,
+				B007A7522872268E00CFA5C9 /* ManagedInbox+.swift in Sources */,
 				B007A72A2864FE4A00CFA5C9 /* CurrencySelect.swift in Sources */,
 				F1A9453C27F7E01D009B5AE3 /* ChallengeValidation.swift in Sources */,
 				F18862512811710100659786 /* OfferStatusView.swift in Sources */,
@@ -2160,6 +2230,7 @@
 				F1BFA959280223BD00F4E745 /* UserProfileCoordinator.swift in Sources */,
 				F1BDC97A285BF9D600F86581 /* ChatExpandedImageCoordinator.swift in Sources */,
 				F18862492811551700659786 /* CreateOfferViewModel.swift in Sources */,
+				B007A75C287226DC00CFA5C9 /* ManagedMessage+.swift in Sources */,
 				F1F5F19D283FE53A00968366 /* ChatRequestViewModel.swift in Sources */,
 				F148563E284FD451003213D7 /* ChatViewModel.swift in Sources */,
 				F1485642284FD451003213D7 /* ChatBlockConfirmationView.swift in Sources */,
@@ -2169,6 +2240,7 @@
 				F11441EB284682F700307D39 /* TabItem.swift in Sources */,
 				F11441E0284681EC00307D39 /* DashedLine.swift in Sources */,
 				F1A9453227F686C8009B5AE3 /* UserSignature.swift in Sources */,
+				B007A7882874BDAE00CFA5C9 /* PersistenceError.swift in Sources */,
 				B08F392E27AE7112008B344F /* UserService.swift in Sources */,
 				F1B5FCCD27C6F7E10018729B /* RegisterPhoneCoordinator.swift in Sources */,
 				F1D204EB28613C44006A5671 /* ChatConversationItem.swift in Sources */,
@@ -2190,6 +2262,7 @@
 				F11441DF284681EC00307D39 /* Line.swift in Sources */,
 				F11441CF284681EC00307D39 /* ExpandingTextView.swift in Sources */,
 				B01C01ED2862F06D00A29F85 /* Currency.swift in Sources */,
+				B007A74B2871EB2900CFA5C9 /* UserRepository.swift in Sources */,
 				B0F206F127AE94C400A44E72 /* InitialScreenManager.swift in Sources */,
 				F12A14E027D6774C0096543E /* RegisterContactsView.swift in Sources */,
 				4F481E76284767480051D3B9 /* ChatRouter.swift in Sources */,
@@ -2233,6 +2306,7 @@
 				F1485653284FD5FD003213D7 /* EncryptedChatMessage.swift in Sources */,
 				B08F393627AE7112008B344F /* UIDevice+.swift in Sources */,
 				F1C734772852CB6D00B3F327 /* ParsedChatMessage.swift in Sources */,
+				B007A7652873514400CFA5C9 /* RepositoryAssembly.swift in Sources */,
 				F13B266F281D4A510011F2FB /* Paged.swift in Sources */,
 				F11441E9284682B200307D39 /* ChatRequestFriendsView.swift in Sources */,
 				F11441D2284681EC00307D39 /* ImagePickerView.swift in Sources */,
@@ -2253,6 +2327,7 @@
 				F148564F284FD5E2003213D7 /* InboxManager.swift in Sources */,
 				F1D200A628252C44006DF4AB /* TabBarController.swift in Sources */,
 				F175AB9927F0D2D8000DAB15 /* ContactsService.swift in Sources */,
+				B007A76328730BDF00CFA5C9 /* Fetched.swift in Sources */,
 				F11441C9284681EC00307D39 /* CardModifier.swift in Sources */,
 				4FBF6244283FBF7200DDBE71 /* RequestOfferView.swift in Sources */,
 				B08F399C27AE7D8D008B344F /* OnboardingViewModel.swift in Sources */,
@@ -2265,6 +2340,7 @@
 				F1D2011A28292868006DF4AB /* TabBarCoordinator.swift in Sources */,
 				4FBF61DE283BD11C00DDBE71 /* FilterCoordinator.swift in Sources */,
 				F175AB9D27F147B5000DAB15 /* ContactsManager.swift in Sources */,
+				B007A756287226AA00CFA5C9 /* ManagedProfile+.swift in Sources */,
 				F1485645284FD451003213D7 /* ChatCommonFriendsView.swift in Sources */,
 				B08F392027AE7112008B344F /* UserDefaultsConfig.swift in Sources */,
 				B08F397627AE7112008B344F /* Error+.swift in Sources */,
@@ -2287,6 +2363,7 @@
 				B08F394D27AE7112008B344F /* AppCoordinator.swift in Sources */,
 				F13B2671281D4AB00011F2FB /* ContactKey.swift in Sources */,
 				F1D20128282AB6EF006DF4AB /* CryptocurrencyValueManager.swift in Sources */,
+				B007A7672873520800CFA5C9 /* PersistenceManagerAssembly.swift in Sources */,
 				F175ABA227F4A8F8000DAB15 /* UserAvailable.swift in Sources */,
 				B0E9BB322815D2B60012BF1D /* CryptographicError.swift in Sources */,
 				4FBF6240283FBF6000DDBE71 /* RequestOfferCoordinator.swift in Sources */,
@@ -2295,6 +2372,7 @@
 				F1BFA8D027FB31E800F4E745 /* FacebookUserData.swift in Sources */,
 				F11441D3284681EC00307D39 /* ContactAvatarInfo.swift in Sources */,
 				B08F399E27AE7D92008B344F /* OnboardingView.swift in Sources */,
+				B007A758287226B500CFA5C9 /* ManagedPublicKey+.swift in Sources */,
 				B08F393F27AE7112008B344F /* APIError.swift in Sources */,
 				F1F5F194283E9FC500968366 /* OfferPaymentIconView.swift in Sources */,
 				F11441DA284681EC00307D39 /* MultipleOptionPickerView.swift in Sources */,
@@ -2307,9 +2385,11 @@
 				F1BDC978285BF9D600F86581 /* ChatExpandedImageView.swift in Sources */,
 				F11441DD284681EC00307D39 /* LoadingIndicatorView.swift in Sources */,
 				F1A9454627F81278009B5AE3 /* ContactInformation.swift in Sources */,
+				B007A78C2875970D00CFA5C9 /* NSManagedObjectContext+.swift in Sources */,
 				F1D2011F282960DC006DF4AB /* TabBarView.swift in Sources */,
 				F11441C7284681EC00307D39 /* RegistrationCardView.swift in Sources */,
 				B08F391327AE7112008B344F /* ManagerAssembly.swift in Sources */,
+				B007A75A287226D000CFA5C9 /* ManagedChat+.swift in Sources */,
 				F13B266928194A060011F2FB /* OffersRouter.swift in Sources */,
 				F188625F2811E53400659786 /* OfferPaymentMethodView.swift in Sources */,
 				4FBF61E0283BD12700DDBE71 /* FilterView.swift in Sources */,
@@ -2330,6 +2410,7 @@
 				F1485626284FD0FB003213D7 /* InboxItemView.swift in Sources */,
 				B08F393227AE7112008B344F /* SceneDelegate.swift in Sources */,
 				B007A72E2865072900CFA5C9 /* RadioButton.swift in Sources */,
+				B007A78A2874C25500CFA5C9 /* PersistenceStoreManager.swift in Sources */,
 				F13B266D281C8FC80011F2FB /* EncryptionError.swift in Sources */,
 				B0EEE11827B14D360097031E /* WelcomeViewModel.swift in Sources */,
 				F151A2AB27CE818C000D7242 /* RegisterNameAvatarView+PhoneVerification.swift in Sources */,
@@ -2369,13 +2450,16 @@
 				F11441CD284681EC00307D39 /* LargeLabelButton.swift in Sources */,
 				F175AB8727E4D5C8000DAB15 /* UIScreen+.swift in Sources */,
 				F18862472811550C00659786 /* CreateOfferCoordinator.swift in Sources */,
+				B007A7542872269B00CFA5C9 /* ManagedUser+.swift in Sources */,
 				F151A2A727C962CC000D7242 /* RegisterNameAvatarView+NameInput.swift in Sources */,
 				F11441D9284681EC00307D39 /* SingleOptionPickerView.swift in Sources */,
+				B007A7502872267400CFA5C9 /* ManagedOffer+.swift in Sources */,
 				F1F5F19B283FE53300968366 /* ChatRequestView.swift in Sources */,
 				F1B93ED0286A2102008DAA90 /* StoredOffer.swift in Sources */,
 				F11441E7284682B200307D39 /* ChatRequestOfferInformationView.swift in Sources */,
 				B08F399527AE7D29008B344F /* SplashScreenViewModel.swift in Sources */,
 				F11441CE284681EC00307D39 /* OffsetScrollView.swift in Sources */,
+				B007A76128722A1F00CFA5C9 /* NSManagedObject+.swift in Sources */,
 				F151A29027C80708000D7242 /* RegisterPhoneView+PhoneInput.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
