@@ -91,8 +91,8 @@ struct Offer {
             let paymentMethods = Self.getPaymentMethods(encryptedOffer.paymentMethod, withKeys: keys)
             let btcNetworks = Self.getBTCNetwork(encryptedOffer.btcNetwork, withKeys: keys)
 
-            guard let minAmount = Int(minAmountString),
-                  let maxAmount = Int(maxAmountString),
+            guard let minAmount = Double(minAmountString),
+                  let maxAmount = Double(maxAmountString),
                   let feeAmount = Double(feeAmountString),
                   let feeState = OfferFeeOption(rawValue: feeStateString),
                   let locationState = OfferTradeLocationOption(rawValue: locationStateString),
@@ -112,8 +112,8 @@ struct Offer {
             self.userPublicKey = encryptedOffer.userPublicKey
             self.source = source
 
-            self.minAmount = minAmount
-            self.maxAmount = maxAmount
+            self.minAmount = Int(minAmount)
+            self.maxAmount = Int(maxAmount)
             self.feeAmount = feeAmount
             self.offerPublicKey = offerPublicKey
             self.description = try encryptedOffer.offerDescription.ecc.decrypt(keys: keys)
