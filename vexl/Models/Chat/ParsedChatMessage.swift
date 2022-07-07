@@ -12,7 +12,7 @@ import Foundation
 struct ParsedChatMessage: Codable {
 
     /// Inbox that sent the message
-    let senderInboxKey: String
+    let contactInboxKey: String
     /// Inbox receiving the message
     let inboxKey: String
     /// Id used for internal purposes
@@ -107,7 +107,7 @@ extension ParsedChatMessage {
         let text = json["text"] as? String
         let image = json["image"] as? String
 
-        self.senderInboxKey = chatMessage.senderPublicKey
+        self.contactInboxKey = chatMessage.senderPublicKey
         self.inboxKey = inboxPublicKey
         self.id = id
         self.text = text
@@ -128,9 +128,9 @@ extension ParsedChatMessage {
                   contentType: ContentType,
                   text: String,
                   image: String? = nil,
-                  senderKey: String) {
+                  contactInboxKey: String) {
         guard messageType != .invalid else { return nil }
-        self.senderInboxKey = senderKey
+        self.contactInboxKey = contactInboxKey
         self.id = UUID().uuidString
         self.text = text
         self.inboxKey = inboxPublicKey
@@ -147,50 +147,50 @@ extension ParsedChatMessage {
 
 extension ParsedChatMessage {
 
-    static func communicationRequest(inboxPublicKey: String, text: String, senderPublicKey: String) -> ParsedChatMessage? {
+    static func communicationRequest(inboxPublicKey: String, text: String, contactInboxKey: String) -> ParsedChatMessage? {
         ParsedChatMessage(inboxPublicKey: inboxPublicKey,
                           messageType: .messagingRequest,
                           contentType: .communicationRequest,
                           text: text,
-                          senderKey: senderPublicKey)
+                          contactInboxKey: contactInboxKey)
     }
 
-    static func communicationConfirmation(isConfirmed: Bool, inboxPublicKey: String, senderPublicKey: String) -> ParsedChatMessage? {
+    static func communicationConfirmation(isConfirmed: Bool, inboxPublicKey: String, contactInboxKey: String) -> ParsedChatMessage? {
         ParsedChatMessage(inboxPublicKey: inboxPublicKey,
                           messageType: isConfirmed ? .messagingApproval : .messagingRejection,
                           contentType: .communicationRequestResponse,
                           text: L.chatMessageConversationRequestAccepted(),
-                          senderKey: senderPublicKey)
+                          contactInboxKey: contactInboxKey)
     }
 
-    static func createMessage(text: String, image: String?, inboxPublicKey: String, senderPublicKey: String) -> ParsedChatMessage? {
+    static func createMessage(text: String, image: String?, inboxPublicKey: String, contactInboxKey: String) -> ParsedChatMessage? {
         let type: ParsedChatMessage.ContentType = image != nil ? .image : .text
         let parsedMessage = ParsedChatMessage(inboxPublicKey: inboxPublicKey,
                                               messageType: .message,
                                               contentType: type,
                                               text: text,
                                               image: image,
-                                              senderKey: senderPublicKey)
+                                              contactInboxKey: contactInboxKey)
         return parsedMessage
     }
 
-    static func createIdentityRequest(inboxPublicKey: String, senderPublicKey: String) -> ParsedChatMessage? {
+    static func createIdentityRequest(inboxPublicKey: String, contactInboxKey: String) -> ParsedChatMessage? {
         let parsedMessage = ParsedChatMessage(inboxPublicKey: inboxPublicKey,
                                               messageType: .revealRequest,
                                               contentType: .anonymousRequest,
                                               text: "",
                                               image: nil,
-                                              senderKey: senderPublicKey)
+                                              contactInboxKey: contactInboxKey)
         return parsedMessage
     }
 
-    static func createDelete(inboxPublicKey: String, senderPublicKey: String) -> ParsedChatMessage? {
+    static func createDelete(inboxPublicKey: String, contactInboxKey: String) -> ParsedChatMessage? {
         let parsedMessage = ParsedChatMessage(inboxPublicKey: inboxPublicKey,
                                               messageType: .deleteChat,
                                               contentType: .deleteChat,
                                               text: "",
                                               image: nil,
-                                              senderKey: senderPublicKey)
+                                              contactInboxKey: contactInboxKey)
         return parsedMessage
     }
 }

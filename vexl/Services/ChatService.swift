@@ -39,8 +39,8 @@ protocol ChatServiceType {
 
     func getStoredInboxMessages() -> AnyPublisher<[ChatInboxMessage], Error>
     func getStoredRequestMessages() -> AnyPublisher<[ParsedChatMessage], Error>
-    func getStoredChatMessages(inboxPublicKey: String, receiverPublicKey: String) -> AnyPublisher<[ParsedChatMessage], Error>
-    func deleteMessages(inboxPublicKey: String, senderPublicKey: String) -> AnyPublisher<Void, Error>
+    func getStoredChatMessages(inboxPublicKey: String, contactPublicKey: String) -> AnyPublisher<[ParsedChatMessage], Error>
+    func deleteMessages(inboxPublicKey: String, contactPublicKey: String) -> AnyPublisher<Void, Error>
 }
 
 final class ChatService: BaseService, ChatServiceType {
@@ -169,12 +169,12 @@ final class ChatService: BaseService, ChatServiceType {
         localStorageService.getRequestMessages()
     }
 
-    func getStoredChatMessages(inboxPublicKey: String, receiverPublicKey: String) -> AnyPublisher<[ParsedChatMessage], Error> {
-        localStorageService.getChatMessages(inboxPublicKey: inboxPublicKey, receiverInboxKey: receiverPublicKey)
+    func getStoredChatMessages(inboxPublicKey: String, contactPublicKey: String) -> AnyPublisher<[ParsedChatMessage], Error> {
+        localStorageService.getChatMessages(inboxPublicKey: inboxPublicKey, contactPublicKey: contactPublicKey)
     }
 
-    func deleteMessages(inboxPublicKey: String, senderPublicKey: String) -> AnyPublisher<Void, Error> {
-        localStorageService.deleteChatMessages(forInbox: inboxPublicKey, senderPublicKey: senderPublicKey)
+    func deleteMessages(inboxPublicKey: String, contactPublicKey: String) -> AnyPublisher<Void, Error> {
+        localStorageService.deleteChatMessages(forInbox: inboxPublicKey, contactPublicKey: contactPublicKey)
     }
 }
 
@@ -248,6 +248,6 @@ extension ChatService {
                 .eraseToAnyPublisher()
         }
 
-        return deleteMessages(inboxPublicKey: inboxKey.publicKey, senderPublicKey: message.senderInboxKey)
+        return deleteMessages(inboxPublicKey: inboxKey.publicKey, contactPublicKey: message.contactInboxKey)
     }
 }

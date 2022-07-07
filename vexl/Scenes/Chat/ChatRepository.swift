@@ -12,7 +12,7 @@ import Cleevio
 protocol ChatRepositoryType {
     var dismissAction: ActionSubject<Void> { get set }
 
-    func deleteChat(senderKey: ECCKeys, receiverPublicKey: String) -> AnyPublisher<Void, Error>
+    func deleteChat(inboxKeys: ECCKeys, contactPublicKey: String) -> AnyPublisher<Void, Error>
 }
 
 final class ChatRepository: ChatRepositoryType {
@@ -23,9 +23,9 @@ final class ChatRepository: ChatRepositoryType {
 
     var dismissAction: ActionSubject<Void> = .init()
 
-    func deleteChat(senderKey: ECCKeys, receiverPublicKey: String) -> AnyPublisher<Void, Error> {
-        let deleteMessage = ParsedChatMessage.createDelete(inboxPublicKey: receiverPublicKey,
-                                                           senderPublicKey: senderKey.publicKey)
+    func deleteChat(inboxKeys: ECCKeys, contactPublicKey: String) -> AnyPublisher<Void, Error> {
+        let deleteMessage = ParsedChatMessage.createDelete(inboxPublicKey: inboxKeys.publicKey,
+                                                           contactInboxKey: contactPublicKey)
 
         let sendMessage = Just(deleteMessage)
             .setFailureType(to: Error.self)
@@ -33,12 +33,12 @@ final class ChatRepository: ChatRepositoryType {
             .withUnretained(self)
             .flatMap { owner, message in
                 owner.cryptoService
-                    .encryptECIES(publicKey: receiverPublicKey, secret: message)
+                    .encryptECIES(publicKey: contactPublicKey, secret: message)
             }
             .withUnretained(self)
             .flatMap { owner, _ in
-                owner.sendMessage(inboxKeys: senderKey,
-                                  receiverPublicKey: receiverPublicKey,
+                owner.sendMessage(inboxKeys: inboxKeys,
+                                  receiverPublicKey: contactPublicKey,
                                   type: .deleteChat,
                                   parsedMessage: deleteMessage)
             }
@@ -47,7 +47,7 @@ final class ChatRepository: ChatRepositoryType {
             .withUnretained(self)
             .flatMap { owner, _ in
                 owner.chatService
-                    .deleteMessages(inboxPublicKey: senderKey.publicKey, senderPublicKey: receiverPublicKey)
+                    .deleteMessages(inboxPublicKey: inboxKeys.publicKey, contactPublicKey: contactPublicKey)
             }
             .withUnretained(self)
             .flatMap { owner, _ in

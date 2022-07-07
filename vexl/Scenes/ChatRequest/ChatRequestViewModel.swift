@@ -171,7 +171,7 @@ final class ChatRequestViewModel: ViewModelType, ObservableObject {
             if let offer = offers.first(where: { $0.offerPublicKey == message.inboxKey }),
                let key = offerKeys.first(where: { $0.id == offer.offerId }) {
 
-                let senderPublicKey = message.senderInboxKey
+                let senderPublicKey = message.contactInboxKey
                 let viewData = ChatRequestOfferViewData(contactName: Constants.randomName,
                                                         contactFriendLevel: offer.friendLevel.label,
                                                         requestText: message.text ?? "",
@@ -201,7 +201,7 @@ final class ChatRequestViewModel: ViewModelType, ObservableObject {
                 let message = ParsedChatMessage
                     .communicationConfirmation(isConfirmed: isConfirmed,
                                                inboxPublicKey: keys.offerKey.publicKey,
-                                               senderPublicKey: keys.senderPublicKey)
+                                               contactInboxKey: keys.senderPublicKey)
 
                 return owner.chatService
                     .communicationConfirmation(confirmation: isConfirmed,
