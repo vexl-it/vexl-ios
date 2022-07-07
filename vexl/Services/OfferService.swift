@@ -163,6 +163,10 @@ extension OfferService {
         var btcNetwork: [String] = []
         let friendLevel = try offer.friendLevelString.ecc.encrypt(publicKey: contactPublicKey)
         let offerType = try offer.offerTypeString.ecc.encrypt(publicKey: contactPublicKey)
+        let activePriceState = try offer.activePriceState.string.ecc.encrypt(publicKey: contactPublicKey)
+        let activePriceValue = try offer.activePriceValue.string.ecc.encrypt(publicKey: contactPublicKey)
+        let active = try offer.active.string.ecc.encrypt(publicKey: contactPublicKey)
+        let commonFriends = try offer.commonFriends.map { try $0.ecc.encrypt(publicKey: contactPublicKey) }
 
         offer.paymentMethodsList.forEach { method in
             if let encrypted = try? method.ecc.encrypt(publicKey: contactPublicKey) {
@@ -196,6 +200,10 @@ extension OfferService {
                               paymentMethod: paymentMethods,
                               btcNetwork: btcNetwork,
                               friendLevel: friendLevel,
-                              offerType: offerType)
+                              offerType: offerType,
+                              activePriceState: activePriceState,
+                              activePriceValue: activePriceValue,
+                              active: active,
+                              commonFriends: commonFriends)
     }
 }

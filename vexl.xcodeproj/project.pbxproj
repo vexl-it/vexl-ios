@@ -38,6 +38,7 @@
 		B007A73528659AD900CFA5C9 /* BottomActionSheetCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B007A73428659AD900CFA5C9 /* BottomActionSheetCoordinator.swift */; };
 		B007A73A2868B66500CFA5C9 /* JoinVexl.swift in Sources */ = {isa = PBXBuildFile; fileRef = B007A7392868B66500CFA5C9 /* JoinVexl.swift */; };
 		B007A73C2868B69E00CFA5C9 /* Donate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B007A73B2868B69E00CFA5C9 /* Donate.swift */; };
+		B007A7922877629A00CFA5C9 /* Bool+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B007A7912877629A00CFA5C9 /* Bool+.swift */; };
 		B01C01E62860B2C400A29F85 /* CoinChartData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B01C01E52860B2C400A29F85 /* CoinChartData.swift */; };
 		B01C01E92860D2CD00A29F85 /* ContentState.swift in Sources */ = {isa = PBXBuildFile; fileRef = B01C01E82860D2CD00A29F85 /* ContentState.swift */; };
 		B01C01EB2861F9D900A29F85 /* vexl-crypto.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = B01C01EA2861F9D900A29F85 /* vexl-crypto.xcframework */; };
@@ -364,6 +365,7 @@
 		B007A73428659AD900CFA5C9 /* BottomActionSheetCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomActionSheetCoordinator.swift; sourceTree = "<group>"; };
 		B007A7392868B66500CFA5C9 /* JoinVexl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinVexl.swift; sourceTree = "<group>"; };
 		B007A73B2868B69E00CFA5C9 /* Donate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Donate.swift; sourceTree = "<group>"; };
+		B007A7912877629A00CFA5C9 /* Bool+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bool+.swift"; sourceTree = "<group>"; };
 		B01C01E52860B2C400A29F85 /* CoinChartData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinChartData.swift; sourceTree = "<group>"; };
 		B01C01E82860D2CD00A29F85 /* ContentState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentState.swift; sourceTree = "<group>"; };
 		B01C01EA2861F9D900A29F85 /* vexl-crypto.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = "vexl-crypto.xcframework"; sourceTree = "<group>"; };
@@ -881,6 +883,7 @@
 				B08F394227AE7112008B344F /* Keychain+.swift */,
 				B08F395E27AE7112008B344F /* String+.swift */,
 				B0E9BB262815C5750012BF1D /* String+Crypto.swift */,
+				B007A7912877629A00CFA5C9 /* Bool+.swift */,
 				B08F396927AE7112008B344F /* URLRequest+.swift */,
 				B08F397527AE7112008B344F /* Error+.swift */,
 				B08F397927AE7112008B344F /* Codable+.swift */,
@@ -2229,6 +2232,7 @@
 				F1485627284FD0FB003213D7 /* InboxCoordinator.swift in Sources */,
 				F1485643284FD451003213D7 /* ChatDeleteConfirmationView.swift in Sources */,
 				F11441D4284681EC00307D39 /* FetchImage.swift in Sources */,
+				B007A7922877629A00CFA5C9 /* Bool+.swift in Sources */,
 				F11441D8284681EC00307D39 /* OptionPickerItemView.swift in Sources */,
 				4FBF6242283FBF6B00DDBE71 /* RequestOfferViewModel.swift in Sources */,
 				F12A150127DFC1D70096543E /* ImportContactItemView.swift in Sources */,

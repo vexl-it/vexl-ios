@@ -27,6 +27,11 @@ struct Offer {
     let type: OfferType
     let source: OfferSource
 
+    var activePriceState: Bool = true
+    var activePriceValue: Bool = true
+    var active: Bool = true
+    var commonFriends: [String] = []
+
     init(minAmount: Int,
          maxAmount: Int,
          description: String,
