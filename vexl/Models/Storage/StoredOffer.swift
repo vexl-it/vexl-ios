@@ -15,8 +15,8 @@ struct StoredOffer: Codable {
     let privateKey: String?
     let publicKey: String
 
-    var minAmount: Int
-    var maxAmount: Int
+    var minAmount: Double
+    var maxAmount: Double
     var description: String
     var feeState: String
     var feeAmount: Double

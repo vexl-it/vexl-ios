@@ -15,8 +15,8 @@ struct Offer {
     var createdAt: String = ""
     var modifiedAt: String = ""
 
-    let minAmount: Int
-    let maxAmount: Int
+    let minAmount: Double
+    let maxAmount: Double
     let description: String
     let feeState: OfferFeeOption
     let feeAmount: Double
@@ -26,6 +26,11 @@ struct Offer {
     let friendLevel: OfferAdvancedFriendDegreeOption
     let type: OfferType
     let source: OfferSource
+
+    var activePriceState: Bool = true
+    var activePriceValue: Bool = true
+    var active: Bool = true
+    var commonFriends: [String] = []
 
     init(minAmount: Int,
          maxAmount: Int,
@@ -38,8 +43,8 @@ struct Offer {
          friendLevel: OfferAdvancedFriendDegreeOption,
          type: OfferType,
          source: OfferSource) {
-        self.minAmount = minAmount
-        self.maxAmount = maxAmount
+        self.minAmount = Double(minAmount)
+        self.maxAmount = Double(maxAmount)
         self.description = description
         self.feeState = feeState
         self.feeAmount = feeAmount
@@ -91,8 +96,8 @@ struct Offer {
             let paymentMethods = Self.getPaymentMethods(encryptedOffer.paymentMethod, withKeys: keys)
             let btcNetworks = Self.getBTCNetwork(encryptedOffer.btcNetwork, withKeys: keys)
 
-            guard let minAmount = Int(minAmountString),
-                  let maxAmount = Int(maxAmountString),
+            guard let minAmount = Double(minAmountString),
+                  let maxAmount = Double(maxAmountString),
                   let feeAmount = Double(feeAmountString),
                   let feeState = OfferFeeOption(rawValue: feeStateString),
                   let locationState = OfferTradeLocationOption(rawValue: locationStateString),
