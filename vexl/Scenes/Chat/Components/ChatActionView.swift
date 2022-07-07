@@ -11,12 +11,21 @@ typealias ChatAction = ChatActionView.ChatAction
 
 struct ChatActionView: View {
 
+    let isUserRevealed: Bool
     let action: (ChatAction) -> Void
+
+    private var availableActions: [ChatAction] {
+        if isUserRevealed {
+            return ChatAction.allCases.filter { $0 != .revealIdentity }
+        } else {
+            return ChatAction.allCases
+        }
+    }
 
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack {
-                ForEach(ChatAction.allCases) { chatAction in
+                ForEach(availableActions) { chatAction in
                     Button(chatAction.title) {
                         action(chatAction)
                     }

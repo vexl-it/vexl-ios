@@ -61,7 +61,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
     @Published var showImagePickerActionSheet = false
     @Published var modal = Modal.none
     @Published var username: String = Constants.randomName
-    @Published var avatar: UIImage? = nil
+    @Published var avatar: UIImage?
 
     var errorIndicator: ErrorIndicator {
         primaryActivity.error
@@ -84,6 +84,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
     var route: CoordinatingSubject<Route> = .init()
 
     // MARK: - Variables
+
     let friends: [ChatCommonFriendViewData] = [.stub, .stub, .stub]
     let offerType: OfferType?
     var offer: Offer?
@@ -127,6 +128,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
         !currentMessage.isEmpty || selectedImage != nil
     }
 
+    var isUserRevealed = false
     private let inboxKeys: ECCKeys
     private let receiverPublicKey: String
     private let isBlocked = false
@@ -155,6 +157,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
                   receiveValue: { owner, user in
                 owner.username = user.username
                 owner.avatar = user.avatar?.imageFromBase64
+                owner.isUserRevealed = true
             })
             .store(in: cancelBag)
 
@@ -179,7 +182,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
                         $0.inboxKey == owner.inboxKeys.publicKey && $0.contactInboxKey == owner.receiverPublicKey
                     }
                     owner.showChatMessages(messagesForInbox)
-                    // TODO: - add update image after
+                    owner.updateRevealedUser(messages: messages)
                 case .failure:
                     // TODO: - show some alert
                     break
@@ -370,6 +373,16 @@ final class ChatViewModel: ViewModelType, ObservableObject {
             return Just(())
                 .eraseToAnyPublisher()
         }
+    }
+    
+    private func updateRevealedUser(messages: [ParsedChatMessage]) {
+        guard let revealMessage = messages.first(where: { $0.messageType == .revealApproval }),
+              let user = revealMessage.user else {
+            return
+        }
+
+        username = user.name
+        avatar = user.image?.imageFromBase64
     }
 
     private func showChatMessages(_ messages: [ParsedChatMessage]) {
