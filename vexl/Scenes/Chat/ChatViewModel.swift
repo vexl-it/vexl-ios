@@ -374,7 +374,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
                 .eraseToAnyPublisher()
         }
     }
-    
+
     private func updateRevealedUser(messages: [ParsedChatMessage]) {
         guard let revealMessage = messages.first(where: { $0.messageType == .revealApproval }),
               let user = revealMessage.user else {
@@ -383,6 +383,8 @@ final class ChatViewModel: ViewModelType, ObservableObject {
 
         username = user.name
         avatar = user.image?.imageFromBase64
+        
+        // update the latest identity reveal request + update the item in the UI
     }
 
     private func showChatMessages(_ messages: [ParsedChatMessage]) {
