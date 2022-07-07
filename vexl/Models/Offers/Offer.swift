@@ -15,8 +15,8 @@ struct Offer {
     var createdAt: String = ""
     var modifiedAt: String = ""
 
-    let minAmount: Int
-    let maxAmount: Int
+    let minAmount: Double
+    let maxAmount: Double
     let description: String
     let feeState: OfferFeeOption
     let feeAmount: Double
@@ -38,8 +38,8 @@ struct Offer {
          friendLevel: OfferAdvancedFriendDegreeOption,
          type: OfferType,
          source: OfferSource) {
-        self.minAmount = minAmount
-        self.maxAmount = maxAmount
+        self.minAmount = Double(minAmount)
+        self.maxAmount = Double(maxAmount)
         self.description = description
         self.feeState = feeState
         self.feeAmount = feeAmount
@@ -112,8 +112,8 @@ struct Offer {
             self.userPublicKey = encryptedOffer.userPublicKey
             self.source = source
 
-            self.minAmount = Int(minAmount)
-            self.maxAmount = Int(maxAmount)
+            self.minAmount = minAmount
+            self.maxAmount = maxAmount
             self.feeAmount = feeAmount
             self.offerPublicKey = offerPublicKey
             self.description = try encryptedOffer.offerDescription.ecc.decrypt(keys: keys)
