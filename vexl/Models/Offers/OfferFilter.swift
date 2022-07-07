@@ -41,7 +41,7 @@ struct OfferFilter: Equatable {
 
     private func isInRange(offer: Offer) -> Bool {
         guard let amountRange = currentAmountRange else { return true }
-        return offer.minAmount >= amountRange.lowerBound && offer.maxAmount <= amountRange.upperBound
+        return Int(offer.minAmount) >= amountRange.lowerBound && Int(offer.maxAmount) <= amountRange.upperBound
     }
 
     private func hasSameFeeOption(offer: Offer) -> Bool {
