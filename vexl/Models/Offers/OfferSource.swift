@@ -20,3 +20,9 @@ enum OfferSource: String {
     case created
     case fetched
 }
+
+enum OfferTrigger: String {
+    case none = "NONE"
+    case below = "PRICE_IS_BELOW"
+    case abowe = "PRICE_IS_ABOVE"
+ }
