@@ -23,7 +23,7 @@ protocol UserRepositoryType {
     func logout()
 }
 
-class UserRepository: UserRepositoryType {
+final class UserRepository: UserRepositoryType {
     @Inject private var userMicroService: UserServiceType
     @Inject private var persistenceManager: PersistenceStoreManagerType
 

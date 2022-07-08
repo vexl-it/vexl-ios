@@ -57,7 +57,7 @@ extension PersistenceStoreManagerType {
     }
 }
 
-class PersistenceStoreManager: PersistenceStoreManagerType {
+final class PersistenceStoreManager: PersistenceStoreManagerType {
 
     private let container = NSPersistentContainer(name: "VexlDataModel")
 
