@@ -38,11 +38,32 @@ struct Constants {
 
     // MARK: - Keychain keys
 
-    enum KeychainKeys: String {
+    enum KeychainKeys: RawRepresentable {
+        init?(rawValue: String) { nil }
+
         case dummyKey
         case accessToken
         case refreshToken
         case userSecurity
+        case userSignature
+        case privateKey(publicKey: String)
+
+        var rawValue: String {
+            switch self {
+            case .dummyKey:
+                return "dummyKey"
+            case .accessToken:
+                return "accessToken"
+            case .refreshToken:
+                return "refreshToken"
+            case .userSecurity:
+                return "userSecurity"
+            case .privateKey(let publicKey):
+                return "publickey-\(publicKey)"
+            case .userSignature:
+                return "userSignature"
+            }
+        }
     }
 
     // MARK: - Decoder
