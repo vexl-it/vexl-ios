@@ -98,6 +98,23 @@ final class ChatCoordinator: BaseCoordinator<RouterResult<Void>> {
             }
             .store(in: cancelBag)
 
+        // swiftlint: disable discouraged_optional_boolean
+        viewModel
+            .route
+            .compactMap { action -> Bool? in
+                if case let .showRevealIdentityModal(isUserResponse) = action { return isUserResponse }
+                return nil
+            }
+            .withUnretained(self)
+            .flatMap { owner, isUserResponse -> CoordinatingResult<RouterResult<Void>> in
+                let router = ModalRouter(parentViewController: viewController,
+                                         presentationStyle: .overFullScreen,
+                                         transitionStyle: .coverVertical)
+                return owner.showRevealIdentity(router: router, isUserResponse: isUserResponse)
+            }
+            .sink()
+            .store(in: cancelBag)
+
         let dismiss = viewModel
             .route
             .filter { $0 == .dismissTapped }
@@ -140,6 +157,18 @@ final class ChatCoordinator: BaseCoordinator<RouterResult<Void>> {
 }
 
 extension ChatCoordinator {
+
+    private func showRevealIdentity(router: Router, isUserResponse: Bool) -> CoordinatingResult<RouterResult<Void>> {
+        coordinate(to: ChatIdentityRevealCoordinator(isUserResponse: isUserResponse, router: router, animated: true))
+        .flatMap { result -> CoordinatingResult<RouterResult<Void>> in
+            guard result != .dismissedByRouter else {
+                return Just(result).eraseToAnyPublisher()
+            }
+            return router.dismiss(animated: true, returning: result)
+        }
+        .prefix(1)
+        .eraseToAnyPublisher()
+    }
 
     // swiftlint: disable line_length
     private func presentActionSheet<ViewModel: BottomActionSheetViewModelProtocol>(router: Router,

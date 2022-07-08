@@ -36,10 +36,11 @@ protocol LocalStorageServiceType {
     func deleteRequestMessage(withOfferId id: String) -> AnyPublisher<Void, Error>
     func deleteChatMessages(forInbox inboxPublicKey: String, contactPublicKey: String) -> AnyPublisher<Void, Error>
     func getChatMessages(inboxPublicKey: String, contactPublicKey: String) -> AnyPublisher<[ParsedChatMessage], Error>
-    
+
     // MARK: - Reveal Identity
     func saveRevealedUser(_ chatUser: ParsedChatMessage.ChatUser, inboxPublicKey: String, contactPublicKey: String) -> AnyPublisher<Void, Error>
     func getRevealedUser(inboxPublicKey: String, contactPublicKey: String) -> AnyPublisher<ParsedChatMessage.ChatUser?, Error>
+    func updateRevealedUser(inboxPublicKey: String, contactPublicKey: String, isAccepted: Bool) -> AnyPublisher<Void, Error>
 }
 
 final class LocalStorageService: LocalStorageServiceType {
@@ -188,6 +189,14 @@ final class LocalStorageService: LocalStorageServiceType {
         Future { promise in
             let storedChatUser = DictionaryDB.getChatUser(inboxPublicKey: inboxPublicKey, contactPublicKey: contactPublicKey)
             promise(.success(storedChatUser))
+        }
+        .eraseToAnyPublisher()
+    }
+
+    func updateRevealedUser(inboxPublicKey: String, contactPublicKey: String, isAccepted: Bool) -> AnyPublisher<Void, Error> {
+        Future { promise in
+            DictionaryDB.updateIdentityReveal(inboxPublicKey: inboxPublicKey, contactPublicKey: contactPublicKey, isAccepted: isAccepted)
+            promise(.success(()))
         }
         .eraseToAnyPublisher()
     }

@@ -20,12 +20,12 @@ struct ParsedChatMessage: Codable {
     let text: String?
     let image: String?
     /// Message type send by the backend
-    let messageTypeValue: String
+    var messageTypeValue: String
     /// Message type for the content used internally in the device
-    let contentTypeValue: String
+    var contentTypeValue: String
     let time: TimeInterval
     /// Information of the sender, will contain data once the identity reveal is accepted.
-    let user: ChatUser?
+    var user: ChatUser?
 
     var isFromContact = true
 
@@ -35,6 +35,10 @@ struct ParsedChatMessage: Codable {
 
     var messageType: MessageType {
         MessageType(rawValue: messageTypeValue) ?? .invalid
+    }
+
+    var shouldBeStored: Bool {
+        ![MessageType.revealRejected, .revealApproval, .deleteChat].contains(messageType)
     }
 
     var previewText: String {
@@ -175,13 +179,18 @@ extension ParsedChatMessage {
         return parsedMessage
     }
 
-    static func createIdentityRequest(inboxPublicKey: String, contactInboxKey: String) -> ParsedChatMessage? {
+    static func createIdentityRequest(inboxPublicKey: String,
+                                      contactInboxKey: String,
+                                      username: String?,
+                                      avatar: String?) -> ParsedChatMessage? {
+        let chatUser = ChatUser(name: username, image: avatar)
         let parsedMessage = ParsedChatMessage(inboxPublicKey: inboxPublicKey,
                                               messageType: .revealRequest,
                                               contentType: .anonymousRequest,
                                               text: "",
                                               image: nil,
-                                              contactInboxKey: contactInboxKey)
+                                              contactInboxKey: contactInboxKey,
+                                              user: chatUser)
         return parsedMessage
     }
 

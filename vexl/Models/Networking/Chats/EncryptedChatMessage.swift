@@ -12,6 +12,7 @@ enum MessageType: String {
     case message = "MESSAGE"
     case revealRequest = "REQUEST_REVEAL"
     case revealApproval = "APPROVE_REVEAL"
+    case revealRejected = "DISAPPROVE_REVEAL"
     case messagingRequest = "REQUEST_MESSAGING"
     case messagingApproval = "APPROVE_MESSAGING"
     case messagingRejection = "DISAPPROVE_MESSAGING"
@@ -19,7 +20,7 @@ enum MessageType: String {
     case invalid
 
     static var displayableMessages: [MessageType] {
-        [.message, .revealRequest, .revealApproval, .messagingApproval]
+        [.message, .revealRequest, .revealApproval, .revealRejected, .messagingApproval]
     }
 }
 

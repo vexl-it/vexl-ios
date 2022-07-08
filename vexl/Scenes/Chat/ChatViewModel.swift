@@ -79,6 +79,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
         case showDeleteTapped
         case showRevealIdentityTapped
         case showRevealIdentityResponseTapped
+        case showRevealIdentityModal(isUserResponse: Bool)
     }
 
     var route: CoordinatingSubject<Route> = .init()
@@ -263,7 +264,12 @@ final class ChatViewModel: ViewModelType, ObservableObject {
         inputMessage
             .withUnretained(self)
             .flatMap { owner, message in
-                owner.sendMessage(type: .message, parsedMessage: message)
+                owner.chatRepository
+                    .sendMessage(inboxKeys: owner.inboxKeys,
+                                 receiverPublicKey: owner.receiverPublicKey,
+                                 type: .message,
+                                 parsedMessage: message,
+                                 updateInbox: true)
             }
             .withUnretained(self)
             .sink { owner, _ in
@@ -347,34 +353,6 @@ final class ChatViewModel: ViewModelType, ObservableObject {
             .assign(to: &$modal)
     }
 
-    private func sendMessage(type: MessageType, parsedMessage: ParsedChatMessage?) -> AnyPublisher<Void, Never> {
-        if let parsedMessage = parsedMessage, let message = parsedMessage.asString {
-            return chatService.sendMessage(inboxKeys: inboxKeys,
-                                           receiverPublicKey: receiverPublicKey,
-                                           message: message,
-                                           messageType: type)
-                .track(activity: primaryActivity)
-                .materialize()
-                .compactMap(\.value)
-                .flatMapLatest(with: self) { owner, _ in
-                    owner.chatService.saveParsedMessages([parsedMessage], inboxKeys: owner.inboxKeys)
-                        .track(activity: owner.primaryActivity)
-                        .materialize()
-                        .compactMap(\.value)
-                }
-                .flatMapLatest(with: self) { owner, _ in
-                    owner.inboxManager.updateInboxMessages()
-                        .materialize()
-                        .compactMap(\.value)
-                }
-                .asVoid()
-                .eraseToAnyPublisher()
-        } else {
-            return Just(())
-                .eraseToAnyPublisher()
-        }
-    }
-
     private func updateRevealedUser(messages: [ParsedChatMessage]) {
         guard let revealMessage = messages.first(where: { $0.messageType == .revealApproval }),
               let user = revealMessage.user else {
@@ -383,8 +361,8 @@ final class ChatViewModel: ViewModelType, ObservableObject {
 
         username = user.name
         avatar = user.image?.imageFromBase64
-        
-        // update the latest identity reveal request + update the item in the UI
+
+        route.send(.showRevealIdentityModal(isUserResponse: false))
     }
 
     private func showChatMessages(_ messages: [ParsedChatMessage]) {
@@ -399,8 +377,10 @@ final class ChatViewModel: ViewModelType, ObservableObject {
             case .communicationRequestResponse:
                 itemType = .start
             case .anonymousRequest:
-                itemType = message.isFromContact ? .receiveReveal : .sendReveal
-            case .deleteChat, .communicationRequest, .none, .anonymousRequestResponse:
+                itemType = message.isFromContact ? .receiveIdentityReveal : .requestIdentityReveal
+            case .anonymousRequestResponse:
+                itemType = message.messageType == .revealApproval ? .approveIdentityReveal : .rejectIdentityReveal
+            case .deleteChat, .communicationRequest, .none:
                 itemType = .noContent
             }
 
@@ -433,7 +413,10 @@ final class ChatViewModel: ViewModelType, ObservableObject {
     func identityRevealResponse(isAccepted: Bool) {
         chatRepository
             .identityRevealResponse(inboxKeys: inboxKeys, contactPublicKey: receiverPublicKey, isAccepted: isAccepted)
-            .sink()
+            .materialize()
+            .compactMap(\.value)
+            .map { _ -> Route in .showRevealIdentityModal(isUserResponse: true) }
+            .subscribe(route)
             .store(in: cancelBag)
     }
 }

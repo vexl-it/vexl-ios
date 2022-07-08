@@ -41,11 +41,11 @@ struct ChatConversationItem: Identifiable, Hashable {
     }
 
     static func createIdentityRequest() -> ChatConversationItem {
-        ChatConversationItem(type: .sendReveal, isContact: false)
+        ChatConversationItem(type: .requestIdentityReveal, isContact: false)
     }
 
     static func createIdentityResponse() -> ChatConversationItem {
-        ChatConversationItem(type: .receiveReveal, isContact: false)
+        ChatConversationItem(type: .receiveIdentityReveal, isContact: false)
     }
 
     func hash(into hasher: inout Hasher) {
@@ -59,8 +59,10 @@ extension ChatConversationItem {
     enum ItemType: Equatable, Hashable {
         case text
         case image
-        case sendReveal
-        case receiveReveal
+        case requestIdentityReveal
+        case receiveIdentityReveal
+        case approveIdentityReveal
+        case rejectIdentityReveal
         case start
         case noContent
     }

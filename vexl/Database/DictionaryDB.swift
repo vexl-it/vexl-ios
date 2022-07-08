@@ -184,9 +184,30 @@ final class DictionaryDB {
     }
 
     static func getChatUser(inboxPublicKey: String, contactPublicKey: String) -> ParsedChatMessage.ChatUser? {
-        guard let storedChatUser = storedChatUser.first(where: { $0.inboxPublicKey == inboxPublicKey && $0.contactPublicKey == contactPublicKey }) else {
+        guard let storedChatUser = storedChatUser.first(where: {
+            $0.inboxPublicKey == inboxPublicKey && $0.contactPublicKey == contactPublicKey
+        }) else {
             return nil
         }
         return ParsedChatMessage.ChatUser(name: storedChatUser.username, image: storedChatUser.avatar)
+    }
+
+    static func updateIdentityReveal(inboxPublicKey: String, contactPublicKey: String, isAccepted: Bool) {
+        let identityMessages = messages.filter { $0.messageType == .revealRequest }
+        for message in identityMessages {
+            if let index = messages.firstIndex(where: { $0.id == message.id }) {
+                var response = message
+                response.messageTypeValue = isAccepted ? MessageType.revealApproval.rawValue : MessageType.revealRejected.rawValue
+                response.contentTypeValue = ParsedChatMessage.ContentType.anonymousRequestResponse.rawValue
+                if !isAccepted {
+                    response.user = nil
+                }
+                messages[index] = response
+            }
+        }
+
+        if let identityMessage = identityMessages.first(where: { $0.user != nil }), let user = identityMessage.user {
+            saveChatUser(user, inboxPublicKey: inboxPublicKey, contactPublicKey: contactPublicKey)
+        }
     }
 }

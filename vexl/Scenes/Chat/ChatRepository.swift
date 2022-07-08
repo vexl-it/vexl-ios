@@ -14,8 +14,15 @@ protocol ChatRepositoryType {
 
     func getContactIdentity(inboxKeys: ECCKeys, contactPublicKey: String) -> AnyPublisher<(username: String, avatar: String?), Error>
     func deleteChat(inboxKeys: ECCKeys, contactPublicKey: String) -> AnyPublisher<Void, Error>
+
     func requestIdentityReveal(inboxKeys: ECCKeys, contactPublicKey: String) -> AnyPublisher<Void, Error>
     func identityRevealResponse(inboxKeys: ECCKeys, contactPublicKey: String, isAccepted: Bool) -> AnyPublisher<Void, Error>
+
+    func sendMessage(inboxKeys: ECCKeys,
+                     receiverPublicKey: String,
+                     type: MessageType,
+                     parsedMessage: ParsedChatMessage?,
+                     updateInbox: Bool) -> AnyPublisher<Void, Never>
 }
 
 final class ChatRepository: ChatRepositoryType {
@@ -29,14 +36,7 @@ final class ChatRepository: ChatRepositoryType {
     var dismissAction: ActionSubject<Void> = .init()
 
     func getContactIdentity(inboxKeys: ECCKeys, contactPublicKey: String) -> AnyPublisher<(username: String, avatar: String?), Error> {
-        localStorageService.getRevealedUser(inboxPublicKey: inboxKeys.publicKey, contactPublicKey: contactPublicKey)
-            .compactMap { user -> (username: String, avatar: String?)? in
-                guard let user = user else {
-                    return nil
-                }
-                return (username: user.name, avatar: user.image)
-            }
-            .eraseToAnyPublisher()
+        chatService.getContactIdentity(inboxKeys: inboxKeys, contactPublicKey: contactPublicKey)
     }
 
     func deleteChat(inboxKeys: ECCKeys, contactPublicKey: String) -> AnyPublisher<Void, Error> {
@@ -69,7 +69,9 @@ final class ChatRepository: ChatRepositoryType {
 
     func requestIdentityReveal(inboxKeys: ECCKeys, contactPublicKey: String) -> AnyPublisher<Void, Error> {
         let requestIdentity = ParsedChatMessage.createIdentityRequest(inboxPublicKey: inboxKeys.publicKey,
-                                                                      contactInboxKey: contactPublicKey)
+                                                                      contactInboxKey: contactPublicKey,
+                                                                      username: authenticationManager.currentUser?.username,
+                                                                      avatar: authenticationManager.currentUser?.avatar)
 
         return sendMessage(inboxKeys: inboxKeys,
                            receiverPublicKey: contactPublicKey,
@@ -87,34 +89,27 @@ final class ChatRepository: ChatRepositoryType {
                                                                         username: authenticationManager.currentUser?.username,
                                                                         avatar: authenticationManager.currentUser?.avatar)
 
-        return sendMessage(inboxKeys: inboxKeys,
-                           receiverPublicKey: contactPublicKey,
-                           type: isAccepted ? .revealApproval : .revealApproval,
-                           parsedMessage: identityResponse,
-                           updateInbox: true)
-            .setFailureType(to: Error.self)
-            .eraseToAnyPublisher()
-    }
-
-    // MARK: - Helper methods
-
-    private func encryptMessage(_ message: ParsedChatMessage?, publicKey: String) -> AnyPublisher<String, Error> {
-        Just(message)
-            .setFailureType(to: Error.self)
-            .compactMap { $0?.asString }
+        return chatService
+            .updateIdentityReveal(inboxKeys: inboxKeys, contactPublicKey: contactPublicKey, isAccepted: isAccepted)
+            .materialize()
+            .compactMap(\.value)
             .withUnretained(self)
-            .flatMap { owner, message in
-                owner.cryptoService
-                    .encryptECIES(publicKey: publicKey, secret: message)
+            .flatMap { owner, _ in
+                owner.sendMessage(inboxKeys: inboxKeys,
+                                  receiverPublicKey: contactPublicKey,
+                                  type: isAccepted ? .revealApproval : .revealRejected,
+                                  parsedMessage: identityResponse,
+                                  updateInbox: true)
             }
+            .setFailureType(to: Error.self)
             .eraseToAnyPublisher()
     }
 
-    private func sendMessage(inboxKeys: ECCKeys,
-                             receiverPublicKey: String,
-                             type: MessageType,
-                             parsedMessage: ParsedChatMessage?,
-                             updateInbox: Bool) -> AnyPublisher<Void, Never> {
+    func sendMessage(inboxKeys: ECCKeys,
+                     receiverPublicKey: String,
+                     type: MessageType,
+                     parsedMessage: ParsedChatMessage?,
+                     updateInbox: Bool) -> AnyPublisher<Void, Never> {
         if let parsedMessage = parsedMessage, let message = parsedMessage.asString {
             return chatService.sendMessage(inboxKeys: inboxKeys,
                                            receiverPublicKey: receiverPublicKey,
