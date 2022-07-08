@@ -53,10 +53,8 @@ final class UserRepository: UserRepositoryType {
         persistenceManager.load(type: ManagedUser.self, context: persistenceManager.viewContext)
             .catch { _ in Just([]) }
             .compactMap(\.first)
-            .withUnretained(self)
-            .sink { owner, user in
-                owner.currentUser.send(user)
-            }
+            .asOptional()
+            .subscribe(currentUser)
             .store(in: cancelBag)
     }
 
