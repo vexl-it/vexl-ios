@@ -11,7 +11,7 @@ struct ChatHeaderView: View {
 
     let username: String
     let offerLabel: String
-    let avatar: UIImage?
+    let avatar: Data?
     let offerType: OfferType?
     let closeAction: () -> Void
 

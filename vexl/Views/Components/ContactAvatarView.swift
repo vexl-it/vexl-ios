@@ -9,14 +9,14 @@ import SwiftUI
 
 struct ContactAvatarView: View {
 
-    let image: UIImage?
+    let image: Data?
     let size: CGSize
 
     var body: some View {
         let avatarImage: Image
 
         if let image = image {
-            avatarImage = Image(uiImage: image)
+            avatarImage = Image(data: image, placeholder: "")
         } else {
             avatarImage = Image(R.image.marketplace.defaultAvatar.name)
         }

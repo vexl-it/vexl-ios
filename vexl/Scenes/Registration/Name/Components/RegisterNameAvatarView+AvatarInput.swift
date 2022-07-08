@@ -12,7 +12,7 @@ extension RegisterNameAvatarView {
     struct AvatarInputView: View {
 
         var name: String
-        var avatar: UIImage?
+        var avatar: Data?
         var addAction: () -> Void
         var deleteAction: () -> Void
 
@@ -50,7 +50,7 @@ extension RegisterNameAvatarView {
 
     private struct AddAvatarView: View {
 
-        var image: UIImage?
+        var image: Data?
         var addAction: () -> Void
         var deleteAction: () -> Void
 
@@ -64,7 +64,7 @@ extension RegisterNameAvatarView {
                         addAction()
                     } label: {
                         if let image = image {
-                            Image(uiImage: image)
+                            Image(data: image, placeholder: "")
                                 .resizable()
                                 .scaledToFill()
                                 .clipShape(Circle())
@@ -95,7 +95,7 @@ extension RegisterNameAvatarView {
 struct RegisterNameAvatarInputViewPreview: PreviewProvider {
     static var previews: some View {
         RegisterNameAvatarView.AvatarInputView(name: "Name",
-                                               avatar: UIImage(named: R.image.onboarding.testAvatar.name),
+                                               avatar: R.image.onboarding.testAvatar()?.jpegData(compressionQuality: 1),
                                                addAction: {},
                                                deleteAction: {})
 

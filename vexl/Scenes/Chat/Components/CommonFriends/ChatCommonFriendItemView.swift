@@ -33,11 +33,12 @@ struct ChatCommonFriendItemView: View {
 }
 
 extension ChatCommonFriendItemView {
+
     struct ViewData: Identifiable, Hashable {
         let id = UUID()
         let title: String
         let subtitle: String
-        let avatar: UIImage?
+        let avatar: Data?
 
         static var stub: ViewData {
             .init(title: "Username", subtitle: "Description goes here", avatar: nil)

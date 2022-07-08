@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ChatRevealIdentityView: View {
 
-    let image: UIImage?
+    let image: Data?
     let isRequest: Bool
     let revealAction: (() -> Void)?
 
@@ -103,7 +103,7 @@ struct ChatRevealIdentityView: View {
 struct ChatIdentityRequestViewPreview: PreviewProvider {
     static var previews: some View {
         VStack {
-            ChatRevealIdentityView(image: R.image.onboarding.testAvatar()!,
+            ChatRevealIdentityView(image: R.image.onboarding.testAvatar()?.jpegData(compressionQuality: 1),
                                    isRequest: true,
                                    revealAction: nil)
 
