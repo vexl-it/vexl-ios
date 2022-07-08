@@ -94,6 +94,19 @@ final class ChatRepository: ChatRepositoryType {
             .materialize()
             .compactMap(\.value)
             .withUnretained(self)
+            .flatMap { owner, _ -> AnyPublisher<Void, Never> in
+                if isAccepted {
+                    return owner.chatService
+                        .createRevealedUser(forInboxKeys: inboxKeys, contactPublicKey: contactPublicKey)
+                        .materialize()
+                        .compactMap(\.value)
+                        .eraseToAnyPublisher()
+                } else {
+                    return Just(())
+                        .eraseToAnyPublisher()
+                }
+            }
+            .withUnretained(self)
             .flatMap { owner, _ in
                 owner.sendMessage(inboxKeys: inboxKeys,
                                   receiverPublicKey: contactPublicKey,

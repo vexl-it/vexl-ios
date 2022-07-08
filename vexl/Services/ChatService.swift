@@ -43,6 +43,7 @@ protocol ChatServiceType {
     func deleteMessages(inboxPublicKey: String, contactPublicKey: String) -> AnyPublisher<Void, Error>
     func getContactIdentity(inboxKeys: ECCKeys, contactPublicKey: String) -> AnyPublisher<(username: String, avatar: String?), Error>
     func updateIdentityReveal(inboxKeys: ECCKeys, contactPublicKey: String, isAccepted: Bool) -> AnyPublisher<Void, Error>
+    func createRevealedUser(forInboxKeys: ECCKeys, contactPublicKey: String) -> AnyPublisher<Void, Error>
 }
 
 final class ChatService: BaseService, ChatServiceType {
@@ -192,7 +193,11 @@ final class ChatService: BaseService, ChatServiceType {
     }
 
     func updateIdentityReveal(inboxKeys: ECCKeys, contactPublicKey: String, isAccepted: Bool) -> AnyPublisher<Void, Error> {
-        localStorageService.updateRevealedUser(inboxPublicKey: inboxKeys.publicKey, contactPublicKey: contactPublicKey, isAccepted: isAccepted)
+        localStorageService.updateIdentityReveal(inboxPublicKey: inboxKeys.publicKey, contactPublicKey: contactPublicKey, isAccepted: isAccepted)
+    }
+
+    func createRevealedUser(forInboxKeys inboxKeys: ECCKeys, contactPublicKey: String) -> AnyPublisher<Void, Error> {
+        localStorageService.createRevealedUser(fromInboxPublicKey: inboxKeys.publicKey, contactPublicKey: contactPublicKey)
     }
 }
 
@@ -230,7 +235,9 @@ extension ChatService {
     }
 
     private func updatedRevealIdentityMessage(_ message: ParsedChatMessage, inboxKeys: ECCKeys, isAccepted: Bool) -> AnyPublisher<Void, Error> {
-        localStorageService.updateRevealedUser(inboxPublicKey: inboxKeys.publicKey, contactPublicKey: message.contactInboxKey, isAccepted: isAccepted)
+        localStorageService.updateIdentityReveal(inboxPublicKey: inboxKeys.publicKey,
+                                                 contactPublicKey: message.contactInboxKey,
+                                                 isAccepted: isAccepted)
             .withUnretained(self)
             .flatMap { owner, _ -> AnyPublisher<Void, Error> in
                 if isAccepted {

@@ -183,6 +183,16 @@ final class DictionaryDB {
         self.storedChatUser.append(storedChatUser)
     }
 
+    static func createChatUser(inboxPublicKey: String, contactPublicKey: String) {
+        guard let approvedMessage = messages.first(where: {
+            $0.messageType == .revealApproval && $0.inboxKey == inboxPublicKey && $0.contactInboxKey == contactPublicKey
+        }), let user = approvedMessage.user else {
+            return
+        }
+
+        saveChatUser(user, inboxPublicKey: inboxPublicKey, contactPublicKey: contactPublicKey)
+    }
+
     static func getChatUser(inboxPublicKey: String, contactPublicKey: String) -> ParsedChatMessage.ChatUser? {
         guard let storedChatUser = storedChatUser.first(where: {
             $0.inboxPublicKey == inboxPublicKey && $0.contactPublicKey == contactPublicKey
@@ -204,10 +214,6 @@ final class DictionaryDB {
                 }
                 messages[index] = response
             }
-        }
-
-        if let identityMessage = identityMessages.first(where: { $0.user != nil }), let user = identityMessage.user {
-            saveChatUser(user, inboxPublicKey: inboxPublicKey, contactPublicKey: contactPublicKey)
         }
     }
 }
