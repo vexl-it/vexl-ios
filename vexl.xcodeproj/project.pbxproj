@@ -40,7 +40,6 @@
 		B007A73C2868B69E00CFA5C9 /* Donate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B007A73B2868B69E00CFA5C9 /* Donate.swift */; };
 		B007A74B2871EB2900CFA5C9 /* UserRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = B007A74A2871EB2900CFA5C9 /* UserRepository.swift */; };
 		B007A7502872267400CFA5C9 /* ManagedOffer+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B007A74F2872267400CFA5C9 /* ManagedOffer+.swift */; };
-		B007A7522872268E00CFA5C9 /* ManagedInbox+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B007A7512872268E00CFA5C9 /* ManagedInbox+.swift */; };
 		B007A7542872269B00CFA5C9 /* ManagedUser+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B007A7532872269B00CFA5C9 /* ManagedUser+.swift */; };
 		B007A756287226AA00CFA5C9 /* ManagedProfile+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B007A755287226AA00CFA5C9 /* ManagedProfile+.swift */; };
 		B007A758287226B500CFA5C9 /* ManagedPublicKey+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B007A757287226B500CFA5C9 /* ManagedPublicKey+.swift */; };
@@ -54,6 +53,7 @@
 		B007A78A2874C25500CFA5C9 /* PersistenceStoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B007A7892874C25500CFA5C9 /* PersistenceStoreManager.swift */; };
 		B007A78C2875970D00CFA5C9 /* NSManagedObjectContext+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B007A78B2875970C00CFA5C9 /* NSManagedObjectContext+.swift */; };
 		B007A7922877629A00CFA5C9 /* Bool+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B007A7912877629A00CFA5C9 /* Bool+.swift */; };
+		B007A7942878285800CFA5C9 /* ManagedInbox+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B007A7932878285800CFA5C9 /* ManagedInbox+.swift */; };
 		B01C01E62860B2C400A29F85 /* CoinChartData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B01C01E52860B2C400A29F85 /* CoinChartData.swift */; };
 		B01C01E92860D2CD00A29F85 /* ContentState.swift in Sources */ = {isa = PBXBuildFile; fileRef = B01C01E82860D2CD00A29F85 /* ContentState.swift */; };
 		B01C01EB2861F9D900A29F85 /* vexl-crypto.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = B01C01EA2861F9D900A29F85 /* vexl-crypto.xcframework */; };
@@ -276,10 +276,10 @@
 		F1B5FCD627C703BF0018729B /* View+.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B5FCD527C703BF0018729B /* View+.swift */; };
 		F1B5FCD827C7040C0018729B /* RoundedCorners.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B5FCD727C7040C0018729B /* RoundedCorners.swift */; };
 		F1B93ED0286A2102008DAA90 /* StoredOffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B93ECF286A2102008DAA90 /* StoredOffer.swift */; };
-		F1B93EDA286D6671008DAA90 /* VexlDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = F1B93ED8286D6671008DAA90 /* VexlDataModel.xcdatamodeld */; };
 		F1B93ED3286D12C6008DAA90 /* OfferKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B93ED2286D12C6008DAA90 /* OfferKeys.swift */; };
 		F1B93ED5286D12D7008DAA90 /* OfferType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B93ED4286D12D7008DAA90 /* OfferType.swift */; };
 		F1B93ED7286D15D5008DAA90 /* OfferSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B93ED6286D15D5008DAA90 /* OfferSource.swift */; };
+		F1B93EDA286D6671008DAA90 /* VexlDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = F1B93ED8286D6671008DAA90 /* VexlDataModel.xcdatamodeld */; };
 		F1B93EDE286E372D008DAA90 /* ChatOfferActionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B93EDD286E372D008DAA90 /* ChatOfferActionSheet.swift */; };
 		F1B93EEC28720A41008DAA90 /* ChatDeleteActionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B93EEA28720A40008DAA90 /* ChatDeleteActionSheet.swift */; };
 		F1B93EED28720A41008DAA90 /* ChatDeleteConfirmationActionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B93EEB28720A41008DAA90 /* ChatDeleteConfirmationActionSheet.swift */; };
@@ -382,7 +382,6 @@
 		B007A73B2868B69E00CFA5C9 /* Donate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Donate.swift; sourceTree = "<group>"; };
 		B007A74A2871EB2900CFA5C9 /* UserRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRepository.swift; sourceTree = "<group>"; };
 		B007A74F2872267400CFA5C9 /* ManagedOffer+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ManagedOffer+.swift"; sourceTree = "<group>"; };
-		B007A7512872268E00CFA5C9 /* ManagedInbox+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "ManagedInbox+.swift"; path = "/Users/madahilas/source/cleevio/vexl-ios/vexl/Database/ManagedObjects/ManagedInbox+.swift"; sourceTree = "<absolute>"; };
 		B007A7532872269B00CFA5C9 /* ManagedUser+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ManagedUser+.swift"; sourceTree = "<group>"; };
 		B007A755287226AA00CFA5C9 /* ManagedProfile+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ManagedProfile+.swift"; sourceTree = "<group>"; };
 		B007A757287226B500CFA5C9 /* ManagedPublicKey+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ManagedPublicKey+.swift"; sourceTree = "<group>"; };
@@ -396,6 +395,7 @@
 		B007A7892874C25500CFA5C9 /* PersistenceStoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceStoreManager.swift; sourceTree = "<group>"; };
 		B007A78B2875970C00CFA5C9 /* NSManagedObjectContext+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSManagedObjectContext+.swift"; sourceTree = "<group>"; };
 		B007A7912877629A00CFA5C9 /* Bool+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bool+.swift"; sourceTree = "<group>"; };
+		B007A7932878285800CFA5C9 /* ManagedInbox+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ManagedInbox+.swift"; sourceTree = "<group>"; };
 		B01C01E52860B2C400A29F85 /* CoinChartData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinChartData.swift; sourceTree = "<group>"; };
 		B01C01E82860D2CD00A29F85 /* ContentState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentState.swift; sourceTree = "<group>"; };
 		B01C01EA2861F9D900A29F85 /* vexl-crypto.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = "vexl-crypto.xcframework"; sourceTree = "<group>"; };
@@ -629,10 +629,10 @@
 		F1B5FCD527C703BF0018729B /* View+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+.swift"; sourceTree = "<group>"; };
 		F1B5FCD727C7040C0018729B /* RoundedCorners.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedCorners.swift; sourceTree = "<group>"; };
 		F1B93ECF286A2102008DAA90 /* StoredOffer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoredOffer.swift; sourceTree = "<group>"; };
-		F1B93ED9286D6671008DAA90 /* VexlDataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = VexlDataModel.xcdatamodel; sourceTree = "<group>"; };
 		F1B93ED2286D12C6008DAA90 /* OfferKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferKeys.swift; sourceTree = "<group>"; };
 		F1B93ED4286D12D7008DAA90 /* OfferType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferType.swift; sourceTree = "<group>"; };
 		F1B93ED6286D15D5008DAA90 /* OfferSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferSource.swift; sourceTree = "<group>"; };
+		F1B93ED9286D6671008DAA90 /* VexlDataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = VexlDataModel.xcdatamodel; sourceTree = "<group>"; };
 		F1B93EDD286E372D008DAA90 /* ChatOfferActionSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatOfferActionSheet.swift; sourceTree = "<group>"; };
 		F1B93EEA28720A40008DAA90 /* ChatDeleteActionSheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatDeleteActionSheet.swift; sourceTree = "<group>"; };
 		F1B93EEB28720A41008DAA90 /* ChatDeleteConfirmationActionSheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatDeleteConfirmationActionSheet.swift; sourceTree = "<group>"; };
@@ -816,9 +816,9 @@
 				B007A755287226AA00CFA5C9 /* ManagedProfile+.swift */,
 				B007A757287226B500CFA5C9 /* ManagedPublicKey+.swift */,
 				B007A74F2872267400CFA5C9 /* ManagedOffer+.swift */,
-				B007A7512872268E00CFA5C9 /* ManagedInbox+.swift */,
 				B007A759287226D000CFA5C9 /* ManagedChat+.swift */,
 				B007A75B287226DC00CFA5C9 /* ManagedMessage+.swift */,
+				B007A7932878285800CFA5C9 /* ManagedInbox+.swift */,
 			);
 			path = ManagedObjects;
 			sourceTree = "<group>";
@@ -2196,7 +2196,6 @@
 				B08F392C27AE7112008B344F /* ApiInterceptor.swift in Sources */,
 				F1B5FCCF27C6F7E80018729B /* RegisterPhoneViewModel.swift in Sources */,
 				F12A14DE27D677420096543E /* RegisterContactsViewModel.swift in Sources */,
-				B007A7522872268E00CFA5C9 /* ManagedInbox+.swift in Sources */,
 				B007A72A2864FE4A00CFA5C9 /* CurrencySelect.swift in Sources */,
 				F1A9453C27F7E01D009B5AE3 /* ChallengeValidation.swift in Sources */,
 				F18862512811710100659786 /* OfferStatusView.swift in Sources */,
@@ -2360,6 +2359,7 @@
 				F1D204EF2862AECB006A5671 /* ChatStartTextView.swift in Sources */,
 				F1D204ED2861543C006A5671 /* ChatModalContainerView.swift in Sources */,
 				B08F396427AE7112008B344F /* UserError.swift in Sources */,
+				B007A7942878285800CFA5C9 /* ManagedInbox+.swift in Sources */,
 				F1A9453727F686D1009B5AE3 /* PhoneVerification.swift in Sources */,
 				F1D2011A28292868006DF4AB /* TabBarCoordinator.swift in Sources */,
 				4FBF61DE283BD11C00DDBE71 /* FilterCoordinator.swift in Sources */,
