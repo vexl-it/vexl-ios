@@ -37,7 +37,7 @@ struct ChatRevealIdentityResponseView: View {
                       height: 1)
                     .frame(maxWidth: .infinity)
 
-                Text(isAccepted ? "Request accepted!" : L.chatMessageIdentityRevealHeader())
+                Text(isAccepted ? L.chatMessageIdentityRevealApproved() : L.chatMessageIdentityRevealHeader())
                     .multilineTextAlignment(.center)
                     .foregroundColor(Appearance.Colors.gray3)
                     .textStyle(.description)
@@ -49,7 +49,7 @@ struct ChatRevealIdentityResponseView: View {
                     .frame(maxWidth: .infinity)
             }
 
-            Text(isAccepted ? username : "You have declined")
+            Text(isAccepted ? username : L.chatMessageIdentityRevealReject())
                 .foregroundColor(Appearance.Colors.whiteText)
                 .textStyle(.titleSmallSemiBold)
                 .padding(.bottom, Appearance.GridGuide.mediumPadding1)
