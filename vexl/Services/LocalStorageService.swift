@@ -13,8 +13,8 @@ enum LocalStorageError: Error {
     case readFailed
 }
 
+@available(*, deprecated)
 protocol LocalStorageServiceType {
-
     // MARK: - Offer
 
     func saveOffers(_ offers: [Offer], areCreated: Bool) -> AnyPublisher<Void, Error>
@@ -32,6 +32,7 @@ protocol LocalStorageServiceType {
     func saveMessages(_ messages: [ParsedChatMessage]) -> AnyPublisher<Void, Error>
     func getMessages() -> AnyPublisher<[ParsedChatMessage], Error>
     func saveRequestMessage(_ message: ParsedChatMessage, inboxPublicKey: String) -> AnyPublisher<Void, Error>
+
     func getRequestMessages() -> AnyPublisher<[ParsedChatMessage], Error>
     func deleteRequestMessage(withOfferId id: String) -> AnyPublisher<Void, Error>
     func deleteChatMessages(forInbox inboxPublicKey: String, contactPublicKey: String) -> AnyPublisher<Void, Error>
