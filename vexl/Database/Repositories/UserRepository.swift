@@ -24,13 +24,22 @@ protocol UserRepositoryType {
 }
 
 final class UserRepository: UserRepositoryType {
-    @Inject private var userMicroService: UserServiceType
-    @Inject private var persistenceManager: PersistenceStoreManagerType
+
+    // MARK: - Public properties
 
     var currentUser: CurrentValueSubject<ManagedUser?, Never> = .init(nil)
 
+    // MARK: - Dependencies
+
+    @Inject private var userMicroService: UserServiceType
+    @Inject private var persistenceManager: PersistenceStoreManagerType
+
+    // MARK: - Private properties
+
     private var cancelBag: CancelBag = .init()
     private lazy var context: NSManagedObjectContext = persistenceManager.viewContext
+
+    // MARK: - Computed variables
 
     var userKeys: ECCKeys {
         guard let pubK = currentUser.value?.profile?.publicKey?.publicKey,
