@@ -139,6 +139,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
         self.receiverPublicKey = receiverPublicKey
         self.offerType = offerType
         setupActionBindings()
+        setupUpdateUIBindings()
         setupChatInputBindings()
         setupChatImageInputBindings()
         setupRevealIdentityRequestBindings()
@@ -150,7 +151,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
         setupOfferBindings()
     }
 
-    private func setupInboxManagerBinding() {
+    private func setupUpdateUIBindings() {
         chatRepository
             .getContactIdentity(inboxKeys: inboxKeys, contactPublicKey: receiverPublicKey)
             .withUnretained(self)
@@ -170,7 +171,9 @@ final class ChatViewModel: ViewModelType, ObservableObject {
                 owner.showChatMessages(messages)
             }
             .store(in: cancelBag)
+    }
 
+    private func setupInboxManagerBinding() {
         inboxManager
             .completedSyncing
             .withUnretained(self)
@@ -386,8 +389,10 @@ final class ChatViewModel: ViewModelType, ObservableObject {
                                         text: message.text,
                                         image: message.image)
         }
+
+        let filteredItems = conversationItems.filter { $0.type == .rejectIdentityReveal || $0.type == .approveIdentityReveal }
         let conversationSection = ChatConversationSection(date: Date(),
-                                                          messages: conversationItems)
+                                                          messages: filteredItems)
         self.messages.append(conversationSection)
     }
 
