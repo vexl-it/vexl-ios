@@ -39,9 +39,17 @@ final class ChatIdentityRevealViewModel: ViewModelType, ObservableObject {
 
     private let cancelBag: CancelBag = .init()
     let isUserResponse: Bool
+    let username: String
+    let avatar: String?
 
-    init(isUserResponse: Bool) {
+    var avatarData: Data? {
+        avatar?.dataFromBase64
+    }
+
+    init(isUserResponse: Bool, username: String, avatar: String?) {
         self.isUserResponse = isUserResponse
+        self.username = username
+        self.avatar = avatar
         setupActionBindings()
     }
 

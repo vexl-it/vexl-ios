@@ -79,7 +79,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
         case showDeleteTapped
         case showRevealIdentityTapped
         case showRevealIdentityResponseTapped
-        case showRevealIdentityModal(isUserResponse: Bool)
+        case showRevealIdentityModal(isUserResponse: Bool, username: String, avatar: String?)
     }
 
     var route: CoordinatingSubject<Route> = .init()
@@ -151,16 +151,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
     }
 
     private func setupInboxManagerBinding() {
-        chatRepository
-            .getContactIdentity(inboxKeys: inboxKeys, contactPublicKey: receiverPublicKey)
-            .withUnretained(self)
-            .sink(receiveCompletion: { _ in },
-                  receiveValue: { owner, user in
-                owner.username = user.username
-                owner.avatar = user.avatar?.dataFromBase64
-                owner.isUserRevealed = true
-            })
-            .store(in: cancelBag)
+        displayRevealedUser()
 
         chatService
             .getStoredChatMessages(inboxPublicKey: inboxKeys.publicKey, contactPublicKey: receiverPublicKey)
@@ -362,7 +353,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
         username = user.name
         avatar = user.image?.dataFromBase64
 
-        route.send(.showRevealIdentityModal(isUserResponse: false))
+        route.send(.showRevealIdentityModal(isUserResponse: false, username: username, avatar: user.image))
     }
 
     private func showChatMessages(_ messages: [ParsedChatMessage]) {
@@ -415,8 +406,31 @@ final class ChatViewModel: ViewModelType, ObservableObject {
             .identityRevealResponse(inboxKeys: inboxKeys, contactPublicKey: receiverPublicKey, isAccepted: isAccepted)
             .materialize()
             .compactMap(\.value)
-            .map { _ -> Route in .showRevealIdentityModal(isUserResponse: true) }
+            .filter { isAccepted }
+            .withUnretained(self)
+            .flatMap { owner, _ in
+                owner.chatRepository
+                    .getContactIdentity(inboxKeys: owner.inboxKeys, contactPublicKey: owner.receiverPublicKey)
+                    .materialize()
+                    .compactMap(\.value)
+            }
+            .map { user -> Route in .showRevealIdentityModal(isUserResponse: true, username: user.username, avatar: user.avatar) }
             .subscribe(route)
+            .store(in: cancelBag)
+    }
+
+    // TODO: - after tapping on user reveal - call displayRevealedUser and update the item in the array.
+
+    func displayRevealedUser() {
+        chatRepository
+            .getContactIdentity(inboxKeys: inboxKeys, contactPublicKey: receiverPublicKey)
+            .withUnretained(self)
+            .sink(receiveCompletion: { _ in },
+                  receiveValue: { owner, user in
+                owner.username = user.username
+                owner.avatar = user.avatar?.dataFromBase64
+                owner.isUserRevealed = true
+            })
             .store(in: cancelBag)
     }
 }
