@@ -19,6 +19,10 @@ struct ChatConversationSection: Identifiable, Hashable {
     mutating func addItem(_ message: ChatConversationItem) {
         self.messages.append(message)
     }
+
+    mutating func updateRevealIdentitiesItems(isAccepted: Bool, chatUser: ParsedChatMessage.ChatUser?) {
+        messages.updateRevealIdentities(isAccepted: isAccepted, chatUser: chatUser)
+    }
 }
 
 extension Array where Element == ChatConversationSection {
@@ -31,6 +35,14 @@ extension Array where Element == ChatConversationSection {
             let newGroup = ChatConversationSection(date: Date(),
                                                    messages: [message])
             self.append(newGroup)
+        }
+    }
+
+    mutating func updateRevealIdentitiesItems(isAccepted: Bool, chatUser: ParsedChatMessage.ChatUser?) {
+        for (index, section) in self.enumerated() {
+            var newSection = section
+            newSection.updateRevealIdentitiesItems(isAccepted: isAccepted, chatUser: chatUser)
+            self[index] = newSection
         }
     }
 }

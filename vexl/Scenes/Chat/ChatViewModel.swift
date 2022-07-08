@@ -151,7 +151,14 @@ final class ChatViewModel: ViewModelType, ObservableObject {
     }
 
     private func setupInboxManagerBinding() {
-        displayRevealedUser()
+        chatRepository
+            .getContactIdentity(inboxKeys: inboxKeys, contactPublicKey: receiverPublicKey)
+            .withUnretained(self)
+            .sink(receiveCompletion: { _ in },
+                  receiveValue: { owner, user in
+                owner.updateContactInformation(username: user.name, avatar: user.image)
+            })
+            .store(in: cancelBag)
 
         chatService
             .getStoredChatMessages(inboxPublicKey: inboxKeys.publicKey, contactPublicKey: receiverPublicKey)
@@ -345,15 +352,14 @@ final class ChatViewModel: ViewModelType, ObservableObject {
     }
 
     private func updateRevealedUser(messages: [ParsedChatMessage]) {
-        guard let revealMessage = messages.first(where: { $0.messageType == .revealApproval }),
-              let user = revealMessage.user else {
-            return
+        if let revealMessage = messages.first(where: { $0.messageType == .revealApproval }),
+           let user = revealMessage.user {
+            updateContactInformation(username: user.name, avatar: user.image)
+            updateDisplayedRevealMessages(isAccepted: true, user: user)
+            route.send(.showRevealIdentityModal(isUserResponse: false, username: user.name, avatar: user.image))
+        } else if messages.contains(where: { $0.messageType == .revealRejected }) {
+            updateDisplayedRevealMessages(isAccepted: false, user: nil)
         }
-
-        username = user.name
-        avatar = user.image?.dataFromBase64
-
-        route.send(.showRevealIdentityModal(isUserResponse: false, username: username, avatar: user.image))
     }
 
     private func showChatMessages(_ messages: [ParsedChatMessage]) {
@@ -406,31 +412,42 @@ final class ChatViewModel: ViewModelType, ObservableObject {
             .identityRevealResponse(inboxKeys: inboxKeys, contactPublicKey: receiverPublicKey, isAccepted: isAccepted)
             .materialize()
             .compactMap(\.value)
-            .filter { isAccepted }
             .withUnretained(self)
-            .flatMap { owner, _ in
-                owner.chatRepository
-                    .getContactIdentity(inboxKeys: owner.inboxKeys, contactPublicKey: owner.receiverPublicKey)
-                    .materialize()
-                    .compactMap(\.value)
+            .flatMap { owner, _ -> AnyPublisher<ParsedChatMessage.ChatUser?, Never> in
+                if isAccepted {
+                    return owner.chatRepository
+                        .getContactIdentity(inboxKeys: owner.inboxKeys, contactPublicKey: owner.receiverPublicKey)
+                        .materialize()
+                        .compactMap { $0.value }
+                        .eraseToAnyPublisher()
+                } else {
+                    return Just(nil)
+                        .eraseToAnyPublisher()
+                }
             }
-            .map { user -> Route in .showRevealIdentityModal(isUserResponse: true, username: user.username, avatar: user.avatar) }
-            .subscribe(route)
+            .withUnretained(self)
+            .sink(receiveValue: { owner, user in
+                if let user = user, isAccepted {
+                    owner.updateContactInformation(username: user.name, avatar: user.image)
+                    owner.route.send(.showRevealIdentityModal(isUserResponse: true, username: user.name, avatar: user.image))
+                }
+
+                owner.updateDisplayedRevealMessages(isAccepted: isAccepted, user: user)
+            })
             .store(in: cancelBag)
     }
 
-    // TODO: - after tapping on user reveal - call displayRevealedUser and update the item in the array.
+    private func updateDisplayedRevealMessages(isAccepted: Bool, user: ParsedChatMessage.ChatUser?) {
+        if let user = user, isAccepted {
+            messages.updateRevealIdentitiesItems(isAccepted: isAccepted, chatUser: user)
+        } else {
+            messages.updateRevealIdentitiesItems(isAccepted: isAccepted, chatUser: user)
+        }
+    }
 
-    func displayRevealedUser() {
-        chatRepository
-            .getContactIdentity(inboxKeys: inboxKeys, contactPublicKey: receiverPublicKey)
-            .withUnretained(self)
-            .sink(receiveCompletion: { _ in },
-                  receiveValue: { owner, user in
-                owner.username = user.username
-                owner.avatar = user.avatar?.dataFromBase64
-                owner.isUserRevealed = true
-            })
-            .store(in: cancelBag)
+    private func updateContactInformation(username: String, avatar: String?) {
+        self.username = username
+        self.avatar = avatar?.dataFromBase64
+        self.isUserRevealed = true
     }
 }
