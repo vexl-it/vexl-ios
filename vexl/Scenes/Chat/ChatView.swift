@@ -65,7 +65,9 @@ struct ChatView: View {
                 }
             }
 
-            ChatConversationView(messages: viewModel.messages,
+            ChatConversationView(username: viewModel.username,
+                                 avatar: viewModel.avatar,
+                                 messages: viewModel.messages,
                                  revealAction: {
                 withAnimation {
                     viewModel.action.send(.revealResponseTap)

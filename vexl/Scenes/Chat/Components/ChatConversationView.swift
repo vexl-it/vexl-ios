@@ -9,6 +9,8 @@ import SwiftUI
 
 struct ChatConversationView: View {
 
+    let username: String
+    let avatar: Data?
     let messages: [ChatConversationSection]
     let revealAction: () -> Void
     let imageAction: (String, String) -> Void
@@ -46,10 +48,12 @@ struct ChatConversationView: View {
                                 revealAction()
                             })
                         case .rejectIdentityReveal:
-                            ChatRevealIdentityResponseView(image: nil,
+                            ChatRevealIdentityResponseView(username: username,
+                                                           image: avatar,
                                                            isAccepted: false)
                         case .approveIdentityReveal:
-                            ChatRevealIdentityResponseView(image: nil,
+                            ChatRevealIdentityResponseView(username: username,
+                                                           image: avatar,
                                                            isAccepted: true)
                         case .noContent:
                             EmptyView()
@@ -67,7 +71,9 @@ struct ChatConversationView: View {
 
 struct ChatConversationViewPreview: PreviewProvider {
     static var previews: some View {
-        ChatConversationView(messages: ChatConversationSection.stub,
+        ChatConversationView(username: "username",
+                             avatar: nil,
+                             messages: ChatConversationSection.stub,
                              revealAction: {},
                              imageAction: { _, _ in })
             .frame(maxWidth: .infinity, maxHeight: .infinity)

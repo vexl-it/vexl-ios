@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ChatRevealIdentityResponseView: View {
 
+    let username: String
     let image: Data?
     let isAccepted: Bool
 
@@ -48,7 +49,7 @@ struct ChatRevealIdentityResponseView: View {
                     .frame(maxWidth: .infinity)
             }
 
-            Text(isAccepted ? "username" : "You have declined")
+            Text(isAccepted ? username : "You have declined")
                 .foregroundColor(Appearance.Colors.whiteText)
                 .textStyle(.titleSmallSemiBold)
                 .padding(.bottom, Appearance.GridGuide.mediumPadding1)
@@ -61,10 +62,12 @@ struct ChatRevealIdentityResponseView: View {
 struct ChatRevealIdentityResponseViewPreview: PreviewProvider {
     static var previews: some View {
         VStack {
-            ChatRevealIdentityResponseView(image: R.image.onboarding.testAvatar()!.jpegData(compressionQuality: 1),
+            ChatRevealIdentityResponseView(username: "Username",
+                                           image: R.image.onboarding.testAvatar()!.jpegData(compressionQuality: 1),
                                            isAccepted: true)
 
-            ChatRevealIdentityResponseView(image: nil,
+            ChatRevealIdentityResponseView(username: "Username",
+                                           image: nil,
                                            isAccepted: false)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
