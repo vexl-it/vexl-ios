@@ -21,7 +21,7 @@ enum OfferSource: String {
     case fetched
 }
 
-enum OffserTrigger: String {
+enum OfferTrigger: String {
     case none = "NONE"
     case below = "PRICE_IS_BELOW"
     case abowe = "PRICE_IS_ABOVE"

@@ -27,7 +27,7 @@ struct Offer {
     let type: OfferType
     let source: OfferSource
 
-    var activePriceState: OffserTrigger = .none
+    var activePriceState: OfferTrigger = .none
     var activePriceValue: Double = 0.0
     var active: Bool = true
     var commonFriends: [String] = []
