@@ -12,15 +12,46 @@ struct ChatRevealIdentityResponseView: View {
     let image: Data?
     let isAccepted: Bool
 
+    private var displayImage: UIImage? {
+        if isAccepted {
+            if let image = image {
+                return UIImage(data: image)
+            } else {
+                return R.image.marketplace.defaultAvatar()
+            }
+        } else {
+            return R.image.chat.rejectReveal()
+        }
+    }
+
     var body: some View {
         VStack {
-            if isAccepted {
-                Text("Accepted")
-                    .foregroundColor(.white)
-            } else {
-                Text("Rejected")
-                    .foregroundColor(.white)
+            ContactAvatarView(image: displayImage,
+                              size: Appearance.GridGuide.chatRequestAvatarSize)
+                .padding(.bottom, Appearance.GridGuide.smallPadding)
+
+            HStack {
+
+                HLine(color: Appearance.Colors.whiteOpaque,
+                      height: 1)
+                    .frame(maxWidth: .infinity)
+
+                Text(isAccepted ? "Request accepted!" : L.chatMessageIdentityRevealHeader())
+                    .multilineTextAlignment(.center)
+                    .foregroundColor(Appearance.Colors.gray3)
+                    .textStyle(.description)
+                    .padding(.bottom, Appearance.GridGuide.tinyPadding)
+                    .frame(maxWidth: .infinity)
+
+                HLine(color: Appearance.Colors.whiteOpaque,
+                      height: 1)
+                    .frame(maxWidth: .infinity)
             }
+
+            Text(isAccepted ? "username" : "You have declined")
+                .foregroundColor(Appearance.Colors.whiteText)
+                .textStyle(.titleSmallSemiBold)
+                .padding(.bottom, Appearance.GridGuide.mediumPadding1)
         }
     }
 }
