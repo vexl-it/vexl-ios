@@ -30,6 +30,7 @@ protocol AuthenticationManagerType {
     func logoutUser()
 }
 
+@available(*, deprecated)
 protocol UserSecurityType {
     var userSecurity: UserSecurity { get set }
     var userKeys: ECCKeys { get }
