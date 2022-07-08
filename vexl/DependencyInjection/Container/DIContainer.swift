@@ -14,6 +14,7 @@ class DIContainer {
     let assembler = Assembler([
         ManagerAssembly(),
         ServiceAssembly(),
+        PersistenceManagerAssembly(),
         RepositoryAssembly()
     ])
 
