@@ -9,6 +9,8 @@ import Foundation
 import Cleevio
 import Combine
 
+private typealias ActionSheetResult = CoordinatingResult<RouterResult<BottomActionSheetActionType>>
+
 final class ChatCoordinator: BaseCoordinator<RouterResult<Void>> {
 
     private let inboxKeys: ECCKeys
@@ -71,7 +73,7 @@ final class ChatCoordinator: BaseCoordinator<RouterResult<Void>> {
                 let router = ModalRouter(parentViewController: viewController,
                                          presentationStyle: .overFullScreen,
                                          transitionStyle: .crossDissolve)
-                return owner.presentActionSheet(router: router, viewModel: ChatIdentityRequestViewModel())
+                return owner.presentActionSheet(router: router, viewModel: ChatIdentityViewModel(isResponse: false))
             }
             .filter(Self.filterPrimaryAction)
             .sink { _ in
@@ -87,7 +89,7 @@ final class ChatCoordinator: BaseCoordinator<RouterResult<Void>> {
                 let router = ModalRouter(parentViewController: viewController,
                                          presentationStyle: .overFullScreen,
                                          transitionStyle: .crossDissolve)
-                return owner.presentActionSheet(router: router, viewModel: ChatIdentityResponseViewModel())
+                return owner.presentActionSheet(router: router, viewModel: ChatIdentityViewModel(isResponse: true))
             }
             .compactMap { result -> BottomActionSheetActionType? in
                 if case let .finished(actionType) = result { return actionType }
@@ -170,9 +172,8 @@ extension ChatCoordinator {
         .eraseToAnyPublisher()
     }
 
-    // swiftlint: disable line_length
     private func presentActionSheet<ViewModel: BottomActionSheetViewModelProtocol>(router: Router,
-                                                                                   viewModel: ViewModel) -> CoordinatingResult<RouterResult<BottomActionSheetActionType>> {
+                                                                                   viewModel: ViewModel) -> ActionSheetResult {
         coordinate(to: BottomActionSheetCoordinator(router: router, viewModel: viewModel))
         .flatMap { result -> CoordinatingResult<RouterResult<BottomActionSheetActionType>> in
             guard result != .dismissedByRouter else {

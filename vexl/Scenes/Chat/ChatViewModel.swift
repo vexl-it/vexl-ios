@@ -129,7 +129,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
         !currentMessage.isEmpty || selectedImage != nil
     }
 
-    var isUserRevealed = false
+    var userIsRevealed = false
     private let inboxKeys: ECCKeys
     private let receiverPublicKey: String
     private let isBlocked = false
@@ -158,7 +158,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
                   receiveValue: { owner, user in
                 owner.username = user.username
                 owner.avatar = user.avatar?.dataFromBase64
-                owner.isUserRevealed = true
+                owner.userIsRevealed = true
             })
             .store(in: cancelBag)
 
