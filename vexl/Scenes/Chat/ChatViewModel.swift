@@ -394,10 +394,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
                                         text: message.text,
                                         image: message.image)
         }
-
-        let conversationSection = ChatConversationSection(date: Date(),
-                                                          messages: conversationItems)
-        self.messages.append(conversationSection)
+        self.messages.appendItems(conversationItems)
     }
 
     func deleteMessages() {
@@ -414,13 +411,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
             .track(activity: primaryActivity)
             .withUnretained(self)
             .sink { owner, _ in
-                let item = ChatConversationItem(type: .requestIdentityReveal,
-                                                isContact: false,
-                                                text: "",
-                                                image: nil)
-                let conversationSection = ChatConversationSection(date: Date(),
-                                                                  messages: [item])
-                owner.messages.append(conversationSection)
+                owner.messages.appendItem(.createIdentityRequest())
             }
             .store(in: cancelBag)
     }
