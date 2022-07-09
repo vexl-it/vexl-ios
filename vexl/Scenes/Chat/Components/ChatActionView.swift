@@ -11,11 +11,11 @@ typealias ChatAction = ChatActionView.ChatAction
 
 struct ChatActionView: View {
 
-    let isUserRevealed: Bool
+    let userIsRevealed: Bool
     let action: (ChatAction) -> Void
 
     private var availableActions: [ChatAction] {
-        if isUserRevealed {
+        if userIsRevealed {
             return ChatAction.allCases.filter { $0 != .revealIdentity }
         } else {
             return ChatAction.allCases

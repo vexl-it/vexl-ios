@@ -9,6 +9,8 @@ import Foundation
 import Cleevio
 import Combine
 
+private typealias ActionSheetResult = CoordinatingResult<RouterResult<BottomActionSheetActionType>>
+
 final class ChatCoordinator: BaseCoordinator<RouterResult<Void>> {
 
     private let inboxKeys: ECCKeys
@@ -170,9 +172,8 @@ extension ChatCoordinator {
         .eraseToAnyPublisher()
     }
 
-    // swiftlint: disable line_length
     private func presentActionSheet<ViewModel: BottomActionSheetViewModelProtocol>(router: Router,
-                                                                                   viewModel: ViewModel) -> CoordinatingResult<RouterResult<BottomActionSheetActionType>> {
+                                                                                   viewModel: ViewModel) -> ActionSheetResult {
         coordinate(to: BottomActionSheetCoordinator(router: router, viewModel: viewModel))
         .flatMap { result -> CoordinatingResult<RouterResult<BottomActionSheetActionType>> in
             guard result != .dismissedByRouter else {
