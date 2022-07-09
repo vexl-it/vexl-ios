@@ -129,7 +129,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
         !currentMessage.isEmpty || selectedImage != nil
     }
 
-    var isUserRevealed = false
+    var userIsRevealed = false
     private let inboxKeys: ECCKeys
     private let receiverPublicKey: String
     private let isBlocked = false
@@ -457,6 +457,6 @@ final class ChatViewModel: ViewModelType, ObservableObject {
     private func updateContactInformation(username: String, avatar: String?) {
         self.username = username
         self.avatar = avatar?.dataFromBase64
-        self.isUserRevealed = true
+        self.userIsRevealed = true
     }
 }
