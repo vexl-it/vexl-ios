@@ -168,7 +168,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
             .compactMap(\.value)
             .withUnretained(self)
             .sink { owner, messages in
-                owner.showChatMessages(messages)
+                owner.showChatMessages(messages, filter: [])
             }
             .store(in: cancelBag)
     }
@@ -183,7 +183,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
                     let messagesForInbox = messages.filter {
                         $0.inboxKey == owner.inboxKeys.publicKey && $0.contactInboxKey == owner.receiverPublicKey
                     }
-                    owner.showChatMessages(messagesForInbox)
+                    owner.showChatMessages(messagesForInbox, filter: [.revealRejected, .revealApproval])
                     owner.updateRevealedUser(messages: messages)
                 case .failure:
                     // TODO: - show some alert
@@ -365,8 +365,13 @@ final class ChatViewModel: ViewModelType, ObservableObject {
         }
     }
 
-    private func showChatMessages(_ messages: [ParsedChatMessage]) {
-        let conversationItems = messages.map { message -> ChatConversationItem in
+    private func showChatMessages(_ messages: [ParsedChatMessage], filter: [MessageType]) {
+        let conversationItems = messages.compactMap { message -> ChatConversationItem? in
+
+            guard !filter.contains(message.messageType) else {
+                return nil
+            }
+
             var itemType: ChatConversationItem.ItemType
 
             switch message.contentType {
@@ -390,9 +395,8 @@ final class ChatViewModel: ViewModelType, ObservableObject {
                                         image: message.image)
         }
 
-        let filteredItems = conversationItems.filter { $0.type == .rejectIdentityReveal || $0.type == .approveIdentityReveal }
         let conversationSection = ChatConversationSection(date: Date(),
-                                                          messages: filteredItems)
+                                                          messages: conversationItems)
         self.messages.append(conversationSection)
     }
 
@@ -408,7 +412,16 @@ final class ChatViewModel: ViewModelType, ObservableObject {
         chatRepository
             .requestIdentityReveal(inboxKeys: inboxKeys, contactPublicKey: receiverPublicKey)
             .track(activity: primaryActivity)
-            .sink()
+            .withUnretained(self)
+            .sink { owner, _ in
+                let item = ChatConversationItem(type: .requestIdentityReveal,
+                                                isContact: false,
+                                                text: "",
+                                                image: nil)
+                let conversationSection = ChatConversationSection(date: Date(),
+                                                                  messages: [item])
+                owner.messages.append(conversationSection)
+            }
             .store(in: cancelBag)
     }
 
