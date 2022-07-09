@@ -284,7 +284,6 @@
 		F1B93EEC28720A41008DAA90 /* ChatDeleteActionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B93EEA28720A40008DAA90 /* ChatDeleteActionSheet.swift */; };
 		F1B93EED28720A41008DAA90 /* ChatDeleteConfirmationActionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B93EEB28720A41008DAA90 /* ChatDeleteConfirmationActionSheet.swift */; };
 		F1B93EEF28720DD5008DAA90 /* ChatRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B93EEE28720DD5008DAA90 /* ChatRepository.swift */; };
-		F1B93EF72872788E008DAA90 /* RepositoryAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B93EF62872788E008DAA90 /* RepositoryAssembly.swift */; };
 		F1B93EF92873791E008DAA90 /* StoredChatUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B93EF82873791E008DAA90 /* StoredChatUser.swift */; };
 		F1B93EFB28739204008DAA90 /* ChatIdentityRequestActionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B93EFA28739204008DAA90 /* ChatIdentityRequestActionSheet.swift */; };
 		F1B93EFD2873C3B6008DAA90 /* ChatIdentityResponseActionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B93EFC2873C3B6008DAA90 /* ChatIdentityResponseActionSheet.swift */; };
@@ -645,7 +644,6 @@
 		F1B93EEA28720A40008DAA90 /* ChatDeleteActionSheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatDeleteActionSheet.swift; sourceTree = "<group>"; };
 		F1B93EEB28720A41008DAA90 /* ChatDeleteConfirmationActionSheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatDeleteConfirmationActionSheet.swift; sourceTree = "<group>"; };
 		F1B93EEE28720DD5008DAA90 /* ChatRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRepository.swift; sourceTree = "<group>"; };
-		F1B93EF62872788E008DAA90 /* RepositoryAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepositoryAssembly.swift; sourceTree = "<group>"; };
 		F1B93EF82873791E008DAA90 /* StoredChatUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoredChatUser.swift; sourceTree = "<group>"; };
 		F1B93EFA28739204008DAA90 /* ChatIdentityRequestActionSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatIdentityRequestActionSheet.swift; sourceTree = "<group>"; };
 		F1B93EFC2873C3B6008DAA90 /* ChatIdentityResponseActionSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatIdentityResponseActionSheet.swift; sourceTree = "<group>"; };
