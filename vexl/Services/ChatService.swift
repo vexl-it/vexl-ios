@@ -42,6 +42,7 @@ protocol ChatServiceType {
     func getStoredChatMessages(inboxPublicKey: String, contactPublicKey: String) -> AnyPublisher<[ParsedChatMessage], Error>
     func deleteMessages(inboxPublicKey: String, contactPublicKey: String) -> AnyPublisher<Void, Error>
     func getContactIdentity(inboxKeys: ECCKeys, contactPublicKey: String) -> AnyPublisher<ParsedChatMessage.ChatUser, Error>
+    func getStoredContactIdentities() -> AnyPublisher<[StoredChatUser], Error>
     func updateIdentityReveal(inboxKeys: ECCKeys, contactPublicKey: String, isAccepted: Bool) -> AnyPublisher<Void, Error>
     func createRevealedUser(forInboxKeys: ECCKeys, contactPublicKey: String) -> AnyPublisher<Void, Error>
 }
@@ -198,6 +199,10 @@ final class ChatService: BaseService, ChatServiceType {
 
     func createRevealedUser(forInboxKeys inboxKeys: ECCKeys, contactPublicKey: String) -> AnyPublisher<Void, Error> {
         localStorageService.createRevealedUser(fromInboxPublicKey: inboxKeys.publicKey, contactPublicKey: contactPublicKey)
+    }
+
+    func getStoredContactIdentities() -> AnyPublisher<[StoredChatUser], Error> {
+        localStorageService.getStoredChatUsers()
     }
 }
 
