@@ -7,10 +7,15 @@
 
 import Foundation
 import Cleevio
+import Combine
+
+private typealias OfferKeyAndType = (offerKey: String, offerType: OfferType)
+private typealias OfferAndMessage = (offers: [OfferKeyAndType], messages: [ChatInboxMessage])
 
 final class InboxViewModel: ViewModelType, ObservableObject {
 
     @Inject var inboxManager: InboxManagerType
+    @Inject var offerService: OfferServiceType
 
     // MARK: - Action Binding
 
@@ -35,7 +40,7 @@ final class InboxViewModel: ViewModelType, ObservableObject {
     enum Route: Equatable {
         case dismissTapped
         case requestTapped
-        case messageTapped(inboxKeys: ECCKeys, recieverPublicKey: String)
+        case conversationTapped(inboxKeys: ECCKeys, recieverPublicKey: String, offerType: OfferType?)
     }
 
     var route: CoordinatingSubject<Route> = .init()
@@ -54,14 +59,36 @@ final class InboxViewModel: ViewModelType, ObservableObject {
     private func setupInboxBindings() {
         inboxManager.inboxMessages
             .withUnretained(self)
+            .flatMap { owner, chatInboxMessages in
+                owner.offerService
+                    .getStoredOffers()
+                    .materialize()
+                    .compactMap(\.value)
+                    .map { offers -> OfferAndMessage in
+                        let offerKeyAndTypes = offers.map { offer in
+                            OfferKeyAndType(offerKey: offer.offerPublicKey, offerType: offer.type)
+                        }
+                        return OfferAndMessage(offers: offerKeyAndTypes, messages: chatInboxMessages)
+                    }
+                    .eraseToAnyPublisher()
+            }
+            .withUnretained(self)
             .sink(receiveCompletion: { _ in },
-                  receiveValue: { owner, chatInboxMessages in
+                  receiveValue: { owner, offerAndMessages in
+                let chatInboxMessages = offerAndMessages.messages
+                let offerKeyAndTypes = offerAndMessages.offers
+
                 owner.inboxItems = chatInboxMessages.map { chatInbox -> InboxItem in
-                    InboxItem(avatar: nil,
-                              username: Constants.randomName,
-                              detail: chatInbox.message.previewText,
-                              time: Formatters.chatDateFormatter.string(from: Date(timeIntervalSince1970: chatInbox.message.time)),
-                              offerType: .buy)
+                    let offerType = offerKeyAndTypes.first(where: {
+                        $0.offerKey == chatInbox.message.inboxKey || $0.offerKey == chatInbox.message.contactInboxKey
+                    })?.offerType
+
+                    // TODO: - Set real values when available
+                    return InboxItem(avatar: nil,
+                                     username: Constants.randomName,
+                                     detail: chatInbox.message.previewText,
+                                     time: Formatters.chatDateFormatter.string(from: Date(timeIntervalSince1970: chatInbox.message.time)),
+                                     offerType: offerType)
                 }
             })
             .store(in: cancelBag)
@@ -96,7 +123,10 @@ final class InboxViewModel: ViewModelType, ObservableObject {
                     return
                 }
                 let chatInboxMessage = owner.inboxManager.currentInboxMessages[index]
-                owner.route.send(.messageTapped(inboxKeys: chatInboxMessage.inbox, recieverPublicKey: chatInboxMessage.receiverInbox))
+                let offerType = owner.inboxItems[index].offerType
+                owner.route.send(.conversationTapped(inboxKeys: chatInboxMessage.inbox,
+                                                     recieverPublicKey: chatInboxMessage.contactInbox,
+                                                     offerType: offerType))
             })
             .store(in: cancelBag)
     }

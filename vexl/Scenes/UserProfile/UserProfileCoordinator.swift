@@ -37,7 +37,7 @@ final class UserProfileCoordinator: BaseCoordinator<Void> {
             .route
             .receive(on: RunLoop.main)
             .filter { $0 == .selectCurrency }
-            .flatMapLatest(with: self) { owner, _ -> CoordinatingResult<RouterResult<Void>> in
+            .flatMapLatest(with: self) { owner, _ -> CoordinatingResult<RouterResult<BottomActionSheetActionType>> in
                 let router = ModalRouter(parentViewController: viewController, presentationStyle: .overFullScreen, transitionStyle: .crossDissolve)
                 return owner.presentCurrencySelect(router: router)
             }
@@ -48,7 +48,7 @@ final class UserProfileCoordinator: BaseCoordinator<Void> {
             .route
             .receive(on: RunLoop.main)
             .filter { $0 == .joinVexl }
-            .flatMapLatest(with: self) { owner, _ -> CoordinatingResult<RouterResult<Void>> in
+            .flatMapLatest(with: self) { owner, _ -> CoordinatingResult<RouterResult<BottomActionSheetActionType>> in
                 let router = ModalRouter(parentViewController: viewController, presentationStyle: .overFullScreen, transitionStyle: .crossDissolve)
                 return owner.presentJoinVexl(router: router)
             }
@@ -59,7 +59,7 @@ final class UserProfileCoordinator: BaseCoordinator<Void> {
             .route
             .receive(on: RunLoop.main)
             .filter { $0 == .donate }
-            .flatMapLatest(with: self) { owner, _ -> CoordinatingResult<RouterResult<Void>> in
+            .flatMapLatest(with: self) { owner, _ -> CoordinatingResult<RouterResult<BottomActionSheetActionType>> in
                 let router = ModalRouter(parentViewController: viewController, presentationStyle: .overFullScreen, transitionStyle: .crossDissolve)
                 return owner.presentDonate(router: router)
             }
@@ -72,9 +72,9 @@ final class UserProfileCoordinator: BaseCoordinator<Void> {
 }
 
 extension UserProfileCoordinator {
-    private func presentCurrencySelect(router: Router) -> CoordinatingResult<RouterResult<Void>> {
+    private func presentCurrencySelect(router: Router) -> CoordinatingResult<RouterResult<BottomActionSheetActionType>> {
         coordinate(to: BottomActionSheetCoordinator(router: router, viewModel: CurrencySelectViewModel()))
-        .flatMap { result -> CoordinatingResult<RouterResult<Void>> in
+        .flatMap { result -> CoordinatingResult<RouterResult<BottomActionSheetActionType>> in
             guard result != .dismissedByRouter else {
                 return Just(result).eraseToAnyPublisher()
             }
@@ -84,9 +84,9 @@ extension UserProfileCoordinator {
         .eraseToAnyPublisher()
     }
 
-    private func presentDonate(router: Router) -> CoordinatingResult<RouterResult<Void>> {
+    private func presentDonate(router: Router) -> CoordinatingResult<RouterResult<BottomActionSheetActionType>> {
         coordinate(to: BottomActionSheetCoordinator(router: router, viewModel: DonateViewModel()))
-        .flatMap { result -> CoordinatingResult<RouterResult<Void>> in
+        .flatMap { result -> CoordinatingResult<RouterResult<BottomActionSheetActionType>> in
             guard result != .dismissedByRouter else {
                 return Just(result).eraseToAnyPublisher()
             }
@@ -96,9 +96,9 @@ extension UserProfileCoordinator {
         .eraseToAnyPublisher()
     }
 
-    private func presentJoinVexl(router: Router) -> CoordinatingResult<RouterResult<Void>> {
+    private func presentJoinVexl(router: Router) -> CoordinatingResult<RouterResult<BottomActionSheetActionType>> {
         coordinate(to: BottomActionSheetCoordinator(router: router, viewModel: JoinVexlViewModel()))
-        .flatMap { result -> CoordinatingResult<RouterResult<Void>> in
+        .flatMap { result -> CoordinatingResult<RouterResult<BottomActionSheetActionType>> in
             guard result != .dismissedByRouter else {
                 return Just(result).eraseToAnyPublisher()
             }

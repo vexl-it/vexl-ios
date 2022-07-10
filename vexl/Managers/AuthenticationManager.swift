@@ -107,12 +107,18 @@ extension AuthenticationManager {
 
         let serverPublishers: AnyPublisher<Void, Never> = {
                 if !force {
-                    return userService.deleteUser().nilOnError()
+                    return userService
+                        .deleteUser()
+                        .nilOnError()
                         .flatMap { _ in
-                            contactService.deleteUser().nilOnError()
+                            contactService
+                                .deleteUser()
+                                .nilOnError()
                         }
                         .flatMap { _ in
-                            offerService.deleteOffers().nilOnError()
+                            offerService
+                                .deleteOffers()
+                                .nilOnError()
                         }
                         .asVoid()
                         .eraseToAnyPublisher()

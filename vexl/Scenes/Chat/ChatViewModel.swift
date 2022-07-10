@@ -12,9 +12,11 @@ import Combine
 
 final class ChatViewModel: ViewModelType, ObservableObject {
 
+    @Inject var offerService: OfferServiceType
     @Inject var chatService: ChatServiceType
     @Inject var cryptoService: CryptoServiceType
     @Inject var inboxManager: InboxManagerType
+    @Inject var chatRepository: ChatRepositoryType
 
     enum ImageSource {
         case photoAlbum, camera
@@ -22,10 +24,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
 
     enum Modal {
         case none
-        case offer
         case friends
-        case delete
-        case deleteConfirmation
         case block
         case blockConfirmation
         case identityRevealRequest
@@ -41,7 +40,6 @@ final class ChatViewModel: ViewModelType, ObservableObject {
         case cameraTap
         case dismissModal
         case deleteTap
-        case deleteConfirmedTap
         case blockTap
         case blockConfirmedTap
         case revealRequestConfirmationTap
@@ -78,6 +76,8 @@ final class ChatViewModel: ViewModelType, ObservableObject {
     enum Route: Equatable {
         case dismissTapped
         case expandImageTapped(image: Data)
+        case showOfferTapped(offer: Offer?)
+        case showDeleteTapped
     }
 
     var route: CoordinatingSubject<Route> = .init()
@@ -87,7 +87,8 @@ final class ChatViewModel: ViewModelType, ObservableObject {
     let username: String = Constants.randomName
     let avatar: UIImage? = nil
     let friends: [ChatCommonFriendViewData] = [.stub, .stub, .stub]
-    let offerType: OfferType = .buy
+    let offerType: OfferType?
+    var offer: Offer?
     var imageSource = ImageSource.photoAlbum
 
     var offerLabel: String {
@@ -96,6 +97,11 @@ final class ChatViewModel: ViewModelType, ObservableObject {
 
     var isModalPresented: Bool {
         modal != .none
+    }
+
+    var offerViewData: OfferDetailViewData? {
+        guard let offer = offer else { return nil }
+        return OfferDetailViewData(offer: offer, isRequested: false)
     }
 
     var selectedImageData: Data? {
@@ -127,9 +133,10 @@ final class ChatViewModel: ViewModelType, ObservableObject {
     private let receiverPublicKey: String
     private let isBlocked = false
 
-    init(inboxKeys: ECCKeys, receiverPublicKey: String) {
+    init(inboxKeys: ECCKeys, receiverPublicKey: String, offerType: OfferType?) {
         self.inboxKeys = inboxKeys
         self.receiverPublicKey = receiverPublicKey
+        self.offerType = offerType
         setupActionBindings()
         setupChatInputBindings()
         setupChatImageInputBindings()
@@ -139,11 +146,12 @@ final class ChatViewModel: ViewModelType, ObservableObject {
         setupDeleteChatBindings()
         setupModalPresentationBindings()
         setupInboxManagerBinding()
+        setupOfferBindings()
     }
 
     private func setupInboxManagerBinding() {
         chatService
-            .getStoredChatMessages(inboxPublicKey: inboxKeys.publicKey, receiverPublicKey: receiverPublicKey)
+            .getStoredChatMessages(inboxPublicKey: inboxKeys.publicKey, contactPublicKey: receiverPublicKey)
             .track(activity: primaryActivity)
             .materialize()
             .compactMap(\.value)
@@ -160,13 +168,29 @@ final class ChatViewModel: ViewModelType, ObservableObject {
                 switch result {
                 case let .success(messages):
                     let messagesForInbox = messages.filter {
-                        $0.inboxKey == owner.inboxKeys.publicKey && $0.senderInboxKey == owner.receiverPublicKey
+                        $0.inboxKey == owner.inboxKeys.publicKey && $0.contactInboxKey == owner.receiverPublicKey
                     }
                     owner.showChatMessages(messagesForInbox)
                 case .failure:
                     // TODO: - show some alert
                     break
                 }
+            }
+            .store(in: cancelBag)
+    }
+
+    private func setupOfferBindings() {
+        offerService
+            .getStoredOffers()
+            .materialize()
+            .compactMap(\.value)
+            .withUnretained(self)
+            .compactMap { owner, offers -> Offer? in
+                offers.first { $0.offerPublicKey == owner.inboxKeys.publicKey }
+            }
+            .withUnretained(self)
+            .sink { owner, offer in
+                owner.offer = offer
             }
             .store(in: cancelBag)
     }
@@ -223,7 +247,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
                     .createMessage(text: owner.currentMessage,
                                    image: image,
                                    inboxPublicKey: owner.inboxKeys.publicKey,
-                                   senderPublicKey: owner.receiverPublicKey)
+                                   contactInboxKey: owner.receiverPublicKey)
             }
 
         inputMessage
@@ -244,6 +268,12 @@ final class ChatViewModel: ViewModelType, ObservableObject {
     private func setupActionBindings() {
         sharedAction
             .filter { $0 == .dismissTap }
+            .map { _ -> Route in .dismissTapped }
+            .subscribe(route)
+            .store(in: cancelBag)
+
+        chatRepository
+            .dismissAction
             .map { _ -> Route in .dismissTapped }
             .subscribe(route)
             .store(in: cancelBag)
@@ -274,13 +304,9 @@ final class ChatViewModel: ViewModelType, ObservableObject {
     private func setupDeleteChatBindings() {
         sharedChatAction
             .filter { $0 == .deleteChat }
-            .map { _ -> Modal in .delete }
-            .assign(to: &$modal)
-
-        sharedAction
-            .filter { $0 == .deleteTap }
-            .map { _ -> Modal in .deleteConfirmation }
-            .assign(to: &$modal)
+            .map { _ -> Route in .showDeleteTapped }
+            .subscribe(route)
+            .store(in: cancelBag)
     }
 
     private func setupBlockChatBindings() {
@@ -303,9 +329,13 @@ final class ChatViewModel: ViewModelType, ObservableObject {
             .assign(to: &$modal)
 
         sharedChatAction
-            .filter { $0 == .showOffer }
-            .map { _ -> Modal in .offer }
-            .assign(to: &$modal)
+            .withUnretained(self)
+            .filter { owner, action in
+                action == .showOffer && owner.offer != nil
+            }
+            .map { owner, _ -> Route in .showOfferTapped(offer: owner.offer) }
+            .subscribe(route)
+            .store(in: cancelBag)
 
         sharedChatAction
             .filter { $0 == .commonFriends }
@@ -368,5 +398,12 @@ final class ChatViewModel: ViewModelType, ObservableObject {
         let conversationSection = ChatConversationSection(date: Date(),
                                                           messages: conversationItems)
         self.messages.append(conversationSection)
+    }
+
+    func deleteMessages() {
+        chatRepository
+            .deleteChat(inboxKeys: inboxKeys, contactPublicKey: receiverPublicKey)
+            .sink()
+            .store(in: cancelBag)
     }
 }

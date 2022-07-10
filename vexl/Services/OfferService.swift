@@ -24,13 +24,10 @@ protocol OfferServiceType {
 
     // MARK: - Storage
 
-    func storeFetchedOffers(offers: [Offer]) -> AnyPublisher<Void, Error>
-    func storeOffer(id: String, offer: Offer, keys: ECCKeys, isCreated: Bool) -> AnyPublisher<Void, Error>
-    func getStoredOfferIds(forType offerType: OfferType) -> AnyPublisher<[String], Error>
-    func getAllStoredOfferIds() -> AnyPublisher<[String], Error>
-    func getStoredOfferKeys() -> AnyPublisher<[StoredOffer.Keys], Error>
-    func getCreatedStoredOfferKeys() -> AnyPublisher<[StoredOffer.Keys], Error>
-    func getFetchedStoredOfferKeys() -> AnyPublisher<[StoredOffer.Keys], Error>
+    func getStoredOffers() -> AnyPublisher<[Offer], Error>
+    func storeOffers(offers: [Offer], areCreated: Bool) -> AnyPublisher<Void, Error>
+    func getStoredOfferIds(fromType option: OfferTypeOption) -> AnyPublisher<[String], Error>
+    func getStoredOfferKeys(fromSource option: OfferSourceOption) -> AnyPublisher<[OfferKeys], Error>
 }
 
 final class OfferService: BaseService, OfferServiceType {
@@ -91,56 +88,52 @@ final class OfferService: BaseService, OfferServiceType {
 
     // MARK: - Storage
 
-    func storeOffer(id: String, offer: Offer, keys: ECCKeys, isCreated: Bool) -> AnyPublisher<Void, Error> {
-        let storedOffer = StoredOffer(offer: offer, id: id, keys: keys)
-        return localStorageService.saveOffers([storedOffer], isCreated: isCreated)
-    }
-
-    func storeFetchedOffers(offers: [Offer]) -> AnyPublisher<Void, Error> {
-        let storedOffers = offers.map {
-            StoredOffer(offer: $0, id: $0.offerId, keys: ECCKeys(pubKey: $0.offerPublicKey, privKey: nil))
-        }
-        return localStorageService.saveOffers(storedOffers, isCreated: false)
-    }
-
-    func getStoredOfferIds(forType offerType: OfferType) -> AnyPublisher<[String], Error> {
+    func getStoredOffers() -> AnyPublisher<[Offer], Error> {
         localStorageService.getOffers()
-            .map { keys in
-                keys
-                    .filter { $0.offerType == offerType }
-                    .map(\.id)
+    }
+
+    func storeOffers(offers: [Offer], areCreated: Bool) -> AnyPublisher<Void, Error> {
+        localStorageService.saveOffers(offers, areCreated: areCreated)
+    }
+
+    func getStoredOfferIds(fromType option: OfferTypeOption) -> AnyPublisher<[String], Error> {
+        localStorageService.getOffers()
+            .map { offers -> [String] in
+                var filteredOffers: [Offer] = []
+
+                if option.contains(.buy) {
+                    filteredOffers.append(contentsOf: offers.filter { $0.type == .buy })
+                }
+
+                if option.contains(.sell) {
+                    filteredOffers.append(contentsOf: offers.filter { $0.type == .sell })
+                }
+
+                return filteredOffers.map(\.offerId)
             }
             .eraseToAnyPublisher()
     }
 
-    func getAllStoredOfferIds() -> AnyPublisher<[String], Error> {
+    func getStoredOfferKeys(fromSource option: OfferSourceOption) -> AnyPublisher<[OfferKeys], Error> {
         localStorageService.getOffers()
-            .map { keys in
-                keys.map(\.id)
+            .map { offers -> [OfferKeys] in
+                var filteredOffers: [Offer] = []
+
+                if option.contains(.created) {
+                    filteredOffers.append(contentsOf: offers.filter { $0.source == .created })
+                }
+
+                if option.contains(.fetched) {
+                    filteredOffers.append(contentsOf: offers.filter { $0.source == .fetched })
+                }
+
+                return filteredOffers.map(\.keysWithId)
             }
-            .eraseToAnyPublisher()
-    }
-
-    func getStoredOfferKeys() -> AnyPublisher<[StoredOffer.Keys], Error> {
-        localStorageService.getOffers()
-            .map { $0.map { $0.getIdWithKeys() } }
-            .eraseToAnyPublisher()
-    }
-
-    func getCreatedStoredOfferKeys() -> AnyPublisher<[StoredOffer.Keys], Error> {
-        localStorageService.getCreatedOffers()
-            .map { $0.map { $0.getIdWithKeys() } }
-            .eraseToAnyPublisher()
-    }
-
-    func getFetchedStoredOfferKeys() -> AnyPublisher<[StoredOffer.Keys], Error> {
-        localStorageService.getFetchedOffers()
-            .map { $0.map { $0.getIdWithKeys() } }
             .eraseToAnyPublisher()
     }
 
     func deleteOffers() -> AnyPublisher<Void, Error> {
-        Publishers.Merge(getStoredOfferIds(forType: .buy), getStoredOfferIds(forType: .sell))
+        getStoredOfferIds(fromType: .all)
             .withUnretained(self)
             .flatMap { owner, offerIds -> AnyPublisher<Void, Error> in
                 if !offerIds.isEmpty {
@@ -170,6 +163,10 @@ extension OfferService {
         var btcNetwork: [String] = []
         let friendLevel = try offer.friendLevelString.ecc.encrypt(publicKey: contactPublicKey)
         let offerType = try offer.offerTypeString.ecc.encrypt(publicKey: contactPublicKey)
+        let activePriceState = try offer.activePriceState.rawValue.ecc.encrypt(publicKey: contactPublicKey)
+        let activePriceValue = try "\(offer.activePriceValue)".ecc.encrypt(publicKey: contactPublicKey)
+        let active = try offer.active.string.ecc.encrypt(publicKey: contactPublicKey)
+        let commonFriends = try offer.commonFriends.map { try $0.ecc.encrypt(publicKey: contactPublicKey) }
 
         offer.paymentMethodsList.forEach { method in
             if let encrypted = try? method.ecc.encrypt(publicKey: contactPublicKey) {
@@ -203,6 +200,10 @@ extension OfferService {
                               paymentMethod: paymentMethods,
                               btcNetwork: btcNetwork,
                               friendLevel: friendLevel,
-                              offerType: offerType)
+                              offerType: offerType,
+                              activePriceState: activePriceState,
+                              activePriceValue: activePriceValue,
+                              active: active,
+                              commonFriends: commonFriends)
     }
 }

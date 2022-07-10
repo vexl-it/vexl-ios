@@ -73,13 +73,12 @@ extension PersistenceStoreManagerType {
     }
 }
 
-class PersistenceStoreManager: PersistenceStoreManagerType {
+final class PersistenceStoreManager: PersistenceStoreManagerType {
 
     var viewContext: NSManagedObjectContext
 
     private var primaryBackgroundContext: NSManagedObjectContext
     private var container = NSPersistentContainer(name: "VexlDataModel")
-
 
     init() {
         let primaryContext = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)

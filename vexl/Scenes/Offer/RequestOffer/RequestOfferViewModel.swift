@@ -94,7 +94,7 @@ final class RequestOfferViewModel: ViewModelType, ObservableObject {
                 ParsedChatMessage
                     .communicationRequest(inboxPublicKey: owner.offer.offerPublicKey,
                                           text: owner.requestText,
-                                          senderPublicKey: owner.authenticationManager.userKeys.publicKey)?
+                                          contactInboxKey: owner.authenticationManager.userKeys.publicKey)?
                     .asString
             }
             .flatMapLatest(with: self) { owner, message -> AnyPublisher<Void, Never> in

@@ -277,7 +277,8 @@ final class CreateOfferViewModel: ViewModelType, ObservableObject {
                                   paymentMethods: owner.selectedPaymentMethodOptions,
                                   btcNetwork: owner.selectedBTCOption,
                                   friendLevel: owner.selectedFriendDegreeOption,
-                                  type: owner.offerType)
+                                  type: owner.offerType,
+                                  source: .created)
 
                 // Adding owner publicKey to the list so that it can be decrypted, displayed and modified
                 // Also we remove the duplicate keys that can arrive because of the 2nd level friend
@@ -314,15 +315,18 @@ final class CreateOfferViewModel: ViewModelType, ObservableObject {
             }
 
         createOffer
-            .flatMapLatest(with: self) { owner, offerAndEncryptedOffer in
-                owner.offerService
-                    .storeOffer(id: offerAndEncryptedOffer.encryptedOffer.offerId,
-                                offer: offerAndEncryptedOffer.offer,
-                                keys: owner.offerKey,
-                                isCreated: true)
+            .flatMapLatest(with: self) { owner, offerAndEncryptedOffer -> AnyPublisher<Void, Never> in
+                var newOffer = offerAndEncryptedOffer.offer
+                newOffer.offerId = offerAndEncryptedOffer.encryptedOffer.offerId
+                newOffer.offerPublicKey = owner.offerKey.publicKey
+                newOffer.offerPrivateKey = owner.offerKey.privateKey
+
+                return owner.offerService
+                    .storeOffers(offers: [newOffer], areCreated: true)
                     .track(activity: owner.primaryActivity)
                     .materialize()
                     .compactMap(\.value)
+                    .eraseToAnyPublisher()
             }
             .flatMapLatest(with: self) { owner, _ in
                 // TODO: setup firebase notifications to get a proper token

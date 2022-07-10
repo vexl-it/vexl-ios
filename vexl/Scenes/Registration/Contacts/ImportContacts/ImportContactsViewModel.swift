@@ -181,7 +181,7 @@ class ImportContactsViewModel: ObservableObject {
             .flatMap { owner, contacts in
                 owner.contactsRepository.save(contacts: contacts)
             }
-            
+
         Publishers.Zip(importContact, saveContacts)
             .withUnretained(self)
             .handleEvents(receiveOutput: { owner, response in
@@ -217,7 +217,6 @@ class ImportContactsViewModel: ObservableObject {
                     .hashHMAC(password: Constants.contactsHashingPassword, message: formattedIdentifier)
                     .map { hash in (contact, hash) }
                     .eraseToAnyPublisher()
-
             }
             .collect()
             .eraseToAnyPublisher()

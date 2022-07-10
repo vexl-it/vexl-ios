@@ -89,7 +89,7 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
     private var sellOfferFilter = OfferFilter(type: .sell)
     private var buyFeedItems: [OfferDetailViewData] = []
     private var sellFeedItems: [OfferDetailViewData] = []
-    private var userOfferKeys: [StoredOffer.Keys] = []
+    private var userOfferKeys: [OfferKeys] = []
     private let cancelBag: CancelBag = .init()
 
     init(bitcoinViewModel: BitcoinViewModel) {
@@ -139,7 +139,7 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
         let encryptedOffsers: AnyPublisher<[EncryptedOffer], Never> = Publishers.Merge(refresh, Just(()))
             .flatMapLatest(with: self) { owner, _ in
                 owner.offerService
-                    .getCreatedStoredOfferKeys()
+                    .getStoredOfferKeys(fromSource: .created)
                     .track(activity: owner.primaryActivity)
                     .materialize()
                     .compactMap(\.value)
@@ -162,7 +162,7 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
         encryptedOffsers
             .withUnretained(self)
             .tryMap { owner, items in
-                items.compactMap { try? Offer(encryptedOffer: $0, keys: owner.authenticationManager.userKeys) }
+                items.compactMap { try? Offer(encryptedOffer: $0, keys: owner.authenticationManager.userKeys, source: .fetched) }
             }
             .replaceError(with: [])
             .assign(to: &$offerItems)
@@ -179,7 +179,7 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
             .withUnretained(self)
             .flatMap { owner, offers in
                 owner.offerService
-                    .storeFetchedOffers(offers: offers)
+                    .storeOffers(offers: offers, areCreated: false)
                     .track(activity: owner.primaryActivity)
                     .materialize()
                     .compactMap(\.value)

@@ -2,7 +2,7 @@
 //  RepositoryAssembly.swift
 //  vexl
 //
-//  Created by Adam Salih on 04.07.2022.
+//  Created by Adam Salih on 01.07.2022.
 //
 
 import Swinject
@@ -18,5 +18,9 @@ class RepositoryAssembly: Assembly {
             ContactsRepository()
         }
         .inObjectScope(.container)
+
+        container.register(ChatRepositoryType.self) { _ in
+            ChatRepository()
+        }
     }
 }

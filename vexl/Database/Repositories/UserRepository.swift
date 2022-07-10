@@ -19,16 +19,24 @@ protocol UserRepositoryType {
     func update(with userResponse: User, avatar: Data?) -> AnyPublisher<ManagedUser, Error>
 }
 
-class UserRepository: UserRepositoryType {
+final class UserRepository: UserRepositoryType {
+
+    // MARK: - Public properties
 
     var user: ManagedUser? { users.first }
+
+    // MARK: - Computed variables
 
     var userPublisher: AnyPublisher<ManagedUser?, Never> {
         $users.map(\.first).eraseToAnyPublisher()
     }
 
+    // MARK: - Dependencies
+
     @Inject private var userMicroService: UserServiceType
     @Inject private var persistenceManager: PersistenceStoreManagerType
+
+    // MARK: - Private properties
 
     @Fetched private var users: [ManagedUser]
 
