@@ -116,7 +116,7 @@ class PersistenceStoreManager: PersistenceStoreManagerType {
         Future { promise in
             var tmpContext: NSManagedObjectContext? = context
             var saveError: Error?
-            while tmpContext != nil && saveError != nil {
+            while tmpContext != nil && saveError == nil {
                 tmpContext?.performAndWait {
                     do {
                         try tmpContext?.save()
