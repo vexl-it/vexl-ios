@@ -15,6 +15,7 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
     @Inject var authenticationManager: AuthenticationManagerType
     @Inject var userService: UserServiceType
     @Inject var offerService: OfferServiceType
+    @Inject var userRepository: UserRepositoryType
     @Inject var contactService: ContactsServiceType
     @Inject var syncInboxManager: SyncInboxManagerType
     @Inject var cryptocurrencyValueManager: CryptocurrencyValueManagerType
@@ -48,11 +49,11 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
 
     // TODO: - Remove hardcoded values
     var username: String {
-        authenticationManager.currentUser?.username ?? ""
+        userRepository.user?.profile?.name ?? ""
     }
 
     var avatar: Data? {
-        authenticationManager.currentUser?.avatarImage ?? R.image.onboarding.emptyAvatar()?.jpegData(compressionQuality: 0.5)
+        userRepository.user?.profile?.avatar ?? R.image.onboarding.emptyAvatar()?.jpegData(compressionQuality: 0.5)
     }
 
     var options: [OptionGroup] {
