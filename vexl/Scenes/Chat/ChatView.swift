@@ -12,13 +12,7 @@ struct ChatView: View {
     @ObservedObject var viewModel: ChatViewModel
 
     var body: some View {
-        ZStack {
-            content
-                .zIndex(0)
-
-            modalView
-                .zIndex(1)
-        }
+        content
         .actionSheet(isPresented: $viewModel.showImagePickerActionSheet, content: {
             ActionSheet(title: Text(L.registerNameAvatarImagePicker()),
                         message: nil,
@@ -89,37 +83,6 @@ struct ChatView: View {
             })
                 .padding([.horizontal, .bottom], Appearance.GridGuide.padding)
         }
-    }
-
-    @ViewBuilder private var modalView: some View {
-        if viewModel.isModalPresented {
-            dimmingView
-        }
-
-        modalSheet
-    }
-
-    private var dimmingView: some View {
-        Color.black
-            .opacity(Appearance.dimmingViewOpacity)
-            .animation(.easeInOut(duration: 0.25), value: viewModel.modal)
-            .edgesIgnoringSafeArea(.all)
-            .onTapGesture {
-                withAnimation {
-                    viewModel.action.send(.dismissModal)
-                }
-            }
-            .edgesIgnoringSafeArea(.all)
-    }
-
-    private var modalSheet: some View {
-        ChatModalContainerView(modal: viewModel.modal,
-                               offerDetailViewData: viewModel.offerViewData,
-                               commonFriends: viewModel.friends,
-                               action: { userAction in
-            viewModel.action.send(userAction)
-        })
-        .transition(.move(edge: .bottom))
     }
 }
 

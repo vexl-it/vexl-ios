@@ -284,7 +284,6 @@
 		F1B93EDA286D6671008DAA90 /* VexlDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = F1B93ED8286D6671008DAA90 /* VexlDataModel.xcdatamodeld */; };
 		F1B93EDE286E372D008DAA90 /* ChatOfferActionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B93EDD286E372D008DAA90 /* ChatOfferActionSheet.swift */; };
 		F1B93EEC28720A41008DAA90 /* ChatDeleteActionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B93EEA28720A40008DAA90 /* ChatDeleteActionSheet.swift */; };
-		F1B93EED28720A41008DAA90 /* ChatDeleteConfirmationActionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B93EEB28720A41008DAA90 /* ChatDeleteConfirmationActionSheet.swift */; };
 		F1B93EEF28720DD5008DAA90 /* ChatRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B93EEE28720DD5008DAA90 /* ChatRepository.swift */; };
 		F1B93EF92873791E008DAA90 /* StoredChatUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B93EF82873791E008DAA90 /* StoredChatUser.swift */; };
 		F1B93F002877721C008DAA90 /* ChatIdentityRevealCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B93EFF2877721C008DAA90 /* ChatIdentityRevealCoordinator.swift */; };
@@ -319,7 +318,6 @@
 		F1D2012C282D4CD5006DF4AB /* DidSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D2012B282D4CD5006DF4AB /* DidSet.swift */; };
 		F1D2012E283401D7006DF4AB /* OfferSortView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D2012D283401D7006DF4AB /* OfferSortView.swift */; };
 		F1D204EB28613C44006A5671 /* ChatConversationItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D204EA28613C44006A5671 /* ChatConversationItem.swift */; };
-		F1D204ED2861543C006A5671 /* ChatModalContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D204EC2861543C006A5671 /* ChatModalContainerView.swift */; };
 		F1D204EF2862AECB006A5671 /* ChatStartTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D204EE2862AECB006A5671 /* ChatStartTextView.swift */; };
 		F1D204F22863A578006A5671 /* ChatInboxMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D204F12863A578006A5671 /* ChatInboxMessage.swift */; };
 		F1D204F72864FADC006A5671 /* SyncInboxManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D204F62864FADC006A5671 /* SyncInboxManager.swift */; };
@@ -644,7 +642,6 @@
 		F1B93ED9286D6671008DAA90 /* VexlDataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = VexlDataModel.xcdatamodel; sourceTree = "<group>"; };
 		F1B93EDD286E372D008DAA90 /* ChatOfferActionSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatOfferActionSheet.swift; sourceTree = "<group>"; };
 		F1B93EEA28720A40008DAA90 /* ChatDeleteActionSheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatDeleteActionSheet.swift; sourceTree = "<group>"; };
-		F1B93EEB28720A41008DAA90 /* ChatDeleteConfirmationActionSheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatDeleteConfirmationActionSheet.swift; sourceTree = "<group>"; };
 		F1B93EEE28720DD5008DAA90 /* ChatRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRepository.swift; sourceTree = "<group>"; };
 		F1B93EF82873791E008DAA90 /* StoredChatUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoredChatUser.swift; sourceTree = "<group>"; };
 		F1B93EFF2877721C008DAA90 /* ChatIdentityRevealCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatIdentityRevealCoordinator.swift; sourceTree = "<group>"; };
@@ -680,7 +677,6 @@
 		F1D2012B282D4CD5006DF4AB /* DidSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DidSet.swift; sourceTree = "<group>"; };
 		F1D2012D283401D7006DF4AB /* OfferSortView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferSortView.swift; sourceTree = "<group>"; };
 		F1D204EA28613C44006A5671 /* ChatConversationItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatConversationItem.swift; sourceTree = "<group>"; };
-		F1D204EC2861543C006A5671 /* ChatModalContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatModalContainerView.swift; sourceTree = "<group>"; };
 		F1D204EE2862AECB006A5671 /* ChatStartTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatStartTextView.swift; sourceTree = "<group>"; };
 		F1D204F12863A578006A5671 /* ChatInboxMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatInboxMessage.swift; sourceTree = "<group>"; };
 		F1D204F62864FADC006A5671 /* SyncInboxManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncInboxManager.swift; sourceTree = "<group>"; };
@@ -1529,7 +1525,6 @@
 				F1485636284FD451003213D7 /* ChatHeaderView.swift */,
 				F1485638284FD451003213D7 /* ChatDateView.swift */,
 				F1485639284FD451003213D7 /* ChatInputView.swift */,
-				F1D204EC2861543C006A5671 /* ChatModalContainerView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -1802,7 +1797,6 @@
 			children = (
 				F1B30106287A40DC00C86F83 /* ChatIdentityActionSheet.swift */,
 				F1B93EEA28720A40008DAA90 /* ChatDeleteActionSheet.swift */,
-				F1B93EEB28720A41008DAA90 /* ChatDeleteConfirmationActionSheet.swift */,
 				F1B93EDD286E372D008DAA90 /* ChatOfferActionSheet.swift */,
 			);
 			path = ActionSheets;
@@ -2390,7 +2384,6 @@
 				B08F397E27AE7112008B344F /* UIViewController+.swift in Sources */,
 				F1485625284FD0FB003213D7 /* InboxFilterView.swift in Sources */,
 				F1D204EF2862AECB006A5671 /* ChatStartTextView.swift in Sources */,
-				F1D204ED2861543C006A5671 /* ChatModalContainerView.swift in Sources */,
 				B08F396427AE7112008B344F /* UserError.swift in Sources */,
 				B007A7942878285800CFA5C9 /* ManagedInbox+.swift in Sources */,
 				F1A9453727F686D1009B5AE3 /* PhoneVerification.swift in Sources */,
@@ -2444,7 +2437,6 @@
 				F11441DE284681EC00307D39 /* SegmentedPickerView.swift in Sources */,
 				F1BDC978285BF9D600F86581 /* ChatExpandedImageView.swift in Sources */,
 				F11441DD284681EC00307D39 /* LoadingIndicatorView.swift in Sources */,
-				F1B93EED28720A41008DAA90 /* ChatDeleteConfirmationActionSheet.swift in Sources */,
 				F1A9454627F81278009B5AE3 /* ContactInformation.swift in Sources */,
 				B007A78C2875970D00CFA5C9 /* NSManagedObjectContext+.swift in Sources */,
 				F1D2011F282960DC006DF4AB /* TabBarView.swift in Sources */,

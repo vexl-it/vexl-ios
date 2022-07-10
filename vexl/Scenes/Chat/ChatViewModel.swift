@@ -22,13 +22,6 @@ final class ChatViewModel: ViewModelType, ObservableObject {
         case photoAlbum, camera
     }
 
-    enum Modal {
-        case none
-        case friends
-        case block
-        case blockConfirmation
-    }
-
     // MARK: - Action Binding
 
     enum UserAction: Equatable {
@@ -36,11 +29,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
         case messageSend
         case cameraTap
         case dismissModal
-        case deleteTap
-        case blockTap
-        case blockConfirmedTap
         case revealResponseTap
-        case revealResponseConfirmationTap
         case deleteImageTap
         case expandImageTap(groupId: String, messageId: String)
     }
@@ -58,7 +47,6 @@ final class ChatViewModel: ViewModelType, ObservableObject {
     @Published var error: Error?
     @Published var showImagePicker = false
     @Published var showImagePickerActionSheet = false
-    @Published var modal = Modal.none
     @Published var username: String = Constants.randomName
     @Published var avatar: Data?
 
@@ -92,10 +80,6 @@ final class ChatViewModel: ViewModelType, ObservableObject {
 
     var offerLabel: String {
         offerType == .buy ? L.marketplaceDetailUserBuy("") : L.marketplaceDetailUserSell("")
-    }
-
-    var isModalPresented: Bool {
-        modal != .none
     }
 
     var offerViewData: OfferDetailViewData? {
@@ -134,7 +118,6 @@ final class ChatViewModel: ViewModelType, ObservableObject {
         setupChatInputBindings()
         setupChatImageInputBindings()
         setupRevealIdentityResponseBindings()
-        setupModalPresentationBindings()
         setupInboxManagerBinding()
         setupOfferBindings()
 
@@ -296,14 +279,6 @@ final class ChatViewModel: ViewModelType, ObservableObject {
             .map { _ -> Route in .showRevealIdentityResponseTapped }
             .subscribe(route)
             .store(in: cancelBag)
-    }
-
-    private func setupModalPresentationBindings() {
-        sharedAction
-            .filter { $0 == .dismissModal }
-            .withUnretained(self)
-            .map { _ -> Modal in .none }
-            .assign(to: &$modal)
     }
 
     private func updateRevealedUser(messages: [ParsedChatMessage]) {
