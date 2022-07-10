@@ -8,7 +8,7 @@
 import SwiftUI
 import Combine
 
-final class ChatDeleteViewModel: BottomActionSheetViewModelProtocol {
+final class ChatDeleteSheetViewModel: BottomActionSheetViewModelProtocol {
 
     typealias DeleteBottomActionSheet = BottomActionSheet<ChatDeleteActionSheetContent>
 

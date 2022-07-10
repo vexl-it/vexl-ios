@@ -60,7 +60,7 @@ final class ChatCoordinator: BaseCoordinator<RouterResult<Void>> {
                 let router = ModalRouter(parentViewController: viewController,
                                          presentationStyle: .overFullScreen,
                                          transitionStyle: .crossDissolve)
-                return owner.presentActionSheet(router: router, viewModel: ChatOfferActionSheetViewModel(offer: offer))
+                return owner.presentActionSheet(router: router, viewModel: ChatOfferSheetViewModel(offer: offer))
             }
             .sink()
             .store(in: cancelBag)
@@ -139,7 +139,7 @@ final class ChatCoordinator: BaseCoordinator<RouterResult<Void>> {
                 let router = ModalRouter(parentViewController: viewController,
                                          presentationStyle: .overFullScreen,
                                          transitionStyle: .crossDissolve)
-                return owner.presentActionSheet(router: router, viewModel: ChatDeleteViewModel(isConfirmation: false))
+                return owner.presentActionSheet(router: router, viewModel: ChatDeleteSheetViewModel(isConfirmation: false))
             }
             .filter(Self.filterPrimaryAction)
             .withUnretained(self)
@@ -147,7 +147,7 @@ final class ChatCoordinator: BaseCoordinator<RouterResult<Void>> {
                 let router = ModalRouter(parentViewController: viewController,
                                          presentationStyle: .overFullScreen,
                                          transitionStyle: .crossDissolve)
-                return owner.presentActionSheet(router: router, viewModel: ChatDeleteViewModel(isConfirmation: true))
+                return owner.presentActionSheet(router: router, viewModel: ChatDeleteSheetViewModel(isConfirmation: true))
             }
             .filter(Self.filterPrimaryAction)
             .sink { _ in
