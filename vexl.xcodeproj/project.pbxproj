@@ -267,6 +267,7 @@
 		F1A9454627F81278009B5AE3 /* ContactInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1A9454527F81278009B5AE3 /* ContactInformation.swift */; };
 		F1B30107287A40DC00C86F83 /* ChatIdentityActionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B30106287A40DC00C86F83 /* ChatIdentityActionSheet.swift */; };
 		F1B3010A287A464600C86F83 /* ChatActionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B30109287A464600C86F83 /* ChatActionViewModel.swift */; };
+		F1B3010F287A53C900C86F83 /* ChatConversationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B3010E287A53C900C86F83 /* ChatConversationViewModel.swift */; };
 		F1B5321C28202B36009D4E0C /* OfferItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B5321B28202B36009D4E0C /* OfferItemView.swift */; };
 		F1B5FCBC27C67DB00018729B /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B5FCBB27C67DB00018729B /* WelcomeViewController.swift */; };
 		F1B5FCBE27C68EA70018729B /* OnboardingView+BottomButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B5FCBD27C68EA70018729B /* OnboardingView+BottomButtons.swift */; };
@@ -625,6 +626,7 @@
 		F1A9454527F81278009B5AE3 /* ContactInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactInformation.swift; sourceTree = "<group>"; };
 		F1B30106287A40DC00C86F83 /* ChatIdentityActionSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatIdentityActionSheet.swift; sourceTree = "<group>"; };
 		F1B30109287A464600C86F83 /* ChatActionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatActionViewModel.swift; sourceTree = "<group>"; };
+		F1B3010E287A53C900C86F83 /* ChatConversationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatConversationViewModel.swift; sourceTree = "<group>"; };
 		F1B5321B28202B36009D4E0C /* OfferItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferItemView.swift; sourceTree = "<group>"; };
 		F1B5FCBB27C67DB00018729B /* WelcomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeViewController.swift; sourceTree = "<group>"; };
 		F1B5FCBD27C68EA70018729B /* OnboardingView+BottomButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OnboardingView+BottomButtons.swift"; sourceTree = "<group>"; };
@@ -1505,6 +1507,7 @@
 			children = (
 				F148563C284FD451003213D7 /* Data */,
 				F148562B284FD451003213D7 /* Components */,
+				F1B3010D287A53B600C86F83 /* Conversation */,
 				F1B30108287A462F00C86F83 /* ActionBar */,
 				F148562A284FD451003213D7 /* ChatViewModel.swift */,
 				F148563A284FD451003213D7 /* ChatCoordinator.swift */,
@@ -1518,10 +1521,8 @@
 			isa = PBXGroup;
 			children = (
 				F1B93EDB286E353B008DAA90 /* ActionSheets */,
-				F1483CC0285A3DDA0054B7A2 /* ConversationItem */,
 				F148562E284FD451003213D7 /* Confirmation */,
 				F1485632284FD451003213D7 /* CommonFriends */,
-				F1485635284FD451003213D7 /* ChatConversationView.swift */,
 				F1485636284FD451003213D7 /* ChatHeaderView.swift */,
 				F1485638284FD451003213D7 /* ChatDateView.swift */,
 				F1485639284FD451003213D7 /* ChatInputView.swift */,
@@ -1749,6 +1750,16 @@
 				F1B30109287A464600C86F83 /* ChatActionViewModel.swift */,
 			);
 			path = ActionBar;
+			sourceTree = "<group>";
+		};
+		F1B3010D287A53B600C86F83 /* Conversation */ = {
+			isa = PBXGroup;
+			children = (
+				F1483CC0285A3DDA0054B7A2 /* ConversationItem */,
+				F1485635284FD451003213D7 /* ChatConversationView.swift */,
+				F1B3010E287A53C900C86F83 /* ChatConversationViewModel.swift */,
+			);
+			path = Conversation;
 			sourceTree = "<group>";
 		};
 		F1B5321D2820976E009D4E0C /* UserOffers */ = {
@@ -2313,6 +2324,7 @@
 				B0F206F127AE94C400A44E72 /* InitialScreenManager.swift in Sources */,
 				F12A14E027D6774C0096543E /* RegisterContactsView.swift in Sources */,
 				4F481E76284767480051D3B9 /* ChatRouter.swift in Sources */,
+				F1B3010F287A53C900C86F83 /* ChatConversationViewModel.swift in Sources */,
 				4F700CBE2844C4C20085139F /* StickyBitcoinView.swift in Sources */,
 				F188626128129ED600659786 /* OfferTriggersView.swift in Sources */,
 				F1BFA958280223BD00F4E745 /* UserProfileViewModel+Options.swift in Sources */,
