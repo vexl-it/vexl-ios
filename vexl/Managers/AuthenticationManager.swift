@@ -13,13 +13,6 @@ import Cleevio
 import FBSDKLoginKit
 import FBSDKCoreKit
 
-typealias BearerToken = String
-
-protocol TokenHandlerType {
-    var accessToken: BearerToken? { get }
-    var refreshToken: BearerToken? { get }
-}
-
 protocol AuthenticationManagerType {
     var currentUser: User? { get }
     var currentAuthenticationState: AuthenticationManager.AuthenticationState { get }
@@ -59,8 +52,6 @@ final class AuthenticationManager: AuthenticationManagerType, TokenHandlerType {
 
     @DidSet var authenticationState: AuthenticationState = .signedOut
 
-    @Published private(set) var accessToken: String?
-    @Published private(set) var refreshToken: String?
 
     var currentAuthenticationState: AuthenticationState {
         authenticationState

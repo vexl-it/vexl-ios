@@ -33,35 +33,37 @@ final class ApiInterceptor: RequestInterceptor {
                for session: Session,
                dueTo error: Error,
                completion: @escaping (RetryResult) -> Void) {
-        do {
-            if let response = request.task?.response as? HTTPURLResponse, response.statusCode == ApiService.StatusCode.unauthorized {
-                let requestUrl = request.request?.url
-                let refreshUrl = try AuthRouter.refresh.asURL()
-
-                if requestUrl == refreshUrl {
-                    self.logoutUser()
-                    completion(.doNotRetry)
-                } else {
-                    refreshAuthorization(session)
-                        .sink(receiveCompletion: { [weak self] message in
-                            switch message {
-                            case .finished:
-                                break
-                            case .failure:
-                                self?.logoutUser()
-                                completion(.doNotRetry)
-                            }
-                        }, receiveValue: {
-                            completion(.retry)
-                        })
-                        .store(in: &cancellables)
-                }
-            } else {
-                completion(.doNotRetry)
-            }
-        } catch {
-            completion(.doNotRetry)
-        }
+        completion(.doNotRetry)
+        // TODO: Handle challenge refresh
+//        do {
+//            if let response = request.task?.response as? HTTPURLResponse, response.statusCode == ApiService.StatusCode.unauthorized {
+//                let requestUrl = request.request?.url
+//                let refreshUrl = try AuthRouter.refresh.asURL()
+//
+//                if requestUrl == refreshUrl {
+//                    self.logoutUser()
+//                    completion(.doNotRetry)
+//                } else {
+//                    refreshAuthorization(session)
+//                        .sink(receiveCompletion: { [weak self] message in
+//                            switch message {
+//                            case .finished:
+//                                break
+//                            case .failure:
+//                                self?.logoutUser()
+//                                completion(.doNotRetry)
+//                            }
+//                        }, receiveValue: {
+//                            completion(.retry)
+//                        })
+//                        .store(in: &cancellables)
+//                }
+//            } else {
+//                completion(.doNotRetry)
+//            }
+//        } catch {
+//            completion(.doNotRetry)
+//        }
     }
 }
 

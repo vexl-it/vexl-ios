@@ -49,7 +49,6 @@
 		B007A76128722A1F00CFA5C9 /* NSManagedObject+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B007A76028722A1F00CFA5C9 /* NSManagedObject+.swift */; };
 		B007A76328730BDF00CFA5C9 /* Fetched.swift in Sources */ = {isa = PBXBuildFile; fileRef = B007A76228730BDF00CFA5C9 /* Fetched.swift */; };
 		B007A7652873514400CFA5C9 /* RepositoryAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = B007A7642873514400CFA5C9 /* RepositoryAssembly.swift */; };
-		B007A7672873520800CFA5C9 /* PersistenceManagerAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = B007A7662873520800CFA5C9 /* PersistenceManagerAssembly.swift */; };
 		B007A7882874BDAE00CFA5C9 /* PersistenceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = B007A7872874BDAE00CFA5C9 /* PersistenceError.swift */; };
 		B007A78A2874C25500CFA5C9 /* PersistenceStoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B007A7892874C25500CFA5C9 /* PersistenceStoreManager.swift */; };
 		B007A78C2875970D00CFA5C9 /* NSManagedObjectContext+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B007A78B2875970C00CFA5C9 /* NSManagedObjectContext+.swift */; };
@@ -384,7 +383,6 @@
 		B007A76028722A1F00CFA5C9 /* NSManagedObject+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSManagedObject+.swift"; sourceTree = "<group>"; };
 		B007A76228730BDF00CFA5C9 /* Fetched.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fetched.swift; sourceTree = "<group>"; };
 		B007A7642873514400CFA5C9 /* RepositoryAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepositoryAssembly.swift; sourceTree = "<group>"; };
-		B007A7662873520800CFA5C9 /* PersistenceManagerAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceManagerAssembly.swift; sourceTree = "<group>"; };
 		B007A7872874BDAE00CFA5C9 /* PersistenceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceError.swift; sourceTree = "<group>"; };
 		B007A7892874C25500CFA5C9 /* PersistenceStoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceStoreManager.swift; sourceTree = "<group>"; };
 		B007A78B2875970C00CFA5C9 /* NSManagedObjectContext+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSManagedObjectContext+.swift"; sourceTree = "<group>"; };
@@ -909,7 +907,6 @@
 				B08F391227AE7112008B344F /* ManagerAssembly.swift */,
 				B08F392927AE7112008B344F /* ServiceAssembly.swift */,
 				B007A7642873514400CFA5C9 /* RepositoryAssembly.swift */,
-				B007A7662873520800CFA5C9 /* PersistenceManagerAssembly.swift */,
 			);
 			path = Container;
 			sourceTree = "<group>";
@@ -2363,7 +2360,6 @@
 				B08F394D27AE7112008B344F /* AppCoordinator.swift in Sources */,
 				F13B2671281D4AB00011F2FB /* ContactKey.swift in Sources */,
 				F1D20128282AB6EF006DF4AB /* CryptocurrencyValueManager.swift in Sources */,
-				B007A7672873520800CFA5C9 /* PersistenceManagerAssembly.swift in Sources */,
 				F175ABA227F4A8F8000DAB15 /* UserAvailable.swift in Sources */,
 				B0E9BB322815D2B60012BF1D /* CryptographicError.swift in Sources */,
 				4FBF6240283FBF6000DDBE71 /* RequestOfferCoordinator.swift in Sources */,

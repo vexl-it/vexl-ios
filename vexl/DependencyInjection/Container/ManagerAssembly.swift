@@ -10,6 +10,11 @@ import Swinject
 
 class ManagerAssembly: Assembly {
     func assemble(container: Container) {
+        container.register(PersistenceStoreManagerType.self) { _ in
+            PersistenceStoreManager()
+        }
+        .inObjectScope(.container)
+
         container.register(AuthenticationManager.self) { _ in
             AuthenticationManager()
         }
@@ -20,10 +25,6 @@ class ManagerAssembly: Assembly {
         }
 
         container.register(UserSecurityType.self) { resolver in
-            resolver.resolve(AuthenticationManager.self)!
-        }
-
-        container.register(TokenHandlerType.self) { resolver in
             resolver.resolve(AuthenticationManager.self)!
         }
 
