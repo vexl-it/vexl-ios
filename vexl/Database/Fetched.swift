@@ -20,10 +20,12 @@ enum FetchContextType {
 class Fetched<Entity: NSManagedObject> {
 
     private let controller: NSFetchedResultsController<Entity>
-    private let fetchDelegate: FetchedResultsControllerDelegate<Entity> = .init()
+    private let fetchDelegate: FetchedResultsControllerDelegate<Entity>
     private var cancelBag: CancelBag = .init()
 
-    private(set) var wrappedValue: ContentState<[Entity]>
+    var wrappedValue: [Entity] {
+        fetchDelegate.publisher.value
+    }
     let context: NSManagedObjectContext
 
     var projectedValue: AnyPublisher<[Entity], Never> {
@@ -52,30 +54,25 @@ class Fetched<Entity: NSManagedObject> {
         }()
 
         controller = NSFetchedResultsController(fetchRequest: request, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
-        controller.delegate = fetchDelegate
 
         do {
             try controller.performFetch()
             let objects = controller.fetchedObjects ?? []
-            wrappedValue = .content(objects)
+            fetchDelegate = .init(objects)
         } catch {
-            wrappedValue = .error(error)
+            fetchDelegate = .init([])
         }
 
-        fetchDelegate.publisher
-            .withUnretained(self)
-            .sink { owner, entities in
-                owner.wrappedValue = .content(entities)
-            }
-            .store(in: cancelBag)
+        controller.delegate = fetchDelegate
     }
 }
 
 class FetchedResultsControllerDelegate<Entity: NSManagedObject>: NSObject, NSFetchedResultsControllerDelegate {
 
-    var publisher: PassthroughSubject<[Entity], Never> = .init()
+    var publisher: CurrentValueSubject<[Entity], Never>
 
-    override init() {
+    init(_ entities: [Entity]) {
+        publisher = .init(entities)
         super.init()
     }
 
