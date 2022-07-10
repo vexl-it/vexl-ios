@@ -11,11 +11,10 @@ typealias ChatAction = ChatActionView.ChatAction
 
 struct ChatActionView: View {
 
-    let userIsRevealed: Bool
-    let action: (ChatAction) -> Void
+    let viewModel: ChatActionViewModel
 
     private var availableActions: [ChatAction] {
-        if userIsRevealed {
+        if viewModel.userIsRevealed {
             return ChatAction.allCases.filter { $0 != .revealIdentity }
         } else {
             return ChatAction.allCases
@@ -27,7 +26,7 @@ struct ChatActionView: View {
             HStack {
                 ForEach(availableActions) { chatAction in
                     Button(chatAction.title) {
-                        action(chatAction)
+                        viewModel.action.send(chatAction)
                     }
                     .textStyle(.paragraphSmallMedium)
                     .padding(Appearance.GridGuide.point)

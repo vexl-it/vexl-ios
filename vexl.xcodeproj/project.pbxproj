@@ -266,6 +266,7 @@
 		F1A9454427F81211009B5AE3 /* ContactsAvailable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1A9454327F81211009B5AE3 /* ContactsAvailable.swift */; };
 		F1A9454627F81278009B5AE3 /* ContactInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1A9454527F81278009B5AE3 /* ContactInformation.swift */; };
 		F1B30107287A40DC00C86F83 /* ChatIdentityActionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B30106287A40DC00C86F83 /* ChatIdentityActionSheet.swift */; };
+		F1B3010A287A464600C86F83 /* ChatActionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B30109287A464600C86F83 /* ChatActionViewModel.swift */; };
 		F1B5321C28202B36009D4E0C /* OfferItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B5321B28202B36009D4E0C /* OfferItemView.swift */; };
 		F1B5FCBC27C67DB00018729B /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B5FCBB27C67DB00018729B /* WelcomeViewController.swift */; };
 		F1B5FCBE27C68EA70018729B /* OnboardingView+BottomButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B5FCBD27C68EA70018729B /* OnboardingView+BottomButtons.swift */; };
@@ -625,6 +626,7 @@
 		F1A9454327F81211009B5AE3 /* ContactsAvailable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsAvailable.swift; sourceTree = "<group>"; };
 		F1A9454527F81278009B5AE3 /* ContactInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactInformation.swift; sourceTree = "<group>"; };
 		F1B30106287A40DC00C86F83 /* ChatIdentityActionSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatIdentityActionSheet.swift; sourceTree = "<group>"; };
+		F1B30109287A464600C86F83 /* ChatActionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatActionViewModel.swift; sourceTree = "<group>"; };
 		F1B5321B28202B36009D4E0C /* OfferItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferItemView.swift; sourceTree = "<group>"; };
 		F1B5FCBB27C67DB00018729B /* WelcomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeViewController.swift; sourceTree = "<group>"; };
 		F1B5FCBD27C68EA70018729B /* OnboardingView+BottomButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OnboardingView+BottomButtons.swift"; sourceTree = "<group>"; };
@@ -1507,6 +1509,7 @@
 			children = (
 				F148563C284FD451003213D7 /* Data */,
 				F148562B284FD451003213D7 /* Components */,
+				F1B30108287A462F00C86F83 /* ActionBar */,
 				F148562A284FD451003213D7 /* ChatViewModel.swift */,
 				F148563A284FD451003213D7 /* ChatCoordinator.swift */,
 				F148563B284FD451003213D7 /* ChatView.swift */,
@@ -1522,7 +1525,6 @@
 				F1483CC0285A3DDA0054B7A2 /* ConversationItem */,
 				F148562E284FD451003213D7 /* Confirmation */,
 				F1485632284FD451003213D7 /* CommonFriends */,
-				F148562C284FD451003213D7 /* ChatActionView.swift */,
 				F1485635284FD451003213D7 /* ChatConversationView.swift */,
 				F1485636284FD451003213D7 /* ChatHeaderView.swift */,
 				F1485638284FD451003213D7 /* ChatDateView.swift */,
@@ -1743,6 +1745,15 @@
 				F1BBC7042835C2960067F81B /* ContactsCount.swift */,
 			);
 			path = Contacts;
+			sourceTree = "<group>";
+		};
+		F1B30108287A462F00C86F83 /* ActionBar */ = {
+			isa = PBXGroup;
+			children = (
+				F148562C284FD451003213D7 /* ChatActionView.swift */,
+				F1B30109287A464600C86F83 /* ChatActionViewModel.swift */,
+			);
+			path = ActionBar;
 			sourceTree = "<group>";
 		};
 		F1B5321D2820976E009D4E0C /* UserOffers */ = {
@@ -2320,6 +2331,7 @@
 				F1483CBF2856CEBE0054B7A2 /* OfferTriggerDeleteView.swift in Sources */,
 				F12A150427E1A4520096543E /* RequestAccessPhoneContactsViewModel.swift in Sources */,
 				F175AB8927E4F493000DAB15 /* Materialize.swift in Sources */,
+				F1B3010A287A464600C86F83 /* ChatActionViewModel.swift in Sources */,
 				F1485627284FD0FB003213D7 /* InboxCoordinator.swift in Sources */,
 				F1485643284FD451003213D7 /* ChatDeleteConfirmationView.swift in Sources */,
 				F11441D4284681EC00307D39 /* FetchImage.swift in Sources */,

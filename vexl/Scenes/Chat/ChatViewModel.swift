@@ -33,7 +33,6 @@ final class ChatViewModel: ViewModelType, ObservableObject {
 
     enum UserAction: Equatable {
         case dismissTap
-        case chatActionTap(action: ChatAction)
         case messageSend
         case cameraTap
         case dismissModal
@@ -115,20 +114,12 @@ final class ChatViewModel: ViewModelType, ObservableObject {
             .share()
             .eraseToAnyPublisher()
     }
-    private var sharedChatAction: AnyPublisher<ChatAction, Never> {
-        action
-            .compactMap { action -> ChatAction? in
-                if case let .chatActionTap(chatAction) = action { return chatAction }
-                return nil
-            }
-            .share()
-            .eraseToAnyPublisher()
-    }
 
     private var isInputValid: Bool {
         !currentMessage.isEmpty || selectedImage != nil
     }
 
+    var chatActionViewModel = ChatActionViewModel()
     var userIsRevealed = false
     private let inboxKeys: ECCKeys
     private let receiverPublicKey: String
@@ -142,13 +133,15 @@ final class ChatViewModel: ViewModelType, ObservableObject {
         setupUpdateUIBindings()
         setupChatInputBindings()
         setupChatImageInputBindings()
-        setupRevealIdentityRequestBindings()
         setupRevealIdentityResponseBindings()
-        setupBlockChatBindings()
-        setupDeleteChatBindings()
         setupModalPresentationBindings()
         setupInboxManagerBinding()
         setupOfferBindings()
+
+        chatActionViewModel
+            .route
+            .subscribe(route)
+            .store(in: cancelBag)
     }
 
     private func setupUpdateUIBindings() {
@@ -205,6 +198,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
             .withUnretained(self)
             .sink { owner, offer in
                 owner.offer = offer
+                owner.chatActionViewModel.offer = offer
             }
             .store(in: cancelBag)
     }
@@ -296,14 +290,6 @@ final class ChatViewModel: ViewModelType, ObservableObject {
             .store(in: cancelBag)
     }
 
-    private func setupRevealIdentityRequestBindings() {
-        sharedChatAction
-            .filter { $0 == .revealIdentity }
-            .map { _ -> Route in .showRevealIdentityTapped }
-            .subscribe(route)
-            .store(in: cancelBag)
-    }
-
     private func setupRevealIdentityResponseBindings() {
         sharedAction
             .filter { $0 == .revealResponseTap }
@@ -312,45 +298,11 @@ final class ChatViewModel: ViewModelType, ObservableObject {
             .store(in: cancelBag)
     }
 
-    private func setupDeleteChatBindings() {
-        sharedChatAction
-            .filter { $0 == .deleteChat }
-            .map { _ -> Route in .showDeleteTapped }
-            .subscribe(route)
-            .store(in: cancelBag)
-    }
-
-    private func setupBlockChatBindings() {
-        sharedChatAction
-            .filter { $0 == .blockUser }
-            .map { _ -> Modal in .block }
-            .assign(to: &$modal)
-
-        sharedAction
-            .filter { $0 == .blockTap }
-            .map { _ -> Modal in .blockConfirmation }
-            .assign(to: &$modal)
-    }
-
     private func setupModalPresentationBindings() {
         sharedAction
             .filter { $0 == .dismissModal }
             .withUnretained(self)
             .map { _ -> Modal in .none }
-            .assign(to: &$modal)
-
-        sharedChatAction
-            .withUnretained(self)
-            .filter { owner, action in
-                action == .showOffer && owner.offer != nil
-            }
-            .map { owner, _ -> Route in .showOfferTapped(offer: owner.offer) }
-            .subscribe(route)
-            .store(in: cancelBag)
-
-        sharedChatAction
-            .filter { $0 == .commonFriends }
-            .map { _ -> Modal in .friends }
             .assign(to: &$modal)
     }
 
@@ -458,5 +410,6 @@ final class ChatViewModel: ViewModelType, ObservableObject {
         self.username = username
         self.avatar = avatar?.dataFromBase64
         self.userIsRevealed = true
+        self.chatActionViewModel.userIsRevealed = true
     }
 }
