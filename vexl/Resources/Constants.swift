@@ -41,18 +41,27 @@ struct Constants {
     enum KeychainKeys: RawRepresentable {
         init?(rawValue: String) { nil }
 
-        case userSecurity
+        case facebookID
+        case facebookToken
+        case facebookHash
+        case facebookSignature
         case userSignature
         case privateKey(publicKey: String)
 
         var rawValue: String {
             switch self {
-            case .userSecurity:
-                return "userSecurity"
             case .privateKey(let publicKey):
                 return "publickey-\(publicKey)"
+            case .facebookID:
+                return "facebookID"
+            case .facebookToken:
+                return "facebookToken"
             case .userSignature:
                 return "userSignature"
+            case .facebookHash:
+                return "facebookHash"
+            case .facebookSignature:
+                return "facebookSignature"
             }
         }
     }

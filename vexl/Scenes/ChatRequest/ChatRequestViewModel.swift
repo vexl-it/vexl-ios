@@ -15,10 +15,10 @@ private typealias OfferAndMessage = (offer: Offer, message: ParsedChatMessage)
 
 final class ChatRequestViewModel: ViewModelType, ObservableObject {
 
-    @Inject var userSecurity: UserSecurityType
     @Inject var chatService: ChatServiceType
     @Inject var offerService: OfferServiceType
     @Inject var cryptoService: CryptoServiceType
+    @Inject var authenticationManager: AuthenticationManagerType
 
     // MARK: - Action Binding
 
@@ -158,7 +158,8 @@ final class ChatRequestViewModel: ViewModelType, ObservableObject {
             .track(activity: primaryActivity)
             .materialize()
             .compactMap(\.value)
-            .map { Offer.createOffers(from: $0, withKey: self.userSecurity.userKeys) }
+            .map { [authenticationManager] in
+                Offer.createOffers(from: $0, withKey: authenticationManager.userKeys) }
             .eraseToAnyPublisher()
     }
 

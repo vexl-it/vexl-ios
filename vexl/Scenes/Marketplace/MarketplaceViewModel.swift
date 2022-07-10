@@ -12,7 +12,7 @@ import Combine
 final class MarketplaceViewModel: ViewModelType, ObservableObject {
 
     @Inject private var offerService: OfferServiceType
-    @Inject private var userSecurity: UserSecurityType
+    @Inject private var authenticationManager: AuthenticationManagerType
     @Inject private var localStorageService: LocalStorageServiceType
     @Inject private var inboxManager: InboxManagerType
 
@@ -136,7 +136,7 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
     }
 
     private func setupDataBindings() {
-        Publishers.Merge(refresh, Just(()))
+        let encryptedOffsers: AnyPublisher<[EncryptedOffer], Never> = Publishers.Merge(refresh, Just(()))
             .flatMapLatest(with: self) { owner, _ in
                 owner.offerService
                     .getCreatedStoredOfferKeys()
@@ -148,17 +148,21 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
             .handleEvents(receiveOutput: { owner, keys in
                 owner.userOfferKeys = keys
             })
-            .flatMapLatest(with: self) { owner, _ in
+            .flatMapLatest(with: self) { owner, _ -> AnyPublisher<[EncryptedOffer], Never> in
                 owner.offerService
                     .getOffer(pageLimit: Constants.pageMaxLimit)
                     .track(activity: owner.primaryActivity)
                     .materialize()
                     .compactMap(\.value)
+                    .map(\.items)
+                    .eraseToAnyPublisher()
             }
-            .map(\.items)
+            .eraseToAnyPublisher()
+
+        encryptedOffsers
             .withUnretained(self)
             .tryMap { owner, items in
-                items.compactMap { try? Offer(encryptedOffer: $0, keys: owner.userSecurity.userKeys) }
+                items.compactMap { try? Offer(encryptedOffer: $0, keys: owner.authenticationManager.userKeys) }
             }
             .replaceError(with: [])
             .assign(to: &$offerItems)

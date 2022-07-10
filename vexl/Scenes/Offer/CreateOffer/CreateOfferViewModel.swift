@@ -31,7 +31,7 @@ final class CreateOfferViewModel: ViewModelType, ObservableObject {
         case loading
     }
 
-    @Inject private var userSecurity: UserSecurityType
+    @Inject private var authenticationManager: AuthenticationManagerType
     @Inject private var offerService: OfferServiceType
     @Inject private var chatService: ChatServiceType
     @Inject private var contactsMananger: ContactsManagerType
@@ -258,7 +258,7 @@ final class CreateOfferViewModel: ViewModelType, ObservableObject {
             .flatMap { owner, _ in
                 owner.contactsService
                     .getAllContacts(friendLevel: owner.friendLevel,
-                                    hasFacebookAccount: owner.userSecurity.facebookSecurityHeader != nil,
+                                    hasFacebookAccount: owner.authenticationManager.facebookSecurityHeader != nil,
                                     pageLimit: Constants.pageMaxLimit)
                     .track(activity: owner.primaryActivity)
                     .materialize()
@@ -283,7 +283,7 @@ final class CreateOfferViewModel: ViewModelType, ObservableObject {
                 // Also we remove the duplicate keys that can arrive because of the 2nd level friend
 
                 var contacts = contacts.phone.items + contacts.facebook.items
-                contacts.append(ContactKey(publicKey: owner.userSecurity.userKeys.publicKey))
+                contacts.append(ContactKey(publicKey: owner.authenticationManager.userKeys.publicKey))
                 let contactsWithoutDuplicates = Array(Set(contacts))
                 return OfferData(offer: offer, contacts: contactsWithoutDuplicates)
             }

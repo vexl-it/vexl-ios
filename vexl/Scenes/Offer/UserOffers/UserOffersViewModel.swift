@@ -12,7 +12,7 @@ import Combine
 final class UserOffersViewModel: ViewModelType, ObservableObject {
 
     @Inject var offerService: OfferServiceType
-    @Inject var userSecurity: UserSecurityType
+    @Inject var authenticationManager: AuthenticationManagerType
 
     // MARK: - Action Binding
 
@@ -144,9 +144,9 @@ final class UserOffersViewModel: ViewModelType, ObservableObject {
             }
             .withUnretained(self)
             .sink { owner, encryptedOffers in
-                owner.userOffers = encryptedOffers.compactMap {
-                    try? Offer(encryptedOffer: $0, keys: owner.userSecurity.userKeys)
-                }
+                let userKeys = owner.authenticationManager.userKeys
+                owner.userOffers = encryptedOffers
+                    .compactMap { try? Offer(encryptedOffer: $0, keys: userKeys) }
                 owner.sortOffers(withOption: owner.offerSortingOption)
             }
             .store(in: cancelBag)

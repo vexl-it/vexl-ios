@@ -14,226 +14,89 @@ import FBSDKLoginKit
 import FBSDKCoreKit
 
 protocol AuthenticationManagerType {
-    var currentUser: User? { get }
-    var currentAuthenticationState: AuthenticationManager.AuthenticationState { get }
-    var authenticationStatePublisher: AnyPublisher<AuthenticationManager.AuthenticationState, Never> { get }
+    var isUserLoggedIn: Bool { get }
+    var isUserLoggedInPublisher: AnyPublisher<Bool, Never> { get }
 
-    func setUser(_ user: User, withAvatar avatar: Data?)
-    func setFacebookUser(id: String?, token: String?)
-    func logoutUser()
-}
-
-@available(*, deprecated)
-protocol UserSecurityType {
-    var userSecurity: UserSecurity { get set }
     var userKeys: ECCKeys { get }
-    var userSignature: String? { get }
     var userHash: String? { get }
-    var userFacebookHash: String? { get }
-    var userFacebookSignature: String? { get }
+    var userSignature: String? { get }
+
     var securityHeader: SecurityHeader? { get }
     var facebookSecurityHeader: SecurityHeader? { get }
 
-    func setUserSignature(_ userSignature: UserSignature)
-    func setUserKeys(_ userKeys: ECCKeys)
-    func setHash(_ challengeValidation: ChallengeValidation)
-    func setFacebookSignature(_ facebookSignature: ChallengeValidation)
-    func generateUserKey()
     func logoutUser(force: Bool)
     func logoutUserPublisher(force: Bool) -> AnyPublisher<Void, Never>
 }
-
-final class AuthenticationManager: AuthenticationManagerType, TokenHandlerType {
-
-    enum AuthenticationState {
-        case signedIn
-        case signedOut
-    }
+final class AuthenticationManager: AuthenticationManagerType {
 
     // MARK: - Properties
 
-    @DidSet var authenticationState: AuthenticationState = .signedOut
-
-
-    var currentAuthenticationState: AuthenticationState {
-        authenticationState
+    var isUserLoggedIn: Bool { checkAuthorization(for: userRepository.user) }
+    var isUserLoggedInPublisher: AnyPublisher<Bool, Never> {
+        userRepository.userPublisher
+            .map(checkAuthorization(for:))
+            .eraseToAnyPublisher()
     }
 
-    var authenticationStatePublisher: AnyPublisher<AuthenticationState, Never> {
-        $authenticationState.eraseToAnyPublisher()
-    }
+    @Inject private var userRepository: UserRepositoryType
+    @Inject private var facebookManager: FacebookManagerType
 
-    private let cancelBag: CancelBag = .init()
-    private let userDefaults: UserDefaults
-
-    // MARK: - Variables for user registration
-
-    var userSecurity: UserSecurity {
-        get {
-            guard let userSecurity: UserSecurity = Keychain.standard[codable: .userSecurity] else {
-                let newUserSecurity: UserSecurity = .init()
-                Keychain.standard[codable: .userSecurity] = newUserSecurity
-                return newUserSecurity
-            }
-            return userSecurity
-        }
-        set { Keychain.standard[codable: .userSecurity] = newValue }
-    }
-
-    private(set) var currentUser: User?
-
-    // MARK: - Initialization
-
-    init(userDefaults: UserDefaults = UserDefaults.standard) {
-        self.userDefaults = userDefaults
-        authentication()
-    }
-
-    func setUser(_ user: User, withAvatar avatar: Data? = nil) {
-        self.currentUser = user
-        self.currentUser?.avatarImage = avatar
-        saveUser()
-    }
-
-    func setFacebookUser(id: String?, token: String?) {
-        self.currentUser?.facebookId = id
-        self.currentUser?.facebookToken = token
-        saveUser()
-    }
-
-    // TODO: - Storing this in the UserDefaults is just a temporal solution for the PoC, later we should
-    // discuss how to store the data in the device: CoreData, Encrypted Files, not Realm, etc.
-
-    func saveUser() {
-        userDefaults.set(value: currentUser, forKey: .storedUser)
-        authenticationState = .signedIn
-    }
-
-    func saveSecurity() {
-        userDefaults.set(value: userSecurity, forKey: .storedSecurity)
-    }
-
-    func authentication() {
-        self.currentUser = userDefaults.codable(forKey: .storedUser)
-        self.userSecurity = userDefaults.codable(forKey: .storedSecurity) ?? .init()
-
-        authenticationState = currentUser == nil ? .signedOut : .signedIn
-    }
-}
-
-// MARK: - Facebook
-
-extension AuthenticationManager {
-
-    func loginWithFacebook(fromViewController viewController: UIViewController? = nil) -> AnyPublisher<String?, Error> {
-        Future { promise in
-            let loginManager = LoginManager()
-            loginManager.logIn(permissions: [.publicProfile, .userFriends], viewController: nil) { [weak self] result in
-                switch result {
-                case .cancelled:
-                    promise(.success(nil))
-                case let .failed(error):
-                    promise(.failure(error))
-                case let .success(_, _, token):
-                    self?.setFacebookUser(id: token?.userID, token: token?.tokenString)
-                    promise(.success(token?.userID))
-                }
-            }
-        }
-        .eraseToAnyPublisher()
-    }
-}
-
-// MARK: - User Security properties
-
-extension AuthenticationManager: UserSecurityType {
     var userKeys: ECCKeys {
-        guard let keys = userSecurity.keys else {
-            let newKeys = ECCKeys()
-            setUserKeys(newKeys)
-            return newKeys
+        guard let pubK = userRepository.user?.profile?.publicKey?.publicKey,
+              let privK = Keychain.standard[.privateKey(publicKey: pubK)] else {
+            logoutUser(force: true)
+            return ECCKeys()
         }
-        return keys
+        return ECCKeys(pubKey: pubK, privKey: privK)
+    }
+
+    var userHash: String? {
+        userRepository.user?.userHash
     }
 
     var userSignature: String? {
-        userSecurity.signature
-    }
-    var userHash: String? {
-        userSecurity.hash
+        Keychain.standard[.userSignature]
     }
 
-    var userFacebookHash: String? {
-        userSecurity.facebookHash
-    }
-    var userFacebookSignature: String? {
-        userSecurity.facebookSignature
-    }
+    private let cancelBag: CancelBag = .init()
+
+    // MARK: - Variables for user registration
 
     var securityHeader: SecurityHeader? {
-        SecurityHeader(hash: userHash, publicKey: userKeys.publicKey, signature: userSignature)
+        guard let hash = userHash, let signature = userSignature else {
+            return nil
+        }
+        return SecurityHeader(
+            hash: hash,
+            publicKey: userKeys.publicKey,
+            signature: signature
+        )
     }
+
     var facebookSecurityHeader: SecurityHeader? {
-        SecurityHeader(hash: userFacebookHash, publicKey: userKeys.publicKey, signature: userFacebookSignature)
+        guard let hash = facebookManager.facebookHash,
+              let signature = facebookManager.facebookSignature else {
+            return nil
+        }
+        return SecurityHeader(
+            hash: hash,
+            publicKey: userKeys.publicKey,
+            signature: signature
+        )
     }
 
-    func setUserSignature(_ userSignature: UserSignature) {
-        self.userSecurity.signature = userSignature.signed
-        saveSecurity()
-    }
-
-    func setUserKeys(_ userKeys: ECCKeys) {
-        self.userSecurity.keys = userKeys
-        saveSecurity()
-    }
-
-    func setHash(_ challengeValidation: ChallengeValidation) {
-        self.userSecurity.hash = challengeValidation.hash
-        self.userSecurity.signature = challengeValidation.signature
-        saveSecurity()
-    }
-
-    func setFacebookSignature(_ facebookSignature: ChallengeValidation) {
-        self.userSecurity.facebookSignature = facebookSignature.signature
-        self.userSecurity.facebookHash = facebookSignature.hash
-        saveSecurity()
-    }
-
-    func clearSecurity() {
-        self.userSecurity.hash = nil
-        self.userSecurity.signature = nil
-        self.userSecurity.keys = nil
-    }
-
-    func generateUserKey() {
-        let newKeys = ECCKeys()
-        setUserKeys(newKeys)
+    private func checkAuthorization(for user: ManagedUser?) -> Bool {
+        user != nil &&
+        Keychain.standard[.userSignature] != nil &&
+        user?.profile?.publicKey?.publicKey != nil &&
+        user?.profile?.publicKey?.publicKey
+            .flatMap { Keychain.standard[.privateKey(publicKey: $0)] } != nil
     }
 }
 
 // MARK: - Methods
 
 extension AuthenticationManager {
-
-    // MARK: - Base Authentication Methods
-
-    func setAccessToken(token: String) {
-        accessToken = token
-    }
-
-    func setRefreshToken(token: String) {
-        refreshToken = token
-    }
-
-    private func clearUser() {
-        accessToken = nil
-        refreshToken = nil
-        currentUser = nil
-        clearSecurity()
-
-        userDefaults.dictionaryRepresentation().keys.forEach(userDefaults.removeObject)
-    }
-
     func logoutUserPublisher(force: Bool) -> AnyPublisher<Void, Never> {
         @Inject var userService: UserServiceType
         @Inject var contactService: ContactsServiceType

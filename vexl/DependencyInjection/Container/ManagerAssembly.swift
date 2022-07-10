@@ -24,10 +24,6 @@ class ManagerAssembly: Assembly {
             resolver.resolve(AuthenticationManager.self)!
         }
 
-        container.register(UserSecurityType.self) { resolver in
-            resolver.resolve(AuthenticationManager.self)!
-        }
-
         container.register(InitialScreenManager.self) { _ in
             InitialScreenManager()
         }

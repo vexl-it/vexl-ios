@@ -12,53 +12,28 @@ import Cleevio
 import CoreData
 
 protocol UserRepositoryType {
-    var currentUser: CurrentValueSubject<ManagedUser?, Never> { get }
-    var userKeys: ECCKeys { get }
-    var userHash: String? { get }
-    var userSignature: String? { get }
+    var userPublisher: AnyPublisher<ManagedUser?, Never> { get }
+    var user: ManagedUser? { get }
 
     func createNewUser(newKeys: ECCKeys, signature: String?, hash: String?) -> AnyPublisher<ManagedUser, Error>
     func update(with userResponse: User, avatar: Data?) -> AnyPublisher<ManagedUser, Error>
-
-    func logout()
 }
 
 class UserRepository: UserRepositoryType {
+
+    var user: ManagedUser? { users.first }
+
+    var userPublisher: AnyPublisher<ManagedUser?, Never> {
+        $users.map(\.first).eraseToAnyPublisher()
+    }
+
     @Inject private var userMicroService: UserServiceType
     @Inject private var persistenceManager: PersistenceStoreManagerType
 
-    var currentUser: CurrentValueSubject<ManagedUser?, Never> = .init(nil)
+    @Fetched private var users: [ManagedUser]
 
     private var cancelBag: CancelBag = .init()
     private lazy var context: NSManagedObjectContext = persistenceManager.viewContext
-
-    var userKeys: ECCKeys {
-        guard let pubK = currentUser.value?.profile?.publicKey?.publicKey,
-              let privK = Keychain.standard[.privateKey(publicKey: pubK)] else {
-            self.logout()
-            return .init()
-        }
-        return ECCKeys(pubKey: pubK, privKey: privK)
-    }
-
-    var userHash: String? {
-        currentUser.value?.userHash
-    }
-
-    var userSignature: String? {
-        Keychain.standard[.userSignature]
-    }
-
-    init() {
-        persistenceManager.load(type: ManagedUser.self, context: persistenceManager.viewContext)
-            .catch { _ in Just([]) }
-            .compactMap(\.first)
-            .withUnretained(self)
-            .sink { owner, user in
-                owner.currentUser.send(user)
-            }
-            .store(in: cancelBag)
-    }
 
     func createNewUser(newKeys: ECCKeys, signature: String?, hash: String?) -> AnyPublisher<ManagedUser, Error> {
         persistenceManager.insert(context: persistenceManager.viewContext) { context in
@@ -68,22 +43,22 @@ class UserRepository: UserRepositoryType {
             let publicKey = ManagedPublicKey(context: context)
             let profile = ManagedProfile(context: context)
             let user = ManagedUser(context: context)
+            let inbox = ManagedInbox(context: context)
 
+            inbox.type = .created
             publicKey.publicKey = newKeys.publicKey
+            publicKey.inbox = inbox
             profile.publicKey = publicKey
             user.profile = profile
             user.userHash = hash
 
             return user
         }
-        .handleEvents(receiveOutput: { [weak self] user in
-            self?.currentUser.send(user)
-        })
         .eraseToAnyPublisher()
     }
 
     func update(with userResponse: User, avatar: Data?) -> AnyPublisher<ManagedUser, Error> {
-        guard let user = currentUser.value else {
+        guard let user = user else {
             return Fail(error: PersistenceError.unknownUser)
                 .eraseToAnyPublisher()
         }
@@ -96,9 +71,5 @@ class UserRepository: UserRepositoryType {
 
             return user
         }
-    }
-
-    func logout() {
-        // TODO: logout
     }
 }

@@ -11,7 +11,7 @@ import Combine
 
 final class RequestOfferViewModel: ViewModelType, ObservableObject {
 
-    @Inject var userSecurity: UserSecurityType
+    @Inject var authenticationManager: AuthenticationManagerType
     @Inject private var chatService: ChatServiceType
 
     enum State {
@@ -94,7 +94,7 @@ final class RequestOfferViewModel: ViewModelType, ObservableObject {
                 ParsedChatMessage
                     .communicationRequest(inboxPublicKey: owner.offer.offerPublicKey,
                                           text: owner.requestText,
-                                          senderPublicKey: owner.userSecurity.userKeys.publicKey)?
+                                          senderPublicKey: owner.authenticationManager.userKeys.publicKey)?
                     .asString
             }
             .flatMapLatest(with: self) { owner, message -> AnyPublisher<Void, Never> in

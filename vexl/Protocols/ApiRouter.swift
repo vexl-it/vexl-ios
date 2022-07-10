@@ -36,7 +36,7 @@ protocol ApiRouter: URLRequestConvertible {
 extension ApiRouter {
 
     var securityHeader: [Header] {
-        let authManager = DIContainer.shared.getDependency(type: UserSecurityType.self)
+        let authManager = DIContainer.shared.getDependency(type: AuthenticationManagerType.self)
         return authManager.securityHeader?.header ?? []
     }
 
