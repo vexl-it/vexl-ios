@@ -18,29 +18,22 @@ enum FetchContextType {
 
 @propertyWrapper
 class Fetched<Entity: NSManagedObject> {
-
-    private let controller: NSFetchedResultsController<Entity>
-    private let fetchDelegate: FetchedResultsControllerDelegate<Entity>
-    private var cancelBag: CancelBag = .init()
+    let context: NSManagedObjectContext
 
     var wrappedValue: [Entity] {
         fetchDelegate.publisher.value
     }
-    let context: NSManagedObjectContext
 
     var projectedValue: AnyPublisher<[Entity], Never> {
         fetchDelegate.publisher.eraseToAnyPublisher()
     }
 
+    private let controller: NSFetchedResultsController<Entity>
+    private let fetchDelegate: FetchedResultsControllerDelegate<Entity>
+    private var cancelBag: CancelBag = .init()
+
     init(contextType: FetchContextType = .view, sortDescriptors: [NSSortDescriptor] = [], predicate: NSPredicate? = nil) {
         @Inject var persistence: PersistenceStoreManagerType
-
-        guard let entity = Entity.entityName else {
-            fatalError("Unknown entity")
-        }
-        let request = NSFetchRequest<Entity>(entityName: entity)
-        request.predicate = predicate
-        request.sortDescriptors = sortDescriptors
 
         context = {
             switch contextType {
@@ -52,6 +45,13 @@ class Fetched<Entity: NSManagedObject> {
                 return persistence.newEditContext()
             }
         }()
+        
+        guard let entity = Entity.entityName else {
+            fatalError("Unknown entity")
+        }
+        let request = NSFetchRequest<Entity>(entityName: entity)
+        request.predicate = predicate
+        request.sortDescriptors = sortDescriptors
 
         controller = NSFetchedResultsController(fetchRequest: request, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
 
