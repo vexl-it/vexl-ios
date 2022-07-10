@@ -51,9 +51,9 @@
 		B007A7882874BDAE00CFA5C9 /* PersistenceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = B007A7872874BDAE00CFA5C9 /* PersistenceError.swift */; };
 		B007A78A2874C25500CFA5C9 /* PersistenceStoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B007A7892874C25500CFA5C9 /* PersistenceStoreManager.swift */; };
 		B007A79028762EE300CFA5C9 /* FacebookManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B007A78F28762EE200CFA5C9 /* FacebookManager.swift */; };
-		B007A7962878DFC600CFA5C9 /* ContactsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = B007A7952878DFC600CFA5C9 /* ContactsRepository.swift */; };
 		B007A7922877629A00CFA5C9 /* Bool+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B007A7912877629A00CFA5C9 /* Bool+.swift */; };
 		B007A7942878285800CFA5C9 /* ManagedInbox+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B007A7932878285800CFA5C9 /* ManagedInbox+.swift */; };
+		B007A7962878DFC600CFA5C9 /* ContactsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = B007A7952878DFC600CFA5C9 /* ContactsRepository.swift */; };
 		B01C01E62860B2C400A29F85 /* CoinChartData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B01C01E52860B2C400A29F85 /* CoinChartData.swift */; };
 		B01C01E92860D2CD00A29F85 /* ContentState.swift in Sources */ = {isa = PBXBuildFile; fileRef = B01C01E82860D2CD00A29F85 /* ContentState.swift */; };
 		B01C01EB2861F9D900A29F85 /* vexl-crypto.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = B01C01EA2861F9D900A29F85 /* vexl-crypto.xcframework */; };
@@ -393,9 +393,9 @@
 		B007A7872874BDAE00CFA5C9 /* PersistenceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceError.swift; sourceTree = "<group>"; };
 		B007A7892874C25500CFA5C9 /* PersistenceStoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceStoreManager.swift; sourceTree = "<group>"; };
 		B007A78F28762EE200CFA5C9 /* FacebookManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookManager.swift; sourceTree = "<group>"; };
-		B007A7952878DFC600CFA5C9 /* ContactsRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsRepository.swift; sourceTree = "<group>"; };
 		B007A7912877629A00CFA5C9 /* Bool+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bool+.swift"; sourceTree = "<group>"; };
 		B007A7932878285800CFA5C9 /* ManagedInbox+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ManagedInbox+.swift"; sourceTree = "<group>"; };
+		B007A7952878DFC600CFA5C9 /* ContactsRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsRepository.swift; sourceTree = "<group>"; };
 		B01C01E52860B2C400A29F85 /* CoinChartData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinChartData.swift; sourceTree = "<group>"; };
 		B01C01E82860D2CD00A29F85 /* ContentState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentState.swift; sourceTree = "<group>"; };
 		B01C01EA2861F9D900A29F85 /* vexl-crypto.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = "vexl-crypto.xcframework"; sourceTree = "<group>"; };
@@ -720,7 +720,6 @@
 			children = (
 				B007A75F28722A1300CFA5C9 /* Extensions */,
 				B007A74D2872264B00CFA5C9 /* ManagedObjects */,
-				B007A7492871E9A300CFA5C9 /* Repositories */,
 				4F2416A02848F2F100B4A437 /* DictionaryDB.swift */,
 				B007A7892874C25500CFA5C9 /* PersistenceStoreManager.swift */,
 				F1B93ED8286D6671008DAA90 /* VexlDataModel.xcdatamodeld */,
@@ -884,6 +883,7 @@
 				B08F38E927AE7110008B344F /* Protocols */,
 				B08F38EC27AE7110008B344F /* Networking */,
 				B08F38EF27AE7110008B344F /* Models */,
+				B007A7492871E9A300CFA5C9 /* Repositories */,
 				B08F38F227AE7110008B344F /* Managers */,
 				B08F38F527AE7110008B344F /* Services */,
 				F11441A1284681EC00307D39 /* Views */,
