@@ -14,9 +14,10 @@ class ImportContactsViewModel: ObservableObject {
 
     // MARK: - Dependencies
 
+    @Inject var contactsRepository: ContactsRepositoryType
     @Inject var contactsManager: ContactsManagerType
+    @Inject var facebookManager: FacebookManagerType
     @Inject var contactsService: ContactsServiceType
-    @Inject var authenticationManager: AuthenticationManager
     @Inject var userService: UserServiceType
     @Inject var cryptoService: CryptoServiceType
 
@@ -149,7 +150,7 @@ class ImportContactsViewModel: ObservableObject {
             }
             .store(in: cancelBag)
     }
-    
+
     private func setupImportAction() {
         let hashContacts = action
             .withUnretained(self)
@@ -157,25 +158,34 @@ class ImportContactsViewModel: ObservableObject {
             .map(\.0.selectedItems)
             .withUnretained(self)
             .flatMap { owner, contacts in
-                owner.hashContacts(identifiers: contacts.map(\.sourceIdentifier))
+                owner.hashContacts(contacts: contacts)
                     .eraseToAnyPublisher()
             }
+            .share()
+            .eraseToAnyPublisher()
 
         let importContact = hashContacts
             .withUnretained(self)
             .flatMap { owner, contacts in
                 owner.contactsService
-                    .importContacts(contacts)
+                    .importContacts(contacts.map(\.1))
                     .track(activity: owner.primaryActivity)
                     .materialize()
+                    .compactMap { $0.value }
                     .eraseToAnyPublisher()
             }
+            .eraseToAnyPublisher()
 
-        importContact
-            .compactMap { $0.value }
+        let saveContacts = hashContacts
+            .withUnretained(self)
+            .flatMap { owner, contacts in
+                owner.contactsRepository.save(contacts: contacts)
+            }
+            
+        Publishers.Zip(importContact, saveContacts)
             .withUnretained(self)
             .handleEvents(receiveOutput: { owner, response in
-                if response.imported {
+                if response.0.imported {
                     owner.currentState = .success
                 }
             })
@@ -188,22 +198,26 @@ class ImportContactsViewModel: ObservableObject {
             .store(in: cancelBag)
     }
 
-    private func hashContacts(identifiers: [String]) -> AnyPublisher<[String], Error> {
+    private func hashContacts(contacts: [ContactInformation]) -> AnyPublisher<[(ContactInformation, String)], Error> {
         let phoneNumber = Formatters.phoneNumberFormatter
         let countryCode = phoneNumber.countryCode(for: Locale.current.regionCode ?? "")
-
-        let trimmedIdentifiers = identifiers.map { identifier -> String in
-            let trimmedIdentifier = identifier.removeWhitespaces()
-            if let countryCode = countryCode, !trimmedIdentifier.contains("+") {
-                return "\(countryCode)\(trimmedIdentifier)"
-            }
-            return trimmedIdentifier
-        }
-
-        return trimmedIdentifiers.publisher
+        return contacts
+            .publisher
             .withUnretained(self)
-            .flatMap { owner, identifier in
-                owner.cryptoService.hashHMAC(password: Constants.contactsHashingPassword, message: identifier)
+            .flatMap { owner, contact -> AnyPublisher<(ContactInformation, String), Error> in
+                let identifier = contact.sourceIdentifier
+                let trimmedIdentifier = identifier.removeWhitespaces()
+                let formattedIdentifier: String = {
+                    if let countryCode = countryCode, !trimmedIdentifier.contains("+") {
+                        return "\(countryCode)\(trimmedIdentifier)"
+                    }
+                    return trimmedIdentifier
+                }()
+                return owner.cryptoService
+                    .hashHMAC(password: Constants.contactsHashingPassword, message: formattedIdentifier)
+                    .map { hash in (contact, hash) }
+                    .eraseToAnyPublisher()
+
             }
             .collect()
             .eraseToAnyPublisher()

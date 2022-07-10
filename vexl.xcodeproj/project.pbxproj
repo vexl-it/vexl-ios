@@ -52,6 +52,8 @@
 		B007A7882874BDAE00CFA5C9 /* PersistenceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = B007A7872874BDAE00CFA5C9 /* PersistenceError.swift */; };
 		B007A78A2874C25500CFA5C9 /* PersistenceStoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B007A7892874C25500CFA5C9 /* PersistenceStoreManager.swift */; };
 		B007A78C2875970D00CFA5C9 /* NSManagedObjectContext+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B007A78B2875970C00CFA5C9 /* NSManagedObjectContext+.swift */; };
+		B007A79028762EE300CFA5C9 /* FacebookManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B007A78F28762EE200CFA5C9 /* FacebookManager.swift */; };
+		B007A7962878DFC600CFA5C9 /* ContactsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = B007A7952878DFC600CFA5C9 /* ContactsRepository.swift */; };
 		B01C01E62860B2C400A29F85 /* CoinChartData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B01C01E52860B2C400A29F85 /* CoinChartData.swift */; };
 		B01C01E92860D2CD00A29F85 /* ContentState.swift in Sources */ = {isa = PBXBuildFile; fileRef = B01C01E82860D2CD00A29F85 /* ContentState.swift */; };
 		B01C01EB2861F9D900A29F85 /* vexl-crypto.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = B01C01EA2861F9D900A29F85 /* vexl-crypto.xcframework */; };
@@ -386,6 +388,8 @@
 		B007A7872874BDAE00CFA5C9 /* PersistenceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceError.swift; sourceTree = "<group>"; };
 		B007A7892874C25500CFA5C9 /* PersistenceStoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceStoreManager.swift; sourceTree = "<group>"; };
 		B007A78B2875970C00CFA5C9 /* NSManagedObjectContext+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSManagedObjectContext+.swift"; sourceTree = "<group>"; };
+		B007A78F28762EE200CFA5C9 /* FacebookManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookManager.swift; sourceTree = "<group>"; };
+		B007A7952878DFC600CFA5C9 /* ContactsRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsRepository.swift; sourceTree = "<group>"; };
 		B01C01E52860B2C400A29F85 /* CoinChartData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinChartData.swift; sourceTree = "<group>"; };
 		B01C01E82860D2CD00A29F85 /* ContentState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentState.swift; sourceTree = "<group>"; };
 		B01C01EA2861F9D900A29F85 /* vexl-crypto.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = "vexl-crypto.xcframework"; sourceTree = "<group>"; };
@@ -793,6 +797,7 @@
 			isa = PBXGroup;
 			children = (
 				B007A74A2871EB2900CFA5C9 /* UserRepository.swift */,
+				B007A7952878DFC600CFA5C9 /* ContactsRepository.swift */,
 			);
 			path = Repositories;
 			sourceTree = "<group>";
@@ -993,6 +998,7 @@
 			children = (
 				F1D204F52864FABB006A5671 /* Inbox */,
 				B08F391627AE7112008B344F /* AuthenticationManager.swift */,
+				B007A78F28762EE200CFA5C9 /* FacebookManager.swift */,
 				B0F206F027AE94C400A44E72 /* InitialScreenManager.swift */,
 				F175AB9C27F147B5000DAB15 /* ContactsManager.swift */,
 				F1D20127282AB6EF006DF4AB /* CryptocurrencyValueManager.swift */,
@@ -2214,6 +2220,7 @@
 				B0E9BB302815C7310012BF1D /* SHA.swift in Sources */,
 				F1483CC9285A77CA0054B7A2 /* ChatRevealConfirmationView.swift in Sources */,
 				B08F390727AE7110008B344F /* UserDefault.swift in Sources */,
+				B007A7962878DFC600CFA5C9 /* ContactsRepository.swift in Sources */,
 				F1D2012A282ABB1F006DF4AB /* TabBarViewModel.swift in Sources */,
 				F1485624284FD0FB003213D7 /* InboxViewModel.swift in Sources */,
 				4FBF6213283CF54400DDBE71 /* FilterHeaderView.swift in Sources */,
@@ -2375,6 +2382,7 @@
 				B0FE523F280E822400A77EC3 /* CryptoService.swift in Sources */,
 				F1485646284FD451003213D7 /* ChatConversationView.swift in Sources */,
 				F1A9452D27F67FD5009B5AE3 /* PhoneConfirmation.swift in Sources */,
+				B007A79028762EE300CFA5C9 /* FacebookManager.swift in Sources */,
 				F1483CC4285A407C0054B7A2 /* ChatImageBubbleView.swift in Sources */,
 				F1B5321C28202B36009D4E0C /* OfferItemView.swift in Sources */,
 				F11441DE284681EC00307D39 /* SegmentedPickerView.swift in Sources */,

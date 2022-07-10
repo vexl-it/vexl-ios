@@ -13,8 +13,8 @@ import Cleevio
 class ImportFacebookContactsViewModel: ImportContactsViewModel {
     override func fetchContacts() throws {
 
-        guard let facebookId = authenticationManager.currentUser?.facebookId,
-              let facebookToken = authenticationManager.currentUser?.facebookToken else {
+        guard let facebookId = facebookManager.facebookID,
+              let facebookToken = facebookManager.facebookToken else {
                   throw UserError.fetchFacebookFriends
               }
 

@@ -13,5 +13,10 @@ class RepositoryAssembly: Assembly {
             UserRepository()
         }
         .inObjectScope(.container)
+
+        container.register(ContactsRepositoryType.self) { _ in
+            ContactsRepository()
+        }
+        .inObjectScope(.container)
     }
 }

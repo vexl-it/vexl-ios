@@ -52,5 +52,10 @@ class ManagerAssembly: Assembly {
             InboxManager()
         }
         .inObjectScope(.container)
+
+        container.register(FacebookManagerType.self) { _ in
+            FacebookManager()
+        }
+        .inObjectScope(.container)
     }
 }
