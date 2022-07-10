@@ -50,18 +50,7 @@ final class ChatService: BaseService, ChatServiceType {
     // MARK: - Create inbox and request messaging permission
 
     func createInbox(offerKey: ECCKeys, pushToken: String) -> AnyPublisher<Void, Error> {
-        Future<Void, Error> { [localStorageService] promise in
-            do {
-                try localStorageService.saveInbox(ChatInbox(key: offerKey, type: .created))
-                promise(.success(()))
-            } catch {
-                promise(.failure(LocalStorageError.saveFailed))
-            }
-        }
-        .flatMapLatest(with: self) { owner, _ in
-            owner.request(endpoint: ChatRouter.createInbox(offerPublicKey: offerKey.publicKey, pushToken: pushToken))
-        }
-        .eraseToAnyPublisher()
+        request(endpoint: ChatRouter.createInbox(offerPublicKey: offerKey.publicKey, pushToken: pushToken))
     }
 
     func requestCommunication(inboxPublicKey: String, message: String) -> AnyPublisher<Void, Error> {

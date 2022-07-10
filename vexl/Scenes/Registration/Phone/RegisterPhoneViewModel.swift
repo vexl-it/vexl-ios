@@ -17,6 +17,7 @@ final class RegisterPhoneViewModel: ViewModelType {
     @Inject var userService: UserServiceType
     @Inject var userRepository: UserRepositoryType
     @Inject var cryptoService: CryptoServiceType
+    @Inject var chatService: ChatServiceType
 
     // MARK: - View State
 
@@ -277,11 +278,24 @@ final class RegisterPhoneViewModel: ViewModelType {
                     .createNewUser(newKeys: owner.newKeys, signature: response.signature, hash: response.hash)
                     .asVoid()
                     .materialize()
+                    .track(activity: owner.primaryActivity)
                     .compactMap(\.value)
                     .receive(on: RunLoop.main)
             }
 
-        createUser
+        let createInbox = createUser
+            .flatMapLatest(with: self) { owner, challengeResponse in
+                owner.chatService
+                    .createInbox(offerKey: owner.newKeys,
+                                 pushToken: Constants.pushNotificationToken)
+                    .track(activity: owner.primaryActivity)
+                    .materialize()
+                    .compactMap(\.value)
+                    .map { challengeResponse }
+                    .eraseToAnyPublisher()
+            }
+
+        createInbox
             .asVoid()
             .withUnretained(self)
             .sink { owner in
