@@ -24,9 +24,6 @@ protocol UserServiceType {
 
 final class UserService: BaseService, UserServiceType {
 
-    @Inject var userSecurity: UserSecurityType
-    @Inject var authenticationManager: AuthenticationManagerType
-
     func me() -> AnyPublisher<User, Error> {
         request(type: User.self, endpoint: UserRouter.me)
     }
@@ -56,12 +53,6 @@ final class UserService: BaseService, UserServiceType {
         request(type: User.self, endpoint: UserRouter.createUser(username: username,
                                                                  avatar: avatar,
                                                                  imageExtension: Constants.jpegFormat))
-            .withUnretained(self)
-            .handleEvents(receiveOutput: { owner, response in
-                let avatarData = avatar?.dataFromBase64
-                owner.authenticationManager.setUser(response, withAvatar: avatarData)
-            })
-            .map(\.1)
             .eraseToAnyPublisher()
     }
 
@@ -71,11 +62,6 @@ final class UserService: BaseService, UserServiceType {
 
     func facebookSignature(id: String) -> AnyPublisher<ChallengeValidation, Error> {
         request(type: ChallengeValidation.self, endpoint: UserRouter.facebookSignature(id: id))
-            .withUnretained(self)
-            .handleEvents(receiveOutput: { owner, response in
-                owner.userSecurity.setFacebookSignature(response)
-            })
-            .map { $0.1 }
             .eraseToAnyPublisher()
     }
 
