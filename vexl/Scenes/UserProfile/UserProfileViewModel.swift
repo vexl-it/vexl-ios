@@ -13,12 +13,8 @@ import Combine
 final class UserProfileViewModel: ViewModelType, ObservableObject {
 
     @Inject var authenticationManager: AuthenticationManagerType
-    @Inject var userService: UserServiceType
-    @Inject var offerService: OfferServiceType
     @Inject var userRepository: UserRepositoryType
     @Inject var contactService: ContactsServiceType
-    @Inject var syncInboxManager: SyncInboxManagerType
-    @Inject var cryptocurrencyValueManager: CryptocurrencyValueManagerType
 
     // MARK: - Action Binding
 
@@ -148,48 +144,10 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
         option
             .filter { $0 == .logout }
             .withUnretained(self)
-            .sink { owner, _ in
-                owner.logoutUser()
-            }
-            .store(in: cancelBag)
-    }
-
-    private func logoutUser() {
-
-        let deleteUser = userService
-            .deleteUser()
-            .track(activity: primaryActivity)
-            .materialize()
-            .compactMap(\.value)
-
-        let deleteContactUser = deleteUser
-            .withUnretained(self)
             .flatMap { owner, _ in
-                owner.contactService
-                    .deleteUser()
-                    .track(activity: owner.primaryActivity)
-                    .materialize()
-                    .compactMap(\.value)
+                owner.authenticationManager.logoutUserPublisher(force: false)
             }
-
-        let deleteOffers = deleteContactUser
-            .withUnretained(self)
-            .flatMap { owner, _ in
-                owner.offerService
-                    .deleteOffers()
-                    .track(activity: owner.primaryActivity)
-                    .materialize()
-                    .compactMap(\.value)
-            }
-
-        deleteOffers
-            .withUnretained(self)
-            .sink { owner, _ in
-                owner.cryptocurrencyValueManager.stopPollingCoinData()
-                owner.cryptocurrencyValueManager.stopFetchingChartData()
-                owner.syncInboxManager.stopSyncingInboxes()
-                owner.authenticationManager.logoutUser()
-            }
+            .sink()
             .store(in: cancelBag)
     }
 }

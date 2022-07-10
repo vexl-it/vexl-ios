@@ -39,6 +39,8 @@ protocol UserSecurityType {
     func setHash(_ challengeValidation: ChallengeValidation)
     func setFacebookSignature(_ facebookSignature: ChallengeValidation)
     func generateUserKey()
+    func logoutUser(force: Bool)
+    func logoutUserPublisher(force: Bool) -> AnyPublisher<Void, Never>
 }
 
 final class AuthenticationManager: AuthenticationManagerType, TokenHandlerType {
@@ -232,8 +234,49 @@ extension AuthenticationManager {
         userDefaults.dictionaryRepresentation().keys.forEach(userDefaults.removeObject)
     }
 
-    func logoutUser() {
-        clearUser()
-        authenticationState = .signedOut
+    func logoutUserPublisher(force: Bool) -> AnyPublisher<Void, Never> {
+        @Inject var userService: UserServiceType
+        @Inject var contactService: ContactsServiceType
+        @Inject var offerService: OfferServiceType
+        @Inject var cryptocurrencyValueManager: CryptocurrencyValueManagerType
+        @Inject var syncInboxManager: SyncInboxManagerType
+        @Inject var persistanceManager: PersistenceStoreManagerType
+
+        let serverPublishers: AnyPublisher<Void, Never> = {
+                if !force {
+                    return userService.deleteUser().nilOnError()
+                        .flatMap { _ in
+                            contactService.deleteUser().nilOnError()
+                        }
+                        .flatMap { _ in
+                            offerService.deleteOffers().nilOnError()
+                        }
+                        .asVoid()
+                        .eraseToAnyPublisher()
+                } else {
+                    return Just(())
+                        .eraseToAnyPublisher()
+                }
+            }()
+
+        return serverPublishers
+            .handleEvents(receiveOutput: {
+                cryptocurrencyValueManager.stopPollingCoinData()
+                cryptocurrencyValueManager.stopFetchingChartData()
+                syncInboxManager.stopSyncingInboxes()
+            })
+            .flatMap {
+                persistanceManager
+                    .wipe()
+                    .nilOnError()
+            }
+            .asVoid()
+            .eraseToAnyPublisher()
+    }
+
+    func logoutUser(force: Bool) {
+        logoutUserPublisher(force: force)
+            .sink()
+            .store(in: cancelBag)
     }
 }
