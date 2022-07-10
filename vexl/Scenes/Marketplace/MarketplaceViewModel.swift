@@ -136,7 +136,7 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
     }
 
     private func setupDataBindings() {
-        let encryptedOffsers: AnyPublisher<[EncryptedOffer], Never> = Publishers.Merge(refresh, Just(()))
+        let encryptedOffers: AnyPublisher<[EncryptedOffer], Never> = Publishers.Merge(refresh, Just(()))
             .flatMapLatest(with: self) { owner, _ in
                 owner.offerService
                     .getStoredOfferKeys(fromSource: .created)
@@ -159,7 +159,7 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
             }
             .eraseToAnyPublisher()
 
-        encryptedOffsers
+        encryptedOffers
             .withUnretained(self)
             .tryMap { owner, items in
                 items.compactMap { try? Offer(encryptedOffer: $0, keys: owner.authenticationManager.userKeys, source: .fetched) }
