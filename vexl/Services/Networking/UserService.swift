@@ -44,11 +44,6 @@ final class UserService: BaseService, UserServiceType {
 
     func validateChallenge(key: String, signature: String) -> AnyPublisher<ChallengeValidation, Error> {
         request(type: ChallengeValidation.self, endpoint: UserRouter.validateChallenge(signature: signature, key: key))
-            .withUnretained(self)
-            .handleEvents(receiveOutput: { owner, response in
-                owner.userSecurity.setHash(response)
-            })
-            .map { $0.1 }
             .eraseToAnyPublisher()
     }
 
