@@ -134,6 +134,7 @@ extension AuthenticationManager {
                 cryptocurrencyValueManager.stopPollingCoinData()
                 cryptocurrencyValueManager.stopFetchingChartData()
                 syncInboxManager.stopSyncingInboxes()
+                try? Keychain.standard.removeAll()
             })
             .flatMap {
                 persistanceManager
