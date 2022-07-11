@@ -20,12 +20,16 @@ enum FetchContextType {
 class Fetched<Entity: NSManagedObject> {
     let context: NSManagedObjectContext
 
+    var publisher: AnyPublisher<[Entity], Never> {
+        fetchDelegate.publisher.eraseToAnyPublisher()
+    }
+
     var wrappedValue: [Entity] {
         fetchDelegate.publisher.value
     }
 
-    var projectedValue: AnyPublisher<[Entity], Never> {
-        fetchDelegate.publisher.eraseToAnyPublisher()
+    var projectedValue: Fetched<Entity> {
+        self
     }
 
     private let controller: NSFetchedResultsController<Entity>
@@ -45,7 +49,7 @@ class Fetched<Entity: NSManagedObject> {
                 return persistence.newEditContext()
             }
         }()
-        
+
         guard let entity = Entity.entityName else {
             fatalError("Unknown entity")
         }

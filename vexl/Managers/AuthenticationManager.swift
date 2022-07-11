@@ -54,9 +54,8 @@ final class AuthenticationManager: AuthenticationManagerType {
         userRepository.user?.userHash
     }
 
-    var userSignature: String? {
-        Keychain.standard[.userSignature]
-    }
+    @KeychainStore(key: .userSignature)
+    var userSignature: String?
 
     private let cancelBag: CancelBag = .init()
 

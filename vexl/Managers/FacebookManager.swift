@@ -16,31 +16,22 @@ protocol FacebookManagerType {
     var facebookHash: String? { get set }
     var facebookSignature: String? { get set }
 
-//    func update(userID: String, token: String)
     func loginWithFacebook(fromViewController viewController: UIViewController?) -> AnyPublisher<String?, Error>
     func update(hash: String, signature: String)
 }
 
 class FacebookManager: FacebookManagerType {
-    var facebookID: String? {
-        get { Keychain.standard[.facebookID] }
-        set { Keychain.standard[.facebookID] = newValue }
-    }
+    @KeychainStore(key: .facebookID)
+    var facebookID: String?
 
-    var facebookToken: String? {
-        get { Keychain.standard[.facebookToken] }
-        set { Keychain.standard[.facebookToken] = newValue }
-    }
+    @KeychainStore(key: .facebookToken)
+    var facebookToken: String?
 
-    var facebookHash: String? {
-        get { Keychain.standard[.facebookHash] }
-        set { Keychain.standard[.facebookHash] = newValue }
-    }
+    @KeychainStore(key: .facebookHash)
+    var facebookHash: String?
 
-    var facebookSignature: String? {
-        get { Keychain.standard[.facebookSignature] }
-        set { Keychain.standard[.facebookSignature] = newValue }
-    }
+    @KeychainStore(key: .facebookSignature)
+    var facebookSignature: String?
 
     func update(hash: String, signature: String) {
         facebookHash = hash
