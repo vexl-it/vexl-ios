@@ -7,17 +7,17 @@
 
 import SwiftUI
 
-typealias ChatAction = ChatActionView.ChatAction
+typealias ChatActionOption = ChatActionView.ChatActionOption
 
 struct ChatActionView: View {
 
     let viewModel: ChatActionViewModel
 
-    private var availableActions: [ChatAction] {
+    private var availableActions: [ChatActionOption] {
         if viewModel.userIsRevealed {
-            return ChatAction.allCases.filter { $0 != .revealIdentity }
+            return ChatActionOption.allCases.filter { $0 != .revealIdentity }
         } else {
-            return ChatAction.allCases
+            return ChatActionOption.allCases
         }
     }
 
@@ -42,9 +42,9 @@ struct ChatActionView: View {
 
 extension ChatActionView {
 
-    enum ChatAction: Identifiable, Hashable, CaseIterable {
+    enum ChatActionOption: Identifiable, Hashable, CaseIterable {
 
-        var id: ChatAction { self }
+        var id: ChatActionOption { self }
 
         case revealIdentity
         case showOffer

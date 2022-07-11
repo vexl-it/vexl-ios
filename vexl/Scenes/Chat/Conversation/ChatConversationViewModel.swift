@@ -27,7 +27,7 @@ final class ChatConversationViewModel: ObservableObject {
     var displayExpandedImage: ActionSubject<Data> = .init()
     var identityRevealResponse: ActionSubject<Void> = .init()
 
-    var userAction: ActionSubject<UserAction> = .init()
+    var action: ActionSubject<UserAction> = .init()
 
     var avatarImage: Image
     var rejectImage: Image
@@ -102,7 +102,7 @@ final class ChatConversationViewModel: ObservableObject {
     }
 
     private func setupActionBindings() {
-        userAction
+        action
             .compactMap { action -> (sectionId: String, messageId: String)? in
                 if case let .imageTapped(sectionId, messageId) = action { return (sectionId: sectionId, messageId: messageId) }
                 return nil
@@ -118,7 +118,7 @@ final class ChatConversationViewModel: ObservableObject {
             .subscribe(displayExpandedImage)
             .store(in: cancelBag)
 
-        userAction
+        action
             .filter { $0 == .revealTapped }
             .asVoid()
             .subscribe(identityRevealResponse)

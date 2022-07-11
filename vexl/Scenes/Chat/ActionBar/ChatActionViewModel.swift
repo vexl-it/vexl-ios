@@ -12,7 +12,7 @@ final class ChatActionViewModel {
 
     @Published var userIsRevealed = false
 
-    var action: ActionSubject<ChatActionView.ChatAction> = .init()
+    var action: ActionSubject<ChatActionView.ChatActionOption> = .init()
     var route: CoordinatingSubject<ChatViewModel.Route> = .init()
 
     private let cancelBag: CancelBag = .init()

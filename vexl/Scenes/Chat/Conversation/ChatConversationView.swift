@@ -31,7 +31,7 @@ struct ChatConversationView: View {
                                                 text: message.text,
                                                 style: message.isContact ? .contact : .user)
                                 .onTapGesture {
-                                    viewModel.userAction.send(.imageTapped(sectionId: section.id.uuidString, messageId: message.id.uuidString))
+                                    viewModel.action.send(.imageTapped(sectionId: section.id.uuidString, messageId: message.id.uuidString))
                                 }
                         case .requestIdentityReveal:
                             ChatRevealIdentityView(image: nil,
@@ -41,7 +41,7 @@ struct ChatConversationView: View {
                             ChatRevealIdentityView(image: nil,
                                                    isRequest: false,
                                                    revealAction: {
-                                viewModel.userAction.send(.revealTapped)
+                                viewModel.action.send(.revealTapped)
                             })
                         case .rejectIdentityReveal:
                             ChatRevealIdentityResponseView(username: viewModel.username,
