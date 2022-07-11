@@ -17,6 +17,7 @@ struct EncryptedOfferList: Codable {
 
 struct EncryptedOffer: Codable {
     let userPublicKey: String
+    var groupUuid: String
     let location: [String]
     let offerPublicKey: String
     let offerDescription: String
@@ -45,6 +46,7 @@ struct EncryptedOffer: Codable {
     var asJson: [String: Any] {
         [
             "userPublicKey": userPublicKey,
+            "groupUuid": groupUuid,
             "location": location,
             "offerPublicKey": offerPublicKey,
             "offerDescription": offerDescription,
