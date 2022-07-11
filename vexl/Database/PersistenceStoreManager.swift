@@ -94,7 +94,7 @@ final class PersistenceStoreManager: PersistenceStoreManagerType {
             forName: NSNotification.Name.NSManagedObjectContextDidSave,
             object: nil,
             queue: nil,
-            using: { [primaryContext, weak viewContext] notification in
+            using: { [weak primaryContext, weak viewContext] notification in
                 guard let notificationContext = notification.object as? NSManagedObjectContext else {
                     return
                 }
