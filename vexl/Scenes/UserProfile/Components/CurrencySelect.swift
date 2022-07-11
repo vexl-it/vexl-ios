@@ -14,6 +14,7 @@ class CurrencySelectViewModel: BottomActionSheetViewModelProtocol {
     var title: String = L.userProfileCurrencyTitle()
     var primaryAction: BottomActionSheet<CurrencySelectContent>.Action = .init(title: L.userProfileCurrencyDismissButton(), isDismissAction: true)
     var secondaryAction: BottomActionSheet<CurrencySelectContent>.Action?
+    var actionPublisher: PassthroughSubject<BottomActionSheetActionType, Never> = .init()
     var dismissPublisher: PassthroughSubject<Void, Never> = .init()
     var colorScheme: BottomActionSheet<CurrencySelectContent>.ColorScheme = .main
     var content: CurrencySelectContent {

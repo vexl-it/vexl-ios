@@ -59,7 +59,7 @@ struct ChatView: View {
                   height: 1)
                 .padding(.top, Appearance.GridGuide.smallPadding)
 
-            ChatActionView { chatAction in
+            ChatActionView(userIsRevealed: viewModel.userIsRevealed) { chatAction in
                 withAnimation {
                     viewModel.action.send(.chatActionTap(action: chatAction))
                 }

@@ -12,6 +12,7 @@ class DonateViewModel: BottomActionSheetViewModelProtocol {
     var title: String = L.userProfileDonateTitle()
     var primaryAction: BottomActionSheet<DonateContent>.Action = .init(title: L.userProfileDonateButtonDonate(), isDismissAction: true)
     var secondaryAction: BottomActionSheet<DonateContent>.Action? = .init(title: L.userProfileDonateButtonDismiss(), isDismissAction: true)
+    var actionPublisher: PassthroughSubject<BottomActionSheetActionType, Never> = .init()
     var dismissPublisher: PassthroughSubject<Void, Never> = .init()
     var colorScheme: BottomActionSheet<DonateContent>.ColorScheme = .main
     var content: DonateContent {

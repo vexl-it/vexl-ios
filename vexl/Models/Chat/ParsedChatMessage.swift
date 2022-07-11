@@ -20,12 +20,12 @@ struct ParsedChatMessage: Codable {
     let text: String?
     let image: String?
     /// Message type send by the backend
-    let messageTypeValue: String
+    var messageTypeValue: String
     /// Message type for the content used internally in the device
-    let contentTypeValue: String
+    var contentTypeValue: String
     let time: TimeInterval
     /// Information of the sender, will contain data once the identity reveal is accepted.
-    let user: ChatUser?
+    var user: ChatUser?
 
     var isFromContact = true
 
@@ -35,6 +35,10 @@ struct ParsedChatMessage: Codable {
 
     var messageType: MessageType {
         MessageType(rawValue: messageTypeValue) ?? .invalid
+    }
+
+    var shouldBeStored: Bool {
+        ![MessageType.revealRejected, .revealApproval, .deleteChat].contains(messageType)
     }
 
     var previewText: String {
@@ -128,7 +132,8 @@ extension ParsedChatMessage {
                   contentType: ContentType,
                   text: String,
                   image: String? = nil,
-                  contactInboxKey: String) {
+                  contactInboxKey: String,
+                  user: ChatUser? = nil) {
         guard messageType != .invalid else { return nil }
         self.contactInboxKey = contactInboxKey
         self.id = UUID().uuidString
@@ -139,7 +144,7 @@ extension ParsedChatMessage {
         self.time = Date().timeIntervalSince1970
         self.image = image
         self.isFromContact = false
-        self.user = nil
+        self.user = user
     }
 }
 
@@ -174,13 +179,34 @@ extension ParsedChatMessage {
         return parsedMessage
     }
 
-    static func createIdentityRequest(inboxPublicKey: String, contactInboxKey: String) -> ParsedChatMessage? {
+    static func createIdentityRequest(inboxPublicKey: String,
+                                      contactInboxKey: String,
+                                      username: String?,
+                                      avatar: String?) -> ParsedChatMessage? {
+        let chatUser = ChatUser(name: username, image: avatar)
         let parsedMessage = ParsedChatMessage(inboxPublicKey: inboxPublicKey,
                                               messageType: .revealRequest,
                                               contentType: .anonymousRequest,
                                               text: "",
                                               image: nil,
-                                              contactInboxKey: contactInboxKey)
+                                              contactInboxKey: contactInboxKey,
+                                              user: chatUser)
+        return parsedMessage
+    }
+
+    static func createIdentityResponse(inboxPublicKey: String,
+                                       contactInboxKey: String,
+                                       isAccepted: Bool,
+                                       username: String?,
+                                       avatar: String?) -> ParsedChatMessage? {
+        let chatUser = ChatUser(name: username, image: avatar)
+        let parsedMessage = ParsedChatMessage(inboxPublicKey: inboxPublicKey,
+                                              messageType: isAccepted ? .revealApproval : .revealApproval,
+                                              contentType: .anonymousRequestResponse,
+                                              text: "",
+                                              image: nil,
+                                              contactInboxKey: contactInboxKey,
+                                              user: chatUser)
         return parsedMessage
     }
 
@@ -211,10 +237,10 @@ extension ParsedChatMessage {
 
     struct ChatUser: Codable {
         let name: String
-        let image: String
+        let image: String?
 
         init?(name: String?, image: String?) {
-            guard let name = name, let image = image else { return nil }
+            guard let name = name else { return nil }
             self.name = name
             self.image = image
         }

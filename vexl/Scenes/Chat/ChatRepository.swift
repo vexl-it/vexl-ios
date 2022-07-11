@@ -12,7 +12,17 @@ import Cleevio
 protocol ChatRepositoryType {
     var dismissAction: ActionSubject<Void> { get set }
 
+    func getContactIdentity(inboxKeys: ECCKeys, contactPublicKey: String) -> AnyPublisher<(username: String, avatar: String?), Error>
     func deleteChat(inboxKeys: ECCKeys, contactPublicKey: String) -> AnyPublisher<Void, Error>
+
+    func requestIdentityReveal(inboxKeys: ECCKeys, contactPublicKey: String) -> AnyPublisher<Void, Error>
+    func identityRevealResponse(inboxKeys: ECCKeys, contactPublicKey: String, isAccepted: Bool) -> AnyPublisher<Void, Error>
+
+    func sendMessage(inboxKeys: ECCKeys,
+                     receiverPublicKey: String,
+                     type: MessageType,
+                     parsedMessage: ParsedChatMessage?,
+                     updateInbox: Bool) -> AnyPublisher<Void, Never>
 }
 
 final class ChatRepository: ChatRepositoryType {
@@ -20,28 +30,24 @@ final class ChatRepository: ChatRepositoryType {
     @Inject private var chatService: ChatServiceType
     @Inject private var cryptoService: CryptoServiceType
     @Inject private var inboxManager: InboxManagerType
+    @Inject private var authenticationManager: AuthenticationManagerType
+    @Inject private var localStorageService: LocalStorageServiceType
 
     var dismissAction: ActionSubject<Void> = .init()
+
+    func getContactIdentity(inboxKeys: ECCKeys, contactPublicKey: String) -> AnyPublisher<(username: String, avatar: String?), Error> {
+        chatService.getContactIdentity(inboxKeys: inboxKeys, contactPublicKey: contactPublicKey)
+    }
 
     func deleteChat(inboxKeys: ECCKeys, contactPublicKey: String) -> AnyPublisher<Void, Error> {
         let deleteMessage = ParsedChatMessage.createDelete(inboxPublicKey: inboxKeys.publicKey,
                                                            contactInboxKey: contactPublicKey)
 
-        let sendMessage = Just(deleteMessage)
-            .setFailureType(to: Error.self)
-            .compactMap { $0?.asString }
-            .withUnretained(self)
-            .flatMap { owner, message in
-                owner.cryptoService
-                    .encryptECIES(publicKey: contactPublicKey, secret: message)
-            }
-            .withUnretained(self)
-            .flatMap { owner, _ in
-                owner.sendMessage(inboxKeys: inboxKeys,
-                                  receiverPublicKey: contactPublicKey,
-                                  type: .deleteChat,
-                                  parsedMessage: deleteMessage)
-            }
+        let sendMessage = sendMessage(inboxKeys: inboxKeys,
+                                      receiverPublicKey: contactPublicKey,
+                                      type: .deleteChat,
+                                      parsedMessage: deleteMessage,
+                                      updateInbox: false)
 
         return sendMessage
             .withUnretained(self)
@@ -61,10 +67,62 @@ final class ChatRepository: ChatRepositoryType {
             .eraseToAnyPublisher()
     }
 
-    private func sendMessage(inboxKeys: ECCKeys,
-                             receiverPublicKey: String,
-                             type: MessageType,
-                             parsedMessage: ParsedChatMessage?) -> AnyPublisher<Void, Never> {
+    func requestIdentityReveal(inboxKeys: ECCKeys, contactPublicKey: String) -> AnyPublisher<Void, Error> {
+        let requestIdentity = ParsedChatMessage.createIdentityRequest(inboxPublicKey: inboxKeys.publicKey,
+                                                                      contactInboxKey: contactPublicKey,
+                                                                      username: authenticationManager.currentUser?.username,
+                                                                      avatar: authenticationManager.currentUser?.avatar)
+
+        return sendMessage(inboxKeys: inboxKeys,
+                           receiverPublicKey: contactPublicKey,
+                           type: .revealRequest,
+                           parsedMessage: requestIdentity,
+                           updateInbox: true)
+            .setFailureType(to: Error.self)
+            .eraseToAnyPublisher()
+    }
+
+    func identityRevealResponse(inboxKeys: ECCKeys, contactPublicKey: String, isAccepted: Bool) -> AnyPublisher<Void, Error> {
+        let identityResponse = ParsedChatMessage.createIdentityResponse(inboxPublicKey: inboxKeys.publicKey,
+                                                                        contactInboxKey: contactPublicKey,
+                                                                        isAccepted: isAccepted,
+                                                                        username: authenticationManager.currentUser?.username,
+                                                                        avatar: authenticationManager.currentUser?.avatar)
+
+        return chatService
+            .updateIdentityReveal(inboxKeys: inboxKeys, contactPublicKey: contactPublicKey, isAccepted: isAccepted)
+            .materialize()
+            .compactMap(\.value)
+            .withUnretained(self)
+            .flatMap { owner, _ -> AnyPublisher<Void, Never> in
+                if isAccepted {
+                    return owner.chatService
+                        .createRevealedUser(forInboxKeys: inboxKeys, contactPublicKey: contactPublicKey)
+                        .materialize()
+                        .compactMap(\.value)
+                        .eraseToAnyPublisher()
+                } else {
+                    return Just(())
+                        .eraseToAnyPublisher()
+                }
+            }
+            .withUnretained(self)
+            .flatMap { owner, _ in
+                owner.sendMessage(inboxKeys: inboxKeys,
+                                  receiverPublicKey: contactPublicKey,
+                                  type: isAccepted ? .revealApproval : .revealRejected,
+                                  parsedMessage: identityResponse,
+                                  updateInbox: true)
+            }
+            .setFailureType(to: Error.self)
+            .eraseToAnyPublisher()
+    }
+
+    func sendMessage(inboxKeys: ECCKeys,
+                     receiverPublicKey: String,
+                     type: MessageType,
+                     parsedMessage: ParsedChatMessage?,
+                     updateInbox: Bool) -> AnyPublisher<Void, Never> {
         if let parsedMessage = parsedMessage, let message = parsedMessage.asString {
             return chatService.sendMessage(inboxKeys: inboxKeys,
                                            receiverPublicKey: receiverPublicKey,
@@ -77,10 +135,16 @@ final class ChatRepository: ChatRepositoryType {
                         .materialize()
                         .compactMap(\.value)
                 }
-                .flatMapLatest(with: self) { owner, _ in
-                    owner.inboxManager.updateInboxMessages()
-                        .materialize()
-                        .compactMap(\.value)
+                .flatMapLatest(with: self) { owner, _ -> AnyPublisher<Void, Never> in
+                    if updateInbox {
+                        return owner.inboxManager.updateInboxMessages()
+                            .materialize()
+                            .compactMap(\.value)
+                            .eraseToAnyPublisher()
+                    } else {
+                        return Just(())
+                            .eraseToAnyPublisher()
+                    }
                 }
                 .asVoid()
                 .eraseToAnyPublisher()

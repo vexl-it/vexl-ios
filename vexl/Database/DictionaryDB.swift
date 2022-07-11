@@ -50,6 +50,13 @@ final class DictionaryDB {
         }
     }
 
+    static private var storedChatUser: [StoredChatUser] = [] {
+        didSet {
+            guard let encodedData = try? encoder.encode(storedChatUser) else { return }
+            UserDefaults.standard.setValue(encodedData, forKey: "storedChatUser")
+        }
+    }
+
     static func setupDatabase() {
         if let inboxesData = UserDefaults.standard.data(forKey: "inboxes"),
            let savedInboxes = try? decoder.decode([String: [ChatInbox]].self, from: inboxesData) {
@@ -74,6 +81,11 @@ final class DictionaryDB {
         if let storedOfferData = UserDefaults.standard.data(forKey: "storedOffer"),
            let savedStoredOffer = try? decoder.decode([String: [StoredOffer]].self, from: storedOfferData) {
             storedOffer = savedStoredOffer
+        }
+
+        if let storedChatUserData = UserDefaults.standard.data(forKey: "storedChatUser"),
+           let savedChatUser = try? decoder.decode([StoredChatUser].self, from: storedChatUserData) {
+            storedChatUser = savedChatUser
         }
     }
 
@@ -162,5 +174,47 @@ final class DictionaryDB {
 
     static func saveFetchedOffers(_ offers: [StoredOffer]) {
         storedOffer["fetched"] = offers
+    }
+
+    static func saveChatUser(_ chatUser: ParsedChatMessage.ChatUser, inboxPublicKey: String, contactPublicKey: String) {
+        let storedChatUser = StoredChatUser(inboxPublicKey: inboxPublicKey,
+                                            contactPublicKey: contactPublicKey,
+                                            username: chatUser.name,
+                                            avatar: chatUser.image)
+        self.storedChatUser.append(storedChatUser)
+    }
+
+    static func createChatUser(inboxPublicKey: String, contactPublicKey: String) {
+        guard let approvedMessage = messages.first(where: {
+            $0.messageType == .revealApproval && $0.inboxKey == inboxPublicKey && $0.contactInboxKey == contactPublicKey
+        }), let user = approvedMessage.user else {
+            return
+        }
+
+        saveChatUser(user, inboxPublicKey: inboxPublicKey, contactPublicKey: contactPublicKey)
+    }
+
+    static func getChatUser(inboxPublicKey: String, contactPublicKey: String) -> ParsedChatMessage.ChatUser? {
+        guard let storedChatUser = storedChatUser.first(where: {
+            $0.inboxPublicKey == inboxPublicKey && $0.contactPublicKey == contactPublicKey
+        }) else {
+            return nil
+        }
+        return ParsedChatMessage.ChatUser(name: storedChatUser.username, image: storedChatUser.avatar)
+    }
+
+    static func updateIdentityReveal(inboxPublicKey: String, contactPublicKey: String, isAccepted: Bool) {
+        let identityMessages = messages.filter { $0.messageType == .revealRequest }
+        for message in identityMessages {
+            if let index = messages.firstIndex(where: { $0.id == message.id }) {
+                var response = message
+                response.messageTypeValue = isAccepted ? MessageType.revealApproval.rawValue : MessageType.revealRejected.rawValue
+                response.contentTypeValue = ParsedChatMessage.ContentType.anonymousRequestResponse.rawValue
+                if !isAccepted {
+                    response.user = nil
+                }
+                messages[index] = response
+            }
+        }
     }
 }

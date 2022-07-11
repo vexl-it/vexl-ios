@@ -26,7 +26,6 @@ protocol BottomActionSheetViewModelProtocol: ObservableObject {
 extension BottomActionSheetViewModelProtocol {
     var imageName: String? { nil }
     var titleAlignment: Alignment { .leading }
-    var actionPublisher: PassthroughSubject<BottomActionSheetActionType, Never> { .init() }
 
     func primaryAction(dismiss: @escaping (BottomActionSheetActionType) -> Void) -> BottomActionSheet<ContentView>.Action {
         var action = primaryAction
