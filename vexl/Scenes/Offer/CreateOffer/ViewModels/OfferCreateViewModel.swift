@@ -16,22 +16,8 @@ final class OfferCreateViewModel: OfferActionViewModel {
         super.init(offerType: offerType, offerKey: ECCKeys())
     }
 
-    override func setupInitialValues() {
-        offerService
-            .getInitialOfferData()
-            .track(activity: primaryActivity)
-            .materialize()
-            .compactMap(\.value)
-            .withUnretained(self)
-            .sink { owner, data in
-                owner.state = .loaded
-                owner.amountRange = data.minOffer...data.maxOffer
-                owner.currentAmountRange = data.minOffer...data.maxOffer
-                owner.minFee = data.minFee
-                owner.maxFee = data.maxFee
-                owner.currencySymbol = data.currencySymbol
-            }
-            .store(in: cancelBag)
+    override func setInitialValues(data: OfferInitialData) {
+        currentAmountRange = data.minOffer...data.maxOffer
     }
 
     override func prepareOffer(encryptedOffers: [EncryptedOffer], expiration: TimeInterval) -> AnyPublisher<EncryptedOffer, Error> {

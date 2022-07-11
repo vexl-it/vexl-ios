@@ -19,36 +19,28 @@ final class OfferEditViewModel: OfferActionViewModel {
         super.init(offerType: offerType, offerKey: ECCKeys(pubKey: offer.offerPublicKey, privKey: offer.offerPrivateKey))
     }
 
-    override func setupInitialValues() {
-        offerService
-            .getInitialOfferData()
-            .track(activity: primaryActivity)
-            .materialize()
-            .compactMap(\.value)
-            .withUnretained(self)
-            .sink { owner, data in
-                owner.state = .loaded
-                owner.amountRange = data.minOffer...data.maxOffer
-                owner.minFee = data.minFee
-                owner.maxFee = data.maxFee
-                owner.currencySymbol = data.currencySymbol
-
-                owner.description = owner.offer.description
-                owner.currentAmountRange = Int(owner.offer.minAmount)...Int(owner.offer.maxAmount)
-            }
-            .store(in: cancelBag)
+    override func setInitialValues(data: OfferInitialData) {
+        description = offer.description
+        currentAmountRange = Int(offer.minAmount)...Int(offer.maxAmount)
+        selectedFeeOption = offer.feeState
+        feeAmount = offer.feeAmount
+        selectedTradeStyleOption = offer.locationState
+        selectedPaymentMethodOptions = offer.paymentMethods
+        selectedBTCOption = offer.btcNetwork
+        selectedFriendDegreeOption = offer.friendLevel
     }
 
     override func prepareOffer(encryptedOffers: [EncryptedOffer], expiration: TimeInterval) -> AnyPublisher<EncryptedOffer, Error> {
-        offerService.createOffer(encryptedOffers: encryptedOffers, expiration: expiration)
+        offerService.updateOffers(encryptedOffers: encryptedOffers, offerId: offer.offerId)
     }
 
     override func storeOffers(offers: [Offer], areCreated: Bool) -> AnyPublisher<Void, Error> {
-        offerService.storeOffers(offers: offers, areCreated: true)
+        Just(()).setFailureType(to: Error.self)
+            .eraseToAnyPublisher()
     }
 
     override func createInbox(offerKey: ECCKeys, pushToken: String) -> AnyPublisher<Void, Error> {
-        chatService.createInbox(offerKey: offerKey,
-                                pushToken: Constants.pushNotificationToken)
+        Just(()).setFailureType(to: Error.self)
+            .eraseToAnyPublisher()
     }
 }

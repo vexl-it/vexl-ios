@@ -21,6 +21,7 @@ protocol OfferServiceType {
     func encryptOffer(withContactKey publicKeys: [String], offerKey: ECCKeys, offer: Offer) -> AnyPublisher<[EncryptedOffer], Error>
     func createOffer(encryptedOffers: [EncryptedOffer], expiration: TimeInterval) -> AnyPublisher<EncryptedOffer, Error>
     func deleteOffers() -> AnyPublisher<Void, Error>
+    func updateOffers(encryptedOffers: [EncryptedOffer], offerId: String) -> AnyPublisher<EncryptedOffer, Error>
 
     // MARK: - Storage
 
@@ -145,6 +146,10 @@ final class OfferService: BaseService, OfferServiceType {
                 }
             }
             .eraseToAnyPublisher()
+    }
+
+    func updateOffers(encryptedOffers: [EncryptedOffer], offerId: String) -> AnyPublisher<EncryptedOffer, Error> {
+        request(type: EncryptedOffer.self, endpoint: OffersRouter.updateOffer(offer: encryptedOffers, offerId: offerId))
     }
 }
 

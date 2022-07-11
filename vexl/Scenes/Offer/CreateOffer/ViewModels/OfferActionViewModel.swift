@@ -162,8 +162,8 @@ class OfferActionViewModel: ViewModelType, ObservableObject {
     init(offerType: OfferType, offerKey: ECCKeys) {
         self.offerType = offerType
         self.offerKey = offerKey
+        setupDataBindings()
         setupActivity()
-        setupInitialValues()
         setupBindings()
         setupCreateOfferBinding()
     }
@@ -180,11 +180,30 @@ class OfferActionViewModel: ViewModelType, ObservableObject {
         fatalError("Need to implement the createInbox method")
     }
 
-    func setupInitialValues() {
-        fatalError("Need to implement the setupInitialValues method")
+    func setInitialValues(data: OfferInitialData) {
     }
 
     // MARK: - Bindings
+
+    private func setupDataBindings() {
+        offerService
+            .getInitialOfferData()
+            .track(activity: primaryActivity)
+            .materialize()
+            .compactMap(\.value)
+            .withUnretained(self)
+            .sink { owner, data in
+                owner.state = .loaded
+                owner.amountRange = data.minOffer...data.maxOffer
+                owner.currentAmountRange = data.minOffer...data.maxOffer
+                owner.minFee = data.minFee
+                owner.maxFee = data.maxFee
+                owner.currencySymbol = data.currencySymbol
+
+                owner.setInitialValues(data: data)
+            }
+            .store(in: cancelBag)
+    }
 
     private func setupActivity() {
         activityIndicator
