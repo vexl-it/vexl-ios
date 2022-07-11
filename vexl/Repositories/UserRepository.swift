@@ -28,7 +28,7 @@ final class UserRepository: UserRepositoryType {
     // MARK: - Computed variables
 
     var userPublisher: AnyPublisher<ManagedUser?, Never> {
-        $users.map(\.first).eraseToAnyPublisher()
+        $users.publisher.map(\.first).eraseToAnyPublisher()
     }
 
     // MARK: - Dependencies
