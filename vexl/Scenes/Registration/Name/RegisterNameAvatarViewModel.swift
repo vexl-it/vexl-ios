@@ -44,7 +44,7 @@ final class RegisterNameAvatarViewModel: ViewModelType {
 
     @Published var username = ""
     @Published var currentState: State = .phoneVerified
-    @Published var avatar: UIImage?
+    @Published var avatar: Data?
     @Published var isActionEnabled = false
     @Published var showImagePicker = false
     @Published var showImagePickerActionSheet = false

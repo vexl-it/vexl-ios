@@ -61,9 +61,10 @@ struct InboxItemView: View {
 }
 
 extension InboxItemView {
+
     struct ViewData: Identifiable, Hashable {
         let id = UUID()
-        let avatar: UIImage?
+        let avatar: Data?
         let username: String
         let detail: String
         let time: String

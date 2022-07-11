@@ -22,6 +22,16 @@ extension UIImage {
     }
 }
 
+extension Data {
+    var base64Publisher: AnyPublisher<String?, Never> {
+        Future { promise in
+            let data = self.base64EncodedString()
+            promise(.success(data))
+        }
+        .eraseToAnyPublisher()
+    }
+}
+
 extension String {
     var imageFromBase64: UIImage? {
         guard let imageData = Data(base64Encoded: self, options: .ignoreUnknownCharacters) else {

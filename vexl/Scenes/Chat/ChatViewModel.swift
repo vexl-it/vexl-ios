@@ -51,7 +51,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
     // MARK: - View Bindings
 
     @Published var currentMessage: String = ""
-    @Published var selectedImage: UIImage?
+    @Published var selectedImage: Data?
     @Published var messages: [ChatConversationSection] = []
 
     @Published var primaryActivity: Activity = .init()
@@ -61,7 +61,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
     @Published var showImagePickerActionSheet = false
     @Published var modal = Modal.none
     @Published var username: String = Constants.randomName
-    @Published var avatar: UIImage?
+    @Published var avatar: Data?
 
     var errorIndicator: ErrorIndicator {
         primaryActivity.error
@@ -105,7 +105,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
     }
 
     var selectedImageData: Data? {
-        selectedImage?.jpegData(compressionQuality: 1)
+        selectedImage
     }
 
     private let cancelBag: CancelBag = .init()
@@ -157,7 +157,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
             .sink(receiveCompletion: { _ in },
                   receiveValue: { owner, user in
                 owner.username = user.username
-                owner.avatar = user.avatar?.imageFromBase64
+                owner.avatar = user.avatar?.dataFromBase64
                 owner.userIsRevealed = true
             })
             .store(in: cancelBag)
@@ -274,7 +274,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
             .withUnretained(self)
             .sink { owner, _ in
                 owner.messages.appendItem(.createInput(text: owner.currentMessage,
-                                                       image: owner.selectedImage?.base64EncodedString))
+                                                       image: owner.selectedImage?.base64EncodedString()))
                 owner.selectedImage = nil
                 owner.currentMessage = ""
             }
@@ -360,7 +360,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
         }
 
         username = user.name
-        avatar = user.image?.imageFromBase64
+        avatar = user.image?.dataFromBase64
 
         route.send(.showRevealIdentityModal(isUserResponse: false))
     }

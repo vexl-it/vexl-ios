@@ -13,15 +13,15 @@ struct ChatRevealIdentityResponseView: View {
     let image: Data?
     let isAccepted: Bool
 
-    private var displayImage: UIImage? {
+    private var displayImage: Data? {
         if isAccepted {
             if let image = image {
-                return UIImage(data: image)
+                return image
             } else {
-                return R.image.marketplace.defaultAvatar()
+                return R.image.marketplace.defaultAvatar()?.jpegData(compressionQuality: 1)
             }
         } else {
-            return R.image.chat.rejectReveal()
+            return R.image.chat.rejectReveal()?.jpegData(compressionQuality: 1)
         }
     }
 
