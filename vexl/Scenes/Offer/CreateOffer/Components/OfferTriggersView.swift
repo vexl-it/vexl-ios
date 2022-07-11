@@ -33,6 +33,9 @@ struct OfferTriggersView: View {
             .foregroundColor(Appearance.Colors.whiteText)
 
             if isActiveExpanded {
+                OfferTriggerActiveView(selectedOption: .constant(.above),
+                                       activeAmount: .constant("$1234"))
+
                 OfferTriggerDeleteView(time: $deleteTime,
                                        timeUnit: $deleteTimeUnit)
             }
