@@ -60,15 +60,18 @@ struct ChatRevealIdentityResponseView: View {
 
 struct ChatRevealIdentityResponseViewPreview: PreviewProvider {
     static var previews: some View {
+
+        let image = R.image.onboarding.testAvatar()!.jpegData(compressionQuality: 1)
+
         VStack {
             ChatRevealIdentityResponseView(username: "Username",
-                                           avatarImage: Image(data: R.image.onboarding.testAvatar()!.jpegData(compressionQuality: 1), placeholder: ""),
-                                           rejectImage: Image(data: R.image.chat.rejectReveal()!.jpegData(compressionQuality: 1), placeholder: ""),
+                                           avatarImage: Image(data: image, placeholder: ""),
+                                           rejectImage: Image(data: image, placeholder: ""),
                                            isAccepted: true)
 
             ChatRevealIdentityResponseView(username: "Username",
-                                           avatarImage: Image(data: R.image.onboarding.testAvatar()!.jpegData(compressionQuality: 1), placeholder: ""),
-                                           rejectImage: Image(data: R.image.chat.rejectReveal()!.jpegData(compressionQuality: 1), placeholder: ""),
+                                           avatarImage: Image(data: image, placeholder: ""),
+                                           rejectImage: Image(data: image, placeholder: ""),
                                            isAccepted: false)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
