@@ -35,35 +35,7 @@ final class ApiInterceptor: RequestInterceptor {
                completion: @escaping (RetryResult) -> Void) {
         completion(.doNotRetry)
         // TODO: Handle challenge refresh
-//        do {
-//            if let response = request.task?.response as? HTTPURLResponse, response.statusCode == ApiService.StatusCode.unauthorized {
-//                let requestUrl = request.request?.url
-//                let refreshUrl = try AuthRouter.refresh.asURL()
-//
-//                if requestUrl == refreshUrl {
-//                    self.logoutUser()
-//                    completion(.doNotRetry)
-//                } else {
-//                    refreshAuthorization(session)
-//                        .sink(receiveCompletion: { [weak self] message in
-//                            switch message {
-//                            case .finished:
-//                                break
-//                            case .failure:
-//                                self?.logoutUser()
-//                                completion(.doNotRetry)
-//                            }
-//                        }, receiveValue: {
-//                            completion(.retry)
-//                        })
-//                        .store(in: &cancellables)
-//                }
-//            } else {
-//                completion(.doNotRetry)
-//            }
-//        } catch {
-//            completion(.doNotRetry)
-//        }
+        // for inspiration check git history of this method
     }
 }
 
