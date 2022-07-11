@@ -55,19 +55,7 @@ struct ChatView: View {
 
             ChatActionView(viewModel: viewModel.chatActionViewModel)
 
-            ChatConversationView(viewModel: viewModel.chatConversationViewModel,
-                                 username: viewModel.username,
-                                 avatar: viewModel.avatar,
-                                 messages: viewModel.messages,
-                                 revealAction: {
-                withAnimation {
-                    viewModel.action.send(.revealResponseTap)
-                }
-            },
-                                 imageAction: { groupId, messageId in
-                viewModel.action.send(.expandImageTap(groupId: groupId,
-                                                      messageId: messageId))
-            })
+            ChatConversationView(viewModel: viewModel.chatConversationViewModel)
                 .frame(maxHeight: .infinity)
                 .padding(.bottom, Appearance.GridGuide.point)
 

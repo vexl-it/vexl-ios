@@ -10,11 +10,6 @@ import SwiftUI
 struct ChatConversationView: View {
 
     @ObservedObject var viewModel: ChatConversationViewModel
-    let username: String
-    let avatar: Data?
-    let messages: [ChatConversationSection]
-    let revealAction: () -> Void
-    let imageAction: (String, String) -> Void
 
     var body: some View {
         ScrollView(showsIndicators: false) {
@@ -36,7 +31,7 @@ struct ChatConversationView: View {
                                                 text: message.text,
                                                 style: message.isContact ? .contact : .user)
                                 .onTapGesture {
-                                    imageAction(section.id.uuidString, message.id.uuidString)
+                                    viewModel.userAction.send(.imageTapped(sectionId: section.id.uuidString, messageId: message.id.uuidString))
                                 }
                         case .requestIdentityReveal:
                             ChatRevealIdentityView(image: nil,
@@ -46,7 +41,7 @@ struct ChatConversationView: View {
                             ChatRevealIdentityView(image: nil,
                                                    isRequest: false,
                                                    revealAction: {
-                                revealAction()
+                                viewModel.userAction.send(.revealTapped)
                             })
                         case .rejectIdentityReveal:
                             ChatRevealIdentityResponseView(username: viewModel.username,
@@ -74,12 +69,8 @@ struct ChatConversationView: View {
 
 struct ChatConversationViewPreview: PreviewProvider {
     static var previews: some View {
-        ChatConversationView(viewModel: .init(inboxKeys: ECCKeys(), receiverPublicKey: "12345"),
-                             username: "username",
-                             avatar: nil,
-                             messages: ChatConversationSection.stub,
-                             revealAction: {},
-                             imageAction: { _, _ in })
+        ChatConversationView(viewModel: .init(inboxKeys: ECCKeys(),
+                                              receiverPublicKey: "12345"))
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .previewDevice("iPhone 11")
     }
