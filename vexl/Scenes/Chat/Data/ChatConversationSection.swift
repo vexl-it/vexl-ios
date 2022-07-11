@@ -56,8 +56,8 @@ extension ChatConversationSection {
                 .init(type: .image,
                       isContact: true,
                       image: R.image.onboarding.testAvatar()!.base64EncodedString!),
-                .init(type: .sendReveal, isContact: false),
-                .init(type: .receiveReveal, isContact: false)
+                .init(type: .requestIdentityReveal, isContact: false),
+                .init(type: .receiveIdentityReveal, isContact: false)
             ])
         ]
     }

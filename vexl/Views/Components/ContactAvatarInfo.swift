@@ -14,7 +14,7 @@ struct ContactAvatarInfo: View {
         case large
     }
 
-    let avatar: UIImage?
+    let avatar: Data?
     let isAvatarWithOpacity: Bool
     let title: String
     let subtitle: String
@@ -36,7 +36,7 @@ struct ContactAvatarInfo: View {
          title: String,
          subtitle: String,
          style: Style = .regular,
-         avatar: UIImage? = nil) {
+         avatar: Data? = nil) {
         self.isAvatarWithOpacity = isAvatarWithOpacity
         self.title = title
         self.subtitle = subtitle

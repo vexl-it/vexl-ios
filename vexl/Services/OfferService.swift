@@ -167,6 +167,7 @@ extension OfferService {
         let activePriceValue = try "\(offer.activePriceValue)".ecc.encrypt(publicKey: contactPublicKey)
         let active = try offer.active.string.ecc.encrypt(publicKey: contactPublicKey)
         let commonFriends = try offer.commonFriends.map { try $0.ecc.encrypt(publicKey: contactPublicKey) }
+        let groupUuid = try offer.groupUuid.rawValue.ecc.encrypt(publicKey: contactPublicKey)
 
         offer.paymentMethodsList.forEach { method in
             if let encrypted = try? method.ecc.encrypt(publicKey: contactPublicKey) {
@@ -189,6 +190,7 @@ extension OfferService {
         let encryptedString = try? locationString.ecc.encrypt(publicKey: contactPublicKey)
 
         return EncryptedOffer(userPublicKey: contactPublicKey,
+                              groupUuid: groupUuid,
                               location: [encryptedString ?? ""],
                               offerPublicKey: offerPublicKey,
                               offerDescription: description,

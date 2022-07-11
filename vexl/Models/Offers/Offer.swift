@@ -9,6 +9,7 @@ import Foundation
 
 struct Offer {
     var offerId: String = ""
+    var groupUuid: GroupUUID = .none
     var offerPublicKey: String = ""
     var offerPrivateKey: String?
     var userPublicKey: String = ""
@@ -112,6 +113,7 @@ struct Offer {
             }
 
             self.offerId = encryptedOffer.offerId
+            self.groupUuid = GroupUUID(rawValue: encryptedOffer.groupUuid)
             self.createdAt = encryptedOffer.createdAt
             self.modifiedAt = encryptedOffer.modifiedAt
             self.userPublicKey = encryptedOffer.userPublicKey

@@ -41,6 +41,9 @@ protocol ChatServiceType {
     func getStoredRequestMessages() -> AnyPublisher<[ParsedChatMessage], Error>
     func getStoredChatMessages(inboxPublicKey: String, contactPublicKey: String) -> AnyPublisher<[ParsedChatMessage], Error>
     func deleteMessages(inboxPublicKey: String, contactPublicKey: String) -> AnyPublisher<Void, Error>
+    func getContactIdentity(inboxKeys: ECCKeys, contactPublicKey: String) -> AnyPublisher<(username: String, avatar: String?), Error>
+    func updateIdentityReveal(inboxKeys: ECCKeys, contactPublicKey: String, isAccepted: Bool) -> AnyPublisher<Void, Error>
+    func createRevealedUser(forInboxKeys: ECCKeys, contactPublicKey: String) -> AnyPublisher<Void, Error>
 }
 
 final class ChatService: BaseService, ChatServiceType {
@@ -117,7 +120,8 @@ final class ChatService: BaseService, ChatServiceType {
     }
 
     func saveParsedMessages(_ messages: [ParsedChatMessage], inboxKeys: ECCKeys) -> AnyPublisher<Void, Error> {
-        localStorageService.saveMessages(messages)
+        let filteredMessages = messages.filter { $0.shouldBeStored }
+        return localStorageService.saveMessages(filteredMessages)
             .flatMapLatest(with: self) { owner, _ -> AnyPublisher<Void, Error> in
                 owner.prepareMessages(messages, inboxKeys: inboxKeys)
             }
@@ -165,11 +169,33 @@ final class ChatService: BaseService, ChatServiceType {
     func deleteMessages(inboxPublicKey: String, contactPublicKey: String) -> AnyPublisher<Void, Error> {
         localStorageService.deleteChatMessages(forInbox: inboxPublicKey, contactPublicKey: contactPublicKey)
     }
+
+    func getContactIdentity(inboxKeys: ECCKeys, contactPublicKey: String) -> AnyPublisher<(username: String, avatar: String?), Error> {
+        localStorageService.getRevealedUser(inboxPublicKey: inboxKeys.publicKey, contactPublicKey: contactPublicKey)
+            .compactMap { user -> (username: String, avatar: String?)? in
+                guard let user = user else {
+                    return nil
+                }
+                return (username: user.name, avatar: user.image)
+            }
+            .eraseToAnyPublisher()
+    }
+
+    func updateIdentityReveal(inboxKeys: ECCKeys, contactPublicKey: String, isAccepted: Bool) -> AnyPublisher<Void, Error> {
+        localStorageService.updateIdentityReveal(inboxPublicKey: inboxKeys.publicKey, contactPublicKey: contactPublicKey, isAccepted: isAccepted)
+    }
+
+    func createRevealedUser(forInboxKeys inboxKeys: ECCKeys, contactPublicKey: String) -> AnyPublisher<Void, Error> {
+        localStorageService.createRevealedUser(fromInboxPublicKey: inboxKeys.publicKey, contactPublicKey: contactPublicKey)
+    }
 }
 
 // MARK: - Helpers
 
 extension ChatService {
+
+    // TODO: - Consider moving this to the inbox manager that will process received messages
+
     private func prepareMessages(_ messages: [ParsedChatMessage], inboxKeys: ECCKeys) -> AnyPublisher<Void, Error> {
         messages.publisher
             .withUnretained(self)
@@ -183,7 +209,11 @@ extension ChatService {
                     return owner.saveLastMessageForInbox(messages, inboxKeys: inboxKeys)
                 case .deleteChat:
                     return owner.deleteMessageRequest(messages, inboxKey: inboxKeys)
-                case .invalid, .revealApproval, .revealRequest, .messagingRejection:
+                case .revealApproval:
+                    return owner.updatedRevealIdentityMessage(message, inboxKeys: inboxKeys, isAccepted: true)
+                case .revealRejected:
+                    return owner.updatedRevealIdentityMessage(message, inboxKeys: inboxKeys, isAccepted: false)
+                case .invalid, .revealRequest, .messagingRejection:
                     return Just(()).setFailureType(to: Error.self)
                         .eraseToAnyPublisher()
                 }
@@ -191,6 +221,31 @@ extension ChatService {
             .collect()
             .asVoid()
             .eraseToAnyPublisher()
+    }
+
+    private func updatedRevealIdentityMessage(_ message: ParsedChatMessage, inboxKeys: ECCKeys, isAccepted: Bool) -> AnyPublisher<Void, Error> {
+        localStorageService.updateIdentityReveal(inboxPublicKey: inboxKeys.publicKey,
+                                                 contactPublicKey: message.contactInboxKey,
+                                                 isAccepted: isAccepted)
+            .withUnretained(self)
+            .flatMap { owner, _ -> AnyPublisher<Void, Error> in
+                if isAccepted {
+                    return owner.saveRevealedUserMessage(message, inboxKeys: inboxKeys)
+                        .eraseToAnyPublisher()
+                } else {
+                    return Just(()).setFailureType(to: Error.self)
+                        .eraseToAnyPublisher()
+                }
+            }
+            .eraseToAnyPublisher()
+    }
+
+    private func saveRevealedUserMessage(_ message: ParsedChatMessage, inboxKeys: ECCKeys) -> AnyPublisher<Void, Error> {
+        guard let chatUser = message.user else {
+            return Just(()).setFailureType(to: Error.self)
+                .eraseToAnyPublisher()
+        }
+        return localStorageService.saveRevealedUser(chatUser, inboxPublicKey: inboxKeys.publicKey, contactPublicKey: message.contactInboxKey)
     }
 
     private func saveLastMessageForInbox(_ messages: [ParsedChatMessage], inboxKeys: ECCKeys) -> AnyPublisher<Void, Error> {

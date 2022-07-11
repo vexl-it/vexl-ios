@@ -8,13 +8,14 @@
 import SwiftUI
 import Combine
 
-final class ChatOfferViewModel: BottomActionSheetViewModelProtocol {
+final class ChatOfferActionSheetViewModel: BottomActionSheetViewModelProtocol {
 
     typealias OfferBottomActionSheet = BottomActionSheet<ChatOfferActionSheetContent>
 
     var title: String = L.chatMessageOffer()
     var primaryAction: OfferBottomActionSheet.Action = .init(title: L.buttonGotIt(), isDismissAction: true)
     var secondaryAction: OfferBottomActionSheet.Action?
+    var actionPublisher: PassthroughSubject<BottomActionSheetActionType, Never> = .init()
     var dismissPublisher: PassthroughSubject<Void, Never> = .init()
     var colorScheme: OfferBottomActionSheet.ColorScheme = .main
     var content: ChatOfferActionSheetContent {

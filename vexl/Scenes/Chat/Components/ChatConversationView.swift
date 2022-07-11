@@ -35,16 +35,22 @@ struct ChatConversationView: View {
                                 .onTapGesture {
                                     imageAction(messageGroup.id.uuidString, message.id.uuidString)
                                 }
-                        case .sendReveal:
+                        case .requestIdentityReveal:
                             ChatRevealIdentityView(image: nil,
                                                    isRequest: true,
                                                    revealAction: nil)
-                        case .receiveReveal:
+                        case .receiveIdentityReveal:
                             ChatRevealIdentityView(image: nil,
                                                    isRequest: false,
                                                    revealAction: {
                                 revealAction()
                             })
+                        case .rejectIdentityReveal:
+                            ChatRevealIdentityResponseView(image: nil,
+                                                           isAccepted: false)
+                        case .approveIdentityReveal:
+                            ChatRevealIdentityResponseView(image: nil,
+                                                           isAccepted: true)
                         case .noContent:
                             EmptyView()
                         }

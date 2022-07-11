@@ -9,6 +9,8 @@ import Foundation
 import Cleevio
 import Combine
 
+private typealias ActionSheetResult = CoordinatingResult<RouterResult<BottomActionSheetActionType>>
+
 final class ChatCoordinator: BaseCoordinator<RouterResult<Void>> {
 
     private let inboxKeys: ECCKeys
@@ -47,6 +49,74 @@ final class ChatCoordinator: BaseCoordinator<RouterResult<Void>> {
             .sink()
             .store(in: cancelBag)
 
+        viewModel
+            .route
+            .compactMap { action -> Offer? in
+                if case let .showOfferTapped(offer) = action { return offer }
+                return nil
+            }
+            .withUnretained(self)
+            .flatMap { owner, offer -> CoordinatingResult<RouterResult<BottomActionSheetActionType>> in
+                let router = ModalRouter(parentViewController: viewController,
+                                         presentationStyle: .overFullScreen,
+                                         transitionStyle: .crossDissolve)
+                return owner.presentActionSheet(router: router, viewModel: ChatOfferActionSheetViewModel(offer: offer))
+            }
+            .sink()
+            .store(in: cancelBag)
+
+        viewModel
+            .route
+            .filter { $0 == .showRevealIdentityTapped }
+            .withUnretained(self)
+            .flatMap { owner, _ -> CoordinatingResult<RouterResult<BottomActionSheetActionType>> in
+                let router = ModalRouter(parentViewController: viewController,
+                                         presentationStyle: .overFullScreen,
+                                         transitionStyle: .crossDissolve)
+                return owner.presentActionSheet(router: router, viewModel: ChatIdentityViewModel(isResponse: false))
+            }
+            .filter(Self.filterPrimaryAction)
+            .sink { _ in
+                viewModel.requestIdentityReveal()
+            }
+            .store(in: cancelBag)
+
+        viewModel
+            .route
+            .filter { $0 == .showRevealIdentityResponseTapped }
+            .withUnretained(self)
+            .flatMap { owner, _ -> CoordinatingResult<RouterResult<BottomActionSheetActionType>> in
+                let router = ModalRouter(parentViewController: viewController,
+                                         presentationStyle: .overFullScreen,
+                                         transitionStyle: .crossDissolve)
+                return owner.presentActionSheet(router: router, viewModel: ChatIdentityViewModel(isResponse: true))
+            }
+            .compactMap { result -> BottomActionSheetActionType? in
+                if case let .finished(actionType) = result { return actionType }
+                return nil
+            }
+            .sink { action in
+                viewModel.identityRevealResponse(isAccepted: action == .primary)
+            }
+            .store(in: cancelBag)
+
+        // swiftlint: disable discouraged_optional_boolean
+        viewModel
+            .route
+            .compactMap { action -> Bool? in
+                if case let .showRevealIdentityModal(isUserResponse) = action { return isUserResponse }
+                return nil
+            }
+            .withUnretained(self)
+            .flatMap { owner, isUserResponse -> CoordinatingResult<RouterResult<Void>> in
+                let router = ModalRouter(parentViewController: viewController,
+                                         presentationStyle: .overFullScreen,
+                                         transitionStyle: .coverVertical)
+                return owner.showRevealIdentity(router: router, isUserResponse: isUserResponse)
+            }
+            .sink()
+            .store(in: cancelBag)
+
         let dismiss = viewModel
             .route
             .filter { $0 == .dismissTapped }
@@ -65,34 +135,34 @@ final class ChatCoordinator: BaseCoordinator<RouterResult<Void>> {
                 let router = ModalRouter(parentViewController: viewController,
                                          presentationStyle: .overFullScreen,
                                          transitionStyle: .crossDissolve)
-                return owner.presentDeleteSheet(router: router)
+                return owner.presentActionSheet(router: router, viewModel: ChatDeleteViewModel())
             }
-            .filter { result in
-                if case let .finished(actionType) = result { return actionType == .primary }
-                return false
-            }
+            .filter(Self.filterPrimaryAction)
             .withUnretained(self)
             .flatMap { owner, _ -> CoordinatingResult<RouterResult<BottomActionSheetActionType>> in
                 let router = ModalRouter(parentViewController: viewController,
                                          presentationStyle: .overFullScreen,
                                          transitionStyle: .crossDissolve)
-                return owner.presentDeleteConfirmationSheet(router: router)
+                return owner.presentActionSheet(router: router, viewModel: ChatDeleteConfirmationViewModel())
             }
-            .filter { result in
-                if case let .finished(actionType) = result { return actionType == .primary }
-                return false
-            }
+            .filter(Self.filterPrimaryAction)
             .sink { _ in
                 viewModel.deleteMessages()
             }
             .store(in: cancelBag)
     }
+
+    private static func filterPrimaryAction(result: RouterResult<BottomActionSheetActionType>) -> Bool {
+        if case let .finished(actionType) = result { return actionType == .primary }
+        return false
+    }
 }
 
 extension ChatCoordinator {
-    private func presentDeleteSheet(router: Router) -> CoordinatingResult<RouterResult<BottomActionSheetActionType>> {
-        coordinate(to: BottomActionSheetCoordinator(router: router, viewModel: ChatDeleteViewModel()))
-        .flatMap { result -> CoordinatingResult<RouterResult<BottomActionSheetActionType>> in
+
+    private func showRevealIdentity(router: Router, isUserResponse: Bool) -> CoordinatingResult<RouterResult<Void>> {
+        coordinate(to: ChatIdentityRevealCoordinator(isUserResponse: isUserResponse, router: router, animated: true))
+        .flatMap { result -> CoordinatingResult<RouterResult<Void>> in
             guard result != .dismissedByRouter else {
                 return Just(result).eraseToAnyPublisher()
             }
@@ -102,20 +172,9 @@ extension ChatCoordinator {
         .eraseToAnyPublisher()
     }
 
-    private func presentDeleteConfirmationSheet(router: Router) -> CoordinatingResult<RouterResult<BottomActionSheetActionType>> {
-        coordinate(to: BottomActionSheetCoordinator(router: router, viewModel: ChatDeleteConfirmationViewModel()))
-        .flatMap { result -> CoordinatingResult<RouterResult<BottomActionSheetActionType>> in
-            guard result != .dismissedByRouter else {
-                return Just(result).eraseToAnyPublisher()
-            }
-            return router.dismiss(animated: true, returning: result)
-        }
-        .prefix(1)
-        .eraseToAnyPublisher()
-    }
-
-    private func presentOfferSheet(router: Router, offer: Offer) -> CoordinatingResult<RouterResult<BottomActionSheetActionType>> {
-        coordinate(to: BottomActionSheetCoordinator(router: router, viewModel: ChatOfferViewModel(offer: offer)))
+    private func presentActionSheet<ViewModel: BottomActionSheetViewModelProtocol>(router: Router,
+                                                                                   viewModel: ViewModel) -> ActionSheetResult {
+        coordinate(to: BottomActionSheetCoordinator(router: router, viewModel: viewModel))
         .flatMap { result -> CoordinatingResult<RouterResult<BottomActionSheetActionType>> in
             guard result != .dismissedByRouter else {
                 return Just(result).eraseToAnyPublisher()
