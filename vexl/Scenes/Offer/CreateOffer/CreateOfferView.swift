@@ -10,7 +10,7 @@ import Cleevio
 
 struct CreateOfferView: View {
 
-    @ObservedObject var viewModel: CreateOfferViewModel
+    @ObservedObject var viewModel: OfferActionViewModel
 
     var body: some View {
         VStack {
@@ -53,7 +53,9 @@ struct CreateOfferView: View {
                     OfferPaymentMethodView(selectedOptions: $viewModel.selectedPaymentMethodOptions)
                         .padding(.top, Appearance.GridGuide.largePadding1)
 
-                    OfferTriggersView(deleteTime: $viewModel.deleteTime,
+                    OfferTriggersView(selectedActivateOption: $viewModel.selectedActivate,
+                                      selectedActivateAmount: $viewModel.selectedActivateAmount,
+                                      deleteTime: $viewModel.deleteTime,
                                       deleteTimeUnit: $viewModel.deleteTimeUnit)
                     .padding(.top, Appearance.GridGuide.mediumPadding2)
 
@@ -83,10 +85,10 @@ struct CreateOfferView: View {
 #if DEBUG || DEVEL
 struct CreateOfferViewPreview: PreviewProvider {
     static var previews: some View {
-        CreateOfferView(viewModel: .init(offerType: .sell))
+        CreateOfferView(viewModel: .init(offerType: .sell, offerKey: ECCKeys()))
             .previewDevice("iPhone 11")
 
-        CreateOfferView(viewModel: .init(offerType: .buy))
+        CreateOfferView(viewModel: .init(offerType: .buy, offerKey: ECCKeys()))
             .previewDevice("iPhone 11")
     }
 }

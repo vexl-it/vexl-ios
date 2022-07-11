@@ -9,12 +9,13 @@ import SwiftUI
 
 struct OfferTriggersView: View {
 
-    @State private var selectedOption: Option = .below
     @State private var isActiveExpanded = true
 
     private let options: [Option] = [.below, .above]
     private let currency: String = Constants.currencySymbol
 
+    @Binding var selectedActivateOption: OfferTrigger
+    @Binding var selectedActivateAmount: String
     @Binding var deleteTime: String
     @Binding var deleteTimeUnit: OfferTriggerDeleteTimeUnit
 
@@ -33,8 +34,8 @@ struct OfferTriggersView: View {
             .foregroundColor(Appearance.Colors.whiteText)
 
             if isActiveExpanded {
-                OfferTriggerActiveView(selectedOption: .constant(.above),
-                                       activeAmount: .constant("$1234"))
+                OfferTriggerActiveView(selectedOption: $selectedActivateOption,
+                                       activeAmount: $selectedActivateAmount)
 
                 OfferTriggerDeleteView(time: $deleteTime,
                                        timeUnit: $deleteTimeUnit)
@@ -61,7 +62,9 @@ extension OfferTriggersView {
 #if DEBUG || DEVEL
 struct OfferTriggersViewPreview: PreviewProvider {
     static var previews: some View {
-        OfferTriggersView(deleteTime: .constant("30"),
+        OfferTriggersView(selectedActivateOption: .constant(.above),
+                          selectedActivateAmount: .constant("12345"),
+                          deleteTime: .constant("30"),
                           deleteTimeUnit: .constant(.days))
             .background(Color.black)
     }

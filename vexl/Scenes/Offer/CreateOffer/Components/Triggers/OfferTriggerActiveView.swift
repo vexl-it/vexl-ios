@@ -36,7 +36,7 @@ struct OfferTriggerActiveView: View {
                     .padding(.vertical, Appearance.GridGuide.point)
 
                 TextField("", text: $activeAmount)
-                    .multilineTextAlignment(.leading)
+                    .multilineTextAlignment(.center)
                     .textStyle(.h3)
                     .foregroundColor(Appearance.Colors.yellow100)
                     .frame(maxWidth: .infinity)

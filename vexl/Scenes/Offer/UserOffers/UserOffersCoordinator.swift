@@ -51,6 +51,27 @@ final class UserOffersCoordinator: BaseCoordinator<RouterResult<Void>> {
             }
             .store(in: cancelBag)
 
+        viewModel
+            .route
+            .compactMap { route -> Offer? in
+                if case let .editOfferTapped(offer) = route { return offer }
+                return nil
+            }
+            .withUnretained(self)
+            .flatMap { owner, offer -> CoordinatingResult<RouterResult<Void>> in
+                let modalRouter = ModalRouter(parentViewController: viewController, presentationStyle: .fullScreen)
+                return owner.showEditOffer(router: modalRouter, offerType: owner.offerType, offer: offer)
+            }
+            .sink { result in
+                switch result {
+                case .finished:
+                    viewModel.refreshOffers()
+                default:
+                    break
+                }
+            }
+            .store(in: cancelBag)
+
         let dismiss = viewModel
             .route
             .filter { $0 == .dismissTapped }
@@ -67,7 +88,19 @@ final class UserOffersCoordinator: BaseCoordinator<RouterResult<Void>> {
 
 extension UserOffersCoordinator {
     private func showCreateOffer(router: Router, offerType: OfferType) -> CoordinatingResult<RouterResult<Void>> {
-        coordinate(to: CreateOfferCoordinator(router: router, offerType: offerType))
+        coordinate(to: CreateOfferCoordinator(router: router, offerType: offerType, offer: nil))
+            .flatMap { result -> CoordinatingResult<RouterResult<Void>> in
+                guard result != .dismissedByRouter else {
+                    return Just(result).eraseToAnyPublisher()
+                }
+                return router.dismiss(animated: true, returning: result)
+            }
+            .prefix(1)
+            .eraseToAnyPublisher()
+    }
+
+    private func showEditOffer(router: Router, offerType: OfferType, offer: Offer) -> CoordinatingResult<RouterResult<Void>> {
+        coordinate(to: CreateOfferCoordinator(router: router, offerType: offerType, offer: offer))
             .flatMap { result -> CoordinatingResult<RouterResult<Void>> in
                 guard result != .dismissedByRouter else {
                     return Just(result).eraseToAnyPublisher()

@@ -12,15 +12,24 @@ import Combine
 final class CreateOfferCoordinator: BaseCoordinator<RouterResult<Void>> {
 
     private let router: Router
+    private let offer: Offer?
     private let offerType: OfferType
 
-    init(router: Router, offerType: OfferType) {
+    init(router: Router, offerType: OfferType, offer: Offer?) {
         self.router = router
+        self.offer = offer
         self.offerType = offerType
     }
 
     override func start() -> CoordinatingResult<RouterResult<Void>> {
-        let viewModel = CreateOfferViewModel(offerType: offerType)
+        let viewModel: OfferActionViewModel
+
+        if let offer = offer {
+            viewModel = OfferEditViewModel(offerType: offerType, offer: offer)
+        } else {
+            viewModel = OfferCreateViewModel(offerType: offerType)
+        }
+
         let viewController = BaseViewController(rootView: CreateOfferView(viewModel: viewModel))
 
         viewModel

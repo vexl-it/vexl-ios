@@ -1,8 +1,8 @@
 //
-//  CreateOfferViewModel.swift
+//  OfferActionViewModel.swift
 //  vexl
 //
-//  Created by Diego Espinoza on 21/04/22.
+//  Created by Diego Espinoza on 11/07/22.
 //
 
 import Foundation
@@ -10,11 +10,11 @@ import Cleevio
 import SwiftUI
 import Combine
 
-//typealias OfferData = (offer: Offer, contacts: [ContactKey])
-//typealias OfferAndEncryptedOffers = (offer: Offer, encryptedOffers: [EncryptedOffer])
-//typealias OfferAndEncryptedOffer = (offer: Offer, encryptedOffer: EncryptedOffer)
+typealias OfferData = (offer: Offer, contacts: [ContactKey])
+typealias OfferAndEncryptedOffers = (offer: Offer, encryptedOffers: [EncryptedOffer])
+typealias OfferAndEncryptedOffer = (offer: Offer, encryptedOffer: EncryptedOffer)
 
-final class CreateOfferViewModel: ViewModelType, ObservableObject {
+class OfferActionViewModel: ViewModelType, ObservableObject {
 
     enum UserAction: Equatable {
         case pause
@@ -31,11 +31,11 @@ final class CreateOfferViewModel: ViewModelType, ObservableObject {
         case loading
     }
 
-    @Inject private var userSecurity: UserSecurityType
-    @Inject private var offerService: OfferServiceType
-    @Inject private var chatService: ChatServiceType
-    @Inject private var contactsMananger: ContactsManagerType
-    @Inject private var contactsService: ContactsServiceType
+    @Inject var userSecurity: UserSecurityType
+    @Inject var offerService: OfferServiceType
+    @Inject var chatService: ChatServiceType
+    @Inject var contactsMananger: ContactsManagerType
+    @Inject var contactsService: ContactsServiceType
 
     // MARK: - Action Binding
 
@@ -154,18 +154,37 @@ final class CreateOfferViewModel: ViewModelType, ObservableObject {
     var minFee: Double = 0
     var maxFee: Double = 0
     var currencySymbol = ""
-    let offerKey = ECCKeys()
+    let offerKey: ECCKeys
     let offerType: OfferType
 
-    private let cancelBag: CancelBag = .init()
+    let cancelBag: CancelBag = .init()
 
-    init(offerType: OfferType) {
+    init(offerType: OfferType, offerKey: ECCKeys) {
         self.offerType = offerType
+        self.offerKey = offerKey
         setupActivity()
-        setupDataBindings()
+        setupInitialValues()
         setupBindings()
         setupCreateOfferBinding()
     }
+
+    func prepareOffer(encryptedOffers: [EncryptedOffer], expiration: TimeInterval) -> AnyPublisher<EncryptedOffer, Error> {
+        fatalError("Need to implement the prepareOffer method")
+    }
+
+    func storeOffers(offers: [Offer], areCreated: Bool) -> AnyPublisher<Void, Error> {
+        fatalError("Need to implement the storeOffers method")
+    }
+
+    func createInbox(offerKey: ECCKeys, pushToken: String) -> AnyPublisher<Void, Error> {
+        fatalError("Need to implement the createInbox method")
+    }
+
+    func setupInitialValues() {
+        fatalError("Need to implement the setupInitialValues method")
+    }
+
+    // MARK: - Bindings
 
     private func setupActivity() {
         activityIndicator
@@ -183,26 +202,6 @@ final class CreateOfferViewModel: ViewModelType, ObservableObject {
             .errors
             .asOptional()
             .assign(to: &$error)
-    }
-
-    // MARK: - Bindings
-
-    private func setupDataBindings() {
-        offerService
-            .getInitialOfferData()
-            .track(activity: primaryActivity)
-            .materialize()
-            .compactMap(\.value)
-            .withUnretained(self)
-            .sink { owner, data in
-                owner.state = .loaded
-                owner.amountRange = data.minOffer...data.maxOffer
-                owner.currentAmountRange = data.minOffer...data.maxOffer
-                owner.minFee = data.minFee
-                owner.maxFee = data.maxFee
-                owner.currencySymbol = data.currencySymbol
-            }
-            .store(in: cancelBag)
     }
 
     private func setupBindings() {
@@ -308,8 +307,7 @@ final class CreateOfferViewModel: ViewModelType, ObservableObject {
         let createOffer = encryptOffer
             .withUnretained(self)
             .flatMap { owner, offerAndEncryptedOffers in
-                owner.offerService
-                    .createOffer(encryptedOffers: offerAndEncryptedOffers.encryptedOffers, expiration: owner.expiration)
+                owner.prepareOffer(encryptedOffers: offerAndEncryptedOffers.encryptedOffers, expiration: owner.expiration)
                     .track(activity: owner.primaryActivity)
                     .materialize()
                     .compactMap(\.value)
@@ -324,8 +322,7 @@ final class CreateOfferViewModel: ViewModelType, ObservableObject {
                 newOffer.offerPublicKey = owner.offerKey.publicKey
                 newOffer.offerPrivateKey = owner.offerKey.privateKey
 
-                return owner.offerService
-                    .storeOffers(offers: [newOffer], areCreated: true)
+                return owner.storeOffers(offers: [newOffer], areCreated: true)
                     .track(activity: owner.primaryActivity)
                     .materialize()
                     .compactMap(\.value)
@@ -333,8 +330,8 @@ final class CreateOfferViewModel: ViewModelType, ObservableObject {
             }
             .flatMapLatest(with: self) { owner, _ in
                 // TODO: setup firebase notifications to get a proper token
-                owner.chatService.createInbox(offerKey: owner.offerKey,
-                                              pushToken: Constants.pushNotificationToken)
+                owner.createInbox(offerKey: owner.offerKey,
+                                  pushToken: Constants.pushNotificationToken)
                     .track(activity: owner.primaryActivity)
                     .materialize()
                     .compactMap(\.value)
