@@ -9,7 +9,7 @@ import Foundation
 import Cleevio
 import Combine
 
-final class CreateOfferCoordinator: BaseCoordinator<RouterResult<Void>> {
+final class OfferCoordinator: BaseCoordinator<RouterResult<Void>> {
 
     private let router: Router
     private let offer: Offer?
@@ -30,7 +30,7 @@ final class CreateOfferCoordinator: BaseCoordinator<RouterResult<Void>> {
             viewModel = OfferCreateViewModel(offerType: offerType)
         }
 
-        let viewController = BaseViewController(rootView: CreateOfferView(viewModel: viewModel))
+        let viewController = BaseViewController(rootView: OfferView(viewModel: viewModel))
 
         viewModel
             .$error

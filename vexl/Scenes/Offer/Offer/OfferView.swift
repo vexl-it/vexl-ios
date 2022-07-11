@@ -8,7 +8,7 @@
 import SwiftUI
 import Cleevio
 
-struct CreateOfferView: View {
+struct OfferView: View {
 
     @ObservedObject var viewModel: OfferActionViewModel
 
@@ -85,10 +85,10 @@ struct CreateOfferView: View {
 #if DEBUG || DEVEL
 struct CreateOfferViewPreview: PreviewProvider {
     static var previews: some View {
-        CreateOfferView(viewModel: .init(offerType: .sell, offerKey: ECCKeys()))
+        OfferView(viewModel: .init(offerType: .sell, offerKey: ECCKeys()))
             .previewDevice("iPhone 11")
 
-        CreateOfferView(viewModel: .init(offerType: .buy, offerKey: ECCKeys()))
+        OfferView(viewModel: .init(offerType: .buy, offerKey: ECCKeys()))
             .previewDevice("iPhone 11")
     }
 }
