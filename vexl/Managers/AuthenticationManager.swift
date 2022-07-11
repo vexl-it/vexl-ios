@@ -34,7 +34,8 @@ final class AuthenticationManager: AuthenticationManagerType {
     var isUserLoggedIn: Bool { checkAuthorization(for: userRepository.user) }
     var isUserLoggedInPublisher: AnyPublisher<Bool, Never> {
         userRepository.userPublisher
-            .map(checkAuthorization(for:))
+            .withUnretained(self)
+            .map { $0.0.checkAuthorization(for: $0.1) }
             .eraseToAnyPublisher()
     }
 
