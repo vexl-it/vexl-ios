@@ -13,7 +13,7 @@ protocol ContactsRepositoryType {
     func save(contacts: [(ContactInformation, String)]) -> AnyPublisher<[ManagedContact], Error>
 }
 
-class ContactsRepository: ContactsRepositoryType {
+final class ContactsRepository: ContactsRepositoryType {
     @Inject private var persistence: PersistenceStoreManagerType
 
     private lazy var context: NSManagedObjectContext = persistence.viewContext

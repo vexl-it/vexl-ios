@@ -27,6 +27,7 @@ protocol AuthenticationManagerType {
     func logoutUser(force: Bool)
     func logoutUserPublisher(force: Bool) -> AnyPublisher<Void, Never>
 }
+
 final class AuthenticationManager: AuthenticationManagerType {
 
     // MARK: - Properties

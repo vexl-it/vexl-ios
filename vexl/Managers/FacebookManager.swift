@@ -20,7 +20,7 @@ protocol FacebookManagerType {
     func update(hash: String, signature: String)
 }
 
-class FacebookManager: FacebookManagerType {
+final class FacebookManager: FacebookManagerType {
     @KeychainStore(key: .facebookID)
     var facebookID: String?
 

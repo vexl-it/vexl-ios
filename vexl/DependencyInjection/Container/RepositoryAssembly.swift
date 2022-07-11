@@ -7,7 +7,7 @@
 
 import Swinject
 
-class RepositoryAssembly: Assembly {
+final class RepositoryAssembly: Assembly {
     func assemble(container: Container) {
         container.register(UserRepositoryType.self) { _ in
             UserRepository()

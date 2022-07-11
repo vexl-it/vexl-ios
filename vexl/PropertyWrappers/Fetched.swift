@@ -17,7 +17,7 @@ enum FetchContextType {
 }
 
 @propertyWrapper
-class Fetched<Entity: NSManagedObject> {
+final class Fetched<Entity: NSManagedObject> {
     let context: NSManagedObjectContext
 
     var publisher: AnyPublisher<[Entity], Never> {
