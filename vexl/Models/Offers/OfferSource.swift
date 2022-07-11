@@ -26,3 +26,26 @@ enum OfferTrigger: String {
     case below = "PRICE_IS_BELOW"
     case abowe = "PRICE_IS_ABOVE"
  }
+
+enum GroupUUID: RawRepresentable {
+    init(rawValue: String) {
+        switch rawValue {
+        case "NONE":
+            self = .none
+        default:
+            self = .id(rawValue)
+        }
+    }
+
+    case none
+    case id(_ id: String)
+
+    var rawValue: String {
+        switch self {
+        case .none:
+            return "NONE"
+        case let .id(id):
+            return id
+        }
+    }
+}
