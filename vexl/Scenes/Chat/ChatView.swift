@@ -55,7 +55,8 @@ struct ChatView: View {
 
             ChatActionView(viewModel: viewModel.chatActionViewModel)
 
-            ChatConversationView(username: viewModel.username,
+            ChatConversationView(viewModel: viewModel.chatConversationViewModel,
+                                 username: viewModel.username,
                                  avatar: viewModel.avatar,
                                  messages: viewModel.messages,
                                  revealAction: {
