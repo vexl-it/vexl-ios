@@ -145,7 +145,7 @@ final class UserOffersViewModel: ViewModelType, ObservableObject {
         Just(())
             .flatMapLatest(with: self) { owner, _ in
                 owner.offerService
-                    .getStoredOfferIds(fromType: owner.offerType == .buy ? .buy : .sell)
+                    .getStoredOfferIds(fromType: owner.offerType == .buy ? .buy : .sell, fromSource: .created)
                     .track(activity: owner.primaryActivity)
                     .materialize()
                     .compactMap(\.value)

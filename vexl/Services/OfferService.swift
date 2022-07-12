@@ -27,7 +27,7 @@ protocol OfferServiceType {
 
     func getStoredOffers() -> AnyPublisher<[Offer], Error>
     func storeOffers(offers: [Offer], areCreated: Bool) -> AnyPublisher<Void, Error>
-    func getStoredOfferIds(fromType option: OfferTypeOption) -> AnyPublisher<[String], Error>
+    func getStoredOfferIds(fromType option: OfferTypeOption, fromSource source: OfferSourceOption) -> AnyPublisher<[String], Error>
     func getStoredOfferKeys(fromSource option: OfferSourceOption) -> AnyPublisher<[OfferKeys], Error>
 }
 
@@ -97,9 +97,9 @@ final class OfferService: BaseService, OfferServiceType {
         localStorageService.saveOffers(offers, areCreated: areCreated)
     }
 
-    func getStoredOfferIds(fromType option: OfferTypeOption) -> AnyPublisher<[String], Error> {
+    func getStoredOfferIds(fromType option: OfferTypeOption, fromSource source: OfferSourceOption) -> AnyPublisher<[String], Error> {
         localStorageService.getOffers()
-            .map { offers -> [String] in
+            .map { offers -> [Offer] in
                 var filteredOffers: [Offer] = []
 
                 if option.contains(.buy) {
@@ -108,6 +108,19 @@ final class OfferService: BaseService, OfferServiceType {
 
                 if option.contains(.sell) {
                     filteredOffers.append(contentsOf: offers.filter { $0.type == .sell })
+                }
+
+                return filteredOffers
+            }
+            .map { offers -> [String] in
+                var filteredOffers: [Offer] = []
+
+                if source.contains(.created) {
+                    filteredOffers.append(contentsOf: offers.filter { $0.source == .created })
+                }
+
+                if source.contains(.fetched) {
+                    filteredOffers.append(contentsOf: offers.filter { $0.source == .fetched })
                 }
 
                 return filteredOffers.map(\.offerId)
@@ -134,7 +147,7 @@ final class OfferService: BaseService, OfferServiceType {
     }
 
     func deleteOffers() -> AnyPublisher<Void, Error> {
-        getStoredOfferIds(fromType: .all)
+        getStoredOfferIds(fromType: .all, fromSource: .all)
             .withUnretained(self)
             .flatMap { owner, offerIds -> AnyPublisher<Void, Error> in
                 if !offerIds.isEmpty {

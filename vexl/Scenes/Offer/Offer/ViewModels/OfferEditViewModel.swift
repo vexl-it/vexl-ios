@@ -45,6 +45,8 @@ final class OfferEditViewModel: OfferActionViewModel {
         selectedPaymentMethodOptions = offer.paymentMethods
         selectedBTCOption = offer.btcNetwork
         selectedFriendDegreeOption = offer.friendLevel
+        selectedPriceTrigger = offer.offerPriceTrigger
+        selectedPriceTriggerAmount = "\(offer.offerPriceTriggerValue)"
     }
 
     override func prepareOffer(encryptedOffers: [EncryptedOffer], expiration: TimeInterval) -> AnyPublisher<EncryptedOffer, Error> {
