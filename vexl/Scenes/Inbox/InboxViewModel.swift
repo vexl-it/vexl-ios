@@ -63,7 +63,7 @@ final class InboxViewModel: ViewModelType, ObservableObject {
             .withUnretained(self)
             .flatMap { owner, chatInboxMessages in
                 owner.offerService
-                    .getStoredOffers()
+                    .getStoredOffers(fromType: .all, fromSource: .all)
                     .materialize()
                     .compactMap(\.value)
                     .map { offers -> OfferAndMessage in
