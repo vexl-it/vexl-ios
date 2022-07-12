@@ -52,13 +52,12 @@ deploy_beta:
   tags: [ios]
   allow_failure: false
 
-deploy_beta_manual:
+deploy_staging:
   stage: deploy
-  except:
-    - master
-    - devel
+  only:
+    - staging
   script:
-    - bundle exec fastlane deploy_devel
+    - bundle exec fastlane deploy_staging
   when: manual
   tags: [ios]
   allow_failure: false
@@ -68,7 +67,18 @@ deploy_AppStore:
   only:
     - master
   script:
-    - bundle exec fastlane deploy_AppStore
+    - bundle exec fastlane deploy_appstore
+  when: manual
+  tags: [ios]
+  allow_failure: false
+
+deploy_beta_manual:
+  stage: deploy
+  except:
+    - master
+    - devel
+  script:
+    - bundle exec fastlane deploy_devel
   when: manual
   tags: [ios]
   allow_failure: false

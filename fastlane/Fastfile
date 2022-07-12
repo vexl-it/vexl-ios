@@ -6,18 +6,19 @@ platform :ios do
 	# ******************** DEFINITIONS ******************** #
 	# ***************************************************** #
 
-	debug_identifier = "com.tmp.vexl"
-	devel_identifier = "com.tmp.vexl.devel"
-	staging_identifier = "com.tmp.vexl.staging"
-    appstore_identifier = "com.tmp.vexl.appstore"
+	debug_identifier = "com.cleevio.vexl.debug"
+	devel_identifier = "com.cleevio.vexl.devel"
+	staging_identifier = "com.cleevio.vexl.staging"
+    appstore_identifier = "com.cleevio.vexl.appstore"
     xcodeproj_identifier = "vexl.xcodeproj"
+    match_repository = "vexl-cleevio"
 
 	main_scheme = "vexl"
 	gsp_path_devel = "vexl/Resources/GoogleServices/Devel/GoogleService-Info.plist"
 	gsp_path_staging = "vexl/Resources/GoogleServices/Staging/GoogleService-Info.plist"
 	gsp_path_appstore = "vexl/Resources/GoogleServices/AppStore/GoogleService-Info.plist"
-	firebase_app_id_devel = "1:386907112085:ios:d4eb7c5afaefc79e50d19c"
-	firebase_app_id_staging = "1:386907112085:ios:c4f9a9b9df3c50ce50d19c"
+	firebase_app_id_devel = "1:386907112085:ios:a11ad194b15d1e3a50d19c"
+	firebase_app_id_staging = "1:386907112085:ios:d5e19c7680bc362050d19c"
 	firebase_app_id_appstore = "1:386907112085:ios:388bfa4f7b872e4650d19c"
 	firebase_tester_group_id = "Cleevio"
 	firebase_cli_path = "/usr/local/bin/firebase"
@@ -83,22 +84,32 @@ platform :ios do
 	desc "Create certificates and provisioning profiles for every app environment. This should be run once at the beginning of the project"
 	lane :create_signing_assets do
 		match(
-			git_branch: main_scheme,
+			git_branch: match_repository,
 			type: "development",
-			app_identifier: debug_identifier,
-			readonly: true  # TODO: remove this line once we have a app store access
+			app_identifier: debug_identifier
 		)
 
 		match(
-			git_branch: main_scheme,
+			git_branch: match_repository,
 			type: "adhoc",
-			app_identifier: devel_identifier,
-			readonly: true  # TODO: remove this line once we have a app store access
+			app_identifier: devel_identifier
+		)
+
+		match(
+			git_branch: match_repository,
+			type: "adhoc",
+			app_identifier: staging_identifier
+		)
+
+		match(
+			git_branch: match_repository,
+			type: "appstore",
+			app_identifier: appstore_identifier
 		)
 	end
 
 	# ***************************************************** #
-	# *************** LANE: Deploy beta ******************* #
+	# *************** LANE: Deploy devel ****************** #
 	# ***************************************************** #
 
 	desc "Submit a new build to Firebase"
@@ -129,9 +140,9 @@ platform :ios do
 
 		match(
 			type: "adhoc",
-			git_branch: main_scheme,
+			git_branch: match_repository,
 			app_identifier: devel_identifier,
-			readonly: true # TODO: change to `readonly: is_ci` once we have a app store access
+			readonly: is_ci
 		)
 
 		clear_derived_data
@@ -169,6 +180,149 @@ platform :ios do
 			   "Build Date" => Time.new.to_s,
 			},
 			message: "New iOS Firebase devel version released! :tada:",
+			slack_url: slackUrl,
+			default_payloads: [:test_result],
+			attachment_properties: {
+				  fields: [{
+						title: "Changelog",
+						value: changelog,
+						short: true	
+			   }]
+			}
+		  )
+	end
+
+	# ***************************************************** #
+	# *************** LANE: Deploy Staging **************** #
+	# ***************************************************** #
+
+	desc "Submit a new build to Firebase"
+	lane :deploy_staging do
+		install_pods()
+
+		clean_build_artifacts
+
+		match(
+			type: "adhoc",
+			git_branch: match_repository,
+			app_identifier: staging_identifier,
+			readonly: is_ci
+		)
+
+		clear_derived_data
+
+		ipa_path = gym(
+			scheme: "#{main_scheme} Staging",
+			silent: true,
+			clean: true,
+			export_method: "ad-hoc",
+			export_options: {
+				manageAppVersionAndBuildNumber: false,
+				compileBitcode: false
+			}
+		)
+
+		changelog = "\#\##{version}(#{build})"
+		changelog += "\n"
+		changelog += File.read("../Changelog.txt")
+
+		firebase_app_distribution(
+			app: firebase_app_id_staging,
+			groups: firebase_tester_group_id,
+			release_notes: changelog,
+			firebase_cli_path: firebase_cli_path,
+			ipa_path: ipa_path
+		)
+
+		upload_symbols_to_crashlytics(
+			gsp_path: gsp_path_staging
+		)
+
+		slack(
+			username: "Siri",
+			payload: {
+			   "Build Date" => Time.new.to_s,
+			},
+			message: "New iOS Firebase Staging version released! :tada:",
+			slack_url: slackUrl,
+			default_payloads: [:test_result],
+			attachment_properties: {
+				  fields: [{
+						title: "Changelog",
+						value: changelog,
+						short: true	
+			   }]
+			}
+		  )
+	end
+
+	# ***************************************************** #
+	# *************** LANE: Deploy Appstore *************** #
+	# ***************************************************** #
+
+	desc "Submit a new build to Firebase"
+	lane :deploy_appstore do
+		install_pods()
+
+		clean_build_artifacts
+
+
+		unless git_tag_exists(tag: "#{version}(#{build})")
+			add_git_tag(tag: "#{version}(#{build})")
+	
+			branch = git_branch
+
+			push_to_git_remote(
+			  remote: "origin",
+			  local_branch: "HEAD",
+			  remote_branch: branch,
+			  force: false,
+			  tags: true
+			)
+		end
+
+
+		match(
+			type: "appstore",
+			git_branch: match_repository,
+			app_identifier: appstore_identifier,
+			readonly: is_ci
+		)
+
+		clear_derived_data
+
+		ipa_path = gym(
+			scheme: "#{main_scheme} AppStore",
+			silent: true,
+			clean: true,
+			export_method: "app-store",
+			export_options: {
+				manageAppVersionAndBuildNumber: false,
+				compileBitcode: false
+			}
+		)
+
+		changelog = "\#\##{version}(#{build})"
+		changelog += "\n"
+		changelog += File.read("../Changelog.txt")
+
+		deliver(
+			username: CredentialsManager::AppfileConfig.try_fetch_value(:apple_id),
+			skip_metadata: true,
+			skip_screenshots: true,
+			force: true
+		)
+
+		upload_symbols_to_crashlytics(
+			gsp_path: gsp_path_appstore
+		)
+
+		slack(
+			username: "Siri",
+			payload: {
+			   "Build Date" => Time.new.to_s,
+			},
+			message: "New iOS Testflight version released! :tada:",
 			slack_url: slackUrl,
 			default_payloads: [:test_result],
 			attachment_properties: {
