@@ -59,8 +59,6 @@
 		B01C01EB2861F9D900A29F85 /* vexl-crypto.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = B01C01EA2861F9D900A29F85 /* vexl-crypto.xcframework */; };
 		B01C01ED2862F06D00A29F85 /* Currency.swift in Sources */ = {isa = PBXBuildFile; fileRef = B01C01EC2862F06D00A29F85 /* Currency.swift */; };
 		B05A22132812BF2700BF8D58 /* Publisher+Crypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = B05A22122812BF2700BF8D58 /* Publisher+Crypto.swift */; };
-		B06A3B57287DAE6B00911795 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B06A3B56287DAE6B00911795 /* GoogleService-Info.plist */; };
-		B06A3B59287DAEEA00911795 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B06A3B58287DAEEA00911795 /* GoogleService-Info.plist */; };
 		B08F38DF27AE7110008B344F /* DIContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B08F38DE27AE7110008B344F /* DIContainer.swift */; };
 		B08F38E227AE7110008B344F /* Inject.swift in Sources */ = {isa = PBXBuildFile; fileRef = B08F38E127AE7110008B344F /* Inject.swift */; };
 		B08F390327AE7110008B344F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B08F390127AE7110008B344F /* LaunchScreen.storyboard */; };
@@ -2019,7 +2017,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B06A3B57287DAE6B00911795 /* GoogleService-Info.plist in Resources */,
 				F1B5FCC527C6C0720018729B /* Generic.strings in Resources */,
 				B08F390327AE7110008B344F /* LaunchScreen.storyboard in Resources */,
 				F1BBC70F283BE5570067F81B /* TT Satoshi Medium.otf in Resources */,
@@ -2027,7 +2024,6 @@
 				F1BBC713283BE55F0067F81B /* PPMonumentExtended-Bold.otf in Resources */,
 				F1B5FCC327C6BC330018729B /* Localizable.strings in Resources */,
 				B08F390F27AE7112008B344F /* Assets.xcassets in Resources */,
-				B06A3B59287DAEEA00911795 /* GoogleService-Info.plist in Resources */,
 				F1BBC711283BE5570067F81B /* TT Satoshi Bold.otf in Resources */,
 				F1BBC70E283BE5570067F81B /* TT Satoshi SemiBold.otf in Resources */,
 			);
