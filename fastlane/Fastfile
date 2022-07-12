@@ -6,18 +6,19 @@ platform :ios do
 	# ******************** DEFINITIONS ******************** #
 	# ***************************************************** #
 
-	debug_identifier = "com.tmp.vexl"
-	devel_identifier = "com.tmp.vexl.devel"
-	staging_identifier = "com.tmp.vexl.staging"
-    appstore_identifier = "com.tmp.vexl.appstore"
+	debug_identifier = "com.cleevio.vexl.debug"
+	devel_identifier = "com.cleevio.vexl.devel"
+	staging_identifier = "com.cleevio.vexl.staging"
+    appstore_identifier = "com.cleevio.vexl.appstore"
     xcodeproj_identifier = "vexl.xcodeproj"
+    match_repository = "vexl-cleevio"
 
 	main_scheme = "vexl"
 	gsp_path_devel = "vexl/Resources/GoogleServices/Devel/GoogleService-Info.plist"
 	gsp_path_staging = "vexl/Resources/GoogleServices/Staging/GoogleService-Info.plist"
 	gsp_path_appstore = "vexl/Resources/GoogleServices/AppStore/GoogleService-Info.plist"
-	firebase_app_id_devel = "1:386907112085:ios:d4eb7c5afaefc79e50d19c"
-	firebase_app_id_staging = "1:386907112085:ios:c4f9a9b9df3c50ce50d19c"
+	firebase_app_id_devel = "1:386907112085:ios:a11ad194b15d1e3a50d19c"
+	firebase_app_id_staging = "1:386907112085:ios:d5e19c7680bc362050d19c"
 	firebase_app_id_appstore = "1:386907112085:ios:388bfa4f7b872e4650d19c"
 	firebase_tester_group_id = "Cleevio"
 	firebase_cli_path = "/usr/local/bin/firebase"
@@ -83,17 +84,27 @@ platform :ios do
 	desc "Create certificates and provisioning profiles for every app environment. This should be run once at the beginning of the project"
 	lane :create_signing_assets do
 		match(
-			git_branch: main_scheme,
+			git_branch: match_repository,
 			type: "development",
-			app_identifier: debug_identifier,
-			readonly: true  # TODO: remove this line once we have a app store access
+			app_identifier: debug_identifier
 		)
 
 		match(
-			git_branch: main_scheme,
+			git_branch: match_repository,
 			type: "adhoc",
-			app_identifier: devel_identifier,
-			readonly: true  # TODO: remove this line once we have a app store access
+			app_identifier: devel_identifier
+		)
+
+		match(
+			git_branch: match_repository,
+			type: "adhoc",
+			app_identifier: staging_identifier
+		)
+
+		match(
+			git_branch: match_repository,
+			type: "appstore",
+			app_identifier: appstore_identifier
 		)
 	end
 
