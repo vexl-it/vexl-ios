@@ -109,7 +109,7 @@ platform :ios do
 	end
 
 	# ***************************************************** #
-	# *************** LANE: Deploy beta ******************* #
+	# *************** LANE: Deploy devel ****************** #
 	# ***************************************************** #
 
 	desc "Submit a new build to Firebase"
@@ -140,9 +140,9 @@ platform :ios do
 
 		match(
 			type: "adhoc",
-			git_branch: main_scheme,
+			git_branch: match_repository,
 			app_identifier: devel_identifier,
-			readonly: true # TODO: change to `readonly: is_ci` once we have a app store access
+			readonly: is_ci
 		)
 
 		clear_derived_data
