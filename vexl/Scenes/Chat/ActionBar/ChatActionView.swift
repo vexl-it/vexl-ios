@@ -7,18 +7,17 @@
 
 import SwiftUI
 
-typealias ChatAction = ChatActionView.ChatAction
+typealias ChatActionOption = ChatActionView.ChatActionOption
 
 struct ChatActionView: View {
 
-    let userIsRevealed: Bool
-    let action: (ChatAction) -> Void
+    let viewModel: ChatActionViewModel
 
-    private var availableActions: [ChatAction] {
-        if userIsRevealed {
-            return ChatAction.allCases.filter { $0 != .revealIdentity }
+    private var availableActions: [ChatActionOption] {
+        if viewModel.userIsRevealed {
+            return ChatActionOption.allCases.filter { $0 != .revealIdentity }
         } else {
-            return ChatAction.allCases
+            return ChatActionOption.allCases
         }
     }
 
@@ -27,7 +26,7 @@ struct ChatActionView: View {
             HStack {
                 ForEach(availableActions) { chatAction in
                     Button(chatAction.title) {
-                        action(chatAction)
+                        viewModel.action.send(chatAction)
                     }
                     .textStyle(.paragraphSmallMedium)
                     .padding(Appearance.GridGuide.point)
@@ -43,9 +42,9 @@ struct ChatActionView: View {
 
 extension ChatActionView {
 
-    enum ChatAction: Identifiable, Hashable, CaseIterable {
+    enum ChatActionOption: Identifiable, Hashable, CaseIterable {
 
-        var id: ChatAction { self }
+        var id: ChatActionOption { self }
 
         case revealIdentity
         case showOffer

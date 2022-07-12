@@ -8,7 +8,7 @@
 import SwiftUI
 import Combine
 
-final class ChatOfferActionSheetViewModel: BottomActionSheetViewModelProtocol {
+final class ChatOfferSheetViewModel: BottomActionSheetViewModelProtocol {
 
     typealias OfferBottomActionSheet = BottomActionSheet<ChatOfferActionSheetContent>
 
