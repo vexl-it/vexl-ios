@@ -89,8 +89,10 @@ private struct ImportContactSelectionView: View {
     }
 }
 
+#if DEBUG || DEVEL
 struct RegisterContacts_ContactItemViewPreview: PreviewProvider {
     static var previews: some View {
         ImportContactItemView(item: ContactInformation.stub().first!, onSelection: { _ in })
     }
 }
+#endif
