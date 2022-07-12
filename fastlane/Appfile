@@ -2,7 +2,7 @@
 apple_id "dev.ios@cleevio.com"
 
 # Apple Developer portal team name and ID. Be sure to specify the client's team here.
-team_name "CLEEVIO s.r.o."
+team_name "iOS Cleevio"
 team_id "C6T557DX87"
 
 # iTunesConnect team name and ID. ID can be found with Spaceship.
