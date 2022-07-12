@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>386907112085-fkafhhodgmjpq2u5bgmchr8qu2s1ad8o.apps.googleusercontent.com</string>
+	<string>386907112085-oqkosd5a8iudn93oiea8a423bbpoufug.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.386907112085-fkafhhodgmjpq2u5bgmchr8qu2s1ad8o</string>
+	<string>com.googleusercontent.apps.386907112085-oqkosd5a8iudn93oiea8a423bbpoufug</string>
 	<key>API_KEY</key>
 	<string>AIzaSyBm7L74xcwF7wEqfqhIbP_S8bgb4wFgkPE</string>
 	<key>GCM_SENDER_ID</key>
@@ -13,7 +13,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.tmp.vexl.staging</string>
+	<string>com.cleevio.vexl.staging</string>
 	<key>PROJECT_ID</key>
 	<string>vexl-devel</string>
 	<key>STORAGE_BUCKET</key>
@@ -29,6 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:386907112085:ios:c4f9a9b9df3c50ce50d19c</string>
+	<string>1:386907112085:ios:d5e19c7680bc362050d19c</string>
 </dict>
 </plist>
