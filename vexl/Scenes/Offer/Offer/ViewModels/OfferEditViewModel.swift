@@ -43,6 +43,9 @@ final class OfferEditViewModel: OfferActionViewModel {
             .compactMap(\.value)
             .withUnretained(self)
             .sink { owner, storedOffer in
+
+                // TODO: - find a way to improve this part
+
                 owner.offer = storedOffer
                 owner.offerKey = ECCKeys(pubKey: storedOffer.offerPublicKey, privKey: storedOffer.offerPrivateKey)
 
