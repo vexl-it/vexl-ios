@@ -193,6 +193,70 @@ platform :ios do
 	end
 
 	# ***************************************************** #
+	# *************** LANE: Deploy Staging **************** #
+	# ***************************************************** #
+
+	desc "Submit a new build to Firebase"
+	lane :deploy_staging do
+		install_pods()
+
+		clean_build_artifacts
+
+		match(
+			type: "adhoc",
+			git_branch: match_repository,
+			app_identifier: staging_identifier,
+			readonly: is_ci
+		)
+
+		clear_derived_data
+
+		ipa_path = gym(
+			scheme: "#{main_scheme} Staging",
+			silent: true,
+			clean: true,
+			export_method: "ad-hoc",
+			export_options: {
+				manageAppVersionAndBuildNumber: false,
+				compileBitcode: false
+			}
+		)
+
+		changelog = "\#\##{version}(#{build})"
+		changelog += "\n"
+		changelog += File.read("../Changelog.txt")
+
+		firebase_app_distribution(
+			app: firebase_app_id_staging,
+			groups: firebase_tester_group_id,
+			release_notes: changelog,
+			firebase_cli_path: firebase_cli_path,
+			ipa_path: ipa_path
+		)
+
+		upload_symbols_to_crashlytics(
+			gsp_path: gsp_path_staging
+		)
+
+		slack(
+			username: "Siri",
+			payload: {
+			   "Build Date" => Time.new.to_s,
+			},
+			message: "New iOS Firebase Staging version released! :tada:",
+			slack_url: slackUrl,
+			default_payloads: [:test_result],
+			attachment_properties: {
+				  fields: [{
+						title: "Changelog",
+						value: changelog,
+						short: true	
+			   }]
+			}
+		  )
+	end
+
+	# ***************************************************** #
 	# ************ LANE: Increment Version **************** #
 	# In order to use this you need to send one of these variables:
 	# VERSION: Please use semantic versioning (e.g 2.0.1)
