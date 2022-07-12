@@ -6,31 +6,38 @@ platform :ios do
 	# ******************** DEFINITIONS ******************** #
 	# ***************************************************** #
 
-	debug_identifier = "FIXME"
-	devel_identifier = "FIXME"
-    appstore_identifier = "FIXME"
+	debug_identifier = "com.cleevio.vexl.debug"
+	devel_identifier = "com.cleevio.vexl.devel"
+	staging_identifier = "com.cleevio.vexl.staging"
+    appstore_identifier = "com.cleevio.vexl.appstore"
+    xcodeproj_identifier = "vexl.xcodeproj"
+    match_repository = "vexl-cleevio"
 
 	main_scheme = "vexl"
-	gsp_path_beta = "vexl/Resources/GoogleServices/Devel/GoogleService-Info.plist"
-	gsp_path_store = "vexl/Resources/GoogleServices/AppStore/GoogleService-Info.plist"
-	firebase_app_id_debug = "FIXME"
-	firebase_app_id_devel = "FIXME"
-	firebase_app_id_appstore = "FIXME"
-	firebase_tester_group_id = "FIXME"
+	gsp_path_devel = "vexl/Resources/GoogleServices/Devel/GoogleService-Info.plist"
+	gsp_path_staging = "vexl/Resources/GoogleServices/Staging/GoogleService-Info.plist"
+	gsp_path_appstore = "vexl/Resources/GoogleServices/AppStore/GoogleService-Info.plist"
+	firebase_app_id_devel = "1:386907112085:ios:a11ad194b15d1e3a50d19c"
+	firebase_app_id_staging = "1:386907112085:ios:d5e19c7680bc362050d19c"
+	firebase_app_id_appstore = "1:386907112085:ios:388bfa4f7b872e4650d19c"
+	firebase_tester_group_id = "Cleevio"
 	firebase_cli_path = "/usr/local/bin/firebase"
-	slackUrl = "FIXME"
-	appSpecificPassword = "FIXME"
+	slackUrl = "https://hooks.slack.com/services/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"
 
 	# ***************************************************** #
 	# ******************** BEFORE ALL ********************* #
 	# ***************************************************** #
 
-	before_all do
-    	ENV["FASTLANE_DONT_STORE_PASSWORD"] = "1"
-    	ENV["FASTLANE_USER"] = "dev@cleevio.cz"
-    	ENV["FASTLANE_PASSWORD"] = "SmartDevsCleevio123"
-    	ENV["FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD"] = appSpecificPassword
-  	end
+	ensure_env_vars(
+		env_vars: [
+			'FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD',
+			'FASTLANE_DONT_STORE_PASSWORD', 
+			'FASTLANE_USER', 
+			'FASTLANE_PASSWORD', 
+			'MATCH_KEYCHAIN_PASSWORD',
+			'MATCH_PASSWORD'
+		]
+	) 
 
 	# ***************************************************** #
 	# ******************** FUNCTIONS ********************** #
@@ -63,9 +70,10 @@ platform :ios do
 	lane :test do
 		install_pods()
 		clear_derived_data
-		scan(
-			scheme: main_scheme,
-			output_directory: "fastlane/tests"
+		run_tests(
+			workspace: "vexl.xcworkspace",
+			devices: ["iPhone 13"],
+			scheme: "vexlTests"
 		)
 	end
 
@@ -76,65 +84,65 @@ platform :ios do
 	desc "Create certificates and provisioning profiles for every app environment. This should be run once at the beginning of the project"
 	lane :create_signing_assets do
 		match(
-		  git_branch: main_scheme,
-		  type: "development",
-		  app_identifier: debug_identifier
+			git_branch: match_repository,
+			type: "development",
+			app_identifier: debug_identifier
 		)
 
 		match(
-		  git_branch: main_scheme,
-		  type: "adhoc",
-		  app_identifier: devel_identifier
+			git_branch: match_repository,
+			type: "adhoc",
+			app_identifier: devel_identifier
 		)
-	
+
 		match(
-		  git_branch: main_scheme,
-		  type: "appstore",
-		  app_identifier: appstore_identifier
+			git_branch: match_repository,
+			type: "adhoc",
+			app_identifier: staging_identifier
+		)
+
+		match(
+			git_branch: match_repository,
+			type: "appstore",
+			app_identifier: appstore_identifier
 		)
 	end
 
 	# ***************************************************** #
-	# *************** LANE: Deploy beta ******************* #
+	# *************** LANE: Deploy devel ****************** #
 	# ***************************************************** #
 
 	desc "Submit a new build to Firebase"
-	lane :deploy_beta do
+	lane :deploy_devel do
 		install_pods()
 
 		version = get_version_number
 		build = increment_build_number(
 			build_number: ENV['CI_JOBENV_ID'],
-			xcodeproj: ENV['XCODE_PROJECT']
+			xcodeproj: xcodeproj_identifier
 		)
 
 		clean_build_artifacts
 
-		unless git_tag_exists(tag: "#{version}(#{build})")
-			commit_version_bump(
-				message: "[ci skip] Build version Bump: #{version}(#{build})",
-				xcodeproj: ENV['XCODE_PROJECT']
-			)
-			add_git_tag(tag: "#{version}(#{build})")
+		commit_version_bump(
+			message: "[ci skip] Build version Bump: #{version}(#{build})",
+			xcodeproj: xcodeproj_identifier
+		)
 	
-			branch = git_branch
-			push_to_git_remote(
-			  remote: "origin",
-			  local_branch: "HEAD",
-			  remote_branch: branch,
-			  force: false,
-			  tags: true
-			)
-		end
-
-	    sh("security unlock-keychain -p \"Cleevio1234\" ~/Library/Keychains/login.keychain-db")
-	    sh("security set-keychain-settings -t 7200 -l ~/Library/Keychains/login.keychain-db")
+		branch = git_branch
+		push_to_git_remote(
+			remote: "origin",
+			local_branch: "HEAD",
+			remote_branch: branch,
+			force: false,
+			tags: true
+		)
 
 		match(
 			type: "adhoc",
-			git_branch: main_scheme,
+			git_branch: match_repository,
 			app_identifier: devel_identifier,
-			force_for_new_devices: true
+			readonly: is_ci
 		)
 
 		clear_derived_data
@@ -152,18 +160,18 @@ platform :ios do
 
 		changelog = "\#\##{version}(#{build})"
 		changelog += "\n"
-		changelog += File.read("../vexl/Changelog.txt")
+		changelog += File.read("../Changelog.txt")
 
 		firebase_app_distribution(
-		   app: firebase_app_id_devel,
-		   groups: firebase_tester_group_id,
-		   release_notes: changelog,
-		   firebase_cli_path: firebase_cli_path,
-		   ipa_path: ipa_path
+			app: firebase_app_id_devel,
+			groups: firebase_tester_group_id,
+			release_notes: changelog,
+			firebase_cli_path: firebase_cli_path,
+			ipa_path: ipa_path
 		)
 
 		upload_symbols_to_crashlytics(
-			gsp_path: gsp_path_beta
+			gsp_path: gsp_path_devel
 		)
 
 		slack(
@@ -185,24 +193,100 @@ platform :ios do
 	end
 
 	# ***************************************************** #
-	# ***************** LANE: AppStore ******************** #
+	# *************** LANE: Deploy Staging **************** #
 	# ***************************************************** #
 
-	desc "Submit a new build to AppStore"
-	lane :deploy_AppStore do
+	desc "Submit a new build to Firebase"
+	lane :deploy_staging do
 		install_pods()
 
-		version = get_version_number
-		build = get_build_number(
-			xcodeproj: ENV['XCODE_PROJECT']
-		)
-
-		puts "Version #{version} - build #{build} will be deploy to Testflight"
+		clean_build_artifacts
 
 		match(
-			git_branch: main_scheme,
+			type: "adhoc",
+			git_branch: match_repository,
+			app_identifier: staging_identifier,
+			readonly: is_ci
+		)
+
+		clear_derived_data
+
+		ipa_path = gym(
+			scheme: "#{main_scheme} Staging",
+			silent: true,
+			clean: true,
+			export_method: "ad-hoc",
+			export_options: {
+				manageAppVersionAndBuildNumber: false,
+				compileBitcode: false
+			}
+		)
+
+		changelog = "\#\##{version}(#{build})"
+		changelog += "\n"
+		changelog += File.read("../Changelog.txt")
+
+		firebase_app_distribution(
+			app: firebase_app_id_staging,
+			groups: firebase_tester_group_id,
+			release_notes: changelog,
+			firebase_cli_path: firebase_cli_path,
+			ipa_path: ipa_path
+		)
+
+		upload_symbols_to_crashlytics(
+			gsp_path: gsp_path_staging
+		)
+
+		slack(
+			username: "Siri",
+			payload: {
+			   "Build Date" => Time.new.to_s,
+			},
+			message: "New iOS Firebase Staging version released! :tada:",
+			slack_url: slackUrl,
+			default_payloads: [:test_result],
+			attachment_properties: {
+				  fields: [{
+						title: "Changelog",
+						value: changelog,
+						short: true	
+			   }]
+			}
+		  )
+	end
+
+	# ***************************************************** #
+	# *************** LANE: Deploy Appstore *************** #
+	# ***************************************************** #
+
+	desc "Submit a new build to Firebase"
+	lane :deploy_appstore do
+		install_pods()
+
+		clean_build_artifacts
+
+
+		unless git_tag_exists(tag: "#{version}(#{build})")
+			add_git_tag(tag: "#{version}(#{build})")
+	
+			branch = git_branch
+
+			push_to_git_remote(
+			  remote: "origin",
+			  local_branch: "HEAD",
+			  remote_branch: branch,
+			  force: false,
+			  tags: true
+			)
+		end
+
+
+		match(
 			type: "appstore",
-			app_identifier: appstore_identifier
+			git_branch: match_repository,
+			app_identifier: appstore_identifier,
+			readonly: is_ci
 		)
 
 		clear_derived_data
@@ -213,9 +297,14 @@ platform :ios do
 			clean: true,
 			export_method: "app-store",
 			export_options: {
-				manageAppVersionAndBuildNumber: false
+				manageAppVersionAndBuildNumber: false,
+				compileBitcode: false
 			}
 		)
+
+		changelog = "\#\##{version}(#{build})"
+		changelog += "\n"
+		changelog += File.read("../Changelog.txt")
 
 		deliver(
 			username: CredentialsManager::AppfileConfig.try_fetch_value(:apple_id),
@@ -225,14 +314,85 @@ platform :ios do
 		)
 
 		upload_symbols_to_crashlytics(
-			gsp_path: gsp_path_store
+			gsp_path: gsp_path_appstore
 		)
 
 		slack(
-			message: "#{version}(#{build}): New iOS AppStore version released! :tada:",
-			slack_url: slackUrl
-		)
+			username: "Siri",
+			payload: {
+			   "Build Date" => Time.new.to_s,
+			},
+			message: "New iOS Testflight version released! :tada:",
+			slack_url: slackUrl,
+			default_payloads: [:test_result],
+			attachment_properties: {
+				  fields: [{
+						title: "Changelog",
+						value: changelog,
+						short: true	
+			   }]
+			}
+		  )
+	end
 
-		clean_build_artifacts
+	# ***************************************************** #
+	# ************ LANE: Increment Version **************** #
+	# In order to use this you need to send one of these variables:
+	# VERSION: Please use semantic versioning (e.g 2.0.1)
+	# BUMP_TYPE: It accepts one of these cases:
+	#   - major
+	#   - minor
+	#   - patch
+	# ***************************************************** #
+
+	desc "Let you increment the version number before submitting to Appstore"
+	lane :bump_version do |options|
+		UI.message "Options received: #{options}"
+
+		version = options[:version] ||= ""
+		bumpType = options[:bump_type] ||= ""
+		hasVersion = !(version.empty?)
+		hasBumpType = !(bumpType.empty?)
+
+		if hasVersion
+			UI.success "Using version with value '#{version}'"
+			increment_version_number_in_xcodeproj(
+				version_number: version,
+				target: "#{main_scheme}"
+			)
+		elsif hasBumpType
+			UI.success "Using bump_type with value '#{bumpType}'"
+			increment_version_number_in_xcodeproj(
+				bump_type: bumpType,
+				target: "#{main_scheme}"
+			)
+		else
+			UI.success "No parameter for incrementing version was found in the pipeline. Continuing..."
+			next
+		end
+
+		if hasVersion or hasBumpType
+			version = get_version_number
+			build = get_build_number(
+				xcodeproj: ENV['XCODE_PROJECT']
+			)
+
+			clean_build_artifacts
+
+			commit_version_bump(
+				message: "[ci skip] Build version Bump: #{version}(#{build})",
+				xcodeproj: ENV['XCODE_PROJECT']
+			)
+			add_git_tag(tag: "#{version}(#{build})")
+
+			branch = git_branch
+			push_to_git_remote(
+				remote: "origin",
+				local_branch: "HEAD",
+				remote_branch: branch,
+				force: false,
+				tags: true
+			)
+		end
 	end
 end

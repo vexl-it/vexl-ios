@@ -29,4 +29,24 @@ extension Keychain {
             self[data: key.rawValue] = newValue
         }
     }
+
+    subscript<T: Codable>(codable key: Constants.KeychainKeys) -> T? {
+        get {
+            guard let keychainData = self[data: key.rawValue],
+                  let object = try? Constants.jsonDecoder.decode(T.self, from: keychainData) else {
+                return nil
+            }
+            return object
+        }
+        set {
+            guard let newValue = newValue else {
+                self[data: key] = nil
+                return
+            }
+            guard let jsonData = try? Constants.jsonEncoder.encode(newValue) else {
+                return
+            }
+            self[data: key.rawValue] = jsonData
+        }
+    }
 }

@@ -19,7 +19,7 @@ extension APIError: LocalizedError {
         case .serverError(let error):
             return error.errorDescription
         case let .clientError(error, message):
-            return error.errorDescription ?? message
+            return error.errorDescription ?? message ?? L.generalInternalServerError()
         }
     }
 }

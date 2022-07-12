@@ -14,14 +14,33 @@ class ServiceAssembly: Assembly {
             ApiInterceptor()
         }
 
-        container.register(ApiServiceType.self) { container in
-            ApiService(
-                authenticationManager: container.resolve(TokenHandlerType.self)!
-            )
+        container.register(ApiServiceType.self) { _ in
+            ApiService()
         }
+
+        container.register(CryptoServiceType.self) { _ in
+            CryptoService()
+        }
+        .inObjectScope(.container)
 
         container.register(UserServiceType.self) { _ in
             UserService()
+        }
+
+        container.register(ContactsServiceType.self) { _ in
+            ContactsService()
+        }
+
+        container.register(OfferServiceType.self) { _ in
+            OfferService()
+        }
+
+        container.register(ChatServiceType.self) { _ in
+            ChatService()
+        }
+
+        container.register(LocalStorageServiceType.self) { _ in
+            LocalStorageService()
         }
     }
 }

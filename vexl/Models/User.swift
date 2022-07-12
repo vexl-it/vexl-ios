@@ -8,7 +8,20 @@
 
 import Foundation
 
-struct User: Decodable {
-    let id: Int
-    let name: String
+struct User: Codable {
+    let userId: Int
+    let username: String
+    let avatar: String?
+    let publicKey: String
+
+    var facebookId: String?
+    var facebookToken: String?
+    var avatarURL: String? {
+        guard let avatar = avatar else {
+            return nil
+        }
+        return "\(Constants.API.userBaseURLString)/\(avatar)"
+    }
+
+    var avatarImage: Data?
 }

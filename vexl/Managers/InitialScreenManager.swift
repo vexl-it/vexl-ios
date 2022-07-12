@@ -18,7 +18,7 @@ extension InitialScreenManager {
 }
 
 final class InitialScreenManager {
-    @Inject var authenticationManager: AuthenticationManager
+    @Inject var authenticationManager: AuthenticationManagerType
 
     @Published private(set) var state: State = .splashScreen
 
@@ -26,23 +26,18 @@ final class InitialScreenManager {
 
     private var cancellables: Cancellables = .init()
 
-    init() {
-        setupSubscriptions()
-    }
+    func getCurrentScreenState() -> State {
 
-    func setupSubscriptions() {
-        Publishers.CombineLatest($initialLoadingInProgress, authenticationManager.$authenticationState)
-            .map { initialLoading, authState -> State in
-                switch (initialLoading, authState) {
-                case (true, _):
-                    return .splashScreen
-                case (_, .signedOut):
-                    return .onboarding
-                case (_, .signedIn):
-                    return .home
-                }
-            }
-            .assign(to: &$state)
+        guard !initialLoadingInProgress else {
+            return .splashScreen
+        }
+
+        switch authenticationManager.currentAuthenticationState {
+        case .signedOut:
+            return .onboarding
+        case .signedIn:
+            return .home
+        }
     }
 
     func update(state: State) {

@@ -10,8 +10,10 @@ target 'vexl' do
     if File.exist?("../CleevioFramework-ios")
         pod 'Cleevio', :path => "../CleevioFramework-ios"
     else
-        pod 'Cleevio', '~> 1.0'
+        pod 'Cleevio', :git => 'git@gitlab.cleevio.cz:cleevio-dev-ios/CleevioFramework-ios.git' 
     end
+
+    pod 'ACKLocalization'
 
     # Strong typing
     pod 'R.swift'
@@ -19,8 +21,8 @@ target 'vexl' do
     # Swift syntax control
     pod 'SwiftLint'
 
-	# Dependency Injection
-	pod 'Swinject'
+    # Dependency Injection
+    pod 'Swinject'
 
     # Keychain
     pod 'KeychainAccess'
@@ -28,7 +30,7 @@ target 'vexl' do
     # Networking
     pod 'Alamofire'
     pod 'AlamofireNetworkActivityIndicator'
-    pod 'AlamofireNetworkActivityLogger', configuration: ['Debug']
+    pod 'AlamofireNetworkActivityLogger', configuration: ['Debug', 'Devel']
     pod 'Kingfisher'
 
  
@@ -41,6 +43,14 @@ target 'vexl' do
 
     # UI
     pod 'SnapKit'
+    pod 'PhoneNumberKit', '~> 3.3'
+
+    # Facebook
+    pod 'FBSDKCoreKit', '~> 13.1'
+    pod 'FBSDKLoginKit', '~> 13.1'
+
+    # Charts
+    pod 'SwiftUICharts', :git => 'https://github.com/willdale/SwiftUICharts.git', :tag => '2.9.9'
 
     target 'vexlTests' do
     end
