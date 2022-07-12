@@ -29,7 +29,7 @@ final class OfferEditViewModel: OfferActionViewModel {
         false
     }
 
-    let offer: Offer
+    var offer: Offer
 
     init(offerType: OfferType, offer: Offer) {
         self.offer = offer
@@ -37,16 +37,27 @@ final class OfferEditViewModel: OfferActionViewModel {
     }
 
     override func setInitialValues(data: OfferInitialData) {
-        description = offer.description
-        currentAmountRange = Int(offer.minAmount)...Int(offer.maxAmount)
-        selectedFeeOption = offer.feeState
-        feeAmount = offer.feeAmount
-        selectedTradeStyleOption = offer.locationState
-        selectedPaymentMethodOptions = offer.paymentMethods
-        selectedBTCOption = offer.btcNetwork
-        selectedFriendDegreeOption = offer.friendLevel
-        selectedPriceTrigger = offer.offerPriceTrigger
-        selectedPriceTriggerAmount = "\(offer.offerPriceTriggerValue)"
+        offerService
+            .getStoredOffer(withId: offer.offerId)
+            .materialize()
+            .compactMap(\.value)
+            .withUnretained(self)
+            .sink { owner, storedOffer in
+                owner.offer = storedOffer
+                owner.offerKey = ECCKeys(pubKey: storedOffer.offerPublicKey, privKey: storedOffer.offerPrivateKey)
+
+                owner.description = storedOffer.description
+                owner.currentAmountRange = Int(storedOffer.minAmount)...Int(storedOffer.maxAmount)
+                owner.selectedFeeOption = storedOffer.feeState
+                owner.feeAmount = storedOffer.feeAmount
+                owner.selectedTradeStyleOption = storedOffer.locationState
+                owner.selectedPaymentMethodOptions = storedOffer.paymentMethods
+                owner.selectedBTCOption = storedOffer.btcNetwork
+                owner.selectedFriendDegreeOption = storedOffer.friendLevel
+                owner.selectedPriceTrigger = storedOffer.offerPriceTrigger
+                owner.selectedPriceTriggerAmount = "\(storedOffer.offerPriceTriggerValue)"
+            }
+            .store(in: cancelBag)
     }
 
     override func prepareOffer(encryptedOffers: [EncryptedOffer], expiration: TimeInterval) -> AnyPublisher<EncryptedOffer, Error> {
@@ -54,8 +65,7 @@ final class OfferEditViewModel: OfferActionViewModel {
     }
 
     override func storeOffers(offers: [Offer], areCreated: Bool) -> AnyPublisher<Void, Error> {
-        Just(()).setFailureType(to: Error.self)
-            .eraseToAnyPublisher()
+        offerService.updateStoredOffers(offers: offers)
     }
 
     override func createInbox(offerKey: ECCKeys, pushToken: String) -> AnyPublisher<Void, Error> {

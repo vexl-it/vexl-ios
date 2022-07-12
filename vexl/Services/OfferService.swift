@@ -25,8 +25,10 @@ protocol OfferServiceType {
 
     // MARK: - Storage
 
+    func getStoredOffer(withId id: String) -> AnyPublisher<Offer, Error>
     func getStoredOffers(fromType type: OfferTypeOption, fromSource source: OfferSourceOption) -> AnyPublisher<[Offer], Error>
     func storeOffers(offers: [Offer], areCreated: Bool) -> AnyPublisher<Void, Error>
+    func updateStoredOffers(offers: [Offer]) -> AnyPublisher<Void, Error>
 }
 
 final class OfferService: BaseService, OfferServiceType {
@@ -87,6 +89,10 @@ final class OfferService: BaseService, OfferServiceType {
 
     // MARK: - Storage
 
+    func getStoredOffer(withId id: String) -> AnyPublisher<Offer, Error> {
+        localStorageService.getOffer(withId: id)
+    }
+
     func getStoredOffers(fromType type: OfferTypeOption, fromSource source: OfferSourceOption) -> AnyPublisher<[Offer], Error> {
         localStorageService.getOffers()
             .map { offers -> [Offer] in
@@ -120,6 +126,10 @@ final class OfferService: BaseService, OfferServiceType {
 
     func storeOffers(offers: [Offer], areCreated: Bool) -> AnyPublisher<Void, Error> {
         localStorageService.saveOffers(offers, areCreated: areCreated)
+    }
+
+    func updateStoredOffers(offers: [Offer]) -> AnyPublisher<Void, Error> {
+        localStorageService.updateOffers(offers)
     }
 
     func deleteOffers() -> AnyPublisher<Void, Error> {

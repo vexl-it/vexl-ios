@@ -166,7 +166,7 @@ class OfferActionViewModel: ViewModelType, ObservableObject {
     var minFee: Double = 0
     var maxFee: Double = 0
     var currencySymbol = ""
-    let offerKey: ECCKeys
+    var offerKey: ECCKeys
     let offerType: OfferType
 
     let cancelBag: CancelBag = .init()
