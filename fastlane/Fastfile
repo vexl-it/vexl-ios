@@ -257,6 +257,85 @@ platform :ios do
 	end
 
 	# ***************************************************** #
+	# *************** LANE: Deploy Appstore *************** #
+	# ***************************************************** #
+
+	desc "Submit a new build to Firebase"
+	lane :deploy_appstore do
+		install_pods()
+
+		clean_build_artifacts
+
+
+		unless git_tag_exists(tag: "#{version}(#{build})")
+			add_git_tag(tag: "#{version}(#{build})")
+	
+			branch = git_branch
+
+			push_to_git_remote(
+			  remote: "origin",
+			  local_branch: "HEAD",
+			  remote_branch: branch,
+			  force: false,
+			  tags: true
+			)
+		end
+
+
+		match(
+			type: "appstore",
+			git_branch: match_repository,
+			app_identifier: appstore_identifier,
+			readonly: is_ci
+		)
+
+		clear_derived_data
+
+		ipa_path = gym(
+			scheme: "#{main_scheme} AppStore",
+			silent: true,
+			clean: true,
+			export_method: "app-store",
+			export_options: {
+				manageAppVersionAndBuildNumber: false,
+				compileBitcode: false
+			}
+		)
+
+		changelog = "\#\##{version}(#{build})"
+		changelog += "\n"
+		changelog += File.read("../Changelog.txt")
+
+		deliver(
+			username: CredentialsManager::AppfileConfig.try_fetch_value(:apple_id),
+			skip_metadata: true,
+			skip_screenshots: true,
+			force: true
+		)
+
+		upload_symbols_to_crashlytics(
+			gsp_path: gsp_path_appstore
+		)
+
+		slack(
+			username: "Siri",
+			payload: {
+			   "Build Date" => Time.new.to_s,
+			},
+			message: "New iOS Testflight version released! :tada:",
+			slack_url: slackUrl,
+			default_payloads: [:test_result],
+			attachment_properties: {
+				  fields: [{
+						title: "Changelog",
+						value: changelog,
+						short: true	
+			   }]
+			}
+		  )
+	end
+
+	# ***************************************************** #
 	# ************ LANE: Increment Version **************** #
 	# In order to use this you need to send one of these variables:
 	# VERSION: Please use semantic versioning (e.g 2.0.1)
