@@ -8,13 +8,34 @@
 
 import UIKit
 import SwiftyBeaver
+import FBSDKCoreKit
+#if DEBUG || DEVEL
+import AlamofireNetworkActivityLogger
+#endif
 
 let log = SwiftyBeaver.self
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        true
+
+        ApplicationDelegate.shared.application(
+            application,
+            didFinishLaunchingWithOptions: launchOptions
+        )
+
+        #if DEBUG || DEVEL
+        NetworkActivityLogger.shared.startLogging()
+        NetworkActivityLogger.shared.level = .debug
+        #endif
+
+        // Global appearance
+        Appearance.setGlobalAppearance()
+
+        // Setup database
+        DictionaryDB.setupDatabase()
+
+        return true
     }
 
     // MARK: UISceneSession Lifecycle

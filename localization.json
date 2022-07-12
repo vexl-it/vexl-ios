@@ -1,0 +1,11 @@
+{
+    "destinationDir": "vexl/Resources",
+    "keyColumnName": "key_ios",
+    "languageMapping": {
+        "en": "en"
+    },
+    "serviceAccount": "ServiceAccount.json",
+    "spreadsheetID": "1xFeCPwewGahK3ESqdOK0SWcarAabhLExURCiS1jn0GI",
+    "stringsFileName": "Localizable.strings",
+    "spreadsheetTabName": "vexl"
+}

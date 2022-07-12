@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftUI
 import Combine
 import Cleevio
 
@@ -14,22 +15,21 @@ final class OnboardingViewModel: ViewModelType {
     // MARK: - Actions Bindings
 
     enum UserAction: Equatable {
-        case tap
+        case showLogin
+        case next
     }
 
     let action: ActionSubject<UserAction> = .init()
 
     // MARK: - View Bindings
 
-    @Published var isLoadingCountries: Bool = false
     @Published var primaryActivity: Activity = .init()
-
-    var userFinished = false
+    @Published var selectedIndex = OnboardingView.PresentationState.friends.rawValue
 
     // MARK: - Coordinator Bindings
 
     enum Route: Equatable {
-        case tapped
+        case skipTapped
     }
 
     var route: CoordinatingSubject<Route> = .init()
@@ -37,6 +37,38 @@ final class OnboardingViewModel: ViewModelType {
     // MARK: - Variables
 
     private let cancelBag: CancelBag = .init()
+
+    var numberOfPages: Int {
+        OnboardingView.PresentationState.allCases.count
+    }
+
+    var presentationState: OnboardingView.PresentationState {
+        OnboardingView.PresentationState(rawValue: selectedIndex) ?? .friends
+    }
+
+    var isLastOnboardingPage: Bool {
+        selectedIndex < numberOfPages - 1
+    }
+
+    var title: String {
+        switch presentationState {
+        case .friends:
+            return L.onboardingIntroMessageFriend()
+        case .buyAndSell:
+            return L.onboardingIntroMessageBuySell()
+        case .requestIdentity:
+            return L.onboardingIntroMessageRequest()
+        }
+    }
+
+    var buttonTitle: String {
+        switch presentationState {
+        case .friends, .buyAndSell:
+            return L.next()
+        case .requestIdentity:
+            return L.gotIt()
+        }
+    }
 
     // MARK: - Initialization
 
@@ -46,9 +78,19 @@ final class OnboardingViewModel: ViewModelType {
 
     private func setupActions() {
         action
-            .sink(receiveValue: { [weak self] _ in
-                self?.route.send(.tapped)
-            })
+            .filter { $0 == .showLogin }
+            .withUnretained(self)
+            .sink { owner, _ in
+                owner.route.send(.skipTapped)
+            }
+            .store(in: cancelBag)
+
+        action
+            .filter { $0 == .next }
+            .withUnretained(self)
+            .sink { owner, _ in
+                owner.selectedIndex += 1
+            }
             .store(in: cancelBag)
     }
 }

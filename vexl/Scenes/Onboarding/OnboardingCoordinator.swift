@@ -23,48 +23,34 @@ final class OnboardingCoordinator: BaseCoordinator<RouterResult<Void>> {
         let viewModel = OnboardingViewModel()
         let viewController = BaseViewController(rootView: OnboardingView(viewModel: viewModel))
 
-        router.present(viewController, animated: animated)
-
         // MARK: Routers
+
+        router.present(viewController, animated: animated)
 
         // MARK: Routing actions
 
-        viewModel
+        let finished = viewModel
             .route
+            .filter { $0 == .skipTapped }
             .receive(on: RunLoop.main)
-            .flatMap { [weak self] route -> CoordinatingResult<RouterResult<Void>> in
-                guard let owner = self else {
-                    return Just(.dismiss).eraseToAnyPublisher()
-                }
-                switch route {
-                case .tapped:
-                    return owner.showLoginFlow(router: owner.router)
-                }
+            .withUnretained(self)
+            .flatMap { owner, _ -> CoordinatingResult<RouterResult<Void>> in
+                owner.showWelcome(router: owner.router)
             }
-            .sink(receiveValue: { _ in })
-            .store(in: cancelBag)
+            .filter { if case .finished = $0 { return true } else { return false } }
 
         // MARK: Dismiss
 
-        let dismiss = viewController.dismissPublisher
-            .map { _ in RouterResult<Void>.dismissedByRouter }
-
-        return dismiss
+        return finished
             .receive(on: RunLoop.main)
-            .prefix(1)
             .eraseToAnyPublisher()
     }
 }
 
 private extension OnboardingCoordinator {
-    func showLoginFlow(router: Router) -> CoordinatingResult<RouterResult<Void>> {
-        coordinate(to: LoginCoordinator(router: router, animated: true))
-            .flatMap { result -> CoordinatingResult<RouterResult<Void>> in
-                guard result != .dismissedByRouter else {
-                    return Just(result).eraseToAnyPublisher()
-                }
-                return router.dismiss(animated: true, returning: result)
-            }
+    func showWelcome(router: Router) -> CoordinatingResult<RouterResult<Void>> {
+        coordinate(to: WelcomeCoordinator(router: router, animated: true))
+            .prefix(1)
             .eraseToAnyPublisher()
     }
 }

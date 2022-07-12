@@ -15,7 +15,7 @@ import Cleevio
 
 struct ErrorPayload: Decodable {
     var message: [String]?
-    var code: Int?
+    var code: String?
 }
 
 // MARK: - ApiServiceType
@@ -28,6 +28,9 @@ protocol ApiServiceType: AnyObject {
 // MARK: - ApiService
 
 final class ApiService: ApiServiceType {
+
+    @Inject var authenticationManager: TokenHandlerType
+
     struct StatusCode {
         static let ok = 200
         static let created = 201
@@ -45,12 +48,10 @@ final class ApiService: ApiServiceType {
     static let jsonContentType = "application/json"
 
     let sessionManager: Session
-    let authenticationManager: TokenHandlerType
 
     private var cancellables: Cancellables = .init()
 
-    init(authenticationManager: TokenHandlerType) {
-        self.authenticationManager = authenticationManager
+    init() {
 
         let configuration = URLSessionConfiguration.default
         configuration.timeoutIntervalForRequest = 10
@@ -90,17 +91,6 @@ final class ApiService: ApiServiceType {
             .asVoid()
             .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()
-            .sink(receiveCompletion: { _ in }, receiveValue: { })
-            .store(in: &cancellables)
-
-        return sessionManager.request(endpoint)
-            .validate()
-            .validate(contentType: [ApiService.jsonContentType])
-            .publishData()
-            .tryMap(handleResponse)
-            .asVoid()
-            .receive(on: DispatchQueue.main)
-            .eraseToAnyPublisher()
     }
 
     private func handleResponse(_ response: DataResponse<Data, AFError>) throws -> Data? {
@@ -114,10 +104,10 @@ final class ApiService: ApiServiceType {
 
         if !(ApiService.StatusCode.success ~= httpResponse.statusCode),
             let data = response.data,
-            let errorPayload = try? JSONDecoder().decode(ErrorPayload.self, from: data),
+            let errorPayload = try? Constants.jsonDecoder.decode(ErrorPayload.self, from: data),
             let code = errorPayload.code,
-            code != 0 {
-            throw APIError.clientError(.parse(code: code), message: errorPayload.message?.first)
+            let codeNumber = Int(code), codeNumber != 0 {
+            throw APIError.clientError(.parse(code: codeNumber), message: errorPayload.message?.first)
         }
 
         if (ApiService.StatusCode.clientError ~= httpResponse.statusCode) ||

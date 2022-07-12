@@ -22,14 +22,13 @@ enum ServerError: Error {
 
 extension ServerError: LocalizedError {
     var errorDescription: String? {
-        #warning("Careful with non-localize strings")
         switch self {
         case .invalidResponse(let message):
             return message
         case .timeout:
-            fatalError("This should have been localized")
+            return L.generalTimeout()
         case .internalError:
-            fatalError("This should have been localized")
+            return L.generalInternalServerError()
         default:
             return nil
         }

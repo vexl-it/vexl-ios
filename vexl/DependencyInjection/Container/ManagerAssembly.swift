@@ -15,12 +15,40 @@ class ManagerAssembly: Assembly {
         }
         .inObjectScope(.container)
 
+        container.register(AuthenticationManagerType.self) { resolver in
+            resolver.resolve(AuthenticationManager.self)!
+        }
+
+        container.register(UserSecurityType.self) { resolver in
+            resolver.resolve(AuthenticationManager.self)!
+        }
+
         container.register(TokenHandlerType.self) { resolver in
             resolver.resolve(AuthenticationManager.self)!
         }
 
         container.register(InitialScreenManager.self) { _ in
             InitialScreenManager()
+        }
+        .inObjectScope(.container)
+
+        container.register(ContactsManagerType.self) { _ in
+            ContactsManager()
+        }
+        .inObjectScope(.container)
+
+        container.register(CryptocurrencyValueManagerType.self) { _ in
+            CryptocurrencyValueManager(option: .oneDayAgo)
+        }
+        .inObjectScope(.container)
+
+        container.register(SyncInboxManagerType.self) { _ in
+            SyncInboxManager()
+        }
+        .inObjectScope(.container)
+
+        container.register(InboxManagerType.self) { _ in
+            InboxManager()
         }
         .inObjectScope(.container)
     }

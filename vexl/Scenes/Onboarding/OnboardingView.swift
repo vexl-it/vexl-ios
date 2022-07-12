@@ -7,19 +7,45 @@
 
 import SwiftUI
 import Combine
+import Cleevio
 
 struct OnboardingView: View {
-    @StateObject var viewModel: OnboardingViewModel
+    @ObservedObject var viewModel: OnboardingViewModel
 
     var body: some View {
         VStack {
-            Text("Onboarding")
-            Button("Push") { viewModel.send(action: .tap) }
+            PageControl(numberOfPages: viewModel.numberOfPages, currentIndex: $viewModel.selectedIndex)
+
+            Spacer()
+
+            OnboardingPresentation(selectedIndex: $viewModel.selectedIndex,
+                                   title: viewModel.title)
+                .padding(.vertical, Appearance.GridGuide.mediumPadding2)
+
+            Spacer()
+
+            ButtonBarView(nextTitle: viewModel.buttonTitle,
+                          skipAction: {
+                viewModel.send(action: .showLogin)
+            },
+                          nextAction: {
+                guard viewModel.isLastOnboardingPage else {
+                    viewModel.send(action: .showLogin)
+                    return
+                }
+
+                withAnimation {
+                    viewModel.send(action: .next)
+                }
+            })
         }
+        .padding(.horizontal, Appearance.GridGuide.padding)
+        .background(Color.black.edgesIgnoringSafeArea(.all))
     }
 }
 
 struct OnboardingViewPreview: PreviewProvider {
+
     static var previews: some View {
         OnboardingView(viewModel: .init())
             .previewDevice("iPhone 13 Pro")
