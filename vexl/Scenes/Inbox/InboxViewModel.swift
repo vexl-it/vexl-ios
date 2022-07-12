@@ -11,11 +11,13 @@ import Combine
 
 private typealias OfferKeyAndType = (offerKey: String, offerType: OfferType)
 private typealias OfferAndMessage = (offers: [OfferKeyAndType], messages: [ChatInboxMessage])
+private typealias OfferMessagesAndUsers = (offers: [OfferKeyAndType], messages: [ChatInboxMessage], users: [StoredChatUser])
 
 final class InboxViewModel: ViewModelType, ObservableObject {
 
     @Inject var inboxManager: InboxManagerType
     @Inject var offerService: OfferServiceType
+    @Inject var chatService: ChatServiceType
 
     // MARK: - Action Binding
 
@@ -73,19 +75,32 @@ final class InboxViewModel: ViewModelType, ObservableObject {
                     .eraseToAnyPublisher()
             }
             .withUnretained(self)
+            .flatMap { owner, offerAndMessages in
+                owner.chatService
+                    .getStoredContactIdentities()
+                    .materialize()
+                    .compactMap(\.value)
+                    .map { OfferMessagesAndUsers(offers: offerAndMessages.offers, messages: offerAndMessages.messages, users: $0) }
+                    .eraseToAnyPublisher()
+            }
+            .withUnretained(self)
             .sink(receiveCompletion: { _ in },
-                  receiveValue: { owner, offerAndMessages in
-                let chatInboxMessages = offerAndMessages.messages
-                let offerKeyAndTypes = offerAndMessages.offers
+                  receiveValue: { owner, offerMessagesAndUsers in
+                let chatInboxMessages = offerMessagesAndUsers.messages
+                let offerKeyAndTypes = offerMessagesAndUsers.offers
+                let users = offerMessagesAndUsers.users
 
                 owner.inboxItems = chatInboxMessages.map { chatInbox -> InboxItem in
                     let offerType = offerKeyAndTypes.first(where: {
                         $0.offerKey == chatInbox.message.inboxKey || $0.offerKey == chatInbox.message.contactInboxKey
                     })?.offerType
 
-                    // TODO: - Set real values when available
-                    return InboxItem(avatar: nil,
-                                     username: Constants.randomName,
+                    let user = users.first(where: {
+                        $0.inboxPublicKey == chatInbox.message.inboxKey && $0.contactPublicKey == chatInbox.message.contactInboxKey
+                    })
+
+                    return InboxItem(avatar: user?.avatar?.dataFromBase64,
+                                     username: user?.username ?? Constants.randomName,
                                      detail: chatInbox.message.previewText,
                                      time: Formatters.chatDateFormatter.string(from: Date(timeIntervalSince1970: chatInbox.message.time)),
                                      offerType: offerType)

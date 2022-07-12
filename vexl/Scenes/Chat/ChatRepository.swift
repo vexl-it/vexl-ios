@@ -12,7 +12,7 @@ import Cleevio
 protocol ChatRepositoryType {
     var dismissAction: ActionSubject<Void> { get set }
 
-    func getContactIdentity(inboxKeys: ECCKeys, contactPublicKey: String) -> AnyPublisher<(username: String, avatar: String?), Error>
+    func getContactIdentity(inboxKeys: ECCKeys, contactPublicKey: String) -> AnyPublisher<ParsedChatMessage.ChatUser, Error>
     func deleteChat(inboxKeys: ECCKeys, contactPublicKey: String) -> AnyPublisher<Void, Error>
 
     func requestIdentityReveal(inboxKeys: ECCKeys, contactPublicKey: String) -> AnyPublisher<Void, Error>
@@ -35,7 +35,7 @@ final class ChatRepository: ChatRepositoryType {
 
     var dismissAction: ActionSubject<Void> = .init()
 
-    func getContactIdentity(inboxKeys: ECCKeys, contactPublicKey: String) -> AnyPublisher<(username: String, avatar: String?), Error> {
+    func getContactIdentity(inboxKeys: ECCKeys, contactPublicKey: String) -> AnyPublisher<ParsedChatMessage.ChatUser, Error> {
         chatService.getContactIdentity(inboxKeys: inboxKeys, contactPublicKey: contactPublicKey)
     }
 

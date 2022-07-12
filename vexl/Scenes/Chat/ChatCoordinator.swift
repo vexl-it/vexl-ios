@@ -100,19 +100,23 @@ final class ChatCoordinator: BaseCoordinator<RouterResult<Void>> {
             }
             .store(in: cancelBag)
 
-        // swiftlint: disable discouraged_optional_boolean
         viewModel
             .route
-            .compactMap { action -> Bool? in
-                if case let .showRevealIdentityModal(isUserResponse) = action { return isUserResponse }
+            .compactMap { action -> (isResponse: Bool, username: String, avatar: String?)? in
+                if case let .showRevealIdentityModal(isUserResponse, username, avatar) = action {
+                    return (isResponse: isUserResponse, username: username, avatar: avatar)
+                }
                 return nil
             }
             .withUnretained(self)
-            .flatMap { owner, isUserResponse -> CoordinatingResult<RouterResult<Void>> in
+            .flatMap { owner, response -> CoordinatingResult<RouterResult<Void>> in
                 let router = ModalRouter(parentViewController: viewController,
                                          presentationStyle: .overFullScreen,
                                          transitionStyle: .coverVertical)
-                return owner.showRevealIdentity(router: router, isUserResponse: isUserResponse)
+                return owner.showRevealIdentity(router: router,
+                                                isUserResponse: response.isResponse,
+                                                username: response.username,
+                                                avatar: response.avatar)
             }
             .sink()
             .store(in: cancelBag)
@@ -160,8 +164,15 @@ final class ChatCoordinator: BaseCoordinator<RouterResult<Void>> {
 
 extension ChatCoordinator {
 
-    private func showRevealIdentity(router: Router, isUserResponse: Bool) -> CoordinatingResult<RouterResult<Void>> {
-        coordinate(to: ChatIdentityRevealCoordinator(isUserResponse: isUserResponse, router: router, animated: true))
+    private func showRevealIdentity(router: Router,
+                                    isUserResponse: Bool,
+                                    username: String,
+                                    avatar: String?) -> CoordinatingResult<RouterResult<Void>> {
+        coordinate(to: ChatIdentityRevealCoordinator(isUserResponse: isUserResponse,
+                                                     username: username,
+                                                     avatar: avatar,
+                                                     router: router,
+                                                     animated: true))
         .flatMap { result -> CoordinatingResult<RouterResult<Void>> in
             guard result != .dismissedByRouter else {
                 return Just(result).eraseToAnyPublisher()
