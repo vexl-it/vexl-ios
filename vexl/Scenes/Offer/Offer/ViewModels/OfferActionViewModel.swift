@@ -17,7 +17,7 @@ typealias OfferAndEncryptedOffer = (offer: Offer, encryptedOffer: EncryptedOffer
 class OfferActionViewModel: ViewModelType, ObservableObject {
 
     enum UserAction: Equatable {
-        case pause
+        case activate
         case delete
         case addLocation
         case deleteLocation(id: Int)
@@ -68,11 +68,13 @@ class OfferActionViewModel: ViewModelType, ObservableObject {
     @Published var selectedBTCOption: [OfferAdvancedBTCOption] = []
     @Published var selectedFriendDegreeOption: OfferAdvancedFriendDegreeOption = .firstDegree
 
-    @Published var selectedActivate: OfferTrigger = .none
-    @Published var selectedActivateAmount: String = "0"
+    @Published var selectedPriceTrigger: OfferTrigger = .none
+    @Published var selectedPriceTriggerAmount: String = "0"
 
     @Published var deleteTimeUnit: OfferTriggerDeleteTimeUnit = .days
     @Published var deleteTime: String = Constants.defaultDeleteTime
+
+    @Published var isActive = true
 
     @Published var state: State = .initial
     @Published var error: Error?
@@ -112,6 +114,13 @@ class OfferActionViewModel: ViewModelType, ObservableObject {
         return Int(((maxFee - minFee) * feeAmount) + minFee)
     }
 
+    var priceTriggerAmount: Int {
+        guard let amount = Int(selectedPriceTriggerAmount) else {
+            return 0
+        }
+        return amount
+    }
+
     private var friendLevel: ContactFriendLevel {
         switch selectedFriendDegreeOption {
         case .firstDegree:
@@ -143,12 +152,15 @@ class OfferActionViewModel: ViewModelType, ObservableObject {
     }
 
     var actionTitle: String {
-        switch offerType {
-        case .sell:
-            return L.offerCreateActionTitle()
-        case .buy:
-            return L.offerCreateBuyActionTitle()
-        }
+        ""
+    }
+
+    var showDeleteButton: Bool {
+        false
+    }
+
+    var showDeleteTrigger: Bool {
+        true
     }
 
     var minFee: Double = 0
@@ -181,6 +193,7 @@ class OfferActionViewModel: ViewModelType, ObservableObject {
     }
 
     func setInitialValues(data: OfferInitialData) {
+        fatalError("Need to implement the setInitialValues method")
     }
 
     // MARK: - Bindings
@@ -224,8 +237,9 @@ class OfferActionViewModel: ViewModelType, ObservableObject {
     }
 
     private func setupBindings() {
-        action
-            .share()
+        let sharedAction = action.share()
+
+        sharedAction
             .filter { $0 == .dismissTap }
             .withUnretained(self)
             .sink { owner, _ in
@@ -233,8 +247,15 @@ class OfferActionViewModel: ViewModelType, ObservableObject {
             }
             .store(in: cancelBag)
 
-        action
-            .share()
+        sharedAction
+            .filter { $0 == .activate }
+            .withUnretained(self)
+            .sink { owner, _ in
+                owner.isActive.toggle()
+            }
+            .store(in: cancelBag)
+
+        sharedAction
             .filter { $0 == .addLocation }
             .withUnretained(self)
             .sink { owner, _ in
@@ -251,8 +272,7 @@ class OfferActionViewModel: ViewModelType, ObservableObject {
             }
             .store(in: cancelBag)
 
-        action
-            .share()
+        sharedAction
             .compactMap { action -> Int? in
                 if case let .deleteLocation(id) = action { return id }
                 return nil
@@ -299,6 +319,9 @@ class OfferActionViewModel: ViewModelType, ObservableObject {
                                   btcNetwork: owner.selectedBTCOption,
                                   friendLevel: owner.selectedFriendDegreeOption,
                                   type: owner.offerType,
+                                  priceTriggerState: owner.selectedPriceTrigger,
+                                  priceTriggerValue: Double(owner.priceTriggerAmount),
+                                  isActive: owner.isActive,
                                   source: .created)
 
                 // Adding owner publicKey to the list so that it can be decrypted, displayed and modified

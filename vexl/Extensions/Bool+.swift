@@ -9,4 +9,14 @@ import Foundation
 
 extension Bool {
     var string: String { self ? "true" : "false" }
+
+    init?(_ value: String) {
+        if value == "true" {
+            self = true
+        } else if value == "false" {
+            self = false
+        } else {
+            return nil
+        }
+    }
 }

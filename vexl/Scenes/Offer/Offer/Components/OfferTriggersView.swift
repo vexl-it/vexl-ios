@@ -14,6 +14,7 @@ struct OfferTriggersView: View {
     private let options: [Option] = [.below, .above]
     private let currency: String = Constants.currencySymbol
 
+    let showDeleteTrigger: Bool
     @Binding var selectedActivateOption: OfferTrigger
     @Binding var selectedActivateAmount: String
     @Binding var deleteTime: String
@@ -37,8 +38,10 @@ struct OfferTriggersView: View {
                 OfferTriggerActiveView(selectedOption: $selectedActivateOption,
                                        activeAmount: $selectedActivateAmount)
 
-                OfferTriggerDeleteView(time: $deleteTime,
-                                       timeUnit: $deleteTimeUnit)
+                if showDeleteTrigger {
+                    OfferTriggerDeleteView(time: $deleteTime,
+                                           timeUnit: $deleteTimeUnit)
+                }
             }
         }
     }
@@ -62,7 +65,8 @@ extension OfferTriggersView {
 #if DEBUG || DEVEL
 struct OfferTriggersViewPreview: PreviewProvider {
     static var previews: some View {
-        OfferTriggersView(selectedActivateOption: .constant(.above),
+        OfferTriggersView(showDeleteTrigger: true,
+                          selectedActivateOption: .constant(.above),
                           selectedActivateAmount: .constant("12345"),
                           deleteTime: .constant("30"),
                           deleteTimeUnit: .constant(.days))

@@ -21,8 +21,10 @@ struct OfferView: View {
             ScrollView(showsIndicators: false) {
                 if viewModel.state != .initial {
 
-                    OfferStatusView(pauseAction: {
-                        viewModel.action.send(.pause)
+                    OfferStatusView(isActive: viewModel.isActive,
+                                    showDeleteButton: viewModel.showDeleteButton,
+                                    pauseAction: {
+                        viewModel.action.send(.activate)
                     },
                                     deleteAction: {
                         viewModel.action.send(.delete)
@@ -53,8 +55,9 @@ struct OfferView: View {
                     OfferPaymentMethodView(selectedOptions: $viewModel.selectedPaymentMethodOptions)
                         .padding(.top, Appearance.GridGuide.largePadding1)
 
-                    OfferTriggersView(selectedActivateOption: $viewModel.selectedActivate,
-                                      selectedActivateAmount: $viewModel.selectedActivateAmount,
+                    OfferTriggersView(showDeleteTrigger: viewModel.showDeleteTrigger,
+                                      selectedActivateOption: $viewModel.selectedPriceTrigger,
+                                      selectedActivateAmount: $viewModel.selectedPriceTriggerAmount,
                                       deleteTime: $viewModel.deleteTime,
                                       deleteTimeUnit: $viewModel.deleteTimeUnit)
                     .padding(.top, Appearance.GridGuide.mediumPadding2)

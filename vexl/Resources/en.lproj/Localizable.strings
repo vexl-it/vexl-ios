@@ -13,8 +13,8 @@
 "got.it" = "Got it!";
 "continue" = "Continue";
 "button.gotIt" = "Got it";
-"onboarding.intro.message.friend" = "import friends anonymously.";
-"onboarding.intro.message.buySell" = "see your connections buy & sell offers.";
+"onboarding.intro.message.friend" = "Import friends anonymously.";
+"onboarding.intro.message.buySell" = "See your connection's buy & sell offers.";
 "onboarding.intro.message.request" = "request identity for the offers you like and trade.";
 "welcome.title" = "That’s it, ready to get started?";
 "welcome.terms.agreements" = "I agree to Terms and Conditions and Privacy Policy";
@@ -135,8 +135,8 @@
 "offer.create.trade.style.personal" = "Only in person";
 "offer.create.trigger.active" = "Active when price is";
 "offer.create.trigger.title" = "Triggers";
-"offer.create.trigger.below" = "below";
-"offer.create.trigger.above" = "above";
+"offer.create.trigger.below" = "Below";
+"offer.create.trigger.above" = "Above";
 "offer.createtrigger.btc.current" = "currently 1 BTC = $%f";
 "offer.create.trigger.delete" = "Delete offer after";
 "offer.create.trigger.delete.timeframe" = "Timeframe";
@@ -144,8 +144,10 @@
 "offer.create.trigger.delete.weeks" = "Weeks";
 "offer.create.trigger.delete.months" = "Months";
 "offer.create.status.pause" = "Pause";
+"offer.create.status.activate" = "Activate";
 "offer.create.status.delete" = "Delete";
 "offer.create.status.active" = "Active";
+"offer.create.status.inactive" = "Inactive";
 "offer.create.status.amount.title" = "Amount";
 "offer.create.location.title" = "Location";
 "offer.create.location.add" = "Another Location";
@@ -169,6 +171,7 @@
 "offer.create.action.title" = "Create sell offer";
 "offer.update.action.title" = "Update sell offer";
 "offer.create.buy.action.title" = "Create buy offer";
+"offer.update.buy.action.title" = "Update buy offer";
 "request.title.normal" = "Offer";
 "request.title.requesting" = "Sending";
 "request.placeholder" = "e.g. let's trade my friend...";

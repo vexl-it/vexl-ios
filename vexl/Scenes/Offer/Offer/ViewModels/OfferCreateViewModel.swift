@@ -12,6 +12,15 @@ import Combine
 
 final class OfferCreateViewModel: OfferActionViewModel {
 
+    override var actionTitle: String {
+        switch offerType {
+        case .sell:
+            return L.offerCreateActionTitle()
+        case .buy:
+            return L.offerCreateBuyActionTitle()
+        }
+    }
+
     init(offerType: OfferType) {
         super.init(offerType: offerType, offerKey: ECCKeys())
     }

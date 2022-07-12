@@ -28,9 +28,9 @@ struct Offer {
     let type: OfferType
     let source: OfferSource
 
-    var activePriceState: OfferTrigger = .none
-    var activePriceValue: Double = 0.0
-    var active: Bool = true
+    var offerPriceTrigger: OfferTrigger = .none
+    var offerPriceTriggerValue: Double = 0.0
+    var isActive: Bool = true
     var commonFriends: [String] = []
 
     init(minAmount: Int,
@@ -43,6 +43,9 @@ struct Offer {
          btcNetwork: [OfferAdvancedBTCOption],
          friendLevel: OfferAdvancedFriendDegreeOption,
          type: OfferType,
+         priceTriggerState: OfferTrigger,
+         priceTriggerValue: Double,
+         isActive: Bool,
          source: OfferSource) {
         self.minAmount = Double(minAmount)
         self.maxAmount = Double(maxAmount)
@@ -54,6 +57,9 @@ struct Offer {
         self.btcNetwork = btcNetwork
         self.friendLevel = friendLevel
         self.type = type
+        self.offerPriceTrigger = priceTriggerState
+        self.offerPriceTriggerValue = priceTriggerValue
+        self.isActive = isActive
         self.source = source
     }
 
@@ -94,15 +100,22 @@ struct Offer {
             let offerTypeString = try encryptedOffer.offerType.ecc.decrypt(keys: keys)
             let offerPublicKey = try encryptedOffer.offerPublicKey.ecc.decrypt(keys: keys)
 
+            let isActiveString = try encryptedOffer.active.ecc.decrypt(keys: keys)
+            let activePriceStateString = try encryptedOffer.activePriceState.ecc.decrypt(keys: keys)
+            let activePriceValueString = try encryptedOffer.activePriceValue.ecc.decrypt(keys: keys)
+
             let paymentMethods = Self.getPaymentMethods(encryptedOffer.paymentMethod, withKeys: keys)
             let btcNetworks = Self.getBTCNetwork(encryptedOffer.btcNetwork, withKeys: keys)
 
             guard let minAmount = Double(minAmountString),
                   let maxAmount = Double(maxAmountString),
                   let feeAmount = Double(feeAmountString),
+                  let activePriceValue = Double(activePriceValueString),
+                  let isActive = Bool(isActiveString),
                   let feeState = OfferFeeOption(rawValue: feeStateString),
                   let locationState = OfferTradeLocationOption(rawValue: locationStateString),
                   let friendLevel = OfferAdvancedFriendDegreeOption(rawValue: friendLevelString),
+                  let activePriceState = OfferTrigger(rawValue: activePriceStateString),
                   let offerType = OfferType(rawValue: offerTypeString) else {
                       return nil
                   }
@@ -129,6 +142,10 @@ struct Offer {
             self.locationState = locationState
             self.friendLevel = friendLevel
             self.type = offerType
+
+            self.isActive = isActive
+            self.offerPriceTrigger = activePriceState
+            self.offerPriceTriggerValue = activePriceValue
 
             self.paymentMethods = paymentMethods
             self.btcNetwork = btcNetworks
@@ -278,6 +295,9 @@ extension Offer {
         btcNetwork: [.lightning],
         friendLevel: .firstDegree,
         type: .buy,
+        priceTriggerState: .above,
+        priceTriggerValue: 20_000,
+        isActive: true,
         source: .fetched
     )
 
@@ -292,6 +312,9 @@ extension Offer {
         btcNetwork: [.lightning],
         friendLevel: .firstDegree,
         type: .buy,
+        priceTriggerState: .below,
+        priceTriggerValue: 20_000,
+        isActive: false,
         source: .created
     )
 }

@@ -12,6 +12,23 @@ import Combine
 
 final class OfferEditViewModel: OfferActionViewModel {
 
+    override var actionTitle: String {
+        switch offerType {
+        case .sell:
+            return L.offerUpdateActionTitle()
+        case .buy:
+            return L.offerUpdateBuyActionTitle()
+        }
+    }
+
+    override var showDeleteButton: Bool {
+        true
+    }
+
+    override var showDeleteTrigger: Bool {
+        false
+    }
+
     let offer: Offer
 
     init(offerType: OfferType, offer: Offer) {
