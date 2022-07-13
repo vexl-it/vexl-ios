@@ -8,7 +8,7 @@
 import SwiftUI
 import Combine
 
-final class ChatIdentityViewModel: BottomActionSheetViewModelProtocol {
+final class ChatIdentitySheetViewModel: BottomActionSheetViewModelProtocol {
 
     typealias IdentityBottomActionSheet = BottomActionSheet<ChatIdentityActionSheetContent>
 

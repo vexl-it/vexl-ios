@@ -189,7 +189,6 @@
 		F1483CC2285A3E6F0054B7A2 /* ChatTextBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1483CC1285A3E6F0054B7A2 /* ChatTextBubbleView.swift */; };
 		F1483CC4285A407C0054B7A2 /* ChatImageBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1483CC3285A407C0054B7A2 /* ChatImageBubbleView.swift */; };
 		F1483CC6285A4D140054B7A2 /* ChatRevealIdentityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1483CC5285A4D140054B7A2 /* ChatRevealIdentityView.swift */; };
-		F1483CC9285A77CA0054B7A2 /* ChatRevealConfirmationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1483CC8285A77CA0054B7A2 /* ChatRevealConfirmationView.swift */; };
 		F1485624284FD0FB003213D7 /* InboxViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F148561E284FD0FB003213D7 /* InboxViewModel.swift */; };
 		F1485625284FD0FB003213D7 /* InboxFilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1485620284FD0FB003213D7 /* InboxFilterView.swift */; };
 		F1485626284FD0FB003213D7 /* InboxItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1485621284FD0FB003213D7 /* InboxItemView.swift */; };
@@ -199,7 +198,6 @@
 		F148563F284FD451003213D7 /* ChatActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F148562C284FD451003213D7 /* ChatActionView.swift */; };
 		F1485641284FD451003213D7 /* ChatConfirmationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F148562F284FD451003213D7 /* ChatConfirmationView.swift */; };
 		F1485642284FD451003213D7 /* ChatBlockConfirmationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1485630284FD451003213D7 /* ChatBlockConfirmationView.swift */; };
-		F1485643284FD451003213D7 /* ChatDeleteConfirmationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1485631284FD451003213D7 /* ChatDeleteConfirmationView.swift */; };
 		F1485644284FD451003213D7 /* ChatCommonFriendItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1485633284FD451003213D7 /* ChatCommonFriendItemView.swift */; };
 		F1485645284FD451003213D7 /* ChatCommonFriendsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1485634284FD451003213D7 /* ChatCommonFriendsView.swift */; };
 		F1485646284FD451003213D7 /* ChatConversationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1485635284FD451003213D7 /* ChatConversationView.swift */; };
@@ -266,6 +264,8 @@
 		F1A9454427F81211009B5AE3 /* ContactsAvailable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1A9454327F81211009B5AE3 /* ContactsAvailable.swift */; };
 		F1A9454627F81278009B5AE3 /* ContactInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1A9454527F81278009B5AE3 /* ContactInformation.swift */; };
 		F1B30107287A40DC00C86F83 /* ChatIdentityActionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B30106287A40DC00C86F83 /* ChatIdentityActionSheet.swift */; };
+		F1B3010A287A464600C86F83 /* ChatActionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B30109287A464600C86F83 /* ChatActionViewModel.swift */; };
+		F1B3010F287A53C900C86F83 /* ChatConversationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B3010E287A53C900C86F83 /* ChatConversationViewModel.swift */; };
 		F1B5321C28202B36009D4E0C /* OfferItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B5321B28202B36009D4E0C /* OfferItemView.swift */; };
 		F1B5FCBC27C67DB00018729B /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B5FCBB27C67DB00018729B /* WelcomeViewController.swift */; };
 		F1B5FCBE27C68EA70018729B /* OnboardingView+BottomButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B5FCBD27C68EA70018729B /* OnboardingView+BottomButtons.swift */; };
@@ -283,13 +283,12 @@
 		F1B93EDA286D6671008DAA90 /* VexlDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = F1B93ED8286D6671008DAA90 /* VexlDataModel.xcdatamodeld */; };
 		F1B93EDE286E372D008DAA90 /* ChatOfferActionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B93EDD286E372D008DAA90 /* ChatOfferActionSheet.swift */; };
 		F1B93EEC28720A41008DAA90 /* ChatDeleteActionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B93EEA28720A40008DAA90 /* ChatDeleteActionSheet.swift */; };
-		F1B93EED28720A41008DAA90 /* ChatDeleteConfirmationActionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B93EEB28720A41008DAA90 /* ChatDeleteConfirmationActionSheet.swift */; };
 		F1B93EEF28720DD5008DAA90 /* ChatRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B93EEE28720DD5008DAA90 /* ChatRepository.swift */; };
 		F1B93EF92873791E008DAA90 /* StoredChatUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B93EF82873791E008DAA90 /* StoredChatUser.swift */; };
 		F1B93F002877721C008DAA90 /* ChatIdentityRevealCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B93EFF2877721C008DAA90 /* ChatIdentityRevealCoordinator.swift */; };
-		F1B93F0228777227008DAA90 /* ChatIdentityRevealViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B93F0128777227008DAA90 /* ChatIdentityRevealViewModel.swift */; };
 		F1B93F0428777230008DAA90 /* ChatIdentityRevealView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B93F0328777230008DAA90 /* ChatIdentityRevealView.swift */; };
 		F1B93F062877AFF5008DAA90 /* ChatRevealIdentityResponseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B93F052877AFF5008DAA90 /* ChatRevealIdentityResponseView.swift */; };
+		F1B93F11287879A3008DAA90 /* ChatIdentityRevealViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B93F0128777227008DAA90 /* ChatIdentityRevealViewModel.swift */; };
 		F1BBC7052835C2960067F81B /* ContactsCount.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1BBC7042835C2960067F81B /* ContactsCount.swift */; };
 		F1BBC70E283BE5570067F81B /* TT Satoshi SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = F1BBC70A283BE5570067F81B /* TT Satoshi SemiBold.otf */; };
 		F1BBC70F283BE5570067F81B /* TT Satoshi Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = F1BBC70B283BE5570067F81B /* TT Satoshi Medium.otf */; };
@@ -318,7 +317,6 @@
 		F1D2012C282D4CD5006DF4AB /* DidSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D2012B282D4CD5006DF4AB /* DidSet.swift */; };
 		F1D2012E283401D7006DF4AB /* OfferSortView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D2012D283401D7006DF4AB /* OfferSortView.swift */; };
 		F1D204EB28613C44006A5671 /* ChatConversationItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D204EA28613C44006A5671 /* ChatConversationItem.swift */; };
-		F1D204ED2861543C006A5671 /* ChatModalContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D204EC2861543C006A5671 /* ChatModalContainerView.swift */; };
 		F1D204EF2862AECB006A5671 /* ChatStartTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D204EE2862AECB006A5671 /* ChatStartTextView.swift */; };
 		F1D204F22863A578006A5671 /* ChatInboxMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D204F12863A578006A5671 /* ChatInboxMessage.swift */; };
 		F1D204F72864FADC006A5671 /* SyncInboxManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D204F62864FADC006A5671 /* SyncInboxManager.swift */; };
@@ -406,11 +404,11 @@
 		B01C01E82860D2CD00A29F85 /* ContentState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentState.swift; sourceTree = "<group>"; };
 		B01C01EC2862F06D00A29F85 /* Currency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Currency.swift; sourceTree = "<group>"; };
 		B021E2F327FF5AA300D186EC /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		B021E2F527FF5AD100D186EC /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		B021E2F727FF5B0B00D186EC /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		B021E2F927FF5B5100D186EC /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		B05A22122812BF2700BF8D58 /* Publisher+Crypto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Publisher+Crypto.swift"; sourceTree = "<group>"; };
 		B06A3B54287D64DC00911795 /* vexl-crypto.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = "vexl-crypto.xcframework"; sourceTree = "<group>"; };
+		B06A3B56287DAE6B00911795 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		B06A3B58287DAEEA00911795 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		B08F38BD27AE7110008B344F /* vexl.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = vexl.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B08F38C027AE7110008B344F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B08F38C927AE7110008B344F /* Changelog.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = Changelog.txt; path = ../Changelog.txt; sourceTree = "<group>"; };
@@ -548,7 +546,6 @@
 		F1483CC1285A3E6F0054B7A2 /* ChatTextBubbleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatTextBubbleView.swift; sourceTree = "<group>"; };
 		F1483CC3285A407C0054B7A2 /* ChatImageBubbleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatImageBubbleView.swift; sourceTree = "<group>"; };
 		F1483CC5285A4D140054B7A2 /* ChatRevealIdentityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRevealIdentityView.swift; sourceTree = "<group>"; };
-		F1483CC8285A77CA0054B7A2 /* ChatRevealConfirmationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRevealConfirmationView.swift; sourceTree = "<group>"; };
 		F148561E284FD0FB003213D7 /* InboxViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InboxViewModel.swift; sourceTree = "<group>"; };
 		F1485620284FD0FB003213D7 /* InboxFilterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InboxFilterView.swift; sourceTree = "<group>"; };
 		F1485621284FD0FB003213D7 /* InboxItemView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InboxItemView.swift; sourceTree = "<group>"; };
@@ -558,7 +555,6 @@
 		F148562C284FD451003213D7 /* ChatActionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatActionView.swift; sourceTree = "<group>"; };
 		F148562F284FD451003213D7 /* ChatConfirmationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatConfirmationView.swift; sourceTree = "<group>"; };
 		F1485630284FD451003213D7 /* ChatBlockConfirmationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatBlockConfirmationView.swift; sourceTree = "<group>"; };
-		F1485631284FD451003213D7 /* ChatDeleteConfirmationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatDeleteConfirmationView.swift; sourceTree = "<group>"; };
 		F1485633284FD451003213D7 /* ChatCommonFriendItemView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatCommonFriendItemView.swift; sourceTree = "<group>"; };
 		F1485634284FD451003213D7 /* ChatCommonFriendsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatCommonFriendsView.swift; sourceTree = "<group>"; };
 		F1485635284FD451003213D7 /* ChatConversationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatConversationView.swift; sourceTree = "<group>"; };
@@ -625,6 +621,8 @@
 		F1A9454327F81211009B5AE3 /* ContactsAvailable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsAvailable.swift; sourceTree = "<group>"; };
 		F1A9454527F81278009B5AE3 /* ContactInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactInformation.swift; sourceTree = "<group>"; };
 		F1B30106287A40DC00C86F83 /* ChatIdentityActionSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatIdentityActionSheet.swift; sourceTree = "<group>"; };
+		F1B30109287A464600C86F83 /* ChatActionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatActionViewModel.swift; sourceTree = "<group>"; };
+		F1B3010E287A53C900C86F83 /* ChatConversationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatConversationViewModel.swift; sourceTree = "<group>"; };
 		F1B5321B28202B36009D4E0C /* OfferItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferItemView.swift; sourceTree = "<group>"; };
 		F1B5FCBB27C67DB00018729B /* WelcomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeViewController.swift; sourceTree = "<group>"; };
 		F1B5FCBD27C68EA70018729B /* OnboardingView+BottomButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OnboardingView+BottomButtons.swift"; sourceTree = "<group>"; };
@@ -642,7 +640,6 @@
 		F1B93ED9286D6671008DAA90 /* VexlDataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = VexlDataModel.xcdatamodel; sourceTree = "<group>"; };
 		F1B93EDD286E372D008DAA90 /* ChatOfferActionSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatOfferActionSheet.swift; sourceTree = "<group>"; };
 		F1B93EEA28720A40008DAA90 /* ChatDeleteActionSheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatDeleteActionSheet.swift; sourceTree = "<group>"; };
-		F1B93EEB28720A41008DAA90 /* ChatDeleteConfirmationActionSheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatDeleteConfirmationActionSheet.swift; sourceTree = "<group>"; };
 		F1B93EEE28720DD5008DAA90 /* ChatRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRepository.swift; sourceTree = "<group>"; };
 		F1B93EF82873791E008DAA90 /* StoredChatUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoredChatUser.swift; sourceTree = "<group>"; };
 		F1B93EFF2877721C008DAA90 /* ChatIdentityRevealCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatIdentityRevealCoordinator.swift; sourceTree = "<group>"; };
@@ -678,7 +675,6 @@
 		F1D2012B282D4CD5006DF4AB /* DidSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DidSet.swift; sourceTree = "<group>"; };
 		F1D2012D283401D7006DF4AB /* OfferSortView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferSortView.swift; sourceTree = "<group>"; };
 		F1D204EA28613C44006A5671 /* ChatConversationItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatConversationItem.swift; sourceTree = "<group>"; };
-		F1D204EC2861543C006A5671 /* ChatModalContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatModalContainerView.swift; sourceTree = "<group>"; };
 		F1D204EE2862AECB006A5671 /* ChatStartTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatStartTextView.swift; sourceTree = "<group>"; };
 		F1D204F12863A578006A5671 /* ChatInboxMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatInboxMessage.swift; sourceTree = "<group>"; };
 		F1D204F62864FADC006A5671 /* SyncInboxManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncInboxManager.swift; sourceTree = "<group>"; };
@@ -856,7 +852,7 @@
 		B021E2F027FF59F600D186EC /* Staging */ = {
 			isa = PBXGroup;
 			children = (
-				B021E2F727FF5B0B00D186EC /* GoogleService-Info.plist */,
+				B06A3B56287DAE6B00911795 /* GoogleService-Info.plist */,
 			);
 			path = Staging;
 			sourceTree = "<group>";
@@ -1152,7 +1148,7 @@
 		B08F396B27AE7112008B344F /* Devel */ = {
 			isa = PBXGroup;
 			children = (
-				B021E2F527FF5AD100D186EC /* GoogleService-Info.plist */,
+				B06A3B58287DAEEA00911795 /* GoogleService-Info.plist */,
 			);
 			path = Devel;
 			sourceTree = "<group>";
@@ -1507,6 +1503,8 @@
 			children = (
 				F148563C284FD451003213D7 /* Data */,
 				F148562B284FD451003213D7 /* Components */,
+				F1B3010D287A53B600C86F83 /* Conversation */,
+				F1B30108287A462F00C86F83 /* ActionBar */,
 				F148562A284FD451003213D7 /* ChatViewModel.swift */,
 				F148563A284FD451003213D7 /* ChatCoordinator.swift */,
 				F148563B284FD451003213D7 /* ChatView.swift */,
@@ -1519,15 +1517,11 @@
 			isa = PBXGroup;
 			children = (
 				F1B93EDB286E353B008DAA90 /* ActionSheets */,
-				F1483CC0285A3DDA0054B7A2 /* ConversationItem */,
 				F148562E284FD451003213D7 /* Confirmation */,
 				F1485632284FD451003213D7 /* CommonFriends */,
-				F148562C284FD451003213D7 /* ChatActionView.swift */,
-				F1485635284FD451003213D7 /* ChatConversationView.swift */,
 				F1485636284FD451003213D7 /* ChatHeaderView.swift */,
 				F1485638284FD451003213D7 /* ChatDateView.swift */,
 				F1485639284FD451003213D7 /* ChatInputView.swift */,
-				F1D204EC2861543C006A5671 /* ChatModalContainerView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -1537,8 +1531,6 @@
 			children = (
 				F148562F284FD451003213D7 /* ChatConfirmationView.swift */,
 				F1485630284FD451003213D7 /* ChatBlockConfirmationView.swift */,
-				F1485631284FD451003213D7 /* ChatDeleteConfirmationView.swift */,
-				F1483CC8285A77CA0054B7A2 /* ChatRevealConfirmationView.swift */,
 			);
 			path = Confirmation;
 			sourceTree = "<group>";
@@ -1745,6 +1737,25 @@
 			path = Contacts;
 			sourceTree = "<group>";
 		};
+		F1B30108287A462F00C86F83 /* ActionBar */ = {
+			isa = PBXGroup;
+			children = (
+				F148562C284FD451003213D7 /* ChatActionView.swift */,
+				F1B30109287A464600C86F83 /* ChatActionViewModel.swift */,
+			);
+			path = ActionBar;
+			sourceTree = "<group>";
+		};
+		F1B3010D287A53B600C86F83 /* Conversation */ = {
+			isa = PBXGroup;
+			children = (
+				F1483CC0285A3DDA0054B7A2 /* ConversationItem */,
+				F1485635284FD451003213D7 /* ChatConversationView.swift */,
+				F1B3010E287A53C900C86F83 /* ChatConversationViewModel.swift */,
+			);
+			path = Conversation;
+			sourceTree = "<group>";
+		};
 		F1B5321D2820976E009D4E0C /* UserOffers */ = {
 			isa = PBXGroup;
 			children = (
@@ -1791,7 +1802,6 @@
 			children = (
 				F1B30106287A40DC00C86F83 /* ChatIdentityActionSheet.swift */,
 				F1B93EEA28720A40008DAA90 /* ChatDeleteActionSheet.swift */,
-				F1B93EEB28720A41008DAA90 /* ChatDeleteConfirmationActionSheet.swift */,
 				F1B93EDD286E372D008DAA90 /* ChatOfferActionSheet.swift */,
 			);
 			path = ActionSheets;
@@ -2256,7 +2266,6 @@
 				B01C01E62860B2C400A29F85 /* CoinChartData.swift in Sources */,
 				F13B2675281EB23A0011F2FB /* ContactFriendLevel.swift in Sources */,
 				B0E9BB302815C7310012BF1D /* SHA.swift in Sources */,
-				F1483CC9285A77CA0054B7A2 /* ChatRevealConfirmationView.swift in Sources */,
 				B08F390727AE7110008B344F /* UserDefault.swift in Sources */,
 				F1D2012A282ABB1F006DF4AB /* TabBarViewModel.swift in Sources */,
 				F1485624284FD0FB003213D7 /* InboxViewModel.swift in Sources */,
@@ -2308,6 +2317,7 @@
 				B0F206F127AE94C400A44E72 /* InitialScreenManager.swift in Sources */,
 				F12A14E027D6774C0096543E /* RegisterContactsView.swift in Sources */,
 				4F481E76284767480051D3B9 /* ChatRouter.swift in Sources */,
+				F1B3010F287A53C900C86F83 /* ChatConversationViewModel.swift in Sources */,
 				4F700CBE2844C4C20085139F /* StickyBitcoinView.swift in Sources */,
 				F188626128129ED600659786 /* OfferTriggersView.swift in Sources */,
 				F1BFA958280223BD00F4E745 /* UserProfileViewModel+Options.swift in Sources */,
@@ -2320,8 +2330,8 @@
 				F1483CBF2856CEBE0054B7A2 /* OfferTriggerDeleteView.swift in Sources */,
 				F12A150427E1A4520096543E /* RequestAccessPhoneContactsViewModel.swift in Sources */,
 				F175AB8927E4F493000DAB15 /* Materialize.swift in Sources */,
+				F1B3010A287A464600C86F83 /* ChatActionViewModel.swift in Sources */,
 				F1485627284FD0FB003213D7 /* InboxCoordinator.swift in Sources */,
-				F1485643284FD451003213D7 /* ChatDeleteConfirmationView.swift in Sources */,
 				F11441D4284681EC00307D39 /* FetchImage.swift in Sources */,
 				B007A7922877629A00CFA5C9 /* Bool+.swift in Sources */,
 				F11441D8284681EC00307D39 /* OptionPickerItemView.swift in Sources */,
@@ -2378,7 +2388,6 @@
 				B08F397E27AE7112008B344F /* UIViewController+.swift in Sources */,
 				F1485625284FD0FB003213D7 /* InboxFilterView.swift in Sources */,
 				F1D204EF2862AECB006A5671 /* ChatStartTextView.swift in Sources */,
-				F1D204ED2861543C006A5671 /* ChatModalContainerView.swift in Sources */,
 				B08F396427AE7112008B344F /* UserError.swift in Sources */,
 				B007A7942878285800CFA5C9 /* ManagedInbox+.swift in Sources */,
 				F1A9453727F686D1009B5AE3 /* PhoneVerification.swift in Sources */,
@@ -2432,7 +2441,6 @@
 				F11441DE284681EC00307D39 /* SegmentedPickerView.swift in Sources */,
 				F1BDC978285BF9D600F86581 /* ChatExpandedImageView.swift in Sources */,
 				F11441DD284681EC00307D39 /* LoadingIndicatorView.swift in Sources */,
-				F1B93EED28720A41008DAA90 /* ChatDeleteConfirmationActionSheet.swift in Sources */,
 				F1A9454627F81278009B5AE3 /* ContactInformation.swift in Sources */,
 				B007A78C2875970D00CFA5C9 /* NSManagedObjectContext+.swift in Sources */,
 				F1D2011F282960DC006DF4AB /* TabBarView.swift in Sources */,
@@ -2452,6 +2460,7 @@
 				F1B93EF92873791E008DAA90 /* StoredChatUser.swift in Sources */,
 				B0E9BB2A2815C7190012BF1D /* AES.swift in Sources */,
 				F1F5F199283FE52D00968366 /* ChatRequestCoordinator.swift in Sources */,
+				F1B93F11287879A3008DAA90 /* ChatIdentityRevealViewModel.swift in Sources */,
 				F1D2012C282D4CD5006DF4AB /* DidSet.swift in Sources */,
 				B01C01E92860D2CD00A29F85 /* ContentState.swift in Sources */,
 				F13B2679281FC5A90011F2FB /* OfferLocation.swift in Sources */,
@@ -2501,7 +2510,6 @@
 				F11441CD284681EC00307D39 /* LargeLabelButton.swift in Sources */,
 				F175AB8727E4D5C8000DAB15 /* UIScreen+.swift in Sources */,
 				F18862472811550C00659786 /* CreateOfferCoordinator.swift in Sources */,
-				F1B93F0228777227008DAA90 /* ChatIdentityRevealViewModel.swift in Sources */,
 				B007A7542872269B00CFA5C9 /* ManagedUser+.swift in Sources */,
 				F151A2A727C962CC000D7242 /* RegisterNameAvatarView+NameInput.swift in Sources */,
 				F11441D9284681EC00307D39 /* SingleOptionPickerView.swift in Sources */,
@@ -2625,9 +2633,9 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 85;
+				CURRENT_PROJECT_VERSION = 92;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = SHD6TUKSPH;
+				DEVELOPMENT_TEAM = C6T557DX87;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = vexl/Info.plist;
@@ -2637,8 +2645,9 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.tmp.vexl.staging;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cleevio.vexl.staging;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "match AdHoc com.cleevio.vexl.staging";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = STAGING;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "vexl/Resources/vexl-Bridging-Header.h";
@@ -2656,7 +2665,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 85;
+				CURRENT_PROJECT_VERSION = 92;
 				DEVELOPMENT_TEAM = SHD6TUKSPH;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
@@ -2739,9 +2748,9 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 85;
+				CURRENT_PROJECT_VERSION = 92;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = SHD6TUKSPH;
+				DEVELOPMENT_TEAM = C6T557DX87;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = vexl/Info.plist;
@@ -2751,9 +2760,9 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.tmp.vexl;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cleevio.vexl.debug;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "Vexel development";
+				PROVISIONING_PROFILE_SPECIFIER = "match Development com.cleevio.vexl.debug";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG DEVEL";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "vexl/Resources/vexl-Bridging-Header.h";
@@ -2771,7 +2780,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 85;
+				CURRENT_PROJECT_VERSION = 92;
 				DEVELOPMENT_TEAM = SHD6TUKSPH;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
@@ -2913,9 +2922,9 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 85;
+				CURRENT_PROJECT_VERSION = 92;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = SHD6TUKSPH;
+				DEVELOPMENT_TEAM = C6T557DX87;
 				ENABLE_BITCODE = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = NO;
@@ -2926,9 +2935,9 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.tmp.vexl.devel;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cleevio.vexl.devel;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "Vexl AdHoc";
+				PROVISIONING_PROFILE_SPECIFIER = "match AdHoc com.cleevio.vexl.devel";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEVEL;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "vexl/Resources/vexl-Bridging-Header.h";
@@ -2945,10 +2954,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 85;
+				CURRENT_PROJECT_VERSION = 92;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = C6T557DX87;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = vexl/Info.plist;
@@ -2958,9 +2968,9 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.tmp.vexl.appstore;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cleevio.vexl.appstore;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE_SPECIFIER = "match AppStore com.cleevio.vexl.appstore";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = APPSTORE;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "vexl/Resources/vexl-Bridging-Header.h";
@@ -2978,7 +2988,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 85;
+				CURRENT_PROJECT_VERSION = 92;
 				DEVELOPMENT_TEAM = SHD6TUKSPH;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
@@ -2997,7 +3007,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 85;
+				CURRENT_PROJECT_VERSION = 92;
 				DEVELOPMENT_TEAM = SHD6TUKSPH;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;

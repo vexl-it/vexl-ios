@@ -22,28 +22,14 @@ final class ChatViewModel: ViewModelType, ObservableObject {
         case photoAlbum, camera
     }
 
-    enum Modal {
-        case none
-        case friends
-        case block
-        case blockConfirmation
-    }
-
     // MARK: - Action Binding
 
     enum UserAction: Equatable {
         case dismissTap
-        case chatActionTap(action: ChatAction)
         case messageSend
         case cameraTap
         case dismissModal
-        case deleteTap
-        case blockTap
-        case blockConfirmedTap
-        case revealResponseTap
-        case revealResponseConfirmationTap
         case deleteImageTap
-        case expandImageTap(groupId: String, messageId: String)
     }
 
     let action: ActionSubject<UserAction> = .init()
@@ -52,14 +38,12 @@ final class ChatViewModel: ViewModelType, ObservableObject {
 
     @Published var currentMessage: String = ""
     @Published var selectedImage: Data?
-    @Published var messages: [ChatConversationSection] = []
 
     @Published var primaryActivity: Activity = .init()
     @Published var isLoading = false
     @Published var error: Error?
     @Published var showImagePicker = false
     @Published var showImagePickerActionSheet = false
-    @Published var modal = Modal.none
     @Published var username: String = Constants.randomName
     @Published var avatar: Data?
 
@@ -79,7 +63,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
         case showDeleteTapped
         case showRevealIdentityTapped
         case showRevealIdentityResponseTapped
-        case showRevealIdentityModal(isUserResponse: Bool)
+        case showRevealIdentityModal(isUserResponse: Bool, username: String, avatar: String?)
     }
 
     var route: CoordinatingSubject<Route> = .init()
@@ -93,10 +77,6 @@ final class ChatViewModel: ViewModelType, ObservableObject {
 
     var offerLabel: String {
         offerType == .buy ? L.marketplaceDetailUserBuy("") : L.marketplaceDetailUserSell("")
-    }
-
-    var isModalPresented: Bool {
-        modal != .none
     }
 
     var offerViewData: OfferDetailViewData? {
@@ -115,20 +95,13 @@ final class ChatViewModel: ViewModelType, ObservableObject {
             .share()
             .eraseToAnyPublisher()
     }
-    private var sharedChatAction: AnyPublisher<ChatAction, Never> {
-        action
-            .compactMap { action -> ChatAction? in
-                if case let .chatActionTap(chatAction) = action { return chatAction }
-                return nil
-            }
-            .share()
-            .eraseToAnyPublisher()
-    }
 
     private var isInputValid: Bool {
         !currentMessage.isEmpty || selectedImage != nil
     }
 
+    var chatActionViewModel: ChatActionViewModel
+    var chatConversationViewModel: ChatConversationViewModel
     var userIsRevealed = false
     private let inboxKeys: ECCKeys
     private let receiverPublicKey: String
@@ -138,57 +111,51 @@ final class ChatViewModel: ViewModelType, ObservableObject {
         self.inboxKeys = inboxKeys
         self.receiverPublicKey = receiverPublicKey
         self.offerType = offerType
+        self.chatActionViewModel = ChatActionViewModel()
+        self.chatConversationViewModel = ChatConversationViewModel(inboxKeys: inboxKeys, receiverPublicKey: receiverPublicKey)
+        setupChildViewModelBindings()
         setupActionBindings()
+        setupUpdateUIBindings()
         setupChatInputBindings()
         setupChatImageInputBindings()
-        setupRevealIdentityRequestBindings()
-        setupRevealIdentityResponseBindings()
-        setupBlockChatBindings()
-        setupDeleteChatBindings()
-        setupModalPresentationBindings()
-        setupInboxManagerBinding()
         setupOfferBindings()
     }
 
-    private func setupInboxManagerBinding() {
+    private func setupChildViewModelBindings() {
+        chatActionViewModel
+            .route
+            .subscribe(route)
+            .store(in: cancelBag)
+
+        chatConversationViewModel
+            .updateContactInformation
+            .withUnretained(self)
+            .sink { owner, user in
+                owner.updateContactInformation(username: user.name, avatar: user.image)
+            }
+            .store(in: cancelBag)
+
+        chatConversationViewModel
+            .displayExpandedImage
+            .map { image -> Route in .expandImageTapped(image: image) }
+            .subscribe(route)
+            .store(in: cancelBag)
+
+        chatConversationViewModel
+            .identityRevealResponse
+            .map { _ -> Route in .showRevealIdentityResponseTapped }
+            .subscribe(route)
+            .store(in: cancelBag)
+    }
+
+    private func setupUpdateUIBindings() {
         chatRepository
             .getContactIdentity(inboxKeys: inboxKeys, contactPublicKey: receiverPublicKey)
             .withUnretained(self)
             .sink(receiveCompletion: { _ in },
                   receiveValue: { owner, user in
-                owner.username = user.username
-                owner.avatar = user.avatar?.dataFromBase64
-                owner.userIsRevealed = true
+                owner.updateContactInformation(username: user.name, avatar: user.image)
             })
-            .store(in: cancelBag)
-
-        chatService
-            .getStoredChatMessages(inboxPublicKey: inboxKeys.publicKey, contactPublicKey: receiverPublicKey)
-            .track(activity: primaryActivity)
-            .materialize()
-            .compactMap(\.value)
-            .withUnretained(self)
-            .sink { owner, messages in
-                owner.showChatMessages(messages)
-            }
-            .store(in: cancelBag)
-
-        inboxManager
-            .completedSyncing
-            .withUnretained(self)
-            .sink { owner, result in
-                switch result {
-                case let .success(messages):
-                    let messagesForInbox = messages.filter {
-                        $0.inboxKey == owner.inboxKeys.publicKey && $0.contactInboxKey == owner.receiverPublicKey
-                    }
-                    owner.showChatMessages(messagesForInbox)
-                    owner.updateRevealedUser(messages: messages)
-                case .failure:
-                    // TODO: - show some alert
-                    break
-                }
-            }
             .store(in: cancelBag)
     }
 
@@ -204,6 +171,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
             .withUnretained(self)
             .sink { owner, offer in
                 owner.offer = offer
+                owner.chatActionViewModel.offer = offer
             }
             .store(in: cancelBag)
     }
@@ -223,23 +191,6 @@ final class ChatViewModel: ViewModelType, ObservableObject {
             .sink { owner, _ in
                 owner.selectedImage = nil
             }
-            .store(in: cancelBag)
-
-        sharedAction
-            .compactMap { action -> (groupId: String, messageId: String)? in
-                if case let .expandImageTap(groupId, messageId) = action { return (groupId: groupId, messageId: messageId) }
-                return nil
-            }
-            .withUnretained(self)
-            .compactMap { owner, ids -> Data? in
-                guard let messageGroup = owner.messages.first(where: { $0.id.uuidString == ids.groupId }),
-                      let message = messageGroup.messages.first(where: { $0.id.uuidString == ids.messageId }) else {
-                          return nil
-                      }
-                return message.image
-            }
-            .map { image -> Route in .expandImageTapped(image: image) }
-            .subscribe(route)
             .store(in: cancelBag)
     }
 
@@ -273,8 +224,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
             }
             .withUnretained(self)
             .sink { owner, _ in
-                owner.messages.appendItem(.createInput(text: owner.currentMessage,
-                                                       image: owner.selectedImage?.base64EncodedString()))
+                owner.chatConversationViewModel.addMessage(owner.currentMessage, image: owner.selectedImage)
                 owner.selectedImage = nil
                 owner.currentMessage = ""
             }
@@ -295,105 +245,6 @@ final class ChatViewModel: ViewModelType, ObservableObject {
             .store(in: cancelBag)
     }
 
-    private func setupRevealIdentityRequestBindings() {
-        sharedChatAction
-            .filter { $0 == .revealIdentity }
-            .map { _ -> Route in .showRevealIdentityTapped }
-            .subscribe(route)
-            .store(in: cancelBag)
-    }
-
-    private func setupRevealIdentityResponseBindings() {
-        sharedAction
-            .filter { $0 == .revealResponseTap }
-            .map { _ -> Route in .showRevealIdentityResponseTapped }
-            .subscribe(route)
-            .store(in: cancelBag)
-    }
-
-    private func setupDeleteChatBindings() {
-        sharedChatAction
-            .filter { $0 == .deleteChat }
-            .map { _ -> Route in .showDeleteTapped }
-            .subscribe(route)
-            .store(in: cancelBag)
-    }
-
-    private func setupBlockChatBindings() {
-        sharedChatAction
-            .filter { $0 == .blockUser }
-            .map { _ -> Modal in .block }
-            .assign(to: &$modal)
-
-        sharedAction
-            .filter { $0 == .blockTap }
-            .map { _ -> Modal in .blockConfirmation }
-            .assign(to: &$modal)
-    }
-
-    private func setupModalPresentationBindings() {
-        sharedAction
-            .filter { $0 == .dismissModal }
-            .withUnretained(self)
-            .map { _ -> Modal in .none }
-            .assign(to: &$modal)
-
-        sharedChatAction
-            .withUnretained(self)
-            .filter { owner, action in
-                action == .showOffer && owner.offer != nil
-            }
-            .map { owner, _ -> Route in .showOfferTapped(offer: owner.offer) }
-            .subscribe(route)
-            .store(in: cancelBag)
-
-        sharedChatAction
-            .filter { $0 == .commonFriends }
-            .map { _ -> Modal in .friends }
-            .assign(to: &$modal)
-    }
-
-    private func updateRevealedUser(messages: [ParsedChatMessage]) {
-        guard let revealMessage = messages.first(where: { $0.messageType == .revealApproval }),
-              let user = revealMessage.user else {
-            return
-        }
-
-        username = user.name
-        avatar = user.image?.dataFromBase64
-
-        route.send(.showRevealIdentityModal(isUserResponse: false))
-    }
-
-    private func showChatMessages(_ messages: [ParsedChatMessage]) {
-        let conversationItems = messages.map { message -> ChatConversationItem in
-            var itemType: ChatConversationItem.ItemType
-
-            switch message.contentType {
-            case .text:
-                itemType = .text
-            case .image:
-                itemType = .image
-            case .communicationRequestResponse:
-                itemType = .start
-            case .anonymousRequest:
-                itemType = message.isFromContact ? .receiveIdentityReveal : .requestIdentityReveal
-            case .anonymousRequestResponse:
-                itemType = message.messageType == .revealApproval ? .approveIdentityReveal : .rejectIdentityReveal
-            case .deleteChat, .communicationRequest, .none:
-                itemType = .noContent
-            }
-
-            return ChatConversationItem(type: itemType,
-                                        isContact: message.isFromContact,
-                                        text: message.text,
-                                        image: message.image)
-        }
-        let conversationSection = ChatConversationSection(date: Date(),
-                                                          messages: conversationItems)
-        self.messages.append(conversationSection)
-    }
-
     func deleteMessages() {
         chatRepository
             .deleteChat(inboxKeys: inboxKeys, contactPublicKey: receiverPublicKey)
@@ -406,7 +257,10 @@ final class ChatViewModel: ViewModelType, ObservableObject {
         chatRepository
             .requestIdentityReveal(inboxKeys: inboxKeys, contactPublicKey: receiverPublicKey)
             .track(activity: primaryActivity)
-            .sink()
+            .withUnretained(self)
+            .sink { owner, _ in
+                owner.chatConversationViewModel.addIdentityRequest()
+            }
             .store(in: cancelBag)
     }
 
@@ -415,8 +269,36 @@ final class ChatViewModel: ViewModelType, ObservableObject {
             .identityRevealResponse(inboxKeys: inboxKeys, contactPublicKey: receiverPublicKey, isAccepted: isAccepted)
             .materialize()
             .compactMap(\.value)
-            .map { _ -> Route in .showRevealIdentityModal(isUserResponse: true) }
-            .subscribe(route)
+            .withUnretained(self)
+            .flatMap { owner, _ -> AnyPublisher<ParsedChatMessage.ChatUser?, Never> in
+                if isAccepted {
+                    return owner.chatRepository
+                        .getContactIdentity(inboxKeys: owner.inboxKeys, contactPublicKey: owner.receiverPublicKey)
+                        .materialize()
+                        .compactMap { $0.value }
+                        .eraseToAnyPublisher()
+                } else {
+                    return Just(nil)
+                        .eraseToAnyPublisher()
+                }
+            }
+            .withUnretained(self)
+            .sink(receiveValue: { owner, user in
+                if let user = user, isAccepted {
+                    owner.updateContactInformation(username: user.name, avatar: user.image)
+                    owner.route.send(.showRevealIdentityModal(isUserResponse: true, username: user.name, avatar: user.image))
+                }
+
+                owner.chatConversationViewModel.updateDisplayedRevealMessages(isAccepted: isAccepted, user: user)
+            })
             .store(in: cancelBag)
+    }
+
+    private func updateContactInformation(username: String, avatar: String?) {
+        self.username = username
+        self.avatar = avatar?.dataFromBase64
+        self.userIsRevealed = true
+        self.chatActionViewModel.userIsRevealed = true
+        self.chatConversationViewModel.updateContact(name: username, avatar: avatar)
     }
 }

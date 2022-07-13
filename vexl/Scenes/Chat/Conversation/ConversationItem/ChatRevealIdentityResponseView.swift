@@ -9,26 +9,25 @@ import SwiftUI
 
 struct ChatRevealIdentityResponseView: View {
 
-    let username: String = ""
-    let image: Data?
+    let username: String
+    let avatarImage: Image
+    let rejectImage: Image
     let isAccepted: Bool
 
-    private var displayImage: Data? {
+    private var displayImage: Image {
         if isAccepted {
-            if let image = image {
-                return image
-            } else {
-                return R.image.marketplace.defaultAvatar()?.jpegData(compressionQuality: 1)
-            }
+            return avatarImage
         } else {
-            return R.image.chat.rejectReveal()?.jpegData(compressionQuality: 1)
+            return rejectImage
         }
     }
 
     var body: some View {
         VStack {
-            ContactAvatarView(image: displayImage,
-                              size: Appearance.GridGuide.chatRequestAvatarSize)
+            displayImage
+                .resizable()
+                .frame(size: Appearance.GridGuide.chatRequestAvatarSize)
+                .cornerRadius(Appearance.GridGuide.buttonCorner)
                 .padding(.bottom, Appearance.GridGuide.smallPadding)
 
             HStack {
@@ -61,11 +60,18 @@ struct ChatRevealIdentityResponseView: View {
 
 struct ChatRevealIdentityResponseViewPreview: PreviewProvider {
     static var previews: some View {
+
+        let image = R.image.onboarding.testAvatar()!.jpegData(compressionQuality: 1)
+
         VStack {
-            ChatRevealIdentityResponseView(image: R.image.onboarding.testAvatar()!.jpegData(compressionQuality: 1),
+            ChatRevealIdentityResponseView(username: "Username",
+                                           avatarImage: Image(data: image, placeholder: ""),
+                                           rejectImage: Image(data: image, placeholder: ""),
                                            isAccepted: true)
 
-            ChatRevealIdentityResponseView(image: nil,
+            ChatRevealIdentityResponseView(username: "Username",
+                                           avatarImage: Image(data: image, placeholder: ""),
+                                           rejectImage: Image(data: image, placeholder: ""),
                                            isAccepted: false)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)

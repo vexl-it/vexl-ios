@@ -9,18 +9,16 @@ import SwiftUI
 
 struct ChatConversationView: View {
 
-    let messages: [ChatConversationSection]
-    let revealAction: () -> Void
-    let imageAction: (String, String) -> Void
+    @ObservedObject var viewModel: ChatConversationViewModel
 
     var body: some View {
         ScrollView(showsIndicators: false) {
             LazyVStack {
-                ForEach(messages) { messageGroup in
+                ForEach(viewModel.messages) { section in
 
                     // TODO: - add date display when its clear how it will be grouped
 
-                    ForEach(messageGroup.messages) { message in
+                    ForEach(section.messages) { message in
                         switch message.type {
                         case .start:
                             ChatStartTextView()
@@ -33,7 +31,7 @@ struct ChatConversationView: View {
                                                 text: message.text,
                                                 style: message.isContact ? .contact : .user)
                                 .onTapGesture {
-                                    imageAction(messageGroup.id.uuidString, message.id.uuidString)
+                                    viewModel.action.send(.imageTapped(sectionId: section.id.uuidString, messageId: message.id.uuidString))
                                 }
                         case .requestIdentityReveal:
                             ChatRevealIdentityView(image: nil,
@@ -43,13 +41,17 @@ struct ChatConversationView: View {
                             ChatRevealIdentityView(image: nil,
                                                    isRequest: false,
                                                    revealAction: {
-                                revealAction()
+                                viewModel.action.send(.revealTapped)
                             })
                         case .rejectIdentityReveal:
-                            ChatRevealIdentityResponseView(image: nil,
+                            ChatRevealIdentityResponseView(username: viewModel.username,
+                                                           avatarImage: viewModel.avatarImage,
+                                                           rejectImage: viewModel.rejectImage,
                                                            isAccepted: false)
                         case .approveIdentityReveal:
-                            ChatRevealIdentityResponseView(image: nil,
+                            ChatRevealIdentityResponseView(username: viewModel.username,
+                                                           avatarImage: viewModel.avatarImage,
+                                                           rejectImage: viewModel.rejectImage,
                                                            isAccepted: true)
                         case .noContent:
                             EmptyView()
@@ -67,9 +69,8 @@ struct ChatConversationView: View {
 
 struct ChatConversationViewPreview: PreviewProvider {
     static var previews: some View {
-        ChatConversationView(messages: ChatConversationSection.stub,
-                             revealAction: {},
-                             imageAction: { _, _ in })
+        ChatConversationView(viewModel: .init(inboxKeys: ECCKeys(),
+                                              receiverPublicKey: "12345"))
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .previewDevice("iPhone 11")
     }

@@ -43,6 +43,7 @@ protocol LocalStorageServiceType {
     func createRevealedUser(fromInboxPublicKey: String, contactPublicKey: String) -> AnyPublisher<Void, Error>
     func saveRevealedUser(_ chatUser: ParsedChatMessage.ChatUser, inboxPublicKey: String, contactPublicKey: String) -> AnyPublisher<Void, Error>
     func getRevealedUser(inboxPublicKey: String, contactPublicKey: String) -> AnyPublisher<ParsedChatMessage.ChatUser?, Error>
+    func getStoredChatUsers() -> AnyPublisher<[StoredChatUser], Error>
     func updateIdentityReveal(inboxPublicKey: String, contactPublicKey: String, isAccepted: Bool) -> AnyPublisher<Void, Error>
 }
 
@@ -208,6 +209,13 @@ final class LocalStorageService: LocalStorageServiceType {
         Future { promise in
             DictionaryDB.createChatUser(inboxPublicKey: inboxPublicKey, contactPublicKey: contactPublicKey)
             promise(.success(()))
+        }
+        .eraseToAnyPublisher()
+    }
+
+    func getStoredChatUsers() -> AnyPublisher<[StoredChatUser], Error> {
+        Future { promise in
+            promise(.success(DictionaryDB.getChatUsers()))
         }
         .eraseToAnyPublisher()
     }
