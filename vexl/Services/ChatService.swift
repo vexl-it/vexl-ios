@@ -41,7 +41,8 @@ protocol ChatServiceType {
     func getStoredRequestMessages() -> AnyPublisher<[ParsedChatMessage], Error>
     func getStoredChatMessages(inboxPublicKey: String, contactPublicKey: String) -> AnyPublisher<[ParsedChatMessage], Error>
     func deleteMessages(inboxPublicKey: String, contactPublicKey: String) -> AnyPublisher<Void, Error>
-    func getContactIdentity(inboxKeys: ECCKeys, contactPublicKey: String) -> AnyPublisher<(username: String, avatar: String?), Error>
+    func getContactIdentity(inboxKeys: ECCKeys, contactPublicKey: String) -> AnyPublisher<ParsedChatMessage.ChatUser, Error>
+    func getStoredContactIdentities() -> AnyPublisher<[StoredChatUser], Error>
     func updateIdentityReveal(inboxKeys: ECCKeys, contactPublicKey: String, isAccepted: Bool) -> AnyPublisher<Void, Error>
     func createRevealedUser(forInboxKeys: ECCKeys, contactPublicKey: String) -> AnyPublisher<Void, Error>
 }
@@ -170,13 +171,13 @@ final class ChatService: BaseService, ChatServiceType {
         localStorageService.deleteChatMessages(forInbox: inboxPublicKey, contactPublicKey: contactPublicKey)
     }
 
-    func getContactIdentity(inboxKeys: ECCKeys, contactPublicKey: String) -> AnyPublisher<(username: String, avatar: String?), Error> {
+    func getContactIdentity(inboxKeys: ECCKeys, contactPublicKey: String) -> AnyPublisher<ParsedChatMessage.ChatUser, Error> {
         localStorageService.getRevealedUser(inboxPublicKey: inboxKeys.publicKey, contactPublicKey: contactPublicKey)
-            .compactMap { user -> (username: String, avatar: String?)? in
+            .compactMap { user -> ParsedChatMessage.ChatUser? in
                 guard let user = user else {
                     return nil
                 }
-                return (username: user.name, avatar: user.image)
+                return user
             }
             .eraseToAnyPublisher()
     }
@@ -187,6 +188,10 @@ final class ChatService: BaseService, ChatServiceType {
 
     func createRevealedUser(forInboxKeys inboxKeys: ECCKeys, contactPublicKey: String) -> AnyPublisher<Void, Error> {
         localStorageService.createRevealedUser(fromInboxPublicKey: inboxKeys.publicKey, contactPublicKey: contactPublicKey)
+    }
+
+    func getStoredContactIdentities() -> AnyPublisher<[StoredChatUser], Error> {
+        localStorageService.getStoredChatUsers()
     }
 }
 

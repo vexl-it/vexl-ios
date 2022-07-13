@@ -217,4 +217,8 @@ final class DictionaryDB {
             }
         }
     }
+
+    static func getChatUsers() -> [StoredChatUser] {
+        self.storedChatUser
+    }
 }

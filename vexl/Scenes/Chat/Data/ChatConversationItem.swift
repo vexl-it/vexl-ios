@@ -17,7 +17,7 @@ struct ChatConversationItem: Identifiable, Hashable {
     let text: String?
     let image: Data?
     let previewImage: Data?
-    let type: ItemType
+    var type: ItemType
     let isContact: Bool
 
     let imageView: Image
@@ -52,6 +52,19 @@ struct ChatConversationItem: Identifiable, Hashable {
         hasher.combine(id)
         hasher.combine(text)
         hasher.combine(image)
+    }
+}
+
+extension Array where Element == ChatConversationItem {
+    mutating func updateRevealIdentities(isAccepted: Bool, chatUser: ParsedChatMessage.ChatUser?) {
+        let identityItems = self.enumerated()
+            .filter { $0.element.type == .receiveIdentityReveal || $0.element.type == .requestIdentityReveal }
+
+        for (index, item) in identityItems {
+            var newItem = item
+            newItem.type = isAccepted ? .approveIdentityReveal : .rejectIdentityReveal
+            self[index] = newItem
+        }
     }
 }
 
