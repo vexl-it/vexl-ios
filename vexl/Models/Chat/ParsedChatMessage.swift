@@ -41,10 +41,6 @@ struct ParsedChatMessage: Codable {
         ![MessageType.revealRejected, .revealApproval, .deleteChat].contains(messageType)
     }
 
-    var timeMilliseconds: Int {
-        time.milliseconds
-    }
-
     var previewText: String {
         switch contentType {
         case .text, .communicationRequestResponse:
@@ -68,7 +64,7 @@ struct ParsedChatMessage: Codable {
         var json: [String: Any] = [
             "uuid": id,
             "type": contentTypeValue,
-            "time": timeMilliseconds
+            "time": time.milliseconds
         ]
 
         if let text = text {
