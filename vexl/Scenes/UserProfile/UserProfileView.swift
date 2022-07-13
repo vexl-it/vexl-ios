@@ -68,6 +68,7 @@ struct UserProfileView: View {
     private var avatarImage: some View {
         Image(data: viewModel.avatar, placeholder: R.image.onboarding.emptyAvatar.name)
             .resizable()
+            .aspectRatio(contentMode: .fill)
             .frame(size: Appearance.GridGuide.largeIconSize)
             .cornerRadius(Appearance.GridGuide.baseHeight * 0.5, corners: .allCorners)
     }
