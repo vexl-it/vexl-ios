@@ -30,6 +30,7 @@ struct EncryptedOffer: Codable {
     let btcNetwork: [String]
     let friendLevel: String
     let offerType: String
+    let currency: String
 
     var offerId: String = ""
     var createdAt: String = ""
@@ -59,6 +60,7 @@ struct EncryptedOffer: Codable {
             "btcNetwork": btcNetwork,
             "friendLevel": friendLevel,
             "offerType": offerType,
+            "currency": currency,
             "activePriceState": activePriceState,
             "activePriceValue": activePriceValue,
             "active": active,
