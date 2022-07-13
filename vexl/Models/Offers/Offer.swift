@@ -15,6 +15,7 @@ struct Offer {
     var userPublicKey: String = ""
     var createdAt: String = ""
     var modifiedAt: String = ""
+    var currency: Currency = .usd
 
     let minAmount: Double
     let maxAmount: Double
@@ -93,6 +94,7 @@ struct Offer {
             let minAmountString = try encryptedOffer.amountBottomLimit.ecc.decrypt(keys: keys)
             let maxAmountString = try encryptedOffer.amountTopLimit.ecc.decrypt(keys: keys)
             let feeAmountString = try encryptedOffer.feeAmount.ecc.decrypt(keys: keys)
+            let currencyString = try encryptedOffer.currency.ecc.decrypt(keys: keys)
 
             let feeStateString = try encryptedOffer.feeState.ecc.decrypt(keys: keys)
             let locationStateString = try encryptedOffer.locationState.ecc.decrypt(keys: keys)
@@ -112,6 +114,7 @@ struct Offer {
                   let feeAmount = Double(feeAmountString),
                   let activePriceValue = Double(activePriceValueString),
                   let isActive = Bool(isActiveString),
+                  let currency = Currency(rawValue: currencyString),
                   let feeState = OfferFeeOption(rawValue: feeStateString),
                   let locationState = OfferTradeLocationOption(rawValue: locationStateString),
                   let friendLevel = OfferAdvancedFriendDegreeOption(rawValue: friendLevelString),
@@ -131,6 +134,7 @@ struct Offer {
             self.modifiedAt = encryptedOffer.modifiedAt
             self.userPublicKey = encryptedOffer.userPublicKey
             self.source = source
+            self.currency = currency
 
             self.minAmount = minAmount
             self.maxAmount = maxAmount

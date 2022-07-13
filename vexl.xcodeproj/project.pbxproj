@@ -56,9 +56,9 @@
 		B007A7942878285800CFA5C9 /* ManagedInbox+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B007A7932878285800CFA5C9 /* ManagedInbox+.swift */; };
 		B01C01E62860B2C400A29F85 /* CoinChartData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B01C01E52860B2C400A29F85 /* CoinChartData.swift */; };
 		B01C01E92860D2CD00A29F85 /* ContentState.swift in Sources */ = {isa = PBXBuildFile; fileRef = B01C01E82860D2CD00A29F85 /* ContentState.swift */; };
-		B01C01EB2861F9D900A29F85 /* vexl-crypto.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = B01C01EA2861F9D900A29F85 /* vexl-crypto.xcframework */; };
 		B01C01ED2862F06D00A29F85 /* Currency.swift in Sources */ = {isa = PBXBuildFile; fileRef = B01C01EC2862F06D00A29F85 /* Currency.swift */; };
 		B05A22132812BF2700BF8D58 /* Publisher+Crypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = B05A22122812BF2700BF8D58 /* Publisher+Crypto.swift */; };
+		B06A3B55287D64DC00911795 /* vexl-crypto.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = B06A3B54287D64DC00911795 /* vexl-crypto.xcframework */; };
 		B08F38DF27AE7110008B344F /* DIContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B08F38DE27AE7110008B344F /* DIContainer.swift */; };
 		B08F38E227AE7110008B344F /* Inject.swift in Sources */ = {isa = PBXBuildFile; fileRef = B08F38E127AE7110008B344F /* Inject.swift */; };
 		B08F390327AE7110008B344F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B08F390127AE7110008B344F /* LaunchScreen.storyboard */; };
@@ -405,13 +405,13 @@
 		B007A7932878285800CFA5C9 /* ManagedInbox+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ManagedInbox+.swift"; sourceTree = "<group>"; };
 		B01C01E52860B2C400A29F85 /* CoinChartData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinChartData.swift; sourceTree = "<group>"; };
 		B01C01E82860D2CD00A29F85 /* ContentState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentState.swift; sourceTree = "<group>"; };
-		B01C01EA2861F9D900A29F85 /* vexl-crypto.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = "vexl-crypto.xcframework"; sourceTree = "<group>"; };
 		B01C01EC2862F06D00A29F85 /* Currency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Currency.swift; sourceTree = "<group>"; };
 		B021E2F327FF5AA300D186EC /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		B021E2F527FF5AD100D186EC /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		B021E2F727FF5B0B00D186EC /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		B021E2F927FF5B5100D186EC /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		B05A22122812BF2700BF8D58 /* Publisher+Crypto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Publisher+Crypto.swift"; sourceTree = "<group>"; };
+		B06A3B54287D64DC00911795 /* vexl-crypto.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = "vexl-crypto.xcframework"; sourceTree = "<group>"; };
+		B06A3B56287DAE6B00911795 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		B06A3B58287DAEEA00911795 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		B08F38BD27AE7110008B344F /* vexl.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = vexl.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B08F38C027AE7110008B344F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B08F38C927AE7110008B344F /* Changelog.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = Changelog.txt; path = ../Changelog.txt; sourceTree = "<group>"; };
@@ -697,7 +697,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0AA456AF4C162D9C8AF6AB30 /* Pods_vexl.framework in Frameworks */,
-				B01C01EB2861F9D900A29F85 /* vexl-crypto.xcframework in Frameworks */,
+				B06A3B55287D64DC00911795 /* vexl-crypto.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -858,7 +858,7 @@
 		B021E2F027FF59F600D186EC /* Staging */ = {
 			isa = PBXGroup;
 			children = (
-				B021E2F727FF5B0B00D186EC /* GoogleService-Info.plist */,
+				B06A3B56287DAE6B00911795 /* GoogleService-Info.plist */,
 			);
 			path = Staging;
 			sourceTree = "<group>";
@@ -1066,7 +1066,7 @@
 		B08F38FE27AE7110008B344F /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				B01C01EA2861F9D900A29F85 /* vexl-crypto.xcframework */,
+				B06A3B54287D64DC00911795 /* vexl-crypto.xcframework */,
 				F1BBC709283BE5430067F81B /* Fonts */,
 				F1B5FCC427C6C0720018729B /* Generic.strings */,
 				F1B5FCC127C6BC330018729B /* Localizable.strings */,
@@ -1154,7 +1154,7 @@
 		B08F396B27AE7112008B344F /* Devel */ = {
 			isa = PBXGroup;
 			children = (
-				B021E2F527FF5AD100D186EC /* GoogleService-Info.plist */,
+				B06A3B58287DAEEA00911795 /* GoogleService-Info.plist */,
 			);
 			path = Devel;
 			sourceTree = "<group>";
@@ -2653,9 +2653,9 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 87;
+				CURRENT_PROJECT_VERSION = 95;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = SHD6TUKSPH;
+				DEVELOPMENT_TEAM = C6T557DX87;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = vexl/Info.plist;
@@ -2665,8 +2665,9 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.tmp.vexl.staging;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cleevio.vexl.staging;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "match AdHoc com.cleevio.vexl.staging";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = STAGING;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "vexl/Resources/vexl-Bridging-Header.h";
@@ -2684,7 +2685,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 87;
+				CURRENT_PROJECT_VERSION = 95;
 				DEVELOPMENT_TEAM = SHD6TUKSPH;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
@@ -2767,9 +2768,9 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 87;
+				CURRENT_PROJECT_VERSION = 95;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = SHD6TUKSPH;
+				DEVELOPMENT_TEAM = C6T557DX87;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = vexl/Info.plist;
@@ -2779,9 +2780,9 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.tmp.vexl;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cleevio.vexl.debug;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "Vexel development";
+				PROVISIONING_PROFILE_SPECIFIER = "match Development com.cleevio.vexl.debug";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG DEVEL";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "vexl/Resources/vexl-Bridging-Header.h";
@@ -2799,7 +2800,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 87;
+				CURRENT_PROJECT_VERSION = 95;
 				DEVELOPMENT_TEAM = SHD6TUKSPH;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
@@ -2941,9 +2942,9 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 87;
+				CURRENT_PROJECT_VERSION = 95;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = SHD6TUKSPH;
+				DEVELOPMENT_TEAM = C6T557DX87;
 				ENABLE_BITCODE = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = NO;
@@ -2954,9 +2955,9 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.tmp.vexl.devel;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cleevio.vexl.devel;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "Vexl AdHoc";
+				PROVISIONING_PROFILE_SPECIFIER = "match AdHoc com.cleevio.vexl.devel";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEVEL;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "vexl/Resources/vexl-Bridging-Header.h";
@@ -2973,10 +2974,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 87;
+				CURRENT_PROJECT_VERSION = 95;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = C6T557DX87;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = vexl/Info.plist;
@@ -2986,9 +2988,9 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.tmp.vexl.appstore;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cleevio.vexl.appstore;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE_SPECIFIER = "match AppStore com.cleevio.vexl.appstore";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = APPSTORE;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "vexl/Resources/vexl-Bridging-Header.h";
@@ -3006,7 +3008,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 87;
+				CURRENT_PROJECT_VERSION = 95;
 				DEVELOPMENT_TEAM = SHD6TUKSPH;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
@@ -3025,7 +3027,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 87;
+				CURRENT_PROJECT_VERSION = 95;
 				DEVELOPMENT_TEAM = SHD6TUKSPH;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;

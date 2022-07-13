@@ -24,6 +24,7 @@ struct StoredOffer: Codable {
     var paymentMethods: [String]
     var btcNetwork: [String]
     var friendLevel: String
+    // TODO: - add new stuff
     var type: String
     var source: String
 

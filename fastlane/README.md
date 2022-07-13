@@ -47,6 +47,22 @@ Create certificates and provisioning profiles for every app environment. This sh
 
 Submit a new build to Firebase
 
+### ios deploy_staging
+
+```sh
+[bundle exec] fastlane ios deploy_staging
+```
+
+Submit a new build to Firebase
+
+### ios deploy_appstore
+
+```sh
+[bundle exec] fastlane ios deploy_appstore
+```
+
+Submit a new build to Firebase
+
 ### ios bump_version
 
 ```sh

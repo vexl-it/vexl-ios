@@ -161,6 +161,7 @@ extension OfferService {
     private func encrypt(offer: Offer, withOfferKey offerKey: ECCKeys, publicKey contactPublicKey: String) throws -> EncryptedOffer {
         let minAmount = try offer.minAmountString.ecc.encrypt(publicKey: contactPublicKey)
         let maxAmount = try offer.maxAmountString.ecc.encrypt(publicKey: contactPublicKey)
+        let currency = try offer.currency.rawValue.ecc.encrypt(publicKey: contactPublicKey)
         let offerPublicKey = try offerKey.publicKey.ecc.encrypt(publicKey: contactPublicKey)
         let description = try offer.description.ecc.encrypt(publicKey: contactPublicKey)
         let feeState = try offer.feeStateString.ecc.encrypt(publicKey: contactPublicKey)
@@ -210,6 +211,7 @@ extension OfferService {
                               btcNetwork: btcNetwork,
                               friendLevel: friendLevel,
                               offerType: offerType,
+                              currency: currency,
                               activePriceState: activePriceState,
                               activePriceValue: activePriceValue,
                               active: active,
