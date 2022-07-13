@@ -152,6 +152,7 @@ final class ChatService: BaseService, ChatServiceType {
                      receiverPublicKey: String,
                      message: String,
                      messageType: MessageType) -> AnyPublisher<Void, Error> {
+        // TODO: [vexl chat encryption] Uncomment this when enabling encryption on chat service
 //        cryptoService
 //            .encryptECIES(publicKey: receiverPublicKey, secret: message)
         Just(message)
