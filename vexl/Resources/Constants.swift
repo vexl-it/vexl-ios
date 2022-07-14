@@ -95,7 +95,7 @@ struct Constants {
     static let pageMaxLimit = 1_000
 
     static let bitcoinPollInterval: TimeInterval = 30
-    static let inboxSyncPollInterval: TimeInterval = 60
+    static let inboxSyncPollInterval: TimeInterval = 10
 
     static let notAvailable = "N/A"
 
