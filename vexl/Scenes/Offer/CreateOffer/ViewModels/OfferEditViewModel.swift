@@ -10,7 +10,7 @@ import Cleevio
 import SwiftUI
 import Combine
 
-final class OfferEditViewModel: OfferActionViewModel {
+final class OfferEditViewModel: CreateOfferViewModel {
 
     override var actionTitle: String {
         switch offerType {

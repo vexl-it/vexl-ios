@@ -14,7 +14,9 @@ typealias OfferData = (offer: Offer, contacts: [ContactKey])
 typealias OfferAndEncryptedOffers = (offer: Offer, encryptedOffers: [EncryptedOffer])
 typealias OfferAndEncryptedOffer = (offer: Offer, encryptedOffer: EncryptedOffer)
 
-class OfferActionViewModel: ViewModelType, ObservableObject {
+// TODO: - Update file and class models once the offer DB migration is done. We are keeping this name to avoid conflicts
+
+class CreateOfferViewModel: ViewModelType, ObservableObject {
 
     enum UserAction: Equatable {
         case activate
