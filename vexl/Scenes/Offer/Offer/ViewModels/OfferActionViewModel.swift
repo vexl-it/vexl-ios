@@ -84,6 +84,7 @@ class OfferActionViewModel: ViewModelType, ObservableObject {
     enum Route: Equatable {
         case dismissTapped
         case offerCreated
+        case offerDeleted
     }
 
     var route: CoordinatingSubject<Route> = .init()
@@ -114,8 +115,8 @@ class OfferActionViewModel: ViewModelType, ObservableObject {
         return Int(((maxFee - minFee) * feeAmount) + minFee)
     }
 
-    var priceTriggerAmount: Int {
-        guard let amount = Int(selectedPriceTriggerAmount) else {
+    var priceTriggerAmount: Double {
+        guard let amount = Double(selectedPriceTriggerAmount) else {
             return 0
         }
         return amount
@@ -320,7 +321,7 @@ class OfferActionViewModel: ViewModelType, ObservableObject {
                                   friendLevel: owner.selectedFriendDegreeOption,
                                   type: owner.offerType,
                                   priceTriggerState: owner.selectedPriceTrigger,
-                                  priceTriggerValue: Double(owner.priceTriggerAmount),
+                                  priceTriggerValue: owner.priceTriggerAmount,
                                   isActive: owner.isActive,
                                   source: .created)
 

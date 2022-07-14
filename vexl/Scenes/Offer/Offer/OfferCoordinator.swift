@@ -45,7 +45,7 @@ final class OfferCoordinator: BaseCoordinator<RouterResult<Void>> {
 
         let finished = viewModel
             .route
-            .filter { $0 == .offerCreated }
+            .filter { $0 == .offerCreated || $0 == .offerDeleted }
             .map { _ -> RouterResult<Void> in .finished(()) }
 
         router.present(viewController, animated: true)

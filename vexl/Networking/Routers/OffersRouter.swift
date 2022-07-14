@@ -68,4 +68,13 @@ enum OffersRouter: ApiRouter {
     var url: String {
         Constants.API.offersBaseURLString
     }
+
+    var useURLEncoding: Bool {
+        switch self {
+        case .deleteOffers:
+            return true
+        default:
+            return false
+        }
+    }
 }

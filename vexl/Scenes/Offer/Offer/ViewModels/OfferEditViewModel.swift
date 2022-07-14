@@ -87,7 +87,7 @@ final class OfferEditViewModel: OfferActionViewModel {
             }
             .withUnretained(self)
             .sink { owner, _ in
-                owner.route.send(.dismissTapped)
+                owner.route.send(.offerDeleted)
             }
             .store(in: cancelBag)
     }
