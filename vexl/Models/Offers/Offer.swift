@@ -87,6 +87,9 @@ struct Offer {
         self.offerPrivateKey = storedOffer.privateKey
         self.offerPublicKey = storedOffer.publicKey
         self.source = source
+        self.offerPriceTrigger = OfferTrigger(rawValue: storedOffer.priceTrigger) ?? .none
+        self.offerPriceTriggerValue = storedOffer.priceTriggerValue
+        self.isActive = storedOffer.isActive
     }
 
     init?(encryptedOffer: EncryptedOffer, keys: ECCKeys, source: OfferSource) throws {

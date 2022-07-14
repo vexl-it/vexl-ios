@@ -24,7 +24,11 @@ struct StoredOffer: Codable {
     var paymentMethods: [String]
     var btcNetwork: [String]
     var friendLevel: String
-    // TODO: - add new stuff
+
+    var isActive: Bool
+    var priceTrigger: String
+    var priceTriggerValue: Double
+
     var type: String
     var source: String
 
@@ -52,5 +56,8 @@ struct StoredOffer: Codable {
         self.friendLevel = offer.friendLevelString
         self.type = offer.offerTypeString
         self.source = source.rawValue
+        self.isActive = offer.isActive
+        self.priceTrigger = offer.offerPriceTrigger.rawValue
+        self.priceTriggerValue = offer.offerPriceTriggerValue
     }
 }
