@@ -163,9 +163,9 @@ extension OfferService {
         var btcNetwork: [String] = []
         let friendLevel = try offer.friendLevelString.ecc.encrypt(publicKey: contactPublicKey)
         let offerType = try offer.offerTypeString.ecc.encrypt(publicKey: contactPublicKey)
-        let activePriceState = try offer.priceTrigger.rawValue.ecc.encrypt(publicKey: contactPublicKey)
-        let activePriceValue = try "\(offer.priceTriggerValue)".ecc.encrypt(publicKey: contactPublicKey)
-        let active = try offer.isActive.string.ecc.encrypt(publicKey: contactPublicKey)
+        let activePriceState = try offer.activePriceState.rawValue.ecc.encrypt(publicKey: contactPublicKey)
+        let activePriceValue = try "\(offer.activePriceValue)".ecc.encrypt(publicKey: contactPublicKey)
+        let active = try offer.active.string.ecc.encrypt(publicKey: contactPublicKey)
         let commonFriends = try offer.commonFriends.map { try $0.ecc.encrypt(publicKey: contactPublicKey) }
         let groupUuid = try offer.groupUuid.rawValue.ecc.encrypt(publicKey: contactPublicKey)
 
