@@ -20,7 +20,7 @@ protocol OfferServiceType {
     func getInitialOfferData() -> AnyPublisher<OfferInitialData, Error>
     func encryptOffer(withContactKey publicKeys: [String], offerKey: ECCKeys, offer: Offer) -> AnyPublisher<[EncryptedOffer], Error>
     func createOffer(encryptedOffers: [EncryptedOffer], expiration: TimeInterval) -> AnyPublisher<EncryptedOffer, Error>
-    func deleteOffers() -> AnyPublisher<Void, Error>
+    func deleteOffers(offerIds: [String]) -> AnyPublisher<Void, Error>
     func updateOffers(encryptedOffers: [EncryptedOffer], offerId: String) -> AnyPublisher<EncryptedOffer, Error>
 
     // MARK: - Storage
@@ -132,22 +132,14 @@ final class OfferService: BaseService, OfferServiceType {
         localStorageService.updateOffers(offers)
     }
 
-    func deleteOffers() -> AnyPublisher<Void, Error> {
-        getStoredOffers(fromType: .all, fromSource: .all)
-            .materialize()
-            .compactMap(\.value)
-            .map { $0.map(\.offerId) }
-            .withUnretained(self)
-            .flatMap { owner, offerIds -> AnyPublisher<Void, Error> in
-                if !offerIds.isEmpty {
-                    // TODO: - clean from the localstorage too
-                    return owner.request(endpoint: OffersRouter.deleteOffers(offerIds: offerIds))
-                } else {
-                    return Just(()).setFailureType(to: Error.self)
-                    .eraseToAnyPublisher()
-                }
-            }
+    func deleteOffers(offerIds: [String]) -> AnyPublisher<Void, Error> {
+        if !offerIds.isEmpty {
+            // TODO: - clean from the localstorage too
+            return request(endpoint: OffersRouter.deleteOffers(offerIds: offerIds))
+        } else {
+            return Just(()).setFailureType(to: Error.self)
             .eraseToAnyPublisher()
+        }
     }
 
     func updateOffers(encryptedOffers: [EncryptedOffer], offerId: String) -> AnyPublisher<EncryptedOffer, Error> {

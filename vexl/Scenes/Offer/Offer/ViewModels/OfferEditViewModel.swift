@@ -34,6 +34,7 @@ final class OfferEditViewModel: OfferActionViewModel {
     init(offerType: OfferType, offer: Offer) {
         self.offer = offer
         super.init(offerType: offerType, offerKey: ECCKeys(pubKey: offer.offerPublicKey, privKey: offer.offerPrivateKey))
+        setupDeleteBinding()
     }
 
     override func setInitialValues(data: OfferInitialData) {
@@ -43,9 +44,6 @@ final class OfferEditViewModel: OfferActionViewModel {
             .compactMap(\.value)
             .withUnretained(self)
             .sink { owner, storedOffer in
-
-                // TODO: - find a way to improve this part
-
                 owner.offer = storedOffer
                 owner.offerKey = ECCKeys(pubKey: storedOffer.offerPublicKey, privKey: storedOffer.offerPrivateKey)
 
@@ -74,5 +72,23 @@ final class OfferEditViewModel: OfferActionViewModel {
     override func createInbox(offerKey: ECCKeys, pushToken: String) -> AnyPublisher<Void, Error> {
         Just(()).setFailureType(to: Error.self)
             .eraseToAnyPublisher()
+    }
+
+    private func setupDeleteBinding() {
+        action
+            .filter { $0 == .delete }
+            .withUnretained(self)
+            .flatMap { owner, _ in
+                owner.offerService
+                    .deleteOffers(offerIds: [owner.offer.offerId])
+                    .track(activity: owner.primaryActivity)
+                    .materialize()
+                    .compactMap(\.value)
+            }
+            .withUnretained(self)
+            .sink { owner, _ in
+                owner.route.send(.dismissTapped)
+            }
+            .store(in: cancelBag)
     }
 }
