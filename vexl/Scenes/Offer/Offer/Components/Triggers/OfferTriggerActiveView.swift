@@ -32,15 +32,21 @@ struct OfferTriggerActiveView: View {
 
                 VLine(color: Appearance.Colors.gray3,
                       width: 1)
-                    .padding(.horizontal, Appearance.GridGuide.padding)
+                    .padding(.horizontal, Appearance.GridGuide.point)
                     .padding(.vertical, Appearance.GridGuide.point)
 
-                TextField("", text: $activeAmount)
-                    .multilineTextAlignment(.center)
-                    .textStyle(.h3)
-                    .foregroundColor(Appearance.Colors.yellow100)
-                    .frame(maxWidth: .infinity)
-                    .keyboardType(.numberPad)
+                HStack(spacing: .zero) {
+                    Text(Constants.currencySymbol)
+                        .textStyle(.h3)
+                        .foregroundColor(Appearance.Colors.yellow100)
+
+                    TextField("", text: $activeAmount)
+                        .multilineTextAlignment(.center)
+                        .textStyle(.h3)
+                        .foregroundColor(Appearance.Colors.yellow100)
+                        .frame(maxWidth: .infinity)
+                        .keyboardType(.numberPad)
+                }
             }
             .padding(Appearance.GridGuide.tinyPadding)
             .background(Appearance.Colors.gray1)
@@ -54,10 +60,10 @@ struct OfferTriggerActiveViewPreview: PreviewProvider {
     static var previews: some View {
         VStack {
             OfferTriggerActiveView(selectedOption: .constant(.none),
-                                   activeAmount: .constant("$10000"))
+                                   activeAmount: .constant("10000"))
 
             OfferTriggerActiveView(selectedOption: .constant(.above),
-                                   activeAmount: .constant("$10000"))
+                                   activeAmount: .constant("10000"))
         }
         .background(Color.black)
         
