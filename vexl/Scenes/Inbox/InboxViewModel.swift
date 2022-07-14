@@ -35,6 +35,7 @@ final class InboxViewModel: ViewModelType, ObservableObject {
     @Published var filter: InboxFilterOption = .all
     @Published var primaryActivity: Activity = .init()
 
+    @Published var hasPendingRequests = false
     @Published var inboxItems: [InboxItem] = []
 
     // MARK: - Coordinator Bindings
@@ -56,6 +57,20 @@ final class InboxViewModel: ViewModelType, ObservableObject {
         self.bitcoinViewModel = bitcoinViewModel
         setupActionBindings()
         setupInboxBindings()
+        setupRequestBindings()
+    }
+
+    private func setupRequestBindings() {
+        chatService
+            .getStoredRequestMessages()
+            .track(activity: primaryActivity)
+            .materialize()
+            .compactMap(\.value)
+            .withUnretained(self)
+            .sink { owner, requests in
+                owner.hasPendingRequests = !requests.isEmpty
+            }
+            .store(in: cancelBag)
     }
 
     private func setupInboxBindings() {
