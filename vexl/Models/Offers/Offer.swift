@@ -29,8 +29,8 @@ struct Offer {
     let type: OfferType
     let source: OfferSource
 
-    var offerPriceTrigger: OfferTrigger = .none
-    var offerPriceTriggerValue: Double = 0.0
+    var priceTrigger: OfferTrigger = .none
+    var priceTriggerValue: Double = 0.0
     var isActive: Bool = true
     var commonFriends: [String] = []
 
@@ -58,8 +58,8 @@ struct Offer {
         self.btcNetwork = btcNetwork
         self.friendLevel = friendLevel
         self.type = type
-        self.offerPriceTrigger = priceTriggerState
-        self.offerPriceTriggerValue = priceTriggerValue
+        self.priceTrigger = priceTriggerState
+        self.priceTriggerValue = priceTriggerValue
         self.isActive = isActive
         self.source = source
     }
@@ -87,8 +87,8 @@ struct Offer {
         self.offerPrivateKey = storedOffer.privateKey
         self.offerPublicKey = storedOffer.publicKey
         self.source = source
-        self.offerPriceTrigger = OfferTrigger(rawValue: storedOffer.priceTrigger) ?? .none
-        self.offerPriceTriggerValue = storedOffer.priceTriggerValue
+        self.priceTrigger = OfferTrigger(rawValue: storedOffer.priceTrigger) ?? .none
+        self.priceTriggerValue = storedOffer.priceTriggerValue
         self.isActive = storedOffer.isActive
     }
 
@@ -151,8 +151,8 @@ struct Offer {
             self.type = offerType
 
             self.isActive = isActive
-            self.offerPriceTrigger = activePriceState
-            self.offerPriceTriggerValue = activePriceValue
+            self.priceTrigger = activePriceState
+            self.priceTriggerValue = activePriceValue
 
             self.paymentMethods = paymentMethods
             self.btcNetwork = btcNetworks

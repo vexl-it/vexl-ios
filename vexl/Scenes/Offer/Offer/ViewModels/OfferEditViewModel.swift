@@ -55,8 +55,8 @@ final class OfferEditViewModel: OfferActionViewModel {
                 owner.selectedPaymentMethodOptions = storedOffer.paymentMethods
                 owner.selectedBTCOption = storedOffer.btcNetwork
                 owner.selectedFriendDegreeOption = storedOffer.friendLevel
-                owner.selectedPriceTrigger = storedOffer.offerPriceTrigger
-                owner.selectedPriceTriggerAmount = "\(Int(storedOffer.offerPriceTriggerValue))"
+                owner.selectedPriceTrigger = storedOffer.priceTrigger
+                owner.selectedPriceTriggerAmount = "\(Int(storedOffer.priceTriggerValue))"
             }
             .store(in: cancelBag)
     }

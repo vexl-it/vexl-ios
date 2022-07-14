@@ -57,7 +57,7 @@ struct StoredOffer: Codable {
         self.type = offer.offerTypeString
         self.source = source.rawValue
         self.isActive = offer.isActive
-        self.priceTrigger = offer.offerPriceTrigger.rawValue
-        self.priceTriggerValue = offer.offerPriceTriggerValue
+        self.priceTrigger = offer.priceTrigger.rawValue
+        self.priceTriggerValue = offer.priceTriggerValue
     }
 }
