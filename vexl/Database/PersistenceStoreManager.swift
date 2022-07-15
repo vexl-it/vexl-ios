@@ -16,7 +16,6 @@ protocol PersistenceStoreManagerType {
     func newEditContext() -> NSManagedObjectContext
     func newBackgroundContext() -> NSManagedObjectContext
 
-    func save(context: NSManagedObjectContext) -> AnyPublisher<Void, Error>
     func wipe() -> AnyPublisher<Void, Error>
 
     func insert<T: NSManagedObject>(context: NSManagedObjectContext, provider: @escaping (NSManagedObjectContext) -> T) -> AnyPublisher<T, Error>
@@ -148,7 +147,7 @@ final class PersistenceStoreManager: PersistenceStoreManagerType {
         return context
     }
 
-    func save(context: NSManagedObjectContext) -> AnyPublisher<Void, Error> {
+    private func save(context: NSManagedObjectContext) -> AnyPublisher<Void, Error> {
         Future { promise in
             var tmpContext: NSManagedObjectContext? = context
             var saveError: Error?
@@ -184,12 +183,15 @@ final class PersistenceStoreManager: PersistenceStoreManagerType {
             offers.forEach(context.delete)
             let contacts = owner.loadSyncroniously(type: ManagedContact.self, context: context)
             contacts.forEach(context.delete)
+            let syncItems = owner.loadSyncroniously(type: ManagedSyncItem.self, context: context)
+            syncItems.forEach(context.delete)
             // The rest of entities will be removedy by cascading rule
             promise(.success(()))
         }
         .flatMapLatest(with: self) { owner, _ in
             owner.save(context: context)
         }
+        .receive(on: RunLoop.current)
         .eraseToAnyPublisher()
     }
 
@@ -205,6 +207,7 @@ final class PersistenceStoreManager: PersistenceStoreManagerType {
             owner.save(context: context)
                 .map { objects }
         }
+        .receive(on: RunLoop.current)
         .eraseToAnyPublisher()
     }
 
@@ -230,6 +233,7 @@ final class PersistenceStoreManager: PersistenceStoreManagerType {
                 }
             }
         }
+        .receive(on: RunLoop.current)
         .eraseToAnyPublisher()
     }
 
@@ -262,6 +266,7 @@ final class PersistenceStoreManager: PersistenceStoreManagerType {
             owner.save(context: context)
                 .map { objects }
         }
+        .receive(on: RunLoop.current)
         .eraseToAnyPublisher()
     }
 
@@ -276,6 +281,7 @@ final class PersistenceStoreManager: PersistenceStoreManagerType {
             owner.save(context: context)
                 .map { objects }
         }
+        .receive(on: RunLoop.current)
         .eraseToAnyPublisher()
     }
 }
