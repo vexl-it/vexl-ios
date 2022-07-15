@@ -8,15 +8,13 @@
 import Foundation
 
 extension Bool {
-    var string: String { self ? "true" : "false" }
+    /// returns "true" and "false" as string
+    var string: String { "\(self)" }
 
     init?(_ value: String) {
-        if value == "true" {
-            self = true
-        } else if value == "false" {
-            self = false
-        } else {
+        guard let val = [true, false].first(where: { $0.string == value }) else {
             return nil
         }
+        self = val
     }
 }
