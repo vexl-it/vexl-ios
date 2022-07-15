@@ -28,7 +28,7 @@ final class UserRepository: UserRepositoryType {
     // MARK: - Computed variables
 
     var userPublisher: AnyPublisher<ManagedUser?, Never> {
-        $users.publisher.map(\.first).eraseToAnyPublisher()
+        $users.publisher.map(\.objects).map(\.first).eraseToAnyPublisher()
     }
 
     // MARK: - Dependencies
@@ -48,15 +48,16 @@ final class UserRepository: UserRepositoryType {
             Keychain.standard[.privateKey(publicKey: newKeys.publicKey)] = newKeys.privateKey
             Keychain.standard[.userSignature] = signature
 
-            let publicKey = ManagedPublicKey(context: context)
+            let keyPair = ManagedKeyPair(context: context)
             let profile = ManagedProfile(context: context)
             let user = ManagedUser(context: context)
             let inbox = ManagedInbox(context: context)
 
             inbox.type = .created
-            publicKey.publicKey = newKeys.publicKey
-            publicKey.inbox = inbox
-            profile.publicKey = publicKey
+            keyPair.publicKey = newKeys.publicKey
+            keyPair.privateKey = newKeys.privateKey
+            keyPair.inbox = inbox
+            profile.keyPair = keyPair
             user.profile = profile
             user.userHash = hash
 

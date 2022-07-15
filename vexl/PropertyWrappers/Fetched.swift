@@ -16,27 +16,43 @@ enum FetchContextType {
     case edit
 }
 
+enum PublishEvent {
+    case insert
+    case delete
+    case change
+    case move
+    case loaded
+}
+
+typealias FetchEvent<T: NSManagedObject> = (event: PublishEvent, objects: [T])
+
 @propertyWrapper
 final class Fetched<Entity: NSManagedObject> {
     let context: NSManagedObjectContext
 
-    var publisher: AnyPublisher<[Entity], Never> {
-        fetchDelegate.publisher.eraseToAnyPublisher()
+    var publisher: AnyPublisher<FetchEvent<Entity>, Never> {
+        currentValue.eraseToAnyPublisher()
     }
 
     var wrappedValue: [Entity] {
-        fetchDelegate.publisher.value
+        currentValue.value.objects
     }
 
     var projectedValue: Fetched<Entity> {
         self
     }
 
+    private let currentValue: CurrentValueSubject<FetchEvent<Entity>, Never>
+
     private let controller: NSFetchedResultsController<Entity>
-    private let fetchDelegate: FetchedResultsControllerDelegate<Entity>
+    private var fetchDelegate: FetchedResultsControllerDelegate<Entity>!
     private var cancelBag: CancelBag = .init()
 
-    init(contextType: FetchContextType = .view, sortDescriptors: [NSSortDescriptor] = [], predicate: NSPredicate? = nil) {
+    init(
+        contextType: FetchContextType = .view,
+        sortDescriptors: [NSSortDescriptor] = [],
+        predicate: NSPredicate? = nil
+    ) {
         @Inject var persistence: PersistenceStoreManagerType
 
         context = {
@@ -57,14 +73,21 @@ final class Fetched<Entity: NSManagedObject> {
         request.predicate = predicate
         request.sortDescriptors = sortDescriptors
 
-        controller = NSFetchedResultsController(fetchRequest: request, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
+        let controller = NSFetchedResultsController(fetchRequest: request, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
+        self.controller = controller
 
-        do {
-            try controller.performFetch()
-            let objects = controller.fetchedObjects ?? []
-            fetchDelegate = .init(objects)
-        } catch {
-            fetchDelegate = .init([])
+        let objects: [Entity] = {
+            do {
+                try controller.performFetch()
+                return controller.fetchedObjects ?? []
+            } catch {
+                return []
+            }
+        }()
+        currentValue = .init((.loaded, objects))
+
+        fetchDelegate = FetchedResultsControllerDelegate { [weak self] event in
+            self?.currentValue.send(event)
         }
 
         controller.delegate = fetchDelegate
@@ -73,10 +96,10 @@ final class Fetched<Entity: NSManagedObject> {
 
 class FetchedResultsControllerDelegate<Entity: NSManagedObject>: NSObject, NSFetchedResultsControllerDelegate {
 
-    var publisher: CurrentValueSubject<[Entity], Never>
+    var publishHandler: (FetchEvent<Entity>) -> Void
 
-    init(_ entities: [Entity]) {
-        publisher = .init(entities)
+    init(_ publishHandler: @escaping (FetchEvent<Entity>) -> Void) {
+        self.publishHandler = publishHandler
         super.init()
     }
 
@@ -90,6 +113,17 @@ class FetchedResultsControllerDelegate<Entity: NSManagedObject>: NSObject, NSFet
         guard let fetchedObjects = controller.fetchedObjects as? [Entity] else {
             return
         }
-        publisher.send(fetchedObjects)
+        switch type {
+        case .insert:
+            publishHandler((.insert, fetchedObjects))
+        case .delete:
+            publishHandler((.delete, fetchedObjects))
+        case .move:
+            publishHandler((.change, fetchedObjects))
+        case .update:
+            publishHandler((.insert, fetchedObjects))
+        @unknown default:
+            break
+        }
     }
 }
