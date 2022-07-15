@@ -42,7 +42,7 @@
 		B007A7502872267400CFA5C9 /* ManagedOffer+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B007A74F2872267400CFA5C9 /* ManagedOffer+.swift */; };
 		B007A7542872269B00CFA5C9 /* ManagedUser+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B007A7532872269B00CFA5C9 /* ManagedUser+.swift */; };
 		B007A756287226AA00CFA5C9 /* ManagedProfile+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B007A755287226AA00CFA5C9 /* ManagedProfile+.swift */; };
-		B007A758287226B500CFA5C9 /* ManagedPublicKey+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B007A757287226B500CFA5C9 /* ManagedPublicKey+.swift */; };
+		B007A758287226B500CFA5C9 /* ManagedKeyPair+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B007A757287226B500CFA5C9 /* ManagedKeyPair+.swift */; };
 		B007A75A287226D000CFA5C9 /* ManagedChat+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B007A759287226D000CFA5C9 /* ManagedChat+.swift */; };
 		B007A75C287226DC00CFA5C9 /* ManagedMessage+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B007A75B287226DC00CFA5C9 /* ManagedMessage+.swift */; };
 		B007A76128722A1F00CFA5C9 /* NSManagedObject+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B007A76028722A1F00CFA5C9 /* NSManagedObject+.swift */; };
@@ -57,6 +57,9 @@
 		B01C01E62860B2C400A29F85 /* CoinChartData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B01C01E52860B2C400A29F85 /* CoinChartData.swift */; };
 		B01C01E92860D2CD00A29F85 /* ContentState.swift in Sources */ = {isa = PBXBuildFile; fileRef = B01C01E82860D2CD00A29F85 /* ContentState.swift */; };
 		B01C01ED2862F06D00A29F85 /* Currency.swift in Sources */ = {isa = PBXBuildFile; fileRef = B01C01EC2862F06D00A29F85 /* Currency.swift */; };
+		B03BC701287B500F00E355D3 /* SyncQueueManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B03BC700287B500F00E355D3 /* SyncQueueManager.swift */; };
+		B03BC703287B51C500E355D3 /* ManagedSyncItem+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B03BC702287B51C500E355D3 /* ManagedSyncItem+.swift */; };
+		B03BC705287B56CC00E355D3 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B03BC704287B56CC00E355D3 /* NetworkManager.swift */; };
 		B03BC707287BF9DD00E355D3 /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = B03BC706287BF9DD00E355D3 /* Keychain.swift */; };
 		B05A22132812BF2700BF8D58 /* Publisher+Crypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = B05A22122812BF2700BF8D58 /* Publisher+Crypto.swift */; };
 		B06A3B55287D64DC00911795 /* vexl-crypto.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = B06A3B54287D64DC00911795 /* vexl-crypto.xcframework */; };
@@ -389,7 +392,7 @@
 		B007A74F2872267400CFA5C9 /* ManagedOffer+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ManagedOffer+.swift"; sourceTree = "<group>"; };
 		B007A7532872269B00CFA5C9 /* ManagedUser+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ManagedUser+.swift"; sourceTree = "<group>"; };
 		B007A755287226AA00CFA5C9 /* ManagedProfile+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ManagedProfile+.swift"; sourceTree = "<group>"; };
-		B007A757287226B500CFA5C9 /* ManagedPublicKey+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ManagedPublicKey+.swift"; sourceTree = "<group>"; };
+		B007A757287226B500CFA5C9 /* ManagedKeyPair+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ManagedKeyPair+.swift"; sourceTree = "<group>"; };
 		B007A759287226D000CFA5C9 /* ManagedChat+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ManagedChat+.swift"; sourceTree = "<group>"; };
 		B007A75B287226DC00CFA5C9 /* ManagedMessage+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ManagedMessage+.swift"; sourceTree = "<group>"; };
 		B007A76028722A1F00CFA5C9 /* NSManagedObject+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSManagedObject+.swift"; sourceTree = "<group>"; };
@@ -406,6 +409,9 @@
 		B01C01EC2862F06D00A29F85 /* Currency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Currency.swift; sourceTree = "<group>"; };
 		B021E2F327FF5AA300D186EC /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		B021E2F927FF5B5100D186EC /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		B03BC700287B500F00E355D3 /* SyncQueueManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncQueueManager.swift; sourceTree = "<group>"; };
+		B03BC702287B51C500E355D3 /* ManagedSyncItem+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ManagedSyncItem+.swift"; sourceTree = "<group>"; };
+		B03BC704287B56CC00E355D3 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		B03BC706287BF9DD00E355D3 /* Keychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keychain.swift; sourceTree = "<group>"; };
 		B05A22122812BF2700BF8D58 /* Publisher+Crypto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Publisher+Crypto.swift"; sourceTree = "<group>"; };
 		B06A3B54287D64DC00911795 /* vexl-crypto.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = "vexl-crypto.xcframework"; sourceTree = "<group>"; };
@@ -823,11 +829,12 @@
 			children = (
 				B007A7532872269B00CFA5C9 /* ManagedUser+.swift */,
 				B007A755287226AA00CFA5C9 /* ManagedProfile+.swift */,
-				B007A757287226B500CFA5C9 /* ManagedPublicKey+.swift */,
+				B007A757287226B500CFA5C9 /* ManagedKeyPair+.swift */,
 				B007A74F2872267400CFA5C9 /* ManagedOffer+.swift */,
 				B007A759287226D000CFA5C9 /* ManagedChat+.swift */,
 				B007A75B287226DC00CFA5C9 /* ManagedMessage+.swift */,
 				B007A7932878285800CFA5C9 /* ManagedInbox+.swift */,
+				B03BC702287B51C500E355D3 /* ManagedSyncItem+.swift */,
 			);
 			path = ManagedObjects;
 			sourceTree = "<group>";
@@ -1018,6 +1025,8 @@
 				B0F206F027AE94C400A44E72 /* InitialScreenManager.swift */,
 				F175AB9C27F147B5000DAB15 /* ContactsManager.swift */,
 				F1D20127282AB6EF006DF4AB /* CryptocurrencyValueManager.swift */,
+				B03BC700287B500F00E355D3 /* SyncQueueManager.swift */,
+				B03BC704287B56CC00E355D3 /* NetworkManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -2354,6 +2363,7 @@
 				F188627328169A3700659786 /* MarketplaceFeedView.swift in Sources */,
 				F12A14F527D96FDC0096543E /* ImportContactsViewModel.swift in Sources */,
 				F1A9453327F686C8009B5AE3 /* UserKeys.swift in Sources */,
+				B03BC703287B51C500E355D3 /* ManagedSyncItem+.swift in Sources */,
 				B08F391C27AE7112008B344F /* BaseService.swift in Sources */,
 				F1C6D09E27BDDD4C009BD506 /* TextStyle.swift in Sources */,
 				4FBF6209283CD5C000DDBE71 /* OfferAdvancedFilterFriendSourceView.swift in Sources */,
@@ -2412,6 +2422,7 @@
 				B08F397C27AE7112008B344F /* SwipeNavigationController.swift in Sources */,
 				4FBF620B283CE08800DDBE71 /* OfferAmountRangeView.swift in Sources */,
 				F13B265C281897DE0011F2FB /* OfferAdvanceFilterFriendDegreeView.swift in Sources */,
+				B03BC705287B56CC00E355D3 /* NetworkManager.swift in Sources */,
 				B05A22132812BF2700BF8D58 /* Publisher+Crypto.swift in Sources */,
 				F11441D6284681EC00307D39 /* SliderView.swift in Sources */,
 				F1BBC7052835C2960067F81B /* ContactsCount.swift in Sources */,
@@ -2421,6 +2432,7 @@
 				4FD8E3E02821B922003B165E /* CoinData.swift in Sources */,
 				F1042BA227BEADB70048C2F0 /* WelcomeView+Agreement.swift in Sources */,
 				B08F394D27AE7112008B344F /* AppCoordinator.swift in Sources */,
+				B03BC701287B500F00E355D3 /* SyncQueueManager.swift in Sources */,
 				F13B2671281D4AB00011F2FB /* ContactKey.swift in Sources */,
 				F1D20128282AB6EF006DF4AB /* CryptocurrencyValueManager.swift in Sources */,
 				F175ABA227F4A8F8000DAB15 /* UserAvailable.swift in Sources */,
@@ -2432,7 +2444,7 @@
 				F1BFA8D027FB31E800F4E745 /* FacebookUserData.swift in Sources */,
 				F11441D3284681EC00307D39 /* ContactAvatarInfo.swift in Sources */,
 				B08F399E27AE7D92008B344F /* OnboardingView.swift in Sources */,
-				B007A758287226B500CFA5C9 /* ManagedPublicKey+.swift in Sources */,
+				B007A758287226B500CFA5C9 /* ManagedKeyPair+.swift in Sources */,
 				B08F393F27AE7112008B344F /* APIError.swift in Sources */,
 				F1F5F194283E9FC500968366 /* OfferPaymentIconView.swift in Sources */,
 				F11441DA284681EC00307D39 /* MultipleOptionPickerView.swift in Sources */,

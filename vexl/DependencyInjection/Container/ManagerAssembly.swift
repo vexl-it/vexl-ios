@@ -24,6 +24,16 @@ class ManagerAssembly: Assembly {
             resolver.resolve(AuthenticationManager.self)!
         }
 
+        container.register(SyncQueueManagerType.self) { _ in
+            SyncQueueManager()
+        }
+        .inObjectScope(.container)
+
+        container.register(NetworkManagerType.self) { _ in
+            NetworkManager()
+        }
+        .inObjectScope(.container)
+
         container.register(InitialScreenManager.self) { _ in
             InitialScreenManager()
         }

@@ -8,6 +8,5 @@
 import Foundation
 
 enum PersistenceError: Error {
-    case wipeError
-    case unknownUser
+    case insufitientData
 }
