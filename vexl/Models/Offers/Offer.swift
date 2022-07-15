@@ -25,7 +25,7 @@ struct Offer {
     let locationState: OfferTradeLocationOption
     let paymentMethods: [OfferPaymentMethodOption]
     let btcNetwork: [OfferAdvancedBTCOption]
-    let friendLevel: OfferAdvancedFriendDegreeOption
+    let friendLevel: OfferFriendDegree
     let type: OfferType
     let source: OfferSource
 
@@ -42,7 +42,7 @@ struct Offer {
          locationState: OfferTradeLocationOption,
          paymentMethods: [OfferPaymentMethodOption],
          btcNetwork: [OfferAdvancedBTCOption],
-         friendLevel: OfferAdvancedFriendDegreeOption,
+         friendLevel: OfferFriendDegree,
          type: OfferType,
          source: OfferSource) {
         self.minAmount = Double(minAmount)
@@ -61,7 +61,7 @@ struct Offer {
     init?(storedOffer: StoredOffer) {
         guard let feeState = OfferFeeOption(rawValue: storedOffer.feeState),
               let locationState = OfferTradeLocationOption(rawValue: storedOffer.locationState),
-              let friendLevel = OfferAdvancedFriendDegreeOption(rawValue: storedOffer.friendLevel),
+              let friendLevel = OfferFriendDegree(rawValue: storedOffer.friendLevel),
               let type = OfferType(rawValue: storedOffer.type),
               let source = OfferSource(rawValue: storedOffer.source) else {
                   return nil
@@ -83,7 +83,7 @@ struct Offer {
         self.source = source
     }
 
-    init?(encryptedOffer: EncryptedOffer, keys: ECCKeys, source: OfferSource) throws {
+    init?(encryptedOffer: OfferPayload, keys: ECCKeys, source: OfferSource) throws {
         do {
             let minAmountString = try encryptedOffer.amountBottomLimit.ecc.decrypt(keys: keys)
             let maxAmountString = try encryptedOffer.amountTopLimit.ecc.decrypt(keys: keys)
@@ -105,7 +105,7 @@ struct Offer {
                   let currency = Currency(rawValue: currencyString),
                   let feeState = OfferFeeOption(rawValue: feeStateString),
                   let locationState = OfferTradeLocationOption(rawValue: locationStateString),
-                  let friendLevel = OfferAdvancedFriendDegreeOption(rawValue: friendLevelString),
+                  let friendLevel = OfferFriendDegree(rawValue: friendLevelString),
                   let offerType = OfferType(rawValue: offerTypeString) else {
                       return nil
                   }

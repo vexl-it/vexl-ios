@@ -68,16 +68,14 @@ final class UserRepository: UserRepositoryType {
 
     func update(with userResponse: User, avatar: Data?) -> AnyPublisher<ManagedUser, Error> {
         guard let user = user else {
-            return Fail(error: PersistenceError.unknownUser)
+            return Fail(error: PersistenceError.insufitientData)
                 .eraseToAnyPublisher()
         }
         return persistenceManager.update(context: context) { [user] in
-
-            user.userId = Int64(userResponse.userId)
+            user.userId = Int64(userResponse.userId ?? 0)
             user.profile?.name = userResponse.username
             user.profile?.avatarURL = userResponse.avatarURL
             user.profile?.avatar = avatar
-
             return user
         }
     }

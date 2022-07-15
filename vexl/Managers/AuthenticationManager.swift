@@ -37,6 +37,7 @@ final class AuthenticationManager: AuthenticationManagerType {
         userRepository.userPublisher
             .withUnretained(self)
             .map { $0.0.checkAuthorization(for: $0.1) }
+            .removeDuplicates()
             .eraseToAnyPublisher()
     }
 
@@ -44,8 +45,8 @@ final class AuthenticationManager: AuthenticationManagerType {
     @Inject private var facebookManager: FacebookManagerType
 
     var userKeys: ECCKeys {
-        guard let pubK = userRepository.user?.profile?.publicKey?.publicKey,
-              let privK = Keychain.standard[.privateKey(publicKey: pubK)] else {
+        guard let pubK = userRepository.user?.profile?.keyPair?.publicKey,
+              let privK = userRepository.user?.profile?.keyPair?.privateKey else {
             logoutUser(force: true)
             return ECCKeys()
         }
@@ -88,10 +89,9 @@ final class AuthenticationManager: AuthenticationManagerType {
 
     private func checkAuthorization(for user: ManagedUser?) -> Bool {
         user != nil &&
-        Keychain.standard[.userSignature] != nil &&
-        user?.profile?.publicKey?.publicKey != nil &&
-        user?.profile?.publicKey?.publicKey
-            .flatMap { Keychain.standard[.privateKey(publicKey: $0)] } != nil
+        userSignature != nil &&
+        user?.profile?.keyPair?.publicKey != nil &&
+        user?.profile?.keyPair?.privateKey != nil
     }
 }
 

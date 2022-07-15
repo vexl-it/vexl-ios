@@ -15,7 +15,7 @@ struct OfferFilter: Equatable {
     var locations: [OfferLocationItemData] = []
     var selectedPaymentMethodOptions: [OfferPaymentMethodOption] = []
     var selectedBTCOptions: [OfferAdvancedBTCOption] = []
-    var selectedFriendDegreeOption: OfferAdvancedFriendDegreeOption = .firstDegree
+    var selectedFriendDegreeOption: OfferFriendDegree = .firstDegree
 
     mutating func reset(with amountRange: ClosedRange<Int>?) {
         currentAmountRange = amountRange
