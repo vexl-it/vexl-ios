@@ -20,14 +20,15 @@ protocol OfferServiceType {
     func getInitialOfferData() -> AnyPublisher<OfferInitialData, Error>
     func encryptOffer(withContactKey publicKeys: [String], offerKey: ECCKeys, offer: Offer) -> AnyPublisher<[EncryptedOffer], Error>
     func createOffer(encryptedOffers: [EncryptedOffer], expiration: TimeInterval) -> AnyPublisher<EncryptedOffer, Error>
-    func deleteOffers() -> AnyPublisher<Void, Error>
+    func deleteOffers(offerIds: [String]) -> AnyPublisher<Void, Error>
+    func updateOffers(encryptedOffers: [EncryptedOffer], offerId: String) -> AnyPublisher<EncryptedOffer, Error>
 
     // MARK: - Storage
 
-    func getStoredOffers() -> AnyPublisher<[Offer], Error>
+    func getStoredOffer(withId id: String) -> AnyPublisher<Offer, Error>
+    func getStoredOffers(fromType type: OfferTypeOption, fromSource source: OfferSourceOption) -> AnyPublisher<[Offer], Error>
     func storeOffers(offers: [Offer], areCreated: Bool) -> AnyPublisher<Void, Error>
-    func getStoredOfferIds(fromType option: OfferTypeOption) -> AnyPublisher<[String], Error>
-    func getStoredOfferKeys(fromSource option: OfferSourceOption) -> AnyPublisher<[OfferKeys], Error>
+    func updateStoredOffers(offers: [Offer]) -> AnyPublisher<Void, Error>
 }
 
 final class OfferService: BaseService, OfferServiceType {
@@ -88,63 +89,61 @@ final class OfferService: BaseService, OfferServiceType {
 
     // MARK: - Storage
 
-    func getStoredOffers() -> AnyPublisher<[Offer], Error> {
+    func getStoredOffer(withId id: String) -> AnyPublisher<Offer, Error> {
+        localStorageService.getOffer(withId: id)
+    }
+
+    func getStoredOffers(fromType type: OfferTypeOption, fromSource source: OfferSourceOption) -> AnyPublisher<[Offer], Error> {
         localStorageService.getOffers()
+            .map { offers -> [Offer] in
+                var filteredOffers: [Offer] = []
+
+                if type.contains(.buy) {
+                    filteredOffers.append(contentsOf: offers.filter { $0.type == .buy })
+                }
+
+                if type.contains(.sell) {
+                    filteredOffers.append(contentsOf: offers.filter { $0.type == .sell })
+                }
+
+                return filteredOffers
+            }
+            .map { offers -> [Offer] in
+                var filteredOffers: [Offer] = []
+
+                if source.contains(.created) {
+                    filteredOffers.append(contentsOf: offers.filter { $0.source == .created })
+                }
+
+                if source.contains(.fetched) {
+                    filteredOffers.append(contentsOf: offers.filter { $0.source == .fetched })
+                }
+
+                return filteredOffers
+            }
+            .eraseToAnyPublisher()
     }
 
     func storeOffers(offers: [Offer], areCreated: Bool) -> AnyPublisher<Void, Error> {
         localStorageService.saveOffers(offers, areCreated: areCreated)
     }
 
-    func getStoredOfferIds(fromType option: OfferTypeOption) -> AnyPublisher<[String], Error> {
-        localStorageService.getOffers()
-            .map { offers -> [String] in
-                var filteredOffers: [Offer] = []
-
-                if option.contains(.buy) {
-                    filteredOffers.append(contentsOf: offers.filter { $0.type == .buy })
-                }
-
-                if option.contains(.sell) {
-                    filteredOffers.append(contentsOf: offers.filter { $0.type == .sell })
-                }
-
-                return filteredOffers.map(\.offerId)
-            }
-            .eraseToAnyPublisher()
+    func updateStoredOffers(offers: [Offer]) -> AnyPublisher<Void, Error> {
+        localStorageService.updateOffers(offers)
     }
 
-    func getStoredOfferKeys(fromSource option: OfferSourceOption) -> AnyPublisher<[OfferKeys], Error> {
-        localStorageService.getOffers()
-            .map { offers -> [OfferKeys] in
-                var filteredOffers: [Offer] = []
-
-                if option.contains(.created) {
-                    filteredOffers.append(contentsOf: offers.filter { $0.source == .created })
-                }
-
-                if option.contains(.fetched) {
-                    filteredOffers.append(contentsOf: offers.filter { $0.source == .fetched })
-                }
-
-                return filteredOffers.map(\.keysWithId)
-            }
+    func deleteOffers(offerIds: [String]) -> AnyPublisher<Void, Error> {
+        if !offerIds.isEmpty {
+            // TODO: - clean from the localstorage too
+            return request(endpoint: OffersRouter.deleteOffers(offerIds: offerIds))
+        } else {
+            return Just(()).setFailureType(to: Error.self)
             .eraseToAnyPublisher()
+        }
     }
 
-    func deleteOffers() -> AnyPublisher<Void, Error> {
-        getStoredOfferIds(fromType: .all)
-            .withUnretained(self)
-            .flatMap { owner, offerIds -> AnyPublisher<Void, Error> in
-                if !offerIds.isEmpty {
-                    // TODO: - clean from the localstorage too
-                    return owner.request(endpoint: OffersRouter.deleteOffers(offerIds: offerIds))
-                } else {
-                    return Just(()).setFailureType(to: Error.self)
-                    .eraseToAnyPublisher()
-                }
-            }
-            .eraseToAnyPublisher()
+    func updateOffers(encryptedOffers: [EncryptedOffer], offerId: String) -> AnyPublisher<EncryptedOffer, Error> {
+        request(type: EncryptedOffer.self, endpoint: OffersRouter.updateOffer(offer: encryptedOffers, offerId: offerId))
     }
 }
 
@@ -154,6 +153,7 @@ extension OfferService {
     private func encrypt(offer: Offer, withOfferKey offerKey: ECCKeys, publicKey contactPublicKey: String) throws -> EncryptedOffer {
         let minAmount = try offer.minAmountString.ecc.encrypt(publicKey: contactPublicKey)
         let maxAmount = try offer.maxAmountString.ecc.encrypt(publicKey: contactPublicKey)
+        let currency = try offer.currency.rawValue.ecc.encrypt(publicKey: contactPublicKey)
         let offerPublicKey = try offerKey.publicKey.ecc.encrypt(publicKey: contactPublicKey)
         let description = try offer.description.ecc.encrypt(publicKey: contactPublicKey)
         let feeState = try offer.feeStateString.ecc.encrypt(publicKey: contactPublicKey)
@@ -203,6 +203,7 @@ extension OfferService {
                               btcNetwork: btcNetwork,
                               friendLevel: friendLevel,
                               offerType: offerType,
+                              currency: currency,
                               activePriceState: activePriceState,
                               activePriceValue: activePriceValue,
                               active: active,

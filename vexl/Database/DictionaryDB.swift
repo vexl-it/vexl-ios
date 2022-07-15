@@ -221,4 +221,20 @@ final class DictionaryDB {
     static func getChatUsers() -> [StoredChatUser] {
         self.storedChatUser
     }
+
+    static func updateOffers(offers: [StoredOffer]) {
+
+        let createdOffers = self.storedOffer["created"] ?? []
+        var updatedCreatedOffers = createdOffers
+
+        for offer in offers {
+            guard let index = createdOffers.firstIndex(where: { $0.id == offer.id }) else {
+                continue
+            }
+
+            updatedCreatedOffers[index] = offer
+        }
+
+        self.storedOffer["created"] = updatedCreatedOffers
+    }
 }
