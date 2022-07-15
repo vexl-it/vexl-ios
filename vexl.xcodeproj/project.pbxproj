@@ -267,7 +267,7 @@
 		F1B3010A287A464600C86F83 /* ChatActionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B30109287A464600C86F83 /* ChatActionViewModel.swift */; };
 		F1B3010F287A53C900C86F83 /* ChatConversationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B3010E287A53C900C86F83 /* ChatConversationViewModel.swift */; };
 		F1B30111287C770D00C86F83 /* OfferTriggerActiveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B30110287C770D00C86F83 /* OfferTriggerActiveView.swift */; };
-		F1B30113287CA5BB00C86F83 /* CreateOfferViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B30112287CA5BB00C86F83 /* CreateOfferViewModel.swift */; };
+		F1B30113287CA5BB00C86F83 /* CreateOfferViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18862482811551700659786 /* CreateOfferViewModel.swift */; };
 		F1B30116287CBD5400C86F83 /* OfferCreateViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B30115287CBD5400C86F83 /* OfferCreateViewModel.swift */; };
 		F1B30118287CC15D00C86F83 /* OfferEditViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B30117287CC15C00C86F83 /* OfferEditViewModel.swift */; };
 		F1B5321C28202B36009D4E0C /* OfferItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B5321B28202B36009D4E0C /* OfferItemView.swift */; };
@@ -628,7 +628,7 @@
 		F1B30109287A464600C86F83 /* ChatActionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatActionViewModel.swift; sourceTree = "<group>"; };
 		F1B3010E287A53C900C86F83 /* ChatConversationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatConversationViewModel.swift; sourceTree = "<group>"; };
 		F1B30110287C770D00C86F83 /* OfferTriggerActiveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferTriggerActiveView.swift; sourceTree = "<group>"; };
-		F1B30112287CA5BB00C86F83 /* CreateOfferViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateOfferViewModel.swift; sourceTree = "<group>"; };
+		F18862482811551700659786 /* CreateOfferViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateOfferViewModel.swift; sourceTree = "<group>"; };
 		F1B30115287CBD5400C86F83 /* OfferCreateViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferCreateViewModel.swift; sourceTree = "<group>"; };
 		F1B30117287CC15C00C86F83 /* OfferEditViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferEditViewModel.swift; sourceTree = "<group>"; };
 		F1B5321B28202B36009D4E0C /* OfferItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferItemView.swift; sourceTree = "<group>"; };
@@ -1649,7 +1649,7 @@
 			children = (
 				F1B365A82880C61F0069788D /* ViewModels */,
 				F188624F281170F200659786 /* Components */,
-				F1B30112287CA5BB00C86F83 /* CreateOfferViewModel.swift */,
+				F18862482811551700659786 /* CreateOfferViewModel.swift */,
 				F18862462811550C00659786 /* CreateOfferCoordinator.swift */,
 				F188624A2811551E00659786 /* CreateOfferView.swift */,
 			);
