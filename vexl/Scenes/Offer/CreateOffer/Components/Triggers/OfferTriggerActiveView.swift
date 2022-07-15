@@ -32,8 +32,7 @@ struct OfferTriggerActiveView: View {
 
                 VLine(color: Appearance.Colors.gray3,
                       width: 1)
-                    .padding(.horizontal, Appearance.GridGuide.point)
-                    .padding(.vertical, Appearance.GridGuide.point)
+                    .padding(.all, Appearance.GridGuide.point)
 
                 HStack(spacing: .zero) {
                     Text(Constants.currencySymbol)
