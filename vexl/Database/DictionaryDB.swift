@@ -235,8 +235,6 @@ final class DictionaryDB {
             updatedCreatedOffers[index] = offer
         }
 
-        print(self.storedOffer["created"])
         self.storedOffer["created"] = updatedCreatedOffers
-        print(self.storedOffer["created"])
     }
 }
