@@ -13,6 +13,7 @@ enum OffersRouter: ApiRouter {
     case getOffers(pageLimit: Int?)
     case getUserOffers(offerIds: [String])
     case deleteOffers(offerIds: [String])
+    case updateOffer(offer: [EncryptedOffer], offerId: String)
 
     var method: HTTPMethod {
         switch self {
@@ -22,6 +23,8 @@ enum OffersRouter: ApiRouter {
             return .post
         case .deleteOffers:
             return .delete
+        case .updateOffer:
+            return .put
         }
     }
 
@@ -33,7 +36,7 @@ enum OffersRouter: ApiRouter {
         switch self {
         case .getOffers:
             return "offers/me"
-        case .createOffer, .getUserOffers, .deleteOffers:
+        case .createOffer, .getUserOffers, .deleteOffers, .updateOffer:
             return "offers"
         }
     }
@@ -51,6 +54,10 @@ enum OffersRouter: ApiRouter {
             let offers = offer.map { $0.asJson }
             return ["offerPrivateList": offers,
                     "expiration": expiration]
+        case let .updateOffer(offer, offerId):
+            let offers = offer.map { $0.asJson }
+            return ["offerId": offerId,
+                    "offerPrivateCreateList": offers]
         }
     }
 
@@ -60,5 +67,14 @@ enum OffersRouter: ApiRouter {
 
     var url: String {
         Constants.API.offersBaseURLString
+    }
+
+    var useURLEncoding: Bool {
+        switch self {
+        case .deleteOffers:
+            return true
+        default:
+            return false
+        }
     }
 }

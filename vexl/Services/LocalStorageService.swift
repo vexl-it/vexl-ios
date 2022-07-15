@@ -18,7 +18,9 @@ protocol LocalStorageServiceType {
     // MARK: - Offer
 
     func saveOffers(_ offers: [Offer], areCreated: Bool) -> AnyPublisher<Void, Error>
+    func updateOffers(_ offers: [Offer]) -> AnyPublisher<Void, Error>
     func getOffers() -> AnyPublisher<[Offer], Error>
+    func getOffer(withId id: String) -> AnyPublisher<Offer, Error>
 
     // MARK: - Inbox and Message cache
 
@@ -71,6 +73,21 @@ final class LocalStorageService: LocalStorageServiceType {
         .eraseToAnyPublisher()
     }
 
+    func updateOffers(_ offers: [Offer]) -> AnyPublisher<Void, Error> {
+        Future { promise in
+            let storedOffers = offers.map {
+                StoredOffer(offer: $0,
+                            id: $0.offerId,
+                            keys: ECCKeys(pubKey: $0.offerPublicKey, privKey: $0.offerPrivateKey),
+                            source: .created)
+            }
+
+            DictionaryDB.updateOffers(offers: storedOffers)
+            promise(.success(()))
+        }
+        .eraseToAnyPublisher()
+    }
+
     func getOffers() -> AnyPublisher<[Offer], Error> {
         Future { promise in
             let createdOffers = DictionaryDB.getCreatedOffers()
@@ -78,6 +95,21 @@ final class LocalStorageService: LocalStorageServiceType {
             let storedOffers = createdOffers + fetchedOffers
             let offers = Self.convertStoredOffers(storedOffers)
             promise(.success(offers))
+        }
+        .eraseToAnyPublisher()
+    }
+
+    func getOffer(withId id: String) -> AnyPublisher<Offer, Error> {
+        Future { promise in
+            let createdOffers = DictionaryDB.getCreatedOffers()
+            let fetchedOffers = DictionaryDB.getFetchedOffers()
+            let storedOffers = createdOffers + fetchedOffers
+            let filteredOffer = storedOffers.first(where: { $0.id == id })
+            if let filteredOffer = filteredOffer, let offer = Offer(storedOffer: filteredOffer) {
+                promise(.success(offer))
+            } else {
+                promise(.failure(LocalStorageError.readFailed))
+            }
         }
         .eraseToAnyPublisher()
     }
