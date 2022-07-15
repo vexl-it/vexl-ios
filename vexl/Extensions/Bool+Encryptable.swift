@@ -7,6 +7,6 @@
 
 import Foundation
 
-extension Bool {
-    var string: String { self ? "true" : "false" }
+extension Bool: Encryptable {
+    var asString: String { self ? "true" : "false" }
 }
