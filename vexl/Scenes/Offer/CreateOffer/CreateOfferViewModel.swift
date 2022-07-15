@@ -184,19 +184,19 @@ class CreateOfferViewModel: ViewModelType, ObservableObject {
     }
 
     func prepareOffer(encryptedOffers: [EncryptedOffer], expiration: TimeInterval) -> AnyPublisher<EncryptedOffer, Error> {
-        fatalError("Need to implement the prepareOffer method")
+        fatalError("Need to override implementation for this method")
     }
 
     func storeOffers(offers: [Offer], areCreated: Bool) -> AnyPublisher<Void, Error> {
-        fatalError("Need to implement the storeOffers method")
+        fatalError("Need to override implementation for this method")
     }
 
     func createInbox(offerKey: ECCKeys, pushToken: String) -> AnyPublisher<Void, Error> {
-        fatalError("Need to implement the createInbox method")
+        fatalError("Need to override implementation for this method")
     }
 
     func setInitialValues(data: OfferInitialData) {
-        fatalError("Need to implement the setInitialValues method")
+        fatalError("Need to override implementation for this method")
     }
 
     // MARK: - Bindings
