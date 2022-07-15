@@ -96,7 +96,7 @@ final class UserRepository: UserRepositoryType {
         }
         return persistenceManager.update(context: context) { [user] in
 
-            user.userId = Int64(userResponse.userId)
+            user.userId = Int64(userResponse.userId ?? 0)
             user.profile?.name = userResponse.username
             user.profile?.avatarURL = userResponse.avatarURL
             user.profile?.avatar = avatar
