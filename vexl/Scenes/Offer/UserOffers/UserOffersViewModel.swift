@@ -19,6 +19,7 @@ final class UserOffersViewModel: ViewModelType, ObservableObject {
     enum UserAction: Equatable {
         case dismissTap
         case createOfferTap
+        case editOfferTap(id: String)
     }
 
     let action: ActionSubject<UserAction> = .init()
@@ -44,6 +45,7 @@ final class UserOffersViewModel: ViewModelType, ObservableObject {
     enum Route: Equatable {
         case dismissTapped
         case createOfferTapped
+        case editOfferTapped(offer: Offer)
     }
 
     var route: CoordinatingSubject<Route> = .init()
@@ -117,6 +119,20 @@ final class UserOffersViewModel: ViewModelType, ObservableObject {
             .store(in: cancelBag)
 
         action
+            .compactMap { action -> String? in
+                if case let .editOfferTap(id) = action { return id }
+                return nil
+            }
+            .withUnretained(self)
+            .sink { owner, id in
+                guard let offer = owner.userOffers.first(where: { $0.offerId == id }) else {
+                    return
+                }
+                owner.route.send(.editOfferTapped(offer: offer))
+            }
+            .store(in: cancelBag)
+
+        action
             .filter { $0 == .dismissTap }
             .withUnretained(self)
             .sink { owner, _ in
@@ -129,10 +145,11 @@ final class UserOffersViewModel: ViewModelType, ObservableObject {
         Just(())
             .flatMapLatest(with: self) { owner, _ in
                 owner.offerService
-                    .getStoredOfferIds(fromType: owner.offerType == .buy ? .buy : .sell)
+                    .getStoredOffers(fromType: owner.offerType == .buy ? .buy : .sell, fromSource: .created)
                     .track(activity: owner.primaryActivity)
                     .materialize()
                     .compactMap(\.value)
+                    .map { $0.map(\.offerId) }
             }
             .filter { !$0.isEmpty }
             .flatMapLatest(with: self) { owner, ids in

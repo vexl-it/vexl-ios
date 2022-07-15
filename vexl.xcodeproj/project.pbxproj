@@ -238,7 +238,6 @@
 		F188622128105A1200659786 /* UserOffersViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F188622028105A1200659786 /* UserOffersViewModel.swift */; };
 		F188622328105A2000659786 /* UserOffersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F188622228105A2000659786 /* UserOffersView.swift */; };
 		F18862472811550C00659786 /* CreateOfferCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18862462811550C00659786 /* CreateOfferCoordinator.swift */; };
-		F18862492811551700659786 /* CreateOfferViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18862482811551700659786 /* CreateOfferViewModel.swift */; };
 		F188624B2811551E00659786 /* CreateOfferView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F188624A2811551E00659786 /* CreateOfferView.swift */; };
 		F18862512811710100659786 /* OfferStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18862502811710100659786 /* OfferStatusView.swift */; };
 		F1886255281185E900659786 /* OfferFeePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1886254281185E900659786 /* OfferFeePickerView.swift */; };
@@ -267,6 +266,10 @@
 		F1B30107287A40DC00C86F83 /* ChatIdentityActionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B30106287A40DC00C86F83 /* ChatIdentityActionSheet.swift */; };
 		F1B3010A287A464600C86F83 /* ChatActionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B30109287A464600C86F83 /* ChatActionViewModel.swift */; };
 		F1B3010F287A53C900C86F83 /* ChatConversationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B3010E287A53C900C86F83 /* ChatConversationViewModel.swift */; };
+		F1B30111287C770D00C86F83 /* OfferTriggerActiveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B30110287C770D00C86F83 /* OfferTriggerActiveView.swift */; };
+		F1B30113287CA5BB00C86F83 /* CreateOfferViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18862482811551700659786 /* CreateOfferViewModel.swift */; };
+		F1B30116287CBD5400C86F83 /* OfferCreateViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B30115287CBD5400C86F83 /* OfferCreateViewModel.swift */; };
+		F1B30118287CC15D00C86F83 /* OfferEditViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B30117287CC15C00C86F83 /* OfferEditViewModel.swift */; };
 		F1B5321C28202B36009D4E0C /* OfferItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B5321B28202B36009D4E0C /* OfferItemView.swift */; };
 		F1B5FCBC27C67DB00018729B /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B5FCBB27C67DB00018729B /* WelcomeViewController.swift */; };
 		F1B5FCBE27C68EA70018729B /* OnboardingView+BottomButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B5FCBD27C68EA70018729B /* OnboardingView+BottomButtons.swift */; };
@@ -596,7 +599,6 @@
 		F188622028105A1200659786 /* UserOffersViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserOffersViewModel.swift; sourceTree = "<group>"; };
 		F188622228105A2000659786 /* UserOffersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserOffersView.swift; sourceTree = "<group>"; };
 		F18862462811550C00659786 /* CreateOfferCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateOfferCoordinator.swift; sourceTree = "<group>"; };
-		F18862482811551700659786 /* CreateOfferViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateOfferViewModel.swift; sourceTree = "<group>"; };
 		F188624A2811551E00659786 /* CreateOfferView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateOfferView.swift; sourceTree = "<group>"; };
 		F18862502811710100659786 /* OfferStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferStatusView.swift; sourceTree = "<group>"; };
 		F1886254281185E900659786 /* OfferFeePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferFeePickerView.swift; sourceTree = "<group>"; };
@@ -625,6 +627,10 @@
 		F1B30106287A40DC00C86F83 /* ChatIdentityActionSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatIdentityActionSheet.swift; sourceTree = "<group>"; };
 		F1B30109287A464600C86F83 /* ChatActionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatActionViewModel.swift; sourceTree = "<group>"; };
 		F1B3010E287A53C900C86F83 /* ChatConversationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatConversationViewModel.swift; sourceTree = "<group>"; };
+		F1B30110287C770D00C86F83 /* OfferTriggerActiveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferTriggerActiveView.swift; sourceTree = "<group>"; };
+		F18862482811551700659786 /* CreateOfferViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateOfferViewModel.swift; sourceTree = "<group>"; };
+		F1B30115287CBD5400C86F83 /* OfferCreateViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferCreateViewModel.swift; sourceTree = "<group>"; };
+		F1B30117287CC15C00C86F83 /* OfferEditViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferEditViewModel.swift; sourceTree = "<group>"; };
 		F1B5321B28202B36009D4E0C /* OfferItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferItemView.swift; sourceTree = "<group>"; };
 		F1B5FCBB27C67DB00018729B /* WelcomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeViewController.swift; sourceTree = "<group>"; };
 		F1B5FCBD27C68EA70018729B /* OnboardingView+BottomButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OnboardingView+BottomButtons.swift"; sourceTree = "<group>"; };
@@ -1464,6 +1470,7 @@
 			isa = PBXGroup;
 			children = (
 				F1483CBE2856CEBE0054B7A2 /* OfferTriggerDeleteView.swift */,
+				F1B30110287C770D00C86F83 /* OfferTriggerActiveView.swift */,
 			);
 			path = Triggers;
 			sourceTree = "<group>";
@@ -1640,9 +1647,10 @@
 		F1886245281154FF00659786 /* CreateOffer */ = {
 			isa = PBXGroup;
 			children = (
+				F1B365A82880C61F0069788D /* ViewModels */,
 				F188624F281170F200659786 /* Components */,
-				F18862462811550C00659786 /* CreateOfferCoordinator.swift */,
 				F18862482811551700659786 /* CreateOfferViewModel.swift */,
+				F18862462811550C00659786 /* CreateOfferCoordinator.swift */,
 				F188624A2811551E00659786 /* CreateOfferView.swift */,
 			);
 			path = CreateOffer;
@@ -1757,6 +1765,15 @@
 				F1B3010E287A53C900C86F83 /* ChatConversationViewModel.swift */,
 			);
 			path = Conversation;
+			sourceTree = "<group>";
+		};
+		F1B365A82880C61F0069788D /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				F1B30115287CBD5400C86F83 /* OfferCreateViewModel.swift */,
+				F1B30117287CC15C00C86F83 /* OfferEditViewModel.swift */,
+			);
+			path = ViewModels;
 			sourceTree = "<group>";
 		};
 		F1B5321D2820976E009D4E0C /* UserOffers */ = {
@@ -2243,6 +2260,7 @@
 				B08F392227AE7112008B344F /* UIColor+.swift in Sources */,
 				B08F396A27AE7112008B344F /* URLRequest+.swift in Sources */,
 				F188627728169A3700659786 /* MarketplaceViewModel.swift in Sources */,
+				F1B30111287C770D00C86F83 /* OfferTriggerActiveView.swift in Sources */,
 				F148564C284FD452003213D7 /* ChatView.swift in Sources */,
 				F175AB9727ECC159000DAB15 /* SecurityHeader.swift in Sources */,
 				F12A14DC27D677340096543E /* RegisterContactsCoordinator.swift in Sources */,
@@ -2283,7 +2301,6 @@
 				B0EEE11A27B14D3D0097031E /* WelcomeView.swift in Sources */,
 				F1BFA959280223BD00F4E745 /* UserProfileCoordinator.swift in Sources */,
 				F1BDC97A285BF9D600F86581 /* ChatExpandedImageCoordinator.swift in Sources */,
-				F18862492811551700659786 /* CreateOfferViewModel.swift in Sources */,
 				B007A75C287226DC00CFA5C9 /* ManagedMessage+.swift in Sources */,
 				F1F5F19D283FE53A00968366 /* ChatRequestViewModel.swift in Sources */,
 				F148563E284FD451003213D7 /* ChatViewModel.swift in Sources */,
@@ -2318,6 +2335,7 @@
 				F11441CF284681EC00307D39 /* ExpandingTextView.swift in Sources */,
 				B01C01ED2862F06D00A29F85 /* Currency.swift in Sources */,
 				B007A74B2871EB2900CFA5C9 /* UserRepository.swift in Sources */,
+				F1B30116287CBD5400C86F83 /* OfferCreateViewModel.swift in Sources */,
 				B0F206F127AE94C400A44E72 /* InitialScreenManager.swift in Sources */,
 				F12A14E027D6774C0096543E /* RegisterContactsView.swift in Sources */,
 				4F481E76284767480051D3B9 /* ChatRouter.swift in Sources */,
@@ -2394,6 +2412,7 @@
 				F1D204EF2862AECB006A5671 /* ChatStartTextView.swift in Sources */,
 				B08F396427AE7112008B344F /* UserError.swift in Sources */,
 				B007A7942878285800CFA5C9 /* ManagedInbox+.swift in Sources */,
+				F1B30118287CC15D00C86F83 /* OfferEditViewModel.swift in Sources */,
 				F1A9453727F686D1009B5AE3 /* PhoneVerification.swift in Sources */,
 				F1B93F0428777230008DAA90 /* ChatIdentityRevealView.swift in Sources */,
 				F1D2011A28292868006DF4AB /* TabBarCoordinator.swift in Sources */,
@@ -2421,6 +2440,7 @@
 				4FD8E3E02821B922003B165E /* CoinData.swift in Sources */,
 				F1042BA227BEADB70048C2F0 /* WelcomeView+Agreement.swift in Sources */,
 				B08F394D27AE7112008B344F /* AppCoordinator.swift in Sources */,
+				F1B30113287CA5BB00C86F83 /* CreateOfferViewModel.swift in Sources */,
 				F13B2671281D4AB00011F2FB /* ContactKey.swift in Sources */,
 				F1D20128282AB6EF006DF4AB /* CryptocurrencyValueManager.swift in Sources */,
 				B007A7672873520800CFA5C9 /* PersistenceManagerAssembly.swift in Sources */,

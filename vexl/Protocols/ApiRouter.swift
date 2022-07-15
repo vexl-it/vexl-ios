@@ -32,6 +32,7 @@ protocol ApiRouter: URLRequestConvertible {
     var rootKey: String { get }
     var additionalHeaders: [Header] { get }
     var url: String { get }
+    var useURLEncoding: Bool { get }
 }
 
 extension ApiRouter {
@@ -52,6 +53,7 @@ extension ApiRouter {
     var additionalHeaders: [Header] { [] }
     var rootKey: String { "data" }
     var url: String { Constants.API.baseURLString }
+    var useURLEncoding: Bool { false }
 
     public func asURL() throws -> URL {
         let urlPath = "\(url)\(path)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
@@ -67,7 +69,7 @@ extension ApiRouter {
 
         // Parameters encoding
         do {
-            if method == .get {
+            if method == .get || useURLEncoding {
                 urlRequest = try URLEncoding.default.encode(urlRequest, with: parameters)
             } else {
                 urlRequest.httpBody = try JSONSerialization.data(withJSONObject: parameters, options: [])

@@ -35,7 +35,9 @@ struct UserOffersView: View {
                     ForEach(viewModel.offerItems) { offerData in
                         OfferItemView(
                             data: offerData,
-                            editOfferAction: { print("handle edit offer") }
+                            editOfferAction: {
+                                viewModel.action.send(.editOfferTap(id: offerData.id))
+                            }
                         )
                     }
                 }

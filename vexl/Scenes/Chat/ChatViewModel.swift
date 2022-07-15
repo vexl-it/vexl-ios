@@ -161,7 +161,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
 
     private func setupOfferBindings() {
         offerService
-            .getStoredOffers()
+            .getStoredOffers(fromType: .all, fromSource: .all)
             .materialize()
             .compactMap(\.value)
             .withUnretained(self)
