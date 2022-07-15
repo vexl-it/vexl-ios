@@ -63,19 +63,20 @@ final class ContactsService: BaseService, ContactsServiceType {
                         hasFacebookAccount: Bool,
                         pageLimit: Int?) -> AnyPublisher<UserContacts, Error> {
 
-        let facebookContacts: AnyPublisher<Paged<ContactKey>, Error>
-        let phoneContacts = getContacts(fromFacebook: false, friendLevel: friendLevel, pageLimit: pageLimit)
-
-        if hasFacebookAccount {
-            facebookContacts = getContacts(fromFacebook: true, friendLevel: friendLevel, pageLimit: pageLimit)
-        } else {
-            facebookContacts = Future { promise in
-                promise(.success(.empty))
-            }
+        getContacts(fromFacebook: false, friendLevel: friendLevel, pageLimit: pageLimit)
             .eraseToAnyPublisher()
-        }
-
-        return Publishers.Zip(phoneContacts, facebookContacts)
+            .withUnretained(self)
+            .flatMap { owner, contacts -> AnyPublisher<(Paged<ContactKey>, Paged<ContactKey>), Error> in
+                if hasFacebookAccount {
+                    return owner.getContacts(fromFacebook: true, friendLevel: friendLevel, pageLimit: pageLimit)
+                        .map { (contacts, $0) }
+                        .eraseToAnyPublisher()
+                } else {
+                    return Just((contacts, .empty))
+                        .setFailureType(to: Error.self)
+                        .eraseToAnyPublisher()
+                }
+            }
             .map { UserContacts(phone: $0.0, facebook: $0.1) }
             .eraseToAnyPublisher()
     }

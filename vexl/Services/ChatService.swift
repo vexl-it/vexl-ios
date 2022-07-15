@@ -12,7 +12,7 @@ protocol ChatServiceType {
 
     // MARK: - Create inbox and request messaging permission
 
-    func createInbox(offerKey: ECCKeys, pushToken: String) -> AnyPublisher<Void, Error>
+    func createInbox(publicKey: String, pushToken: String) -> AnyPublisher<Void, Error>
     func requestCommunication(inboxPublicKey: String, message: String) -> AnyPublisher<Void, Error>
     func communicationConfirmation(confirmation: Bool,
                                    message: ParsedChatMessage?,
@@ -54,8 +54,8 @@ final class ChatService: BaseService, ChatServiceType {
 
     // MARK: - Create inbox and request messaging permission
 
-    func createInbox(offerKey: ECCKeys, pushToken: String) -> AnyPublisher<Void, Error> {
-        request(endpoint: ChatRouter.createInbox(offerPublicKey: offerKey.publicKey, pushToken: pushToken))
+    func createInbox(publicKey: String, pushToken: String) -> AnyPublisher<Void, Error> {
+        request(endpoint: ChatRouter.createInbox(publicKey: publicKey, pushToken: pushToken))
     }
 
     func requestCommunication(inboxPublicKey: String, message: String) -> AnyPublisher<Void, Error> {

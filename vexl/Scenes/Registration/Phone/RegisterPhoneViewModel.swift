@@ -286,7 +286,7 @@ final class RegisterPhoneViewModel: ViewModelType {
         let createInbox = createUser
             .flatMapLatest(with: self) { owner, challengeResponse in
                 owner.chatService
-                    .createInbox(offerKey: owner.newKeys,
+                    .createInbox(publicKey: owner.newKeys.publicKey,
                                  pushToken: Constants.pushNotificationToken)
                     .track(activity: owner.primaryActivity)
                     .materialize()

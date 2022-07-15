@@ -31,7 +31,7 @@ struct CreateOfferView: View {
                     OfferDescriptionView(text: $viewModel.description)
                         .padding(.bottom, Appearance.GridGuide.padding)
 
-                    OfferAmountRangeView(currencySymbol: viewModel.currencySymbol,
+                    OfferAmountRangeView(currencySymbol: viewModel.currency.sign,
                                          currentValue: $viewModel.currentAmountRange,
                                          sliderBounds: viewModel.amountRange)
 

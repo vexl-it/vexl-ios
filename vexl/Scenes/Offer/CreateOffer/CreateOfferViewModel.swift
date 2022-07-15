@@ -49,8 +49,8 @@ final class CreateOfferViewModel: ViewModelType, ObservableObject {
 
     @Published var description: String = ""
 
-    @Published var amountRange: ClosedRange<Int> = 0...0
-    @Published var currentAmountRange: ClosedRange<Int> = 0...0
+    @Published var amountRange: ClosedRange<Int> = Constants.OfferInitialData.minOffer...Constants.OfferInitialData.maxOffer
+    @Published var currentAmountRange: ClosedRange<Int> = Constants.OfferInitialData.minOffer...Constants.OfferInitialData.maxOffer
 
     @Published var selectedFeeOption: OfferFeeOption = .withoutFee
     @Published var feeAmount: Double = 0
@@ -62,13 +62,15 @@ final class CreateOfferViewModel: ViewModelType, ObservableObject {
     @Published var selectedPaymentMethodOptions: [OfferPaymentMethodOption] = []
 
     @Published var selectedBTCOption: [OfferAdvancedBTCOption] = []
-    @Published var selectedFriendDegreeOption: OfferAdvancedFriendDegreeOption = .firstDegree
+    @Published var selectedFriendDegreeOption: OfferFriendDegree = .firstDegree
 
     @Published var deleteTimeUnit: OfferTriggerDeleteTimeUnit = .days
     @Published var deleteTime: String = Constants.defaultDeleteTime
 
-    @Published var state: State = .initial
+    @Published var state: State = .loaded
     @Published var error: Error?
+
+    @Published var currency: Currency = Constants.OfferInitialData.currency
 
     // MARK: - Coordinator Bindings
 
@@ -144,9 +146,8 @@ final class CreateOfferViewModel: ViewModelType, ObservableObject {
         }
     }
 
-    var minFee: Double = 0
-    var maxFee: Double = 0
-    var currencySymbol = ""
+    var minFee: Double = Constants.OfferInitialData.minFee
+    var maxFee: Double = Constants.OfferInitialData.maxFee
     let offerKey = ECCKeys()
     let offerType: OfferType
 
@@ -157,7 +158,6 @@ final class CreateOfferViewModel: ViewModelType, ObservableObject {
         setupActivity()
         setupDataBindings()
         setupBindings()
-        setupCreateOfferBinding()
     }
 
     private func setupActivity() {
@@ -181,21 +181,6 @@ final class CreateOfferViewModel: ViewModelType, ObservableObject {
     // MARK: - Bindings
 
     private func setupDataBindings() {
-        offerService
-            .getInitialOfferData()
-            .track(activity: primaryActivity)
-            .materialize()
-            .compactMap(\.value)
-            .withUnretained(self)
-            .sink { owner, data in
-                owner.state = .loaded
-                owner.amountRange = data.minOffer...data.maxOffer
-                owner.currentAmountRange = data.minOffer...data.maxOffer
-                owner.minFee = data.minFee
-                owner.maxFee = data.maxFee
-                owner.currencySymbol = data.currencySymbol
-            }
-            .store(in: cancelBag)
     }
 
     private func setupBindings() {

@@ -136,7 +136,7 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
     }
 
     private func setupDataBindings() {
-        let encryptedOffers: AnyPublisher<[EncryptedOffer], Never> = Publishers.Merge(refresh, Just(()))
+        let encryptedOffers: AnyPublisher<[OfferPayload], Never> = Publishers.Merge(refresh, Just(()))
             .flatMapLatest(with: self) { owner, _ in
                 owner.offerService
                     .getStoredOfferKeys(fromSource: .created)
@@ -148,7 +148,7 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
             .handleEvents(receiveOutput: { owner, keys in
                 owner.userOfferKeys = keys
             })
-            .flatMapLatest(with: self) { owner, _ -> AnyPublisher<[EncryptedOffer], Never> in
+            .flatMapLatest(with: self) { owner, _ -> AnyPublisher<[OfferPayload], Never> in
                 owner.offerService
                     .getOffer(pageLimit: Constants.pageMaxLimit)
                     .track(activity: owner.primaryActivity)
