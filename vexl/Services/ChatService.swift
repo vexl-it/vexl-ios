@@ -49,7 +49,8 @@ protocol ChatServiceType {
 
 final class ChatService: BaseService, ChatServiceType {
 
-    @Inject private var cryptoService: CryptoServiceType
+    // TODO: [vexl chat encryption] Uncomment this when enabling encryption on chat service
+//    @Inject private var cryptoService: CryptoServiceType
     @Inject private var localStorageService: LocalStorageServiceType
 
     // MARK: - Create inbox and request messaging permission
