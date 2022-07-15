@@ -19,6 +19,11 @@ final class RepositoryAssembly: Assembly {
         }
         .inObjectScope(.container)
 
+        container.register(OfferRepositoryType.self) { _ in
+            OfferRepository()
+        }
+        .inObjectScope(.container)
+
         container.register(ChatRepositoryType.self) { _ in
             ChatRepository()
         }

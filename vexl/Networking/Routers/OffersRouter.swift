@@ -9,7 +9,7 @@ import Foundation
 import Alamofire
 
 enum OffersRouter: ApiRouter {
-    case createOffer(offer: [EncryptedOffer], expiration: TimeInterval)
+    case createOffer(offerPayloads: [OfferPayload], expiration: TimeInterval)
     case getOffers(pageLimit: Int?)
     case getUserOffers(offerIds: [String])
     case deleteOffers(offerIds: [String])

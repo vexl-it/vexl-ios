@@ -16,6 +16,7 @@ protocol UserRepositoryType {
     var user: ManagedUser? { get }
 
     func createNewUser(newKeys: ECCKeys, signature: String?, hash: String?) -> AnyPublisher<ManagedUser, Error>
+    func getUser(for context: NSManagedObjectContext) -> ManagedUser?
     func update(with userResponse: User, avatar: Data?) -> AnyPublisher<ManagedUser, Error>
 }
 
@@ -64,6 +65,14 @@ final class UserRepository: UserRepositoryType {
             return user
         }
         .eraseToAnyPublisher()
+    }
+
+    func getUser(for context: NSManagedObjectContext) -> ManagedUser? {
+        guard let objId = user?.objectID,
+              let user = context.object(with: objId) as? ManagedUser else {
+            return nil
+        }
+        return user
     }
 
     func update(with userResponse: User, avatar: Data?) -> AnyPublisher<ManagedUser, Error> {

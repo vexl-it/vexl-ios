@@ -114,10 +114,54 @@ final class SyncQueueManager: SyncQueueManagerType {
     }
 
     private func uploadOffer(offer: ManagedOffer, item: ManagedSyncItem) -> AnyPublisher<Void, Error> {
+        guard let friendLevel = offer.friendLevel,
+              let expiration = offer.expirationDate?.timeIntervalSince1970,
+              let userPublicKey = userRepository.user?.profile?.keyPair?.publicKey
+        else {
+            return Fail(error: PersistenceError.insufitientData).eraseToAnyPublisher()
+        }
 
+        let context = $queue.context
+
+        let createOffer = offerService
+            .createOffer(offer: offer, userPublicKey: userPublicKey, fiendLevel: friendLevel.convertToContactFriendLevel, expiration: expiration)
+
+        let updatePersistence = createOffer
+            .flatMapLatest(with: self) { owner, offerPayload -> AnyPublisher<Void, Error> in
+                owner.persistence
+                    .update(context: owner.$queue.context) {
+                        offer.id = offerPayload.offerId
+                        return offer
+                    }
+                    .asVoid()
+                    .eraseToAnyPublisher()
+            }
+            .eraseToAnyPublisher()
+
+        let removeSyncItem: AnyPublisher<Void, Error> = updatePersistence
+            .flatMapLatest { [persistence] _ -> AnyPublisher<Void, Error> in
+                persistence.delete(context: context, object: item)
+            }
+            .eraseToAnyPublisher()
+
+        return removeSyncItem
     }
 
     private func uploadInbox(inbox: ManagedInbox, item: ManagedSyncItem) -> AnyPublisher<Void, Error> {
-        
+        guard let publicKey = inbox.keyPair?.publicKey else {
+            return Fail(error: PersistenceError.insufitientData).eraseToAnyPublisher()
+        }
+
+        let context = $queue.context
+
+        return chatService
+            .createInbox(
+                publicKey: publicKey,
+                pushToken: Constants.pushNotificationToken
+            )
+            .flatMap { [persistence] _ -> AnyPublisher<Void, Error> in
+                persistence.delete(context: context, object: item)
+            }
+            .eraseToAnyPublisher()
     }
 }

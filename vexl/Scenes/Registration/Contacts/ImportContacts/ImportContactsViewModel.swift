@@ -19,7 +19,7 @@ class ImportContactsViewModel: ObservableObject {
     @Inject var facebookManager: FacebookManagerType
     @Inject var contactsService: ContactsServiceType
     @Inject var userService: UserServiceType
-    @Inject var cryptoService: CryptoServiceType
+    @Inject var encryptionService: EncryptionServiceType
 
     // MARK: - View State
 
@@ -156,18 +156,17 @@ class ImportContactsViewModel: ObservableObject {
             .withUnretained(self)
             .filter { $0.0.currentState == .content && $0.0.hasSelectedItem && $0.1 == .importContacts }
             .map(\.0.selectedItems)
-            .withUnretained(self)
-            .flatMap { owner, contacts in
-                owner.hashContacts(contacts: contacts)
-                    .eraseToAnyPublisher()
+            .flatMap { [encryptionService] contacts in
+                encryptionService
+                    .hashContacts(contacts: contacts)
             }
             .share()
             .eraseToAnyPublisher()
 
         let importContact = hashContacts
             .withUnretained(self)
-            .flatMap { owner, contacts in
-                owner.contactsService
+            .flatMap { owner, contacts -> AnyPublisher<ContactsImported, Never> in
+                return owner.contactsService
                     .importContacts(contacts.map(\.1))
                     .track(activity: owner.primaryActivity)
                     .materialize()
@@ -196,30 +195,6 @@ class ImportContactsViewModel: ObservableObject {
                 owner.completed.send(())
             })
             .store(in: cancelBag)
-    }
-
-    private func hashContacts(contacts: [ContactInformation]) -> AnyPublisher<[(ContactInformation, String)], Error> {
-        let phoneNumber = Formatters.phoneNumberFormatter
-        let countryCode = phoneNumber.countryCode(for: Locale.current.regionCode ?? "")
-        return contacts
-            .publisher
-            .withUnretained(self)
-            .flatMap { owner, contact -> AnyPublisher<(ContactInformation, String), Error> in
-                let identifier = contact.sourceIdentifier
-                let trimmedIdentifier = identifier.removeWhitespaces()
-                let formattedIdentifier: String = {
-                    if let countryCode = countryCode, !trimmedIdentifier.contains("+") {
-                        return "\(countryCode)\(trimmedIdentifier)"
-                    }
-                    return trimmedIdentifier
-                }()
-                return owner.cryptoService
-                    .hashHMAC(password: Constants.contactsHashingPassword, message: formattedIdentifier)
-                    .map { hash in (contact, hash) }
-                    .eraseToAnyPublisher()
-            }
-            .collect()
-            .eraseToAnyPublisher()
     }
 
     private func select(_ isSelected: Bool, item: ContactInformation) {

@@ -191,7 +191,7 @@ struct Offer {
 
     // MARK: - Helper static methods for creating list of offers
 
-    static func createOffers(from encryptedOffers: [EncryptedOffer], withKey key: ECCKeys, source: OfferSource) -> [Offer] {
+    static func createOffers(from encryptedOffers: [OfferPayload], withKey key: ECCKeys, source: OfferSource) -> [Offer] {
         var offers: [Offer] = []
         for encryptedOffer in encryptedOffers {
             if let offer = try? Offer(encryptedOffer: encryptedOffer, keys: key, source: source) {
