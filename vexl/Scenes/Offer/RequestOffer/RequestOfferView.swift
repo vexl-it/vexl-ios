@@ -168,15 +168,16 @@ extension VerticalAlignment {
     static let bottomTextAndLoading = VerticalAlignment(BottomTextAndLoading.self)
 }
 
-#if DEBUG || DEVEL
-struct RequestOfferViewPreview: PreviewProvider {
-    static var previews: some View {
-        let viewModel: RequestOfferViewModel = {
-            let vm = RequestOfferViewModel(offer: .stub)
-            vm.state = .requesting
-            return vm
-        }()
-        return RequestOfferView(viewModel: viewModel)
-    }
-}
-#endif
+// TODO: [offer refactor] scene preview
+//#if DEBUG || DEVEL
+//struct RequestOfferViewPreview: PreviewProvider {
+//    static var previews: some View {
+//        let viewModel: RequestOfferViewModel = {
+//            let vm = RequestOfferViewModel(offer: .stub)
+//            vm.state = .requesting
+//            return vm
+//        }()
+//        return RequestOfferView(viewModel: viewModel)
+//    }
+//}
+//#endif

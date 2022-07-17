@@ -38,34 +38,35 @@ struct MarketplaceFeedView: View {
     }
 }
 
-#if DEBUG || DEVEL
-struct MarketplaceFeedViewViewPreview: PreviewProvider {
-    static var previews: some View {
-        let data = OfferDetailViewData(offer: .stub, isRequested: false)
-        let data2 = OfferDetailViewData(offer: .stub2, isRequested: true)
-
-        return ZStack {
-            Color.black
-                .edgesIgnoringSafeArea(.all)
-
-            VStack {
-                MarketplaceFeedView(data: data,
-                                    displayFooter: false,
-                                    detailAction: { _ in },
-                                    requestAction: { _ in })
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 300)
-                    .background(Color.black)
-
-                MarketplaceFeedView(data: data2,
-                                    displayFooter: true,
-                                    detailAction: { _ in },
-                                    requestAction: { _ in })
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 300)
-                    .background(Color.black)
-            }
-        }
-    }
-}
-#endif
+// TODO: [offer refactor] scene preview
+//#if DEBUG || DEVEL
+//struct MarketplaceFeedViewViewPreview: PreviewProvider {
+//    static var previews: some View {
+//        let data = OfferDetailViewData(offer: .stub, isRequested: false)
+//        let data2 = OfferDetailViewData(offer: .stub2, isRequested: true)
+//
+//        return ZStack {
+//            Color.black
+//                .edgesIgnoringSafeArea(.all)
+//
+//            VStack {
+//                MarketplaceFeedView(data: data,
+//                                    displayFooter: false,
+//                                    detailAction: { _ in },
+//                                    requestAction: { _ in })
+//                    .frame(maxWidth: .infinity)
+//                    .frame(height: 300)
+//                    .background(Color.black)
+//
+//                MarketplaceFeedView(data: data2,
+//                                    displayFooter: true,
+//                                    detailAction: { _ in },
+//                                    requestAction: { _ in })
+//                    .frame(maxWidth: .infinity)
+//                    .frame(height: 300)
+//                    .background(Color.black)
+//            }
+//        }
+//    }
+//}
+//#endif

@@ -159,20 +159,21 @@ extension OfferInformationDetailView {
     }
 }
 
-#if DEBUG || DEVEL
-struct MarketplaceFeedDetailViewPreview: PreviewProvider {
-    static var previews: some View {
-        ZStack {
-            Color.black
-                .edgesIgnoringSafeArea(.all)
-
-            OfferInformationDetailView(
-                data: .stub,
-                useInnerPadding: false,
-                showBackground: true
-            )
-            .frame(height: 250)
-        }
-    }
-}
-#endif
+// TODO: [offer refactor] scene preview
+//#if DEBUG || DEVEL
+//struct MarketplaceFeedDetailViewPreview: PreviewProvider {
+//    static var previews: some View {
+//        ZStack {
+//            Color.black
+//                .edgesIgnoringSafeArea(.all)
+//
+//            OfferInformationDetailView(
+//                data: .stub,
+//                useInnerPadding: false,
+//                showBackground: true
+//            )
+//            .frame(height: 250)
+//        }
+//    }
+//}
+//#endif

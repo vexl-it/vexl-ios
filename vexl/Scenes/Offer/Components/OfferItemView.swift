@@ -52,17 +52,18 @@ struct OfferItemView: View {
     }
 }
 
-#if DEBUG || DEVEL
-struct OfferItemViewPreview: PreviewProvider {
-    static var previews: some View {
-        let data = OfferDetailViewData(offer: .stub, isRequested: true)
-        ZStack {
-            Color.black
-                .edgesIgnoringSafeArea(.all)
-
-            OfferItemView(data: data, editOfferAction: {})
-                .frame(height: 250)
-        }
-    }
-}
-#endif
+// TODO: [offer refactor] scene preview
+//#if DEBUG || DEVEL
+//struct OfferItemViewPreview: PreviewProvider {
+//    static var previews: some View {
+//        let data = OfferDetailViewData(offer: .stub, isRequested: true)
+//        ZStack {
+//            Color.black
+//                .edgesIgnoringSafeArea(.all)
+//
+//            OfferItemView(data: data, editOfferAction: {})
+//                .frame(height: 250)
+//        }
+//    }
+//}
+//#endif
