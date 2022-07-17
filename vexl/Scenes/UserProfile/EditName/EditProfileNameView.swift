@@ -14,15 +14,11 @@ struct EditProfileNameView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: Appearance.GridGuide.padding) {
-            HeaderTitleView(title: "Edit name",
+            HeaderTitleView(title: L.userProfileEditNameTitle(),
                             showsSeparator: false,
                             dismissAction: {
                 viewModel.action.send(.dismissTap)
             })
-
-            Text("qwe123123")
-                .textStyle(.description)
-                .foregroundColor(Appearance.Colors.gray4)
 
             HStack {
                 TextField("", text: $viewModel.currentName)
@@ -40,13 +36,13 @@ struct EditProfileNameView: View {
             .background(Appearance.Colors.gray1)
             .cornerRadius(Appearance.GridGuide.buttonCorner)
 
-            LargeSolidButton(title: L.continue(),
+            LargeSolidButton(title: L.userProfileEditNameAction(),
                              font: Appearance.TextStyle.paragraphBold.font.asFont,
                              style: .main,
                              isFullWidth: true,
                              isEnabled: .constant(true),
                              action: {
-                print("1234")
+                viewModel.action.send(.updateName)
             })
                 .frame(maxHeight: .infinity, alignment: .bottom)
         }

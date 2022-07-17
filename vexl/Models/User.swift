@@ -10,7 +10,7 @@ import Foundation
 
 struct User: Codable {
     let userId: Int
-    let username: String
+    var username: String
     let avatar: String?
     let publicKey: String
 
@@ -24,4 +24,10 @@ struct User: Codable {
     }
 
     var avatarImage: Data?
+}
+
+struct EditUser: Decodable {
+    let username: String
+    let avatar: String?
+    let publicKey: String
 }

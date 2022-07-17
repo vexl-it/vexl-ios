@@ -84,7 +84,7 @@ final class UserProfileCoordinator: BaseCoordinator<Void> {
 
 extension UserProfileCoordinator {
     private func presentEditName(router: Router) -> CoordinatingResult<RouterResult<Void>> {
-        coordinate(to: EditProfileNameCoordiantor(router: router, animated: true))
+        coordinate(to: EditProfileNameCoordinator(router: router, animated: true))
         .flatMap { result -> CoordinatingResult<RouterResult<Void>> in
             guard result != .dismissedByRouter else {
                 return Just(result).eraseToAnyPublisher()

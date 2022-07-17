@@ -37,7 +37,7 @@ enum UserRouter: ApiRouter {
 
     var additionalHeaders: [Header] {
         switch self {
-        case .createUser, .validateUsername, .facebookSignature, .bitcoin, .deleteUser, .bitcoinChart:
+        case .createUser, .validateUsername, .facebookSignature, .bitcoin, .deleteUser, .bitcoinChart, .updateUser:
             return securityHeader
         default:
             return []
@@ -46,9 +46,9 @@ enum UserRouter: ApiRouter {
 
     var path: String {
         switch self {
-        case .me, .deleteUser:
+        case .me, .deleteUser, .updateUser:
             return "user/me"
-        case .createUser, .updateUser:
+        case .createUser:
             return "user"
         case .confirmPhone:
             return "user/confirmation/phone"

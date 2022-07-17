@@ -24,8 +24,10 @@ protocol AuthenticationManagerType {
     var currentUser: User? { get }
     var currentAuthenticationState: AuthenticationManager.AuthenticationState { get }
     var authenticationStatePublisher: AnyPublisher<AuthenticationManager.AuthenticationState, Never> { get }
+    var updatedCurrentUser: AnyPublisher<User?, Never> { get }
 
     func setUser(_ user: User, withAvatar avatar: Data?)
+    func updateUser(_ user: EditUser)
     func setFacebookUser(id: String?, token: String?)
     func logoutUser()
 }
@@ -70,6 +72,12 @@ final class AuthenticationManager: AuthenticationManagerType, TokenHandlerType {
         $authenticationState.eraseToAnyPublisher()
     }
 
+    var updatedCurrentUser: AnyPublisher<User?, Never> {
+        updateCurrentUser
+            .eraseToAnyPublisher()
+    }
+
+    private let updateCurrentUser = PassthroughSubject<User?, Never>()
     private let cancelBag: CancelBag = .init()
     private let userDefaults: UserDefaults
 
@@ -100,6 +108,15 @@ final class AuthenticationManager: AuthenticationManagerType, TokenHandlerType {
         self.currentUser = user
         self.currentUser?.avatarImage = avatar
         saveUser()
+    }
+
+    func updateUser(_ user: EditUser) {
+        var newUser = self.currentUser
+        newUser?.username = user.username
+        newUser?.avatarImage = user.avatar?.dataFromBase64
+        self.currentUser = newUser
+        saveUser()
+        updateCurrentUser.send(newUser)
     }
 
     func setFacebookUser(id: String?, token: String?) {
