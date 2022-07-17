@@ -12,6 +12,7 @@ import Alamofire
 enum UserRouter: ApiRouter {
     case me
     case createUser(username: String, avatar: String?, imageExtension: String)
+    case updateUser(username: String, avatar: String?, imageExtension: String)
     case deleteUser
     case confirmPhone(phoneNumber: String)
     case validateCode(id: Int, code: String, key: String)
@@ -29,6 +30,8 @@ enum UserRouter: ApiRouter {
             return .post
         case .deleteUser:
             return .delete
+        case .updateUser:
+            return .put
         }
     }
 
@@ -45,7 +48,7 @@ enum UserRouter: ApiRouter {
         switch self {
         case .me, .deleteUser:
             return "user/me"
-        case .createUser:
+        case .createUser, .updateUser:
             return "user"
         case .confirmPhone:
             return "user/confirmation/phone"
@@ -68,7 +71,8 @@ enum UserRouter: ApiRouter {
         switch self {
         case .me, .facebookSignature, .bitcoin, .deleteUser:
             return [:]
-        case let .createUser(username, avatar, imageExtension):
+        case let .createUser(username, avatar, imageExtension),
+             let .updateUser(username, avatar, imageExtension):
             guard let avatar = avatar else {
                 return ["username": username]
             }

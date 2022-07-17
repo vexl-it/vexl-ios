@@ -66,6 +66,7 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
         case selectCurrency
         case donate
         case joinVexl
+        case editName
     }
 
     var route: CoordinatingSubject<Route> = .init()
@@ -136,6 +137,7 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
                 if case let .itemTap(option) = action { return option }
                 return nil
             }
+            .share()
 
         option
             .filter { $0 == .currency }
@@ -149,6 +151,14 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
             .withUnretained(self)
             .sink { owner, _ in
                 owner.logoutUser()
+            }
+            .store(in: cancelBag)
+
+        option
+            .filter { $0 == .editName }
+            .withUnretained(self)
+            .sink { owner, _ in
+                owner.route.send(.editName)
             }
             .store(in: cancelBag)
     }
