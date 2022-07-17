@@ -190,7 +190,6 @@
 		F13B2671281D4AB00011F2FB /* ContactKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = F13B2670281D4AB00011F2FB /* ContactKey.swift */; };
 		F13B2673281D81060011F2FB /* OfferPayload.swift in Sources */ = {isa = PBXBuildFile; fileRef = F13B2672281D81060011F2FB /* OfferPayload.swift */; };
 		F13B2675281EB23A0011F2FB /* ContactFriendLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F13B2674281EB2390011F2FB /* ContactFriendLevel.swift */; };
-		F13B2677281F43A10011F2FB /* Offer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F13B2676281F43A10011F2FB /* Offer.swift */; };
 		F13B2679281FC5A90011F2FB /* OfferLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F13B2678281FC5A90011F2FB /* OfferLocation.swift */; };
 		F1483CBF2856CEBE0054B7A2 /* OfferTriggerDeleteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1483CBE2856CEBE0054B7A2 /* OfferTriggerDeleteView.swift */; };
 		F1483CC2285A3E6F0054B7A2 /* ChatTextBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1483CC1285A3E6F0054B7A2 /* ChatTextBubbleView.swift */; };
@@ -281,7 +280,6 @@
 		F1B5FCD127C6F7EF0018729B /* RegisterPhoneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B5FCD027C6F7EF0018729B /* RegisterPhoneView.swift */; };
 		F1B5FCD627C703BF0018729B /* View+.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B5FCD527C703BF0018729B /* View+.swift */; };
 		F1B5FCD827C7040C0018729B /* RoundedCorners.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B5FCD727C7040C0018729B /* RoundedCorners.swift */; };
-		F1B93ED0286A2102008DAA90 /* StoredOffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B93ECF286A2102008DAA90 /* StoredOffer.swift */; };
 		F1B93ED3286D12C6008DAA90 /* OfferKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B93ED2286D12C6008DAA90 /* OfferKeys.swift */; };
 		F1B93ED5286D12D7008DAA90 /* OfferType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B93ED4286D12D7008DAA90 /* OfferType.swift */; };
 		F1B93ED7286D15D5008DAA90 /* OfferSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B93ED6286D15D5008DAA90 /* OfferSource.swift */; };
@@ -551,7 +549,6 @@
 		F13B2670281D4AB00011F2FB /* ContactKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactKey.swift; sourceTree = "<group>"; };
 		F13B2672281D81060011F2FB /* OfferPayload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferPayload.swift; sourceTree = "<group>"; };
 		F13B2674281EB2390011F2FB /* ContactFriendLevel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactFriendLevel.swift; sourceTree = "<group>"; };
-		F13B2676281F43A10011F2FB /* Offer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Offer.swift; sourceTree = "<group>"; };
 		F13B2678281FC5A90011F2FB /* OfferLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferLocation.swift; sourceTree = "<group>"; };
 		F1483CBE2856CEBE0054B7A2 /* OfferTriggerDeleteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferTriggerDeleteView.swift; sourceTree = "<group>"; };
 		F1483CC1285A3E6F0054B7A2 /* ChatTextBubbleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatTextBubbleView.swift; sourceTree = "<group>"; };
@@ -642,7 +639,6 @@
 		F1B5FCD027C6F7EF0018729B /* RegisterPhoneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterPhoneView.swift; sourceTree = "<group>"; };
 		F1B5FCD527C703BF0018729B /* View+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+.swift"; sourceTree = "<group>"; };
 		F1B5FCD727C7040C0018729B /* RoundedCorners.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedCorners.swift; sourceTree = "<group>"; };
-		F1B93ECF286A2102008DAA90 /* StoredOffer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoredOffer.swift; sourceTree = "<group>"; };
 		F1B93ED2286D12C6008DAA90 /* OfferKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferKeys.swift; sourceTree = "<group>"; };
 		F1B93ED4286D12D7008DAA90 /* OfferType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferType.swift; sourceTree = "<group>"; };
 		F1B93ED6286D15D5008DAA90 /* OfferSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferSource.swift; sourceTree = "<group>"; };
@@ -778,7 +774,6 @@
 			isa = PBXGroup;
 			children = (
 				4FBF620D283CE3FB00DDBE71 /* OfferFilter.swift */,
-				F13B2676281F43A10011F2FB /* Offer.swift */,
 				F1B93ED2286D12C6008DAA90 /* OfferKeys.swift */,
 				F1B93ED4286D12D7008DAA90 /* OfferType.swift */,
 				F1B93ED6286D15D5008DAA90 /* OfferSource.swift */,
@@ -1795,7 +1790,6 @@
 		F1B93ECE286A20F9008DAA90 /* Storage */ = {
 			isa = PBXGroup;
 			children = (
-				F1B93ECF286A2102008DAA90 /* StoredOffer.swift */,
 				F1B93EF82873791E008DAA90 /* StoredChatUser.swift */,
 			);
 			path = Storage;
@@ -2514,7 +2508,6 @@
 				F1485656284FD60D003213D7 /* InboxError.swift in Sources */,
 				4F700CBA2844B08B0085139F /* BitcoinView.swift in Sources */,
 				B08F394327AE7112008B344F /* Keychain+.swift in Sources */,
-				F13B2677281F43A10011F2FB /* Offer.swift in Sources */,
 				F11441CD284681EC00307D39 /* LargeLabelButton.swift in Sources */,
 				F175AB8727E4D5C8000DAB15 /* UIScreen+.swift in Sources */,
 				F18862472811550C00659786 /* CreateOfferCoordinator.swift in Sources */,
@@ -2523,7 +2516,6 @@
 				F11441D9284681EC00307D39 /* SingleOptionPickerView.swift in Sources */,
 				B007A7502872267400CFA5C9 /* ManagedOffer+.swift in Sources */,
 				F1F5F19B283FE53300968366 /* ChatRequestView.swift in Sources */,
-				F1B93ED0286A2102008DAA90 /* StoredOffer.swift in Sources */,
 				F11441E7284682B200307D39 /* ChatRequestOfferInformationView.swift in Sources */,
 				B08F399527AE7D29008B344F /* SplashScreenViewModel.swift in Sources */,
 				F11441CE284681EC00307D39 /* OffsetScrollView.swift in Sources */,
