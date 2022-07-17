@@ -23,7 +23,25 @@ struct EditProfileAvatarView: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
 
             if viewModel.isAvatarUpdated {
-                
+                HStack {
+                    LargeSolidButton(title: L.generalCancel(),
+                                     font: Appearance.TextStyle.paragraphBold.font.asFont,
+                                     style: .secondary,
+                                     isFullWidth: true,
+                                     isEnabled: .constant(true),
+                                     action: {
+                        viewModel.action.send(.cancel)
+                    })
+
+                    LargeSolidButton(title: L.continue(),
+                                     font: Appearance.TextStyle.paragraphBold.font.asFont,
+                                     style: .main,
+                                     isFullWidth: true,
+                                     isEnabled: .constant(true),
+                                     action: {
+                        viewModel.action.send(.updateAvatar)
+                    })
+                }
             } else {
                 LargeSolidButton(title: L.continue(),
                                  font: Appearance.TextStyle.paragraphBold.font.asFont,
@@ -31,7 +49,7 @@ struct EditProfileAvatarView: View {
                                  isFullWidth: true,
                                  isEnabled: .constant(true),
                                  action: {
-                    
+                    viewModel.action.send(.selectAvatar)
                 })
             }
         }
@@ -82,7 +100,7 @@ struct EditProfileAvatarView: View {
             .cornerRadius(Appearance.GridGuide.buttonCorner)
         }
         .onTapGesture {
-            viewModel.action.send(.selectAvatar)
+            viewModel.action.send(.avatarTap)
         }
     }
 }
@@ -93,6 +111,7 @@ struct EditProfileAvatarViewPreview: PreviewProvider {
 
     static var viewModel: EditProfileAvatarViewModel {
         let viewModel = EditProfileAvatarViewModel()
+        viewModel.isAvatarUpdated = true
         return viewModel
     }
 

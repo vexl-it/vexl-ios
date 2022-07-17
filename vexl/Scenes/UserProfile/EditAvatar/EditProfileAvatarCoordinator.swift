@@ -22,8 +22,15 @@ final class EditProfileAvatarCoordinator: BaseCoordinator<RouterResult<Void>> {
 
         let viewModel = EditProfileAvatarViewModel()
         let viewController = BaseViewController(rootView: EditProfileAvatarView(viewModel: viewModel))
-
         router.present(viewController, animated: animated)
+
+        viewModel
+            .$error
+            .assign(to: &viewController.$error)
+
+        viewModel
+            .$isLoading
+            .assign(to: &viewController.$isLoading)
 
         let dismiss = viewModel
             .route
