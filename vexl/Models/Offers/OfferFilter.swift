@@ -27,7 +27,7 @@ struct OfferFilter: Equatable {
         selectedFriendDegreeOption = .firstDegree
     }
 
-    func shouldShow(offer: Offer) -> Bool {
+    func shouldShow(offer: ManagedOffer) -> Bool {
         [
             isInRange(offer: offer),
             hasSameFeeOption(offer: offer),
@@ -39,39 +39,39 @@ struct OfferFilter: Equatable {
         ].allSatisfy { $0 }
     }
 
-    private func isInRange(offer: Offer) -> Bool {
+    private func isInRange(offer: ManagedOffer) -> Bool {
         guard let amountRange = currentAmountRange else { return true }
         return Int(offer.minAmount) >= amountRange.lowerBound && Int(offer.maxAmount) <= amountRange.upperBound
     }
 
-    private func hasSameFeeOption(offer: Offer) -> Bool {
+    private func hasSameFeeOption(offer: ManagedOffer) -> Bool {
         offer.feeState == selectedFeeOption
     }
 
-    private func hasSameFeeValue(offer: Offer) -> Bool {
+    private func hasSameFeeValue(offer: ManagedOffer) -> Bool {
         guard offer.feeState == .withFee else { return true }
         return offer.feeAmount.rounded() == feeAmount.rounded()
     }
 
-    private func hasSameLocations(offer: Offer) -> Bool {
+    private func hasSameLocations(offer: ManagedOffer) -> Bool {
         true
     }
 
-    private func hasSamePaymentMethods(offer: Offer) -> Bool {
+    private func hasSamePaymentMethods(offer: ManagedOffer) -> Bool {
         guard !selectedPaymentMethodOptions.isEmpty else { return true }
         let offerSet = Set(offer.paymentMethods)
         let filterSet = Set(selectedPaymentMethodOptions)
         return filterSet.isSubset(of: offerSet)
     }
 
-    private func hasSameBTCOptions(offer: Offer) -> Bool {
+    private func hasSameBTCOptions(offer: ManagedOffer) -> Bool {
         guard !selectedBTCOptions.isEmpty else { return true }
-        let offerSet = Set(offer.btcNetwork)
+        let offerSet = Set(offer.btcNetworks)
         let filterSet = Set(selectedBTCOptions)
         return filterSet.isSubset(of: offerSet)
     }
 
-    private func hasSameFriendDegree(offer: Offer) -> Bool {
+    private func hasSameFriendDegree(offer: ManagedOffer) -> Bool {
         offer.friendLevel == selectedFriendDegreeOption
     }
 }

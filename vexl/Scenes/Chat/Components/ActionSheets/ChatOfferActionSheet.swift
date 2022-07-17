@@ -24,9 +24,9 @@ final class ChatOfferSheetViewModel: BottomActionSheetViewModelProtocol {
                                     dismiss: {})
     }
 
-    let offer: Offer
+    let offer: ManagedOffer
 
-    init(offer: Offer) {
+    init(offer: ManagedOffer) {
         self.offer = offer
     }
 }

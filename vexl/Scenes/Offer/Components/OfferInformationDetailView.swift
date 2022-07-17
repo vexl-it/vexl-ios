@@ -122,19 +122,19 @@ extension OfferInformationDetailView {
         let offerType: OfferType
         let createdDate: Date
 
-        init(offer: Offer, isRequested: Bool) {
+        init(offer: ManagedOffer, isRequested: Bool) {
             let currencySymbol = Constants.currencySymbol
             let formattedAmount = offer.maxAmount
 
-            self.id = offer.offerId
-            self.title = offer.description
+            self.id = offer.id ?? ""
+            self.title = offer.offerDescription ?? ""
             self.isRequested = isRequested
-            self.friendLevel = offer.friendLevel.label
+            self.friendLevel = offer.friendLevel?.label ?? ""
             self.amount = "\(formattedAmount)\(currencySymbol)"
             self.paymentMethods = offer.paymentMethods
             self.fee = offer.feeAmount > 0 ? "\(offer.feeAmount)%" : nil
-            self.offerType = offer.type
-            self.createdDate = offer.createdDate
+            self.offerType = offer.type ?? .sell
+            self.createdDate = offer.createdAt ?? Date()
         }
 
         var paymentIcons: [String] {
@@ -153,9 +153,9 @@ extension OfferInformationDetailView {
             return label
         }
 
-        static var stub: OfferDetailViewData {
-            OfferDetailViewData(offer: .stub, isRequested: true)
-        }
+//        static var stub: OfferDetailViewData {
+//            OfferDetailViewData(offer: .stub, isRequested: true)
+//        }
     }
 }
 

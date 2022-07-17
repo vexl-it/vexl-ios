@@ -15,10 +15,6 @@ enum LocalStorageError: Error {
 
 @available(*, deprecated)
 protocol LocalStorageServiceType {
-    // MARK: - Offer
-
-    func saveOffers(_ offers: [Offer], areCreated: Bool) -> AnyPublisher<Void, Error>
-    func getOffers() -> AnyPublisher<[Offer], Error>
 
     // MARK: - Inbox and Message cache
 
@@ -51,36 +47,6 @@ final class LocalStorageService: LocalStorageServiceType {
 
     // MARK: - Offer
 
-    func saveOffers(_ offers: [Offer], areCreated: Bool) -> AnyPublisher<Void, Error> {
-        Future { promise in
-            let storedOffers = offers.map {
-                StoredOffer(offer: $0,
-                            id: $0.offerId,
-                            keys: ECCKeys(pubKey: $0.offerPublicKey, privKey: $0.offerPrivateKey),
-                            source: areCreated ? .created : .fetched)
-            }
-
-            if areCreated {
-                DictionaryDB.saveCreatedOffers(storedOffers)
-            } else {
-                DictionaryDB.saveFetchedOffers(storedOffers)
-            }
-
-            promise(.success(()))
-        }
-        .eraseToAnyPublisher()
-    }
-
-    func getOffers() -> AnyPublisher<[Offer], Error> {
-        Future { promise in
-            let createdOffers = DictionaryDB.getCreatedOffers()
-            let fetchedOffers = DictionaryDB.getFetchedOffers()
-            let storedOffers = createdOffers + fetchedOffers
-            let offers = Self.convertStoredOffers(storedOffers)
-            promise(.success(offers))
-        }
-        .eraseToAnyPublisher()
-    }
 
     // MARK: - Inbox and Message cache
 
@@ -220,15 +186,4 @@ final class LocalStorageService: LocalStorageServiceType {
         .eraseToAnyPublisher()
     }
 
-    // TODO: - helper method, remove when core data is implemented
-
-    private static func convertStoredOffers(_ storedOffers: [StoredOffer]) -> [Offer] {
-        var offers: [Offer] = []
-        storedOffers.forEach { item in
-            if let storedOffer = Offer(storedOffer: item) {
-                offers.append(storedOffer)
-            }
-        }
-        return offers
-    }
 }

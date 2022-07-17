@@ -78,10 +78,6 @@ final class DictionaryDB {
             inboxMessage = savedInboxMessages
         }
 
-        if let storedOfferData = UserDefaults.standard.data(forKey: "storedOffer"),
-           let savedStoredOffer = try? decoder.decode([String: [StoredOffer]].self, from: storedOfferData) {
-            storedOffer = savedStoredOffer
-        }
 
         if let storedChatUserData = UserDefaults.standard.data(forKey: "storedChatUser"),
            let savedChatUser = try? decoder.decode([StoredChatUser].self, from: storedChatUserData) {
@@ -158,23 +154,6 @@ final class DictionaryDB {
         self.inboxMessage
     }
 
-    static func getCreatedOffers() -> [StoredOffer] {
-        storedOffer["created"] ?? []
-    }
-
-    static func getFetchedOffers() -> [StoredOffer] {
-        storedOffer["fetched"] ?? []
-    }
-
-    static func saveCreatedOffers(_ offers: [StoredOffer]) {
-        var content = storedOffer["created"] ?? []
-        content.append(contentsOf: offers)
-        storedOffer["created"] = content
-    }
-
-    static func saveFetchedOffers(_ offers: [StoredOffer]) {
-        storedOffer["fetched"] = offers
-    }
 
     static func saveChatUser(_ chatUser: ParsedChatMessage.ChatUser, inboxPublicKey: String, contactPublicKey: String) {
         let storedChatUser = StoredChatUser(inboxPublicKey: inboxPublicKey,
