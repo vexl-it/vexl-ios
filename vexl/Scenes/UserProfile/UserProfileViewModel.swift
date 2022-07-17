@@ -46,14 +46,8 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
         primaryActivity.indicator
     }
 
-    // TODO: - Remove hardcoded values
-    var username: String {
-        authenticationManager.currentUser?.username ?? ""
-    }
-
-    var avatar: Data? {
-        authenticationManager.currentUser?.avatarImage ?? R.image.onboarding.emptyAvatar()?.jpegData(compressionQuality: 0.5)
-    }
+    @Published var username: String = ""
+    @Published var avatar: Data?
 
     var options: [OptionGroup] {
         Option.groupedOptions
@@ -82,6 +76,9 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
         setupActivity()
         setupDataBindings()
         setupBindings()
+        setupUpdateUser()
+        self.username = authenticationManager.currentUser?.username ?? ""
+        self.avatar = authenticationManager.currentUser?.avatarImage ?? R.image.onboarding.emptyAvatar()?.jpegData(compressionQuality: 0.5)
     }
 
     func subtitle(for item: UserProfileViewModel.Option) -> String? {
@@ -114,6 +111,17 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
             .materialize()
             .compactMap(\.value)
             .assign(to: &$numberOfContacts)
+    }
+
+    private func setupUpdateUser() {
+        authenticationManager
+            .updatedCurrentUser
+            .withUnretained(self)
+            .sink { owner, user in
+                owner.username = user?.username ?? ""
+                owner.avatar = user?.avatarImage ?? R.image.onboarding.emptyAvatar()?.jpegData(compressionQuality: 0.5)
+            }
+            .store(in: cancelBag)
     }
 
     private func setupBindings() {

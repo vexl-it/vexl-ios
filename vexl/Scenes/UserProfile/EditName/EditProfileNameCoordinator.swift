@@ -9,7 +9,7 @@ import Foundation
 import Cleevio
 import Combine
 
-final class EditProfileNameCoordiantor: BaseCoordinator<RouterResult<Void>> {
+final class EditProfileNameCoordinator: BaseCoordinator<RouterResult<Void>> {
 
     let animated: Bool
     let router: Router
@@ -23,8 +23,15 @@ final class EditProfileNameCoordiantor: BaseCoordinator<RouterResult<Void>> {
 
         let viewModel = EditProfileNameViewModel()
         let viewController = BaseViewController(rootView: EditProfileNameView(viewModel: viewModel))
-
         router.present(viewController, animated: animated)
+
+        viewModel
+            .$error
+            .assign(to: &viewController.$error)
+
+        viewModel
+            .$isLoading
+            .assign(to: &viewController.$isLoading)
 
         let dismiss = viewModel
             .route

@@ -25,6 +25,8 @@ final class EditProfileNameViewModel: ViewModelType, ObservableObject {
 
     @Published var primaryActivity: Activity = .init()
     @Published var currentName: String = ""
+    @Published var isLoading = false
+    @Published var error: Error?
 
     var errorIndicator: ErrorIndicator {
         primaryActivity.error
@@ -47,7 +49,19 @@ final class EditProfileNameViewModel: ViewModelType, ObservableObject {
 
     init() {
         self.currentName = authenticationManager.currentUser?.username ?? ""
+        setupActivityBindings()
         setupActionBindings()
+    }
+
+    private func setupActivityBindings() {
+        activityIndicator
+            .loading
+            .assign(to: &$isLoading)
+
+        errorIndicator
+            .errors
+            .asOptional()
+            .assign(to: &$error)
     }
 
     private func setupActionBindings() {

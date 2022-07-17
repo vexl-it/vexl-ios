@@ -61,7 +61,7 @@ final class UserProfileCoordinator: BaseCoordinator<Void> {
             .filter { $0 == .editName }
             .flatMapLatest(with: self) { owner, _ -> CoordinatingResult<RouterResult<Void>> in
                 let router = ModalRouter(parentViewController: viewController, presentationStyle: .fullScreen, transitionStyle: .coverVertical)
-                let coordinator = EditProfileNameCoordiantor(router: router, animated: true)
+                let coordinator = EditProfileNameCoordinator(router: router, animated: true)
                 return owner.present(coordinator: coordinator, router: router)
             }
             .sink()
@@ -99,6 +99,18 @@ extension UserProfileCoordinator {
 
     private func present(coordinator: BaseCoordinator<RouterResult<Void>>, router: Router) -> CoordinatingResult<RouterResult<Void>> {
         coordinate(to: coordinator)
+        .flatMap { result -> CoordinatingResult<RouterResult<Void>> in
+            guard result != .dismissedByRouter else {
+                return Just(result).eraseToAnyPublisher()
+            }
+            return router.dismiss(animated: true, returning: result)
+        }
+        .prefix(1)
+        .eraseToAnyPublisher()
+    }
+
+    private func presentEditName(router: Router) -> CoordinatingResult<RouterResult<Void>> {
+        coordinate(to: EditProfileNameCoordinator(router: router, animated: true))
         .flatMap { result -> CoordinatingResult<RouterResult<Void>> in
             guard result != .dismissedByRouter else {
                 return Just(result).eraseToAnyPublisher()

@@ -14,9 +14,15 @@ final class EditProfileAvatarViewModel: ViewModelType, ObservableObject {
     @Inject var userService: UserServiceType
     @Inject var authenticationManager: AuthenticationManagerType
 
+    enum ImageSource {
+        case photoAlbum, camera
+    }
+
     enum UserAction: Equatable {
         case dismissTap
+        case selectAvatar
         case updateAvatar
+        case cancel
     }
 
     let action: ActionSubject<UserAction> = .init()
@@ -24,7 +30,9 @@ final class EditProfileAvatarViewModel: ViewModelType, ObservableObject {
     // MARK: - View Bindings
 
     @Published var primaryActivity: Activity = .init()
-    @Published var currentName: String = ""
+    @Published var showImagePicker = false
+    @Published var showImagePickerActionSheet = false
+    @Published var avatar: Data?
 
     var errorIndicator: ErrorIndicator {
         primaryActivity.error
@@ -43,10 +51,12 @@ final class EditProfileAvatarViewModel: ViewModelType, ObservableObject {
 
     // MARK: - Variables
 
+    var imageSource = ImageSource.photoAlbum
+    var isAvatarUpdated = false
     private let cancelBag: CancelBag = .init()
 
     init() {
-        self.currentName = authenticationManager.currentUser?.username ?? ""
+        self.avatar = authenticationManager.currentUser?.avatarImage
         setupActionBindings()
     }
 
@@ -54,35 +64,31 @@ final class EditProfileAvatarViewModel: ViewModelType, ObservableObject {
         let action = action.share()
 
         action
+            .filter { $0 == .selectAvatar }
+            .withUnretained(self)
+            .sink { owner, _ in
+                owner.showImagePickerActionSheet = true
+            }
+            .store(in: cancelBag)
+
+        action
             .filter { $0 == .dismissTap }
             .map { _ -> Route in .dismissTapped }
             .subscribe(route)
             .store(in: cancelBag)
 
-        let validateName = action
-            .withUnretained(self)
-            .filter { $0.1 == .updateAvatar && !$0.0.currentName.isEmpty }
-            .flatMap { owner, _ in
-                owner.userService
-                    .validateUsername(username: owner.currentName)
-                    .track(activity: owner.primaryActivity)
-                    .materialize()
-                    .compactMap(\.value)
-                    .map(\.isAvailable)
-            }
-
-        validateName
-            .filter { $0 }
-            .withUnretained(self)
-            .flatMap { owner, _ in
-                owner.userService
-                    .updateUser(username: owner.currentName, avatar: owner.authenticationManager.currentUser?.avatarImage?.base64EncodedString())
-                    .track(activity: owner.primaryActivity)
-                    .materialize()
-                    .compactMap(\.value)
-            }
-            .map { _ -> Route in .dismissTapped }
-            .subscribe(route)
-            .store(in: cancelBag)
+//        validateName
+//            .filter { $0 }
+//            .withUnretained(self)
+//            .flatMap { owner, _ in
+//                owner.userService
+//                    .updateUser(username: owner.currentName, avatar: owner.authenticationManager.currentUser?.avatarImage?.base64EncodedString())
+//                    .track(activity: owner.primaryActivity)
+//                    .materialize()
+//                    .compactMap(\.value)
+//            }
+//            .map { _ -> Route in .dismissTapped }
+//            .subscribe(route)
+//            .store(in: cancelBag)
     }
 }
