@@ -12,7 +12,7 @@ import Combine
 
 final class ChatViewModel: ViewModelType, ObservableObject {
 
-    @Inject var offerService: OfferServiceType
+    @Inject var offerRepository: OfferRepositoryType
     @Inject var chatService: ChatServiceType
     @Inject var cryptoService: CryptoServiceType
     @Inject var inboxManager: InboxManagerType
@@ -59,7 +59,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
     enum Route: Equatable {
         case dismissTapped
         case expandImageTapped(image: Data)
-        case showOfferTapped(offer: Offer?)
+        case showOfferTapped(offer: ManagedOffer?)
         case showDeleteTapped
         case showRevealIdentityTapped
         case showRevealIdentityResponseTapped
@@ -72,7 +72,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
 
     let friends: [ChatCommonFriendViewData] = [.stub, .stub, .stub]
     let offerType: OfferType?
-    var offer: Offer?
+    var offer: ManagedOffer?
     var imageSource = ImageSource.photoAlbum
 
     var offerLabel: String {
@@ -81,7 +81,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
 
     var offerViewData: OfferDetailViewData? {
         guard let offer = offer else { return nil }
-        return OfferDetailViewData(offer: offer, isRequested: false)
+        return OfferDetailViewData(offer: offer)
     }
 
     var selectedImageData: Data? {
@@ -160,14 +160,9 @@ final class ChatViewModel: ViewModelType, ObservableObject {
     }
 
     private func setupOfferBindings() {
-        offerService
-            .getStoredOffers()
-            .materialize()
-            .compactMap(\.value)
-            .withUnretained(self)
-            .compactMap { owner, offers -> Offer? in
-                offers.first { $0.offerPublicKey == owner.inboxKeys.publicKey || $0.offerPublicKey == owner.receiverPublicKey }
-            }
+        offerRepository
+            .getOrder(with: inboxKeys.publicKey)
+            .nilOnError()
             .withUnretained(self)
             .sink { owner, offer in
                 owner.offer = offer
