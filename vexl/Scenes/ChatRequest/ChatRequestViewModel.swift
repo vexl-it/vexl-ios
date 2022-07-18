@@ -132,6 +132,8 @@ final class ChatRequestViewModel: ViewModelType, ObservableObject {
     // MARK: - Helper methods for presenting the request that are pending of approval/rejection
 
     private func prepareRequestedMessages(storedOfferKeys: [OfferKeys]) -> AnyPublisher<Void, Never> {
+        // TODO: Refactor chat to use persistence
+        Just(()).eraseToAnyPublisher()
     }
 
 

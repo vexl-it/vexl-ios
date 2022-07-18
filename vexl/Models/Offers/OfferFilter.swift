@@ -17,6 +17,53 @@ struct OfferFilter: Equatable {
     var selectedBTCOptions: [OfferAdvancedBTCOption] = []
     var selectedFriendDegreeOption: OfferFriendDegree = .firstDegree
 
+    var predicate: NSPredicate {
+        var format = """
+            offerTypeRawType == '\(type.rawValue)'
+        AND feeStateRawType == '\(selectedFeeOption.rawValue)'
+        AND friendDegreeRawType == '\(selectedFriendDegreeOption.rawValue)'
+        """
+
+        if selectedFeeOption == .withFee {
+            format += """
+                AND feeAmount == \(feeAmount)
+            """
+        }
+
+        if let currentAmountRange = currentAmountRange {
+            format += """
+            AND maxAmount <= \(currentAmountRange.upperBound)
+            AND minAmount >= \(currentAmountRange.lowerBound)
+            """
+        }
+
+        // TODO: filter location
+
+        if !selectedPaymentMethodOptions.isEmpty {
+            let paymentPredicates = selectedPaymentMethodOptions.map(\.rawValue)
+                .map { rawValue in
+                    "'\(rawValue)'"
+                }
+                .joined(separator: ", ") + " IN paymentMethodRawTypes "
+
+            format += """
+                AND \(paymentPredicates)
+            """
+        }
+
+        if !selectedBTCOptions.isEmpty {
+            let paymentPredicates = selectedBTCOptions.map(\.rawValue)
+                .map { rawValue in
+                    "'\(rawValue)'"
+                }
+                .joined(separator: ", ") + " IN paymentMethodRawTypes "
+
+            format += "AND \(paymentPredicates)"
+        }
+
+        return NSPredicate(format: format)
+    }
+
     mutating func reset(with amountRange: ClosedRange<Int>?) {
         currentAmountRange = amountRange
         selectedFeeOption = .withoutFee
@@ -25,54 +72,6 @@ struct OfferFilter: Equatable {
         selectedPaymentMethodOptions = []
         selectedBTCOptions = []
         selectedFriendDegreeOption = .firstDegree
-    }
-
-    func shouldShow(offer: ManagedOffer) -> Bool {
-        [
-            isInRange(offer: offer),
-            hasSameFeeOption(offer: offer),
-            hasSameFeeValue(offer: offer),
-            hasSameLocations(offer: offer),
-            hasSamePaymentMethods(offer: offer),
-            hasSameBTCOptions(offer: offer),
-            hasSameFriendDegree(offer: offer)
-        ].allSatisfy { $0 }
-    }
-
-    private func isInRange(offer: ManagedOffer) -> Bool {
-        guard let amountRange = currentAmountRange else { return true }
-        return Int(offer.minAmount) >= amountRange.lowerBound && Int(offer.maxAmount) <= amountRange.upperBound
-    }
-
-    private func hasSameFeeOption(offer: ManagedOffer) -> Bool {
-        offer.feeState == selectedFeeOption
-    }
-
-    private func hasSameFeeValue(offer: ManagedOffer) -> Bool {
-        guard offer.feeState == .withFee else { return true }
-        return offer.feeAmount.rounded() == feeAmount.rounded()
-    }
-
-    private func hasSameLocations(offer: ManagedOffer) -> Bool {
-        true
-    }
-
-    private func hasSamePaymentMethods(offer: ManagedOffer) -> Bool {
-        guard !selectedPaymentMethodOptions.isEmpty else { return true }
-        let offerSet = Set(offer.paymentMethods)
-        let filterSet = Set(selectedPaymentMethodOptions)
-        return filterSet.isSubset(of: offerSet)
-    }
-
-    private func hasSameBTCOptions(offer: ManagedOffer) -> Bool {
-        guard !selectedBTCOptions.isEmpty else { return true }
-        let offerSet = Set(offer.btcNetworks)
-        let filterSet = Set(selectedBTCOptions)
-        return filterSet.isSubset(of: offerSet)
-    }
-
-    private func hasSameFriendDegree(offer: ManagedOffer) -> Bool {
-        offer.friendLevel == selectedFriendDegreeOption
     }
 }
 

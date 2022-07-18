@@ -43,12 +43,6 @@ final class DictionaryDB {
         }
     }
 
-    static private var storedOffer: [String: [StoredOffer]] = ["created": [], "fetched": []] {
-        didSet {
-            guard let encodedData = try? encoder.encode(storedOffer) else { return }
-            UserDefaults.standard.setValue(encodedData, forKey: "storedOffer")
-        }
-    }
 
     static private var storedChatUser: [StoredChatUser] = [] {
         didSet {
