@@ -112,25 +112,24 @@ struct BottomActionSheet<ContentView: View>: View {
     }
 }
 
-// TODO: [offer refactor] scene preview
-//struct BottomSheet_Previews: PreviewProvider {
-//    static var previews: some View {
-//        BottomActionSheet(
-//            title: "String",
-//            primaryAction: .init(title: "title", isDismissAction: false, action: {}),
-//            secondaryAction: .init(title: "title", isDismissAction: false, action: {}),
-//            colorScheme: .main,
-//            content: {
-//                OfferInformationDetailView(
-//                    data: .stub,
-//                    useInnerPadding: true,
-//                    showBackground: false
-//                )
-//                .background(Appearance.Colors.gray6)
-//                .cornerRadius(Appearance.GridGuide.buttonCorner)
-//            })
-//            .frame(maxWidth: .infinity, maxHeight: .infinity)
-//            .background(Color.blue)
-//            .previewDevice("iPhone 11")
-//    }
-//}
+struct BottomSheet_Previews: PreviewProvider {
+    static var previews: some View {
+        BottomActionSheet(
+            title: "String",
+            primaryAction: .init(title: "title", isDismissAction: false, action: {}),
+            secondaryAction: .init(title: "title", isDismissAction: false, action: {}),
+            colorScheme: .main,
+            content: {
+                OfferInformationDetailView(
+                    data: .stub,
+                    useInnerPadding: true,
+                    showBackground: false
+                )
+                .background(Appearance.Colors.gray6)
+                .cornerRadius(Appearance.GridGuide.buttonCorner)
+            })
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background(Color.blue)
+            .previewDevice("iPhone 11")
+    }
+}

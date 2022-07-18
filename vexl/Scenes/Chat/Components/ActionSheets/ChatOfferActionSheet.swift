@@ -45,16 +45,14 @@ struct ChatOfferActionSheetContent: View {
     }
 }
 
-// TODO: [offer refactor] scene preview
-//#if DEBUG || DEVEL
-//
-//struct ChatOfferActionSheetContentPreview: PreviewProvider {
-//    static var previews: some View {
-//        ChatOfferActionSheetContent(data: .stub, dismiss: { })
-//            .frame(maxWidth: .infinity, maxHeight: .infinity)
-//            .background(Color.black)
-//            .previewDevice("iPhone 11")
-//    }
-//}
-//
-//#endif
+#if DEBUG || DEVEL
+struct ChatOfferActionSheetContentPreview: PreviewProvider {
+    static var previews: some View {
+        ChatOfferActionSheetContent(data: .stub, dismiss: { })
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background(Color.black)
+            .previewDevice("iPhone 11")
+    }
+}
+
+#endif

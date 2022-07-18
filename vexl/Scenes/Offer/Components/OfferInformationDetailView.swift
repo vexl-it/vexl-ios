@@ -142,27 +142,26 @@ extension OfferInformationDetailView {
             return label
         }
 
-//        static var stub: OfferDetailViewData {
-//            OfferDetailViewData(offer: .stub, isRequested: true)
-//        }
+        static var stub: OfferDetailViewData {
+            OfferDetailViewData(offer: .stub)
+        }
     }
 }
 
-// TODO: [offer refactor] scene preview
-//#if DEBUG || DEVEL
-//struct MarketplaceFeedDetailViewPreview: PreviewProvider {
-//    static var previews: some View {
-//        ZStack {
-//            Color.black
-//                .edgesIgnoringSafeArea(.all)
-//
-//            OfferInformationDetailView(
-//                data: .stub,
-//                useInnerPadding: false,
-//                showBackground: true
-//            )
-//            .frame(height: 250)
-//        }
-//    }
-//}
-//#endif
+#if DEBUG || DEVEL
+struct MarketplaceFeedDetailViewPreview: PreviewProvider {
+    static var previews: some View {
+        ZStack {
+            Color.black
+                .edgesIgnoringSafeArea(.all)
+
+            OfferInformationDetailView(
+                data: .stub,
+                useInnerPadding: false,
+                showBackground: true
+            )
+            .frame(height: 250)
+        }
+    }
+}
+#endif

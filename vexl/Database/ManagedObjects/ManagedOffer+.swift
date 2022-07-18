@@ -59,3 +59,31 @@ extension ManagedOffer {
         set { activePriceStateRawType = newValue?.rawValue }
     }
 }
+
+extension ManagedOffer {
+    static var stub: ManagedOffer {
+        let offer = ManagedOffer()
+        offer.isRequested = false
+
+        offer.id = "21"
+        offer.groupUuid = GroupUUID.none
+        offer.createdAt = Date()
+        offer.modifiedAt = ""
+        offer.currency = .usd
+        offer.minAmount = 0
+        offer.maxAmount = 10000
+        offer.feeAmount = 590
+        offer.offerDescription = "Test"
+        offer.feeState = .none
+        offer.locationState = .online
+        offer.friendLevel = .firstDegree
+        offer.type = .sell
+        offer.active = true
+        offer.activePriceState = .none
+        offer.activePriceValue = 12
+        offer.paymentMethods = [.bank, .cash]
+        offer.btcNetworks = [.lightning]
+
+        return offer
+    }
+}
