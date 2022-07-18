@@ -24,8 +24,8 @@ protocol OfferServiceType {
 
     // MARK: - Storage
 
-    func getStoredOffers() -> AnyPublisher<[Offer], Error>
-    func storeOffers(offers: [Offer], areCreated: Bool) -> AnyPublisher<Void, Error>
+    func getStoredOffers() -> AnyPublisher<[ManagedOffer], Error>
+    func storeOffers(offers: [ManagedOffer], areCreated: Bool) -> AnyPublisher<Void, Error>
     func getStoredOfferIds(fromType option: OfferTypeOption) -> AnyPublisher<[String], Error>
     func getStoredOfferKeys(fromSource option: OfferSourceOption) -> AnyPublisher<[OfferKeys], Error>
 }
@@ -100,47 +100,31 @@ final class OfferService: BaseService, OfferServiceType {
 
     // MARK: - Storage
 
-    func getStoredOffers() -> AnyPublisher<[Offer], Error> {
-        localStorageService.getOffers()
+    func getStoredOffers() -> AnyPublisher<[ManagedOffer], Error> {
+        // TODO: Implement a varient for this method in OfferRepository
+        Just([])
+            .setFailureType(to: Error.self)
+            .eraseToAnyPublisher()
     }
 
-    func storeOffers(offers: [Offer], areCreated: Bool) -> AnyPublisher<Void, Error> {
-        localStorageService.saveOffers(offers, areCreated: areCreated)
+    func storeOffers(offers: [ManagedOffer], areCreated: Bool) -> AnyPublisher<Void, Error> {
+        // TODO: Implement a varient for this method in OfferRepository
+        Just(())
+            .setFailureType(to: Error.self)
+            .eraseToAnyPublisher()
     }
 
     func getStoredOfferIds(fromType option: OfferTypeOption) -> AnyPublisher<[String], Error> {
-        localStorageService.getOffers()
-            .map { offers -> [String] in
-                var filteredOffers: [Offer] = []
-
-                if option.contains(.buy) {
-                    filteredOffers.append(contentsOf: offers.filter { $0.type == .buy })
-                }
-
-                if option.contains(.sell) {
-                    filteredOffers.append(contentsOf: offers.filter { $0.type == .sell })
-                }
-
-                return filteredOffers.map(\.offerId)
-            }
+        // TODO: Implement a varient for this method in OfferRepository
+        Just([])
+            .setFailureType(to: Error.self)
             .eraseToAnyPublisher()
     }
 
     func getStoredOfferKeys(fromSource option: OfferSourceOption) -> AnyPublisher<[OfferKeys], Error> {
-        localStorageService.getOffers()
-            .map { offers -> [OfferKeys] in
-                var filteredOffers: [Offer] = []
-
-                if option.contains(.created) {
-                    filteredOffers.append(contentsOf: offers.filter { $0.source == .created })
-                }
-
-                if option.contains(.fetched) {
-                    filteredOffers.append(contentsOf: offers.filter { $0.source == .fetched })
-                }
-
-                return filteredOffers.map(\.keysWithId)
-            }
+        // TODO: Implement a varient for this method in OfferRepository
+        Just([])
+            .setFailureType(to: Error.self)
             .eraseToAnyPublisher()
     }
 

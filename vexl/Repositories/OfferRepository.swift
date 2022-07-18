@@ -32,12 +32,18 @@ protocol OfferRepositoryType {
         active: Bool,
         expiration: Date?
     ) -> AnyPublisher<ManagedOffer, Error>
+
+    func createOffer(offerPayloads: [OfferPayload]) -> AnyPublisher<[ManagedOffer], Error>
+
+    func getOrder(with publicKey: String) -> AnyPublisher<ManagedOffer, Error>
 }
 
 class OfferRepository: OfferRepositoryType {
 
     @Inject private var persistence: PersistenceStoreManagerType
     @Inject private var userRepository: UserRepositoryType
+
+    private lazy var backgroundContext: NSManagedObjectContext = persistence.newBackgroundContext()
 
     func createOffer(
         offerId: String?,
@@ -96,5 +102,41 @@ class OfferRepository: OfferRepositoryType {
 
             return offer
         }
+    }
+
+    func createOffer(offerPayloads: [OfferPayload]) -> AnyPublisher<[ManagedOffer], Error> {
+        guard let userInboxID = userRepository.user?.profile?.keyPair?.inbox?.objectID,
+              let userInbox = persistence.loadSyncroniously(type: ManagedInbox.self, context: backgroundContext, objectID: userInboxID)else {
+            return Fail(error: PersistenceError.insufitientData).eraseToAnyPublisher()
+        }
+        return persistence.insert(context: backgroundContext) { context in
+            offerPayloads.compactMap { $0.decrypt(context: context, userInbox: userInbox) }
+        }
+    }
+
+    func getOrder(with publicKey: String) -> AnyPublisher<ManagedOffer, Error> {
+        persistence.load(
+            type: ManagedKeyPair.self,
+            context: persistence.viewContext,
+            predicate: NSPredicate(format: "publicKey == '\(publicKey)'")
+        )
+        .map(\.first)
+        .flatMap { keyPair -> AnyPublisher<ManagedOffer, Error> in
+            // Received offers
+            if let offer = keyPair?.offer {
+                return Just(offer)
+                    .setFailureType(to: Error.self)
+                    .eraseToAnyPublisher()
+            }
+            // User offers
+            if let offer = keyPair?.inbox?.offers?.first(where: { _ in true }) as? ManagedOffer {
+                return Just(offer)
+                    .setFailureType(to: Error.self)
+                    .eraseToAnyPublisher()
+            }
+            return Fail(error: PersistenceError.notFound)
+                .eraseToAnyPublisher()
+        }
+        .eraseToAnyPublisher()
     }
 }
