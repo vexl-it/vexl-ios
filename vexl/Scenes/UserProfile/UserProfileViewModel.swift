@@ -197,7 +197,15 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
             .withUnretained(self)
             .flatMap { owner, _ in
                 owner.offerService
-                    .deleteOffers()
+                    .getStoredOffers(fromType: .all, fromSource: .all)
+                    .materialize()
+                    .compactMap(\.value)
+                    .map { $0.map(\.offerId) }
+            }
+            .withUnretained(self)
+            .flatMap { owner, ids in
+                owner.offerService
+                    .deleteOffers(offerIds: ids)
                     .track(activity: owner.primaryActivity)
                     .materialize()
                     .compactMap(\.value)

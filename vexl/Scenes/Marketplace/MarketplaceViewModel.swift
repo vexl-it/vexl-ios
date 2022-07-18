@@ -139,10 +139,11 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
         Publishers.Merge(refresh, Just(()))
             .flatMapLatest(with: self) { owner, _ in
                 owner.offerService
-                    .getStoredOfferKeys(fromSource: .created)
+                    .getStoredOffers(fromType: .all, fromSource: .created)
                     .track(activity: owner.primaryActivity)
                     .materialize()
                     .compactMap(\.value)
+                    .map { $0.map(\.keysWithId) }
             }
             .withUnretained(self)
             .handleEvents(receiveOutput: { owner, keys in
