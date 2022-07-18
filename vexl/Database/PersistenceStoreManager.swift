@@ -171,7 +171,7 @@ final class PersistenceStoreManager: PersistenceStoreManagerType {
             if let saveError = saveError {
                 promise(.failure(saveError))
             } else {
-                promise(.success(()))
+            promise(.success(()))
             }
         }
         .eraseToAnyPublisher()
@@ -194,10 +194,12 @@ final class PersistenceStoreManager: PersistenceStoreManagerType {
             // The rest of entities will be removedy by cascading rule
             promise(.success(()))
         }
+        .receive(on: RunLoop.main)
         .flatMapLatest(with: self) { owner, _ in
             owner.save(context: context)
         }
-        .receive(on: RunLoop.current)
+        .receive(on: RunLoop.main)
+//        .receive(on: RunLoop.current)
         .eraseToAnyPublisher()
     }
 
@@ -209,11 +211,17 @@ final class PersistenceStoreManager: PersistenceStoreManagerType {
                 promise(.success(objects))
             }
         }
-        .flatMapLatest(with: self) { owner, objects in
-            owner.save(context: context)
+        .receive(on: RunLoop.main)
+        .print("[\(Thread.current)] [Persistence] inserted")
+        .flatMapLatest(with: self) { (owner, objects: [T]) -> AnyPublisher<[T], Error> in
+//            print("[\(Thread.current)] [Persistence] inside")
+            return owner.save(context: context)
                 .map { objects }
+                .eraseToAnyPublisher()
         }
-        .receive(on: RunLoop.current)
+        .receive(on: RunLoop.main)
+        .print("[\(Thread.current)] [Persistence] saved")
+//        .receive(on: RunLoop.current)
         .eraseToAnyPublisher()
     }
 
@@ -239,7 +247,8 @@ final class PersistenceStoreManager: PersistenceStoreManagerType {
                 }
             }
         }
-        .receive(on: RunLoop.current)
+        .receive(on: RunLoop.main)
+//        .receive(on: RunLoop.current)
         .eraseToAnyPublisher()
     }
 
@@ -279,11 +288,13 @@ final class PersistenceStoreManager: PersistenceStoreManagerType {
                 promise(.success(editor()))
             }
         }
+        .receive(on: RunLoop.main)
         .flatMapLatest(with: self) { owner, objects in
             owner.save(context: context)
                 .map { objects }
         }
-        .receive(on: RunLoop.current)
+        .receive(on: RunLoop.main)
+//        .receive(on: RunLoop.current)
         .eraseToAnyPublisher()
     }
 
@@ -294,11 +305,13 @@ final class PersistenceStoreManager: PersistenceStoreManagerType {
                 promise(.success(()))
             }
         }
+        .receive(on: RunLoop.main)
         .flatMapLatest(with: self) { owner, objects in
             owner.save(context: context)
                 .map { objects }
         }
-        .receive(on: RunLoop.current)
+        .receive(on: RunLoop.main)
+//        .receive(on: RunLoop.current)
         .eraseToAnyPublisher()
     }
 }

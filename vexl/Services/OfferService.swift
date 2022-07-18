@@ -57,6 +57,7 @@ final class OfferService: BaseService, OfferServiceType {
         fiendLevel: ContactFriendLevel,
         expiration: TimeInterval
     ) -> AnyPublisher<OfferPayload, Error> {
+        print("[\(Thread.current)] [OfferService] Getting contacts")
         let contacts = contactsService
             .getAllContacts(
                 friendLevel: fiendLevel,
@@ -71,14 +72,17 @@ final class OfferService: BaseService, OfferServiceType {
             }
 
         let encryptOffer = contacts
+            .print("[\(Thread.current)] [OfferService] encrypting offers for contacts: ")
             .withUnretained(self)
             .flatMap { [encryptionService] owner, contacts in
                 encryptionService
                     .encryptOffer(withContactKey: contacts.map(\.publicKey), offer: offer)
             }
+            .print("[\(Thread.current)] [OfferService] encrypted")
             .eraseToAnyPublisher()
 
         let createOffer = encryptOffer
+            .print("[\(Thread.current)] [OfferService] will send offer payload")
             .withUnretained(self)
             .flatMap { owner, offerPayloads -> AnyPublisher<OfferPayload, Error> in
                 owner.request(
@@ -90,6 +94,7 @@ final class OfferService: BaseService, OfferServiceType {
                 )
                 .eraseToAnyPublisher()
             }
+            .print("[\(Thread.current)] [OfferService] did send offer payload")
             .eraseToAnyPublisher()
 
         return createOffer

@@ -76,7 +76,7 @@ final class ApiService: ApiServiceType {
                 }
                 return data
             }
-            .receive(on: DispatchQueue.main)
+//            .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()
     }
 
@@ -87,7 +87,7 @@ final class ApiService: ApiServiceType {
             .publishData()
             .tryMap(handleResponse)
             .asVoid()
-            .receive(on: DispatchQueue.main)
+//            .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()
     }
 

@@ -28,7 +28,7 @@ final class SyncQueueManager: SyncQueueManagerType {
     @Inject private var offerService: OfferServiceType
     @Inject private var chatService: ChatServiceType
 
-    @Fetched(contextType: .background)
+    @Fetched(contextType: .view)
     private var queue: [ManagedSyncItem]
 
     private var cancelBag: CancelBag = .init()
@@ -40,10 +40,13 @@ final class SyncQueueManager: SyncQueueManagerType {
 
     private func setupMonitoring() {
         let isLogged = authenticationManager.isUserLoggedInPublisher
+            .print("[\(Thread.current)] [SyncQueue] isLogged")
         let isConnected = networkManager.isConnectedPublisher
+            .print("[\(Thread.current)] [SyncQueue] isConnected")
 
         let canSync = Publishers.CombineLatest(isLogged, isConnected)
             .map { isLogged, isConnected in isLogged && isConnected }
+            .print("[\(Thread.current)] [SyncQueue] canSync")
 
         let persistentQueue = $queue.publisher
             .filter { $0.event == .insert }
@@ -54,6 +57,7 @@ final class SyncQueueManager: SyncQueueManagerType {
             .map(\.1)
             .withUnretained(self)
             .map { $0.0.filterNewItems(items: $0.1) }
+            .print("[\(Thread.current)] [SyncQueue] queue")
             .filter { !$0.isEmpty }
 
         queue
@@ -118,6 +122,8 @@ final class SyncQueueManager: SyncQueueManagerType {
         let createOffer = offerService
             .createOffer(offer: offer, userPublicKey: userPublicKey, fiendLevel: friendLevel.convertToContactFriendLevel, expiration: expiration)
 
+
+        print("[\(Thread.current)] [SyncQueue] Dispatching Offer \(item.objectID.uriRepresentation())")
         let updatePersistence = createOffer
             .flatMapLatest(with: self) { owner, offerPayload -> AnyPublisher<Void, Error> in
                 owner.persistence
@@ -140,6 +146,7 @@ final class SyncQueueManager: SyncQueueManagerType {
     }
 
     private func uploadInbox(inbox: ManagedInbox, item: ManagedSyncItem) -> AnyPublisher<Void, Error> {
+        print("[\(Thread.current)] [SyncQueue] Dispatching Inbox \(item.objectID.uriRepresentation())")
         guard let publicKey = inbox.keyPair?.publicKey else {
             return Fail(error: PersistenceError.insufitientData).eraseToAnyPublisher()
         }

@@ -66,7 +66,7 @@ class OfferRepository: OfferRepositoryType {
         active: Bool,
         expiration: Date?
     ) -> AnyPublisher<ManagedOffer, Error> {
-        persistence.insert(context: persistence.newEditContext()) { [userRepository] context in
+        persistence.insert(context: persistence.viewContext) { [userRepository] context in
 
             let offer = ManagedOffer(context: context)
             let inbox = ManagedInbox(context: context)

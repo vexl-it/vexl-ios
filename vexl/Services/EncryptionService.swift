@@ -31,7 +31,7 @@ final class EncryptionService: EncryptionServiceType {
 
     private func hashContact(contact: ContactInformation, countryCode: UInt64?) -> AnyPublisher<(ContactInformation, String), Error> {
         Future { promise in
-            DispatchQueue(label: "ContactHMAC", qos: .userInitiated).async {
+//            DispatchQueue(label: "ContactHMAC", qos: .userInitiated).async {
                 let identifier = contact.sourceIdentifier
                 let trimmedIdentifier = identifier.removeWhitespaces()
                 let formattedIdentifier: String = {
@@ -46,9 +46,9 @@ final class EncryptionService: EncryptionServiceType {
                 } catch {
                     promise(.failure(error))
                 }
-            }
+//            }
         }
-        .receive(on: RunLoop.current)
+//        .receive(on: RunLoop.current)
         .eraseToAnyPublisher()
     }
 
@@ -77,7 +77,7 @@ final class EncryptionService: EncryptionServiceType {
                 }
             }
         }
-        .receive(on: RunLoop.current)
+//        .receive(on: RunLoop.current)
         .eraseToAnyPublisher()
     }
 }

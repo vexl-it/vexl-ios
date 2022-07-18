@@ -231,6 +231,7 @@ final class CreateOfferViewModel: ViewModelType, ObservableObject {
         action
             .filter { $0 == .createOffer }
             .map { _ in ECCKeys() }
+            .print("[\(Thread.current)] [OfferCreate] will create offer")
             .withUnretained(self)
             .flatMap { owner, keys in
                 owner.offerRepository
@@ -257,7 +258,10 @@ final class CreateOfferViewModel: ViewModelType, ObservableObject {
                     )
                     .materialize()
                     .compactMap(\.value)
+                    .print("[\(Thread.current)] [OfferCreate] finished")
             }
+//            .receive(on: RunLoop.main)
+            .print("[\(Thread.current)] [OfferCreate] finished2")
             .map { _ in .offerCreated }
             .subscribe(route)
             .store(in: cancelBag)
