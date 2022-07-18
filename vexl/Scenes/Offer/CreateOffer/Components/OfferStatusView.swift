@@ -9,6 +9,8 @@ import SwiftUI
 
 struct OfferStatusView: View {
 
+    let isActive: Bool
+    let showDeleteButton: Bool
     let pauseAction: () -> Void
     let deleteAction: () -> Void
 
@@ -16,10 +18,10 @@ struct OfferStatusView: View {
         HStack {
             HStack {
                 Circle()
-                    .foregroundColor(Appearance.Colors.green100)
+                    .foregroundColor(isActive ? Appearance.Colors.green100 : Appearance.Colors.red100)
                     .frame(size: Appearance.GridGuide.smallIconSize)
 
-                Text(L.offerCreateStatusActive())
+                Text(isActive ? L.offerCreateStatusActive() : L.offerCreateStatusInactive())
                     .textStyle(.paragraph)
                     .foregroundColor(Appearance.Colors.green100)
             }
@@ -27,15 +29,16 @@ struct OfferStatusView: View {
             Spacer()
 
             HStack(spacing: Appearance.GridGuide.padding) {
-
-                OfferButton(title: L.offerCreateStatusPause(),
-                            iconName: "pause") {
+                OfferButton(title: isActive ? L.offerCreateStatusPause() : L.offerCreateStatusActivate(),
+                            iconName: isActive ? "pause" : "play") {
                     pauseAction()
                 }
 
-                OfferButton(title: L.offerCreateStatusDelete(),
-                            iconName: "trash.fill") {
-                    deleteAction()
+                if showDeleteButton {
+                    OfferButton(title: L.offerCreateStatusDelete(),
+                                iconName: "trash.fill") {
+                        deleteAction()
+                    }
                 }
             }
         }
@@ -55,12 +58,11 @@ struct OfferStatusView: View {
 
                     Text(title)
                 }
-                .foregroundColor(Appearance.Colors.gray3)
+                .foregroundColor(Appearance.Colors.gray4)
             }
             .padding(Appearance.GridGuide.smallPadding)
-            .makeCorneredBorder(color: Appearance.Colors.gray1,
-                                borderWidth: 1,
-                                cornerRadius: Appearance.GridGuide.buttonCorner)
+            .background(Appearance.Colors.gray1)
+            .cornerRadius(Appearance.GridGuide.buttonCorner)
         }
     }
 }
@@ -68,9 +70,21 @@ struct OfferStatusView: View {
 #if DEBUG || DEVEL
 struct OfferStatusViewPreview: PreviewProvider {
     static var previews: some View {
-        OfferStatusView(pauseAction: {}, deleteAction: {})
-            .previewDevice("iPhone 11")
-            .background(Color.black)
+        VStack {
+            OfferStatusView(isActive: true,
+                            showDeleteButton: true,
+                            pauseAction: {},
+                            deleteAction: {})
+                .previewDevice("iPhone 11")
+                .background(Color.black)
+
+            OfferStatusView(isActive: false,
+                            showDeleteButton: false,
+                            pauseAction: {},
+                            deleteAction: {})
+                .previewDevice("iPhone 11")
+                .background(Color.black)
+        }
     }
 }
 #endif

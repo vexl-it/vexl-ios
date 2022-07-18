@@ -9,7 +9,7 @@
 import Foundation
 
 struct User: Codable {
-    let userId: Int
+    let userId: Int?
     var username: String
     let avatar: String?
     let publicKey: String
