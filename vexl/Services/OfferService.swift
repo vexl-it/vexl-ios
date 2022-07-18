@@ -69,14 +69,12 @@ final class OfferService: BaseService, OfferServiceType {
                     + [ContactKey(publicKey: userPublicKey)]
                 return Array(Set(contacts))
             }
-            .print("[omg] [offer\(offer.objectID.uriRepresentation().relativeString)] got contacts")
 
         let encryptOffer = contacts
             .withUnretained(self)
             .flatMap { [encryptionService] owner, contacts in
                 encryptionService
                     .encryptOffer(withContactKey: contacts.map(\.publicKey), offer: offer)
-                    .print("[omg] [offer\(offer.objectID.uriRepresentation().relativeString)] encrypted offer")
             }
             .eraseToAnyPublisher()
 
@@ -90,7 +88,6 @@ final class OfferService: BaseService, OfferServiceType {
                         expiration: expiration
                     )
                 )
-                .print("[omg] [offer\(offer.objectID.uriRepresentation().relativeString)] semt offer")
                 .eraseToAnyPublisher()
             }
             .eraseToAnyPublisher()

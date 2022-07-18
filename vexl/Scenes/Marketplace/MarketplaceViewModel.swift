@@ -131,13 +131,11 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
         $fetchedBuyOffers.publisher
             .map(\.objects)
             .map { $0.map(OfferDetailViewData.init) }
-            .print("[MarketPlace] received buy offers")
             .assign(to: &$buyFeed)
 
         $fetchedSellOffers.publisher
             .map(\.objects)
             .map { $0.map(OfferDetailViewData.init) }
-            .print("[MarketPlace] received sell offers")
             .assign(to: &$sellFeed)
 
         $fetchedBuyOffers.load(

@@ -40,18 +40,13 @@ final class SyncQueueManager: SyncQueueManagerType {
 
     private func setupMonitoring() {
         let isLogged = authenticationManager.isUserLoggedInPublisher
-            .print("[SyncQueue] isLogged")
-
         let isConnected = networkManager.isConnectedPublisher
-            .print("[SyncQueue] isConnected")
 
         let canSync = Publishers.CombineLatest(isLogged, isConnected)
             .map { isLogged, isConnected in isLogged && isConnected }
-            .print("[SyncQueue] canSync")
 
         let persistentQueue = $queue.publisher
             .filter { $0.event == .insert }
-            .print("[SyncQueue] persistentQueue")
             .map(\.objects)
 
         let queue = Publishers.CombineLatest(canSync, persistentQueue)
@@ -59,7 +54,6 @@ final class SyncQueueManager: SyncQueueManagerType {
             .map(\.1)
             .withUnretained(self)
             .map { $0.0.filterNewItems(items: $0.1) }
-            .print("[SyncQueue] newQueueItems")
             .filter { !$0.isEmpty }
 
         queue
@@ -75,13 +69,11 @@ final class SyncQueueManager: SyncQueueManagerType {
                             .compactMap(\.value)
                     }
                     .collect()
-                    .print("[SyncQueue] items collected")
                     .materialize()
                     .compactMap(\.value)
                     .asVoid()
                     .eraseToAnyPublisher()
             }
-            .print("[SyncQueue] finish")
             .sink()
             .store(in: cancelBag)
     }
