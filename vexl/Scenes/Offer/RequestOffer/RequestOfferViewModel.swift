@@ -8,11 +8,13 @@
 import Foundation
 import Cleevio
 import Combine
+import CoreData
 
 final class RequestOfferViewModel: ViewModelType, ObservableObject {
 
     @Inject var authenticationManager: AuthenticationManagerType
     @Inject private var chatService: ChatServiceType
+    @Inject var persistence: PersistenceStoreManagerType
 
     enum State {
         case normal
@@ -40,7 +42,7 @@ final class RequestOfferViewModel: ViewModelType, ObservableObject {
     }
 
     var offerViewData: OfferDetailViewData {
-        OfferDetailViewData(offer: offer, isRequested: false)
+        OfferDetailViewData(offer: offer)
     }
 
     // MARK: - Coordinator Bindings
@@ -56,10 +58,10 @@ final class RequestOfferViewModel: ViewModelType, ObservableObject {
 
     var username: String = Constants.randomName
 
-    private let offer: Offer
+    private let offer: ManagedOffer
     private let cancelBag: CancelBag = .init()
 
-    init(offer: Offer) {
+    init(offer: ManagedOffer) {
         self.offer = offer
         setupActivityBindings()
         setupActionBindings()
@@ -91,19 +93,33 @@ final class RequestOfferViewModel: ViewModelType, ObservableObject {
             .filter { $0 == .sendRequest }
             .withUnretained(self)
             .compactMap { owner, _ -> String? in
-                ParsedChatMessage
-                    .communicationRequest(inboxPublicKey: owner.offer.offerPublicKey,
+                guard let publicKey = owner.offer.inbox?.keyPair?.publicKey else {
+                    return nil
+                }
+                return ParsedChatMessage
+                    .communicationRequest(inboxPublicKey: publicKey,
                                           text: owner.requestText,
                                           contactInboxKey: owner.authenticationManager.userKeys.publicKey)?
                     .asString
             }
             .flatMapLatest(with: self) { owner, message -> AnyPublisher<Void, Never> in
                 owner.state = .requesting
+                guard let publicKey = owner.offer.inbox?.keyPair?.publicKey else {
+                    return Just(()).eraseToAnyPublisher()
+                }
                 return owner.chatService
-                    .requestCommunication(inboxPublicKey: owner.offer.offerPublicKey, message: message)
+                    .requestCommunication(inboxPublicKey: publicKey, message: message)
                     .trackError(owner.primaryActivity.error)
             }
-            .map { _ in Route.requestSent }
+            .flatMap { [persistence, offer] _ in
+                persistence.update(context: persistence.viewContext) {
+                    offer.isRequested = true
+                    return offer
+                }
+                .asVoid()
+                .justOnError()
+            }
+            .map { Route.requestSent }
             .subscribe(route)
             .store(in: cancelBag)
     }

@@ -66,9 +66,12 @@ final class InboxViewModel: ViewModelType, ObservableObject {
                     .getStoredOffers()
                     .materialize()
                     .compactMap(\.value)
-                    .map { offers -> OfferAndMessage in
-                        let offerKeyAndTypes = offers.map { offer in
-                            OfferKeyAndType(offerKey: offer.offerPublicKey, offerType: offer.type)
+                    .map { (offers: [ManagedOffer]) -> OfferAndMessage in
+                        let offerKeyAndTypes = offers.compactMap { offer -> OfferKeyAndType? in
+                            guard let publicKey = offer.inbox?.keyPair?.publicKey, let offerType = offer.type else {
+                                return nil
+                            }
+                            return OfferKeyAndType(offerKey: publicKey, offerType: offerType)
                         }
                         return OfferAndMessage(offers: offerKeyAndTypes, messages: chatInboxMessages)
                     }
