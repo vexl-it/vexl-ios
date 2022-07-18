@@ -11,10 +11,25 @@ import Combine
 
 final class MarketplaceViewModel: ViewModelType, ObservableObject {
 
-    @Inject private var offerService: OfferServiceType
-    @Inject private var authenticationManager: AuthenticationManagerType
-    @Inject private var localStorageService: LocalStorageServiceType
+    // MARK: - Dependency Bindings
+
+    @Inject private var offerManager: OfferManagerType
     @Inject private var inboxManager: InboxManagerType
+
+    // MARK: - Fetched Bindings
+
+    @Fetched(fetchImmediately: false)
+    var fetchedBuyOffers: [ManagedOffer]
+
+    @Fetched(fetchImmediately: false)
+    var fetchedSellOffers: [ManagedOffer]
+
+    // MARK: - View Bindings
+
+    @Published var primaryActivity: Activity = .init()
+    @Published var selectedOption: OfferType = .buy
+    @Published private var buyFeed: [OfferDetailViewData] = []
+    @Published private var sellFeed: [OfferDetailViewData] = []
 
     // MARK: - Actions Bindings
 
@@ -23,19 +38,12 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
         case showSellFilters
         case showSellOffer
         case showBuyOffer
-        case offerDetailTapped(id: String)
-        case requestOfferTapped(id: String)
+        case offerDetailTapped(offer: ManagedOffer)
+        case requestOfferTapped(offer: ManagedOffer)
+        case fetchNewOffers
     }
 
     let action: ActionSubject<UserAction> = .init()
-
-    // MARK: - View Bindings
-
-    @Published var primaryActivity: Activity = .init()
-    @Published var selectedOption: OfferType = .buy
-    @Published var offerItems: [Offer] = []
-    @Published private var displayedBuyFeedItems: [OfferDetailViewData] = []
-    @Published private var displayedSellFeedItems: [OfferDetailViewData] = []
 
     // MARK: - Coordinator Bindings
 
@@ -43,7 +51,7 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
         case showFiltersTapped(OfferFilter)
         case showSellOfferTapped
         case showBuyOfferTapped
-        case showRequestOffer(Offer)
+        case showRequestOffer(ManagedOffer)
     }
 
     var route: CoordinatingSubject<Route> = .init()
@@ -77,9 +85,9 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
     var marketplaceFeedItems: [OfferDetailViewData] {
         switch selectedOption {
         case .sell:
-            return displayedSellFeedItems
+            return sellFeed
         case .buy:
-            return displayedBuyFeedItems
+            return buyFeed
         }
     }
 
@@ -87,16 +95,14 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
     let bitcoinViewModel: BitcoinViewModel
     private var buyOfferFilter = OfferFilter(type: .buy)
     private var sellOfferFilter = OfferFilter(type: .sell)
-    private var buyFeedItems: [OfferDetailViewData] = []
-    private var sellFeedItems: [OfferDetailViewData] = []
-    private var userOfferKeys: [OfferKeys] = []
     private let cancelBag: CancelBag = .init()
+
+    // MARK: - Methods
 
     init(bitcoinViewModel: BitcoinViewModel) {
         self.bitcoinViewModel = bitcoinViewModel
         setupDataBindings()
         setupActionBindings()
-        setupOfferItemBindings()
         setupInbox()
     }
 
@@ -104,31 +110,17 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
         switch filter.type {
         case .buy:
             buyOfferFilter = filter
-            filterBuyOffers()
+            $fetchedBuyOffers.load(
+                sortDescriptors: [ NSSortDescriptor(key: "createdAt", ascending: true) ],
+                predicate: filter.predicate
+            )
         case .sell:
             sellOfferFilter = filter
-            filterSellOffers()
+            $fetchedSellOffers.load(
+                sortDescriptors: [ NSSortDescriptor(key: "createdAt", ascending: true) ],
+                predicate: filter.predicate
+            )
         }
-    }
-
-    private func filterBuyOffers() {
-        let filteredItems = buyFeedItems.filter { item in
-            if let offer = self.offerItems.first(where: { $0.offerId == item.id }) {
-                return buyOfferFilter.shouldShow(offer: offer)
-            }
-            return false
-        }
-        displayedBuyFeedItems = filteredItems
-    }
-
-    private func filterSellOffers() {
-        let filteredItems = sellFeedItems.filter { item in
-            if let offer = self.offerItems.first(where: { $0.offerId == item.id }) {
-                return sellOfferFilter.shouldShow(offer: offer)
-            }
-            return false
-        }
-        displayedSellFeedItems = filteredItems
     }
 
     private func setupInbox() {
@@ -136,77 +128,27 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
     }
 
     private func setupDataBindings() {
-        let encryptedOffers: AnyPublisher<[OfferPayload], Never> = Publishers.Merge(refresh, Just(()))
-            .flatMapLatest(with: self) { owner, _ in
-                owner.offerService
-                    .getStoredOfferKeys(fromSource: .created)
-                    .track(activity: owner.primaryActivity)
-                    .materialize()
-                    .compactMap(\.value)
-            }
-            .withUnretained(self)
-            .handleEvents(receiveOutput: { owner, keys in
-                owner.userOfferKeys = keys
-            })
-            .flatMapLatest(with: self) { owner, _ -> AnyPublisher<[OfferPayload], Never> in
-                owner.offerService
-                    .getOffer(pageLimit: Constants.pageMaxLimit)
-                    .track(activity: owner.primaryActivity)
-                    .materialize()
-                    .compactMap(\.value)
-                    .map(\.items)
-                    .eraseToAnyPublisher()
-            }
-            .eraseToAnyPublisher()
+        $fetchedBuyOffers.publisher
+            .map(\.objects)
+            .map { $0.map(OfferDetailViewData.init) }
+            .print("[MarketPlace] received buy offers")
+            .assign(to: &$buyFeed)
 
-        encryptedOffers
-            .withUnretained(self)
-            .tryMap { owner, items in
-                items.compactMap { try? Offer(encryptedOffer: $0, keys: owner.authenticationManager.userKeys, source: .fetched) }
-            }
-            .replaceError(with: [])
-            .assign(to: &$offerItems)
-    }
+        $fetchedSellOffers.publisher
+            .map(\.objects)
+            .map { $0.map(OfferDetailViewData.init) }
+            .print("[MarketPlace] received sell offers")
+            .assign(to: &$sellFeed)
 
-    private func setupOfferItemBindings() {
-        $offerItems
-            .withUnretained(self)
-            .map { owner, offers -> [Offer] in
-                offers.filter { offer in
-                    !owner.userOfferKeys.contains(where: { $0.id == offer.offerId })
-                }
-            }
-            .withUnretained(self)
-            .flatMap { owner, offers in
-                owner.offerService
-                    .storeOffers(offers: offers, areCreated: false)
-                    .track(activity: owner.primaryActivity)
-                    .materialize()
-                    .compactMap(\.value)
-                    .map { offers }
-                    .eraseToAnyPublisher()
-            }
-            .withUnretained(self)
-            .sink { owner, offers in
-                let requestedInboxes = owner.getRequestedInboxes()
-                owner.buyFeedItems.removeAll()
-                owner.sellFeedItems.removeAll()
+        $fetchedBuyOffers.load(
+            sortDescriptors: [ NSSortDescriptor(key: "createdAt", ascending: true) ],
+            predicate: buyOfferFilter.predicate
+        )
 
-                for offer in offers {
-                    let isRequested = requestedInboxes.contains(where: { $0.publicKey == offer.offerPublicKey })
-                    let viewData = OfferDetailViewData(offer: offer, isRequested: isRequested)
-                    switch offer.type {
-                    case .buy:
-                        owner.buyFeedItems.append(viewData)
-                    case .sell:
-                        owner.sellFeedItems.append(viewData)
-                    }
-                }
-
-                owner.displayedBuyFeedItems = owner.buyFeedItems
-                owner.displayedSellFeedItems = owner.sellFeedItems
-            }
-            .store(in: cancelBag)
+        $fetchedSellOffers.load(
+            sortDescriptors: [ NSSortDescriptor(key: "createdAt", ascending: true) ],
+            predicate: sellOfferFilter.predicate
+        )
     }
 
     private func setupActionBindings() {
@@ -246,24 +188,22 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
             .store(in: cancelBag)
 
         userAction
-            .compactMap { action -> String? in
-                if case let .requestOfferTapped(id) = action { return id }
-                return nil
-            }
+            .filter { $0 == .fetchNewOffers }
             .withUnretained(self)
-            .compactMap { owner, id in
-                owner.offerItems.first(where: { $0.offerId == id })
+            .sink { [offerManager] _ in
+                offerManager.sync()
+            }
+            .store(in: cancelBag)
+
+        userAction
+            .compactMap { action -> ManagedOffer? in
+                guard case let .requestOfferTapped(offer) = action else {
+                    return nil
+                }
+                return offer
             }
             .map { offer in Route.showRequestOffer(offer) }
             .subscribe(route)
             .store(in: cancelBag)
-    }
-
-    private func getRequestedInboxes() -> [ChatInbox] {
-        do {
-            return try localStorageService.getInboxes(ofType: .requested)
-        } catch {
-            return []
-        }
     }
 }
