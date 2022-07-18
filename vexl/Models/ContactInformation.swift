@@ -19,7 +19,7 @@ struct ContactInformation: Identifiable {
     var phone: String
     var avatar: Data?
     var avatarURL: String?
-    var isSelected = false
+    var isSelected = true
     var source: Source
 
     var sourceIdentifier: String {
