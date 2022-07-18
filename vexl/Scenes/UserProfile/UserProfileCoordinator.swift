@@ -109,18 +109,6 @@ extension UserProfileCoordinator {
         .eraseToAnyPublisher()
     }
 
-    private func presentEditName(router: Router) -> CoordinatingResult<RouterResult<Void>> {
-        coordinate(to: EditProfileNameCoordinator(router: router, animated: true))
-        .flatMap { result -> CoordinatingResult<RouterResult<Void>> in
-            guard result != .dismissedByRouter else {
-                return Just(result).eraseToAnyPublisher()
-            }
-            return router.dismiss(animated: true, returning: result)
-        }
-        .prefix(1)
-        .eraseToAnyPublisher()
-    }
-
     private func presentCurrencySelect(router: Router) -> CoordinatingResult<RouterResult<BottomActionSheetActionType>> {
         coordinate(to: BottomActionSheetCoordinator(router: router, viewModel: CurrencySelectViewModel()))
         .flatMap { result -> CoordinatingResult<RouterResult<BottomActionSheetActionType>> in
