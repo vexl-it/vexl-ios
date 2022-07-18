@@ -11,8 +11,12 @@ import Combine
 
 final class UserOffersViewModel: ViewModelType, ObservableObject {
 
-    @Inject var offerService: OfferServiceType
     @Inject var authenticationManager: AuthenticationManagerType
+
+    // MARK: - Fetched Bindings
+
+    @Fetched(fetchImmediately: false)
+    var fetchedOffers: [ManagedOffer]
 
     // MARK: - Action Binding
 
@@ -25,7 +29,7 @@ final class UserOffersViewModel: ViewModelType, ObservableObject {
 
     // MARK: - View Bindings
 
-    @Published var userOffers: [Offer] = []
+    @Published var userOffers: [ManagedOffer] = []
     @Published var offerSortingOption: OfferSortOption = .newest
 
     @Published var primaryActivity: Activity = .init()
@@ -72,13 +76,12 @@ final class UserOffersViewModel: ViewModelType, ObservableObject {
     }
 
     var offerItems: [OfferDetailViewData] {
-        userOffers.map { OfferDetailViewData(offer: $0, isRequested: false) }
+        userOffers.map { OfferDetailViewData(offer: $0) }
     }
 
     init(offerType: OfferType) {
         self.offerType = offerType
         setupActivityBindings()
-        setupBindings()
         setupDataBindings()
         setupActionBindings()
     }
@@ -94,17 +97,20 @@ final class UserOffersViewModel: ViewModelType, ObservableObject {
             .assign(to: &$error)
     }
 
-    private func setupBindings() {
-        $offerSortingOption
-            .withUnretained(self)
-            .sink { owner, option in
-                owner.sortOffers(withOption: option)
-            }
-            .store(in: cancelBag)
-    }
-
     private func setupDataBindings() {
-        fetchOffers()
+        $fetchedOffers
+            .load(
+                sortDescriptors: [
+                    NSSortDescriptor(key: "createdAt", ascending: true)
+                ],
+                predicate: .init(
+                    format: "offerTypeRawType == '\(OfferType.buy.rawValue)' AND user != nil"
+                )
+            )
+
+        $fetchedOffers.publisher
+            .map(\.objects)
+            .assign(to: &$userOffers)
     }
 
     private func setupActionBindings() {
@@ -123,49 +129,5 @@ final class UserOffersViewModel: ViewModelType, ObservableObject {
                 owner.route.send(.dismissTapped)
             }
             .store(in: cancelBag)
-    }
-
-    private func fetchOffers() {
-        Just(())
-            .flatMapLatest(with: self) { owner, _ in
-                owner.offerService
-                    .getStoredOfferIds(fromType: owner.offerType == .buy ? .buy : .sell)
-                    .track(activity: owner.primaryActivity)
-                    .materialize()
-                    .compactMap(\.value)
-            }
-            .filter { !$0.isEmpty }
-            .flatMapLatest(with: self) { owner, ids in
-                owner.offerService
-                    .getUserOffers(offerIds: ids)
-                    .track(activity: owner.primaryActivity)
-                    .materialize()
-                    .compactMap(\.value)
-            }
-            .withUnretained(self)
-            .sink { owner, encryptedOffers in
-                let userKeys = owner.authenticationManager.userKeys
-
-                owner.userOffers = encryptedOffers
-                    .compactMap { try? Offer(encryptedOffer: $0, keys: userKeys, source: .created) }
-
-                owner.sortOffers(withOption: owner.offerSortingOption)
-            }
-            .store(in: cancelBag)
-    }
-
-    private func sortOffers(withOption option: OfferSortOption) {
-        userOffers = userOffers.sorted { first, second in
-            switch option {
-            case .newest:
-                return first.createdDate.compare(second.createdDate) == .orderedDescending
-            case .oldest:
-                return first.createdDate.compare(second.createdDate) == .orderedAscending
-            }
-        }
-    }
-
-    func refreshOffers() {
-        fetchOffers()
     }
 }
