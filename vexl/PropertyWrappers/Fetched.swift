@@ -31,29 +31,36 @@ final class Fetched<Entity: NSManagedObject> {
     let context: NSManagedObjectContext
 
     var publisher: AnyPublisher<FetchEvent<Entity>, Never> {
-        currentValue.eraseToAnyPublisher()
+        currentValue
+            .filterNil()
+            .eraseToAnyPublisher()
     }
 
     var wrappedValue: [Entity] {
-        currentValue.value.objects
+        currentValue.value?.objects ?? []
     }
 
     var projectedValue: Fetched<Entity> {
         self
     }
 
-    private let currentValue: CurrentValueSubject<FetchEvent<Entity>, Never>
+    private let currentValue: CurrentValueSubject<FetchEvent<Entity>?, Never> = .init(nil)
 
-    private let controller: NSFetchedResultsController<Entity>
+    private var controller: NSFetchedResultsController<Entity>?
     private var fetchDelegate: FetchedResultsControllerDelegate<Entity>!
     private var cancelBag: CancelBag = .init()
+    private var currentSortDescriptors: [NSSortDescriptor]
+    private var currentPredicate: NSPredicate?
 
     init(
+        fetchImmediately: Bool = true,
         contextType: FetchContextType = .view,
         sortDescriptors: [NSSortDescriptor] = [],
         predicate: NSPredicate? = nil
     ) {
         @Inject var persistence: PersistenceStoreManagerType
+        currentSortDescriptors = sortDescriptors
+        currentPredicate = predicate
 
         context = {
             switch contextType {
@@ -66,28 +73,44 @@ final class Fetched<Entity: NSManagedObject> {
             }
         }()
 
+        if fetchImmediately {
+            load()
+        }
+    }
+
+    func load(
+        sortDescriptors: [NSSortDescriptor]? = nil,
+        predicate: NSPredicate? = nil
+    ) {
         guard let entity = Entity.entityName else {
             fatalError("Unknown entity")
         }
+
+        if let sortDescriptors = sortDescriptors {
+            self.currentSortDescriptors = sortDescriptors
+        }
+
+        if let predicate = predicate {
+            self.currentPredicate = predicate
+        }
+
         let request = NSFetchRequest<Entity>(entityName: entity)
-        request.predicate = predicate
-        request.sortDescriptors = sortDescriptors
+        request.predicate = currentPredicate
+        request.sortDescriptors = currentSortDescriptors
 
         let controller = NSFetchedResultsController(fetchRequest: request, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
         self.controller = controller
 
-        let objects: [Entity] = {
-            do {
-                try controller.performFetch()
-                return controller.fetchedObjects ?? []
-            } catch {
-                return []
-            }
-        }()
-        currentValue = .init((.loaded, objects))
-
         fetchDelegate = FetchedResultsControllerDelegate { [weak self] event in
             self?.currentValue.send(event)
+        }
+
+        do {
+            try controller.performFetch()
+            let objects = controller.fetchedObjects ?? []
+            currentValue.send((.loaded, objects))
+        } catch {
+            currentValue.send((.loaded, []))
         }
 
         controller.delegate = fetchDelegate
