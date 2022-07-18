@@ -35,6 +35,12 @@ protocol PersistenceStoreManagerType {
         predicate: NSPredicate?
     ) -> [T]
 
+    func loadSyncroniously<T: NSManagedObject>(
+        type: T.Type,
+        context: NSManagedObjectContext,
+        objectID: NSManagedObjectID
+    ) -> T?
+
     func update<T: NSManagedObject>(context: NSManagedObjectContext, editor: @escaping () -> T) -> AnyPublisher<T, Error>
 
     func delete<T: NSManagedObject>(context: NSManagedObjectContext, object: T) -> AnyPublisher<Void, Error>
@@ -254,6 +260,17 @@ final class PersistenceStoreManager: PersistenceStoreManagerType {
         } catch {
             return []
         }
+    }
+
+    func loadSyncroniously<T: NSManagedObject>(
+        type: T.Type,
+        context: NSManagedObjectContext,
+        objectID: NSManagedObjectID
+    ) -> T? {
+        guard let object = context.object(with: objectID) as? T else {
+            return nil
+        }
+        return object
     }
 
     func update<T: NSManagedObject>(context: NSManagedObjectContext, editor: @escaping () -> T) -> AnyPublisher<T, Error> {

@@ -68,11 +68,10 @@ final class UserRepository: UserRepositoryType {
     }
 
     func getUser(for context: NSManagedObjectContext) -> ManagedUser? {
-        guard let objId = user?.objectID,
-              let user = context.object(with: objId) as? ManagedUser else {
+        guard let objId = user?.objectID else {
             return nil
         }
-        return user
+        return persistenceManager.loadSyncroniously(type: ManagedUser.self, context: context, objectID: objId)
     }
 
     func update(with userResponse: User, avatar: Data?) -> AnyPublisher<ManagedUser, Error> {
