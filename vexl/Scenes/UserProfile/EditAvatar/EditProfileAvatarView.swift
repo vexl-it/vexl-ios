@@ -22,34 +22,23 @@ struct EditProfileAvatarView: View {
             selectAvatar
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
 
-            if viewModel.isAvatarUpdated {
-                HStack {
-                    LargeSolidButton(title: L.generalCancel(),
-                                     font: Appearance.TextStyle.paragraphBold.font.asFont,
-                                     style: .secondary,
-                                     isFullWidth: true,
-                                     isEnabled: .constant(true),
-                                     action: {
-                        viewModel.action.send(.cancel)
-                    })
+            HStack {
+                LargeSolidButton(title: L.generalCancel(),
+                                 font: Appearance.TextStyle.paragraphBold.font.asFont,
+                                 style: .secondary,
+                                 isFullWidth: true,
+                                 isEnabled: .constant(true),
+                                 action: {
+                    viewModel.action.send(.cancel)
+                })
 
-                    LargeSolidButton(title: L.continue(),
-                                     font: Appearance.TextStyle.paragraphBold.font.asFont,
-                                     style: .main,
-                                     isFullWidth: true,
-                                     isEnabled: .constant(true),
-                                     action: {
-                        viewModel.action.send(.updateAvatar)
-                    })
-                }
-            } else {
                 LargeSolidButton(title: L.continue(),
                                  font: Appearance.TextStyle.paragraphBold.font.asFont,
                                  style: .main,
                                  isFullWidth: true,
                                  isEnabled: .constant(true),
                                  action: {
-                    viewModel.action.send(.selectAvatar)
+                    viewModel.action.send(.updateAvatar)
                 })
             }
         }
@@ -88,16 +77,18 @@ struct EditProfileAvatarView: View {
                 .cornerRadius(Appearance.GridGuide.padding)
                 .padding(Appearance.GridGuide.point)
 
-            Group {
-                Image(systemName: "camera.fill")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .foregroundColor(Appearance.Colors.primaryText)
-                    .frame(size: Appearance.GridGuide.smallIconSize)
+            if viewModel.avatar != nil {
+                Group {
+                    Image(systemName: "camera.fill")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .foregroundColor(Appearance.Colors.primaryText)
+                        .frame(size: Appearance.GridGuide.smallIconSize)
+                }
+                .frame(size: Appearance.GridGuide.iconSize, alignment: .center)
+                .background(Appearance.Colors.yellow100)
+                .cornerRadius(Appearance.GridGuide.buttonCorner)
             }
-            .frame(size: Appearance.GridGuide.iconSize, alignment: .center)
-            .background(Appearance.Colors.yellow100)
-            .cornerRadius(Appearance.GridGuide.buttonCorner)
         }
         .onTapGesture {
             viewModel.action.send(.avatarTap)

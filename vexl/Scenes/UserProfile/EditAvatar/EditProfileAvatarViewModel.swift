@@ -21,7 +21,6 @@ final class EditProfileAvatarViewModel: ViewModelType, ObservableObject {
     enum UserAction: Equatable {
         case dismissTap
         case avatarTap
-        case selectAvatar
         case updateAvatar
         case cancel
     }
@@ -83,14 +82,6 @@ final class EditProfileAvatarViewModel: ViewModelType, ObservableObject {
             .withUnretained(self)
             .sink { owner, _ in
                 owner.showImagePickerActionSheet = true
-            }
-            .store(in: cancelBag)
-
-        action
-            .filter { $0 == .selectAvatar }
-            .withUnretained(self)
-            .sink { owner, _ in
-                owner.isAvatarUpdated = true
             }
             .store(in: cancelBag)
 
