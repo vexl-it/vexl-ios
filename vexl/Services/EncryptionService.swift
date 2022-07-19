@@ -15,6 +15,8 @@ protocol EncryptionServiceType {
 
 final class EncryptionService: EncryptionServiceType {
     @Inject var cryptoService: CryptoServiceType
+    let hashingQueue: OperationQueue = .init()
+    let encryptionQueue: OperationQueue = .init()
 
     func hashContacts(contacts: [ContactInformation]) -> AnyPublisher<[(ContactInformation, String)], Error> {
         let phoneNumber = Formatters.phoneNumberFormatter
@@ -30,8 +32,12 @@ final class EncryptionService: EncryptionServiceType {
     }
 
     private func hashContact(contact: ContactInformation, countryCode: UInt64?) -> AnyPublisher<(ContactInformation, String), Error> {
-        Future { promise in
-//            DispatchQueue(label: "ContactHMAC", qos: .userInitiated).async {
+        Future { [weak self] promise in
+            guard let owner = self else {
+                promise(.failure(EncryptionError.dataEncryption))
+                return
+            }
+            owner.hashingQueue.addOperation {
                 let identifier = contact.sourceIdentifier
                 let trimmedIdentifier = identifier.removeWhitespaces()
                 let formattedIdentifier: String = {
@@ -46,9 +52,9 @@ final class EncryptionService: EncryptionServiceType {
                 } catch {
                     promise(.failure(error))
                 }
-//            }
+            }
         }
-//        .receive(on: RunLoop.main)
+        .receive(on: RunLoop.main)
         .eraseToAnyPublisher()
     }
 
@@ -68,16 +74,20 @@ final class EncryptionService: EncryptionServiceType {
     }
 
     private func encrypt(offer: ManagedOffer, publicKey contactPublicKey: String, commonFriends: [String]) -> AnyPublisher<OfferPayload, Error> {
-        Future { promise in
-//            DispatchQueue(label: "OfferEncryption", qos: .userInitiated).async {
+        Future { [weak self] promise in
+            guard let owner = self else {
+                promise(.failure(EncryptionError.dataEncryption))
+                return
+            }
+            owner.encryptionQueue.addOperation {
                 do {
                     promise(.success(try OfferPayload(offer: offer, encryptionPublicKey: contactPublicKey, commonFriends: commonFriends)))
                 } catch {
                     promise(.failure(error))
                 }
-//            }
+            }
         }
-//        .receive(on: RunLoop.main)
+        .receive(on: RunLoop.main)
         .eraseToAnyPublisher()
     }
 }

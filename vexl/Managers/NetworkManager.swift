@@ -29,7 +29,7 @@ final class NetworkManager: NetworkManagerType {
     }
 
     init() {
-        interfaceMonitor = .init(requiredInterfaceType: .wifi)
+        interfaceMonitor = .init()
         interfaceMonitor.pathUpdateHandler = { [weak self] path in
             self?.handler(path: path)
         }
