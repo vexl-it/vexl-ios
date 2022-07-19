@@ -276,6 +276,9 @@
 		F1B365BD2885CB500069788D /* EditProfileNameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B365BA2885CB500069788D /* EditProfileNameView.swift */; };
 		F1B365BE2885CB500069788D /* EditProfileNameCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B365BB2885CB500069788D /* EditProfileNameCoordinator.swift */; };
 		F1B365BF2885CB500069788D /* EditProfileNameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B365BC2885CB500069788D /* EditProfileNameViewModel.swift */; };
+		F1B365D1288608680069788D /* ImportContactsProfileCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B365D0288608680069788D /* ImportContactsProfileCoordinator.swift */; };
+		F1B365D32886093D0069788D /* ImportContactsProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B365D22886093D0069788D /* ImportContactsProfileViewModel.swift */; };
+		F1B365D5288609A10069788D /* ImportContactsProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B365D4288609A10069788D /* ImportContactsProfileView.swift */; };
 		F1B5321C28202B36009D4E0C /* OfferItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B5321B28202B36009D4E0C /* OfferItemView.swift */; };
 		F1B5FCBC27C67DB00018729B /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B5FCBB27C67DB00018729B /* WelcomeViewController.swift */; };
 		F1B5FCBE27C68EA70018729B /* OnboardingView+BottomButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B5FCBD27C68EA70018729B /* OnboardingView+BottomButtons.swift */; };
@@ -640,6 +643,9 @@
 		F1B365BA2885CB500069788D /* EditProfileNameView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfileNameView.swift; sourceTree = "<group>"; };
 		F1B365BB2885CB500069788D /* EditProfileNameCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfileNameCoordinator.swift; sourceTree = "<group>"; };
 		F1B365BC2885CB500069788D /* EditProfileNameViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfileNameViewModel.swift; sourceTree = "<group>"; };
+		F1B365D0288608680069788D /* ImportContactsProfileCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportContactsProfileCoordinator.swift; sourceTree = "<group>"; };
+		F1B365D22886093D0069788D /* ImportContactsProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportContactsProfileViewModel.swift; sourceTree = "<group>"; };
+		F1B365D4288609A10069788D /* ImportContactsProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportContactsProfileView.swift; sourceTree = "<group>"; };
 		F1B5321B28202B36009D4E0C /* OfferItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferItemView.swift; sourceTree = "<group>"; };
 		F1B5FCBB27C67DB00018729B /* WelcomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeViewController.swift; sourceTree = "<group>"; };
 		F1B5FCBD27C68EA70018729B /* OnboardingView+BottomButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OnboardingView+BottomButtons.swift"; sourceTree = "<group>"; };
@@ -1795,6 +1801,16 @@
 			path = EditName;
 			sourceTree = "<group>";
 		};
+		F1B365CF288608420069788D /* ImportContacts */ = {
+			isa = PBXGroup;
+			children = (
+				F1B365D0288608680069788D /* ImportContactsProfileCoordinator.swift */,
+				F1B365D22886093D0069788D /* ImportContactsProfileViewModel.swift */,
+				F1B365D4288609A10069788D /* ImportContactsProfileView.swift */,
+			);
+			path = ImportContacts;
+			sourceTree = "<group>";
+		};
 		F1B5321D2820976E009D4E0C /* UserOffers */ = {
 			isa = PBXGroup;
 			children = (
@@ -1881,6 +1897,7 @@
 		F1BFA951280223BD00F4E745 /* UserProfile */ = {
 			isa = PBXGroup;
 			children = (
+				F1B365CF288608420069788D /* ImportContacts */,
 				F1B365B92885CB500069788D /* EditName */,
 				F1BFA96F2803A59F00F4E745 /* Components */,
 				F1BFA955280223BD00F4E745 /* UserProfileCoordinator.swift */,
@@ -2286,6 +2303,7 @@
 				F12A14DC27D677340096543E /* RegisterContactsCoordinator.swift in Sources */,
 				F1485644284FD451003213D7 /* ChatCommonFriendItemView.swift in Sources */,
 				B007A73128659A8700CFA5C9 /* BottomActionSheetView.swift in Sources */,
+				F1B365D1288608680069788D /* ImportContactsProfileCoordinator.swift in Sources */,
 				F188625D2811E3E700659786 /* OfferTradeLocationPickerView.swift in Sources */,
 				F11441F328468B5600307D39 /* CloseButton.swift in Sources */,
 				F151A29727C8667A000D7242 /* RegisterNameAvatarCoordinator.swift in Sources */,
@@ -2295,6 +2313,7 @@
 				F188624B2811551E00659786 /* CreateOfferView.swift in Sources */,
 				F13B266528192BBF0011F2FB /* OfferInitialData.swift in Sources */,
 				F1B365BF2885CB500069788D /* EditProfileNameViewModel.swift in Sources */,
+				F1B365D5288609A10069788D /* ImportContactsProfileView.swift in Sources */,
 				F12A14F327D96FD40096543E /* ImportContactsView.swift in Sources */,
 				F12A150827E1A4940096543E /* RequestAccessAlert.swift in Sources */,
 				B0E9BB2E2815C7260012BF1D /* HMAC.swift in Sources */,
@@ -2306,6 +2325,7 @@
 				F1A9453627F686D1009B5AE3 /* CodeValidation.swift in Sources */,
 				F12A14E827D6A8690096543E /* RequestAccessContactsView.swift in Sources */,
 				B01C01E62860B2C400A29F85 /* CoinChartData.swift in Sources */,
+				F1B365D32886093D0069788D /* ImportContactsProfileViewModel.swift in Sources */,
 				F13B2675281EB23A0011F2FB /* ContactFriendLevel.swift in Sources */,
 				B0E9BB302815C7310012BF1D /* SHA.swift in Sources */,
 				B08F390727AE7110008B344F /* UserDefault.swift in Sources */,
