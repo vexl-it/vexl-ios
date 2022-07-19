@@ -76,8 +76,8 @@ final class UserService: BaseService, UserServiceType {
                                                                      avatar: avatar,
                                                                      imageExtension: Constants.jpegFormat))
             .withUnretained(self)
-            .handleEvents(receiveOutput: { owner, response in
-                owner.authenticationManager.updateUser(response)
+            .handleEvents(receiveOutput: { owner, _ in
+                owner.authenticationManager.updateUser(username: username, withAvatar: avatar?.dataFromBase64)
             })
             .map(\.1)
             .eraseToAnyPublisher()
