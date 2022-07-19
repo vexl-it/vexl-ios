@@ -8,7 +8,6 @@
 import Foundation
 import Cleevio
 import Combine
-import CoreData
 
 final class RequestOfferViewModel: ViewModelType, ObservableObject {
 
