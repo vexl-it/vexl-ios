@@ -8,6 +8,8 @@
 import Foundation
 import CoreData
 
+// swiftlint:disable unnecessary_parenthesis
+
 struct OfferPayloadList: Codable {
     let offerPrivateList: [OfferPayload]
 
@@ -121,6 +123,7 @@ struct OfferPayload: Codable {
         self.commonFriends = commonFriends
     }
 
+    // swiftlint:disable:next function_body_length
     func decrypt(context: NSManagedObjectContext, userInbox: ManagedInbox) -> ManagedOffer? {
         guard let keys = userInbox.keyPair?.keys else {
             return nil
@@ -193,7 +196,6 @@ struct OfferPayload: Codable {
         } catch {
             return nil
         }
-
     }
 }
 

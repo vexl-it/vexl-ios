@@ -12,6 +12,15 @@ import PhoneNumberKit
 struct Formatters {
     // MARK: - Date API
 
+    /// format: yyyy-MM-dd'T'HH:mm:ss.SSS'Z'
+    /// example: 2022-06-22T11:29:00.000Z
+    static let apiUTCFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        return formatter
+    }()
+
     /// format: yyyy-MM-dd'T'HH:mm:ss.SSSZZZZ
     /// example: 2022-06-22T11:29:00.000GMT+02:00
     static let dateApiFormatter: DateFormatter = {

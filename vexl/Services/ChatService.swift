@@ -55,9 +55,7 @@ final class ChatService: BaseService, ChatServiceType {
     // MARK: - Create inbox and request messaging permission
 
     func createInbox(publicKey: String, pushToken: String) -> AnyPublisher<Void, Error> {
-        print("[SyncQueue] creating inbox")
-        return request(endpoint: ChatRouter.createInbox(publicKey: publicKey, pushToken: pushToken))
-            .print("[SyncQueue] inbox created")
+        request(endpoint: ChatRouter.createInbox(publicKey: publicKey, pushToken: pushToken))
             .eraseToAnyPublisher()
     }
 

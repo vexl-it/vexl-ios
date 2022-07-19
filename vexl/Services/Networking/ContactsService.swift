@@ -64,18 +64,15 @@ final class ContactsService: BaseService, ContactsServiceType {
                         pageLimit: Int?) -> AnyPublisher<UserContacts, Error> {
 
         getContacts(fromFacebook: false, friendLevel: friendLevel, pageLimit: pageLimit)
-            .print("[\(Thread.current)] [ContactService] got my contacts")
             .eraseToAnyPublisher()
             .withUnretained(self)
             .flatMap { owner, contacts -> AnyPublisher<(Paged<ContactKey>, Paged<ContactKey>), Error> in
                 if hasFacebookAccount {
                     return owner.getContacts(fromFacebook: true, friendLevel: friendLevel, pageLimit: pageLimit)
-                        .print("[\(Thread.current)] [ContactService] got my and facebooks contacts")
                         .map { (contacts, $0) }
                         .eraseToAnyPublisher()
                 } else {
                     return Just((contacts, .empty))
-                        .print("[\(Thread.current)] [ContactService] got only my contacts")
                         .setFailureType(to: Error.self)
                         .eraseToAnyPublisher()
                 }

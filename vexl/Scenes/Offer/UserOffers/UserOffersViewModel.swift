@@ -101,7 +101,7 @@ final class UserOffersViewModel: ViewModelType, ObservableObject {
         $fetchedOffers
             .load(
                 sortDescriptors: [
-                    NSSortDescriptor(key: "createdAt", ascending: true)
+                    NSSortDescriptor(key: "createdAt", ascending: false)
                 ],
                 predicate: .init(
                     format: "offerTypeRawType == '\(OfferType.buy.rawValue)' AND user != nil"

@@ -43,7 +43,6 @@ final class DictionaryDB {
         }
     }
 
-
     static private var storedChatUser: [StoredChatUser] = [] {
         didSet {
             guard let encodedData = try? encoder.encode(storedChatUser) else { return }
@@ -71,7 +70,6 @@ final class DictionaryDB {
            let savedInboxMessages = try? decoder.decode([ChatInboxMessage].self, from: inboxMessagesData) {
             inboxMessage = savedInboxMessages
         }
-
 
         if let storedChatUserData = UserDefaults.standard.data(forKey: "storedChatUser"),
            let savedChatUser = try? decoder.decode([StoredChatUser].self, from: storedChatUserData) {
@@ -147,7 +145,6 @@ final class DictionaryDB {
     static func getInboxMessages() -> [ChatInboxMessage] {
         self.inboxMessage
     }
-
 
     static func saveChatUser(_ chatUser: ParsedChatMessage.ChatUser, inboxPublicKey: String, contactPublicKey: String) {
         let storedChatUser = StoredChatUser(inboxPublicKey: inboxPublicKey,

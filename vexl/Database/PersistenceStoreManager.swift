@@ -94,23 +94,6 @@ final class PersistenceStoreManager: PersistenceStoreManagerType {
         viewContext.parent = primaryBackgroundContext
         self.viewContext = viewContext
         loadPersistentStore()
-
-        NotificationCenter.default.addObserver(
-            forName: NSNotification.Name.NSManagedObjectContextDidSave,
-            object: nil,
-            queue: nil,
-            using: { [weak primaryContext, weak viewContext] notification in
-                guard let notificationContext = notification.object as? NSManagedObjectContext else {
-                    return
-                }
-                switch notificationContext {
-                case primaryContext:
-                    viewContext?.mergeChanges(fromContextDidSave: notification)
-                default:
-                    break
-                }
-            }
-        )
     }
 
     private func loadPersistentStore() {
@@ -199,7 +182,6 @@ final class PersistenceStoreManager: PersistenceStoreManagerType {
             owner.save(context: context)
         }
         .receive(on: RunLoop.main)
-//        .receive(on: RunLoop.current)
         .eraseToAnyPublisher()
     }
 
@@ -212,16 +194,12 @@ final class PersistenceStoreManager: PersistenceStoreManagerType {
             }
         }
         .receive(on: RunLoop.main)
-        .print("[\(Thread.current)] [Persistence] inserted")
         .flatMapLatest(with: self) { (owner, objects: [T]) -> AnyPublisher<[T], Error> in
-//            print("[\(Thread.current)] [Persistence] inside")
-            return owner.save(context: context)
+            owner.save(context: context)
                 .map { objects }
                 .eraseToAnyPublisher()
         }
         .receive(on: RunLoop.main)
-        .print("[\(Thread.current)] [Persistence] saved")
-//        .receive(on: RunLoop.current)
         .eraseToAnyPublisher()
     }
 
@@ -248,7 +226,6 @@ final class PersistenceStoreManager: PersistenceStoreManagerType {
             }
         }
         .receive(on: RunLoop.main)
-//        .receive(on: RunLoop.current)
         .eraseToAnyPublisher()
     }
 
@@ -294,7 +271,6 @@ final class PersistenceStoreManager: PersistenceStoreManagerType {
                 .map { objects }
         }
         .receive(on: RunLoop.main)
-//        .receive(on: RunLoop.current)
         .eraseToAnyPublisher()
     }
 
@@ -311,7 +287,6 @@ final class PersistenceStoreManager: PersistenceStoreManagerType {
                 .map { objects }
         }
         .receive(on: RunLoop.main)
-//        .receive(on: RunLoop.current)
         .eraseToAnyPublisher()
     }
 }

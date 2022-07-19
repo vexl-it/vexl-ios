@@ -71,7 +71,7 @@ extension ManagedOffer {
         offer.modifiedAt = ""
         offer.currency = .usd
         offer.minAmount = 0
-        offer.maxAmount = 10000
+        offer.maxAmount = 10_000
         offer.feeAmount = 590
         offer.offerDescription = "Test"
         offer.feeState = .none
@@ -79,7 +79,7 @@ extension ManagedOffer {
         offer.friendLevel = .firstDegree
         offer.type = .sell
         offer.active = true
-        offer.activePriceState = .none
+        offer.activePriceState = OfferTrigger.none
         offer.activePriceValue = 12
         offer.paymentMethods = [.bank, .cash]
         offer.btcNetworks = [.lightning]

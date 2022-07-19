@@ -166,7 +166,7 @@ class ImportContactsViewModel: ObservableObject {
         let importContact = hashContacts
             .withUnretained(self)
             .flatMap { owner, contacts -> AnyPublisher<ContactsImported, Never> in
-                return owner.contactsService
+                owner.contactsService
                     .importContacts(contacts.map(\.1))
                     .track(activity: owner.primaryActivity)
                     .materialize()

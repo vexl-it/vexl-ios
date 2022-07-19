@@ -97,6 +97,7 @@ class OfferRepository: OfferRepositoryType {
             offer.activePriceValue = activePriceValue
             offer.active = active
             offer.expirationDate = expiration
+            offer.createdAt = Date()
             offer.syncItem = ManagedSyncItem(context: context)
             offer.user = userRepository.getUser(for: context)
 
@@ -106,7 +107,8 @@ class OfferRepository: OfferRepositoryType {
 
     func createOffer(offerPayloads: [OfferPayload]) -> AnyPublisher<[ManagedOffer], Error> {
         guard let userInboxID = userRepository.user?.profile?.keyPair?.inbox?.objectID,
-              let userInbox = persistence.loadSyncroniously(type: ManagedInbox.self, context: backgroundContext, objectID: userInboxID)else {
+              let userInbox = persistence.loadSyncroniously(type: ManagedInbox.self, context: backgroundContext, objectID: userInboxID),
+              !offerPayloads.isEmpty else {
             return Fail(error: PersistenceError.insufitientData).eraseToAnyPublisher()
         }
         return persistence.insert(context: backgroundContext) { context in

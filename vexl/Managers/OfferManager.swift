@@ -19,18 +19,22 @@ final class OfferManager: OfferManagerType {
     @Inject private var offerRepository: OfferRepositoryType
     private var cancellable: AnyCancellable?
 
+    @UserDefault(UserDefaultKey.lastOfferSyncDate.rawValue, defaultValue: Date()) private var lastSyncDate: Date
+
     func sync() {
         guard cancellable == nil else {
             return
         }
+        let startDate = Date()
         cancellable = offerService
-            .getOffer(pageLimit: Constants.pageMaxLimit)
+            .getNewOffers(pageLimit: Constants.pageMaxLimit, lastSyncDate: lastSyncDate)
             .map(\.items)
             .flatMap { [offerRepository] payloads -> AnyPublisher<[ManagedOffer], Error> in
                 offerRepository.createOffer(offerPayloads: payloads)
             }
             .catch { _ in Just([]) }
             .sink(receiveValue: { [weak self] _ in
+                self?.lastSyncDate = startDate
                 self?.cancellable = nil
             })
     }

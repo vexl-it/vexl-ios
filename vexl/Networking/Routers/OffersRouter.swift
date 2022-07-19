@@ -12,11 +12,13 @@ enum OffersRouter: ApiRouter {
     case createOffer(offerPayloads: [OfferPayload], expiration: TimeInterval)
     case getOffers(pageLimit: Int?)
     case getUserOffers(offerIds: [String])
+    case getNewOffers(pageLimit: Int?, lastSyncDate: Date)
+
     case deleteOffers(offerIds: [String])
 
     var method: HTTPMethod {
         switch self {
-        case .getOffers, .getUserOffers:
+        case .getOffers, .getUserOffers, .getNewOffers:
             return .get
         case .createOffer:
             return .post
@@ -31,6 +33,8 @@ enum OffersRouter: ApiRouter {
 
     var path: String {
         switch self {
+        case .getNewOffers:
+            return "offers/me/modified"
         case .getOffers:
             return "offers/me"
         case .createOffer, .getUserOffers, .deleteOffers:
@@ -40,6 +44,14 @@ enum OffersRouter: ApiRouter {
 
     var parameters: Parameters {
         switch self {
+        case let .getNewOffers(pageLimit, lastSyncDate):
+            guard let pageLimit = pageLimit else {
+                return [:]
+            }
+            return [
+                "limit": pageLimit,
+                "modifiedAt": Formatters.apiUTCFormatter.string(from: lastSyncDate)
+            ]
         case let .getOffers(pageLimit):
             guard let pageLimit = pageLimit else {
                 return [:]

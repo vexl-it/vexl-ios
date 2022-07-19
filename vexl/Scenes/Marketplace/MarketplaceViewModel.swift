@@ -111,13 +111,13 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
         case .buy:
             buyOfferFilter = filter
             $fetchedBuyOffers.load(
-                sortDescriptors: [ NSSortDescriptor(key: "createdAt", ascending: true) ],
+                sortDescriptors: [ NSSortDescriptor(key: "createdAt", ascending: false) ],
                 predicate: filter.predicate
             )
         case .sell:
             sellOfferFilter = filter
             $fetchedSellOffers.load(
-                sortDescriptors: [ NSSortDescriptor(key: "createdAt", ascending: true) ],
+                sortDescriptors: [ NSSortDescriptor(key: "createdAt", ascending: false) ],
                 predicate: filter.predicate
             )
         }
@@ -139,12 +139,12 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
             .assign(to: &$sellFeed)
 
         $fetchedBuyOffers.load(
-            sortDescriptors: [ NSSortDescriptor(key: "createdAt", ascending: true) ],
+            sortDescriptors: [ NSSortDescriptor(key: "createdAt", ascending: false) ],
             predicate: buyOfferFilter.predicate
         )
 
         $fetchedSellOffers.load(
-            sortDescriptors: [ NSSortDescriptor(key: "createdAt", ascending: true) ],
+            sortDescriptors: [ NSSortDescriptor(key: "createdAt", ascending: false) ],
             predicate: sellOfferFilter.predicate
         )
     }

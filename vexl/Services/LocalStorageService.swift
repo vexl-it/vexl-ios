@@ -45,9 +45,6 @@ protocol LocalStorageServiceType {
 
 final class LocalStorageService: LocalStorageServiceType {
 
-    // MARK: - Offer
-
-
     // MARK: - Inbox and Message cache
 
     func saveInbox(_ inbox: ChatInbox) throws {
@@ -185,5 +182,4 @@ final class LocalStorageService: LocalStorageServiceType {
         }
         .eraseToAnyPublisher()
     }
-
 }

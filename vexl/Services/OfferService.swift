@@ -14,6 +14,7 @@ protocol OfferServiceType {
 
     func getUserOffers(offerIds: [String]) -> AnyPublisher<[OfferPayload], Error>
     func getOffer(pageLimit: Int?) -> AnyPublisher<Paged<OfferPayload>, Error>
+    func getNewOffers(pageLimit: Int?, lastSyncDate: Date) -> AnyPublisher<Paged<OfferPayload>, Error>
 
     // MARK: - Offer Creation
 
@@ -49,6 +50,10 @@ final class OfferService: BaseService, OfferServiceType {
             .eraseToAnyPublisher()
     }
 
+    func getNewOffers(pageLimit: Int?, lastSyncDate: Date) -> AnyPublisher<Paged<OfferPayload>, Error> {
+        request(type: Paged<OfferPayload>.self, endpoint: OffersRouter.getNewOffers(pageLimit: pageLimit, lastSyncDate: lastSyncDate))
+    }
+
     // MARK: - Offer Creation
 
     func createOffer(
@@ -57,7 +62,6 @@ final class OfferService: BaseService, OfferServiceType {
         fiendLevel: ContactFriendLevel,
         expiration: TimeInterval
     ) -> AnyPublisher<OfferPayload, Error> {
-        print("[\(Thread.current)] [OfferService] Getting contacts")
         let contacts = contactsService
             .getAllContacts(
                 friendLevel: fiendLevel,
@@ -72,17 +76,13 @@ final class OfferService: BaseService, OfferServiceType {
             }
 
         let encryptOffer = contacts
-            .print("[\(Thread.current)] [OfferService] encrypting offers for contacts: ")
-            .withUnretained(self)
-            .flatMap { [encryptionService] owner, contacts in
+            .flatMap { [encryptionService] contacts in
                 encryptionService
                     .encryptOffer(withContactKey: contacts.map(\.publicKey), offer: offer)
             }
-            .print("[\(Thread.current)] [OfferService] encrypted")
             .eraseToAnyPublisher()
 
         let createOffer = encryptOffer
-            .print("[\(Thread.current)] [OfferService] will send offer payload")
             .withUnretained(self)
             .flatMap { owner, offerPayloads -> AnyPublisher<OfferPayload, Error> in
                 owner.request(
@@ -94,7 +94,6 @@ final class OfferService: BaseService, OfferServiceType {
                 )
                 .eraseToAnyPublisher()
             }
-            .print("[\(Thread.current)] [OfferService] did send offer payload")
             .eraseToAnyPublisher()
 
         return createOffer

@@ -136,7 +136,6 @@ final class ChatRequestViewModel: ViewModelType, ObservableObject {
         Just(()).eraseToAnyPublisher()
     }
 
-
     // MARK: - Helper methods for sending the confirmation request to the BE
 
     private func communicationRequest(index: Int, isConfirmed: Bool) -> AnyPublisher<IndexAndConfirmation, Never> {
