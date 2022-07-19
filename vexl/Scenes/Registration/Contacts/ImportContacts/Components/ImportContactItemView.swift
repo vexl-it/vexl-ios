@@ -76,23 +76,29 @@ private struct ImportContactSelectionView: View {
         } label: {
             if isSelected {
                 ZStack {
-                    Appearance.Colors.green100
+                    Appearance.Colors.yellow100
                         .cornerRadius(Appearance.GridGuide.buttonCorner)
                     Image(systemName: "checkmark")
-                        .foregroundColor(Appearance.Colors.green20)
+                        .foregroundColor(Appearance.Colors.black1)
                 }
             } else {
-                Appearance.Colors.gray4
+                Appearance.Colors.whiteText
                     .cornerRadius(Appearance.GridGuide.buttonCorner)
             }
         }
+        .makeCorneredBorder(color: isSelected ? Appearance.Colors.yellow100 : Appearance.Colors.gray4,
+                            borderWidth: 1,
+                            cornerRadius: Appearance.GridGuide.buttonCorner)
     }
 }
 
 #if DEBUG || DEVEL
 struct RegisterContacts_ContactItemViewPreview: PreviewProvider {
     static var previews: some View {
-        ImportContactItemView(item: ContactInformation.stub().first!, onSelection: { _ in })
+        VStack {
+            ImportContactItemView(item: ContactInformation.stub()[0], onSelection: { _ in })
+            ImportContactItemView(item: ContactInformation.stub()[1], onSelection: { _ in })
+        }
     }
 }
 #endif

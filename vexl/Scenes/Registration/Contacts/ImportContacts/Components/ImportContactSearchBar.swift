@@ -19,14 +19,16 @@ struct ImportContactSearchBar: View {
 
             ZStack {
                 Rectangle()
-                    .foregroundColor(Appearance.Colors.gray4)
+                    .foregroundColor(Appearance.Colors.gray6)
 
                 HStack {
                     Image(systemName: "magnifyingglass")
+                        .foregroundColor(Appearance.Colors.gray3)
+
                     ZStack(alignment: .leading) {
                         if searchText.isEmpty {
                             Text(L.generalSearch())
-                                .foregroundColor(Appearance.Colors.gray2)
+                                .foregroundColor(Appearance.Colors.gray3)
                         }
 
                         TextField("", text: $searchText)
@@ -43,10 +45,10 @@ struct ImportContactSearchBar: View {
                 onAction()
             }
             .textStyle(.paragraph)
-            .foregroundColor(hasSelectedItem ? Color.white : Appearance.Colors.gray2)
+            .foregroundColor(Appearance.Colors.whiteText)
             .frame(height: Appearance.GridGuide.baseHeight)
             .padding(.horizontal, Appearance.GridGuide.padding)
-            .background(hasSelectedItem ? Appearance.Colors.primaryText : Appearance.Colors.gray4)
+            .background(Appearance.Colors.black1)
             .cornerRadius(Appearance.GridGuide.buttonCorner)
             .disabled(!hasSelectedItem)
         }

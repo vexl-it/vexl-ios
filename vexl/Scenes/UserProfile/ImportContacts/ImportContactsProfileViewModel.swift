@@ -10,7 +10,7 @@ import Cleevio
 import Combine
 
 final class ImportContactsProfileViewModel: ViewModelType, ObservableObject {
-    
+
     enum UserAction: Equatable {
         case dismissTap
     }
@@ -37,6 +37,7 @@ final class ImportContactsProfileViewModel: ViewModelType, ObservableObject {
     }
 
     var route: CoordinatingSubject<Route> = .init()
+    var importContactViewModel = ImportPhoneContactsViewModel()
 
     // MARK: - Variables
 
@@ -44,6 +45,8 @@ final class ImportContactsProfileViewModel: ViewModelType, ObservableObject {
 
     init() {
         setupActivityBindings()
+        importContactViewModel.currentState = .loading
+        try? importContactViewModel.fetchContacts()
     }
 
     private func setupActivityBindings() {

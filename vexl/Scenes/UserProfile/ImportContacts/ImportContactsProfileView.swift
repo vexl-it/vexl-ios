@@ -12,7 +12,10 @@ struct ImportContactsProfileView: View {
     @ObservedObject var viewModel: ImportContactsProfileViewModel
 
     var body: some View {
-        Text("1234")
+        VStack {
+            ImportContactsView(viewModel: viewModel.importContactViewModel)
+        }
+        .background(Color.black.edgesIgnoringSafeArea(.all))
     }
 }
 

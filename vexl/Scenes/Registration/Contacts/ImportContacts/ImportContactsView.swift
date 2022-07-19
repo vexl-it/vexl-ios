@@ -20,7 +20,7 @@ struct ImportContactsView: View {
 
             LargeSolidButton(title: viewModel.actionTitle,
                              font: Appearance.TextStyle.titleSmallBold.font.asFont,
-                             style: .custom(color: viewModel.currentState == .success ? .success : .welcome),
+                             style: .custom(color: viewModel.currentState == .success ? .success : .main),
                              isFullWidth: true,
                              isEnabled: .constant(true),
                              action: {

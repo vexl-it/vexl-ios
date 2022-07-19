@@ -188,7 +188,7 @@ class ImportContactsViewModel: ObservableObject {
             .store(in: cancelBag)
     }
 
-    private func hashContacts(identifiers: [String]) -> AnyPublisher<[String], Error> {
+    func hashContacts(identifiers: [String]) -> AnyPublisher<[String], Error> {
         let phoneNumber = Formatters.phoneNumberFormatter
         let countryCode = phoneNumber.countryCode(for: Locale.current.regionCode ?? "")
 
