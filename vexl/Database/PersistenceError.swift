@@ -9,5 +9,5 @@ import Foundation
 
 enum PersistenceError: Error {
     case notFound
-    case insufitientData
+    case insufficientData
 }

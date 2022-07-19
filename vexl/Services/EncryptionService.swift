@@ -48,7 +48,7 @@ final class EncryptionService: EncryptionServiceType {
                 }
 //            }
         }
-//        .receive(on: RunLoop.current)
+//        .receive(on: RunLoop.main)
         .eraseToAnyPublisher()
     }
 
@@ -69,15 +69,15 @@ final class EncryptionService: EncryptionServiceType {
 
     private func encrypt(offer: ManagedOffer, publicKey contactPublicKey: String, commonFriends: [String]) -> AnyPublisher<OfferPayload, Error> {
         Future { promise in
-            DispatchQueue(label: "OfferEncryption", qos: .userInitiated).async {
+//            DispatchQueue(label: "OfferEncryption", qos: .userInitiated).async {
                 do {
                     promise(.success(try OfferPayload(offer: offer, encryptionPublicKey: contactPublicKey, commonFriends: commonFriends)))
                 } catch {
                     promise(.failure(error))
                 }
-            }
+//            }
         }
-//        .receive(on: RunLoop.current)
+//        .receive(on: RunLoop.main)
         .eraseToAnyPublisher()
     }
 }

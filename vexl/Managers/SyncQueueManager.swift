@@ -44,6 +44,7 @@ final class SyncQueueManager: SyncQueueManagerType {
 
         let canSync = Publishers.CombineLatest(isLogged, isConnected)
             .map { isLogged, isConnected in isLogged && isConnected }
+            .print("CanSync")
 
         let persistentQueue = $queue.publisher
             .filter { $0.event == .insert }
@@ -52,6 +53,7 @@ final class SyncQueueManager: SyncQueueManagerType {
         let queue = Publishers.CombineLatest(canSync, persistentQueue)
             .filter(\.0)
             .map(\.1)
+            .print("queue")
             .withUnretained(self)
             .map { $0.0.filterNewItems(items: $0.1) }
             .filter { !$0.isEmpty }
@@ -64,7 +66,7 @@ final class SyncQueueManager: SyncQueueManagerType {
                     .withUnretained(owner)
                     .flatMap { owner, item in
                         owner
-                            .doAction(item: item)
+                            .dispatch(item: item)
                             .materialize()
                             .compactMap(\.value)
                     }
@@ -94,7 +96,7 @@ final class SyncQueueManager: SyncQueueManagerType {
         return newItems
     }
 
-    private func doAction(item: ManagedSyncItem) -> AnyPublisher<Void, Error> {
+    private func dispatch(item: ManagedSyncItem) -> AnyPublisher<Void, Error> {
         if let offer = item.offer {
             return uploadOffer(offer: offer, item: item)
         } else if let inbox = item.inbox {
@@ -110,7 +112,7 @@ final class SyncQueueManager: SyncQueueManagerType {
               let expiration = offer.expirationDate?.timeIntervalSince1970,
               let userPublicKey = userRepository.user?.profile?.keyPair?.publicKey
         else {
-            return Fail(error: PersistenceError.insufitientData).eraseToAnyPublisher()
+            return Fail(error: PersistenceError.insufficientData).eraseToAnyPublisher()
         }
 
         let context = $queue.context
@@ -141,7 +143,7 @@ final class SyncQueueManager: SyncQueueManagerType {
 
     private func uploadInbox(inbox: ManagedInbox, item: ManagedSyncItem) -> AnyPublisher<Void, Error> {
         guard let publicKey = inbox.keyPair?.publicKey else {
-            return Fail(error: PersistenceError.insufitientData).eraseToAnyPublisher()
+            return Fail(error: PersistenceError.insufficientData).eraseToAnyPublisher()
         }
 
         let context = $queue.context

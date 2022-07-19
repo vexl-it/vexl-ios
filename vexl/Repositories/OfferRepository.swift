@@ -109,7 +109,7 @@ class OfferRepository: OfferRepositoryType {
         guard let userInboxID = userRepository.user?.profile?.keyPair?.inbox?.objectID,
               let userInbox = persistence.loadSyncroniously(type: ManagedInbox.self, context: backgroundContext, objectID: userInboxID),
               !offerPayloads.isEmpty else {
-            return Fail(error: PersistenceError.insufitientData).eraseToAnyPublisher()
+            return Fail(error: PersistenceError.insufficientData).eraseToAnyPublisher()
         }
         return persistence.insert(context: backgroundContext) { context in
             offerPayloads.compactMap { $0.decrypt(context: context, userInbox: userInbox) }

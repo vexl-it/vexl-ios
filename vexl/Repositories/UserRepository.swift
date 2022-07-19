@@ -29,7 +29,7 @@ final class UserRepository: UserRepositoryType {
     // MARK: - Computed variables
 
     var userPublisher: AnyPublisher<ManagedUser?, Never> {
-        $users.publisher.map(\.objects).map(\.first).eraseToAnyPublisher()
+        $users.publisher.map(\.objects.first).eraseToAnyPublisher()
     }
 
     // MARK: - Dependencies
@@ -76,7 +76,7 @@ final class UserRepository: UserRepositoryType {
 
     func update(with userResponse: User, avatar: Data?) -> AnyPublisher<ManagedUser, Error> {
         guard let user = user else {
-            return Fail(error: PersistenceError.insufitientData)
+            return Fail(error: PersistenceError.insufficientData)
                 .eraseToAnyPublisher()
         }
         return persistenceManager.update(context: context) { [user] in
