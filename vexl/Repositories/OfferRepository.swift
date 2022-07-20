@@ -135,7 +135,6 @@ class OfferRepository: OfferRepositoryType {
                 predicate: NSPredicate(format: "%@ contains[cd] id", NSArray(array: ids))
             )
             .flatMap { [persistence] offers -> AnyPublisher<Void, Error> in
-                print("offers count \(offers.count)")
                 return persistence.delete(context: context, editor: { offers })
             }
             .eraseToAnyPublisher()

@@ -44,7 +44,7 @@ final class SyncQueueManager: SyncQueueManagerType {
 
         let canSync = Publishers.CombineLatest(isLogged, isConnected)
             .map { isLogged, isConnected in isLogged && isConnected }
-            .print("CanSync")
+            .print("[SyncQueue] CanSync")
 
         let persistentQueue = $queue.publisher
             .filter { $0.event == .insert }
@@ -53,10 +53,16 @@ final class SyncQueueManager: SyncQueueManagerType {
         let queue = Publishers.CombineLatest(canSync, persistentQueue)
             .filter(\.0)
             .map(\.1)
-            .print("queue")
             .withUnretained(self)
             .map { $0.0.filterNewItems(items: $0.1) }
             .filter { !$0.isEmpty }
+            .share()
+
+        queue
+            .map(\.count)
+            .print("[SyncQueue] Items to sync")
+            .sink()
+            .store(in: cancelBag)
 
         queue
             .withUnretained(self)
