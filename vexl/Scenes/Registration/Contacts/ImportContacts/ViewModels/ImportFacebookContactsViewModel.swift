@@ -9,6 +9,7 @@ import Foundation
 import Combine
 import SwiftUI
 import Cleevio
+import FBSDKCoreKit
 
 class ImportFacebookContactsViewModel: ImportContactsViewModel {
     override func fetchContacts() throws {

@@ -279,6 +279,9 @@
 		F1B365D1288608680069788D /* ImportContactsProfileCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B365D0288608680069788D /* ImportContactsProfileCoordinator.swift */; };
 		F1B365D32886093D0069788D /* ImportContactsProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B365D22886093D0069788D /* ImportContactsProfileViewModel.swift */; };
 		F1B365D5288609A10069788D /* ImportContactsProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B365D4288609A10069788D /* ImportContactsProfileView.swift */; };
+		F1B365D8288882EA0069788D /* ImportFacebookProfileCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B365D7288882EA0069788D /* ImportFacebookProfileCoordinator.swift */; };
+		F1B365DA288882F50069788D /* ImportContactsProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B365D9288882F50069788D /* ImportContactsProfileViewModel.swift */; };
+		F1B365DC288883000069788D /* ImportFacebookProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B365DB288883000069788D /* ImportFacebookProfileView.swift */; };
 		F1B5321C28202B36009D4E0C /* OfferItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B5321B28202B36009D4E0C /* OfferItemView.swift */; };
 		F1B5FCBC27C67DB00018729B /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B5FCBB27C67DB00018729B /* WelcomeViewController.swift */; };
 		F1B5FCBE27C68EA70018729B /* OnboardingView+BottomButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B5FCBD27C68EA70018729B /* OnboardingView+BottomButtons.swift */; };
@@ -646,6 +649,9 @@
 		F1B365D0288608680069788D /* ImportContactsProfileCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportContactsProfileCoordinator.swift; sourceTree = "<group>"; };
 		F1B365D22886093D0069788D /* ImportContactsProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportContactsProfileViewModel.swift; sourceTree = "<group>"; };
 		F1B365D4288609A10069788D /* ImportContactsProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportContactsProfileView.swift; sourceTree = "<group>"; };
+		F1B365D7288882EA0069788D /* ImportFacebookProfileCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportFacebookProfileCoordinator.swift; sourceTree = "<group>"; };
+		F1B365D9288882F50069788D /* ImportContactsProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportContactsProfileViewModel.swift; sourceTree = "<group>"; };
+		F1B365DB288883000069788D /* ImportFacebookProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportFacebookProfileView.swift; sourceTree = "<group>"; };
 		F1B5321B28202B36009D4E0C /* OfferItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferItemView.swift; sourceTree = "<group>"; };
 		F1B5FCBB27C67DB00018729B /* WelcomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeViewController.swift; sourceTree = "<group>"; };
 		F1B5FCBD27C68EA70018729B /* OnboardingView+BottomButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OnboardingView+BottomButtons.swift"; sourceTree = "<group>"; };
@@ -1811,6 +1817,16 @@
 			path = ImportContacts;
 			sourceTree = "<group>";
 		};
+		F1B365D6288882CD0069788D /* ImportFacebook */ = {
+			isa = PBXGroup;
+			children = (
+				F1B365D7288882EA0069788D /* ImportFacebookProfileCoordinator.swift */,
+				F1B365D9288882F50069788D /* ImportContactsProfileViewModel.swift */,
+				F1B365DB288883000069788D /* ImportFacebookProfileView.swift */,
+			);
+			path = ImportFacebook;
+			sourceTree = "<group>";
+		};
 		F1B5321D2820976E009D4E0C /* UserOffers */ = {
 			isa = PBXGroup;
 			children = (
@@ -1897,6 +1913,7 @@
 		F1BFA951280223BD00F4E745 /* UserProfile */ = {
 			isa = PBXGroup;
 			children = (
+				F1B365D6288882CD0069788D /* ImportFacebook */,
 				F1B365CF288608420069788D /* ImportContacts */,
 				F1B365B92885CB500069788D /* EditName */,
 				F1BFA96F2803A59F00F4E745 /* Components */,
@@ -2333,6 +2350,7 @@
 				F13721EF287F29830013BB7B /* TimeInterval+.swift in Sources */,
 				F1485624284FD0FB003213D7 /* InboxViewModel.swift in Sources */,
 				4FBF6213283CF54400DDBE71 /* FilterHeaderView.swift in Sources */,
+				F1B365DC288883000069788D /* ImportFacebookProfileView.swift in Sources */,
 				F11441D7284681EC00307D39 /* RangePickerView.swift in Sources */,
 				B08F391727AE7112008B344F /* AuthenticationManager.swift in Sources */,
 				F1886257281193CA00659786 /* OfferLocationPickerView.swift in Sources */,
@@ -2398,6 +2416,7 @@
 				F11441D4284681EC00307D39 /* FetchImage.swift in Sources */,
 				B007A7922877629A00CFA5C9 /* Bool+.swift in Sources */,
 				F11441D8284681EC00307D39 /* OptionPickerItemView.swift in Sources */,
+				F1B365DA288882F50069788D /* ImportContactsProfileViewModel.swift in Sources */,
 				4FBF6242283FBF6B00DDBE71 /* RequestOfferViewModel.swift in Sources */,
 				F12A150127DFC1D70096543E /* ImportContactItemView.swift in Sources */,
 				F1BFA96E2803A49300F4E745 /* UserProfileView+Item.swift in Sources */,
@@ -2415,6 +2434,7 @@
 				F1A9453327F686C8009B5AE3 /* UserKeys.swift in Sources */,
 				B08F391C27AE7112008B344F /* BaseService.swift in Sources */,
 				F1C6D09E27BDDD4C009BD506 /* TextStyle.swift in Sources */,
+				F1B365D8288882EA0069788D /* ImportFacebookProfileCoordinator.swift in Sources */,
 				4FBF6209283CD5C000DDBE71 /* OfferAdvancedFilterFriendSourceView.swift in Sources */,
 				4F24169E2848CF4300B4A437 /* LocalStorageService.swift in Sources */,
 				F188627528169A3700659786 /* MarketplaceSegmentView.swift in Sources */,
