@@ -19,12 +19,12 @@ final class SyncInboxManager: SyncInboxManagerType {
     private var cancellable: AnyCancellable?
 
     func startSyncingInboxes(every interval: TimeInterval) {
-//        cancellable = Timer.publish(every: interval, on: RunLoop.main, in: .default)
-//            .autoconnect()
-//            .withUnretained(self)
-//            .sink(receiveValue: { owner, _ in
-//                owner.inboxManager.syncInboxes()
-//            })
+        cancellable = Timer.publish(every: interval, on: RunLoop.main, in: .default)
+            .autoconnect()
+            .withUnretained(self)
+            .sink(receiveValue: { owner, _ in
+                owner.inboxManager.syncInboxes()
+            })
     }
 
     func stopSyncingInboxes() {
