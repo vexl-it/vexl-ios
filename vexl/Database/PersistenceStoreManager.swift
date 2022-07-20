@@ -80,7 +80,6 @@ extension PersistenceStoreManagerType {
 
 final class PersistenceStoreManager: PersistenceStoreManagerType {
 
-
     let viewContext: NSManagedObjectContext
 
     private let primaryBackgroundContext: NSManagedObjectContext

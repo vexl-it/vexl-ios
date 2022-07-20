@@ -45,8 +45,6 @@ struct OfferPayload: Codable {
 
     var commonFriends: [String]
 
-    // TODO: - add real values for commonFriends, active, activePriceValu, activePriceState when components are implemented
-
     var asJson: [String: Any] {
         [
             "userPublicKey": userPublicKey,

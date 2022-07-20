@@ -17,6 +17,7 @@ final class InboxViewModel: ViewModelType, ObservableObject {
 
     @Inject var inboxManager: InboxManagerType
     @Inject var offerService: OfferServiceType
+    @Inject var offerRepository: OfferRepositoryType
     @Inject var chatService: ChatServiceType
 
     // MARK: - Action Binding
@@ -77,8 +78,8 @@ final class InboxViewModel: ViewModelType, ObservableObject {
         inboxManager.inboxMessages
             .withUnretained(self)
             .flatMap { owner, chatInboxMessages in
-                owner.offerService
-                    .getStoredOffers(fromType: .all, fromSource: .all)
+                owner.offerRepository
+                    .getOffers(fromType: nil, fromSource: nil)
                     .materialize()
                     .compactMap(\.value)
                     .map { (offers: [ManagedOffer]) -> OfferAndMessage in

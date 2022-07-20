@@ -26,13 +26,6 @@ protocol OfferServiceType {
 
     func deleteOffers(offerIds: [String]) -> AnyPublisher<Void, Error>
     func updateOffers(encryptedOffers: [OfferPayload], offerId: String) -> AnyPublisher<OfferPayload, Error>
-
-    // MARK: Storage
-
-    func getStoredOffer(withId id: String) -> AnyPublisher<ManagedOffer?, Error>
-    func getStoredOffers(fromType type: OfferTypeOption, fromSource source: OfferSourceOption) -> AnyPublisher<[ManagedOffer], Error>
-    func storeOffers(offers: [ManagedOffer], areCreated: Bool) -> AnyPublisher<Void, Error>
-    func updateStoredOffers(offers: [ManagedOffer]) -> AnyPublisher<Void, Error>
 }
 
 final class OfferService: BaseService, OfferServiceType {
@@ -130,57 +123,11 @@ final class OfferService: BaseService, OfferServiceType {
 
     func deleteOffers(offerIds: [String]) -> AnyPublisher<Void, Error> {
         if !offerIds.isEmpty {
-            // TODO: - clean from the localstorage too
             return request(endpoint: OffersRouter.deleteOffers(offerIds: offerIds))
         } else {
             return Just(()).setFailureType(to: Error.self)
             .eraseToAnyPublisher()
         }
-    }
-
-    // MARK: - Storage
-
-    func getStoredOffer(withId id: String) -> AnyPublisher<ManagedOffer?, Error> {
-        // TODO: Implement a varient for this method in OfferRepository
-        Just(nil)
-            .setFailureType(to: Error.self)
-            .eraseToAnyPublisher()
-    }
-
-    func storeOffers(offers: [ManagedOffer], areCreated: Bool) -> AnyPublisher<Void, Error> {
-        // TODO: Implement a varient for this method in OfferRepository
-        Just(())
-            .setFailureType(to: Error.self)
-            .eraseToAnyPublisher()
-    }
-
-    func getStoredOfferIds(fromType option: OfferTypeOption) -> AnyPublisher<[String], Error> {
-        // TODO: Implement a varient for this method in OfferRepository
-        Just([])
-            .setFailureType(to: Error.self)
-            .eraseToAnyPublisher()
-    }
-
-    func getStoredOffers(fromType type: OfferTypeOption, fromSource source: OfferSourceOption) -> AnyPublisher<[ManagedOffer], Error> {
-        // TODO: Implement a varient for this method in OfferRepository
-        Just([])
-            .setFailureType(to: Error.self)
-            .eraseToAnyPublisher()
-
-    }
-
-    func getStoredOfferKeys(fromSource option: OfferSourceOption) -> AnyPublisher<[OfferKeys], Error> {
-        // TODO: Implement a varient for this method in OfferRepository
-        Just([])
-            .setFailureType(to: Error.self)
-            .eraseToAnyPublisher()
-    }
-
-    func updateStoredOffers(offers: [ManagedOffer]) -> AnyPublisher<Void, Error> {
-        // TODO: Implement a varient for this method in OfferRepository
-        Just(())
-            .setFailureType(to: Error.self)
-            .eraseToAnyPublisher()
     }
 }
 

@@ -4,25 +4,20 @@
 //
 //  Created by Adam Salih on 10.07.2022.
 //
-// swiftlint:disable function_parameter_count
 
 import Foundation
 import CoreData
 import Combine
 
 protocol OfferRepositoryType {
-    func createOffer(
-        provider: @escaping (ManagedOffer) -> Void
-    ) -> AnyPublisher<ManagedOffer, Error>
+    func createOffer(provider: @escaping (ManagedOffer) -> Void) -> AnyPublisher<ManagedOffer, Error>
 
-    func update(
-        offer: ManagedOffer,
-        provider: @escaping (ManagedOffer) -> Void
-    ) -> AnyPublisher<ManagedOffer, Error>
+    func update(offer: ManagedOffer, provider: @escaping (ManagedOffer) -> Void) -> AnyPublisher<ManagedOffer, Error>
 
     func createOrUpdateOffer(offerPayloads: [OfferPayload]) -> AnyPublisher<[ManagedOffer], Error>
 
-    func getOrder(with publicKey: String) -> AnyPublisher<ManagedOffer, Error>
+    func getOffer(with publicKey: String) -> AnyPublisher<ManagedOffer, Error>
+    func getOffers(fromType type: OfferType?, fromSource source: OfferSource?) -> AnyPublisher<[ManagedOffer], Error>
 
     func deleteOffers(with ids: [String]) -> AnyPublisher<Void, Error>
 }
@@ -32,9 +27,7 @@ class OfferRepository: OfferRepositoryType {
     @Inject private var persistence: PersistenceStoreManagerType
     @Inject private var userRepository: UserRepositoryType
 
-    func createOffer(
-        provider: @escaping (ManagedOffer) -> Void
-    ) -> AnyPublisher<ManagedOffer, Error> {
+    func createOffer(provider: @escaping (ManagedOffer) -> Void) -> AnyPublisher<ManagedOffer, Error> {
         persistence.insert(context: persistence.viewContext) { [userRepository] context in
 
             let offer = ManagedOffer(context: context)
@@ -60,10 +53,7 @@ class OfferRepository: OfferRepositoryType {
         }
     }
 
-    func update(
-        offer: ManagedOffer,
-        provider: @escaping (ManagedOffer) -> Void
-    ) -> AnyPublisher<ManagedOffer, Error> {
+    func update(offer: ManagedOffer, provider: @escaping (ManagedOffer) -> Void) -> AnyPublisher<ManagedOffer, Error> {
         persistence.update(context: persistence.viewContext) { context in
             provider(offer)
 
@@ -100,7 +90,7 @@ class OfferRepository: OfferRepositoryType {
         }
     }
 
-    func getOrder(with publicKey: String) -> AnyPublisher<ManagedOffer, Error> {
+    func getOffer(with publicKey: String) -> AnyPublisher<ManagedOffer, Error> {
         persistence.load(
             type: ManagedKeyPair.self,
             context: persistence.viewContext,
@@ -126,6 +116,29 @@ class OfferRepository: OfferRepositoryType {
         .eraseToAnyPublisher()
     }
 
+    func getOffers(fromType type: OfferType?, fromSource source: OfferSource?) -> AnyPublisher<[ManagedOffer], Error> {
+        var predicates: [NSPredicate] = []
+        if let type = type {
+            predicates.append(NSPredicate(format: "type == '\(type.rawValue)'"))
+        }
+        switch source {
+        case .fetched:
+            predicates.append(NSPredicate(format: "user == nil"))
+        case .created:
+            predicates.append(NSPredicate(format: "user != nil"))
+        case .none:
+            break
+        }
+
+        let predicate = predicates.isEmpty ? nil : NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
+
+        return persistence.load(
+            type: ManagedOffer.self,
+            context: persistence.viewContext,
+            predicate: predicate
+        )
+    }
+
     func deleteOffers(with ids: [String]) -> AnyPublisher<Void, Error> {
         let context = persistence.viewContext
         return persistence
@@ -135,7 +148,7 @@ class OfferRepository: OfferRepositoryType {
                 predicate: NSPredicate(format: "%@ contains[cd] id", NSArray(array: ids))
             )
             .flatMap { [persistence] offers -> AnyPublisher<Void, Error> in
-                return persistence.delete(context: context, editor: { offers })
+                persistence.delete(context: context, editor: { offers })
             }
             .eraseToAnyPublisher()
     }

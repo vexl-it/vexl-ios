@@ -246,8 +246,8 @@
 		F188621F28105A0A00659786 /* UserOffersCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F188621E28105A0A00659786 /* UserOffersCoordinator.swift */; };
 		F188622128105A1200659786 /* UserOffersViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F188622028105A1200659786 /* UserOffersViewModel.swift */; };
 		F188622328105A2000659786 /* UserOffersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F188622228105A2000659786 /* UserOffersView.swift */; };
-		F18862472811550C00659786 /* CreateOfferCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18862462811550C00659786 /* CreateOfferCoordinator.swift */; };
-		F188624B2811551E00659786 /* CreateOfferView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F188624A2811551E00659786 /* CreateOfferView.swift */; };
+		F18862472811550C00659786 /* OfferSettingsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18862462811550C00659786 /* OfferSettingsCoordinator.swift */; };
+		F188624B2811551E00659786 /* OfferSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F188624A2811551E00659786 /* OfferSettingsView.swift */; };
 		F18862512811710100659786 /* OfferStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18862502811710100659786 /* OfferStatusView.swift */; };
 		F1886255281185E900659786 /* OfferFeePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1886254281185E900659786 /* OfferFeePickerView.swift */; };
 		F1886257281193CA00659786 /* OfferLocationPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1886256281193CA00659786 /* OfferLocationPickerView.swift */; };
@@ -274,7 +274,7 @@
 		F1B3010A287A464600C86F83 /* ChatActionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B30109287A464600C86F83 /* ChatActionViewModel.swift */; };
 		F1B3010F287A53C900C86F83 /* ChatConversationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B3010E287A53C900C86F83 /* ChatConversationViewModel.swift */; };
 		F1B30111287C770D00C86F83 /* OfferTriggerActiveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B30110287C770D00C86F83 /* OfferTriggerActiveView.swift */; };
-		F1B30113287CA5BB00C86F83 /* CreateOfferViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18862482811551700659786 /* CreateOfferViewModel.swift */; };
+		F1B30113287CA5BB00C86F83 /* OfferSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18862482811551700659786 /* OfferSettingsViewModel.swift */; };
 		F1B5321C28202B36009D4E0C /* OfferItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B5321B28202B36009D4E0C /* OfferItemView.swift */; };
 		F1B5FCBC27C67DB00018729B /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B5FCBB27C67DB00018729B /* WelcomeViewController.swift */; };
 		F1B5FCBE27C68EA70018729B /* OnboardingView+BottomButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B5FCBD27C68EA70018729B /* OnboardingView+BottomButtons.swift */; };
@@ -610,9 +610,9 @@
 		F188621E28105A0A00659786 /* UserOffersCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserOffersCoordinator.swift; sourceTree = "<group>"; };
 		F188622028105A1200659786 /* UserOffersViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserOffersViewModel.swift; sourceTree = "<group>"; };
 		F188622228105A2000659786 /* UserOffersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserOffersView.swift; sourceTree = "<group>"; };
-		F18862462811550C00659786 /* CreateOfferCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateOfferCoordinator.swift; sourceTree = "<group>"; };
-		F18862482811551700659786 /* CreateOfferViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateOfferViewModel.swift; sourceTree = "<group>"; };
-		F188624A2811551E00659786 /* CreateOfferView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateOfferView.swift; sourceTree = "<group>"; };
+		F18862462811550C00659786 /* OfferSettingsCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferSettingsCoordinator.swift; sourceTree = "<group>"; };
+		F18862482811551700659786 /* OfferSettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferSettingsViewModel.swift; sourceTree = "<group>"; };
+		F188624A2811551E00659786 /* OfferSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferSettingsView.swift; sourceTree = "<group>"; };
 		F18862502811710100659786 /* OfferStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferStatusView.swift; sourceTree = "<group>"; };
 		F1886254281185E900659786 /* OfferFeePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferFeePickerView.swift; sourceTree = "<group>"; };
 		F1886256281193CA00659786 /* OfferLocationPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferLocationPickerView.swift; sourceTree = "<group>"; };
@@ -1661,9 +1661,9 @@
 			isa = PBXGroup;
 			children = (
 				F188624F281170F200659786 /* Components */,
-				F18862482811551700659786 /* CreateOfferViewModel.swift */,
-				F18862462811550C00659786 /* CreateOfferCoordinator.swift */,
-				F188624A2811551E00659786 /* CreateOfferView.swift */,
+				F18862482811551700659786 /* OfferSettingsViewModel.swift */,
+				F18862462811550C00659786 /* OfferSettingsCoordinator.swift */,
+				F188624A2811551E00659786 /* OfferSettingsView.swift */,
 			);
 			path = CreateOffer;
 			sourceTree = "<group>";
@@ -2266,7 +2266,7 @@
 				B007A73A2868B66500CFA5C9 /* JoinVexl.swift in Sources */,
 				B08F399727AE7D33008B344F /* SplashScreenView.swift in Sources */,
 				F175ABAA27F4FC3F000DAB15 /* ImportPhoneContactsViewModel.swift in Sources */,
-				F188624B2811551E00659786 /* CreateOfferView.swift in Sources */,
+				F188624B2811551E00659786 /* OfferSettingsView.swift in Sources */,
 				F12A14F327D96FD40096543E /* ImportContactsView.swift in Sources */,
 				F12A150827E1A4940096543E /* RequestAccessAlert.swift in Sources */,
 				B0E9BB2E2815C7260012BF1D /* HMAC.swift in Sources */,
@@ -2437,7 +2437,7 @@
 				F1042BA227BEADB70048C2F0 /* WelcomeView+Agreement.swift in Sources */,
 				B08F394D27AE7112008B344F /* AppCoordinator.swift in Sources */,
 				B03BC701287B500F00E355D3 /* SyncQueueManager.swift in Sources */,
-				F1B30113287CA5BB00C86F83 /* CreateOfferViewModel.swift in Sources */,
+				F1B30113287CA5BB00C86F83 /* OfferSettingsViewModel.swift in Sources */,
 				F13B2671281D4AB00011F2FB /* ContactKey.swift in Sources */,
 				F1D20128282AB6EF006DF4AB /* CryptocurrencyValueManager.swift in Sources */,
 				F175ABA227F4A8F8000DAB15 /* UserAvailable.swift in Sources */,
@@ -2530,7 +2530,7 @@
 				B08F394327AE7112008B344F /* Keychain+.swift in Sources */,
 				F11441CD284681EC00307D39 /* LargeLabelButton.swift in Sources */,
 				F175AB8727E4D5C8000DAB15 /* UIScreen+.swift in Sources */,
-				F18862472811550C00659786 /* CreateOfferCoordinator.swift in Sources */,
+				F18862472811550C00659786 /* OfferSettingsCoordinator.swift in Sources */,
 				B007A7542872269B00CFA5C9 /* ManagedUser+.swift in Sources */,
 				F151A2A727C962CC000D7242 /* RegisterNameAvatarView+NameInput.swift in Sources */,
 				F11441D9284681EC00307D39 /* SingleOptionPickerView.swift in Sources */,

@@ -34,20 +34,19 @@ final class ApiInterceptor: RequestInterceptor {
                dueTo error: Error,
                completion: @escaping (RetryResult) -> Void) {
         completion(.doNotRetry)
-        // TODO: Handle challenge refresh
-        // for inspiration check git history of this method
     }
 }
 
 extension ApiInterceptor {
     private func logoutUser() {
         DispatchQueue.main.async {
-            // TODO: Implement logout
+            @Inject var authentication: AuthenticationManagerType
+            authentication.logoutUser(force: true)
         }
     }
 
     public func refreshAuthorization(_ session: Session) -> AnyPublisher<Void, Error> {
-        // TODO: implement authorization refresh
+        logoutUser()
         return Just<Void>(())
             .setFailureType(to: Error.self)
             .eraseToAnyPublisher()

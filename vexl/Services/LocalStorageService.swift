@@ -13,7 +13,7 @@ enum LocalStorageError: Error {
     case readFailed
 }
 
-@available(*, deprecated)
+// TODO: Remove this class when possible
 protocol LocalStorageServiceType {
 
     // MARK: - Inbox and Message cache

@@ -9,9 +9,7 @@ import Foundation
 import Cleevio
 import Combine
 
-// TODO: - Update file and class models once the offer DB migration is done. We are keeping this name to avoid conflicts
-
-final class CreateOfferCoordinator: BaseCoordinator<RouterResult<Void>> {
+final class OfferSettingsCoordinator: BaseCoordinator<RouterResult<Void>> {
 
     private let router: Router
     private let offer: ManagedOffer?
@@ -24,15 +22,15 @@ final class CreateOfferCoordinator: BaseCoordinator<RouterResult<Void>> {
     }
 
     override func start() -> CoordinatingResult<RouterResult<Void>> {
-        let viewModel: CreateOfferViewModel
+        let viewModel: OfferSettingsViewModel
 
         if let offer = offer {
-            viewModel = CreateOfferViewModel(offer: offer)
+            viewModel = OfferSettingsViewModel(offer: offer)
         } else {
-            viewModel = CreateOfferViewModel(offerType: offerType, offerKey: ECCKeys())
+            viewModel = OfferSettingsViewModel(offerType: offerType, offerKey: ECCKeys())
         }
 
-        let viewController = BaseViewController(rootView: CreateOfferView(viewModel: viewModel))
+        let viewController = BaseViewController(rootView: OfferSettingsView(viewModel: viewModel))
 
         viewModel
             .$error

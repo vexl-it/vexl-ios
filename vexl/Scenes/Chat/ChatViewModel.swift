@@ -161,7 +161,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
 
     private func setupOfferBindings() {
         offerRepository
-            .getOrder(with: inboxKeys.publicKey)
+            .getOffer(with: inboxKeys.publicKey)
             .nilOnError()
             .withUnretained(self)
             .sink { owner, offer in

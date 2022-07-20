@@ -88,8 +88,6 @@ extension ApiRouter {
             urlRequest.setValue(header.value, forHTTPHeaderField: ApiInterceptor.authorizationHeaderKey)
         }
 
-        // TODO: Implement request signing
-
         return urlRequest
     }
 }

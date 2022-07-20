@@ -66,7 +66,6 @@ final class EncryptionService: EncryptionServiceType {
                     return Fail(error: EncryptionError.dataEncryption)
                         .eraseToAnyPublisher()
                 }
-                // TODO: [common friends] load common firends from offer
                 return owner.encrypt(offer: offer, publicKey: contact.publicKey, commonFriends: commonFriends)
             }
             .collect()

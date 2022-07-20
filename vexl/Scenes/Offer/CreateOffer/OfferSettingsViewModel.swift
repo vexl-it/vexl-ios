@@ -10,7 +10,7 @@ import Cleevio
 import SwiftUI
 import Combine
 
-class CreateOfferViewModel: ViewModelType, ObservableObject {
+final class OfferSettingsViewModel: ViewModelType, ObservableObject {
 
     @Inject var authenticationManager: AuthenticationManagerType
     @Inject var offerRepository: OfferRepositoryType

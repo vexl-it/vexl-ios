@@ -24,5 +24,4 @@ extension ManagedSyncItem {
             typeRawType = Int64(intValue)
         }
     }
-
 }

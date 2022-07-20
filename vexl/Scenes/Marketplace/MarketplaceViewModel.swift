@@ -58,8 +58,6 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
 
     // MARK: - Variables
 
-    // TODO: - Update to real data when services are ready
-
     var currencySymbol: String {
         Constants.currencySymbol
     }

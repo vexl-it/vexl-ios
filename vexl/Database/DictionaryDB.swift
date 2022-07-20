@@ -9,7 +9,7 @@ import Foundation
 
 // This is not for production, just to accelerate development. Later we should setup CoreData with proper security
 
-@available(*, deprecated)
+// TODO: Remove this class when possible
 final class DictionaryDB {
 
     static private let encoder = Constants.jsonEncoder
