@@ -24,7 +24,18 @@ enum OfferSource: String {
 enum OfferTrigger: String {
     case none = "NONE"
     case below = "PRICE_IS_BELOW"
-    case abowe = "PRICE_IS_ABOVE"
+    case above = "PRICE_IS_ABOVE"
+
+    var title: String {
+        switch self {
+        case .none:
+            return ""
+        case .above:
+            return L.offerCreateTriggerAbove()
+        case .below:
+            return L.offerCreateTriggerBelow()
+        }
+    }
  }
 
 enum GroupUUID: RawRepresentable {

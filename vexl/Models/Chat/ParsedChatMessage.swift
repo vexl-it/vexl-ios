@@ -64,7 +64,7 @@ struct ParsedChatMessage: Codable {
         var json: [String: Any] = [
             "uuid": id,
             "type": contentTypeValue,
-            "time": time
+            "time": time.milliseconds
         ]
 
         if let text = text {
@@ -104,7 +104,7 @@ extension ParsedChatMessage {
         guard let json = chatMessage.asJSON(with: key),
               let id = json["uuid"] as? String,
               let contentType = json["type"] as? String,
-              let time = json["time"] as? TimeInterval else {
+              let time = json["time"] as? Int else {
                   return nil
               }
 
@@ -118,7 +118,7 @@ extension ParsedChatMessage {
         self.image = image
         self.contentTypeValue = contentType
         self.messageTypeValue = chatMessage.messageType
-        self.time = time
+        self.time = TimeInterval(time) / 1_000
         self.user = ChatUser(name: json["username"] as? String,
                              image: json["userAvatar"] as? String)
     }

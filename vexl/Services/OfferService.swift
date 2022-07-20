@@ -10,25 +10,29 @@ import Combine
 
 protocol OfferServiceType {
 
-    // MARK: - Offer Fetching
+    // MARK: Offer Fetching
 
     func getUserOffers(offerIds: [String]) -> AnyPublisher<[OfferPayload], Error>
     func getOffer(pageLimit: Int?) -> AnyPublisher<Paged<OfferPayload>, Error>
     func getNewOffers(pageLimit: Int?, lastSyncDate: Date) -> AnyPublisher<Paged<OfferPayload>, Error>
 
-    // MARK: - Offer Creation
+    // MARK: Offer Creation
 
     func createOffer(
         offer: ManagedOffer, userPublicKey: String, fiendLevel: ContactFriendLevel, expiration: TimeInterval
     ) -> AnyPublisher<OfferPayload, Error>
-    func deleteOffers() -> AnyPublisher<Void, Error>
 
-    // MARK: - Storage
+    // MARK: Offer Updating
 
-    func getStoredOffers() -> AnyPublisher<[ManagedOffer], Error>
+    func deleteOffers(offerIds: [String]) -> AnyPublisher<Void, Error>
+    func updateOffers(encryptedOffers: [OfferPayload], offerId: String) -> AnyPublisher<OfferPayload, Error>
+
+    // MARK: Storage
+
+    func getStoredOffer(withId id: String) -> AnyPublisher<ManagedOffer?, Error>
+    func getStoredOffers(fromType type: OfferTypeOption, fromSource source: OfferSourceOption) -> AnyPublisher<[ManagedOffer], Error>
     func storeOffers(offers: [ManagedOffer], areCreated: Bool) -> AnyPublisher<Void, Error>
-    func getStoredOfferIds(fromType option: OfferTypeOption) -> AnyPublisher<[String], Error>
-    func getStoredOfferKeys(fromSource option: OfferSourceOption) -> AnyPublisher<[OfferKeys], Error>
+    func updateStoredOffers(offers: [ManagedOffer]) -> AnyPublisher<Void, Error>
 }
 
 final class OfferService: BaseService, OfferServiceType {
@@ -38,7 +42,7 @@ final class OfferService: BaseService, OfferServiceType {
     @Inject private var encryptionService: EncryptionServiceType
     @Inject private var authenticationManager: AuthenticationManagerType
 
-    // MARK: - Offer Fetching
+    // MARK: - Offer Endpoints
 
     func getUserOffers(offerIds: [String]) -> AnyPublisher<[OfferPayload], Error> {
         request(type: [OfferPayload].self, endpoint: OffersRouter.getUserOffers(offerIds: offerIds))
@@ -113,11 +117,27 @@ final class OfferService: BaseService, OfferServiceType {
         return createOffer
     }
 
+    // MARK: - Offer updating
+
+    func updateOffers(encryptedOffers: [OfferPayload], offerId: String) -> AnyPublisher<OfferPayload, Error> {
+        request(type: OfferPayload.self, endpoint: OffersRouter.updateOffer(offer: encryptedOffers, offerId: offerId))
+    }
+
+    func deleteOffers(offerIds: [String]) -> AnyPublisher<Void, Error> {
+        if !offerIds.isEmpty {
+            // TODO: - clean from the localstorage too
+            return request(endpoint: OffersRouter.deleteOffers(offerIds: offerIds))
+        } else {
+            return Just(()).setFailureType(to: Error.self)
+            .eraseToAnyPublisher()
+        }
+    }
+
     // MARK: - Storage
 
-    func getStoredOffers() -> AnyPublisher<[ManagedOffer], Error> {
+    func getStoredOffer(withId id: String) -> AnyPublisher<ManagedOffer?, Error> {
         // TODO: Implement a varient for this method in OfferRepository
-        Just([])
+        Just(nil)
             .setFailureType(to: Error.self)
             .eraseToAnyPublisher()
     }
@@ -136,6 +156,14 @@ final class OfferService: BaseService, OfferServiceType {
             .eraseToAnyPublisher()
     }
 
+    func getStoredOffers(fromType type: OfferTypeOption, fromSource source: OfferSourceOption) -> AnyPublisher<[ManagedOffer], Error> {
+        // TODO: Implement a varient for this method in OfferRepository
+        Just([])
+            .setFailureType(to: Error.self)
+            .eraseToAnyPublisher()
+
+    }
+
     func getStoredOfferKeys(fromSource option: OfferSourceOption) -> AnyPublisher<[OfferKeys], Error> {
         // TODO: Implement a varient for this method in OfferRepository
         Just([])
@@ -143,18 +171,10 @@ final class OfferService: BaseService, OfferServiceType {
             .eraseToAnyPublisher()
     }
 
-    func deleteOffers() -> AnyPublisher<Void, Error> {
-        getStoredOfferIds(fromType: .all)
-            .withUnretained(self)
-            .flatMap { owner, offerIds -> AnyPublisher<Void, Error> in
-                if !offerIds.isEmpty {
-                    // TODO: - clean from the localstorage too
-                    return owner.request(endpoint: OffersRouter.deleteOffers(offerIds: offerIds))
-                } else {
-                    return Just(()).setFailureType(to: Error.self)
-                    .eraseToAnyPublisher()
-                }
-            }
+    func updateStoredOffers(offers: [ManagedOffer]) -> AnyPublisher<Void, Error> {
+        // TODO: Implement a varient for this method in OfferRepository
+        Just(())
+            .setFailureType(to: Error.self)
             .eraseToAnyPublisher()
     }
 }
