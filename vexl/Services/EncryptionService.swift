@@ -10,7 +10,7 @@ import Combine
 
 protocol EncryptionServiceType {
     func hashContacts(contacts: [ContactInformation]) -> AnyPublisher<[(ContactInformation, String)], Error>
-    func encryptOffer(withContactKey publicKeys: [String], offer: ManagedOffer) -> AnyPublisher<[OfferPayload], Error>
+    func encryptOffer(withContactKey publicKeys: [(ContactKey, [String])], offer: ManagedOffer) -> AnyPublisher<[OfferPayload], Error>
 }
 
 final class EncryptionService: EncryptionServiceType {
@@ -58,16 +58,16 @@ final class EncryptionService: EncryptionServiceType {
         .eraseToAnyPublisher()
     }
 
-    func encryptOffer(withContactKey publicKeys: [String], offer: ManagedOffer) -> AnyPublisher<[OfferPayload], Error> {
+    func encryptOffer(withContactKey publicKeys: [(ContactKey, [String])], offer: ManagedOffer) -> AnyPublisher<[OfferPayload], Error> {
         publicKeys
             .publisher
-            .flatMap { [weak self] publicKey -> AnyPublisher<OfferPayload, Error> in
+            .flatMap { [weak self] contact, commonFriends -> AnyPublisher<OfferPayload, Error> in
                 guard let owner = self else {
                     return Fail(error: EncryptionError.dataEncryption)
                         .eraseToAnyPublisher()
                 }
                 // TODO: [common friends] load common firends from offer
-                return owner.encrypt(offer: offer, publicKey: publicKey, commonFriends: [])
+                return owner.encrypt(offer: offer, publicKey: contact.publicKey, commonFriends: commonFriends)
             }
             .collect()
             .eraseToAnyPublisher()

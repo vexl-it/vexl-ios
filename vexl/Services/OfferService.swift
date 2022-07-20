@@ -75,10 +75,24 @@ final class OfferService: BaseService, OfferServiceType {
                 return Array(Set(contacts))
             }
 
-        let encryptOffer = contacts
-            .flatMap { [encryptionService] contacts in
+        let commonFriends = contacts
+            .flatMap { [contactsService] contacts in
+                contactsService
+                    .getCommonFriends(publicKeys: contacts.map(\.publicKey))
+                    .catch { _ in Just([:]) }
+                    .map { (contacts, $0) }
+            }
+            .map { contacts, hashes in
+                contacts.map { contact -> (ContactKey, [String]) in
+                    let commonFriends = hashes[contact.publicKey] ?? []
+                    return (contact, commonFriends)
+                }
+            }
+
+        let encryptOffer = commonFriends
+            .flatMap { [encryptionService] contactsAndHashes in
                 encryptionService
-                    .encryptOffer(withContactKey: contacts.map(\.publicKey), offer: offer)
+                    .encryptOffer(withContactKey: contactsAndHashes, offer: offer)
             }
             .eraseToAnyPublisher()
 

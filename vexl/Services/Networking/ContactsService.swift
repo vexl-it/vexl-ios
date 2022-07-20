@@ -22,6 +22,8 @@ protocol ContactsServiceType {
                         pageLimit: Int?) -> AnyPublisher<UserContacts, Error>
     func deleteUser() -> AnyPublisher<Void, Error>
     func countPhoneContacts() -> AnyPublisher<Int, Error>
+
+    func getCommonFriends(publicKeys: [String]) -> AnyPublisher<[String: [String]], Error>
 }
 
 final class ContactsService: BaseService, ContactsServiceType {
@@ -88,6 +90,12 @@ final class ContactsService: BaseService, ContactsServiceType {
     func countPhoneContacts() -> AnyPublisher<Int, Error> {
         request(type: ContactsCount.self, endpoint: ContactsRouter.countPhoneContacts)
             .map(\.count)
+            .eraseToAnyPublisher()
+    }
+
+    func getCommonFriends(publicKeys: [String]) -> AnyPublisher<[String: [String]], Error> {
+        request(type: CommonFriends.self, endpoint: ContactsRouter.getCommonFriends(publicKeys: publicKeys))
+            .map(\.asDictionary)
             .eraseToAnyPublisher()
     }
 }
