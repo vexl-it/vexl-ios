@@ -15,6 +15,9 @@ final class RequestOfferViewModel: ViewModelType, ObservableObject {
     @Inject private var chatService: ChatServiceType
     @Inject var persistence: PersistenceStoreManagerType
 
+    @Fetched(fetchImmediately: false)
+    var fetchedCommonFriends: [ManagedContact]
+
     enum State {
         case normal
         case requesting
@@ -35,6 +38,7 @@ final class RequestOfferViewModel: ViewModelType, ObservableObject {
     @Published var error: Error?
     @Published var state: State = .normal
     @Published var requestText: String = ""
+    @Published var commonFriends: [ManagedContact] = []
 
     var errorIndicator: ErrorIndicator {
         primaryActivity.error
@@ -62,8 +66,21 @@ final class RequestOfferViewModel: ViewModelType, ObservableObject {
 
     init(offer: ManagedOffer) {
         self.offer = offer
+        setupDataBindings()
         setupActivityBindings()
         setupActionBindings()
+    }
+
+    private func setupDataBindings() {
+        if let commonFriends = offer.commonFriends, !commonFriends.isEmpty {
+            let array = NSArray(array: offer.commonFriends ?? [])
+            $fetchedCommonFriends
+                .load(predicate: NSPredicate(format: "hmacHash contains[cd] %@", array))
+
+            $fetchedCommonFriends.publisher
+                .map(\.objects)
+                .assign(to: &$commonFriends)
+        }
     }
 
     private func setupActivityBindings() {

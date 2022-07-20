@@ -64,6 +64,7 @@
 		B03BC707287BF9DD00E355D3 /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = B03BC706287BF9DD00E355D3 /* Keychain.swift */; };
 		B0501BA02884B45E00A44E18 /* OfferManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0501B9F2884B45E00A44E18 /* OfferManager.swift */; };
 		B0501BA62887389000A44E18 /* CommonFriends.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0501BA52887389000A44E18 /* CommonFriends.swift */; };
+		B0501BAA2887419F00A44E18 /* Array+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0501BA92887419F00A44E18 /* Array+.swift */; };
 		B05A22132812BF2700BF8D58 /* Publisher+Crypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = B05A22122812BF2700BF8D58 /* Publisher+Crypto.swift */; };
 		B06A3B4F287C967F00911795 /* Encryptable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B06A3B4E287C967F00911795 /* Encryptable.swift */; };
 		B06A3B51287C976300911795 /* Number+Encryptable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B06A3B50287C976300911795 /* Number+Encryptable.swift */; };
@@ -416,6 +417,7 @@
 		B03BC706287BF9DD00E355D3 /* Keychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keychain.swift; sourceTree = "<group>"; };
 		B0501B9F2884B45E00A44E18 /* OfferManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferManager.swift; sourceTree = "<group>"; };
 		B0501BA52887389000A44E18 /* CommonFriends.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonFriends.swift; sourceTree = "<group>"; };
+		B0501BA92887419F00A44E18 /* Array+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+.swift"; sourceTree = "<group>"; };
 		B05A22122812BF2700BF8D58 /* Publisher+Crypto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Publisher+Crypto.swift"; sourceTree = "<group>"; };
 		B06A3B4E287C967F00911795 /* Encryptable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Encryptable.swift; sourceTree = "<group>"; };
 		B06A3B50287C976300911795 /* Number+Encryptable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Number+Encryptable.swift"; sourceTree = "<group>"; };
@@ -976,6 +978,7 @@
 				F1B5FCD527C703BF0018729B /* View+.swift */,
 				F175AB8627E4D5C8000DAB15 /* UIScreen+.swift */,
 				F1BFA97228043D6300F4E745 /* Image+.swift */,
+				B0501BA92887419F00A44E18 /* Array+.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -2363,6 +2366,7 @@
 				F188627528169A3700659786 /* MarketplaceSegmentView.swift in Sources */,
 				4F700CC02844C54E0085139F /* BitcoinViewModel.swift in Sources */,
 				F1D2012E283401D7006DF4AB /* OfferSortView.swift in Sources */,
+				B0501BAA2887419F00A44E18 /* Array+.swift in Sources */,
 				F1485653284FD5FD003213D7 /* EncryptedChatMessage.swift in Sources */,
 				B08F393627AE7112008B344F /* UIDevice+.swift in Sources */,
 				F1C734772852CB6D00B3F327 /* ParsedChatMessage.swift in Sources */,
