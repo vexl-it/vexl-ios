@@ -33,9 +33,6 @@ class CreateOfferViewModel: ViewModelType, ObservableObject {
         case loaded
         case loading
     }
-    //    @Inject var chatService: ChatServiceType
-    //    @Inject var contactsMananger: ContactsManagerType
-    //    @Inject var contactsService: ContactsServiceType
 
     // MARK: - Action Binding
 
