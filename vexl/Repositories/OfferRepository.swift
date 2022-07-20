@@ -12,30 +12,19 @@ import Combine
 
 protocol OfferRepositoryType {
     func createOffer(
-        offerId: String?,
-        groupUuid: GroupUUID?,
-        offerPublicKey: String?,
-        offerPrivateKey: String?,
-        currency: Currency?,
-        minAmount: Double,
-        maxAmount: Double,
-        description: String?,
-        feeState: OfferFeeOption?,
-        feeAmount: Double,
-        locationState: OfferTradeLocationOption,
-        paymentMethods: [OfferPaymentMethodOption],
-        btcNetworks: [OfferAdvancedBTCOption],
-        friendLevel: OfferFriendDegree?,
-        type: OfferType?,
-        activePriceState: OfferTrigger?,
-        activePriceValue: Double,
-        active: Bool,
-        expiration: Date?
+        provider: @escaping (ManagedOffer) -> Void
+    ) -> AnyPublisher<ManagedOffer, Error>
+
+    func update(
+        offer: ManagedOffer,
+        provider: @escaping (ManagedOffer) -> Void
     ) -> AnyPublisher<ManagedOffer, Error>
 
     func createOrUpdateOffer(offerPayloads: [OfferPayload]) -> AnyPublisher<[ManagedOffer], Error>
 
     func getOrder(with publicKey: String) -> AnyPublisher<ManagedOffer, Error>
+
+    func deleteOffers(with ids: [String]) -> AnyPublisher<Void, Error>
 }
 
 class OfferRepository: OfferRepositoryType {
@@ -44,25 +33,7 @@ class OfferRepository: OfferRepositoryType {
     @Inject private var userRepository: UserRepositoryType
 
     func createOffer(
-        offerId: String?,
-        groupUuid: GroupUUID?,
-        offerPublicKey: String?,
-        offerPrivateKey: String?,
-        currency: Currency?,
-        minAmount: Double,
-        maxAmount: Double,
-        description: String?,
-        feeState: OfferFeeOption?,
-        feeAmount: Double,
-        locationState: OfferTradeLocationOption,
-        paymentMethods: [OfferPaymentMethodOption],
-        btcNetworks: [OfferAdvancedBTCOption],
-        friendLevel: OfferFriendDegree?,
-        type: OfferType?,
-        activePriceState: OfferTrigger?,
-        activePriceValue: Double,
-        active: Bool,
-        expiration: Date?
+        provider: @escaping (ManagedOffer) -> Void
     ) -> AnyPublisher<ManagedOffer, Error> {
         persistence.insert(context: persistence.viewContext) { [userRepository] context in
 
@@ -70,34 +41,36 @@ class OfferRepository: OfferRepositoryType {
             let inbox = ManagedInbox(context: context)
             let keyPair = ManagedKeyPair(context: context)
 
-            keyPair.publicKey = offerPublicKey
-            keyPair.privateKey = offerPrivateKey
+            let keys = ECCKeys()
+
+            keyPair.publicKey = keys.publicKey
+            keyPair.privateKey = keys.privateKey
 
             inbox.keyPair = keyPair
             inbox.syncItem = ManagedSyncItem(context: context)
 
             offer.inbox = inbox
 
-            offer.id = offerId
-            offer.groupUuid = groupUuid
-            offer.currency = currency
-            offer.minAmount = minAmount
-            offer.maxAmount = maxAmount
-            offer.offerDescription = description
-            offer.feeState = feeState
-            offer.feeAmount = feeAmount
-            offer.locationState = locationState
-            offer.paymentMethods = paymentMethods
-            offer.btcNetworks = btcNetworks
-            offer.friendLevel = friendLevel
-            offer.type = type
-            offer.activePriceState = activePriceState
-            offer.activePriceValue = activePriceValue
-            offer.active = active
-            offer.expirationDate = expiration
-            offer.createdAt = Date()
+            provider(offer)
             offer.syncItem = ManagedSyncItem(context: context)
+            offer.syncItem?.type = .insert
             offer.user = userRepository.getUser(for: context)
+
+            return offer
+        }
+    }
+
+    func update(
+        offer: ManagedOffer,
+        provider: @escaping (ManagedOffer) -> Void
+    ) -> AnyPublisher<ManagedOffer, Error> {
+        persistence.update(context: persistence.viewContext) { context in
+            provider(offer)
+
+            if offer.syncItem != nil {
+                offer.syncItem = ManagedSyncItem(context: context)
+                offer.syncItem?.type = .update
+            }
 
             return offer
         }
@@ -151,5 +124,20 @@ class OfferRepository: OfferRepositoryType {
                 .eraseToAnyPublisher()
         }
         .eraseToAnyPublisher()
+    }
+
+    func deleteOffers(with ids: [String]) -> AnyPublisher<Void, Error> {
+        let context = persistence.viewContext
+        return persistence
+            .load(
+                type: ManagedOffer.self,
+                context: context,
+                predicate: NSPredicate(format: "%@ contains[cd] id", NSArray(array: ids))
+            )
+            .flatMap { [persistence] offers -> AnyPublisher<Void, Error> in
+                print("offers count \(offers.count)")
+                return persistence.delete(context: context, editor: { offers })
+            }
+            .eraseToAnyPublisher()
     }
 }

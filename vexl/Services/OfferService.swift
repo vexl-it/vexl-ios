@@ -66,39 +66,13 @@ final class OfferService: BaseService, OfferServiceType {
         fiendLevel: ContactFriendLevel,
         expiration: TimeInterval
     ) -> AnyPublisher<OfferPayload, Error> {
-        let contacts = contactsService
-            .getAllContacts(
-                friendLevel: fiendLevel,
-                hasFacebookAccount: authenticationManager.facebookSecurityHeader != nil,
-                pageLimit: Constants.pageMaxLimit
-            )
-            .map { contacts -> [ContactKey] in
-                let contacts = contacts.phone.items
-                    + contacts.facebook.items
-                    + [ContactKey(publicKey: userPublicKey)]
-                return Array(Set(contacts))
-            }
 
-        let commonFriends = contacts
-            .flatMap { [contactsService] contacts in
-                contactsService
-                    .getCommonFriends(publicKeys: contacts.map(\.publicKey))
-                    .catch { _ in Just([:]) }
-                    .map { (contacts, $0) }
-            }
-            .map { contacts, hashes in
-                contacts.map { contact -> (ContactKey, [String]) in
-                    let commonFriends = hashes[contact.publicKey] ?? []
-                    return (contact, commonFriends)
-                }
-            }
-
-        let encryptOffer = commonFriends
-            .flatMap { [encryptionService] contactsAndHashes in
-                encryptionService
-                    .encryptOffer(withContactKey: contactsAndHashes, offer: offer)
-            }
-            .eraseToAnyPublisher()
+        let encryptOffer = encryptOffer(
+            offer: offer,
+            userPublicKey: userPublicKey,
+            fiendLevel: fiendLevel,
+            expiration: expiration
+        )
 
         let createOffer = encryptOffer
             .withUnretained(self)
@@ -121,6 +95,37 @@ final class OfferService: BaseService, OfferServiceType {
 
     func updateOffers(encryptedOffers: [OfferPayload], offerId: String) -> AnyPublisher<OfferPayload, Error> {
         request(type: OfferPayload.self, endpoint: OffersRouter.updateOffer(offer: encryptedOffers, offerId: offerId))
+    }
+
+    func updateOffers(
+        offer: ManagedOffer,
+        offerID: String,
+        userPublicKey: String,
+        fiendLevel: ContactFriendLevel,
+        expiration: TimeInterval
+    ) -> AnyPublisher<OfferPayload, Error> {
+        let encryptOffer = encryptOffer(
+            offer: offer,
+            userPublicKey: userPublicKey,
+            fiendLevel: fiendLevel,
+            expiration: expiration
+        )
+
+        let createOffer = encryptOffer
+            .withUnretained(self)
+            .flatMap { owner, offerPayloads -> AnyPublisher<OfferPayload, Error> in
+                owner.request(
+                    type: OfferPayload.self,
+                    endpoint: OffersRouter.updateOffer(
+                        offer: offerPayloads,
+                        offerId: offerID
+                    )
+                )
+                .eraseToAnyPublisher()
+            }
+            .eraseToAnyPublisher()
+
+        return createOffer
     }
 
     func deleteOffers(offerIds: [String]) -> AnyPublisher<Void, Error> {
@@ -175,6 +180,49 @@ final class OfferService: BaseService, OfferServiceType {
         // TODO: Implement a varient for this method in OfferRepository
         Just(())
             .setFailureType(to: Error.self)
+            .eraseToAnyPublisher()
+    }
+}
+
+extension OfferService {
+    func encryptOffer(
+        offer: ManagedOffer,
+        userPublicKey: String,
+        fiendLevel: ContactFriendLevel,
+        expiration: TimeInterval
+    ) -> AnyPublisher<[OfferPayload], Error> {
+        let contacts = contactsService
+            .getAllContacts(
+                friendLevel: fiendLevel,
+                hasFacebookAccount: authenticationManager.facebookSecurityHeader != nil,
+                pageLimit: Constants.pageMaxLimit
+            )
+            .map { contacts -> [ContactKey] in
+                let contacts = contacts.phone.items
+                    + contacts.facebook.items
+                    + [ContactKey(publicKey: userPublicKey)]
+                return Array(Set(contacts))
+            }
+
+        let commonFriends = contacts
+            .flatMap { [contactsService] contacts in
+                contactsService
+                    .getCommonFriends(publicKeys: contacts.map(\.publicKey))
+                    .catch { _ in Just([:]) }
+                    .map { (contacts, $0) }
+            }
+            .map { contacts, hashes in
+                contacts.map { contact -> (ContactKey, [String]) in
+                    let commonFriends = hashes[contact.publicKey] ?? []
+                    return (contact, commonFriends)
+                }
+            }
+
+        return commonFriends
+            .flatMap { [encryptionService] contactsAndHashes in
+                encryptionService
+                    .encryptOffer(withContactKey: contactsAndHashes, offer: offer)
+            }
             .eraseToAnyPublisher()
     }
 }

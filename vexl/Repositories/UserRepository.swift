@@ -79,7 +79,7 @@ final class UserRepository: UserRepositoryType {
             return Fail(error: PersistenceError.insufficientData)
                 .eraseToAnyPublisher()
         }
-        return persistenceManager.update(context: context) { [user] in
+        return persistenceManager.update(context: context) { [user] _ in
             user.userId = Int64(userResponse.userId ?? 0)
             user.profile?.name = userResponse.username
             user.profile?.avatarURL = userResponse.avatarURL

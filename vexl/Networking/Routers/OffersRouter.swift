@@ -15,7 +15,7 @@ enum OffersRouter: ApiRouter {
     case getNewOffers(pageLimit: Int?, lastSyncDate: Date)
 
     case deleteOffers(offerIds: [String])
-    case updateOffer(offer: [EncryptedOffer], offerId: String)
+    case updateOffer(offer: [OfferPayload], offerId: String)
 
     var method: HTTPMethod {
         switch self {

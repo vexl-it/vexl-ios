@@ -76,6 +76,7 @@
         <relationship name="keyPair" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ManagedKeyPair" inverseName="profile" inverseEntity="ManagedKeyPair"/>
     </entity>
     <entity name="ManagedSyncItem" representedClassName="ManagedSyncItem" syncable="YES" codeGenerationType="class">
+        <attribute name="typeRawType" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <relationship name="inbox" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ManagedInbox" inverseName="syncItem" inverseEntity="ManagedInbox"/>
         <relationship name="offer" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ManagedOffer" inverseName="syncItem" inverseEntity="ManagedOffer"/>
     </entity>
@@ -93,7 +94,7 @@
         <element name="ManagedMessage" positionX="-157.73828125" positionY="-369.1796875" width="128" height="178"/>
         <element name="ManagedOffer" positionX="-803.05859375" positionY="-512.62109375" width="128" height="404"/>
         <element name="ManagedProfile" positionX="-568.91015625" positionY="-80.58984375" width="128" height="148"/>
-        <element name="ManagedSyncItem" positionX="-586.4140625" positionY="-573.5234375" width="128" height="73"/>
+        <element name="ManagedSyncItem" positionX="-586.4140625" positionY="-573.5234375" width="128" height="74"/>
         <element name="ManagedUser" positionX="-1029.0078125" positionY="-133.734375" width="165.6171875" height="103"/>
     </elements>
 </model>

@@ -27,9 +27,9 @@ final class CreateOfferCoordinator: BaseCoordinator<RouterResult<Void>> {
         let viewModel: CreateOfferViewModel
 
         if let offer = offer {
-            viewModel = OfferEditViewModel(offerType: offerType, offer: offer)
+            viewModel = CreateOfferViewModel(offer: offer)
         } else {
-            viewModel = OfferCreateViewModel(offerType: offerType)
+            viewModel = CreateOfferViewModel(offerType: offerType, offerKey: ECCKeys())
         }
 
         let viewController = BaseViewController(rootView: CreateOfferView(viewModel: viewModel))

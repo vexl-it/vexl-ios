@@ -77,18 +77,18 @@ final class ChatRequestViewModel: ViewModelType, ObservableObject {
     }
 
     private func setupDataBindings() {
-        offerService
-            .getStoredOffers(fromType: .all, fromSource: .all)
-            .track(activity: primaryActivity)
-            .materialize()
-            .compactMap(\.value)
-            .map { $0.map(\.keysWithId) }
-            .withUnretained(self)
-            .flatMap { owner, keys in
-                owner.prepareRequestedMessages(storedOfferKeys: keys)
-            }
-            .sink()
-            .store(in: cancelBag)
+//        offerService
+//            .getStoredOffers(fromType: .all, fromSource: .all)
+//            .track(activity: primaryActivity)
+//            .materialize()
+//            .compactMap(\.value)
+//            .map { $0.map(\.keysWithId) }
+//            .withUnretained(self)
+//            .flatMap { owner, keys in
+//                owner.prepareRequestedMessages(storedOfferKeys: keys)
+//            }
+//            .sink()
+//            .store(in: cancelBag)
     }
 
     private func setupActionBindings() {

@@ -128,7 +128,7 @@ final class RequestOfferViewModel: ViewModelType, ObservableObject {
                     .trackError(owner.primaryActivity.error)
             }
             .flatMap { [persistence, offer] _ in
-                persistence.update(context: persistence.viewContext) {
+                persistence.update(context: persistence.viewContext) { _ in
                     offer.isRequested = true
                     return offer
                 }

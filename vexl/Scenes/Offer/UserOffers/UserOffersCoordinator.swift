@@ -46,7 +46,7 @@ final class UserOffersCoordinator: BaseCoordinator<RouterResult<Void>> {
 
         viewModel
             .route
-            .compactMap { route -> Offer? in
+            .compactMap { route -> ManagedOffer? in
                 if case let .editOfferTapped(offer) = route { return offer }
                 return nil
             }
@@ -58,7 +58,7 @@ final class UserOffersCoordinator: BaseCoordinator<RouterResult<Void>> {
             .sink { result in
                 switch result {
                 case .finished:
-                    viewModel.refreshOffers()
+                    return
                 default:
                     break
                 }
@@ -92,7 +92,7 @@ extension UserOffersCoordinator {
             .eraseToAnyPublisher()
     }
 
-    private func showEditOffer(router: Router, offerType: OfferType, offer: Offer) -> CoordinatingResult<RouterResult<Void>> {
+    private func showEditOffer(router: Router, offerType: OfferType, offer: ManagedOffer) -> CoordinatingResult<RouterResult<Void>> {
         coordinate(to: CreateOfferCoordinator(router: router, offerType: offerType, offer: offer))
             .flatMap { result -> CoordinatingResult<RouterResult<Void>> in
                 guard result != .dismissedByRouter else {

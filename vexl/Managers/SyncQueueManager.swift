@@ -98,7 +98,14 @@ final class SyncQueueManager: SyncQueueManagerType {
 
     private func dispatch(item: ManagedSyncItem) -> AnyPublisher<Void, Error> {
         if let offer = item.offer {
-            return uploadOffer(offer: offer, item: item)
+            switch item.type {
+            case .insert:
+                return createOffer(offer: offer, item: item)
+            case .update:
+                return updateOffer(offer: offer, item: item)
+            case .none:
+                break
+            }
         } else if let inbox = item.inbox {
             return uploadInbox(inbox: inbox, item: item)
         }
@@ -107,7 +114,7 @@ final class SyncQueueManager: SyncQueueManagerType {
             .eraseToAnyPublisher()
     }
 
-    private func uploadOffer(offer: ManagedOffer, item: ManagedSyncItem) -> AnyPublisher<Void, Error> {
+    private func createOffer(offer: ManagedOffer, item: ManagedSyncItem) -> AnyPublisher<Void, Error> {
         guard let friendLevel = offer.friendLevel,
               let expiration = offer.expirationDate?.timeIntervalSince1970,
               let userPublicKey = userRepository.user?.profile?.keyPair?.publicKey
@@ -123,7 +130,41 @@ final class SyncQueueManager: SyncQueueManagerType {
         let updatePersistence = createOffer
             .flatMapLatest(with: self) { owner, offerPayload -> AnyPublisher<Void, Error> in
                 owner.persistence
-                    .update(context: owner.$queue.context) {
+                    .update(context: owner.$queue.context) { _ in
+                        offer.id = offerPayload.offerId
+                        return offer
+                    }
+                    .asVoid()
+                    .eraseToAnyPublisher()
+            }
+            .eraseToAnyPublisher()
+
+        let removeSyncItem: AnyPublisher<Void, Error> = updatePersistence
+            .flatMapLatest { [persistence] _ -> AnyPublisher<Void, Error> in
+                persistence.delete(context: context, object: item)
+            }
+            .eraseToAnyPublisher()
+
+        return removeSyncItem
+    }
+
+    private func updateOffer(offer: ManagedOffer, item: ManagedSyncItem) -> AnyPublisher<Void, Error> {
+        guard let friendLevel = offer.friendLevel,
+              let expiration = offer.expirationDate?.timeIntervalSince1970,
+              let userPublicKey = userRepository.user?.profile?.keyPair?.publicKey
+        else {
+            return Fail(error: PersistenceError.insufficientData).eraseToAnyPublisher()
+        }
+
+        let context = $queue.context
+
+        let createOffer = offerService
+            .createOffer(offer: offer, userPublicKey: userPublicKey, fiendLevel: friendLevel.convertToContactFriendLevel, expiration: expiration)
+
+        let updatePersistence = createOffer
+            .flatMapLatest(with: self) { owner, offerPayload -> AnyPublisher<Void, Error> in
+                owner.persistence
+                    .update(context: owner.$queue.context) { _ in
                         offer.id = offerPayload.offerId
                         return offer
                     }

@@ -111,17 +111,25 @@ extension AuthenticationManager {
                     return userService
                         .deleteUser()
                         .nilOnError()
-                        .flatMap { _ in
+                        .flatMap { [contactService] _ in
                             contactService
                                 .deleteUser()
-                                .nilOnError()
+                                .materialize()
+                                .compactMap(\.value)
+                                .eraseToAnyPublisher()
                         }
-                        .flatMap { _ in
-                            offerService
-                                .deleteOffers()
-                                .nilOnError()
+                        .flatMap { [persistanceManager] _ -> AnyPublisher<Void, Never> in
+                            let offers = persistanceManager.loadSyncroniously(
+                                type: ManagedOffer.self,
+                                context: persistanceManager.viewContext,
+                                predicate: NSPredicate(format: "user != nil")
+                            )
+                            return offerService
+                                .deleteOffers(offerIds: offers.compactMap(\.id))
+                                .materialize()
+                                .compactMap(\.value)
+                                .eraseToAnyPublisher()
                         }
-                        .asVoid()
                         .eraseToAnyPublisher()
                 } else {
                     return Just(())
