@@ -18,7 +18,6 @@ final class NetworkManager: NetworkManagerType {
     private let interfaceMonitor: NWPathMonitor
 
     private let threadQueue = DispatchQueue(label: "interfaceMonitorQueue")
-    private var cancellables: Set<AnyCancellable> = Set()
 
     private(set) var running = false
 
