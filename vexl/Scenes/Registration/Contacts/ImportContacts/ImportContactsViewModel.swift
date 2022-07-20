@@ -34,7 +34,9 @@ class ImportContactsViewModel: ObservableObject {
     enum UserAction: Equatable {
         case itemSelected(Bool, ContactInformation)
         case unselectAll
+        case selectAll
         case importContacts
+        case dismiss
 
         static func == (lhs: UserAction, rhs: UserAction) -> Bool {
             switch (lhs, rhs) {
@@ -44,6 +46,10 @@ class ImportContactsViewModel: ObservableObject {
                 return true
             case (.importContacts, .importContacts):
                 return true
+            case (.dismiss, .dismiss):
+                return true
+            case (.selectAll, .selectAll):
+                return true
             default:
                 return false
             }
@@ -52,6 +58,7 @@ class ImportContactsViewModel: ObservableObject {
 
     let action: ActionSubject<UserAction> = .init()
     let completed: ActionSubject<Void> = .init()
+    let dismiss: ActionSubject<Void> = .init()
 
     // MARK: - View Bindings
 
@@ -59,6 +66,9 @@ class ImportContactsViewModel: ObservableObject {
     @Published var items: [ContactInformation] = []
     @Published var searchText = ""
     @Published var hasSelectedItem = false
+
+    @Published var showBackButton = false
+    @Published var showActionButton = true
 
     @Published var loading = false
     @Published var error: Error?
@@ -84,6 +94,10 @@ class ImportContactsViewModel: ObservableObject {
 
     private var canBeCompletedWithoutSelection: Bool {
         (currentState == .content && !hasSelectedItem) || currentState == .loading || currentState == .empty
+    }
+
+    var shouldSelectAll: Bool {
+        false
     }
 
     var actionTitle: String {
@@ -116,10 +130,9 @@ class ImportContactsViewModel: ObservableObject {
     }
 
     private func setupActions() {
+        let action = action.share()
+
         action
-            .filter { action in
-                ![UserAction.unselectAll, .importContacts].contains(action)
-            }
             .compactMap { action -> (Bool, ContactInformation)? in
                 if case let .itemSelected(isSelected, item) = action {
                     return (isSelected, item)
@@ -136,7 +149,15 @@ class ImportContactsViewModel: ObservableObject {
             .filter { $0 == .unselectAll }
             .withUnretained(self)
             .sink { owner, _ in
-                owner.unselectAllItems()
+                owner.selectAllItems(areSelected: false)
+            }
+            .store(in: cancelBag)
+
+        action
+            .filter { $0 == .selectAll }
+            .withUnretained(self)
+            .sink { owner, _ in
+                owner.selectAllItems(areSelected: true)
             }
             .store(in: cancelBag)
 
@@ -146,6 +167,14 @@ class ImportContactsViewModel: ObservableObject {
             .filter { $0.0.canBeCompletedWithoutSelection }
             .sink { owner, _ in
                 owner.completed.send(())
+            }
+            .store(in: cancelBag)
+
+        action
+            .filter { $0 == .dismiss }
+            .withUnretained(self)
+            .sink { owner, _ in
+                owner.dismiss.send(())
             }
             .store(in: cancelBag)
     }
@@ -215,11 +244,11 @@ class ImportContactsViewModel: ObservableObject {
         hasSelectedItem = items.contains(where: { $0.isSelected })
     }
 
-    private func unselectAllItems() {
+    private func selectAllItems(areSelected: Bool) {
         for index in items.indices {
-            items[index].isSelected = false
+            items[index].isSelected = areSelected
         }
-        hasSelectedItem = false
+        hasSelectedItem = areSelected
     }
 
     func fetchContacts() throws {

@@ -18,14 +18,29 @@ struct ImportContactsView: View {
                 .padding(.horizontal, Appearance.GridGuide.point)
                 .padding(.vertical, Appearance.GridGuide.padding)
 
-            LargeSolidButton(title: viewModel.actionTitle,
-                             font: Appearance.TextStyle.titleSmallBold.font.asFont,
-                             style: .custom(color: viewModel.currentState == .success ? .success : .main),
-                             isFullWidth: true,
-                             isEnabled: .constant(true),
-                             action: {
-                viewModel.action.send(.importContacts)
-            })
+            HStack {
+                if viewModel.showBackButton {
+                    LargeSolidButton(title: L.generalBack(),
+                                     font: Appearance.TextStyle.titleSmallBold.font.asFont,
+                                     style: .secondary,
+                                     isFullWidth: true,
+                                     isEnabled: .constant(true),
+                                     action: {
+                        viewModel.action.send(.dismiss)
+                    })
+                }
+
+                if viewModel.showActionButton {
+                    LargeSolidButton(title: viewModel.actionTitle,
+                                     font: Appearance.TextStyle.titleSmallBold.font.asFont,
+                                     style: .custom(color: viewModel.currentState == .success ? .success : .main),
+                                     isFullWidth: true,
+                                     isEnabled: .constant(true),
+                                     action: {
+                        viewModel.action.send(.importContacts)
+                    })
+                }
+            }
                 .padding(.horizontal, Appearance.GridGuide.mediumPadding1)
         }
     }

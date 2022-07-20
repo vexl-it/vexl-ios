@@ -33,8 +33,9 @@ struct ImportContactListView: View {
             case .content, .success:
                 ImportContactSearchBar(searchText: $viewModel.searchText,
                                        hasSelectedItem: viewModel.hasSelectedItem,
+                                       shouldSelectAll: viewModel.shouldSelectAll,
                                        onAction: {
-                    viewModel.action.send(.unselectAll)
+                    viewModel.action.send(viewModel.shouldSelectAll ? .selectAll : .unselectAll)
                 })
                 .padding(Appearance.GridGuide.padding)
 

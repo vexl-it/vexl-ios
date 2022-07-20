@@ -9,6 +9,52 @@ import Foundation
 import Cleevio
 import Combine
 
+final class ImportPhoneContactsProfileViewModel: ImportContactsViewModel {
+
+    override var actionTitle: String {
+        L.registerContactsUpdateButton()
+    }
+
+    override var shouldSelectAll: Bool {
+        true
+    }
+
+    override init() {
+        super.init()
+        showActionButton = false
+        showBackButton = true
+        currentState = .loading
+        setupActionBindings()
+    }
+
+    private func setupActionBindings() {
+        $hasSelectedItem
+            .withUnretained(self)
+            .sink { owner, hasSelection in
+                owner.showActionButton = hasSelection
+            }
+            .store(in: cancelBag)
+    }
+
+    override func fetchContacts() throws {
+        let contacts = contactsManager.fetchPhoneContacts()
+        let phones = contacts.map(\.phone)
+
+        contactsManager
+            .getActivePhoneContacts(phones)
+            .track(activity: primaryActivity)
+            .materialize()
+            .compactMap(\.value)
+            .eraseToAnyPublisher()
+            .withUnretained(self)
+            .sink { owner, availableContacts in
+                owner.currentState = availableContacts.isEmpty ? .empty : .content
+                owner.items = availableContacts
+            }
+            .store(in: cancelBag)
+    }
+}
+
 final class ImportContactsProfileViewModel: ViewModelType, ObservableObject {
 
     enum UserAction: Equatable {
@@ -37,7 +83,7 @@ final class ImportContactsProfileViewModel: ViewModelType, ObservableObject {
     }
 
     var route: CoordinatingSubject<Route> = .init()
-    var importContactViewModel = ImportPhoneContactsViewModel()
+    var importContactViewModel = ImportPhoneContactsProfileViewModel()
 
     // MARK: - Variables
 
@@ -45,7 +91,18 @@ final class ImportContactsProfileViewModel: ViewModelType, ObservableObject {
 
     init() {
         setupActivityBindings()
-        importContactViewModel.currentState = .loading
+        setupImportContact()
+    }
+
+    private func setupImportContact() {
+        importContactViewModel.primaryActivity = primaryActivity
+
+        importContactViewModel
+            .dismiss
+            .map { _ -> Route in .dismissTapped }
+            .subscribe(route)
+            .store(in: cancelBag)
+
         try? importContactViewModel.fetchContacts()
     }
 
