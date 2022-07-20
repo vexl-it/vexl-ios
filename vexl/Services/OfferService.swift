@@ -13,7 +13,7 @@ protocol OfferServiceType {
     // MARK: Offer Fetching
 
     func getUserOffers(offerIds: [String]) -> AnyPublisher<[OfferPayload], Error>
-    func getOffer(pageLimit: Int?) -> AnyPublisher<Paged<OfferPayload>, Error>
+    func getMyOffers(pageLimit: Int?) -> AnyPublisher<Paged<OfferPayload>, Error>
     func getNewOffers(pageLimit: Int?, lastSyncDate: Date) -> AnyPublisher<Paged<OfferPayload>, Error>
 
     // MARK: Offer Creation
@@ -49,7 +49,7 @@ final class OfferService: BaseService, OfferServiceType {
             .eraseToAnyPublisher()
     }
 
-    func getOffer(pageLimit: Int?) -> AnyPublisher<Paged<OfferPayload>, Error> {
+    func getMyOffers(pageLimit: Int?) -> AnyPublisher<Paged<OfferPayload>, Error> {
         request(type: Paged<OfferPayload>.self, endpoint: OffersRouter.getOffers(pageLimit: pageLimit))
             .eraseToAnyPublisher()
     }
