@@ -15,7 +15,10 @@ final class UserOffersViewModel: ViewModelType, ObservableObject {
 
     // MARK: - Fetched Bindings
 
-    @Fetched(fetchImmediately: false)
+    @Fetched(
+        fetchImmediately: false,
+        sortDescriptors: [ NSSortDescriptor(key: "createdAt", ascending: false) ]
+    )
     var fetchedOffers: [ManagedOffer]
 
     // MARK: - Action Binding
@@ -100,12 +103,7 @@ final class UserOffersViewModel: ViewModelType, ObservableObject {
     private func setupDataBindings() {
         $fetchedOffers
             .load(
-                sortDescriptors: [
-                    NSSortDescriptor(key: "createdAt", ascending: false)
-                ],
-                predicate: .init(
-                    format: "offerTypeRawType == '\(OfferType.buy.rawValue)' AND user != nil"
-                )
+                predicate: .init(format: "offerTypeRawType == '\(OfferType.buy.rawValue)' AND user != nil")
             )
 
         $fetchedOffers.publisher
@@ -127,6 +125,14 @@ final class UserOffersViewModel: ViewModelType, ObservableObject {
             .withUnretained(self)
             .sink { owner, _ in
                 owner.route.send(.dismissTapped)
+            }
+            .store(in: cancelBag)
+
+        $offerSortingOption
+            .withUnretained(self)
+            .sink { owner, option in
+                owner.$fetchedOffers
+                    .load(sortDescriptors: [ NSSortDescriptor(key: "createdAt", ascending: option == .oldest) ])
             }
             .store(in: cancelBag)
     }
