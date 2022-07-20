@@ -25,6 +25,7 @@ protocol ContactsManagerType {
 final class ContactsManager: ContactsManagerType {
 
     @Inject var contactsService: ContactsServiceType
+    @Inject var cryptoService: CryptoServiceType
 
     // MARK: - Properties
 
@@ -93,6 +94,18 @@ final class ContactsManager: ContactsManagerType {
                 owner.availablePhoneContacts = availableContacts
             })
             .map(\.0.availablePhoneContacts)
+            .eraseToAnyPublisher()
+    }
+
+    private func verifyPhoneContacts(_ availableContacts: [String]) -> AnyPublisher<[String], Error> {
+        availableContacts.publisher
+            .withUnretained(self)
+            .flatMap { owner, contact in
+                owner.cryptoService
+                    .hashHMAC(password: Constants.contactsHashingPassword, message: contact)
+                    .eraseToAnyPublisher()
+            }
+            .collect()
             .eraseToAnyPublisher()
     }
 
