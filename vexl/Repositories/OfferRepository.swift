@@ -33,7 +33,7 @@ protocol OfferRepositoryType {
         expiration: Date?
     ) -> AnyPublisher<ManagedOffer, Error>
 
-    func createOffer(offerPayloads: [OfferPayload]) -> AnyPublisher<[ManagedOffer], Error>
+    func createOrUpdateOffer(offerPayloads: [OfferPayload]) -> AnyPublisher<[ManagedOffer], Error>
 
     func getOrder(with publicKey: String) -> AnyPublisher<ManagedOffer, Error>
 }
@@ -42,8 +42,6 @@ class OfferRepository: OfferRepositoryType {
 
     @Inject private var persistence: PersistenceStoreManagerType
     @Inject private var userRepository: UserRepositoryType
-
-    private lazy var backgroundContext: NSManagedObjectContext = persistence.newBackgroundContext()
 
     func createOffer(
         offerId: String?,
@@ -105,14 +103,27 @@ class OfferRepository: OfferRepositoryType {
         }
     }
 
-    func createOffer(offerPayloads: [OfferPayload]) -> AnyPublisher<[ManagedOffer], Error> {
+    func createOrUpdateOffer(offerPayloads: [OfferPayload]) -> AnyPublisher<[ManagedOffer], Error> {
+        let context = persistence.viewContext
         guard let userInboxID = userRepository.user?.profile?.keyPair?.inbox?.objectID,
-              let userInbox = persistence.loadSyncroniously(type: ManagedInbox.self, context: backgroundContext, objectID: userInboxID),
+              let userInbox = persistence.loadSyncroniously(type: ManagedInbox.self, context: context, objectID: userInboxID),
               !offerPayloads.isEmpty else {
             return Fail(error: PersistenceError.insufficientData).eraseToAnyPublisher()
         }
-        return persistence.insert(context: backgroundContext) { context in
-            offerPayloads.compactMap { $0.decrypt(context: context, userInbox: userInbox) }
+        return persistence.insert(context: context) { [persistence] context in
+            offerPayloads.compactMap { payload in
+                let offers = persistence.loadSyncroniously(
+                    type: ManagedOffer.self,
+                    context: context,
+                    predicate: NSPredicate(format: "id == '\(payload.offerId)'")
+                )
+                if let offer = offers.first {
+                    _ = payload.decrypt(context: context, userInbox: userInbox, into: offer)
+                    return nil
+                }
+                let offer = ManagedOffer(context: context)
+                return payload.decrypt(context: context, userInbox: userInbox, into: offer)
+            }
         }
     }
 

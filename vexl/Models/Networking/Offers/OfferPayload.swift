@@ -124,7 +124,7 @@ struct OfferPayload: Codable {
     }
 
     // swiftlint:disable:next function_body_length
-    func decrypt(context: NSManagedObjectContext, userInbox: ManagedInbox) -> ManagedOffer? {
+    func decrypt(context: NSManagedObjectContext, userInbox: ManagedInbox, into offer: ManagedOffer) -> ManagedOffer? {
         guard let keys = userInbox.keyPair?.keys else {
             return nil
         }
@@ -146,6 +146,12 @@ struct OfferPayload: Codable {
 
             let paymentMethods = Self.getPaymentMethods(paymentMethod, withKeys: keys)
             let btcNetworks = Self.getBTCNetwork(btcNetwork, withKeys: keys)
+            let commonFirends = try commonFriends.compactMap { hash -> String? in
+                if !hash.isEmpty {
+                    return try hash.ecc.decrypt(keys: keys)
+                }
+                return nil
+            }
 
             guard let minAmount = Double(minAmountString),
                   let maxAmount = Double(maxAmountString),
@@ -166,9 +172,6 @@ struct OfferPayload: Codable {
                 return nil
             }
 
-            let offer = ManagedOffer(context: context)
-            let offerKeyPair = ManagedKeyPair(context: context)
-
             offer.id = offerId
             offer.groupUuid = GroupUUID(rawValue: groupUuid)
             offer.createdAt = Formatters.dateApiFormatter.date(from: createdAt)
@@ -177,7 +180,6 @@ struct OfferPayload: Codable {
             offer.minAmount = minAmount
             offer.maxAmount = maxAmount
             offer.feeAmount = feeAmount
-            offer.receiverPublicKey = offerKeyPair
             offer.offerDescription = try offerDescription.ecc.decrypt(keys: keys)
             offer.feeState = feeState
             offer.locationState = locationState
@@ -188,9 +190,17 @@ struct OfferPayload: Codable {
             offer.activePriceValue = activePriceValue
             offer.paymentMethods = paymentMethods
             offer.btcNetworks = btcNetworks
+            offer.commonFriends = commonFirends
 
-            offerKeyPair.publicKey = offerPublicKey
-            offer.inbox = userInbox
+            if offer.receiverPublicKey == nil {
+                let offerKeyPair = ManagedKeyPair(context: context)
+                offerKeyPair.publicKey = offerPublicKey
+                offer.receiverPublicKey = offerKeyPair
+            }
+
+            if offer.inbox == nil {
+                offer.inbox = userInbox
+            }
 
             return offer
         } catch {

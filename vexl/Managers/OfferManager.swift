@@ -30,7 +30,7 @@ final class OfferManager: OfferManagerType {
             .getNewOffers(pageLimit: Constants.pageMaxLimit, lastSyncDate: lastSyncDate)
             .map(\.items)
             .flatMap { [offerRepository] payloads -> AnyPublisher<[ManagedOffer], Error> in
-                offerRepository.createOffer(offerPayloads: payloads)
+                offerRepository.createOrUpdateOffer(offerPayloads: payloads)
             }
             .catch { _ in Just([]) }
             .sink(receiveValue: { [weak self] _ in
