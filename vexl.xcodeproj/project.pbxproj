@@ -270,9 +270,6 @@
 		F1B30113287CA5BB00C86F83 /* CreateOfferViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18862482811551700659786 /* CreateOfferViewModel.swift */; };
 		F1B30116287CBD5400C86F83 /* OfferCreateViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B30115287CBD5400C86F83 /* OfferCreateViewModel.swift */; };
 		F1B30118287CC15D00C86F83 /* OfferEditViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B30117287CC15C00C86F83 /* OfferEditViewModel.swift */; };
-		F1B365AB2880FC720069788D /* (null) in Sources */ = {isa = PBXBuildFile; };
-		F1B365AD2880FC790069788D /* (null) in Sources */ = {isa = PBXBuildFile; };
-		F1B365AF2880FC820069788D /* (null) in Sources */ = {isa = PBXBuildFile; };
 		F1B365BD2885CB500069788D /* EditProfileNameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B365BA2885CB500069788D /* EditProfileNameView.swift */; };
 		F1B365BE2885CB500069788D /* EditProfileNameCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B365BB2885CB500069788D /* EditProfileNameCoordinator.swift */; };
 		F1B365BF2885CB500069788D /* EditProfileNameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B365BC2885CB500069788D /* EditProfileNameViewModel.swift */; };
@@ -2489,12 +2486,10 @@
 				F11441DD284681EC00307D39 /* LoadingIndicatorView.swift in Sources */,
 				F1A9454627F81278009B5AE3 /* ContactInformation.swift in Sources */,
 				B007A78C2875970D00CFA5C9 /* NSManagedObjectContext+.swift in Sources */,
-				F1B365AF2880FC820069788D /* (null) in Sources */,
 				F1D2011F282960DC006DF4AB /* TabBarView.swift in Sources */,
 				F11441C7284681EC00307D39 /* RegistrationCardView.swift in Sources */,
 				B08F391327AE7112008B344F /* ManagerAssembly.swift in Sources */,
 				B007A75A287226D000CFA5C9 /* ManagedChat+.swift in Sources */,
-				F1B365AD2880FC790069788D /* (null) in Sources */,
 				F13B266928194A060011F2FB /* OffersRouter.swift in Sources */,
 				F188625F2811E53400659786 /* OfferPaymentMethodView.swift in Sources */,
 				4FBF61E0283BD12700DDBE71 /* FilterView.swift in Sources */,
@@ -2563,7 +2558,6 @@
 				F151A2A727C962CC000D7242 /* RegisterNameAvatarView+NameInput.swift in Sources */,
 				F11441D9284681EC00307D39 /* SingleOptionPickerView.swift in Sources */,
 				B007A7502872267400CFA5C9 /* ManagedOffer+.swift in Sources */,
-				F1B365AB2880FC720069788D /* (null) in Sources */,
 				F1F5F19B283FE53300968366 /* ChatRequestView.swift in Sources */,
 				F1B93ED0286A2102008DAA90 /* StoredOffer.swift in Sources */,
 				F11441E7284682B200307D39 /* ChatRequestOfferInformationView.swift in Sources */,
