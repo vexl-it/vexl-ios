@@ -15,12 +15,16 @@ final class ImportPhoneContactsViewModel: ImportContactsViewModel {
         let contacts = contactsManager.fetchPhoneContacts()
         let phones = contacts.map(\.phone)
 
-        contactsManager
-            .getActivePhoneContacts(phones)
+        hashContacts(identifiers: phones)
             .track(activity: primaryActivity)
-            .materialize()
-            .compactMap(\.value)
-            .eraseToAnyPublisher()
+            .withUnretained(self)
+            .flatMap { owner, hashedPhones in
+                owner.contactsManager
+                    .getActivePhoneContacts(hashedPhones)
+                    .track(activity: owner.primaryActivity)
+                    .materialize()
+                    .compactMap(\.value)
+            }
             .withUnretained(self)
             .sink { owner, availableContacts in
                 owner.currentState = availableContacts.isEmpty ? .empty : .content

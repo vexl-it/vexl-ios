@@ -20,6 +20,7 @@ protocol ContactsManagerType {
 
     func fetchFacebookContacts(id: String, accessToken: String) -> AnyPublisher<[ContactInformation], Error>
     func getActiveFacebookContacts(_ contacts: [String], withId id: String, token: String) -> AnyPublisher<[ContactInformation], Error>
+    func hashPhoneContacts(_ availableContacts: [String]) -> AnyPublisher<[String], Error>
 }
 
 final class ContactsManager: ContactsManagerType {
@@ -89,16 +90,39 @@ final class ContactsManager: ContactsManagerType {
         contactsService
             .getActivePhoneContacts(contacts)
             .withUnretained(self)
+            .flatMap { owner, hashedAvailableContacts -> AnyPublisher<([String], [String]), Error> in
+                let userContacts = owner.userPhoneContacts.map(\.sourceIdentifier)
+                return owner.hashPhoneContacts(userContacts)
+                    .map { (hashedAvailableContacts.newContacts, $0) }
+                    .eraseToAnyPublisher()
+            }
+            .withUnretained(self)
             .handleEvents(receiveOutput: { owner, contacts in
-                let availableContacts = owner.userPhoneContacts.filter { contacts.newContacts.contains($0.sourceIdentifier) }
-                owner.availablePhoneContacts = availableContacts
+                owner.availablePhoneContacts = []
+                let (hashedAvailableContacts, hashedUserContacts) = contacts
+                for (index, contact) in hashedUserContacts.enumerated() {
+                    if hashedAvailableContacts.contains(contact) {
+                        owner.availablePhoneContacts.append(owner.userPhoneContacts[index])
+                    }
+                }
             })
             .map(\.0.availablePhoneContacts)
             .eraseToAnyPublisher()
     }
 
-    private func verifyPhoneContacts(_ availableContacts: [String]) -> AnyPublisher<[String], Error> {
-        availableContacts.publisher
+    func hashPhoneContacts(_ availableContacts: [String]) -> AnyPublisher<[String], Error> {
+        let phoneNumber = Formatters.phoneNumberFormatter
+        let countryCode = phoneNumber.countryCode(for: Locale.current.regionCode ?? "")
+
+        let trimmedIdentifiers = availableContacts.map { identifier -> String in
+            let trimmedIdentifier = identifier.removeWhitespaces()
+            if let countryCode = countryCode, !trimmedIdentifier.contains("+") {
+                return "\(countryCode)\(trimmedIdentifier)"
+            }
+            return trimmedIdentifier
+        }
+
+        return trimmedIdentifiers.publisher
             .withUnretained(self)
             .flatMap { owner, contact in
                 owner.cryptoService

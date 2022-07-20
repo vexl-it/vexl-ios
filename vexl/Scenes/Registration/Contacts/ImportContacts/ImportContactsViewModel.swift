@@ -217,6 +217,8 @@ class ImportContactsViewModel: ObservableObject {
             .store(in: cancelBag)
     }
 
+    // TODO: - Replace this with the ContactManager hashPhoneContacts when Core Data Migration is done. Currently leaving it as it is to avoid merge conflicts.
+
     func hashContacts(identifiers: [String]) -> AnyPublisher<[String], Error> {
         let phoneNumber = Formatters.phoneNumberFormatter
         let countryCode = phoneNumber.countryCode(for: Locale.current.regionCode ?? "")
