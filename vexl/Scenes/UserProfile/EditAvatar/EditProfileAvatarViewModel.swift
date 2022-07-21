@@ -97,7 +97,8 @@ final class EditProfileAvatarViewModel: ViewModelType, ObservableObject {
             .withUnretained(self)
             .flatMap { owner, _ -> AnyPublisher<String?, Never> in
                 guard let avatar = owner.avatar else { return Just<String?>(nil).eraseToAnyPublisher() }
-                return avatar.base64Publisher
+                let compressedAvatar = avatar.compressImage(quality: 0.25)
+                return compressedAvatar.base64Publisher
                     .track(activity: owner.primaryActivity)
             }
             .withUnretained(self)
