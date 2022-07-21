@@ -88,7 +88,16 @@ struct RegisterNameAvatarView: View {
 }
 
 struct RegisterNameAvatarViewPreview: PreviewProvider {
+
+    static var viewModel: RegisterNameAvatarViewModel {
+        let viewModel = RegisterNameAvatarViewModel()
+        viewModel.currentState = .avatarInput
+        return viewModel
+    }
+
     static var previews: some View {
         RegisterNameAvatarView(viewModel: .init())
+
+        RegisterNameAvatarView(viewModel: viewModel)
     }
 }
