@@ -182,23 +182,4 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
             .sink()
             .store(in: cancelBag)
     }
-
-    private func logoutUser() {
-
-        let deleteUser = userService
-            .deleteUser()
-            .track(activity: primaryActivity)
-            .materialize()
-            .compactMap(\.value)
-
-        let deleteContactUser = deleteUser
-            .withUnretained(self)
-            .flatMap { owner, _ in
-                owner.contactService
-                    .deleteUser()
-                    .track(activity: owner.primaryActivity)
-                    .materialize()
-                    .compactMap(\.value)
-            }
-    }
 }
