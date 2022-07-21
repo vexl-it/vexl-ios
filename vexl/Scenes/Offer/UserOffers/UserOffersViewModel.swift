@@ -105,7 +105,7 @@ final class UserOffersViewModel: ViewModelType, ObservableObject {
     private func setupDataBindings() {
         $fetchedOffers
             .load(
-                predicate: .init(format: "offerTypeRawType == '\(OfferType.buy.rawValue)' AND user != nil")
+                predicate: .init(format: "offerTypeRawType == '\(offerType.rawValue)' AND user != nil")
             )
 
         $fetchedOffers.publisher
