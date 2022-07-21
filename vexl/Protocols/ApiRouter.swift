@@ -22,7 +22,6 @@ enum AuthType {
 }
 
 protocol ApiRouter: URLRequestConvertible {
-    var tokenHandler: TokenHandlerType { get }
     var securityHeader: [Header] { get }
     var facebookSecurityHeader: [Header] { get }
     var method: HTTPMethod { get }
@@ -36,12 +35,9 @@ protocol ApiRouter: URLRequestConvertible {
 }
 
 extension ApiRouter {
-    var tokenHandler: TokenHandlerType {
-        DIContainer.shared.getDependency(type: TokenHandlerType.self)
-    }
 
     var securityHeader: [Header] {
-        let authManager = DIContainer.shared.getDependency(type: UserSecurityType.self)
+        let authManager = DIContainer.shared.getDependency(type: AuthenticationManagerType.self)
         return authManager.securityHeader?.header ?? []
     }
 
@@ -85,27 +81,13 @@ extension ApiRouter {
 
         // Authentication
         switch authType {
-        case .none:
+        case .none, .bearer, .refresh:
             break
         case let .basic(username, password):
             let header = HTTPHeader.authorization(username: username, password: password)
             urlRequest.setValue(header.value, forHTTPHeaderField: ApiInterceptor.authorizationHeaderKey)
-        case .bearer:
-            if let accessToken = tokenHandler.accessToken {
-                urlRequest.setValue(accessToken.bearer, forHTTPHeaderField: ApiInterceptor.authorizationHeaderKey)
-            }
-        case .refresh:
-            if let refreshToken = tokenHandler.refreshToken {
-                urlRequest.setValue(refreshToken.bearer, forHTTPHeaderField: ApiInterceptor.authorizationHeaderKey)
-            }
         }
 
         return urlRequest
-    }
-}
-
-fileprivate extension BearerToken {
-    var bearer: String {
-        "Bearer \(self)"
     }
 }

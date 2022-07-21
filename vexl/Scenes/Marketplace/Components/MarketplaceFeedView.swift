@@ -41,8 +41,8 @@ struct MarketplaceFeedView: View {
 #if DEBUG || DEVEL
 struct MarketplaceFeedViewViewPreview: PreviewProvider {
     static var previews: some View {
-        let data = OfferDetailViewData(offer: .stub, isRequested: false)
-        let data2 = OfferDetailViewData(offer: .stub2, isRequested: true)
+        let data = OfferDetailViewData(offer: .stub)
+        let data2 = OfferDetailViewData(offer: .stub)
 
         return ZStack {
             Color.black

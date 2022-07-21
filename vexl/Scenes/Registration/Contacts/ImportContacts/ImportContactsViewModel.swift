@@ -14,10 +14,12 @@ class ImportContactsViewModel: ObservableObject {
 
     // MARK: - Dependencies
 
+    @Inject var contactsRepository: ContactsRepositoryType
     @Inject var contactsManager: ContactsManagerType
+    @Inject var facebookManager: FacebookManagerType
     @Inject var contactsService: ContactsServiceType
-    @Inject var authenticationManager: AuthenticationManager
     @Inject var userService: UserServiceType
+    @Inject var encryptionService: EncryptionServiceType
     @Inject var cryptoService: CryptoServiceType
 
     // MARK: - View State
@@ -184,27 +186,35 @@ class ImportContactsViewModel: ObservableObject {
             .withUnretained(self)
             .filter { $0.0.currentState == .content && $0.0.hasSelectedItem && $0.1 == .importContacts }
             .map(\.0.selectedItems)
-            .withUnretained(self)
-            .flatMap { owner, contacts in
-                owner.hashContacts(identifiers: contacts.map(\.sourceIdentifier))
-                    .eraseToAnyPublisher()
+            .flatMap { [encryptionService] contacts in
+                encryptionService
+                    .hashContacts(contacts: contacts)
             }
+            .share()
+            .eraseToAnyPublisher()
 
         let importContact = hashContacts
             .withUnretained(self)
-            .flatMap { owner, contacts in
+            .flatMap { owner, contacts -> AnyPublisher<ContactsImported, Never> in
                 owner.contactsService
-                    .importContacts(contacts)
+                    .importContacts(contacts.map(\.1))
                     .track(activity: owner.primaryActivity)
                     .materialize()
+                    .compactMap { $0.value }
                     .eraseToAnyPublisher()
             }
+            .eraseToAnyPublisher()
 
-        importContact
-            .compactMap { $0.value }
+        let saveContacts = hashContacts
+            .withUnretained(self)
+            .flatMap { owner, contacts in
+                owner.contactsRepository.save(contacts: contacts)
+            }
+
+        Publishers.Zip(importContact, saveContacts)
             .withUnretained(self)
             .handleEvents(receiveOutput: { owner, response in
-                if response.imported {
+                if response.0.imported {
                     owner.currentState = .success
                 }
             })

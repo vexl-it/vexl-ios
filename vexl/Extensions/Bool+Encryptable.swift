@@ -7,12 +7,12 @@
 
 import Foundation
 
-extension Bool {
+extension Bool: Encryptable {
     /// returns "true" and "false" as string
-    var string: String { "\(self)" }
+    var asString: String { "\(self)" }
 
     init?(_ value: String) {
-        guard let val = [true, false].first(where: { $0.string == value }) else {
+        guard let val = [true, false].first(where: { $0.asString == value }) else {
             return nil
         }
         self = val

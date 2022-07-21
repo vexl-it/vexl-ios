@@ -7,12 +7,10 @@
 
 import SwiftUI
 
-typealias OfferAdvancedFriendDegreeOption = OfferAdvanceFilterFriendDegreeView.Option
-
 struct OfferAdvanceFilterFriendDegreeView: View {
 
-    @Binding var selectedOption: Option
-    private let options: [Option] = [.firstDegree, .secondDegree]
+    @Binding var selectedOption: OfferFriendDegree
+    private let options: [OfferFriendDegree] = [.firstDegree, .secondDegree]
 
     var body: some View {
         VStack(alignment: .leading) {
@@ -36,40 +34,6 @@ struct OfferAdvanceFilterFriendDegreeView: View {
                             .offset(x: -10, y: -10)
                     )
             }, action: nil)
-        }
-    }
-}
-
-extension OfferAdvanceFilterFriendDegreeView {
-    enum Option: String {
-        case firstDegree = "FIRST_DEGREE"
-        case secondDegree = "SECOND_DEGREE"
-
-        var degree: Int {
-            switch self {
-            case .firstDegree:
-                return 1
-            case .secondDegree:
-                return 2
-            }
-        }
-
-        var imageName: String {
-            switch self {
-            case .firstDegree:
-                return R.image.offer.firstDegree.name
-            case .secondDegree:
-                return R.image.offer.secondDegree.name
-            }
-        }
-
-        var label: String {
-            switch self {
-            case .firstDegree:
-                return L.marketplaceDetailFriendFirst()
-            case .secondDegree:
-                return L.marketplaceDetailFriendSecond()
-            }
         }
     }
 }

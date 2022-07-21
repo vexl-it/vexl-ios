@@ -11,14 +11,14 @@ import Combine
 
 private typealias OfferAndSenderKeys = (offerKey: OfferKeys, senderPublicKey: String)
 private typealias IndexAndConfirmation = (index: Int, confirmation: Bool)
-private typealias OfferAndMessage = (offer: Offer, message: ParsedChatMessage)
+private typealias OfferAndMessage = (offer: ManagedOffer, message: ParsedChatMessage)
 
 final class ChatRequestViewModel: ViewModelType, ObservableObject {
 
-    @Inject var userSecurity: UserSecurityType
     @Inject var chatService: ChatServiceType
     @Inject var offerService: OfferServiceType
     @Inject var cryptoService: CryptoServiceType
+    @Inject var authenticationManager: AuthenticationManagerType
 
     // MARK: - Action Binding
 
@@ -76,20 +76,7 @@ final class ChatRequestViewModel: ViewModelType, ObservableObject {
             .assign(to: &$error)
     }
 
-    private func setupDataBindings() {
-        offerService
-            .getStoredOffers(fromType: .all, fromSource: .all)
-            .track(activity: primaryActivity)
-            .materialize()
-            .compactMap(\.value)
-            .map { $0.map(\.keysWithId) }
-            .withUnretained(self)
-            .flatMap { owner, keys in
-                owner.prepareRequestedMessages(storedOfferKeys: keys)
-            }
-            .sink()
-            .store(in: cancelBag)
-    }
+    private func setupDataBindings() { }
 
     private func setupActionBindings() {
 
@@ -135,59 +122,8 @@ final class ChatRequestViewModel: ViewModelType, ObservableObject {
     // MARK: - Helper methods for presenting the request that are pending of approval/rejection
 
     private func prepareRequestedMessages(storedOfferKeys: [OfferKeys]) -> AnyPublisher<Void, Never> {
-        chatService
-            .getStoredRequestMessages()
-            .track(activity: primaryActivity)
-            .materialize()
-            .compactMap(\.value)
-            .flatMapLatest(with: self) { owner, parsedMessages -> AnyPublisher<(offers: [Offer], messages: [ParsedChatMessage]), Never> in
-                owner.fetchUserOffers(offerKeys: storedOfferKeys)
-                    .map { (offers: $0, messages: parsedMessages) }
-                    .eraseToAnyPublisher()
-            }
-            .withUnretained(self)
-            .handleEvents(receiveOutput: { owner, offersAndMessages in
-                owner.saveRequestedOffers(offersAndMessages.offers,
-                                          offerKeys: storedOfferKeys,
-                                          parsedMessages: offersAndMessages.messages)
-            })
-            .asVoid()
-            .eraseToAnyPublisher()
-    }
-
-    private func fetchUserOffers(offerKeys: [OfferKeys]) -> AnyPublisher<[Offer], Never> {
-        offerService
-            .getUserOffers(offerIds: offerKeys.map(\.id))
-            .track(activity: primaryActivity)
-            .materialize()
-            .compactMap(\.value)
-            .map { Offer.createOffers(from: $0, withKey: self.userSecurity.userKeys, source: .fetched) }
-            .eraseToAnyPublisher()
-    }
-
-    private func saveRequestedOffers(_ offers: [Offer], offerKeys: [OfferKeys], parsedMessages: [ParsedChatMessage]) {
-
-        var offerRequestViewData: [ChatRequestOfferViewData] = []
-        var offerAndSender: [OfferAndSenderKeys] = []
-
-        for message in parsedMessages {
-            if let offer = offers.first(where: { $0.offerPublicKey == message.inboxKey }),
-               let key = offerKeys.first(where: { $0.id == offer.offerId }) {
-
-                let senderPublicKey = message.contactInboxKey
-                let viewData = ChatRequestOfferViewData(contactName: Constants.randomName,
-                                                        contactFriendLevel: offer.friendLevel.label,
-                                                        requestText: message.text ?? "",
-                                                        friends: [],
-                                                        offer: .init(offer: offer, isRequested: false))
-
-                offerRequestViewData.append(viewData)
-                offerAndSender.append(OfferAndSenderKeys(offerKey: key, senderPublicKey: senderPublicKey))
-            }
-        }
-
-        offerRequests = offerRequestViewData
-        offerAndSenderKeys = offerAndSender
+        // TODO: Refactor chat to use persistence
+        Just(()).eraseToAnyPublisher()
     }
 
     // MARK: - Helper methods for sending the confirmation request to the BE

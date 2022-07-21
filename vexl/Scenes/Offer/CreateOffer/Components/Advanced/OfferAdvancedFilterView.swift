@@ -10,7 +10,7 @@ import SwiftUI
 struct OfferAdvancedFilterView: View {
 
     @Binding var selectedTypeOptions: [OfferAdvancedBTCOption]
-    @Binding var selectedFriendDegreeOption: OfferAdvancedFriendDegreeOption
+    @Binding var selectedFriendDegreeOption: OfferFriendDegree
 
     @State private var isExpanded = true
 

@@ -77,7 +77,7 @@ struct FilterView: View {
     private var amount: some View {
         VStack(spacing: Appearance.GridGuide.point) {
             OfferAmountRangeView(
-                currencySymbol: viewModel.currencySymbol,
+                currencySymbol: viewModel.currency.sign,
                 currentValue: $viewModel.currentAmountRange,
                 sliderBounds: viewModel.amountRange
             )

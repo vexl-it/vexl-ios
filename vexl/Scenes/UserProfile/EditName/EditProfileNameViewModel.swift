@@ -12,6 +12,7 @@ import Combine
 final class EditProfileNameViewModel: ViewModelType, ObservableObject {
 
     @Inject var userService: UserServiceType
+    @Inject var userRepository: UserRepositoryType
     @Inject var authenticationManager: AuthenticationManagerType
 
     enum UserAction: Equatable {
@@ -48,7 +49,7 @@ final class EditProfileNameViewModel: ViewModelType, ObservableObject {
     private let cancelBag: CancelBag = .init()
 
     init() {
-        self.currentName = authenticationManager.currentUser?.username ?? ""
+        self.currentName = userRepository.user?.profile?.name ?? ""
         setupActivityBindings()
         setupActionBindings()
     }
@@ -85,12 +86,25 @@ final class EditProfileNameViewModel: ViewModelType, ObservableObject {
                     .map(\.isAvailable)
             }
 
-        validateName
+        let updateUser = validateName
             .filter { $0 }
             .withUnretained(self)
             .flatMap { owner, _ in
                 owner.userService
-                    .updateUser(username: owner.currentName, avatar: owner.authenticationManager.currentUser?.avatarImage?.base64EncodedString())
+                    .updateUser(username: owner.currentName,
+                                avatar: owner.userRepository.user?.profile?.avatar?.base64EncodedString())
+                    .track(activity: owner.primaryActivity)
+                    .materialize()
+                    .compactMap(\.value)
+            }
+
+        updateUser
+            .withUnretained(self)
+            .flatMap { owner, editUser in
+                owner.userRepository
+                    .update(username: editUser.username,
+                            avatarURL: nil,
+                            avatar: nil)
                     .track(activity: owner.primaryActivity)
                     .materialize()
                     .compactMap(\.value)

@@ -51,13 +51,14 @@ final class SplashScreenViewModel: ViewModelType {
         initialScreenManager.finishInitialLoading()
 
         let userSignedOut: AnyPublisher<InitialScreenManager.State, Never> = authenticationManager
-            .$authenticationState
-            .filter { $0 == .signedOut }
+            .isUserLoggedInPublisher
+            .filter { !$0 }
             .map { _ in .onboarding }
             .eraseToAnyPublisher()
 
-        let refresh = authenticationManager.$authenticationState
-            .filter { $0 == .signedIn }
+        let refresh = authenticationManager
+            .isUserLoggedInPublisher
+            .filter { $0 }
             .withUnretained(self)
             .flatMap { owner, _ -> AnyPublisher<InitialScreenManager.State, Never> in
                 Just(())

@@ -65,7 +65,6 @@ struct OfferTriggerActiveViewPreview: PreviewProvider {
                                    activeAmount: .constant("10000"))
         }
         .background(Color.black)
-        
     }
 }
 #endif

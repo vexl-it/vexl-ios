@@ -19,14 +19,13 @@ final class ChatOfferSheetViewModel: BottomActionSheetViewModelProtocol {
     var dismissPublisher: PassthroughSubject<Void, Never> = .init()
     var colorScheme: OfferBottomActionSheet.ColorScheme = .main
     var content: ChatOfferActionSheetContent {
-        ChatOfferActionSheetContent(data: OfferDetailViewData(offer: self.offer,
-                                                              isRequested: false),
+        ChatOfferActionSheetContent(data: OfferDetailViewData(offer: self.offer),
                                     dismiss: {})
     }
 
-    let offer: Offer
+    let offer: ManagedOffer
 
-    init(offer: Offer) {
+    init(offer: ManagedOffer) {
         self.offer = offer
     }
 }
@@ -47,7 +46,6 @@ struct ChatOfferActionSheetContent: View {
 }
 
 #if DEBUG || DEVEL
-
 struct ChatOfferActionSheetContentPreview: PreviewProvider {
     static var previews: some View {
         ChatOfferActionSheetContent(data: .stub, dismiss: { })

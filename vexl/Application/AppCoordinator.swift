@@ -13,6 +13,7 @@ import Cleevio
 final class AppCoordinator: BaseCoordinator<Void> {
 
     @Inject var initialScreenManager: InitialScreenManager
+    @Inject var syncQueue: SyncQueueManagerType
 
     private let window: UIWindow
 
