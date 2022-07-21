@@ -13,11 +13,10 @@ import Combine
 final class UserProfileViewModel: ViewModelType, ObservableObject {
 
     @Inject var authenticationManager: AuthenticationManagerType
-    @Inject var userService: UserServiceType
-    @Inject var offerService: OfferServiceType
+    @Inject var userRepository: UserRepositoryType
     @Inject var contactService: ContactsServiceType
-    @Inject var syncInboxManager: SyncInboxManagerType
-    @Inject var cryptocurrencyValueManager: CryptocurrencyValueManagerType
+
+    @Fetched var users: [ManagedUser]
 
     // MARK: - Action Binding
 
@@ -49,10 +48,6 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
     @Published var username: String = ""
     @Published var avatar: Data?
 
-    var options: [OptionGroup] {
-        Option.groupedOptions
-    }
-
     // MARK: - Coordinator Bindings
 
     enum Route: Equatable {
@@ -67,6 +62,14 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
 
     // MARK: - Variables
 
+    var options: [OptionGroup] {
+        Option.groupedOptions
+    }
+
+    var user: ManagedUser? {
+        users.first
+    }
+
     let bitcoinViewModel: BitcoinViewModel
     private let cancelBag: CancelBag = .init()
 
@@ -76,8 +79,8 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
         setupDataBindings()
         setupBindings()
         setupUpdateUser()
-        self.username = authenticationManager.currentUser?.username ?? ""
-        self.avatar = authenticationManager.currentUser?.avatarImage ?? R.image.onboarding.emptyAvatar()?.jpegData(compressionQuality: 0.5)
+        self.username = userRepository.user?.profile?.name ?? ""
+        self.avatar = userRepository.user?.profile?.avatar
     }
 
     func subtitle(for item: UserProfileViewModel.Option) -> String? {
@@ -113,12 +116,18 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
     }
 
     private func setupUpdateUser() {
-        authenticationManager
-            .updatedCurrentUser
+        $users
+            .publisher
             .withUnretained(self)
-            .sink { owner, user in
-                owner.username = user?.username ?? ""
-                owner.avatar = user?.avatarImage ?? R.image.onboarding.emptyAvatar()?.jpegData(compressionQuality: 0.5)
+            .sink { owner, data in
+                let (event, _) = data
+                switch event {
+                case .change:
+                    owner.username = owner.user?.profile?.name ?? ""
+                    owner.avatar = owner.user?.profile?.avatar
+                default:
+                    break
+                }
             }
             .store(in: cancelBag)
     }
@@ -155,66 +164,20 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
             .store(in: cancelBag)
 
         option
-            .filter { $0 == .logout }
-            .withUnretained(self)
-            .sink { owner, _ in
-                owner.logoutUser()
-            }
-            .store(in: cancelBag)
-
-        option
             .filter { $0 == .editName }
             .withUnretained(self)
             .sink { owner, _ in
                 owner.route.send(.editName)
             }
             .store(in: cancelBag)
-    }
 
-    private func logoutUser() {
-
-        let deleteUser = userService
-            .deleteUser()
-            .track(activity: primaryActivity)
-            .materialize()
-            .compactMap(\.value)
-
-        let deleteContactUser = deleteUser
+        option
+            .filter { $0 == .logout }
             .withUnretained(self)
             .flatMap { owner, _ in
-                owner.contactService
-                    .deleteUser()
-                    .track(activity: owner.primaryActivity)
-                    .materialize()
-                    .compactMap(\.value)
+                owner.authenticationManager.logoutUserPublisher(force: false)
             }
-
-        let deleteOffers = deleteContactUser
-            .withUnretained(self)
-            .flatMap { owner, _ in
-                owner.offerService
-                    .getStoredOffers(fromType: .all, fromSource: .all)
-                    .materialize()
-                    .compactMap(\.value)
-                    .map { $0.map(\.offerId) }
-            }
-            .withUnretained(self)
-            .flatMap { owner, ids in
-                owner.offerService
-                    .deleteOffers(offerIds: ids)
-                    .track(activity: owner.primaryActivity)
-                    .materialize()
-                    .compactMap(\.value)
-            }
-
-        deleteOffers
-            .withUnretained(self)
-            .sink { owner, _ in
-                owner.cryptocurrencyValueManager.stopPollingCoinData()
-                owner.cryptocurrencyValueManager.stopFetchingChartData()
-                owner.syncInboxManager.stopSyncingInboxes()
-                owner.authenticationManager.logoutUser()
-            }
+            .sink()
             .store(in: cancelBag)
     }
 }

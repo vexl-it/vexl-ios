@@ -47,7 +47,7 @@ final class RequestAccessFacebookContactsViewModel: RequestAccessContactsViewMod
         let loginFacebookUser = requestAccess
             .withUnretained(self)
             .flatMap { owner, _ in
-                owner.authenticationManager
+                owner.facebookManager
                     .loginWithFacebook(fromViewController: nil)
                     .track(activity: owner.primaryActivity)
                     .materialize()
@@ -76,6 +76,8 @@ final class RequestAccessFacebookContactsViewModel: RequestAccessContactsViewMod
             .handleEvents(receiveOutput: { owner, response in
                 if !response.challengeVerified {
                     owner.contactsImported.send(.failure(UserError.facebookValidation))
+                } else {
+                    owner.facebookManager.update(hash: response.hash, signature: response.signature)
                 }
             })
             .filter(\.1.challengeVerified)

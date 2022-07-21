@@ -29,8 +29,8 @@ final class FilterViewModel: ViewModelType, ObservableObject {
 
     // MARK: - View Bindings
 
-    @Published var currentAmountRange: ClosedRange<Int>
-    @Published var amountRange: ClosedRange<Int> = 0...0
+    @Published var currentAmountRange: ClosedRange<Int> = Constants.OfferInitialData.minOffer...Constants.OfferInitialData.maxOffer
+    @Published var amountRange: ClosedRange<Int> = Constants.OfferInitialData.minOffer...Constants.OfferInitialData.maxOffer
 
     @Published var selectedFeeOption: OfferFeeOption
     @Published var feeAmount: Double
@@ -40,15 +40,15 @@ final class FilterViewModel: ViewModelType, ObservableObject {
     @Published var selectedPaymentMethodOptions: [OfferPaymentMethodOption]
 
     @Published var selectedBTCOptions: [OfferAdvancedBTCOption]
-    @Published var selectedFriendDegreeOption: OfferAdvancedFriendDegreeOption
+    @Published var selectedFriendDegreeOption: OfferFriendDegree
+
+    @Published var currency: Currency = Constants.OfferInitialData.currency
 
     var filterType: String { offerFilter.type.title }
     var feeValue: Int {
         guard selectedFeeOption == .withFee else { return 0 }
         return Int(((maxFee - minFee) * feeAmount) + minFee)
     }
-
-    var currencySymbol = Constants.currencySymbol
 
     // MARK: - Coordinator Bindings
 
@@ -62,8 +62,8 @@ final class FilterViewModel: ViewModelType, ObservableObject {
 
     // MARK: - Variables
 
-    private var minFee: Double = 0
-    private var maxFee: Double = 0
+    private var minFee: Double = Constants.OfferInitialData.minFee
+    private var maxFee: Double = Constants.OfferInitialData.maxFee
     private var offerFilter: OfferFilter
     private let cancelBag: CancelBag = .init()
 
@@ -82,23 +82,6 @@ final class FilterViewModel: ViewModelType, ObservableObject {
     }
 
     private func setupDataBindings() {
-        offerService
-            .getInitialOfferData()
-            .track(activity: primaryActivity)
-            .materialize()
-            .compactMap(\.value)
-            .withUnretained(self)
-            .sink { owner, data in
-                owner.amountRange = data.minOffer...data.maxOffer
-                owner.minFee = data.minFee
-                owner.maxFee = data.maxFee
-                owner.currencySymbol = data.currencySymbol
-
-                if owner.offerFilter.currentAmountRange == nil {
-                    owner.currentAmountRange = data.minOffer...data.maxOffer
-                }
-            }
-            .store(in: cancelBag)
     }
 
     private func setupBindings() {

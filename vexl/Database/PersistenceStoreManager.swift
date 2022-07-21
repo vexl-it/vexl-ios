@@ -16,7 +16,6 @@ protocol PersistenceStoreManagerType {
     func newEditContext() -> NSManagedObjectContext
     func newBackgroundContext() -> NSManagedObjectContext
 
-    func save(context: NSManagedObjectContext) -> AnyPublisher<Void, Error>
     func wipe() -> AnyPublisher<Void, Error>
 
     func insert<T: NSManagedObject>(context: NSManagedObjectContext, provider: @escaping (NSManagedObjectContext) -> T) -> AnyPublisher<T, Error>
@@ -29,7 +28,20 @@ protocol PersistenceStoreManagerType {
         predicate: NSPredicate?
     ) -> AnyPublisher<[T], Error>
 
-    func update<T: NSManagedObject>(context: NSManagedObjectContext, editor: @escaping () -> T) -> AnyPublisher<T, Error>
+    func loadSyncroniously<T: NSManagedObject>(
+        type: T.Type,
+        context: NSManagedObjectContext,
+        sortDescriptors: [NSSortDescriptor],
+        predicate: NSPredicate?
+    ) -> [T]
+
+    func loadSyncroniously<T: NSManagedObject>(
+        type: T.Type,
+        context: NSManagedObjectContext,
+        objectID: NSManagedObjectID
+    ) -> T?
+
+    func update<T: NSManagedObject>(context: NSManagedObjectContext, editor: @escaping (NSManagedObjectContext) -> T) -> AnyPublisher<T, Error>
 
     func delete<T: NSManagedObject>(context: NSManagedObjectContext, object: T) -> AnyPublisher<Void, Error>
     func delete<T: NSManagedObject>(context: NSManagedObjectContext, editor: @escaping () -> [T]) -> AnyPublisher<Void, Error>
@@ -46,6 +58,15 @@ extension PersistenceStoreManagerType {
         load(type: type, context: context, sortDescriptors: sortDescriptors, predicate: predicate)
     }
 
+    func loadSyncroniously<T: NSManagedObject>(
+        type: T.Type,
+        context: NSManagedObjectContext,
+        sortDescriptors: [NSSortDescriptor] = [],
+        predicate: NSPredicate? = nil
+    ) -> [T] {
+        loadSyncroniously(type: type, context: context, sortDescriptors: sortDescriptors, predicate: predicate)
+    }
+
     func insert<T: NSManagedObject>(context: NSManagedObjectContext, provider: @escaping (NSManagedObjectContext) -> T) -> AnyPublisher<T, Error> {
         insert(context: context, provider: { [ provider($0) ] })
             .compactMap(\.first)
@@ -59,21 +80,23 @@ extension PersistenceStoreManagerType {
 
 final class PersistenceStoreManager: PersistenceStoreManagerType {
 
+    let viewContext: NSManagedObjectContext
+
+    private let primaryBackgroundContext: NSManagedObjectContext
     private let container = NSPersistentContainer(name: "VexlDataModel")
 
-    private lazy var primaryBackgroundContext: NSManagedObjectContext = {
-        let context = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
-        context.persistentStoreCoordinator = container.persistentStoreCoordinator
-        return context
-    }()
-
-    lazy var viewContext: NSManagedObjectContext = {
-        let context = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
-        context.parent = primaryBackgroundContext
-        return context
-    }()
-
     init() {
+        let primaryContext = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
+        primaryContext.persistentStoreCoordinator = container.persistentStoreCoordinator
+        primaryBackgroundContext = primaryContext
+
+        let viewContext = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
+        viewContext.parent = primaryBackgroundContext
+        self.viewContext = viewContext
+        loadPersistentStore()
+    }
+
+    private func loadPersistentStore() {
         container.loadPersistentStores { _, error in
             if let error = error {
                 print("Core Data failed to load: \(error.localizedDescription)")
@@ -94,13 +117,14 @@ final class PersistenceStoreManager: PersistenceStoreManagerType {
             forName: NSNotification.Name.NSManagedObjectContextDidSave,
             object: nil,
             queue: nil,
-            using: { [weak context, weak viewContext] notification in
-                guard let context = context, let viewContext = viewContext,
+            using: { [context, weak viewContext, weak primaryBackgroundContext] notification in
+                guard let viewContext = viewContext,
+                    let primaryBackgroundContext = primaryBackgroundContext,
                     let notificationContext = notification.object as? NSManagedObjectContext else {
                     return
                 }
                 switch notificationContext {
-                case viewContext:
+                case viewContext, primaryBackgroundContext:
                     context.mergeChanges(fromContextDidSave: notification)
                 case context:
                     viewContext.mergeChanges(fromContextDidSave: notification)
@@ -112,11 +136,11 @@ final class PersistenceStoreManager: PersistenceStoreManagerType {
         return context
     }
 
-    func save(context: NSManagedObjectContext) -> AnyPublisher<Void, Error> {
+    private func save(context: NSManagedObjectContext) -> AnyPublisher<Void, Error> {
         Future { promise in
             var tmpContext: NSManagedObjectContext? = context
             var saveError: Error?
-            while tmpContext != nil && saveError != nil {
+            while tmpContext != nil && saveError == nil {
                 tmpContext?.performAndWait {
                     do {
                         try tmpContext?.save()
@@ -130,20 +154,35 @@ final class PersistenceStoreManager: PersistenceStoreManagerType {
             if let saveError = saveError {
                 promise(.failure(saveError))
             } else {
-                promise(.success(()))
+            promise(.success(()))
             }
         }
         .eraseToAnyPublisher()
     }
 
     func wipe() -> AnyPublisher<Void, Error> {
-        primaryBackgroundContext
-            .deleteAllData()
-            .withUnretained(self)
-            .flatMap { owner in
-                owner.save(context: owner.primaryBackgroundContext)
+        let context = newBackgroundContext()
+        return Future<Void, Error> { [weak self] promise in
+            guard let owner = self else {
+                return
             }
-            .eraseToAnyPublisher()
+            let users = owner.loadSyncroniously(type: ManagedUser.self, context: context)
+            users.forEach(context.delete)
+            let offers = owner.loadSyncroniously(type: ManagedOffer.self, context: context)
+            offers.forEach(context.delete)
+            let contacts = owner.loadSyncroniously(type: ManagedContact.self, context: context)
+            contacts.forEach(context.delete)
+            let syncItems = owner.loadSyncroniously(type: ManagedSyncItem.self, context: context)
+            syncItems.forEach(context.delete)
+            // The rest of entities will be removedy by cascading rule
+            promise(.success(()))
+        }
+        .receive(on: RunLoop.main)
+        .flatMapLatest(with: self) { owner, _ in
+            owner.save(context: context)
+        }
+        .receive(on: RunLoop.main)
+        .eraseToAnyPublisher()
     }
 
     func insert<T: NSManagedObject>(context: NSManagedObjectContext, provider: @escaping(NSManagedObjectContext) -> [T]) -> AnyPublisher<[T], Error> {
@@ -154,10 +193,13 @@ final class PersistenceStoreManager: PersistenceStoreManagerType {
                 promise(.success(objects))
             }
         }
-        .flatMapLatest(with: self) { owner, objects in
+        .receive(on: RunLoop.main)
+        .flatMapLatest(with: self) { (owner, objects: [T]) -> AnyPublisher<[T], Error> in
             owner.save(context: context)
                 .map { objects }
+                .eraseToAnyPublisher()
         }
+        .receive(on: RunLoop.main)
         .eraseToAnyPublisher()
     }
 
@@ -183,19 +225,52 @@ final class PersistenceStoreManager: PersistenceStoreManagerType {
                 }
             }
         }
+        .receive(on: RunLoop.main)
         .eraseToAnyPublisher()
     }
 
-    func update<T: NSManagedObject>(context: NSManagedObjectContext, editor: @escaping () -> T) -> AnyPublisher<T, Error> {
+    func loadSyncroniously<T: NSManagedObject>(
+        type: T.Type,
+        context: NSManagedObjectContext,
+        sortDescriptors: [NSSortDescriptor],
+        predicate: NSPredicate?
+    ) -> [T] {
+        guard let entity = T.entityName else {
+            return []
+        }
+        let request = NSFetchRequest<T>(entityName: entity)
+        request.predicate = predicate
+        request.sortDescriptors = sortDescriptors
+        do {
+            return try context.fetch(request)
+        } catch {
+            return []
+        }
+    }
+
+    func loadSyncroniously<T: NSManagedObject>(
+        type: T.Type,
+        context: NSManagedObjectContext,
+        objectID: NSManagedObjectID
+    ) -> T? {
+        guard let object = context.object(with: objectID) as? T else {
+            return nil
+        }
+        return object
+    }
+
+    func update<T: NSManagedObject>(context: NSManagedObjectContext, editor: @escaping (NSManagedObjectContext) -> T) -> AnyPublisher<T, Error> {
         Future { promise in
             context.perform {
-                promise(.success(editor()))
+                promise(.success(editor(context)))
             }
         }
+        .receive(on: RunLoop.main)
         .flatMapLatest(with: self) { owner, objects in
             owner.save(context: context)
                 .map { objects }
         }
+        .receive(on: RunLoop.main)
         .eraseToAnyPublisher()
     }
 
@@ -206,10 +281,12 @@ final class PersistenceStoreManager: PersistenceStoreManagerType {
                 promise(.success(()))
             }
         }
+        .receive(on: RunLoop.main)
         .flatMapLatest(with: self) { owner, objects in
             owner.save(context: context)
                 .map { objects }
         }
+        .receive(on: RunLoop.main)
         .eraseToAnyPublisher()
     }
 }

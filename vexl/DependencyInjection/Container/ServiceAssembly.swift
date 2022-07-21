@@ -23,6 +23,11 @@ class ServiceAssembly: Assembly {
         }
         .inObjectScope(.container)
 
+        container.register(EncryptionServiceType.self) { _ in
+            EncryptionService()
+        }
+        .inObjectScope(.container)
+
         container.register(UserServiceType.self) { _ in
             UserService()
         }

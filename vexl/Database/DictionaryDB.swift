@@ -9,7 +9,7 @@ import Foundation
 
 // This is not for production, just to accelerate development. Later we should setup CoreData with proper security
 
-@available(*, deprecated)
+// TODO: Remove this class when possible
 final class DictionaryDB {
 
     static private let encoder = Constants.jsonEncoder
@@ -43,13 +43,6 @@ final class DictionaryDB {
         }
     }
 
-    static private var storedOffer: [String: [StoredOffer]] = ["created": [], "fetched": []] {
-        didSet {
-            guard let encodedData = try? encoder.encode(storedOffer) else { return }
-            UserDefaults.standard.setValue(encodedData, forKey: "storedOffer")
-        }
-    }
-
     static private var storedChatUser: [StoredChatUser] = [] {
         didSet {
             guard let encodedData = try? encoder.encode(storedChatUser) else { return }
@@ -76,11 +69,6 @@ final class DictionaryDB {
         if let inboxMessagesData = UserDefaults.standard.data(forKey: "inboxMessages"),
            let savedInboxMessages = try? decoder.decode([ChatInboxMessage].self, from: inboxMessagesData) {
             inboxMessage = savedInboxMessages
-        }
-
-        if let storedOfferData = UserDefaults.standard.data(forKey: "storedOffer"),
-           let savedStoredOffer = try? decoder.decode([String: [StoredOffer]].self, from: storedOfferData) {
-            storedOffer = savedStoredOffer
         }
 
         if let storedChatUserData = UserDefaults.standard.data(forKey: "storedChatUser"),
@@ -158,24 +146,6 @@ final class DictionaryDB {
         self.inboxMessage
     }
 
-    static func getCreatedOffers() -> [StoredOffer] {
-        storedOffer["created"] ?? []
-    }
-
-    static func getFetchedOffers() -> [StoredOffer] {
-        storedOffer["fetched"] ?? []
-    }
-
-    static func saveCreatedOffers(_ offers: [StoredOffer]) {
-        var content = storedOffer["created"] ?? []
-        content.append(contentsOf: offers)
-        storedOffer["created"] = content
-    }
-
-    static func saveFetchedOffers(_ offers: [StoredOffer]) {
-        storedOffer["fetched"] = offers
-    }
-
     static func saveChatUser(_ chatUser: ParsedChatMessage.ChatUser, inboxPublicKey: String, contactPublicKey: String) {
         let storedChatUser = StoredChatUser(inboxPublicKey: inboxPublicKey,
                                             contactPublicKey: contactPublicKey,
@@ -220,21 +190,5 @@ final class DictionaryDB {
 
     static func getChatUsers() -> [StoredChatUser] {
         self.storedChatUser
-    }
-
-    static func updateOffers(offers: [StoredOffer]) {
-
-        let createdOffers = self.storedOffer["created"] ?? []
-        var updatedCreatedOffers = createdOffers
-
-        for offer in offers {
-            guard let index = createdOffers.firstIndex(where: { $0.id == offer.id }) else {
-                continue
-            }
-
-            updatedCreatedOffers[index] = offer
-        }
-
-        self.storedOffer["created"] = updatedCreatedOffers
     }
 }

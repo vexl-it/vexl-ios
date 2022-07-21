@@ -18,9 +18,15 @@ public extension Publisher {
             return (obj, element)
         }
     }
-    
+
     func asOptional() -> Publishers.Map<Self, Self.Output?> {
         self.map { $0 }
+    }
+
+    func nilOnError() -> AnyPublisher<Optional<Self.Output>, Never> {
+        self.asOptional()
+            .catch { _ in Just(nil) }
+            .eraseToAnyPublisher()
     }
 
     func sink() -> AnyCancellable {
@@ -52,5 +58,11 @@ extension Publisher where Output == Void {
             guard let obj = obj else { return nil }
             return obj
         }
+    }
+
+    func justOnError() -> AnyPublisher<Void, Never> {
+        self
+            .catch { _ in Just(()) }
+            .eraseToAnyPublisher()
     }
 }

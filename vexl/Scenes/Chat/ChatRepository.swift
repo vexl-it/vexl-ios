@@ -30,7 +30,7 @@ final class ChatRepository: ChatRepositoryType {
     @Inject private var chatService: ChatServiceType
     @Inject private var cryptoService: CryptoServiceType
     @Inject private var inboxManager: InboxManagerType
-    @Inject private var authenticationManager: AuthenticationManagerType
+    @Inject private var userRepository: UserRepositoryType
     @Inject private var localStorageService: LocalStorageServiceType
 
     var dismissAction: ActionSubject<Void> = .init()
@@ -70,8 +70,8 @@ final class ChatRepository: ChatRepositoryType {
     func requestIdentityReveal(inboxKeys: ECCKeys, contactPublicKey: String) -> AnyPublisher<Void, Error> {
         let requestIdentity = ParsedChatMessage.createIdentityRequest(inboxPublicKey: inboxKeys.publicKey,
                                                                       contactInboxKey: contactPublicKey,
-                                                                      username: authenticationManager.currentUser?.username,
-                                                                      avatar: authenticationManager.currentUser?.avatar)
+                                                                      username: userRepository.user?.profile?.name,
+                                                                      avatar: userRepository.user?.profile?.avatarURL)
 
         return sendMessage(inboxKeys: inboxKeys,
                            receiverPublicKey: contactPublicKey,
@@ -86,8 +86,8 @@ final class ChatRepository: ChatRepositoryType {
         let identityResponse = ParsedChatMessage.createIdentityResponse(inboxPublicKey: inboxKeys.publicKey,
                                                                         contactInboxKey: contactPublicKey,
                                                                         isAccepted: isAccepted,
-                                                                        username: authenticationManager.currentUser?.username,
-                                                                        avatar: authenticationManager.currentUser?.avatar)
+                                                                        username: userRepository.user?.profile?.name,
+                                                                        avatar: userRepository.user?.profile?.avatarURL)
 
         return chatService
             .updateIdentityReveal(inboxKeys: inboxKeys, contactPublicKey: contactPublicKey, isAccepted: isAccepted)
