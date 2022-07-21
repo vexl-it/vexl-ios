@@ -16,6 +16,7 @@ protocol UserServiceType {
     func validateChallenge(key: String, signature: String) -> AnyPublisher<ChallengeValidation, Error>
     func validateUsername(username: String) -> AnyPublisher<UserAvailable, Error>
     func createUser(username: String, avatar: String?) -> AnyPublisher<User, Error>
+    func updateUser(username: String, avatar: String?) -> AnyPublisher<EditUser, Error>
     func deleteUser() -> AnyPublisher<Void, Error>
     func facebookSignature(id: String) -> AnyPublisher<ChallengeValidation, Error>
     func getBitcoinData() -> AnyPublisher<CoinData, Error>
@@ -54,6 +55,12 @@ final class UserService: BaseService, UserServiceType {
                                                                  avatar: avatar,
                                                                  imageExtension: Constants.jpegFormat))
             .eraseToAnyPublisher()
+    }
+
+    func updateUser(username: String, avatar: String?) -> AnyPublisher<EditUser, Error> {
+        request(type: EditUser.self, endpoint: UserRouter.updateUser(username: username,
+                                                                     avatar: avatar,
+                                                                     imageExtension: Constants.jpegFormat))
     }
 
     func deleteUser() -> AnyPublisher<Void, Error> {

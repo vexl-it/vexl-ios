@@ -43,18 +43,8 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
         primaryActivity.indicator
     }
 
-    // TODO: - Remove hardcoded values
-    var username: String {
-        userRepository.user?.profile?.name ?? ""
-    }
-
-    var avatar: Data? {
-        userRepository.user?.profile?.avatar ?? R.image.onboarding.emptyAvatar()?.jpegData(compressionQuality: 0.5)
-    }
-
-    var options: [OptionGroup] {
-        Option.groupedOptions
-    }
+    @Published var username: String = ""
+    @Published var avatar: Data?
 
     // MARK: - Coordinator Bindings
 
@@ -63,11 +53,16 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
         case selectCurrency
         case donate
         case joinVexl
+        case editName
     }
 
     var route: CoordinatingSubject<Route> = .init()
 
     // MARK: - Variables
+
+    var options: [OptionGroup] {
+        Option.groupedOptions
+    }
 
     let bitcoinViewModel: BitcoinViewModel
     private let cancelBag: CancelBag = .init()
@@ -77,6 +72,9 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
         setupActivity()
         setupDataBindings()
         setupBindings()
+        setupUpdateUser()
+        self.username = userRepository.user?.profile?.name ?? ""
+        self.avatar = userRepository.user?.profile?.avatar
     }
 
     func subtitle(for item: UserProfileViewModel.Option) -> String? {
@@ -111,6 +109,18 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
             .assign(to: &$numberOfContacts)
     }
 
+    private func setupUpdateUser() {
+        userRepository.user?.profile?
+            .publisher(for: \.name)
+            .map { $0 ?? "" }
+            .assign(to: &$username)
+
+        userRepository.user?.profile?
+            .publisher(for: \.avatar)
+            .compactMap { $0 }
+            .assign(to: &$avatar)
+    }
+
     private func setupBindings() {
         action
             .filter { $0 == .joinVexl }
@@ -133,12 +143,21 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
                 if case let .itemTap(option) = action { return option }
                 return nil
             }
+            .share()
 
         option
             .filter { $0 == .currency }
             .withUnretained(self)
             .map { _ in .selectCurrency }
             .subscribe(route)
+            .store(in: cancelBag)
+
+        option
+            .filter { $0 == .editName }
+            .withUnretained(self)
+            .sink { owner, _ in
+                owner.route.send(.editName)
+            }
             .store(in: cancelBag)
 
         option
