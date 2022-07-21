@@ -16,8 +16,6 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
     @Inject var userRepository: UserRepositoryType
     @Inject var contactService: ContactsServiceType
 
-    @Fetched var users: [ManagedUser]
-
     // MARK: - Action Binding
 
     enum UserAction: Equatable {
@@ -67,10 +65,6 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
         Option.groupedOptions
     }
 
-    var user: ManagedUser? {
-        users.first
-    }
-
     let bitcoinViewModel: BitcoinViewModel
     private let cancelBag: CancelBag = .init()
 
@@ -117,20 +111,15 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
     }
 
     private func setupUpdateUser() {
-        $users
-            .publisher
-            .withUnretained(self)
-            .sink { owner, data in
-                let (event, _) = data
-                switch event {
-                case .change:
-                    owner.username = owner.user?.profile?.name ?? ""
-                    owner.avatar = owner.user?.profile?.avatar
-                default:
-                    break
-                }
-            }
-            .store(in: cancelBag)
+        userRepository.user?.profile?
+            .publisher(for: \.name)
+            .map { $0 ?? "" }
+            .assign(to: &$username)
+
+        userRepository.user?.profile?
+            .publisher(for: \.avatar)
+            .compactMap { $0 }
+            .assign(to: &$avatar)
     }
 
     private func setupBindings() {
