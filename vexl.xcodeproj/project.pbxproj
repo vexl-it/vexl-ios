@@ -280,7 +280,7 @@
 		F1B365D32886093D0069788D /* ImportContactsProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B365D22886093D0069788D /* ImportContactsProfileViewModel.swift */; };
 		F1B365D5288609A10069788D /* ImportContactsProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B365D4288609A10069788D /* ImportContactsProfileView.swift */; };
 		F1B365D8288882EA0069788D /* ImportFacebookProfileCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B365D7288882EA0069788D /* ImportFacebookProfileCoordinator.swift */; };
-		F1B365DA288882F50069788D /* ImportContactsProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B365D9288882F50069788D /* ImportContactsProfileViewModel.swift */; };
+		F1B365DA288882F50069788D /* ImportFacebookProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B365D9288882F50069788D /* ImportFacebookProfileViewModel.swift */; };
 		F1B365DC288883000069788D /* ImportFacebookProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B365DB288883000069788D /* ImportFacebookProfileView.swift */; };
 		F1B5321C28202B36009D4E0C /* OfferItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B5321B28202B36009D4E0C /* OfferItemView.swift */; };
 		F1B5FCBC27C67DB00018729B /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B5FCBB27C67DB00018729B /* WelcomeViewController.swift */; };
@@ -650,7 +650,7 @@
 		F1B365D22886093D0069788D /* ImportContactsProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportContactsProfileViewModel.swift; sourceTree = "<group>"; };
 		F1B365D4288609A10069788D /* ImportContactsProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportContactsProfileView.swift; sourceTree = "<group>"; };
 		F1B365D7288882EA0069788D /* ImportFacebookProfileCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportFacebookProfileCoordinator.swift; sourceTree = "<group>"; };
-		F1B365D9288882F50069788D /* ImportContactsProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportContactsProfileViewModel.swift; sourceTree = "<group>"; };
+		F1B365D9288882F50069788D /* ImportFacebookProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportFacebookProfileViewModel.swift; sourceTree = "<group>"; };
 		F1B365DB288883000069788D /* ImportFacebookProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportFacebookProfileView.swift; sourceTree = "<group>"; };
 		F1B5321B28202B36009D4E0C /* OfferItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferItemView.swift; sourceTree = "<group>"; };
 		F1B5FCBB27C67DB00018729B /* WelcomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeViewController.swift; sourceTree = "<group>"; };
@@ -1821,7 +1821,7 @@
 			isa = PBXGroup;
 			children = (
 				F1B365D7288882EA0069788D /* ImportFacebookProfileCoordinator.swift */,
-				F1B365D9288882F50069788D /* ImportContactsProfileViewModel.swift */,
+				F1B365D9288882F50069788D /* ImportFacebookProfileViewModel.swift */,
 				F1B365DB288883000069788D /* ImportFacebookProfileView.swift */,
 			);
 			path = ImportFacebook;
@@ -2416,7 +2416,7 @@
 				F11441D4284681EC00307D39 /* FetchImage.swift in Sources */,
 				B007A7922877629A00CFA5C9 /* Bool+.swift in Sources */,
 				F11441D8284681EC00307D39 /* OptionPickerItemView.swift in Sources */,
-				F1B365DA288882F50069788D /* ImportContactsProfileViewModel.swift in Sources */,
+				F1B365DA288882F50069788D /* ImportFacebookProfileViewModel.swift in Sources */,
 				4FBF6242283FBF6B00DDBE71 /* RequestOfferViewModel.swift in Sources */,
 				F12A150127DFC1D70096543E /* ImportContactItemView.swift in Sources */,
 				F1BFA96E2803A49300F4E745 /* UserProfileView+Item.swift in Sources */,

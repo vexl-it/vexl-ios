@@ -62,6 +62,7 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
         case joinVexl
         case editName
         case importContacts
+        case importFacebook
     }
 
     var route: CoordinatingSubject<Route> = .init()
@@ -175,6 +176,12 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
             .filter { $0 == .contacts }
             .withUnretained(self)
             .map { _ -> Route in .importContacts }
+            .subscribe(route)
+            .store(in: cancelBag)
+        
+        option
+            .filter { $0 == .facebook }
+            .map { _ -> Route in .importFacebook }
             .subscribe(route)
             .store(in: cancelBag)
     }
