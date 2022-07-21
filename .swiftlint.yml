@@ -132,7 +132,6 @@ opt_in_rules:
   - last_where
   - legacy_multiple
   - legacy_random
-  - let_var_whitespace
   - literal_expression_end_indentation
   - multiline_function_chains
   - multiline_parameters

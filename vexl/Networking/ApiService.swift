@@ -29,8 +29,6 @@ protocol ApiServiceType: AnyObject {
 
 final class ApiService: ApiServiceType {
 
-    @Inject var authenticationManager: TokenHandlerType
-
     struct StatusCode {
         static let ok = 200
         static let created = 201

@@ -11,8 +11,12 @@ import Combine
 
 final class RequestOfferViewModel: ViewModelType, ObservableObject {
 
-    @Inject var userSecurity: UserSecurityType
+    @Inject var authenticationManager: AuthenticationManagerType
     @Inject private var chatService: ChatServiceType
+    @Inject var persistence: PersistenceStoreManagerType
+
+    @Fetched(fetchImmediately: false)
+    var fetchedCommonFriends: [ManagedContact]
 
     enum State {
         case normal
@@ -34,13 +38,14 @@ final class RequestOfferViewModel: ViewModelType, ObservableObject {
     @Published var error: Error?
     @Published var state: State = .normal
     @Published var requestText: String = ""
+    @Published var commonFriends: [ManagedContact] = []
 
     var errorIndicator: ErrorIndicator {
         primaryActivity.error
     }
 
     var offerViewData: OfferDetailViewData {
-        OfferDetailViewData(offer: offer, isRequested: false)
+        OfferDetailViewData(offer: offer)
     }
 
     // MARK: - Coordinator Bindings
@@ -56,13 +61,26 @@ final class RequestOfferViewModel: ViewModelType, ObservableObject {
 
     var username: String = Constants.randomName
 
-    private let offer: Offer
+    private let offer: ManagedOffer
     private let cancelBag: CancelBag = .init()
 
-    init(offer: Offer) {
+    init(offer: ManagedOffer) {
         self.offer = offer
+        setupDataBindings()
         setupActivityBindings()
         setupActionBindings()
+    }
+
+    private func setupDataBindings() {
+        if let commonFriends = offer.commonFriends, !commonFriends.isEmpty {
+            let array = NSArray(array: offer.commonFriends ?? [])
+            $fetchedCommonFriends
+                .load(predicate: NSPredicate(format: "hmacHash contains[cd] %@", array))
+
+            $fetchedCommonFriends.publisher
+                .map(\.objects)
+                .assign(to: &$commonFriends)
+        }
     }
 
     private func setupActivityBindings() {
@@ -91,19 +109,33 @@ final class RequestOfferViewModel: ViewModelType, ObservableObject {
             .filter { $0 == .sendRequest }
             .withUnretained(self)
             .compactMap { owner, _ -> String? in
-                ParsedChatMessage
-                    .communicationRequest(inboxPublicKey: owner.offer.offerPublicKey,
+                guard let publicKey = owner.offer.inbox?.keyPair?.publicKey else {
+                    return nil
+                }
+                return ParsedChatMessage
+                    .communicationRequest(inboxPublicKey: publicKey,
                                           text: owner.requestText,
-                                          contactInboxKey: owner.userSecurity.userKeys.publicKey)?
+                                          contactInboxKey: owner.authenticationManager.userKeys.publicKey)?
                     .asString
             }
             .flatMapLatest(with: self) { owner, message -> AnyPublisher<Void, Never> in
                 owner.state = .requesting
+                guard let publicKey = owner.offer.inbox?.keyPair?.publicKey else {
+                    return Just(()).eraseToAnyPublisher()
+                }
                 return owner.chatService
-                    .requestCommunication(inboxPublicKey: owner.offer.offerPublicKey, message: message)
+                    .requestCommunication(inboxPublicKey: publicKey, message: message)
                     .trackError(owner.primaryActivity.error)
             }
-            .map { _ in Route.requestSent }
+            .flatMap { [persistence, offer] _ in
+                persistence.update(context: persistence.viewContext) { _ in
+                    offer.isRequested = true
+                    return offer
+                }
+                .asVoid()
+                .justOnError()
+            }
+            .map { Route.requestSent }
             .subscribe(route)
             .store(in: cancelBag)
     }

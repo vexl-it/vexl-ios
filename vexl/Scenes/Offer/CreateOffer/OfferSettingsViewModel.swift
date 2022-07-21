@@ -10,13 +10,14 @@ import Cleevio
 import SwiftUI
 import Combine
 
-typealias OfferData = (offer: Offer, contacts: [ContactKey])
-typealias OfferAndEncryptedOffers = (offer: Offer, encryptedOffers: [EncryptedOffer])
-typealias OfferAndEncryptedOffer = (offer: Offer, encryptedOffer: EncryptedOffer)
+final class OfferSettingsViewModel: ViewModelType, ObservableObject {
 
-// TODO: - Update file and class models once the offer DB migration is done. We are keeping this name to avoid conflicts
-
-class CreateOfferViewModel: ViewModelType, ObservableObject {
+    @Inject var authenticationManager: AuthenticationManagerType
+    @Inject var offerRepository: OfferRepositoryType
+    @Inject var chatService: ChatServiceType
+    @Inject var contactsMananger: ContactsManagerType
+    @Inject var contactsService: ContactsServiceType
+    @Inject var offerService: OfferServiceType
 
     enum UserAction: Equatable {
         case activate
@@ -32,12 +33,6 @@ class CreateOfferViewModel: ViewModelType, ObservableObject {
         case loaded
         case loading
     }
-
-    @Inject var userSecurity: UserSecurityType
-    @Inject var offerService: OfferServiceType
-    @Inject var chatService: ChatServiceType
-    @Inject var contactsMananger: ContactsManagerType
-    @Inject var contactsService: ContactsServiceType
 
     // MARK: - Action Binding
 
@@ -55,8 +50,8 @@ class CreateOfferViewModel: ViewModelType, ObservableObject {
 
     @Published var description: String = ""
 
-    @Published var amountRange: ClosedRange<Int> = 0...0
-    @Published var currentAmountRange: ClosedRange<Int> = 0...0
+    @Published var amountRange: ClosedRange<Int> = Constants.OfferInitialData.minOffer...Constants.OfferInitialData.maxOffer
+    @Published var currentAmountRange: ClosedRange<Int> = Constants.OfferInitialData.minOffer...Constants.OfferInitialData.maxOffer
 
     @Published var selectedFeeOption: OfferFeeOption = .withoutFee
     @Published var feeAmount: Double = 0
@@ -68,7 +63,7 @@ class CreateOfferViewModel: ViewModelType, ObservableObject {
     @Published var selectedPaymentMethodOptions: [OfferPaymentMethodOption] = []
 
     @Published var selectedBTCOption: [OfferAdvancedBTCOption] = []
-    @Published var selectedFriendDegreeOption: OfferAdvancedFriendDegreeOption = .firstDegree
+    @Published var selectedFriendDegreeOption: OfferFriendDegree = .firstDegree
 
     @Published var selectedPriceTrigger: OfferTrigger = .none
     @Published var selectedPriceTriggerAmount: String = "0"
@@ -78,8 +73,10 @@ class CreateOfferViewModel: ViewModelType, ObservableObject {
 
     @Published var isActive = true
 
-    @Published var state: State = .initial
+    @Published var state: State = .loaded
     @Published var error: Error?
+
+    @Published var currency: Currency = Constants.OfferInitialData.currency
 
     // MARK: - Coordinator Bindings
 
@@ -155,15 +152,28 @@ class CreateOfferViewModel: ViewModelType, ObservableObject {
     }
 
     var actionTitle: String {
-        ""
+        if offer != nil {
+            switch offerType {
+            case .sell:
+                return L.offerUpdateActionTitle()
+            case .buy:
+                return L.offerUpdateBuyActionTitle()
+            }
+        }
+        switch offerType {
+        case .sell:
+            return L.offerCreateActionTitle()
+        case .buy:
+            return L.offerCreateBuyActionTitle()
+        }
     }
 
     var showDeleteButton: Bool {
-        false
+        offer != nil
     }
 
     var showDeleteTrigger: Bool {
-        true
+        offer == nil
     }
 
     var minFee: Double = 0
@@ -172,53 +182,44 @@ class CreateOfferViewModel: ViewModelType, ObservableObject {
     var offerKey: ECCKeys
     let offerType: OfferType
 
-    let cancelBag: CancelBag = .init()
+    private var offer: ManagedOffer?
+    private let cancelBag: CancelBag = .init()
+
+    init(offer: ManagedOffer) {
+        self.offerKey = offer.inbox?.keyPair?.keys ?? ECCKeys()
+        self.offerType = offer.type ?? .buy
+        self.offer = offer
+        setup()
+    }
 
     init(offerType: OfferType, offerKey: ECCKeys) {
         self.offerType = offerType
         self.offerKey = offerKey
+        setup()
+    }
+
+    func setup() {
         setupDataBindings()
         setupActivity()
         setupBindings()
-        setupCreateOfferBinding()
-    }
-
-    func prepareOffer(encryptedOffers: [EncryptedOffer], expiration: TimeInterval) -> AnyPublisher<EncryptedOffer, Error> {
-        fatalError("Need to override implementation for this method")
-    }
-
-    func storeOffers(offers: [Offer], areCreated: Bool) -> AnyPublisher<Void, Error> {
-        fatalError("Need to override implementation for this method")
-    }
-
-    func createInbox(offerKey: ECCKeys, pushToken: String) -> AnyPublisher<Void, Error> {
-        fatalError("Need to override implementation for this method")
-    }
-
-    func setInitialValues(data: OfferInitialData) {
-        fatalError("Need to override implementation for this method")
+        setupDeleteBinding()
     }
 
     // MARK: - Bindings
 
     private func setupDataBindings() {
-        offerService
-            .getInitialOfferData()
-            .track(activity: primaryActivity)
-            .materialize()
-            .compactMap(\.value)
-            .withUnretained(self)
-            .sink { owner, data in
-                owner.state = .loaded
-                owner.amountRange = data.minOffer...data.maxOffer
-                owner.currentAmountRange = data.minOffer...data.maxOffer
-                owner.minFee = data.minFee
-                owner.maxFee = data.maxFee
-                owner.currencySymbol = data.currencySymbol
-
-                owner.setInitialValues(data: data)
-            }
-            .store(in: cancelBag)
+        if let offer = offer {
+            description = offer.offerDescription ?? ""
+            currentAmountRange = Int(offer.minAmount)...Int(offer.maxAmount)
+            selectedFeeOption = offer.feeState ?? .withoutFee
+            feeAmount = offer.feeAmount
+            selectedTradeStyleOption = offer.locationState ?? .personal
+            selectedPaymentMethodOptions = offer.paymentMethods
+            selectedBTCOption = offer.btcNetworks
+            selectedFriendDegreeOption = offer.friendLevel ?? .firstDegree
+            selectedPriceTrigger = offer.activePriceState ?? .none
+            selectedPriceTriggerAmount = "\(Int(offer.activePriceValue))"
+        }
     }
 
     private func setupActivity() {
@@ -291,99 +292,77 @@ class CreateOfferViewModel: ViewModelType, ObservableObject {
                 owner.locations = newLocations
             }
             .store(in: cancelBag)
-    }
 
-    // swiftlint: disable function_body_length
-    private func setupCreateOfferBinding() {
-        let fetchContacts = action
-            .share()
+        action
             .filter { $0 == .createOffer }
+            .map { _ in ECCKeys() }
             .withUnretained(self)
-            .flatMap { owner, _ in
-                owner.contactsService
-                    .getAllContacts(friendLevel: owner.friendLevel,
-                                    hasFacebookAccount: owner.userSecurity.facebookSecurityHeader != nil,
-                                    pageLimit: Constants.pageMaxLimit)
-                    .track(activity: owner.primaryActivity)
-                    .materialize()
-                    .compactMap(\.value)
+            .flatMap { owner, keys -> AnyPublisher<ManagedOffer, Never> in
+                let provider: (ManagedOffer) -> Void = { [weak self] offer in
+                    guard let owner = self else { return }
+                    offer.id = nil
+                    offer.groupUuid = GroupUUID.none
+                    offer.currency = owner.currency
+                    offer.minAmount = Double(owner.currentAmountRange.lowerBound)
+                    offer.maxAmount = Double(owner.currentAmountRange.upperBound)
+                    offer.offerDescription = owner.description
+                    offer.feeState = owner.selectedFeeOption
+                    offer.feeAmount = Double(owner.feeValue)
+                    offer.locationState = owner.selectedTradeStyleOption
+                    offer.paymentMethods = owner.selectedPaymentMethodOptions
+                    offer.btcNetworks = owner.selectedBTCOption
+                    offer.friendLevel = owner.selectedFriendDegreeOption
+                    offer.type = owner.offerType
+                    offer.activePriceState = OfferTrigger.none
+                    offer.activePriceValue = 0.0
+                    offer.active = true
+                    offer.expirationDate = Date(timeIntervalSince1970: owner.expiration)
+                    offer.createdAt = Date()
+                }
+                if let offer = owner.offer {
+                    return owner.offerRepository
+                        .update(offer: offer, provider: provider)
+                        .materialize()
+                        .compactMap(\.value)
+                        .eraseToAnyPublisher()
+                } else {
+                    return owner.offerRepository
+                        .createOffer(provider: provider)
+                        .materialize()
+                        .compactMap(\.value)
+                        .eraseToAnyPublisher()
+                }
             }
-
-        let encryptOffer = fetchContacts
-            .withUnretained(self)
-            .map { owner, contacts -> OfferData in
-                let offer = Offer(minAmount: owner.currentAmountRange.lowerBound,
-                                  maxAmount: owner.currentAmountRange.upperBound,
-                                  description: owner.description,
-                                  feeState: owner.selectedFeeOption,
-                                  feeAmount: Double(owner.feeValue),
-                                  locationState: owner.selectedTradeStyleOption,
-                                  paymentMethods: owner.selectedPaymentMethodOptions,
-                                  btcNetwork: owner.selectedBTCOption,
-                                  friendLevel: owner.selectedFriendDegreeOption,
-                                  type: owner.offerType,
-                                  priceTriggerState: owner.selectedPriceTrigger,
-                                  priceTriggerValue: owner.priceTriggerAmount,
-                                  isActive: owner.isActive,
-                                  source: .created)
-
-                // Adding owner publicKey to the list so that it can be decrypted, displayed and modified
-                // Also we remove the duplicate keys that can arrive because of the 2nd level friend
-
-                var contacts = contacts.phone.items + contacts.facebook.items
-                contacts.append(ContactKey(publicKey: owner.userSecurity.userKeys.publicKey))
-                let contactsWithoutDuplicates = Array(Set(contacts))
-                return OfferData(offer: offer, contacts: contactsWithoutDuplicates)
-            }
-            .subscribe(on: DispatchQueue.global(qos: .userInitiated))
-            .withUnretained(self)
-            .flatMap { owner, offerData in
-                owner.offerService
-                    .encryptOffer(withContactKey: offerData.contacts.map(\.publicKey),
-                                  offerKey: owner.offerKey,
-                                  offer: offerData.offer)
-                    .track(activity: owner.primaryActivity)
-                    .materialize()
-                    .compactMap(\.value)
-                    .map { OfferAndEncryptedOffers(offer: offerData.offer, encryptedOffers: $0) }
-                    .eraseToAnyPublisher()
-            }
-
-        let createOffer = encryptOffer
-            .withUnretained(self)
-            .flatMap { owner, offerAndEncryptedOffers in
-                owner.prepareOffer(encryptedOffers: offerAndEncryptedOffers.encryptedOffers, expiration: owner.expiration)
-                    .track(activity: owner.primaryActivity)
-                    .materialize()
-                    .compactMap(\.value)
-                    .map { OfferAndEncryptedOffer(offer: offerAndEncryptedOffers.offer, encryptedOffer: $0) }
-                    .eraseToAnyPublisher()
-            }
-
-        createOffer
-            .flatMapLatest(with: self) { owner, offerAndEncryptedOffer -> AnyPublisher<Void, Never> in
-                var newOffer = offerAndEncryptedOffer.offer
-                newOffer.offerId = offerAndEncryptedOffer.encryptedOffer.offerId
-                newOffer.offerPublicKey = owner.offerKey.publicKey
-                newOffer.offerPrivateKey = owner.offerKey.privateKey
-
-                return owner.storeOffers(offers: [newOffer], areCreated: true)
-                    .track(activity: owner.primaryActivity)
-                    .materialize()
-                    .compactMap(\.value)
-                    .eraseToAnyPublisher()
-            }
-            .flatMapLatest(with: self) { owner, _ in
-                // TODO: setup firebase notifications to get a proper token
-                owner.createInbox(offerKey: owner.offerKey,
-                                  pushToken: Constants.pushNotificationToken)
-                    .track(activity: owner.primaryActivity)
-                    .materialize()
-                    .compactMap(\.value)
-            }
-            .receive(on: RunLoop.main)
             .map { _ in .offerCreated }
             .subscribe(route)
+            .store(in: cancelBag)
+    }
+
+    private func setupDeleteBinding() {
+        guard let id = offer?.id else {
+            return
+        }
+        action
+            .filter { $0 == .delete }
+            .withUnretained(self)
+            .flatMap { owner, _ in
+                owner.offerService
+                    .deleteOffers(offerIds: [id])
+                    .track(activity: owner.primaryActivity)
+                    .materialize()
+                    .compactMap(\.value)
+            }
+            .withUnretained(self)
+            .flatMap { owner, _ in
+                owner.offerRepository
+                    .deleteOffers(with: [id])
+                    .materialize()
+                    .compactMap(\.value)
+            }
+            .withUnretained(self)
+            .sink { owner, _ in
+                owner.route.send(.offerDeleted)
+            }
             .store(in: cancelBag)
     }
 }

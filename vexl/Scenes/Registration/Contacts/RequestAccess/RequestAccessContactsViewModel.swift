@@ -12,7 +12,7 @@ import Cleevio
 
 class RequestAccessContactsViewModel: ObservableObject {
 
-    @Inject var authenticationManager: AuthenticationManager
+    @Inject var facebookManager: FacebookManagerType
     @Inject var userService: UserServiceType
     @Inject var contactsService: ContactsServiceType
 

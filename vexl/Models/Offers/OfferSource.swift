@@ -60,3 +60,44 @@ enum GroupUUID: RawRepresentable {
         }
     }
 }
+
+enum OfferFriendDegree: String {
+    case firstDegree = "FIRST_DEGREE"
+    case secondDegree = "SECOND_DEGREE"
+
+    var degree: Int {
+        switch self {
+        case .firstDegree:
+            return 1
+        case .secondDegree:
+            return 2
+        }
+    }
+
+    var imageName: String {
+        switch self {
+        case .firstDegree:
+            return R.image.offer.firstDegree.name
+        case .secondDegree:
+            return R.image.offer.secondDegree.name
+        }
+    }
+
+    var label: String {
+        switch self {
+        case .firstDegree:
+            return L.marketplaceDetailFriendFirst()
+        case .secondDegree:
+            return L.marketplaceDetailFriendSecond()
+        }
+    }
+
+    var convertToContactFriendLevel: ContactFriendLevel {
+        switch self {
+        case .firstDegree:
+            return .first
+        case .secondDegree:
+            return .second
+        }
+    }
+}

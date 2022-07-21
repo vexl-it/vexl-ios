@@ -13,6 +13,7 @@ final class EditProfileAvatarViewModel: ViewModelType, ObservableObject {
 
     @Inject var userService: UserServiceType
     @Inject var authenticationManager: AuthenticationManagerType
+    @Inject var userRepository: UserRepositoryType
 
     enum ImageSource {
         case photoAlbum, camera
@@ -58,7 +59,7 @@ final class EditProfileAvatarViewModel: ViewModelType, ObservableObject {
     private let cancelBag: CancelBag = .init()
 
     init() {
-        self.avatar = authenticationManager.currentUser?.avatarImage
+        self.avatar = userRepository.user?.profile?.avatar
         setupActivityBindings()
         setupActionBindings()
     }
@@ -102,8 +103,18 @@ final class EditProfileAvatarViewModel: ViewModelType, ObservableObject {
             .withUnretained(self)
             .flatMap { owner, avatar in
                 owner.userService
-                    .updateUser(username: owner.authenticationManager.currentUser?.username ?? "",
+                    .updateUser(username: owner.userRepository.user?.profile?.name ?? "",
                                 avatar: avatar)
+                    .track(activity: owner.primaryActivity)
+                    .materialize()
+                    .compactMap(\.value)
+            }
+            .withUnretained(self)
+            .flatMap { owner, editUser in
+                owner.userRepository
+                    .update(username: editUser.username,
+                            avatarURL: editUser.avatar,
+                            avatar: owner.avatar)
                     .track(activity: owner.primaryActivity)
                     .materialize()
                     .compactMap(\.value)
