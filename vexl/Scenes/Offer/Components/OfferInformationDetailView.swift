@@ -111,35 +111,24 @@ extension OfferInformationDetailView {
 extension OfferInformationDetailView {
 
     struct ViewData: Identifiable, Hashable {
-        let id: String
+        let offer: ManagedOffer
+
+        var isRequested: Bool { offer.isRequested }
+
+        var id: String { offer.id ?? UUID().uuidString }
         let username: String = Constants.randomName // TODO: - use random name generator when available
-        let title: String
-        let isRequested: Bool
-        let friendLevel: String
-        let amount: String
-        let paymentMethods: [OfferPaymentMethodOption]
-        let fee: String?
-        let offerType: OfferType
-        let createdDate: Date
-
-        init(offer: Offer, isRequested: Bool) {
-            let currencySymbol = Constants.currencySymbol
-            let formattedAmount = offer.maxAmount
-
-            self.id = offer.offerId
-            self.title = offer.description
-            self.isRequested = isRequested
-            self.friendLevel = offer.friendLevel.label
-            self.amount = "\(formattedAmount)\(currencySymbol)"
-            self.paymentMethods = offer.paymentMethods
-            self.fee = offer.feeAmount > 0 ? "\(offer.feeAmount)%" : nil
-            self.offerType = offer.type
-            self.createdDate = offer.createdDate
+        var title: String { offer.offerDescription ?? "" }
+        var friendLevel: String { offer.friendLevel?.label ?? "" }
+        var amount: String {
+            guard let sign = offer.currency?.sign else { return "" }
+            return "\(offer.maxAmount)\(sign)"
         }
+        var paymentMethods: [OfferPaymentMethodOption] { offer.paymentMethods }
+        var fee: String? { offer.feeAmount > 0 ? "\(offer.feeAmount)%" : nil }
+        var offerType: OfferType { offer.type ?? .sell }
+        var createdDate: Date { offer.createdAt ?? Date() }
 
-        var paymentIcons: [String] {
-            paymentMethods.map(\.iconName)
-        }
+        var paymentIcons: [String] { paymentMethods.map(\.iconName) }
 
         var paymentLabel: String {
             guard let label = paymentMethods.first?.title else {
@@ -154,7 +143,7 @@ extension OfferInformationDetailView {
         }
 
         static var stub: OfferDetailViewData {
-            OfferDetailViewData(offer: .stub, isRequested: true)
+            OfferDetailViewData(offer: .stub)
         }
     }
 }

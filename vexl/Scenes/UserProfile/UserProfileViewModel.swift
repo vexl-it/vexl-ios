@@ -13,11 +13,8 @@ import Combine
 final class UserProfileViewModel: ViewModelType, ObservableObject {
 
     @Inject var authenticationManager: AuthenticationManagerType
-    @Inject var userService: UserServiceType
-    @Inject var offerService: OfferServiceType
+    @Inject var userRepository: UserRepositoryType
     @Inject var contactService: ContactsServiceType
-    @Inject var syncInboxManager: SyncInboxManagerType
-    @Inject var cryptocurrencyValueManager: CryptocurrencyValueManagerType
 
     // MARK: - Action Binding
 
@@ -48,11 +45,11 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
 
     // TODO: - Remove hardcoded values
     var username: String {
-        authenticationManager.currentUser?.username ?? ""
+        userRepository.user?.profile?.name ?? ""
     }
 
     var avatar: Data? {
-        authenticationManager.currentUser?.avatarImage ?? R.image.onboarding.emptyAvatar()?.jpegData(compressionQuality: 0.5)
+        userRepository.user?.profile?.avatar ?? R.image.onboarding.emptyAvatar()?.jpegData(compressionQuality: 0.5)
     }
 
     var options: [OptionGroup] {
@@ -147,56 +144,10 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
         option
             .filter { $0 == .logout }
             .withUnretained(self)
-            .sink { owner, _ in
-                owner.logoutUser()
-            }
-            .store(in: cancelBag)
-    }
-
-    private func logoutUser() {
-
-        let deleteUser = userService
-            .deleteUser()
-            .track(activity: primaryActivity)
-            .materialize()
-            .compactMap(\.value)
-
-        let deleteContactUser = deleteUser
-            .withUnretained(self)
             .flatMap { owner, _ in
-                owner.contactService
-                    .deleteUser()
-                    .track(activity: owner.primaryActivity)
-                    .materialize()
-                    .compactMap(\.value)
+                owner.authenticationManager.logoutUserPublisher(force: false)
             }
-
-        let deleteOffers = deleteContactUser
-            .withUnretained(self)
-            .flatMap { owner, _ in
-                owner.offerService
-                    .getStoredOffers(fromType: .all, fromSource: .all)
-                    .materialize()
-                    .compactMap(\.value)
-                    .map { $0.map(\.offerId) }
-            }
-            .withUnretained(self)
-            .flatMap { owner, ids in
-                owner.offerService
-                    .deleteOffers(offerIds: ids)
-                    .track(activity: owner.primaryActivity)
-                    .materialize()
-                    .compactMap(\.value)
-            }
-
-        deleteOffers
-            .withUnretained(self)
-            .sink { owner, _ in
-                owner.cryptocurrencyValueManager.stopPollingCoinData()
-                owner.cryptocurrencyValueManager.stopFetchingChartData()
-                owner.syncInboxManager.stopSyncingInboxes()
-                owner.authenticationManager.logoutUser()
-            }
+            .sink()
             .store(in: cancelBag)
     }
 }

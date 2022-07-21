@@ -7,10 +7,20 @@
 
 import Swinject
 
-class RepositoryAssembly: Assembly {
+final class RepositoryAssembly: Assembly {
     func assemble(container: Container) {
         container.register(UserRepositoryType.self) { _ in
             UserRepository()
+        }
+        .inObjectScope(.container)
+
+        container.register(ContactsRepositoryType.self) { _ in
+            ContactsRepository()
+        }
+        .inObjectScope(.container)
+
+        container.register(OfferRepositoryType.self) { _ in
+            OfferRepository()
         }
         .inObjectScope(.container)
 

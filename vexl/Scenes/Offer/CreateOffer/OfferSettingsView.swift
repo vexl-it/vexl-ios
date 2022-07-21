@@ -8,11 +8,9 @@
 import SwiftUI
 import Cleevio
 
-// TODO: - Update file and class models once the offer DB migration is done. We are keeping this name to avoid conflicts
+struct OfferSettingsView: View {
 
-struct CreateOfferView: View {
-
-    @ObservedObject var viewModel: CreateOfferViewModel
+    @ObservedObject var viewModel: OfferSettingsViewModel
 
     var body: some View {
         VStack {
@@ -35,7 +33,7 @@ struct CreateOfferView: View {
                     OfferDescriptionView(text: $viewModel.description)
                         .padding(.bottom, Appearance.GridGuide.padding)
 
-                    OfferAmountRangeView(currencySymbol: viewModel.currencySymbol,
+                    OfferAmountRangeView(currencySymbol: viewModel.currency.sign,
                                          currentValue: $viewModel.currentAmountRange,
                                          sliderBounds: viewModel.amountRange)
 
@@ -90,10 +88,10 @@ struct CreateOfferView: View {
 #if DEBUG || DEVEL
 struct CreateOfferViewPreview: PreviewProvider {
     static var previews: some View {
-        CreateOfferView(viewModel: .init(offerType: .sell, offerKey: ECCKeys()))
+        OfferSettingsView(viewModel: .init(offerType: .sell, offerKey: ECCKeys()))
             .previewDevice("iPhone 11")
 
-        CreateOfferView(viewModel: .init(offerType: .buy, offerKey: ECCKeys()))
+        OfferSettingsView(viewModel: .init(offerType: .buy, offerKey: ECCKeys()))
             .previewDevice("iPhone 11")
     }
 }

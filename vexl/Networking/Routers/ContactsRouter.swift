@@ -17,10 +17,11 @@ enum ContactsRouter: ApiRouter {
     case deleteUser
     case getContacts(useFacebookHeader: Bool, friendLevel: ContactFriendLevel, pageLimit: Int?)
     case countPhoneContacts
+    case getCommonFriends(publicKeys: [String])
 
     var method: HTTPMethod {
         switch self {
-        case .getFacebookContacts, .getAvailableFacebookContacts, .getContacts, .countPhoneContacts:
+        case .getFacebookContacts, .getAvailableFacebookContacts, .getContacts, .countPhoneContacts, .getCommonFriends:
             return .get
         case .createUser, .importContacts, .getAvailableContacts:
             return .post
@@ -33,7 +34,7 @@ enum ContactsRouter: ApiRouter {
         switch self {
         case .getFacebookContacts, .getAvailableFacebookContacts:
             return facebookSecurityHeader
-        case .importContacts, .getAvailableContacts, .deleteUser, .countPhoneContacts:
+        case .importContacts, .getAvailableContacts, .deleteUser, .countPhoneContacts, .getCommonFriends:
             return securityHeader
         case let .createUser(useFacebookHeader):
             return useFacebookHeader ? facebookSecurityHeader : securityHeader
@@ -60,6 +61,8 @@ enum ContactsRouter: ApiRouter {
             return "users/me"
         case .countPhoneContacts:
             return "contacts/count"
+        case .getCommonFriends:
+            return "contacts/common"
         }
     }
 
@@ -79,6 +82,8 @@ enum ContactsRouter: ApiRouter {
             }
             return ["level": friendLevel.rawValue,
                     "limit": pageLimit]
+        case let .getCommonFriends(publicKeys):
+            return ["offerIds": publicKeys.joined(separator: ",")]
         }
     }
 
