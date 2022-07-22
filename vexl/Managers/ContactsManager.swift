@@ -12,7 +12,6 @@ import FBSDKCoreKit
 import FBSDKLoginKit
 
 protocol ContactsManagerType {
-    var availablePhoneContacts: [ContactInformation] { get }
     var availableFacebookContacts: [ContactInformation] { get }
 
     func fetchPhoneContacts() -> [ContactInformation]
@@ -31,7 +30,6 @@ final class ContactsManager: ContactsManagerType {
     // MARK: - Properties
 
     private var userPhoneContacts: [ContactInformation] = []
-    private(set) var availablePhoneContacts: [ContactInformation] = []
 
     private var userFacebookContacts: [ContactInformation] = []
     private(set) var availableFacebookContacts: [ContactInformation] = []
@@ -89,23 +87,17 @@ final class ContactsManager: ContactsManagerType {
     func getActivePhoneContacts(_ contacts: [String]) -> AnyPublisher<[ContactInformation], Error> {
         contactsService
             .getActivePhoneContacts(contacts)
+            .map(\.newContacts)
             .withUnretained(self)
-            .flatMap { owner, hashedAvailableContacts -> AnyPublisher<([String], [String]), Error> in
+            .flatMap { owner, hashedAvailableContacts -> AnyPublisher<[ContactInformation], Error> in
                 owner.encryptionService.hashContacts(contacts: owner.userPhoneContacts)
-                    .map { (hashedAvailableContacts.newContacts, $0.map(\.1)) }
+                    .map { hashedContacts in
+                        hashedContacts
+                            .filter { hashedAvailableContacts.contains($0.1) }
+                            .map { $0.0 }
+                    }
                     .eraseToAnyPublisher()
             }
-            .withUnretained(self)
-            .handleEvents(receiveOutput: { owner, contacts in
-                owner.availablePhoneContacts = []
-                let (hashedAvailableContacts, hashedUserContacts) = contacts
-                for (index, contact) in hashedUserContacts.enumerated() {
-                    if hashedAvailableContacts.contains(contact) {
-                        owner.availablePhoneContacts.append(owner.userPhoneContacts[index])
-                    }
-                }
-            })
-            .map(\.0.availablePhoneContacts)
             .eraseToAnyPublisher()
     }
 
