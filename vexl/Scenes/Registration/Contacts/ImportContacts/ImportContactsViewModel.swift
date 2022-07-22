@@ -227,29 +227,6 @@ class ImportContactsViewModel: ObservableObject {
             .store(in: cancelBag)
     }
 
-    // TODO: - Replace this with the ContactManager hashPhoneContacts when Core Data Migration is done. Currently leaving it as it is to avoid merge conflicts.
-
-    func hashContacts(identifiers: [String]) -> AnyPublisher<[String], Error> {
-        let phoneNumber = Formatters.phoneNumberFormatter
-        let countryCode = phoneNumber.countryCode(for: Locale.current.regionCode ?? "")
-
-        let trimmedIdentifiers = identifiers.map { identifier -> String in
-            let trimmedIdentifier = identifier.removeWhitespaces()
-            if let countryCode = countryCode, !trimmedIdentifier.contains("+") {
-                return "\(countryCode)\(trimmedIdentifier)"
-            }
-            return trimmedIdentifier
-        }
-
-        return trimmedIdentifiers.publisher
-            .withUnretained(self)
-            .flatMap { owner, identifier in
-                owner.cryptoService.hashHMAC(password: Constants.contactsHashingPassword, message: identifier)
-            }
-            .collect()
-            .eraseToAnyPublisher()
-    }
-
     private func select(_ isSelected: Bool, item: ContactInformation) {
         guard let selectedIndex = items.firstIndex(where: { $0.id == item.id }) else { return }
         items[selectedIndex].isSelected = isSelected

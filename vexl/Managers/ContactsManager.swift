@@ -20,13 +20,13 @@ protocol ContactsManagerType {
 
     func fetchFacebookContacts(id: String, accessToken: String) -> AnyPublisher<[ContactInformation], Error>
     func getActiveFacebookContacts(_ contacts: [String], withId id: String, token: String) -> AnyPublisher<[ContactInformation], Error>
-    func hashPhoneContacts(_ availableContacts: [String]) -> AnyPublisher<[String], Error>
 }
 
 final class ContactsManager: ContactsManagerType {
 
     @Inject var contactsService: ContactsServiceType
     @Inject var cryptoService: CryptoServiceType
+    @Inject var encryptionService: EncryptionServiceType
 
     // MARK: - Properties
 
@@ -91,9 +91,8 @@ final class ContactsManager: ContactsManagerType {
             .getActivePhoneContacts(contacts)
             .withUnretained(self)
             .flatMap { owner, hashedAvailableContacts -> AnyPublisher<([String], [String]), Error> in
-                let userContacts = owner.userPhoneContacts.map(\.sourceIdentifier)
-                return owner.hashPhoneContacts(userContacts)
-                    .map { (hashedAvailableContacts.newContacts, $0) }
+                owner.encryptionService.hashContacts(contacts: owner.userPhoneContacts)
+                    .map { (hashedAvailableContacts.newContacts, $0.map(\.1)) }
                     .eraseToAnyPublisher()
             }
             .withUnretained(self)
@@ -107,29 +106,6 @@ final class ContactsManager: ContactsManagerType {
                 }
             })
             .map(\.0.availablePhoneContacts)
-            .eraseToAnyPublisher()
-    }
-
-    func hashPhoneContacts(_ availableContacts: [String]) -> AnyPublisher<[String], Error> {
-        let phoneNumber = Formatters.phoneNumberFormatter
-        let countryCode = phoneNumber.countryCode(for: Locale.current.regionCode ?? "")
-
-        let trimmedIdentifiers = availableContacts.map { identifier -> String in
-            let trimmedIdentifier = identifier.removeWhitespaces()
-            if let countryCode = countryCode, !trimmedIdentifier.contains("+") {
-                return "\(countryCode)\(trimmedIdentifier)"
-            }
-            return trimmedIdentifier
-        }
-
-        return trimmedIdentifiers.publisher
-            .withUnretained(self)
-            .flatMap { owner, contact in
-                owner.cryptoService
-                    .hashHMAC(password: Constants.contactsHashingPassword, message: contact)
-                    .eraseToAnyPublisher()
-            }
-            .collect()
             .eraseToAnyPublisher()
     }
 

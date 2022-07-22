@@ -12,15 +12,16 @@ import Cleevio
 
 final class ImportPhoneContactsViewModel: ImportContactsViewModel {
     override func fetchContacts() throws {
-        let contacts = contactsManager.fetchPhoneContacts()
-        let phones = contacts.map(\.phone)
+        @Inject var encryptionService: EncryptionServiceType
 
-        hashContacts(identifiers: phones)
+        let contacts = contactsManager.fetchPhoneContacts()
+
+        encryptionService.hashContacts(contacts: contacts)
             .track(activity: primaryActivity)
             .withUnretained(self)
             .flatMap { owner, hashedPhones in
                 owner.contactsManager
-                    .getActivePhoneContacts(hashedPhones)
+                    .getActivePhoneContacts(hashedPhones.map(\.1))
                     .track(activity: owner.primaryActivity)
                     .materialize()
                     .compactMap(\.value)
