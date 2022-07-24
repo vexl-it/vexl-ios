@@ -10,7 +10,7 @@ import Alamofire
 
 // swiftlint: disable enum_case_associated_values_count
 enum ChatRouter: ApiRouter {
-    case createInbox(offerPublicKey: String, pushToken: String)
+    case createInbox(publicKey: String, pushToken: String)
     case request(inboxPublicKey: String, message: String)
     case requestConfirmation(confirmed: Bool, message: String, inboxPublicKey: String,
                              requesterPublicKey: String, signature: String)
@@ -61,9 +61,9 @@ enum ChatRouter: ApiRouter {
 
     var parameters: Parameters {
         switch self {
-        case let .createInbox(offerPublicKey, pushToken):
+        case let .createInbox(publicKey, pushToken):
             return [
-                "publicKey": offerPublicKey,
+                "publicKey": publicKey,
                 "token": pushToken
             ]
         case let .request(inboxPublicKey, message):

@@ -16,7 +16,7 @@ final class ChatActionViewModel {
     var route: CoordinatingSubject<ChatViewModel.Route> = .init()
 
     private let cancelBag: CancelBag = .init()
-    var offer: Offer?
+    var offer: ManagedOffer?
 
     init() {
         setupActionBindings()

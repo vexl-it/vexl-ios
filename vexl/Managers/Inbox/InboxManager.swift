@@ -20,8 +20,6 @@ protocol InboxManagerType {
 }
 
 final class InboxManager: InboxManagerType {
-
-    @Inject var userSecurity: UserSecurityType
     @Inject var cryptoService: CryptoServiceType
     @Inject var chatService: ChatServiceType
     @Inject var localStorageService: LocalStorageServiceType

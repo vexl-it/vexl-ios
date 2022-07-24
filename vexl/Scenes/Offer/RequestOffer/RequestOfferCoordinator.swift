@@ -12,9 +12,9 @@ import Combine
 final class RequestOfferCoordinator: BaseCoordinator<RouterResult<Void>> {
 
     private let router: Router
-    private let offer: Offer
+    private let offer: ManagedOffer
 
-    init(router: Router, offer: Offer) {
+    init(router: Router, offer: ManagedOffer) {
         self.router = router
         self.offer = offer
     }

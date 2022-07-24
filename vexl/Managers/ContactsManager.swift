@@ -12,7 +12,6 @@ import FBSDKCoreKit
 import FBSDKLoginKit
 
 protocol ContactsManagerType {
-    var availablePhoneContacts: [ContactInformation] { get }
     var availableFacebookContacts: [ContactInformation] { get }
 
     func fetchPhoneContacts() -> [ContactInformation]
@@ -20,18 +19,17 @@ protocol ContactsManagerType {
 
     func fetchFacebookContacts(id: String, accessToken: String) -> AnyPublisher<[ContactInformation], Error>
     func getActiveFacebookContacts(_ contacts: [String], withId id: String, token: String) -> AnyPublisher<[ContactInformation], Error>
-    func hashPhoneContacts(_ availableContacts: [String]) -> AnyPublisher<[String], Error>
 }
 
 final class ContactsManager: ContactsManagerType {
 
     @Inject var contactsService: ContactsServiceType
     @Inject var cryptoService: CryptoServiceType
+    @Inject var encryptionService: EncryptionServiceType
 
     // MARK: - Properties
 
     private var userPhoneContacts: [ContactInformation] = []
-    private(set) var availablePhoneContacts: [ContactInformation] = []
 
     private var userFacebookContacts: [ContactInformation] = []
     private(set) var availableFacebookContacts: [ContactInformation] = []
@@ -89,47 +87,17 @@ final class ContactsManager: ContactsManagerType {
     func getActivePhoneContacts(_ contacts: [String]) -> AnyPublisher<[ContactInformation], Error> {
         contactsService
             .getActivePhoneContacts(contacts)
+            .map(\.newContacts)
             .withUnretained(self)
-            .flatMap { owner, hashedAvailableContacts -> AnyPublisher<([String], [String]), Error> in
-                let userContacts = owner.userPhoneContacts.map(\.sourceIdentifier)
-                return owner.hashPhoneContacts(userContacts)
-                    .map { (hashedAvailableContacts.newContacts, $0) }
-                    .eraseToAnyPublisher()
-            }
-            .withUnretained(self)
-            .handleEvents(receiveOutput: { owner, contacts in
-                owner.availablePhoneContacts = []
-                let (hashedAvailableContacts, hashedUserContacts) = contacts
-                for (index, contact) in hashedUserContacts.enumerated() {
-                    if hashedAvailableContacts.contains(contact) {
-                        owner.availablePhoneContacts.append(owner.userPhoneContacts[index])
+            .flatMap { owner, hashedAvailableContacts -> AnyPublisher<[ContactInformation], Error> in
+                owner.encryptionService.hashContacts(contacts: owner.userPhoneContacts)
+                    .map { hashedContacts in
+                        hashedContacts
+                            .filter { hashedAvailableContacts.contains($0.1) }
+                            .map { $0.0 }
                     }
-                }
-            })
-            .map(\.0.availablePhoneContacts)
-            .eraseToAnyPublisher()
-    }
-
-    func hashPhoneContacts(_ availableContacts: [String]) -> AnyPublisher<[String], Error> {
-        let phoneNumber = Formatters.phoneNumberFormatter
-        let countryCode = phoneNumber.countryCode(for: Locale.current.regionCode ?? "")
-
-        let trimmedIdentifiers = availableContacts.map { identifier -> String in
-            let trimmedIdentifier = identifier.removeWhitespaces()
-            if let countryCode = countryCode, !trimmedIdentifier.contains("+") {
-                return "\(countryCode)\(trimmedIdentifier)"
-            }
-            return trimmedIdentifier
-        }
-
-        return trimmedIdentifiers.publisher
-            .withUnretained(self)
-            .flatMap { owner, contact in
-                owner.cryptoService
-                    .hashHMAC(password: Constants.contactsHashingPassword, message: contact)
                     .eraseToAnyPublisher()
             }
-            .collect()
             .eraseToAnyPublisher()
     }
 

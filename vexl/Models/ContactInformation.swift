@@ -9,7 +9,7 @@ import Foundation
 
 struct ContactInformation: Identifiable {
 
-    enum Source {
+    enum Source: String {
         case phone
         case facebook
     }

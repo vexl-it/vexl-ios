@@ -73,7 +73,19 @@ final class UserProfileCoordinator: BaseCoordinator<Void> {
             .filter { $0 == .importContacts }
             .flatMapLatest(with: self) { owner, _ -> CoordinatingResult<RouterResult<Void>> in
                 let router = ModalRouter(parentViewController: viewController, presentationStyle: .fullScreen, transitionStyle: .coverVertical)
-                let coordinator = ImportContactsProfileCoordinator(router: router, animated: true)
+                let coordinator = ProfilePhoneContactsCoordinator(router: router, animated: true)
+                return owner.present(coordinator: coordinator, router: router)
+            }
+            .sink()
+            .store(in: cancelBag)
+
+        viewModel
+            .route
+            .receive(on: RunLoop.main)
+            .filter { $0 == .editAvatar }
+            .flatMapLatest(with: self) { owner, _ -> CoordinatingResult<RouterResult<Void>> in
+                let router = ModalRouter(parentViewController: viewController, presentationStyle: .fullScreen, transitionStyle: .coverVertical)
+                let coordinator = EditProfileAvatarCoordinator(router: router, animated: true)
                 return owner.present(coordinator: coordinator, router: router)
             }
             .sink()
@@ -85,7 +97,7 @@ final class UserProfileCoordinator: BaseCoordinator<Void> {
             .filter { $0 == .importFacebook }
             .flatMapLatest(with: self) { owner, _ -> CoordinatingResult<RouterResult<Void>> in
                 let router = ModalRouter(parentViewController: viewController, presentationStyle: .fullScreen, transitionStyle: .coverVertical)
-                let coordinator = ImportFacebookProfileCoordinator(router: router, animated: true)
+                let coordinator = ProfileFacebookContactsCoordinator(router: router, animated: true)
                 return owner.present(coordinator: coordinator, router: router)
             }
             .sink()

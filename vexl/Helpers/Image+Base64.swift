@@ -30,6 +30,13 @@ extension Data {
         }
         .eraseToAnyPublisher()
     }
+
+    func compressImage(quality: Double) -> Data {
+        guard let image = UIImage(data: self) else {
+            return self
+        }
+        return image.jpegData(compressionQuality: quality) ?? self
+    }
 }
 
 extension String {

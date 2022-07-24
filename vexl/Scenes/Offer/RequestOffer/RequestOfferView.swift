@@ -88,7 +88,9 @@ struct RequestOfferView: View {
                     case .requesting:
                         Spacer()
                     case .normal:
-                        commonFriendsContainer
+                        if !viewModel.commonFriends.isEmpty {
+                            commonFriendsContainer
+                        }
 
                         ExpandingTextView(
                             placeholder: L.requestPlaceholder(),
@@ -133,7 +135,7 @@ struct RequestOfferView: View {
 
     private var commonFriendsContainer: some View {
         VStack(alignment: .leading, spacing: Appearance.GridGuide.point) {
-            Text(L.requestCommonFriends(16))
+            Text(L.requestCommonFriends(viewModel.commonFriends.count))
                 .textStyle(.descriptionSemiBold)
                 .foregroundColor(Appearance.Colors.gray3)
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -145,15 +147,24 @@ struct RequestOfferView: View {
         .cornerRadius(Appearance.GridGuide.containerCorner)
     }
 
+    @ViewBuilder
     private var commonFriends: some View {
-        HStack {
-            Circle()
-                .fill(.white)
-                .frame(size: Appearance.GridGuide.iconSize)
+        let chunks = viewModel.commonFriends.splitIntoChunks(by: 2)
+        ForEach(Array(chunks.enumerated()), id: \.offset) { chunk in
+            VStack {
+                HStack {
+                    ForEach(chunk.element) { contact in
+                        Image(data: contact.avatar, placeholder: "PinFaceId")
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(size: Appearance.GridGuide.iconSize)
 
-            Text("Diego E.")
-                .textStyle(.paragraphSmall)
-                .foregroundColor(Appearance.Colors.gray3)
+                        Text(contact.name ?? "")
+                            .textStyle(.paragraphSmall)
+                            .foregroundColor(Appearance.Colors.gray3)
+                    }
+                }
+            }
         }
     }
 }

@@ -41,19 +41,12 @@ final class UserOffersCoordinator: BaseCoordinator<RouterResult<Void>> {
                 let modalRouter = ModalRouter(parentViewController: viewController, presentationStyle: .fullScreen)
                 return owner.showCreateOffer(router: modalRouter, offerType: owner.offerType)
             }
-            .sink { result in
-                switch result {
-                case .finished:
-                    viewModel.refreshOffers()
-                default:
-                    break
-                }
-            }
+            .sink()
             .store(in: cancelBag)
 
         viewModel
             .route
-            .compactMap { route -> Offer? in
+            .compactMap { route -> ManagedOffer? in
                 if case let .editOfferTapped(offer) = route { return offer }
                 return nil
             }
@@ -65,7 +58,7 @@ final class UserOffersCoordinator: BaseCoordinator<RouterResult<Void>> {
             .sink { result in
                 switch result {
                 case .finished:
-                    viewModel.refreshOffers()
+                    return
                 default:
                     break
                 }
@@ -88,7 +81,7 @@ final class UserOffersCoordinator: BaseCoordinator<RouterResult<Void>> {
 
 extension UserOffersCoordinator {
     private func showCreateOffer(router: Router, offerType: OfferType) -> CoordinatingResult<RouterResult<Void>> {
-        coordinate(to: CreateOfferCoordinator(router: router, offerType: offerType, offer: nil))
+        coordinate(to: OfferSettingsCoordinator(router: router, offerType: offerType, offer: nil))
             .flatMap { result -> CoordinatingResult<RouterResult<Void>> in
                 guard result != .dismissedByRouter else {
                     return Just(result).eraseToAnyPublisher()
@@ -99,8 +92,8 @@ extension UserOffersCoordinator {
             .eraseToAnyPublisher()
     }
 
-    private func showEditOffer(router: Router, offerType: OfferType, offer: Offer) -> CoordinatingResult<RouterResult<Void>> {
-        coordinate(to: CreateOfferCoordinator(router: router, offerType: offerType, offer: offer))
+    private func showEditOffer(router: Router, offerType: OfferType, offer: ManagedOffer) -> CoordinatingResult<RouterResult<Void>> {
+        coordinate(to: OfferSettingsCoordinator(router: router, offerType: offerType, offer: offer))
             .flatMap { result -> CoordinatingResult<RouterResult<Void>> in
                 guard result != .dismissedByRouter else {
                     return Just(result).eraseToAnyPublisher()

@@ -51,7 +51,7 @@ final class ChatCoordinator: BaseCoordinator<RouterResult<Void>> {
 
         viewModel
             .route
-            .compactMap { action -> Offer? in
+            .compactMap { action -> ManagedOffer? in
                 if case let .showOfferTapped(offer) = action { return offer }
                 return nil
             }

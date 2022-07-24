@@ -79,7 +79,7 @@ final class MarketplaceCoordinator: BaseCoordinator<Void> {
         viewModel
             .route
             .receive(on: RunLoop.main)
-            .compactMap { route -> Offer? in
+            .compactMap { route -> ManagedOffer? in
                 if case let .showRequestOffer(offer) = route { return offer } else { return nil }
             }
             .flatMapLatest(with: self) { owner, offer -> CoordinatingResult<RouterResult<Void>> in
@@ -130,7 +130,7 @@ extension MarketplaceCoordinator {
         .eraseToAnyPublisher()
     }
 
-    private func showRequestOffer(router: Router, offer: Offer) -> CoordinatingResult<RouterResult<Void>> {
+    private func showRequestOffer(router: Router, offer: ManagedOffer) -> CoordinatingResult<RouterResult<Void>> {
         coordinate(to: RequestOfferCoordinator(router: router, offer: offer))
         .flatMap { result -> CoordinatingResult<RouterResult<Void>> in
             guard result != .dismissedByRouter else {
