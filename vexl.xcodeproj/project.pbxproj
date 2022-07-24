@@ -278,6 +278,9 @@
 		F1B3010F287A53C900C86F83 /* ChatConversationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B3010E287A53C900C86F83 /* ChatConversationViewModel.swift */; };
 		F1B30111287C770D00C86F83 /* OfferTriggerActiveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B30110287C770D00C86F83 /* OfferTriggerActiveView.swift */; };
 		F1B30113287CA5BB00C86F83 /* OfferSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18862482811551700659786 /* OfferSettingsViewModel.swift */; };
+		F1B365CB2885CBEB0069788D /* EditProfileAvatarCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B365C82885CBEB0069788D /* EditProfileAvatarCoordinator.swift */; };
+		F1B365CC2885CBEB0069788D /* EditProfileAvatarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B365C92885CBEB0069788D /* EditProfileAvatarViewModel.swift */; };
+		F1B365CD2885CBEB0069788D /* EditProfileAvatarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B365CA2885CBEB0069788D /* EditProfileAvatarView.swift */; };
 		F1B5321C28202B36009D4E0C /* OfferItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B5321B28202B36009D4E0C /* OfferItemView.swift */; };
 		F1B5FCBC27C67DB00018729B /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B5FCBB27C67DB00018729B /* WelcomeViewController.swift */; };
 		F1B5FCBE27C68EA70018729B /* OnboardingView+BottomButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B5FCBD27C68EA70018729B /* OnboardingView+BottomButtons.swift */; };
@@ -330,6 +333,9 @@
 		F1D204EF2862AECB006A5671 /* ChatStartTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D204EE2862AECB006A5671 /* ChatStartTextView.swift */; };
 		F1D204F22863A578006A5671 /* ChatInboxMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D204F12863A578006A5671 /* ChatInboxMessage.swift */; };
 		F1D204F72864FADC006A5671 /* SyncInboxManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D204F62864FADC006A5671 /* SyncInboxManager.swift */; };
+		F1E7029D2889C2D100EBB087 /* EditProfileNameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1E7029A2889C2D100EBB087 /* EditProfileNameView.swift */; };
+		F1E7029E2889C2D100EBB087 /* EditProfileNameCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1E7029B2889C2D100EBB087 /* EditProfileNameCoordinator.swift */; };
+		F1E7029F2889C2D100EBB087 /* EditProfileNameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1E7029C2889C2D100EBB087 /* EditProfileNameViewModel.swift */; };
 		F1F5F194283E9FC500968366 /* OfferPaymentIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1F5F193283E9FC500968366 /* OfferPaymentIconView.swift */; };
 		F1F5F199283FE52D00968366 /* ChatRequestCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1F5F198283FE52D00968366 /* ChatRequestCoordinator.swift */; };
 		F1F5F19B283FE53300968366 /* ChatRequestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1F5F19A283FE53300968366 /* ChatRequestView.swift */; };
@@ -645,6 +651,11 @@
 		F1B30109287A464600C86F83 /* ChatActionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatActionViewModel.swift; sourceTree = "<group>"; };
 		F1B3010E287A53C900C86F83 /* ChatConversationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatConversationViewModel.swift; sourceTree = "<group>"; };
 		F1B30110287C770D00C86F83 /* OfferTriggerActiveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferTriggerActiveView.swift; sourceTree = "<group>"; };
+		F1B365BB2885CB500069788D /* EditProfileNameCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfileNameCoordinator.swift; sourceTree = "<group>"; };
+		F1B365BC2885CB500069788D /* EditProfileNameViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfileNameViewModel.swift; sourceTree = "<group>"; };
+		F1B365C82885CBEB0069788D /* EditProfileAvatarCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfileAvatarCoordinator.swift; sourceTree = "<group>"; };
+		F1B365C92885CBEB0069788D /* EditProfileAvatarViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfileAvatarViewModel.swift; sourceTree = "<group>"; };
+		F1B365CA2885CBEB0069788D /* EditProfileAvatarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfileAvatarView.swift; sourceTree = "<group>"; };
 		F1B5321B28202B36009D4E0C /* OfferItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferItemView.swift; sourceTree = "<group>"; };
 		F1B5FCBB27C67DB00018729B /* WelcomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeViewController.swift; sourceTree = "<group>"; };
 		F1B5FCBD27C68EA70018729B /* OnboardingView+BottomButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OnboardingView+BottomButtons.swift"; sourceTree = "<group>"; };
@@ -698,6 +709,9 @@
 		F1D204EE2862AECB006A5671 /* ChatStartTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatStartTextView.swift; sourceTree = "<group>"; };
 		F1D204F12863A578006A5671 /* ChatInboxMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatInboxMessage.swift; sourceTree = "<group>"; };
 		F1D204F62864FADC006A5671 /* SyncInboxManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncInboxManager.swift; sourceTree = "<group>"; };
+		F1E7029A2889C2D100EBB087 /* EditProfileNameView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfileNameView.swift; sourceTree = "<group>"; };
+		F1E7029B2889C2D100EBB087 /* EditProfileNameCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfileNameCoordinator.swift; sourceTree = "<group>"; };
+		F1E7029C2889C2D100EBB087 /* EditProfileNameViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfileNameViewModel.swift; sourceTree = "<group>"; };
 		F1F5F193283E9FC500968366 /* OfferPaymentIconView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferPaymentIconView.swift; sourceTree = "<group>"; };
 		F1F5F198283FE52D00968366 /* ChatRequestCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRequestCoordinator.swift; sourceTree = "<group>"; };
 		F1F5F19A283FE53300968366 /* ChatRequestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRequestView.swift; sourceTree = "<group>"; };
@@ -1284,6 +1298,8 @@
 				4F481E65284504050051D3B9 /* MultipleOptionPickerView.swift */,
 				4F481E6D2845040A0051D3B9 /* Line.swift */,
 				4F700CC22844DA250085139F /* OffsetScrollView.swift */,
+				F1B365BC2885CB500069788D /* EditProfileNameViewModel.swift */,
+				F1B365BB2885CB500069788D /* EditProfileNameCoordinator.swift */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
@@ -1779,6 +1795,16 @@
 			path = Conversation;
 			sourceTree = "<group>";
 		};
+		F1B365C72885CBEB0069788D /* EditAvatar */ = {
+			isa = PBXGroup;
+			children = (
+				F1B365C82885CBEB0069788D /* EditProfileAvatarCoordinator.swift */,
+				F1B365C92885CBEB0069788D /* EditProfileAvatarViewModel.swift */,
+				F1B365CA2885CBEB0069788D /* EditProfileAvatarView.swift */,
+			);
+			path = EditAvatar;
+			sourceTree = "<group>";
+		};
 		F1B5321D2820976E009D4E0C /* UserOffers */ = {
 			isa = PBXGroup;
 			children = (
@@ -1864,6 +1890,8 @@
 		F1BFA951280223BD00F4E745 /* UserProfile */ = {
 			isa = PBXGroup;
 			children = (
+				F1E702992889C2D100EBB087 /* EditName */,
+				F1B365C72885CBEB0069788D /* EditAvatar */,
 				F1BFA96F2803A59F00F4E745 /* Components */,
 				F1BFA955280223BD00F4E745 /* UserProfileCoordinator.swift */,
 				F1BFA952280223BD00F4E745 /* UserProfileView.swift */,
@@ -1931,6 +1959,16 @@
 				F1D204F62864FADC006A5671 /* SyncInboxManager.swift */,
 			);
 			path = Inbox;
+			sourceTree = "<group>";
+		};
+		F1E702992889C2D100EBB087 /* EditName */ = {
+			isa = PBXGroup;
+			children = (
+				F1E7029A2889C2D100EBB087 /* EditProfileNameView.swift */,
+				F1E7029B2889C2D100EBB087 /* EditProfileNameCoordinator.swift */,
+				F1E7029C2889C2D100EBB087 /* EditProfileNameViewModel.swift */,
+			);
+			path = EditName;
 			sourceTree = "<group>";
 		};
 		F1F5F197283FE51F00968366 /* ChatRequest */ = {
@@ -2241,6 +2279,7 @@
 			files = (
 				B0FEDE5A28801D620030220A /* EncryptionService.swift in Sources */,
 				F1B5FCBC27C67DB00018729B /* WelcomeViewController.swift in Sources */,
+				F1B365CB2885CBEB0069788D /* EditProfileAvatarCoordinator.swift in Sources */,
 				F148564A284FD451003213D7 /* ChatInputView.swift in Sources */,
 				F1B93EEF28720DD5008DAA90 /* OldChatRepository.swift in Sources */,
 				F12A14E427D692DB0096543E /* RegisterViewController.swift in Sources */,
@@ -2254,12 +2293,14 @@
 				F12A14F027D912410096543E /* RequestAccessContactsViewModel.swift in Sources */,
 				F188627228169A3700659786 /* OfferInformationDetailView.swift in Sources */,
 				F12A14EB27D6B1CF0096543E /* RequestAccessPortraitView.swift in Sources */,
+				F1E7029F2889C2D100EBB087 /* EditProfileNameViewModel.swift in Sources */,
 				F1485628284FD0FB003213D7 /* InboxView.swift in Sources */,
 				F188621F28105A0A00659786 /* UserOffersCoordinator.swift in Sources */,
 				F1B93F002877721C008DAA90 /* ChatIdentityRevealCoordinator.swift in Sources */,
 				F1485648284FD451003213D7 /* ChatBubbleView.swift in Sources */,
 				F188627128169A3700659786 /* MarketplaceFilterView.swift in Sources */,
 				B08F392227AE7112008B344F /* UIColor+.swift in Sources */,
+				F1B365CD2885CBEB0069788D /* EditProfileAvatarView.swift in Sources */,
 				B0501BA02884B45E00A44E18 /* OfferManager.swift in Sources */,
 				B08F396A27AE7112008B344F /* URLRequest+.swift in Sources */,
 				F188627728169A3700659786 /* MarketplaceViewModel.swift in Sources */,
@@ -2331,6 +2372,7 @@
 				F1485654284FD5FD003213D7 /* ChatChallenge.swift in Sources */,
 				4FBF620E283CE3FB00DDBE71 /* OfferFilter.swift in Sources */,
 				F1485649284FD451003213D7 /* ChatDateView.swift in Sources */,
+				F1E7029D2889C2D100EBB087 /* EditProfileNameView.swift in Sources */,
 				F1B93ED7286D15D5008DAA90 /* OfferSource.swift in Sources */,
 				B08F397227AE7112008B344F /* Formatters.swift in Sources */,
 				F11441DF284681EC00307D39 /* Line.swift in Sources */,
@@ -2415,6 +2457,7 @@
 				B08F397E27AE7112008B344F /* UIViewController+.swift in Sources */,
 				F1485625284FD0FB003213D7 /* InboxFilterView.swift in Sources */,
 				F1D204EF2862AECB006A5671 /* ChatStartTextView.swift in Sources */,
+				F1B365CC2885CBEB0069788D /* EditProfileAvatarViewModel.swift in Sources */,
 				B08F396427AE7112008B344F /* UserError.swift in Sources */,
 				B007A7942878285800CFA5C9 /* ManagedInbox+.swift in Sources */,
 				F1A9453727F686D1009B5AE3 /* PhoneVerification.swift in Sources */,
@@ -2491,6 +2534,7 @@
 				B08F395B27AE7112008B344F /* Appearance.swift in Sources */,
 				B0F206F327AEA4C800A44E72 /* WindowCoordinator.swift in Sources */,
 				F1B93EF92873791E008DAA90 /* StoredChatUser.swift in Sources */,
+				F1E7029E2889C2D100EBB087 /* EditProfileNameCoordinator.swift in Sources */,
 				B0E9BB2A2815C7190012BF1D /* AES.swift in Sources */,
 				F1F5F199283FE52D00968366 /* ChatRequestCoordinator.swift in Sources */,
 				F1B93F11287879A3008DAA90 /* ChatIdentityRevealViewModel.swift in Sources */,
@@ -2665,7 +2709,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 102;
+				CURRENT_PROJECT_VERSION = 103;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = C6T557DX87;
 				ENABLE_PREVIEWS = YES;
@@ -2697,7 +2741,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 102;
+				CURRENT_PROJECT_VERSION = 103;
 				DEVELOPMENT_TEAM = SHD6TUKSPH;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
@@ -2780,7 +2824,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 102;
+				CURRENT_PROJECT_VERSION = 103;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = C6T557DX87;
 				ENABLE_PREVIEWS = YES;
@@ -2812,7 +2856,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 102;
+				CURRENT_PROJECT_VERSION = 103;
 				DEVELOPMENT_TEAM = SHD6TUKSPH;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
@@ -2954,7 +2998,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 102;
+				CURRENT_PROJECT_VERSION = 103;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = C6T557DX87;
 				ENABLE_BITCODE = YES;
@@ -2988,7 +3032,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 102;
+				CURRENT_PROJECT_VERSION = 103;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = C6T557DX87;
 				ENABLE_PREVIEWS = YES;
@@ -3020,7 +3064,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 102;
+				CURRENT_PROJECT_VERSION = 103;
 				DEVELOPMENT_TEAM = SHD6TUKSPH;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
@@ -3039,7 +3083,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 102;
+				CURRENT_PROJECT_VERSION = 103;
 				DEVELOPMENT_TEAM = SHD6TUKSPH;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
