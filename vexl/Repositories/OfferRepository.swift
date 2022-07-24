@@ -86,6 +86,16 @@ class OfferRepository: OfferRepositoryType {
                 }
                 let offer = ManagedOffer(context: context)
                 return payload.decrypt(context: context, userInbox: userInbox, into: offer)
+                    .flatMap { offer -> ManagedOffer in
+                        let profile = ManagedProfile(context: context)
+
+                        profile.avatar = UIImage(named: R.image.profile.avatar.name)?.pngData() // TODO: generate random avatar
+                        profile.name = Constants.randomName // TODO: generate random name
+
+                        offer.receiverPublicKey?.profile = profile
+
+                        return offer
+                    }
             }
         }
     }

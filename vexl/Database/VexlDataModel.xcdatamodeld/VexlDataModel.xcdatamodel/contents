@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="20086" systemVersion="21E258" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="ManagedChat" representedClassName="ManagedChat" syncable="YES" codeGenerationType="class">
+        <attribute name="id" optional="YES" attributeType="String"/>
+        <attribute name="isApproved" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="isRequesting" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="lastMessageDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <relationship name="inbox" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ManagedInbox" inverseName="chats" inverseEntity="ManagedInbox"/>
         <relationship name="messages" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ManagedMessage" inverseName="chat" inverseEntity="ManagedMessage"/>
         <relationship name="receiverKeyPair" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ManagedKeyPair" inverseName="chat" inverseEntity="ManagedKeyPair"/>
@@ -22,6 +26,7 @@
         <relationship name="syncItem" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ManagedSyncItem" inverseName="inbox" inverseEntity="ManagedSyncItem"/>
     </entity>
     <entity name="ManagedKeyPair" representedClassName="ManagedKeyPair" syncable="YES" codeGenerationType="class">
+        <attribute name="encryptedPrivateKey" optional="YES" attributeType="String"/>
         <attribute name="publicKey" optional="YES" attributeType="String"/>
         <relationship name="chat" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ManagedChat" inverseName="receiverKeyPair" inverseEntity="ManagedChat"/>
         <relationship name="inbox" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ManagedInbox" inverseName="keyPair" inverseEntity="ManagedInbox"/>
@@ -29,12 +34,12 @@
         <relationship name="profile" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ManagedProfile" inverseName="keyPair" inverseEntity="ManagedProfile"/>
     </entity>
     <entity name="ManagedMessage" representedClassName="ManagedMessage" syncable="YES" codeGenerationType="class">
-        <attribute name="contentType" optional="YES" attributeType="String"/>
+        <attribute name="contentTypeRawType" optional="YES" attributeType="String"/>
         <attribute name="id" optional="YES" attributeType="String"/>
         <attribute name="image" optional="YES" attributeType="String"/>
-        <attribute name="messageType" optional="YES" attributeType="String"/>
         <attribute name="text" optional="YES" attributeType="String"/>
         <attribute name="time" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="typeRawType" optional="YES" attributeType="String"/>
         <attribute name="userAvatar" optional="YES" attributeType="String"/>
         <attribute name="username" optional="YES" attributeType="String"/>
         <relationship name="chat" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ManagedChat" inverseName="messages" inverseEntity="ManagedChat"/>
@@ -81,20 +86,21 @@
         <relationship name="offer" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ManagedOffer" inverseName="syncItem" inverseEntity="ManagedOffer"/>
     </entity>
     <entity name="ManagedUser" representedClassName="ManagedUser" syncable="YES" codeGenerationType="class">
+        <attribute name="encryptedSignature" optional="YES" attributeType="String"/>
         <attribute name="userHash" optional="YES" attributeType="String"/>
         <attribute name="userId" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <relationship name="offers" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ManagedOffer" inverseName="user" inverseEntity="ManagedOffer"/>
         <relationship name="profile" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ManagedProfile" inverseName="currentUser" inverseEntity="ManagedProfile"/>
     </entity>
     <elements>
-        <element name="ManagedChat" positionX="-375.078125" positionY="-370.49609375" width="162.57421875" height="88"/>
-        <element name="ManagedContact" positionX="-920.40625" positionY="34.38671875" width="128" height="134"/>
+        <element name="ManagedChat" positionX="-334.3984375" positionY="-421.15625" width="162.57421875" height="148"/>
+        <element name="ManagedContact" positionX="-1060.67578125" positionY="-241.9453125" width="128" height="134"/>
         <element name="ManagedInbox" positionX="-562.71484375" positionY="-370.265625" width="128" height="118"/>
-        <element name="ManagedKeyPair" positionX="-343.20703125" positionY="-220.0234375" width="128" height="118"/>
-        <element name="ManagedMessage" positionX="-157.73828125" positionY="-369.1796875" width="128" height="178"/>
-        <element name="ManagedOffer" positionX="-803.05859375" positionY="-512.62109375" width="128" height="404"/>
+        <element name="ManagedKeyPair" positionX="-343.26171875" positionY="-227.74609375" width="128" height="133"/>
+        <element name="ManagedMessage" positionX="-116.65234375" positionY="-370.39453125" width="128" height="178"/>
+        <element name="ManagedOffer" positionX="-870.50390625" positionY="-571.98046875" width="128" height="404"/>
         <element name="ManagedProfile" positionX="-568.91015625" positionY="-80.58984375" width="128" height="148"/>
         <element name="ManagedSyncItem" positionX="-586.4140625" positionY="-573.5234375" width="128" height="74"/>
-        <element name="ManagedUser" positionX="-1029.0078125" positionY="-133.734375" width="165.6171875" height="103"/>
+        <element name="ManagedUser" positionX="-1013.984375" positionY="-50.265625" width="165.6171875" height="118"/>
     </elements>
 </model>

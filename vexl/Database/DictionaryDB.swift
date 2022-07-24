@@ -179,7 +179,7 @@ final class DictionaryDB {
             if let index = messages.firstIndex(where: { $0.id == message.id }) {
                 var response = message
                 response.messageTypeValue = isAccepted ? MessageType.revealApproval.rawValue : MessageType.revealRejected.rawValue
-                response.contentTypeValue = ParsedChatMessage.ContentType.anonymousRequestResponse.rawValue
+                response.contentTypeValue = ContentType.anonymousRequestResponse.rawValue
                 if !isAccepted {
                     response.user = nil
                 }

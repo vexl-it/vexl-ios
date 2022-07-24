@@ -7,6 +7,17 @@
 
 import Foundation
 
+enum ContentType: String {
+    case text = "TEXT"
+    case image = "IMAGE"
+    case anonymousRequest = "ANON_REQUEST"
+    case anonymousRequestResponse = "ANON_REQUEST_RESPONSE"
+    case communicationRequest = "COMMUNICATION_REQUEST"
+    case communicationRequestResponse = "COMMUNICATION_REQUEST_RESPONSE"
+    case deleteChat = "DELETE_CHAT"
+    case none
+}
+
 /// The struct used to contained the data that comes from the server using `EncryptedChatMessage`.
 /// This will be stored in the databased and used for populating the Inbox and Chat user interfaces.
 struct ParsedChatMessage: Codable {
@@ -169,7 +180,7 @@ extension ParsedChatMessage {
     }
 
     static func createMessage(text: String, image: String?, inboxPublicKey: String, contactInboxKey: String) -> ParsedChatMessage? {
-        let type: ParsedChatMessage.ContentType = image != nil ? .image : .text
+        let type: ContentType = image != nil ? .image : .text
         let parsedMessage = ParsedChatMessage(inboxPublicKey: inboxPublicKey,
                                               messageType: .message,
                                               contentType: type,
@@ -223,17 +234,6 @@ extension ParsedChatMessage {
 // MARK: - Enum and Structs
 
 extension ParsedChatMessage {
-
-    enum ContentType: String {
-        case text = "TEXT"
-        case image = "IMAGE"
-        case anonymousRequest = "ANON_REQUEST"
-        case anonymousRequestResponse = "ANON_REQUEST_RESPONSE"
-        case communicationRequest = "COMMUNICATION_REQUEST"
-        case communicationRequestResponse = "COMMUNICATION_REQUEST_RESPONSE"
-        case deleteChat = "DELETE_CHAT"
-        case none
-    }
 
     struct ChatUser: Codable {
         let name: String
