@@ -20,9 +20,11 @@ protocol InboxManagerType {
 }
 
 final class InboxManager: InboxManagerType {
+    @Inject var inboxRepository: InboxRepositoryType
     @Inject var cryptoService: CryptoServiceType
     @Inject var chatService: ChatServiceType
     @Inject var localStorageService: LocalStorageServiceType
+    @Inject var userRepository: UserRepositoryType
 
     var isSyncing: AnyPublisher<Bool, Never> {
         _syncActivity.loading
@@ -46,10 +48,10 @@ final class InboxManager: InboxManagerType {
     private var cancelBag = CancelBag()
 
     func syncInboxes() {
-
-        guard let inboxes = try? localStorageService.getInboxes(ofType: .created) else {
-            return
-        }
+        let userOfferInboxes = userRepository.user?.offers?.allObjects as? [ManagedInbox] ?? []
+        let userInbox = userRepository.user?.profile?.keyPair?.inbox
+        var inboxes = userOfferInboxes + [userInbox].compactMap { $0 }
+        inboxes = inboxes.filter { $0.syncItem == nil }
 
         let inboxPublishers = inboxes.map { inbox in
             self.syncInbox(inbox)
@@ -89,60 +91,74 @@ final class InboxManager: InboxManagerType {
             .store(in: cancelBag)
     }
 
-    private func syncInbox(_ inbox: ChatInbox) -> AnyPublisher<Result<[ParsedChatMessage], Error>, Error> {
+    private func syncInbox(_ inbox: ManagedInbox) -> AnyPublisher<Result<[ParsedChatMessage], Error>, Error> {
+        guard let inboxKeys = inbox.keyPair?.keys else {
+            return Fail(error: PersistenceError.insufficientData)
+                .eraseToAnyPublisher()
+        }
 
-        let challenge = requestChallenge(key: inbox.key)
+        let challenge = chatService.requestChallenge(publicKey: inboxKeys.publicKey)
+            .map { $0.challenge }
+            .eraseToAnyPublisher()
             .subscribe(on: DispatchQueue.global(qos: .background))
 
         let signature = challenge
-            .flatMapLatest(with: self) { owner, challenge -> AnyPublisher<String, Error> in
-                owner.signChallenge(keys: inbox.key, challenge: challenge)
+            .flatMapLatest { [cryptoService] challenge in
+                cryptoService.signECDSA(keys: inboxKeys, message: challenge)
             }
+            .eraseToAnyPublisher()
 
-        let pullChat = signature
-            .flatMapLatest(with: self) { owner, signature -> AnyPublisher<[EncryptedChatMessage], Error> in
-                owner.pullInboxMessage(inboxPublicKey: inbox.publicKey, signature: signature)
-            }
-
-        let saveMessages = pullChat
-            .flatMapLatest(with: self) { owner, encryptedMessages -> AnyPublisher<[ParsedChatMessage], Error> in
-                owner.saveFetchedMessages(encryptedMessages, inboxKeys: inbox.key)
-            }
-
-        let deleteChat = saveMessages
-            .flatMapLatest(with: self) { owner, parsedMessages -> AnyPublisher<[ParsedChatMessage], Error> in
-                owner.deleteMessages(inboxPublicKey: inbox.publicKey)
-                    .map { parsedMessages }
+        let encryptedMessages = signature
+            .flatMapLatest { [chatService] signature -> AnyPublisher<[EncryptedChatMessage], Error> in
+                chatService.pullInboxMessages(publicKey: inboxKeys.publicKey, signature: signature)
+                    .map(\.messages)
                     .eraseToAnyPublisher()
             }
+            .eraseToAnyPublisher()
+
+        let messagePayloads = encryptedMessages
+            .flatMap { messages in
+                messages.publisher
+                    .compactMap { ParsedChatMessage(chatMessage: $0, key: inboxKeys, inboxPublicKey: inboxKeys.publicKey) }
+                    .collect()
+            }
+            .eraseToAnyPublisher()
+
+        let deleteMessages = messagePayloads
+            .flatMap { [inboxRepository] payloads -> AnyPublisher<[ParsedChatMessage], Error> in
+                inboxRepository
+                    .deleteChats(recevedPayloads: payloads, inbox: inbox)
+                    .map { payloads }
+                    .eraseToAnyPublisher()
+            }
+            .eraseToAnyPublisher()
+
+        let saveMessages: AnyPublisher<[ParsedChatMessage], Error> = deleteMessages
+            .flatMap { [inboxRepository] payloads -> AnyPublisher<[ParsedChatMessage], Error> in
+                inboxRepository
+                    .createOrUpdateChats(receivedPayloads: payloads, inbox: inbox)
+                    .map { payloads }
+                    .eraseToAnyPublisher()
+            }
+            .eraseToAnyPublisher()
+
+        let deleteChat = saveMessages
+            .flatMap { [chatService] payloads in
+                chatService.deleteInboxMessages(publicKey: inboxKeys.publicKey)
+                    .map { payloads }
+            }
+            .eraseToAnyPublisher()
 
         return deleteChat
-            .map { .success($0) }
+            .map { Result.success($0) }
             .catch { _ in
-                Just(.failure(InboxError.inboxSyncFailed)).setFailureType(to: Error.self)
+                Just(Result.failure(InboxError.inboxSyncFailed)).setFailureType(to: Error.self)
                     .eraseToAnyPublisher()
             }
             .eraseToAnyPublisher()
     }
 
     // MARK: - Methods for syncing up the app messages with the server
-
-    private func requestChallenge(key: ECCKeys) -> AnyPublisher<String, Error> {
-        chatService.requestChallenge(publicKey: key.publicKey)
-            .map { $0.challenge }
-            .eraseToAnyPublisher()
-    }
-
-    private func signChallenge(keys: ECCKeys, challenge: String) -> AnyPublisher<String, Error> {
-        cryptoService.signECDSA(keys: keys, message: challenge)
-            .eraseToAnyPublisher()
-    }
-
-    private func pullInboxMessage(inboxPublicKey: String, signature: String) -> AnyPublisher<[EncryptedChatMessage], Error> {
-        chatService.pullInboxMessages(publicKey: inboxPublicKey, signature: signature)
-            .map(\.messages)
-            .eraseToAnyPublisher()
-    }
 
     private func saveFetchedMessages(_ messages: [EncryptedChatMessage],
                                      inboxKeys: ECCKeys) -> AnyPublisher<[ParsedChatMessage], Error> {
