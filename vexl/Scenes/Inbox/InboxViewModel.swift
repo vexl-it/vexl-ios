@@ -18,7 +18,6 @@ final class InboxViewModel: ViewModelType, ObservableObject {
 
     // MARK: - Persistence Bindings
 
-    // TODO: fetch only chats that conforms to 'isApproved == true' and sort them by date last message date
     @Fetched(
         fetchImmediately: false,
         sortDescriptors: [ NSSortDescriptor(key: "lastMessageDate", ascending: false) ]
