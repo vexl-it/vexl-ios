@@ -8,9 +8,10 @@
 import Foundation
 import CoreData
 import Combine
+import UIKit
 
 protocol OfferRepositoryType {
-    func createOffer(provider: @escaping (ManagedOffer) -> Void) -> AnyPublisher<ManagedOffer, Error>
+    func createOffer(keys: ECCKeys, provider: @escaping (ManagedOffer) -> Void) -> AnyPublisher<ManagedOffer, Error>
 
     func update(offer: ManagedOffer, provider: @escaping (ManagedOffer) -> Void) -> AnyPublisher<ManagedOffer, Error>
 
@@ -27,14 +28,12 @@ class OfferRepository: OfferRepositoryType {
     @Inject private var persistence: PersistenceStoreManagerType
     @Inject private var userRepository: UserRepositoryType
 
-    func createOffer(provider: @escaping (ManagedOffer) -> Void) -> AnyPublisher<ManagedOffer, Error> {
+    func createOffer(keys: ECCKeys, provider: @escaping (ManagedOffer) -> Void) -> AnyPublisher<ManagedOffer, Error> {
         persistence.insert(context: persistence.viewContext) { [userRepository] context in
 
             let offer = ManagedOffer(context: context)
             let inbox = ManagedInbox(context: context)
             let keyPair = ManagedKeyPair(context: context)
-
-            let keys = ECCKeys()
 
             keyPair.publicKey = keys.publicKey
             keyPair.privateKey = keys.privateKey

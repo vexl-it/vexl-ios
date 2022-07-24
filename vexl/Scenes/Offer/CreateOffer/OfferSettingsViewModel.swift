@@ -295,9 +295,9 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
 
         action
             .filter { $0 == .createOffer }
-            .map { _ in ECCKeys() }
+            .asVoid()
             .withUnretained(self)
-            .flatMap { owner, keys -> AnyPublisher<ManagedOffer, Never> in
+            .flatMap { owner -> AnyPublisher<ManagedOffer, Never> in
                 let provider: (ManagedOffer) -> Void = { [weak self] offer in
                     guard let owner = self else { return }
                     offer.id = nil
@@ -327,7 +327,7 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
                         .eraseToAnyPublisher()
                 } else {
                     return owner.offerRepository
-                        .createOffer(provider: provider)
+                        .createOffer(keys: owner.offerKey, provider: provider)
                         .materialize()
                         .compactMap(\.value)
                         .eraseToAnyPublisher()
