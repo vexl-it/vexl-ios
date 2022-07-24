@@ -9,7 +9,7 @@ import Foundation
 import Combine
 import Cleevio
 
-protocol ChatRepositoryType {
+protocol OldChatRepositoryType {
     var dismissAction: ActionSubject<Void> { get set }
 
     func getContactIdentity(inboxKeys: ECCKeys, contactPublicKey: String) -> AnyPublisher<ParsedChatMessage.ChatUser, Error>
@@ -25,7 +25,7 @@ protocol ChatRepositoryType {
                      updateInbox: Bool) -> AnyPublisher<Void, Never>
 }
 
-final class ChatRepository: ChatRepositoryType {
+final class OldChatRepository: OldChatRepositoryType {
 
     @Inject private var chatService: ChatServiceType
     @Inject private var cryptoService: CryptoServiceType

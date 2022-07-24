@@ -16,7 +16,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
     @Inject var chatService: ChatServiceType
     @Inject var cryptoService: CryptoServiceType
     @Inject var inboxManager: InboxManagerType
-    @Inject var chatRepository: ChatRepositoryType
+    @Inject var chatRepository: OldChatRepositoryType
 
     enum ImageSource {
         case photoAlbum, camera
