@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ProfilePhoneContactsView: View {
 
-    @ObservedObject var viewModel: ImportContactsProfileViewModel
+    @ObservedObject var viewModel: ProfilePhoneContactsViewModel
 
     var body: some View {
         VStack {

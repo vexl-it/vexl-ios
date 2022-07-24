@@ -9,7 +9,7 @@ import Foundation
 import Cleevio
 import Combine
 
-final class ProfilePhoneContactsViewModel: ImportContactsViewModel {
+final class ProfileImportPhonesViewModel: ImportContactsViewModel {
 
     override var actionTitle: String {
         L.registerContactsUpdateButton()
@@ -60,7 +60,7 @@ final class ProfilePhoneContactsViewModel: ImportContactsViewModel {
     }
 }
 
-final class ImportContactsProfileViewModel: ViewModelType, ObservableObject {
+final class ProfilePhoneContactsViewModel: ViewModelType, ObservableObject {
 
     enum UserAction: Equatable {
         case dismissTap
@@ -88,7 +88,7 @@ final class ImportContactsProfileViewModel: ViewModelType, ObservableObject {
     }
 
     var route: CoordinatingSubject<Route> = .init()
-    var importContactViewModel = ProfilePhoneContactsViewModel()
+    var importContactViewModel = ProfileImportPhonesViewModel()
 
     // MARK: - Variables
 

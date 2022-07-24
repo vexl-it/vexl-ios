@@ -20,7 +20,7 @@ final class ProfilePhoneContactsCoordinator: BaseCoordinator<RouterResult<Void>>
     }
 
     override func start() -> CoordinatingResult<RouterResult<Void>> {
-        let viewModel = ImportContactsProfileViewModel()
+        let viewModel = ProfilePhoneContactsViewModel()
         let viewController = BaseViewController(rootView: ProfilePhoneContactsView(viewModel: viewModel))
         router.present(viewController, animated: animated)
 
