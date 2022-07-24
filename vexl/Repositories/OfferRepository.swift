@@ -45,6 +45,7 @@ class OfferRepository: OfferRepositoryType {
             offer.inbox = inbox
 
             provider(offer)
+
             offer.syncItem = ManagedSyncItem(context: context)
             offer.syncItem?.type = .insert
             offer.user = userRepository.getUser(for: context)
@@ -158,7 +159,7 @@ class OfferRepository: OfferRepositoryType {
                 predicate: NSPredicate(format: "%@ contains[cd] id", NSArray(array: ids))
             )
             .flatMap { [persistence] offers -> AnyPublisher<Void, Error> in
-                persistence.delete(context: context, editor: { offers })
+                persistence.delete(context: context, editor: { _ in offers })
             }
             .eraseToAnyPublisher()
     }

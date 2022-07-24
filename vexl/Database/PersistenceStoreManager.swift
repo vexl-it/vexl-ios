@@ -44,7 +44,7 @@ protocol PersistenceStoreManagerType {
     func update<T: NSManagedObject>(context: NSManagedObjectContext, editor: @escaping (NSManagedObjectContext) -> T) -> AnyPublisher<T, Error>
 
     func delete<T: NSManagedObject>(context: NSManagedObjectContext, object: T) -> AnyPublisher<Void, Error>
-    func delete<T: NSManagedObject>(context: NSManagedObjectContext, editor: @escaping () -> [T]) -> AnyPublisher<Void, Error>
+    func delete<T: NSManagedObject>(context: NSManagedObjectContext, editor: @escaping (NSManagedObjectContext) -> [T]) -> AnyPublisher<Void, Error>
 }
 
 // swiftlint:disable:next file_types_order
@@ -74,7 +74,7 @@ extension PersistenceStoreManagerType {
     }
 
     func delete<T: NSManagedObject>(context: NSManagedObjectContext, object: T) -> AnyPublisher<Void, Error> {
-        delete(context: context, editor: { [object] })
+        delete(context: context, editor: { _ in [object] })
     }
 }
 
@@ -274,10 +274,10 @@ final class PersistenceStoreManager: PersistenceStoreManagerType {
         .eraseToAnyPublisher()
     }
 
-    func delete<T: NSManagedObject>(context: NSManagedObjectContext, editor: @escaping () -> [T]) -> AnyPublisher<Void, Error> {
+    func delete<T: NSManagedObject>(context: NSManagedObjectContext, editor: @escaping (NSManagedObjectContext) -> [T]) -> AnyPublisher<Void, Error> {
         Future { promise in
             context.perform {
-                editor().forEach(context.delete)
+                editor(context).forEach(context.delete)
                 promise(.success(()))
             }
         }
