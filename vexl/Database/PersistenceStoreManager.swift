@@ -113,26 +113,27 @@ final class PersistenceStoreManager: PersistenceStoreManagerType {
     func newBackgroundContext() -> NSManagedObjectContext {
         let context = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
         context.parent = primaryBackgroundContext
-        NotificationCenter.default.addObserver(
-            forName: NSNotification.Name.NSManagedObjectContextDidSave,
-            object: nil,
-            queue: nil,
-            using: { [context, weak viewContext, weak primaryBackgroundContext] notification in
-                guard let viewContext = viewContext,
-                    let primaryBackgroundContext = primaryBackgroundContext,
-                    let notificationContext = notification.object as? NSManagedObjectContext else {
-                    return
-                }
-                switch notificationContext {
-                case viewContext, primaryBackgroundContext:
-                    context.mergeChanges(fromContextDidSave: notification)
-                case context:
-                    viewContext.mergeChanges(fromContextDidSave: notification)
-                default:
-                    break
-                }
-            }
-        )
+        // TODO: synchronize beckground contexts when possible
+//        NotificationCenter.default.addObserver(
+//            forName: NSNotification.Name.NSManagedObjectContextDidSave,
+//            object: nil,
+//            queue: nil,
+//            using: { [context, weak viewContext, weak primaryBackgroundContext] notification in
+//                guard let viewContext = viewContext,
+//                    let primaryBackgroundContext = primaryBackgroundContext,
+//                    let notificationContext = notification.object as? NSManagedObjectContext else {
+//                    return
+//                }
+//                switch notificationContext {
+//                case viewContext, primaryBackgroundContext:
+//                    context.mergeChanges(fromContextDidSave: notification)
+//                case context:
+//                    viewContext.mergeChanges(fromContextDidSave: notification)
+//                default:
+//                    break
+//                }
+//            }
+//        )
         return context
     }
 

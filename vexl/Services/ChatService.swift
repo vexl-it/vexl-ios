@@ -61,25 +61,15 @@ final class ChatService: BaseService, ChatServiceType {
     }
 
     func requestCommunication(inboxPublicKey: String, message: String) -> AnyPublisher<Void, Error> {
-        Future<Void, Error> { [localStorageService] promise in
-            do {
-                try localStorageService.saveInbox(ChatInbox(publicKey: inboxPublicKey, type: .requested))
-                promise(.success(()))
-            } catch {
-                promise(.failure(LocalStorageError.saveFailed))
-            }
-        }
-        .flatMapLatest(with: self) { _, _ in
-            // TODO: [vexl chat encryption] Uncomment this when enabling encryption on chat service
+        // TODO: [vexl chat encryption] Uncomment this when enabling encryption on chat service
 //            owner.cryptoService
 //                .encryptECIES(publicKey: inboxPublicKey, secret: message)
-            Just(message)
-                .setFailureType(to: Error.self)
-        }
-        .flatMapLatest(with: self) { owner, encryptedMessage in
-            owner.request(endpoint: ChatRouter.request(inboxPublicKey: inboxPublicKey, message: encryptedMessage))
-        }
-        .eraseToAnyPublisher()
+        Just(message)
+            .setFailureType(to: Error.self)
+            .flatMapLatest(with: self) { owner, encryptedMessage in
+                owner.request(endpoint: ChatRouter.request(inboxPublicKey: inboxPublicKey, message: encryptedMessage))
+            }
+            .eraseToAnyPublisher()
     }
 
     func communicationConfirmation(confirmation: Bool,
@@ -167,7 +157,8 @@ final class ChatService: BaseService, ChatServiceType {
     // MARK: - Storage
 
     func getStoredInboxMessages() -> AnyPublisher<[ChatInboxMessage], Error> {
-        localStorageService.getInboxMessages()
+        // TODO: get rid of this method
+        return Just([]).setFailureType(to: Error.self).eraseToAnyPublisher()
     }
 
     func getStoredRequestMessages() -> AnyPublisher<[ParsedChatMessage], Error> {
@@ -269,8 +260,8 @@ extension ChatService {
             return Just(()).setFailureType(to: Error.self)
                 .eraseToAnyPublisher()
         }
-
-        return localStorageService.saveInboxMessage(displayMessage, inboxKeys: inboxKeys)
+        // TODO: get rid of this method
+        return Just(()).setFailureType(to: Error.self).eraseToAnyPublisher()
     }
 
     private func saveCommunicationRequest(_ message: ParsedChatMessage, inboxPublicKey: String) -> AnyPublisher<Void, Error> {
@@ -288,18 +279,16 @@ extension ChatService {
                 }
             }
             .flatMapLatest(with: self) { owner, _ -> AnyPublisher<Void, Error> in
-                if isConfirmed {
-                    return owner.localStorageService.saveInboxMessage(message, inboxKeys: inboxKeys)
-                } else {
-                    return Just(()).setFailureType(to: Error.self)
+                // TODO: get rid of this method
+                return Just(()).setFailureType(to: Error.self)
                         .eraseToAnyPublisher()
-                }
             }
             .eraseToAnyPublisher()
     }
 
     private func saveAcceptedRequest(_ message: ParsedChatMessage, inboxKeys: ECCKeys) -> AnyPublisher<Void, Error> {
-        localStorageService.saveInboxMessage(message, inboxKeys: inboxKeys)
+        // TODO: get rid of this method
+        return Just(()).setFailureType(to: Error.self).eraseToAnyPublisher()
     }
 
     private func deleteMessageRequest(_ messages: [ParsedChatMessage], inboxKey: ECCKeys) -> AnyPublisher<Void, Error> {

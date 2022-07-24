@@ -45,9 +45,7 @@ final class UserRepository: UserRepositoryType {
     private lazy var context: NSManagedObjectContext = persistenceManager.viewContext
 
     func createNewUser(newKeys: ECCKeys, signature: String?, hash: String?) -> AnyPublisher<ManagedUser, Error> {
-        persistenceManager.insert(context: persistenceManager.viewContext) { context in
-            Keychain.standard[.privateKey(publicKey: newKeys.publicKey)] = newKeys.privateKey
-            Keychain.standard[.userSignature] = signature
+        persistenceManager.insert(context: persistenceManager.newEditContext()) { context in
 
             let keyPair = ManagedKeyPair(context: context)
             let profile = ManagedProfile(context: context)
@@ -61,6 +59,7 @@ final class UserRepository: UserRepositoryType {
             profile.keyPair = keyPair
             user.profile = profile
             user.userHash = hash
+            user.signature = signature
 
             return user
         }

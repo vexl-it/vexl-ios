@@ -16,13 +16,6 @@ enum LocalStorageError: Error {
 // TODO: Remove this class when possible
 protocol LocalStorageServiceType {
 
-    // MARK: - Inbox and Message cache
-
-    func saveInbox(_ inbox: ChatInbox) throws
-    func getInboxes(ofType type: ChatInbox.InboxType) throws -> [ChatInbox]
-    func saveInboxMessage(_ message: ParsedChatMessage, inboxKeys: ECCKeys) -> AnyPublisher<Void, Error>
-    func getInboxMessages() -> AnyPublisher<[ChatInboxMessage], Error>
-
     // MARK: - Messages
 
     func saveMessages(_ messages: [ParsedChatMessage]) -> AnyPublisher<Void, Error>
@@ -44,41 +37,6 @@ protocol LocalStorageServiceType {
 }
 
 final class LocalStorageService: LocalStorageServiceType {
-
-    // MARK: - Inbox and Message cache
-
-    func saveInbox(_ inbox: ChatInbox) throws {
-        switch inbox.type {
-        case .created:
-            DictionaryDB.saveCreatedInbox(inbox)
-        case .requested:
-            DictionaryDB.saveRequestedInbox(inbox)
-        }
-    }
-
-    func getInboxes(ofType type: ChatInbox.InboxType) throws -> [ChatInbox] {
-        switch type {
-        case .created:
-            return DictionaryDB.getCreatedInboxes()
-        case .requested:
-            return DictionaryDB.getRequestedInboxes()
-        }
-    }
-
-    func saveInboxMessage(_ message: ParsedChatMessage, inboxKeys: ECCKeys) -> AnyPublisher<Void, Error> {
-        Future { promise in
-            DictionaryDB.saveInboxMessages(message, inboxKeys: inboxKeys, contactPublicKey: message.contactInboxKey)
-            promise(.success(()))
-        }
-        .eraseToAnyPublisher()
-    }
-
-    func getInboxMessages() -> AnyPublisher<[ChatInboxMessage], Error> {
-        Future { promise in
-            promise(.success(DictionaryDB.getInboxMessages()))
-        }
-        .eraseToAnyPublisher()
-    }
 
     // MARK: - Messages
 
