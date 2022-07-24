@@ -9,10 +9,6 @@ import Foundation
 import Cleevio
 import Combine
 
-private typealias OfferKeyAndType = (offerKey: String, offerType: OfferType)
-private typealias OfferAndMessage = (offers: [OfferKeyAndType], messages: [ChatInboxMessage])
-private typealias OfferMessagesAndUsers = (offers: [OfferKeyAndType], messages: [ChatInboxMessage], users: [StoredChatUser])
-
 final class InboxViewModel: ViewModelType, ObservableObject {
 
     // MARK: - Dependency Bindings
