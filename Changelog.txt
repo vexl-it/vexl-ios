@@ -1,8 +1,7 @@
-- Requires uninstall: NO
+- Requires uninstall: ⚠️ YES ⚠️
 
 ### Improvements
-- Added offers to Marketplace screen
-- Users can now create a Buy Offer
+- Persistence now supported in the 
 
 ### Fixes
 
