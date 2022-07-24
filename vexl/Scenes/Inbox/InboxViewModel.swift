@@ -15,10 +15,22 @@ private typealias OfferMessagesAndUsers = (offers: [OfferKeyAndType], messages: 
 
 final class InboxViewModel: ViewModelType, ObservableObject {
 
+    // MARK: - Dependency Bindings
+
     @Inject var inboxManager: InboxManagerType
-    @Inject var offerService: OfferServiceType
-    @Inject var offerRepository: OfferRepositoryType
     @Inject var chatService: ChatServiceType
+
+    // MARK: - Persistence Bindings
+
+    // TODO: fetch only chats that conforms to 'isApproved == true' and sort them by date last message date
+    @Fetched(
+        fetchImmediately: false,
+        sortDescriptors: [ NSSortDescriptor(key: "lastMessageDate", ascending: false) ]
+    )
+    var chats: [ManagedChat]
+
+    @Fetched(predicate: NSPredicate(format: "isRequesting == true AND isApproved == false"))
+    var requests: [ManagedChat]
 
     // MARK: - Action Binding
 
@@ -59,73 +71,21 @@ final class InboxViewModel: ViewModelType, ObservableObject {
         setupActionBindings()
         setupInboxBindings()
         setupRequestBindings()
+        action.send(.selectFilter(option: .all))
     }
 
     private func setupRequestBindings() {
-        chatService
-            .getStoredRequestMessages()
-            .track(activity: primaryActivity)
-            .materialize()
-            .compactMap(\.value)
-            .withUnretained(self)
-            .sink { owner, requests in
-                owner.hasPendingRequests = !requests.isEmpty
-            }
-            .store(in: cancelBag)
+        $requests.publisher
+            .map(\.objects.count)
+            .map { $0 > 0 }
+            .assign(to: &$hasPendingRequests)
     }
 
     private func setupInboxBindings() {
-        inboxManager.inboxMessages
-            .withUnretained(self)
-            .flatMap { owner, chatInboxMessages in
-                owner.offerRepository
-                    .getOffers(fromType: nil, fromSource: nil)
-                    .materialize()
-                    .compactMap(\.value)
-                    .map { (offers: [ManagedOffer]) -> OfferAndMessage in
-                        let offerKeyAndTypes = offers.compactMap { offer -> OfferKeyAndType? in
-                            guard let publicKey = offer.inbox?.keyPair?.publicKey, let offerType = offer.type else {
-                                return nil
-                            }
-                            return OfferKeyAndType(offerKey: publicKey, offerType: offerType)
-                        }
-                        return OfferAndMessage(offers: offerKeyAndTypes, messages: chatInboxMessages)
-                    }
-                    .eraseToAnyPublisher()
-            }
-            .withUnretained(self)
-            .flatMap { owner, offerAndMessages in
-                owner.chatService
-                    .getStoredContactIdentities()
-                    .materialize()
-                    .compactMap(\.value)
-                    .map { OfferMessagesAndUsers(offers: offerAndMessages.offers, messages: offerAndMessages.messages, users: $0) }
-                    .eraseToAnyPublisher()
-            }
-            .withUnretained(self)
-            .sink(receiveCompletion: { _ in },
-                  receiveValue: { owner, offerMessagesAndUsers in
-                let chatInboxMessages = offerMessagesAndUsers.messages
-                let offerKeyAndTypes = offerMessagesAndUsers.offers
-                let users = offerMessagesAndUsers.users
-
-                owner.inboxItems = chatInboxMessages.map { chatInbox -> InboxItem in
-                    let offerType = offerKeyAndTypes.first(where: {
-                        $0.offerKey == chatInbox.message.inboxKey || $0.offerKey == chatInbox.message.contactInboxKey
-                    })?.offerType
-
-                    let user = users.first(where: {
-                        $0.inboxPublicKey == chatInbox.message.inboxKey && $0.contactPublicKey == chatInbox.message.contactInboxKey
-                    })
-
-                    return InboxItem(avatar: user?.avatar?.dataFromBase64,
-                                     username: user?.username ?? Constants.randomName,
-                                     detail: chatInbox.message.previewText,
-                                     time: Formatters.chatDateFormatter.string(from: Date(timeIntervalSince1970: chatInbox.message.time)),
-                                     offerType: offerType)
-                }
-            })
-            .store(in: cancelBag)
+        $chats.publisher
+            .map(\.objects)
+            .map { $0.map(InboxItem.init) }
+            .assign(to: &$inboxItems)
     }
 
     private func setupActionBindings() {
@@ -139,12 +99,18 @@ final class InboxViewModel: ViewModelType, ObservableObject {
             .subscribe(route)
             .store(in: cancelBag)
 
-        action
+        self.action
             .compactMap { action -> InboxFilterOption? in
                 if case let .selectFilter(option) = action { return option }
                 return nil
             }
-            .assign(to: &$filter)
+            .withUnretained(self)
+            .sink { owner, filter in
+                var predicate = NSPredicate(format: "isRequesting == false AND isApproved == true")
+                predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate, filter.chatPredicate].compactMap { $0 })
+                owner.$chats.load(predicate: predicate)
+            }
+            .store(in: cancelBag)
 
         action
             .compactMap { action -> String? in
@@ -153,7 +119,8 @@ final class InboxViewModel: ViewModelType, ObservableObject {
             }
             .withUnretained(self)
             .sink(receiveValue: { owner, id in
-                guard let index = owner.inboxItems.firstIndex(where: { $0.id.uuidString == id }) else {
+                guard let index = owner.inboxItems.firstIndex(where: { $0.id == id }),
+                      index < owner.inboxManager.currentInboxMessages.count else {
                     return
                 }
                 let chatInboxMessage = owner.inboxManager.currentInboxMessages[index]

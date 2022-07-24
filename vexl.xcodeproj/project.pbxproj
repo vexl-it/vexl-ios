@@ -57,6 +57,8 @@
 		B01C01E62860B2C400A29F85 /* CoinChartData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B01C01E52860B2C400A29F85 /* CoinChartData.swift */; };
 		B01C01E92860D2CD00A29F85 /* ContentState.swift in Sources */ = {isa = PBXBuildFile; fileRef = B01C01E82860D2CD00A29F85 /* ContentState.swift */; };
 		B01C01ED2862F06D00A29F85 /* Currency.swift in Sources */ = {isa = PBXBuildFile; fileRef = B01C01EC2862F06D00A29F85 /* Currency.swift */; };
+		B03910652889D9E20034358C /* InboxRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = B03910642889D9E20034358C /* InboxRepository.swift */; };
+		B03910672889E6D80034358C /* ChatManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B03910662889E6D80034358C /* ChatManager.swift */; };
 		B03910692889E9F90034358C /* ChatRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = B03910682889E9F90034358C /* ChatRepository.swift */; };
 		B03BC6FD287B4A8600E355D3 /* OfferRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = B03BC6FC287B4A8600E355D3 /* OfferRepository.swift */; };
 		B03BC701287B500F00E355D3 /* SyncQueueManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B03BC700287B500F00E355D3 /* SyncQueueManager.swift */; };
@@ -413,6 +415,8 @@
 		B01C01EC2862F06D00A29F85 /* Currency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Currency.swift; sourceTree = "<group>"; };
 		B021E2F327FF5AA300D186EC /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		B021E2F927FF5B5100D186EC /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		B03910642889D9E20034358C /* InboxRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InboxRepository.swift; sourceTree = "<group>"; };
+		B03910662889E6D80034358C /* ChatManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatManager.swift; sourceTree = "<group>"; };
 		B03910682889E9F90034358C /* ChatRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRepository.swift; sourceTree = "<group>"; };
 		B03BC6FC287B4A8600E355D3 /* OfferRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferRepository.swift; sourceTree = "<group>"; };
 		B03BC700287B500F00E355D3 /* SyncQueueManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncQueueManager.swift; sourceTree = "<group>"; };
@@ -828,6 +832,7 @@
 				B007A74A2871EB2900CFA5C9 /* UserRepository.swift */,
 				B007A7952878DFC600CFA5C9 /* ContactsRepository.swift */,
 				B03BC6FC287B4A8600E355D3 /* OfferRepository.swift */,
+				B03910642889D9E20034358C /* InboxRepository.swift */,
 				B03910682889E9F90034358C /* ChatRepository.swift */,
 				F1B93EEE28720DD5008DAA90 /* OldChatRepository.swift */,
 			);
@@ -1041,6 +1046,7 @@
 				B03BC700287B500F00E355D3 /* SyncQueueManager.swift */,
 				B03BC704287B56CC00E355D3 /* NetworkManager.swift */,
 				B0501B9F2884B45E00A44E18 /* OfferManager.swift */,
+				B03910662889E6D80034358C /* ChatManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -2337,6 +2343,7 @@
 				F1B3010F287A53C900C86F83 /* ChatConversationViewModel.swift in Sources */,
 				4F700CBE2844C4C20085139F /* StickyBitcoinView.swift in Sources */,
 				F188626128129ED600659786 /* OfferTriggersView.swift in Sources */,
+				B03910672889E6D80034358C /* ChatManager.swift in Sources */,
 				F1BFA958280223BD00F4E745 /* UserProfileViewModel+Options.swift in Sources */,
 				F11441E2284681EC00307D39 /* InfoBarView.swift in Sources */,
 				B007A73328659AC100CFA5C9 /* BottomActionSheetViewModel.swift in Sources */,
@@ -2425,6 +2432,7 @@
 				F11441CC284681EC00307D39 /* DottedButton.swift in Sources */,
 				F1B93EDA286D6671008DAA90 /* VexlDataModel.xcdatamodeld in Sources */,
 				F188627928169A7400659786 /* MarketplaceView.swift in Sources */,
+				B03910652889D9E20034358C /* InboxRepository.swift in Sources */,
 				B08F397C27AE7112008B344F /* SwipeNavigationController.swift in Sources */,
 				4FBF620B283CE08800DDBE71 /* OfferAmountRangeView.swift in Sources */,
 				F13B265C281897DE0011F2FB /* OfferAdvanceFilterFriendDegreeView.swift in Sources */,

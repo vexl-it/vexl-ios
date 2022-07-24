@@ -24,6 +24,17 @@ struct InboxFilterView: View {
                 return L.chatFilterSell()
             }
         }
+
+        var chatPredicate: NSPredicate? {
+            switch self {
+            case .buy:
+                return NSPredicate(format: "receiverKeyPair.offer.offerTypeRawType == '\(OfferType.buy.rawValue)'")
+            case .sell:
+                return NSPredicate(format: "receiverKeyPair.offer.offerTypeRawType == '\(OfferType.sell.rawValue)'")
+            case .all:
+                return nil
+            }
+        }
     }
 
     @Binding var selectedOption: Option

@@ -6,12 +6,13 @@
 //
 
 import SwiftUI
+import Cleevio
 
 typealias InboxItem = InboxItemView.ViewData
 
 struct InboxItemView: View {
 
-    var data: ViewData
+    @ObservedObject var data: ViewData
 
     private var offerLabel: String {
         guard let offerType = data.offerType else {
@@ -62,12 +63,40 @@ struct InboxItemView: View {
 
 extension InboxItemView {
 
-    struct ViewData: Identifiable, Hashable {
-        let id = UUID()
-        let avatar: Data?
-        let username: String
-        let detail: String
-        let time: String
-        let offerType: OfferType?
+    final class ViewData: Identifiable, Hashable, ObservableObject {
+        static func == (lhs: InboxItemView.ViewData, rhs: InboxItemView.ViewData) -> Bool {
+            lhs.id == rhs.id
+        }
+
+        let chat: ManagedChat
+
+        @Published private var lastMessage: ManagedMessage?
+
+        var id: String { chat.id ?? UUID().uuidString }
+        var avatar: Data? { chat.receiverKeyPair?.profile?.avatar }
+        var username: String { chat.receiverKeyPair?.profile?.name ?? Constants.randomName }
+        var detail: String { lastMessage?.text ?? "" }
+        var time: String { lastMessage?.formatedDate ?? "" }
+        var offerType: OfferType? { chat.receiverKeyPair?.offer?.type }
+
+        private var cancelBag: CancelBag = .init()
+
+        init(chat: ManagedChat) {
+            self.chat = chat
+
+            chat
+                .publisher(for: \.messages)
+                .map { messages in
+                    messages?
+                        .sortedArray(
+                            using: [ NSSortDescriptor(key: "time", ascending: true) ]
+                        ).last as? ManagedMessage
+                }
+                .assign(to: &$lastMessage)
+        }
+
+        func hash(into hasher: inout Hasher) {
+            hasher.combine(id)
+        }
     }
 }
