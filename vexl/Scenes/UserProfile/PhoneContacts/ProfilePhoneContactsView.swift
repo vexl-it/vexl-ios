@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ImportContactsProfileView: View {
+struct ProfilePhoneContactsView: View {
 
     @ObservedObject var viewModel: ImportContactsProfileViewModel
 
@@ -23,7 +23,7 @@ struct ImportContactsProfileView: View {
 
 struct ImportContactsProfileViewPreview: PreviewProvider {
     static var previews: some View {
-        ImportContactsProfileView(viewModel: .init())
+        ProfilePhoneContactsView(viewModel: .init())
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .previewDevice("iPhone 11")
     }

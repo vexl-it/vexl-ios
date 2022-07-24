@@ -9,7 +9,7 @@ import Foundation
 import Cleevio
 import Combine
 
-final class ImportPhoneContactsProfileViewModel: ImportContactsViewModel {
+final class ProfilePhoneContactsViewModel: ImportContactsViewModel {
 
     override var actionTitle: String {
         L.registerContactsUpdateButton()
@@ -88,7 +88,7 @@ final class ImportContactsProfileViewModel: ViewModelType, ObservableObject {
     }
 
     var route: CoordinatingSubject<Route> = .init()
-    var importContactViewModel = ImportPhoneContactsProfileViewModel()
+    var importContactViewModel = ProfilePhoneContactsViewModel()
 
     // MARK: - Variables
 
