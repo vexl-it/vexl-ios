@@ -63,10 +63,6 @@ struct InboxItemView: View {
 extension InboxItemView {
 
     final class ViewData: Identifiable, Hashable, ObservableObject {
-        static func == (lhs: InboxItemView.ViewData, rhs: InboxItemView.ViewData) -> Bool {
-            lhs.id == rhs.id
-        }
-
         let chat: ManagedChat
 
         @Published private var lastMessage: ManagedMessage?
@@ -94,6 +90,10 @@ extension InboxItemView {
 
         func hash(into hasher: inout Hasher) {
             hasher.combine(id)
+        }
+
+        static func == (lhs: InboxItemView.ViewModel, rhs: InboxItemView.ViewModel) -> Bool {
+            lhs.id == rhs.id
         }
     }
 }
