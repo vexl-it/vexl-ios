@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import Cleevio
 
 typealias InboxItem = InboxItemView.ViewData
 
@@ -78,8 +77,6 @@ extension InboxItemView {
         var detail: String { lastMessage?.text ?? "" }
         var time: String { lastMessage?.formatedDate ?? "" }
         var offerType: OfferType? { chat.receiverKeyPair?.offer?.type }
-
-        private var cancelBag: CancelBag = .init()
 
         init(chat: ManagedChat) {
             self.chat = chat
