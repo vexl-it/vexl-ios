@@ -68,5 +68,10 @@ class ManagerAssembly: Assembly {
             OfferManager()
         }
         .inObjectScope(.container)
+
+        container.register(ChatManagerType.self) { _ in
+            ChatManager()
+        }
+        .inObjectScope(.container)
     }
 }

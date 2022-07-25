@@ -13,7 +13,7 @@ struct OfferItemView: View {
         static let editOfferButtonHeight: CGFloat = 48
     }
 
-    let data: OfferDetailViewData
+    @ObservedObject var data: OfferDetailViewData
     let editOfferAction: () -> Void
 
     var body: some View {

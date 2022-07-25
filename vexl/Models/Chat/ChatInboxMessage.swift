@@ -10,5 +10,5 @@ import Foundation
 struct ChatInboxMessage: Codable {
     let inbox: ECCKeys
     let contactInbox: String
-    let message: ParsedChatMessage
+    let message: MessagePayload
 }

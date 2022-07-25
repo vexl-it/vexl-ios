@@ -11,7 +11,7 @@ import SwiftUI
 typealias OfferDetailViewData = OfferInformationDetailView.ViewData
 
 struct OfferInformationDetailView: View {
-    let data: ViewData
+    @ObservedObject var data: ViewData
     let useInnerPadding: Bool
     let showBackground: Bool
     @State private var lineSize: CGSize = .zero
@@ -110,25 +110,36 @@ extension OfferInformationDetailView {
 
 extension OfferInformationDetailView {
 
-    struct ViewData: Identifiable, Hashable {
+    final class ViewData: Identifiable, Hashable, ObservableObject {
+        static func == (lhs: OfferInformationDetailView.ViewData, rhs: OfferInformationDetailView.ViewData) -> Bool {
+            lhs.id == rhs.id
+        }
+
+        func hash(into hasher: inout Hasher) {
+            hasher.combine(id)
+        }
+
         let offer: ManagedOffer
 
-        var isRequested: Bool { offer.isRequested }
+        @Published var isRequested: Bool = false
+        @Published var id: String = UUID().uuidString
+        @Published var avatar: Data?
+        @Published var username: String = Constants.randomName
+        @Published var title: String = ""
+        @Published var friendLevel: String = OfferFriendDegree.firstDegree.rawValue
+        @Published var paymentMethods: [OfferPaymentMethodOption] = []
+        @Published var fee: String?
+        @Published var offerType: OfferType = .buy
+        @Published var createdDate: Date = Date()
 
-        var id: String { offer.id ?? UUID().uuidString }
-        let username: String = Constants.randomName // TODO: - use random name generator when available
-        var title: String { offer.offerDescription ?? "" }
-        var friendLevel: String { offer.friendLevel?.label ?? "" }
         var amount: String {
             guard let sign = offer.currency?.sign else { return "" }
             return "\(offer.maxAmount)\(sign)"
         }
-        var paymentMethods: [OfferPaymentMethodOption] { offer.paymentMethods }
-        var fee: String? { offer.feeAmount > 0 ? "\(offer.feeAmount)%" : nil }
-        var offerType: OfferType { offer.type ?? .sell }
-        var createdDate: Date { offer.createdAt ?? Date() }
 
-        var paymentIcons: [String] { paymentMethods.map(\.iconName) }
+        var paymentIcons: [String] {
+            paymentMethods.map(\.iconName)
+        }
 
         var paymentLabel: String {
             guard let label = paymentMethods.first?.title else {
@@ -140,6 +151,22 @@ extension OfferInformationDetailView {
             }
 
             return label
+        }
+
+        init(offer: ManagedOffer) {
+            self.offer = offer
+            let profile = offer.receiverPublicKey?.profile
+
+            offer.publisher(for: \.isRequested).assign(to: &$isRequested)
+            offer.publisher(for: \.id).filterNil().assign(to: &$id)
+            profile?.publisher(for: \.avatar).assign(to: &$avatar)
+            profile?.publisher(for: \.name).filterNil().assign(to: &$username)
+            offer.publisher(for: \.offerDescription).filterNil().assign(to: &$title)
+            offer.publisher(for: \.friendDegreeRawType).map { _ in offer.friendLevel?.label }.filterNil().assign(to: &$friendLevel)
+            offer.publisher(for: \.paymentMethodRawTypes).map { _ in offer.paymentMethods }.filterNil().assign(to: &$paymentMethods)
+            offer.publisher(for: \.feeAmount).filter { $0 > 0 }.map { "\($0)%" }.filterNil().assign(to: &$fee)
+            offer.publisher(for: \.offerTypeRawType).map { _ in offer.type }.filterNil().assign(to: &$offerType)
+            offer.publisher(for: \.createdAt).filterNil().assign(to: &$createdDate)
         }
 
         static var stub: OfferDetailViewData {

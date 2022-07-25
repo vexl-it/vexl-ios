@@ -44,7 +44,7 @@ protocol PersistenceStoreManagerType {
     func update<T: NSManagedObject>(context: NSManagedObjectContext, editor: @escaping (NSManagedObjectContext) -> T) -> AnyPublisher<T, Error>
 
     func delete<T: NSManagedObject>(context: NSManagedObjectContext, object: T) -> AnyPublisher<Void, Error>
-    func delete<T: NSManagedObject>(context: NSManagedObjectContext, editor: @escaping () -> [T]) -> AnyPublisher<Void, Error>
+    func delete<T: NSManagedObject>(context: NSManagedObjectContext, editor: @escaping (NSManagedObjectContext) -> [T]) -> AnyPublisher<Void, Error>
 }
 
 // swiftlint:disable:next file_types_order
@@ -74,7 +74,7 @@ extension PersistenceStoreManagerType {
     }
 
     func delete<T: NSManagedObject>(context: NSManagedObjectContext, object: T) -> AnyPublisher<Void, Error> {
-        delete(context: context, editor: { [object] })
+        delete(context: context, editor: { _ in [object] })
     }
 }
 
@@ -113,26 +113,27 @@ final class PersistenceStoreManager: PersistenceStoreManagerType {
     func newBackgroundContext() -> NSManagedObjectContext {
         let context = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
         context.parent = primaryBackgroundContext
-        NotificationCenter.default.addObserver(
-            forName: NSNotification.Name.NSManagedObjectContextDidSave,
-            object: nil,
-            queue: nil,
-            using: { [context, weak viewContext, weak primaryBackgroundContext] notification in
-                guard let viewContext = viewContext,
-                    let primaryBackgroundContext = primaryBackgroundContext,
-                    let notificationContext = notification.object as? NSManagedObjectContext else {
-                    return
-                }
-                switch notificationContext {
-                case viewContext, primaryBackgroundContext:
-                    context.mergeChanges(fromContextDidSave: notification)
-                case context:
-                    viewContext.mergeChanges(fromContextDidSave: notification)
-                default:
-                    break
-                }
-            }
-        )
+        // TODO: synchronize beckground contexts when possible
+//        NotificationCenter.default.addObserver(
+//            forName: NSNotification.Name.NSManagedObjectContextDidSave,
+//            object: nil,
+//            queue: nil,
+//            using: { [context, weak viewContext, weak primaryBackgroundContext] notification in
+//                guard let viewContext = viewContext,
+//                    let primaryBackgroundContext = primaryBackgroundContext,
+//                    let notificationContext = notification.object as? NSManagedObjectContext else {
+//                    return
+//                }
+//                switch notificationContext {
+//                case viewContext, primaryBackgroundContext:
+//                    context.mergeChanges(fromContextDidSave: notification)
+//                case context:
+//                    viewContext.mergeChanges(fromContextDidSave: notification)
+//                default:
+//                    break
+//                }
+//            }
+//        )
         return context
     }
 
@@ -274,10 +275,10 @@ final class PersistenceStoreManager: PersistenceStoreManagerType {
         .eraseToAnyPublisher()
     }
 
-    func delete<T: NSManagedObject>(context: NSManagedObjectContext, editor: @escaping () -> [T]) -> AnyPublisher<Void, Error> {
+    func delete<T: NSManagedObject>(context: NSManagedObjectContext, editor: @escaping (NSManagedObjectContext) -> [T]) -> AnyPublisher<Void, Error> {
         Future { promise in
             context.perform {
-                editor().forEach(context.delete)
+                editor(context).forEach(context.delete)
                 promise(.success(()))
             }
         }

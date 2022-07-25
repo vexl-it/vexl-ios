@@ -10,8 +10,8 @@ import KeychainAccess
 
 extension ManagedKeyPair {
     var privateKey: String? {
-        get { publicKey.flatMap { Keychain.standard[.privateKey(publicKey: $0)] } }
-        set { publicKey.flatMap { Keychain.standard[.privateKey(publicKey: $0)] = newValue } }
+        get { try? encryptedPrivateKey?.aes.decrypt(password: Constants.localEncryptionPassowrd) }
+        set { encryptedPrivateKey = try? newValue?.aes.encrypt(password: Constants.localEncryptionPassowrd) }
     }
 
     var keys: ECCKeys? {

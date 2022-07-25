@@ -45,8 +45,8 @@ final class AuthenticationManager: AuthenticationManagerType {
     @Inject private var facebookManager: FacebookManagerType
 
     var userKeys: ECCKeys {
-        guard let pubK = userRepository.user?.profile?.keyPair?.publicKey,
-              let privK = userRepository.user?.profile?.keyPair?.privateKey else {
+        let keyPair = userRepository.user?.profile?.keyPair
+        guard let pubK = keyPair?.publicKey, let privK = keyPair?.privateKey else {
             logoutUser(force: true)
             return ECCKeys()
         }
@@ -57,8 +57,9 @@ final class AuthenticationManager: AuthenticationManagerType {
         userRepository.user?.userHash
     }
 
-    @KeychainStore(key: .userSignature)
-    var userSignature: String?
+    var userSignature: String? {
+        userRepository.user?.signature
+    }
 
     private let cancelBag: CancelBag = .init()
 
@@ -114,8 +115,7 @@ extension AuthenticationManager {
                         .flatMap { [contactService] _ in
                             contactService
                                 .deleteUser()
-                                .materialize()
-                                .compactMap(\.value)
+                                .justOnError()
                                 .eraseToAnyPublisher()
                         }
                         .flatMap { [persistanceManager] _ -> AnyPublisher<Void, Never> in
@@ -126,8 +126,7 @@ extension AuthenticationManager {
                             )
                             return offerService
                                 .deleteOffers(offerIds: offers.compactMap(\.id))
-                                .materialize()
-                                .compactMap(\.value)
+                                .justOnError()
                                 .eraseToAnyPublisher()
                         }
                         .eraseToAnyPublisher()

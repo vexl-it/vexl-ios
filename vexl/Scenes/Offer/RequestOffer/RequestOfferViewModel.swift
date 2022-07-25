@@ -14,6 +14,7 @@ final class RequestOfferViewModel: ViewModelType, ObservableObject {
     @Inject var authenticationManager: AuthenticationManagerType
     @Inject private var chatService: ChatServiceType
     @Inject var persistence: PersistenceStoreManagerType
+    @Inject var chatManager: ChatManagerType
 
     @Fetched(fetchImmediately: false)
     var fetchedCommonFriends: [ManagedContact]
@@ -108,23 +109,22 @@ final class RequestOfferViewModel: ViewModelType, ObservableObject {
         userAction
             .filter { $0 == .sendRequest }
             .withUnretained(self)
-            .compactMap { owner, _ -> String? in
+            .compactMap { owner, _ -> MessagePayload? in
                 guard let publicKey = owner.offer.inbox?.keyPair?.publicKey else {
                     return nil
                 }
-                return ParsedChatMessage
+                return MessagePayload
                     .communicationRequest(inboxPublicKey: publicKey,
                                           text: owner.requestText,
-                                          contactInboxKey: owner.authenticationManager.userKeys.publicKey)?
-                    .asString
+                                          contactInboxKey: owner.authenticationManager.userKeys.publicKey)
             }
-            .flatMapLatest(with: self) { owner, message -> AnyPublisher<Void, Never> in
+            .flatMapLatest(with: self) { owner, payload -> AnyPublisher<Void, Never> in
                 owner.state = .requesting
-                guard let publicKey = owner.offer.inbox?.keyPair?.publicKey else {
+                guard let publicKey = owner.offer.receiverPublicKey?.publicKey else {
                     return Just(()).eraseToAnyPublisher()
                 }
-                return owner.chatService
-                    .requestCommunication(inboxPublicKey: publicKey, message: message)
+                return owner.chatManager
+                    .requestCommunication(offer: owner.offer, receiverPublicKey: publicKey, messagePayload: payload)
                     .trackError(owner.primaryActivity.error)
             }
             .flatMap { [persistence, offer] _ in

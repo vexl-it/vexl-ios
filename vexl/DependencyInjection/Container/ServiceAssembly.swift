@@ -43,9 +43,5 @@ class ServiceAssembly: Assembly {
         container.register(ChatServiceType.self) { _ in
             ChatService()
         }
-
-        container.register(LocalStorageServiceType.self) { _ in
-            LocalStorageService()
-        }
     }
 }

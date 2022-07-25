@@ -8,4 +8,8 @@
 import Foundation
 
 extension ManagedChat {
+    static var stub: ManagedChat {
+        let chat = ManagedChat()
+        return chat
+    }
 }
