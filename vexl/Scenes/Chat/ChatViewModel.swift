@@ -182,12 +182,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
             .subscribe(route)
             .store(in: cancelBag)
 
-        // TODO: dismiss on delete
-//        chatRepository
-//            .dismissAction
-//            .map { _ -> Route in .dismissTapped }
-//            .subscribe(route)
-//            .store(in: cancelBag)
+        // TODO: dismiss on delete ManagedObject
     }
 
     func deleteMessages() {
