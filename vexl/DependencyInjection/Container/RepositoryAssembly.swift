@@ -33,9 +33,5 @@ final class RepositoryAssembly: Assembly {
             ChatRepository()
         }
         .inObjectScope(.container)
-
-        container.register(OldChatRepositoryType.self) { _ in
-            OldChatRepository()
-        }
     }
 }
