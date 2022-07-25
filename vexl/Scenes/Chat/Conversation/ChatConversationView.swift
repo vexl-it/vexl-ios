@@ -31,7 +31,7 @@ struct ChatConversationView: View {
                                                 text: message.text,
                                                 style: message.isContact ? .contact : .user)
                                 .onTapGesture {
-                                    viewModel.action.send(.imageTapped(sectionId: section.id.uuidString, messageId: message.id.uuidString))
+                                    viewModel.action.send(.imageTapped(sectionId: section.id, messageId: message.id))
                                 }
                         case .requestIdentityReveal:
                             ChatRevealIdentityView(image: nil,

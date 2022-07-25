@@ -96,11 +96,6 @@ struct MessagePayload: Codable {
         }
         return String(data: data, encoding: .utf8)
     }
-
-    /// This will always return the other chat participant publicID (not users)
-    var receiverPublicKey: String {
-        isFromContact ? contactInboxKey : inboxKey
-    }
 }
 
 // MARK: - Initializers and helpers
@@ -169,19 +164,23 @@ extension MessagePayload {
 extension MessagePayload {
 
     static func communicationRequest(inboxPublicKey: String, text: String, contactInboxKey: String) -> MessagePayload? {
-        MessagePayload(inboxPublicKey: inboxPublicKey,
-                          messageType: .messagingRequest,
-                          contentType: .communicationRequest,
-                          text: text,
-                          contactInboxKey: contactInboxKey)
+        MessagePayload(
+            inboxPublicKey: inboxPublicKey,
+            messageType: .messagingRequest,
+            contentType: .communicationRequest,
+            text: text,
+            contactInboxKey: contactInboxKey
+        )
     }
 
     static func communicationConfirmation(isConfirmed: Bool, inboxPublicKey: String, contactInboxKey: String) -> MessagePayload? {
-        MessagePayload(inboxPublicKey: inboxPublicKey,
-                          messageType: isConfirmed ? .messagingApproval : .messagingRejection,
-                          contentType: .communicationRequestResponse,
-                          text: L.chatMessageConversationRequestAccepted(),
-                          contactInboxKey: contactInboxKey)
+        MessagePayload(
+            inboxPublicKey: inboxPublicKey,
+            messageType: isConfirmed ? .messagingApproval : .messagingRejection,
+            contentType: .communicationRequestResponse,
+            text: L.chatMessageConversationRequestAccepted(),
+            contactInboxKey: contactInboxKey
+        )
     }
 
     static func createMessage(text: String, image: String?, inboxPublicKey: String?, contactInboxKey: String?) -> MessagePayload? {
@@ -190,12 +189,14 @@ extension MessagePayload {
         }
 
         let type: ContentType = image != nil ? .image : .text
-        let parsedMessage = MessagePayload(inboxPublicKey: inboxPublicKey,
-                                              messageType: .message,
-                                              contentType: type,
-                                              text: text,
-                                              image: image,
-                                              contactInboxKey: contactInboxKey)
+        let parsedMessage = MessagePayload(
+            inboxPublicKey: inboxPublicKey,
+            messageType: .message,
+            contentType: type,
+            text: text,
+            image: image,
+            contactInboxKey: contactInboxKey
+        )
         return parsedMessage
     }
 
@@ -204,13 +205,15 @@ extension MessagePayload {
                                       username: String?,
                                       avatar: String?) -> MessagePayload? {
         let chatUser = ChatUser(name: username, image: avatar)
-        let parsedMessage = MessagePayload(inboxPublicKey: inboxPublicKey,
-                                              messageType: .revealRequest,
-                                              contentType: .anonymousRequest,
-                                              text: "",
-                                              image: nil,
-                                              contactInboxKey: contactInboxKey,
-                                              user: chatUser)
+        let parsedMessage = MessagePayload(
+            inboxPublicKey: inboxPublicKey,
+            messageType: .revealRequest,
+            contentType: .anonymousRequest,
+            text: "",
+            image: nil,
+            contactInboxKey: contactInboxKey,
+            user: chatUser
+        )
         return parsedMessage
     }
 
@@ -220,23 +223,27 @@ extension MessagePayload {
                                        username: String?,
                                        avatar: String?) -> MessagePayload? {
         let chatUser = ChatUser(name: username, image: avatar)
-        let parsedMessage = MessagePayload(inboxPublicKey: inboxPublicKey,
-                                              messageType: isAccepted ? .revealApproval : .revealApproval,
-                                              contentType: .anonymousRequestResponse,
-                                              text: "",
-                                              image: nil,
-                                              contactInboxKey: contactInboxKey,
-                                              user: chatUser)
+        let parsedMessage = MessagePayload(
+            inboxPublicKey: inboxPublicKey,
+            messageType: isAccepted ? .revealApproval : .revealApproval,
+            contentType: .anonymousRequestResponse,
+            text: "",
+            image: nil,
+            contactInboxKey: contactInboxKey,
+            user: chatUser
+        )
         return parsedMessage
     }
 
     static func createDelete(inboxPublicKey: String, contactInboxKey: String) -> MessagePayload? {
-        let parsedMessage = MessagePayload(inboxPublicKey: inboxPublicKey,
-                                              messageType: .deleteChat,
-                                              contentType: .deleteChat,
-                                              text: "",
-                                              image: nil,
-                                              contactInboxKey: contactInboxKey)
+        let parsedMessage = MessagePayload(
+            inboxPublicKey: inboxPublicKey,
+            messageType: .deleteChat,
+            contentType: .deleteChat,
+            text: "",
+            image: nil,
+            contactInboxKey: contactInboxKey
+        )
         return parsedMessage
     }
 }

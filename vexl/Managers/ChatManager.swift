@@ -38,10 +38,10 @@ final class ChatManager: ChatManagerType {
     }
 
     func send(payload: MessagePayload, chat: ManagedChat) ->AnyPublisher<Void, Error> {
-        guard let inboxKeys = chat.inbox?.keyPair?.keys,
+        guard let inbox = chat.inbox,
+              let inboxKeys = inbox.keyPair?.keys,
               let receiverPublicKey = chat.receiverKeyPair?.publicKey,
-              let message = payload.asString,
-              let inbox = chat.inbox else {
+              let message = payload.asString else {
             return Fail(error: PersistenceError.insufficientData)
                 .eraseToAnyPublisher()
         }
@@ -52,7 +52,7 @@ final class ChatManager: ChatManagerType {
             messageType: payload.messageType
         )
         .flatMap { [inboxRepository] in
-            inboxRepository.deleteChats(recevedPayloads: [payload], inbox: inbox)
+            inboxRepository.createOrUpdateChats(receivedPayloads: [payload], inbox: inbox)
         }
         .eraseToAnyPublisher()
     }

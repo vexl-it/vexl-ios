@@ -113,7 +113,7 @@ final class PersistenceStoreManager: PersistenceStoreManagerType {
     func newBackgroundContext() -> NSManagedObjectContext {
         let context = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
         context.parent = primaryBackgroundContext
-        // TODO: synchronize beckground contexts when possible
+        // TODO: synchronize background contexts when possible
 //        NotificationCenter.default.addObserver(
 //            forName: NSNotification.Name.NSManagedObjectContextDidSave,
 //            object: nil,

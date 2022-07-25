@@ -12,7 +12,7 @@ import Foundation
 
 struct ChatConversationSection: Identifiable, Hashable {
 
-    let id = UUID()
+    let id = "UUID"
     let date: Date
     var messages: [ChatConversationItem]
 

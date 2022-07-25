@@ -14,7 +14,7 @@ struct MarketplaceFeedFooterView: View {
     let isRequested: Bool
     let friendLevel: String
     let offerType: OfferType
-    var avatar: Data? = nil
+    var avatar: Data?
     let action: () -> Void
 
     private var title: String {
