@@ -36,7 +36,7 @@ struct UserOffersView: View {
                         OfferItemView(
                             data: offerData,
                             editOfferAction: {
-                                viewModel.action.send(.editOfferTap(id: offerData.id))
+                                viewModel.action.send(.editOfferTap(offer: offerData.offer))
                             }
                         )
                     }
