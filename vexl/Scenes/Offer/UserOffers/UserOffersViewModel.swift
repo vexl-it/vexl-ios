@@ -26,7 +26,7 @@ final class UserOffersViewModel: ViewModelType, ObservableObject {
     enum UserAction: Equatable {
         case dismissTap
         case createOfferTap
-        case editOfferTap(id: String)
+        case editOfferTap(offer: ManagedOffer)
     }
 
     let action: ActionSubject<UserAction> = .init()
@@ -123,17 +123,12 @@ final class UserOffersViewModel: ViewModelType, ObservableObject {
             .store(in: cancelBag)
 
         action
-            .compactMap { action -> String? in
-                if case let .editOfferTap(id) = action { return id }
+            .compactMap { action -> ManagedOffer? in
+                if case let .editOfferTap(offer) = action { return offer }
                 return nil
             }
-            .withUnretained(self)
-            .sink { owner, id in
-                guard let offer = owner.userOffers.first(where: { $0.id == id }) else {
-                    return
-                }
-                owner.route.send(.editOfferTapped(offer: offer))
-            }
+            .map(Route.editOfferTapped(offer:))
+            .subscribe(route)
             .store(in: cancelBag)
 
         action
