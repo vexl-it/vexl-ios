@@ -7,11 +7,11 @@
 
 import SwiftUI
 
-typealias InboxItem = InboxItemView.ViewData
+typealias InboxItem = InboxItemView.ViewModel
 
 struct InboxItemView: View {
 
-    @ObservedObject var data: ViewData
+    @ObservedObject var data: ViewModel
 
     private var offerLabel: String {
         guard let offerType = data.offerType else {
@@ -62,7 +62,7 @@ struct InboxItemView: View {
 
 extension InboxItemView {
 
-    final class ViewData: Identifiable, Hashable, ObservableObject {
+    final class ViewModel: Identifiable, Hashable, ObservableObject {
         let chat: ManagedChat
 
         @Published private var lastMessage: ManagedMessage?
