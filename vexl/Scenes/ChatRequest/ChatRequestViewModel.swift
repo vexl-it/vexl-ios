@@ -11,7 +11,7 @@ import Combine
 
 private typealias OfferAndSenderKeys = (offerKey: OfferKeys, senderPublicKey: String)
 private typealias IndexAndConfirmation = (index: Int, confirmation: Bool)
-private typealias OfferAndMessage = (offer: ManagedOffer, message: ParsedChatMessage)
+private typealias OfferAndMessage = (offer: ManagedOffer, message: MessagePayload)
 
 final class ChatRequestViewModel: ViewModelType, ObservableObject {
 
@@ -137,7 +137,7 @@ final class ChatRequestViewModel: ViewModelType, ObservableObject {
 
         return generateSignature
             .flatMapLatest(with: self) { owner, signature -> AnyPublisher<IndexAndConfirmation, Never> in
-                let message = ParsedChatMessage
+                let message = MessagePayload
                     .communicationConfirmation(isConfirmed: isConfirmed,
                                                inboxPublicKey: keys.offerKey.publicKey,
                                                contactInboxKey: keys.senderPublicKey)

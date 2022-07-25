@@ -10,41 +10,15 @@ import Combine
 import Cleevio
 
 protocol InboxManagerType {
-    var currentInboxMessages: [ChatInboxMessage] { get }
-    var inboxMessages: AnyPublisher<[ChatInboxMessage], Error> { get }
-    var isSyncing: AnyPublisher<Bool, Never> { get }
-    var completedSyncing: AnyPublisher<Result<[ParsedChatMessage], InboxError>, Never> { get }
-
     func syncInboxes()
-    func updateInboxMessages() -> AnyPublisher<Void, Error>
 }
 
 final class InboxManager: InboxManagerType {
     @Inject var inboxRepository: InboxRepositoryType
     @Inject var cryptoService: CryptoServiceType
     @Inject var chatService: ChatServiceType
-    @Inject var localStorageService: LocalStorageServiceType
     @Inject var userRepository: UserRepositoryType
 
-    var isSyncing: AnyPublisher<Bool, Never> {
-        _syncActivity.loading
-    }
-
-    var completedSyncing: AnyPublisher<Result<[ParsedChatMessage], InboxError>, Never> {
-        _completedSyncing.eraseToAnyPublisher()
-    }
-
-    var inboxMessages: AnyPublisher<[ChatInboxMessage], Error> {
-        _inboxMessages.eraseToAnyPublisher()
-    }
-
-    var currentInboxMessages: [ChatInboxMessage] {
-        _inboxMessages.value
-    }
-
-    private var _completedSyncing = PassthroughSubject<Result<[ParsedChatMessage], InboxError>, Never>()
-    private var _syncActivity = ActivityIndicator()
-    private var _inboxMessages = CurrentValueSubject<[ChatInboxMessage], Error>([])
     private var cancelBag = CancelBag()
 
     func syncInboxes() {
@@ -57,41 +31,13 @@ final class InboxManager: InboxManagerType {
             self.syncInbox(inbox)
         }
 
-        let syncInboxes = Publishers.MergeMany(inboxPublishers)
+        Publishers.MergeMany(inboxPublishers)
             .collect()
-
-        let updateInboxMessages = syncInboxes
-            .flatMapLatest(with: self) { owner, results -> AnyPublisher<[Result<[ParsedChatMessage], Error>], Error> in
-                owner.updateInboxMessages()
-                    .map { results }
-                    .eraseToAnyPublisher()
-            }
-
-        updateInboxMessages
-            .trackActivity(_syncActivity)
-            .withUnretained(self)
-            .subscribe(on: DispatchQueue.main)
-            .sink(receiveCompletion: { _ in },
-                  receiveValue: { owner, results in
-
-                let successfulResults = results.filter { if case .success = $0 { return true } else { return false } }
-
-                if successfulResults.isEmpty {
-                    owner._completedSyncing.send(.failure(.inboxesSyncFailed))
-                } else {
-                    let successfulParsedMessages = successfulResults.map { result -> [ParsedChatMessage] in
-                        if case let .success(messages) = result { return messages }
-                        return []
-                    }
-
-                    let fetchedParsedMessages = Array(successfulParsedMessages.joined())
-                    owner._completedSyncing.send(.success(fetchedParsedMessages))
-                }
-            })
+            .sink()
             .store(in: cancelBag)
     }
 
-    private func syncInbox(_ inbox: ManagedInbox) -> AnyPublisher<Result<[ParsedChatMessage], Error>, Error> {
+    private func syncInbox(_ inbox: ManagedInbox) -> AnyPublisher<Result<[MessagePayload], Error>, Error> {
         guard let inboxKeys = inbox.keyPair?.keys else {
             return Fail(error: PersistenceError.insufficientData)
                 .eraseToAnyPublisher()
@@ -118,13 +64,13 @@ final class InboxManager: InboxManagerType {
         let messagePayloads = encryptedMessages
             .flatMap { messages in
                 messages.publisher
-                    .compactMap { ParsedChatMessage(chatMessage: $0, key: inboxKeys, inboxPublicKey: inboxKeys.publicKey) }
+                    .compactMap { MessagePayload(chatMessage: $0, key: inboxKeys, inboxPublicKey: inboxKeys.publicKey) }
                     .collect()
             }
             .eraseToAnyPublisher()
 
         let deleteMessages = messagePayloads
-            .flatMap { [inboxRepository] payloads -> AnyPublisher<[ParsedChatMessage], Error> in
+            .flatMap { [inboxRepository] payloads -> AnyPublisher<[MessagePayload], Error> in
                 inboxRepository
                     .deleteChats(recevedPayloads: payloads, inbox: inbox)
                     .map { payloads }
@@ -132,8 +78,8 @@ final class InboxManager: InboxManagerType {
             }
             .eraseToAnyPublisher()
 
-        let saveMessages: AnyPublisher<[ParsedChatMessage], Error> = deleteMessages
-            .flatMap { [inboxRepository] payloads -> AnyPublisher<[ParsedChatMessage], Error> in
+        let saveMessages: AnyPublisher<[MessagePayload], Error> = deleteMessages
+            .flatMap { [inboxRepository] payloads -> AnyPublisher<[MessagePayload], Error> in
                 inboxRepository
                     .createOrUpdateChats(receivedPayloads: payloads, inbox: inbox)
                     .map { payloads }
@@ -157,40 +103,8 @@ final class InboxManager: InboxManagerType {
             .eraseToAnyPublisher()
     }
 
-    // MARK: - Methods for syncing up the app messages with the server
-
-    private func saveFetchedMessages(_ messages: [EncryptedChatMessage],
-                                     inboxKeys: ECCKeys) -> AnyPublisher<[ParsedChatMessage], Error> {
-        parseMessages(messages, key: inboxKeys, inboxPublicKey: inboxKeys.publicKey)
-            .flatMapLatest(with: self) { owner, messages -> AnyPublisher<[ParsedChatMessage], Error> in
-                owner.chatService.saveParsedMessages(messages, inboxKeys: inboxKeys)
-                    .map { messages }
-                    .eraseToAnyPublisher()
-            }
-            .eraseToAnyPublisher()
-    }
-
-    private func parseMessages(_ messages: [EncryptedChatMessage], key: ECCKeys, inboxPublicKey: String) -> AnyPublisher<[ParsedChatMessage], Error> {
-        messages.publisher
-            .compactMap { ParsedChatMessage(chatMessage: $0, key: key, inboxPublicKey: inboxPublicKey) }
-            .collect()
-            .setFailureType(to: Error.self)
-            .eraseToAnyPublisher()
-    }
-
     private func deleteMessages(inboxPublicKey: String) -> AnyPublisher<Void, Error> {
         chatService.deleteInboxMessages(publicKey: inboxPublicKey)
-            .eraseToAnyPublisher()
-    }
-
-    func updateInboxMessages() -> AnyPublisher<Void, Error> {
-        chatService.getStoredInboxMessages()
-            .withUnretained(self)
-            .subscribe(on: DispatchQueue.main)
-            .handleEvents(receiveOutput: { owner, chatInboxMessages in
-                owner._inboxMessages.send(chatInboxMessages)
-            })
-            .asVoid()
             .eraseToAnyPublisher()
     }
 }

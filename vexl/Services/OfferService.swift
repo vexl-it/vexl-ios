@@ -30,7 +30,6 @@ protocol OfferServiceType {
 
 final class OfferService: BaseService, OfferServiceType {
 
-    @Inject private var localStorageService: LocalStorageServiceType
     @Inject private var contactsService: ContactsServiceType
     @Inject private var encryptionService: EncryptionServiceType
     @Inject private var authenticationManager: AuthenticationManagerType

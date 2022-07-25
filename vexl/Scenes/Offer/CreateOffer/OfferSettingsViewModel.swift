@@ -293,6 +293,10 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
             }
             .store(in: cancelBag)
 
+        setupCreateOfferAction()
+    }
+
+    func setupCreateOfferAction() {
         action
             .filter { $0 == .createOffer }
             .asVoid()

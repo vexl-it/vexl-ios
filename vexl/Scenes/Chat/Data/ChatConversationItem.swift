@@ -56,7 +56,7 @@ struct ChatConversationItem: Identifiable, Hashable {
 }
 
 extension Array where Element == ChatConversationItem {
-    mutating func updateRevealIdentities(isAccepted: Bool, chatUser: ParsedChatMessage.ChatUser?) {
+    mutating func updateRevealIdentities(isAccepted: Bool, chatUser: MessagePayload.ChatUser?) {
         let identityItems = self.enumerated()
             .filter { $0.element.type == .receiveIdentityReveal || $0.element.type == .requestIdentityReveal }
 

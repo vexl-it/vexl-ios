@@ -69,8 +69,7 @@ struct ChatConversationView: View {
 
 struct ChatConversationViewPreview: PreviewProvider {
     static var previews: some View {
-        ChatConversationView(viewModel: .init(inboxKeys: ECCKeys(),
-                                              receiverPublicKey: "12345"))
+        ChatConversationView(viewModel: .init(chat: .stub))
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .previewDevice("iPhone 11")
     }
