@@ -17,4 +17,9 @@ extension ManagedChat {
                 ]
             ).last as? ManagedMessage
     }
+
+    static var stub: ManagedChat {
+        let chat = ManagedChat()
+        return chat
+    }
 }

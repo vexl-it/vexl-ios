@@ -75,14 +75,14 @@ struct ChatView: View {
     }
 }
 
-//#if DEBUG || DEVEL
-//
-//struct ChatMessageViewPreview: PreviewProvider {
-//    static var previews: some View {
-//        ChatView(viewModel: .init(inboxKeys: ECCKeys(), receiverPublicKey: "234", offerType: .buy))
-//            .frame(maxWidth: .infinity, maxHeight: .infinity)
-//            .previewDevice("iPhone 11")
-//    }
-//}
-//
-//#endif
+#if DEBUG || DEVEL
+
+struct ChatMessageViewPreview: PreviewProvider {
+    static var previews: some View {
+        ChatView(viewModel: .init(chat: .stub))
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .previewDevice("iPhone 11")
+    }
+}
+
+#endif
