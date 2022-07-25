@@ -96,11 +96,6 @@ struct MessagePayload: Codable {
         }
         return String(data: data, encoding: .utf8)
     }
-
-    /// This will always return the other chat participant publicID (not users)
-    var receiverPublicKey: String {
-        isFromContact ? contactInboxKey : inboxKey
-    }
 }
 
 // MARK: - Initializers and helpers
