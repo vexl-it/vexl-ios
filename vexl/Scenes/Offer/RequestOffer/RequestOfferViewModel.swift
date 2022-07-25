@@ -109,11 +109,11 @@ final class RequestOfferViewModel: ViewModelType, ObservableObject {
         userAction
             .filter { $0 == .sendRequest }
             .withUnretained(self)
-            .compactMap { owner, _ -> ParsedChatMessage? in
+            .compactMap { owner, _ -> MessagePayload? in
                 guard let publicKey = owner.offer.inbox?.keyPair?.publicKey else {
                     return nil
                 }
-                return ParsedChatMessage
+                return MessagePayload
                     .communicationRequest(inboxPublicKey: publicKey,
                                           text: owner.requestText,
                                           contactInboxKey: owner.authenticationManager.userKeys.publicKey)

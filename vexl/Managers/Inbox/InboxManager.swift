@@ -170,10 +170,9 @@ final class InboxManager: InboxManagerType {
             }
             .eraseToAnyPublisher()
     }
-
-    private func parseMessages(_ messages: [EncryptedChatMessage], key: ECCKeys, inboxPublicKey: String) -> AnyPublisher<[ParsedChatMessage], Error> {
+    private func parseMessages(_ messages: [EncryptedChatMessage], key: ECCKeys, inboxPublicKey: String) -> AnyPublisher<[MessagePayload], Error> {
         messages.publisher
-            .compactMap { ParsedChatMessage(chatMessage: $0, key: key, inboxPublicKey: inboxPublicKey) }
+            .compactMap { MessagePayload(chatMessage: $0, key: key, inboxPublicKey: inboxPublicKey) }
             .collect()
             .setFailureType(to: Error.self)
             .eraseToAnyPublisher()

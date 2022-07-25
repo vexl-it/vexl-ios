@@ -24,7 +24,7 @@ struct ChatConversationSection: Identifiable, Hashable {
         self.messages.append(contentsOf: messages)
     }
 
-    mutating func updateRevealIdentitiesItems(isAccepted: Bool, chatUser: ParsedChatMessage.ChatUser?) {
+    mutating func updateRevealIdentitiesItems(isAccepted: Bool, chatUser: MessagePayload.ChatUser?) {
         messages.updateRevealIdentities(isAccepted: isAccepted, chatUser: chatUser)
     }
 }
@@ -54,7 +54,7 @@ extension Array where Element == ChatConversationSection {
         }
     }
 
-    mutating func updateRevealIdentitiesItems(isAccepted: Bool, chatUser: ParsedChatMessage.ChatUser?) {
+    mutating func updateRevealIdentitiesItems(isAccepted: Bool, chatUser: MessagePayload.ChatUser?) {
         for (index, section) in self.enumerated() {
             var newSection = section
             newSection.updateRevealIdentitiesItems(isAccepted: isAccepted, chatUser: chatUser)

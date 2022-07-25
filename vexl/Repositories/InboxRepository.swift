@@ -11,15 +11,15 @@ import Network
 
 protocol InboxRepositoryType {
 
-    func createOrUpdateChats(receivedPayloads: [ParsedChatMessage], inbox: ManagedInbox) -> AnyPublisher<Void, Error>
+    func createOrUpdateChats(receivedPayloads: [MessagePayload], inbox: ManagedInbox) -> AnyPublisher<Void, Error>
 
-    func deleteChats(recevedPayloads: [ParsedChatMessage], inbox: ManagedInbox) -> AnyPublisher<Void, Error>
+    func deleteChats(recevedPayloads: [MessagePayload], inbox: ManagedInbox) -> AnyPublisher<Void, Error>
 }
 
 class InboxRepository: InboxRepositoryType {
     @Inject var persistence: PersistenceStoreManagerType
 
-    func createOrUpdateChats(receivedPayloads payloads: [ParsedChatMessage], inbox unsafeContextInbox: ManagedInbox) -> AnyPublisher<Void, Error> {
+    func createOrUpdateChats(receivedPayloads payloads: [MessagePayload], inbox unsafeContextInbox: ManagedInbox) -> AnyPublisher<Void, Error> {
         persistence.insert(context: persistence.viewContext) { [weak self, persistence] context -> [ManagedChat] in
             guard let inbox = persistence.loadSyncroniously(type: ManagedInbox.self, context: context, objectID: unsafeContextInbox.objectID) else {
                 return []
@@ -49,7 +49,7 @@ class InboxRepository: InboxRepositoryType {
         .eraseToAnyPublisher()
     }
 
-    private func populateMessage(message: ManagedMessage, chat: ManagedChat, payload: ParsedChatMessage) {
+    private func populateMessage(message: ManagedMessage, chat: ManagedChat, payload: MessagePayload) {
         message.chat = chat
         message.text = payload.text
         message.image = payload.image
@@ -77,7 +77,7 @@ class InboxRepository: InboxRepositoryType {
         }
     }
 
-    func deleteChats(recevedPayloads payloads: [ParsedChatMessage], inbox unsafeContextInbox: ManagedInbox) -> AnyPublisher<Void, Error> {
+    func deleteChats(recevedPayloads payloads: [MessagePayload], inbox unsafeContextInbox: ManagedInbox) -> AnyPublisher<Void, Error> {
         persistence.delete(context: persistence.viewContext) { [persistence] context -> [ManagedChat] in
             guard let inbox = persistence.loadSyncroniously(type: ManagedInbox.self, context: context, objectID: unsafeContextInbox.objectID) else {
                 return []

@@ -9,14 +9,15 @@ import Foundation
 import Combine
 
 protocol ChatManagerType {
-    func requestCommunication(offer: ManagedOffer, receiverPublicKey: String, messagePayload: ParsedChatMessage) -> AnyPublisher<Void, Error>
+    func requestCommunication(offer: ManagedOffer, receiverPublicKey: String, messagePayload: MessagePayload) -> AnyPublisher<Void, Error>
+
 }
 
 final class ChatManager: ChatManagerType {
     @Inject var chatRepository: ChatRepositoryType
     @Inject var chatService: ChatServiceType
 
-    func requestCommunication(offer: ManagedOffer, receiverPublicKey: String, messagePayload: ParsedChatMessage) -> AnyPublisher<Void, Error> {
+    func requestCommunication(offer: ManagedOffer, receiverPublicKey: String, messagePayload: MessagePayload) -> AnyPublisher<Void, Error> {
         guard let payload = messagePayload.asString else {
             return Fail(error: PersistenceError.insufficientData)
                 .eraseToAnyPublisher()
