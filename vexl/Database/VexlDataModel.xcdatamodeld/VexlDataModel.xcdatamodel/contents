@@ -4,6 +4,8 @@
         <attribute name="id" optional="YES" attributeType="String"/>
         <attribute name="isApproved" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="isRequesting" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="isRequestingReveal" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="isRevealed" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="lastMessageDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <relationship name="inbox" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ManagedInbox" inverseName="chats" inverseEntity="ManagedInbox"/>
         <relationship name="messages" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ManagedMessage" inverseName="chat" inverseEntity="ManagedMessage"/>
@@ -37,6 +39,7 @@
         <attribute name="contentTypeRawType" optional="YES" attributeType="String"/>
         <attribute name="id" optional="YES" attributeType="String"/>
         <attribute name="image" optional="YES" attributeType="String"/>
+        <attribute name="isContact" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="text" optional="YES" attributeType="String"/>
         <attribute name="time" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="typeRawType" optional="YES" attributeType="String"/>
@@ -93,14 +96,14 @@
         <relationship name="profile" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ManagedProfile" inverseName="currentUser" inverseEntity="ManagedProfile"/>
     </entity>
     <elements>
-        <element name="ManagedChat" positionX="-334.3984375" positionY="-421.15625" width="162.57421875" height="148"/>
+        <element name="ManagedChat" positionX="-333.91796875" positionY="-454.86328125" width="162.57421875" height="178"/>
         <element name="ManagedContact" positionX="-1060.67578125" positionY="-241.9453125" width="128" height="134"/>
         <element name="ManagedInbox" positionX="-562.71484375" positionY="-370.265625" width="128" height="118"/>
         <element name="ManagedKeyPair" positionX="-343.26171875" positionY="-227.74609375" width="128" height="133"/>
-        <element name="ManagedMessage" positionX="-116.65234375" positionY="-370.39453125" width="128" height="178"/>
+        <element name="ManagedMessage" positionX="-110.484375" positionY="-455.828125" width="128" height="193"/>
         <element name="ManagedOffer" positionX="-870.50390625" positionY="-571.98046875" width="128" height="404"/>
         <element name="ManagedProfile" positionX="-568.91015625" positionY="-80.58984375" width="128" height="148"/>
-        <element name="ManagedSyncItem" positionX="-586.4140625" positionY="-573.5234375" width="128" height="74"/>
+        <element name="ManagedSyncItem" positionX="-591.86328125" positionY="-567.52734375" width="128" height="74"/>
         <element name="ManagedUser" positionX="-1013.984375" positionY="-50.265625" width="165.6171875" height="118"/>
     </elements>
 </model>

@@ -15,7 +15,7 @@ protocol ChatServiceType {
     func createInbox(publicKey: String, pushToken: String) -> AnyPublisher<Void, Error>
     func requestCommunication(inboxPublicKey: String, message: String) -> AnyPublisher<Void, Error>
     func communicationConfirmation(confirmation: Bool,
-                                   message: ParsedChatMessage?,
+                                   message: MessagePayload?,
                                    inboxKeys: ECCKeys,
                                    requesterPublicKey: String,
                                    signature: String) -> AnyPublisher<Void, Error>

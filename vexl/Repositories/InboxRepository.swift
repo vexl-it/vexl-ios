@@ -27,7 +27,9 @@ class InboxRepository: InboxRepositoryType {
             return payloads
                 .filter { $0.messageType != .deleteChat && $0.messageType != .messagingRejection }
                 .compactMap { payload in
-                    let predicate = NSPredicate(format: "receiverKeyPair.publicKey == '\(payload.contactInboxKey)'")
+                    let predicate = payload.isFromContact
+                        ? NSPredicate(format: "receiverKeyPair.publicKey == '\(payload.contactInboxKey)'")
+                        : NSPredicate(format: "receiverKeyPair.publicKey == '\(payload.inboxKey)'")
                     if let chat = inbox.chats?.filtered(using: predicate).first as? ManagedChat {
                         if chat.messages?.filtered(using: NSPredicate(format: "id == '\(payload.id)'")).first == nil {
                             let message = ManagedMessage(context: context)
@@ -56,6 +58,7 @@ class InboxRepository: InboxRepositoryType {
         message.contentType = payload.contentType
         message.time = payload.time
         message.type = payload.messageType
+        message.isContact = payload.isFromContact
 
         chat.lastMessageDate = message.date
 

@@ -44,7 +44,7 @@ struct ChatView: View {
             ChatHeaderView(username: viewModel.username,
                            offerLabel: viewModel.offerLabel,
                            avatar: viewModel.avatar,
-                           offerType: viewModel.offerType,
+                           offerType: viewModel.offer?.type,
                            closeAction: {
                 viewModel.action.send(.dismissTap)
             })
@@ -75,14 +75,14 @@ struct ChatView: View {
     }
 }
 
-#if DEBUG || DEVEL
-
-struct ChatMessageViewPreview: PreviewProvider {
-    static var previews: some View {
-        ChatView(viewModel: .init(inboxKeys: ECCKeys(), receiverPublicKey: "234", offerType: .buy))
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .previewDevice("iPhone 11")
-    }
-}
-
-#endif
+//#if DEBUG || DEVEL
+//
+//struct ChatMessageViewPreview: PreviewProvider {
+//    static var previews: some View {
+//        ChatView(viewModel: .init(inboxKeys: ECCKeys(), receiverPublicKey: "234", offerType: .buy))
+//            .frame(maxWidth: .infinity, maxHeight: .infinity)
+//            .previewDevice("iPhone 11")
+//    }
+//}
+//
+//#endif

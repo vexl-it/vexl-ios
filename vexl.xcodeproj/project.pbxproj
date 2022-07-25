@@ -321,7 +321,7 @@
 		F1BFA97328043D6300F4E745 /* Image+.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1BFA97228043D6300F4E745 /* Image+.swift */; };
 		F1C6D09E27BDDD4C009BD506 /* TextStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1C6D09D27BDDD4C009BD506 /* TextStyle.swift */; };
 		F1C6D0A027BDECB0009BD506 /* WelcomeView+LogoImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1C6D09F27BDECB0009BD506 /* WelcomeView+LogoImageView.swift */; };
-		F1C734772852CB6D00B3F327 /* ParsedChatMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1C734762852CB6D00B3F327 /* ParsedChatMessage.swift */; };
+		F1C734772852CB6D00B3F327 /* MessagePayload.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1C734762852CB6D00B3F327 /* MessagePayload.swift */; };
 		F1D200A628252C44006DF4AB /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D200A528252C44006DF4AB /* TabBarController.swift */; };
 		F1D2011A28292868006DF4AB /* TabBarCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D2011928292868006DF4AB /* TabBarCoordinator.swift */; };
 		F1D2011F282960DC006DF4AB /* TabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D2011E282960DC006DF4AB /* TabBarView.swift */; };
@@ -697,7 +697,7 @@
 		F1C6D09627BDAD7F009BD506 /* LargeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LargeButton.swift; sourceTree = "<group>"; };
 		F1C6D09D27BDDD4C009BD506 /* TextStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextStyle.swift; sourceTree = "<group>"; };
 		F1C6D09F27BDECB0009BD506 /* WelcomeView+LogoImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WelcomeView+LogoImageView.swift"; sourceTree = "<group>"; };
-		F1C734762852CB6D00B3F327 /* ParsedChatMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParsedChatMessage.swift; sourceTree = "<group>"; };
+		F1C734762852CB6D00B3F327 /* MessagePayload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagePayload.swift; sourceTree = "<group>"; };
 		F1D200A528252C44006DF4AB /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		F1D2011928292868006DF4AB /* TabBarCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarCoordinator.swift; sourceTree = "<group>"; };
 		F1D2011E282960DC006DF4AB /* TabBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarView.swift; sourceTree = "<group>"; };
@@ -1945,7 +1945,7 @@
 		F1D204F02863A282006A5671 /* Chat */ = {
 			isa = PBXGroup;
 			children = (
-				F1C734762852CB6D00B3F327 /* ParsedChatMessage.swift */,
+				F1C734762852CB6D00B3F327 /* MessagePayload.swift */,
 				4F2416A228490B3C00B4A437 /* ChatInbox.swift */,
 				F1D204F12863A578006A5671 /* ChatInboxMessage.swift */,
 			);
@@ -2428,7 +2428,7 @@
 				B0501BAA2887419F00A44E18 /* Array+.swift in Sources */,
 				F1485653284FD5FD003213D7 /* EncryptedChatMessage.swift in Sources */,
 				B08F393627AE7112008B344F /* UIDevice+.swift in Sources */,
-				F1C734772852CB6D00B3F327 /* ParsedChatMessage.swift in Sources */,
+				F1C734772852CB6D00B3F327 /* MessagePayload.swift in Sources */,
 				B007A7652873514400CFA5C9 /* RepositoryAssembly.swift in Sources */,
 				F13B266F281D4A510011F2FB /* Paged.swift in Sources */,
 				F11441E9284682B200307D39 /* ChatRequestFriendsView.swift in Sources */,

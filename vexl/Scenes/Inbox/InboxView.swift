@@ -39,7 +39,7 @@ struct InboxView: View {
                         InboxItemView(data: chatItem)
                             .padding(.bottom, Appearance.GridGuide.mediumPadding1)
                             .onTapGesture {
-                                viewModel.action.send(.selectMessage(id: chatItem.id))
+                                viewModel.action.send(.selectMessage(chat: chatItem.chat))
                             }
                     }
                 }

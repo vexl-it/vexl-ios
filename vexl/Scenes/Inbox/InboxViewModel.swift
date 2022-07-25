@@ -33,7 +33,7 @@ final class InboxViewModel: ViewModelType, ObservableObject {
         case selectFilter(option: InboxFilterOption)
         case continueTap
         case requestTap
-        case selectMessage(id: String)
+        case selectMessage(chat: ManagedChat)
     }
 
     let action: ActionSubject<UserAction> = .init()
@@ -51,7 +51,7 @@ final class InboxViewModel: ViewModelType, ObservableObject {
     enum Route: Equatable {
         case dismissTapped
         case requestTapped
-        case conversationTapped(inboxKeys: ECCKeys, recieverPublicKey: String, offerType: OfferType?)
+        case conversationTapped(chat: ManagedChat)
     }
 
     var route: CoordinatingSubject<Route> = .init()
@@ -108,22 +108,16 @@ final class InboxViewModel: ViewModelType, ObservableObject {
             .store(in: cancelBag)
 
         action
-            .compactMap { action -> String? in
-                if case let .selectMessage(id) = action { return id }
+            .compactMap { action -> ManagedChat? in
+                if case let .selectMessage(chat) = action { return chat }
                 return nil
             }
+            .map { Route.conversationTapped(chat: $0) }
             .withUnretained(self)
-            .sink(receiveValue: { owner, id in
-                guard let index = owner.inboxItems.firstIndex(where: { $0.id == id }),
-                      index < owner.inboxManager.currentInboxMessages.count else {
-                    return
-                }
-                let chatInboxMessage = owner.inboxManager.currentInboxMessages[index]
-                let offerType = owner.inboxItems[index].offerType
-                owner.route.send(.conversationTapped(inboxKeys: chatInboxMessage.inbox,
-                                                     recieverPublicKey: chatInboxMessage.contactInbox,
-                                                     offerType: offerType))
+            .handleEvents(receiveOutput: { owner, route in
+                owner.route.send(route)
             })
+            .sink()
             .store(in: cancelBag)
     }
 }

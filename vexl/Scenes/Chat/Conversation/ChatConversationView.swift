@@ -65,15 +65,15 @@ struct ChatConversationView: View {
     }
 }
 
-#if DEBUG || DEVEL
-
-struct ChatConversationViewPreview: PreviewProvider {
-    static var previews: some View {
-        ChatConversationView(viewModel: .init(inboxKeys: ECCKeys(),
-                                              receiverPublicKey: "12345"))
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .previewDevice("iPhone 11")
-    }
-}
-
-#endif
+//#if DEBUG || DEVEL
+//
+//struct ChatConversationViewPreview: PreviewProvider {
+//    static var previews: some View {
+//        ChatConversationView(viewModel: .init(inboxKeys: ECCKeys(),
+//                                              receiverPublicKey: "12345"))
+//            .frame(maxWidth: .infinity, maxHeight: .infinity)
+//            .previewDevice("iPhone 11")
+//    }
+//}
+//
+//#endif
