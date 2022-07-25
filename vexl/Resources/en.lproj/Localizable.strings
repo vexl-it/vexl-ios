@@ -81,6 +81,9 @@
 "user.profile.refuse.snap.chat" = "Refuse users to snap the chat";
 "user.profile.private.settings.title" = "Private settings";
 "user.profile.private.settings.subtitle" = "Unlock to access your identity and contacts";
+"user.profile.report.error.emailbody" = "Error report";
+"user.profile.report.error.title" = "Something went wrong?";
+"user.profile.report.error.subtitle" = "Feel free to get in touch with our support.";
 "user.profile.edit.name.title" = "Edit name";
 "user.profile.edit.name.subtitle" = "Space for additional copy. You can lorem\nipsum dolor sit ametum roma von carpa di.";
 "user.profile.edit.name.action" = "Save";
