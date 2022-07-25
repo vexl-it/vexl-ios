@@ -91,8 +91,8 @@ final class ChatConversationViewModel: ObservableObject {
             }
             .withUnretained(self)
             .compactMap { owner, ids -> Data? in
-                guard let section = owner.messages.first(where: { $0.id.uuidString == ids.sectionId }),
-                      let message = section.messages.first(where: { $0.id.uuidString == ids.messageId }) else {
+                guard let section = owner.messages.first(where: { $0.id == ids.sectionId }),
+                      let message = section.messages.first(where: { $0.id == ids.messageId }) else {
                           return nil
                       }
                 return message.image
@@ -113,30 +113,9 @@ final class ChatConversationViewModel: ObservableObject {
             guard !filter.contains(message.type) else {
                 return nil
             }
-
-            var itemType: ChatConversationItem.ItemType
-
-            switch message.contentType {
-            case .text:
-                itemType = .text
-            case .image:
-                itemType = .image
-            case .communicationRequestResponse:
-                itemType = .start
-            case .anonymousRequest:
-                itemType = message.isContact ? .receiveIdentityReveal : .requestIdentityReveal
-            case .anonymousRequestResponse:
-                itemType = message.type == .revealApproval ? .approveIdentityReveal : .rejectIdentityReveal
-            case .deleteChat, .communicationRequest, .none:
-                itemType = .noContent
-            }
-
-            return ChatConversationItem(type: itemType,
-                                        isContact: message.isContact,
-                                        text: message.text,
-                                        image: message.image)
+            return ChatConversationItem(message: message)
         }
-        self.messages.appendItems(conversationItems)
+        self.messages = [ChatConversationSection(date: Date(), messages: conversationItems)]
     }
 
      private func updateRevealedUser(messages: [MessagePayload]) {
