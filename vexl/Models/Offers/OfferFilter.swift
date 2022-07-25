@@ -19,7 +19,8 @@ struct OfferFilter: Equatable {
 
     var predicate: NSPredicate {
         var format = """
-            offerTypeRawType == '\(type.rawValue)'
+            user == nil
+        AND offerTypeRawType == '\(type.rawValue)'
         AND feeStateRawType == '\(selectedFeeOption.rawValue)'
         AND friendDegreeRawType == '\(selectedFriendDegreeOption.rawValue)'
         """
