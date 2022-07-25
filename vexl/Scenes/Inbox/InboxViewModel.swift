@@ -14,7 +14,6 @@ final class InboxViewModel: ViewModelType, ObservableObject {
     // MARK: - Dependency Bindings
 
     @Inject var inboxManager: InboxManagerType
-    @Inject var chatService: ChatServiceType
 
     // MARK: - Persistence Bindings
 

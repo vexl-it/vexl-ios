@@ -6,13 +6,12 @@
 //
 
 import SwiftUI
-import Cleevio
 
-typealias InboxItem = InboxItemView.ViewData
+typealias InboxItem = InboxItemView.ViewModel
 
 struct InboxItemView: View {
 
-    @ObservedObject var data: ViewData
+    @ObservedObject var data: ViewModel
 
     private var offerLabel: String {
         guard let offerType = data.offerType else {
@@ -63,11 +62,7 @@ struct InboxItemView: View {
 
 extension InboxItemView {
 
-    final class ViewData: Identifiable, Hashable, ObservableObject {
-        static func == (lhs: InboxItemView.ViewData, rhs: InboxItemView.ViewData) -> Bool {
-            lhs.id == rhs.id
-        }
-
+    final class ViewModel: Identifiable, Hashable, ObservableObject {
         let chat: ManagedChat
 
         @Published private var lastMessage: ManagedMessage?
@@ -78,8 +73,6 @@ extension InboxItemView {
         var detail: String { lastMessage?.text ?? "" }
         var time: String { lastMessage?.formatedDate ?? "" }
         var offerType: OfferType? { chat.receiverKeyPair?.offer?.type }
-
-        private var cancelBag: CancelBag = .init()
 
         init(chat: ManagedChat) {
             self.chat = chat
@@ -97,6 +90,10 @@ extension InboxItemView {
 
         func hash(into hasher: inout Hasher) {
             hasher.combine(id)
+        }
+
+        static func == (lhs: InboxItemView.ViewModel, rhs: InboxItemView.ViewModel) -> Bool {
+            lhs.id == rhs.id
         }
     }
 }

@@ -46,7 +46,6 @@ final class InboxManager: InboxManagerType {
         let challenge = chatService.requestChallenge(publicKey: inboxKeys.publicKey)
             .map { $0.challenge }
             .eraseToAnyPublisher()
-            .subscribe(on: DispatchQueue.global(qos: .background))
 
         let signature = challenge
             .flatMapLatest { [cryptoService] challenge in
