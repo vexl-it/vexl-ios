@@ -62,11 +62,15 @@ class InboxRepository: InboxRepositoryType {
 
         switch message.type {
         case .revealRequest:
-            break // TODO: set request flag
+            if payload.isFromContact {
+                chat.isRequestingReveal = true
+            }
         case .revealApproval:
-            break // TODO: set request flag
+            chat.isRequestingReveal = false
+            chat.isRevealed = true
         case .revealRejected:
-            break // TODO: set request flag
+            chat.isRequestingReveal = false
+            chat.isRevealed = false
         case .messagingRequest:
             chat.isApproved = false
             chat.isRequesting = false

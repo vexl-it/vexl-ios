@@ -229,6 +229,7 @@ final class RegisterPhoneViewModel: ViewModelType {
             .eraseToAnyPublisher()
     }
 
+    // swiftlint:disable:next function_body_length
     private func setupChallengeActionBindings() {
         let resolveChallenge: AnyPublisher<ChallengeValidation, Never> = codeInputSuccess
             .withUnretained(self)
