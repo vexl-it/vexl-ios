@@ -127,7 +127,8 @@ struct RequestOfferView: View {
             ContactAvatarInfo(
                 isAvatarWithOpacity: false,
                 title: avatarTitle,
-                subtitle: viewModel.offerViewData.friendLevel
+                subtitle: viewModel.offerViewData.friendLevel,
+                avatar: viewModel.offerViewData.avatar
             )
         }
         .padding(.top, Appearance.GridGuide.padding)

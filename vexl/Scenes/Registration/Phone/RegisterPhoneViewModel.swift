@@ -18,6 +18,7 @@ final class RegisterPhoneViewModel: ViewModelType {
     @Inject var userRepository: UserRepositoryType
     @Inject var cryptoService: CryptoServiceType
     @Inject var chatService: ChatServiceType
+    @Inject var contactsService: ContactsServiceType
 
     // MARK: - View State
 
@@ -228,6 +229,7 @@ final class RegisterPhoneViewModel: ViewModelType {
             .eraseToAnyPublisher()
     }
 
+    // swiftlint:disable:next function_body_length
     private func setupChallengeActionBindings() {
         let resolveChallenge: AnyPublisher<ChallengeValidation, Never> = codeInputSuccess
             .withUnretained(self)
@@ -283,15 +285,26 @@ final class RegisterPhoneViewModel: ViewModelType {
                     .receive(on: RunLoop.main)
             }
 
-        let createInbox = createUser
-            .flatMapLatest(with: self) { owner, challengeResponse in
+        let zip = Publishers.Zip(createUser, userRepository.userPublisher.filterNil().receive(on: RunLoop.main))
+
+        let createUserBE = zip
+            .flatMapLatest(with: self) { owner, _ in
+                owner.contactsService
+                    .createUser(forFacebook: false)
+                    .track(activity: owner.primaryActivity)
+                    .materialize()
+                    .compactMap(\.value)
+                    .eraseToAnyPublisher()
+            }
+
+        let createInbox = createUserBE
+            .flatMapLatest(with: self) { owner, _ in
                 owner.chatService
                     .createInbox(publicKey: owner.newKeys.publicKey,
                                  pushToken: Constants.pushNotificationToken)
                     .track(activity: owner.primaryActivity)
                     .materialize()
                     .compactMap(\.value)
-                    .map { challengeResponse }
                     .eraseToAnyPublisher()
             }
 

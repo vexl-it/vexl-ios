@@ -39,7 +39,7 @@ struct InboxView: View {
                         InboxItemView(data: chatItem)
                             .padding(.bottom, Appearance.GridGuide.mediumPadding1)
                             .onTapGesture {
-                                viewModel.action.send(.selectMessage(id: chatItem.id.uuidString))
+                                viewModel.action.send(.selectMessage(chat: chatItem.chat))
                             }
                     }
                 }
@@ -78,16 +78,7 @@ struct InboxView: View {
 struct InboxViewPreview: PreviewProvider {
     static var previews: some View {
         let viewModel = InboxViewModel(bitcoinViewModel: .init())
-        viewModel.inboxItems = [.init(avatar: nil,
-                                      username: "Random 1",
-                                      detail: "Has started conversation",
-                                      time: "Date 1",
-                                      offerType: .buy),
-                                .init(avatar: nil,
-                                      username: "Random 2",
-                                      detail: "Has started conversation",
-                                      time: "Date 2",
-                                      offerType: .sell)]
+        viewModel.inboxItems = []
         return InboxView(viewModel: viewModel)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .previewDevice("iPhone 11")

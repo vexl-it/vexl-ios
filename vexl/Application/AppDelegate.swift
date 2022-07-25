@@ -32,9 +32,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Global appearance
         Appearance.setGlobalAppearance()
 
-        // Setup database
-        DictionaryDB.setupDatabase()
-
         return true
     }
 

@@ -8,4 +8,8 @@
 import Foundation
 
 extension ManagedUser {
+    var signature: String? {
+        get { try? encryptedSignature?.aes.decrypt(password: Constants.localEncryptionPassowrd) }
+        set { encryptedSignature = try? newValue?.aes.encrypt(password: Constants.localEncryptionPassowrd) }
+    }
 }
