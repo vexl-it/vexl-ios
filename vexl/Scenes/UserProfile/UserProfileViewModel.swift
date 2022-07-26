@@ -15,6 +15,7 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
     @Inject var authenticationManager: AuthenticationManagerType
     @Inject var userRepository: UserRepositoryType
     @Inject var contactService: ContactsServiceType
+    @Inject var userService: UserServiceType
 
     // MARK: - Action Binding
 
@@ -55,6 +56,7 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
         case joinVexl
         case editName
         case editAvatar
+        case importContacts
     }
 
     var route: CoordinatingSubject<Route> = .init()
@@ -161,6 +163,13 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
         option
             .filter { $0 == .editAvatar }
             .map { _ in .editAvatar }
+            .subscribe(route)
+            .store(in: cancelBag)
+
+        option
+            .filter { $0 == .contacts }
+            .withUnretained(self)
+            .map { _ -> Route in .importContacts }
             .subscribe(route)
             .store(in: cancelBag)
 

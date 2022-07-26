@@ -34,7 +34,7 @@ struct ContactInformation: Identifiable {
     #if DEBUG || DEVEL
     static func stub() -> [ContactInformation] {
         [
-            ContactInformation(id: "1", name: "Diego Espinoza 1", phone: "999 944 222", avatar: nil, source: .phone),
+            ContactInformation(id: "1", name: "Diego Espinoza 1", phone: "999 944 222", avatar: nil, isSelected: true, source: .phone),
             ContactInformation(id: "2", name: "Diego Espinoza 2", phone: "929 944 222", avatar: nil, source: .phone),
             ContactInformation(id: "3", name: "Diego Espinoza 3", phone: "969 944 222", avatar: nil, source: .phone),
             ContactInformation(id: "4", name: "Diego Espinoza 4", phone: "969 944 222", avatar: nil, source: .phone),

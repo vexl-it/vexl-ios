@@ -70,6 +70,18 @@ final class UserProfileCoordinator: BaseCoordinator<Void> {
         viewModel
             .route
             .receive(on: RunLoop.main)
+            .filter { $0 == .importContacts }
+            .flatMapLatest(with: self) { owner, _ -> CoordinatingResult<RouterResult<Void>> in
+                let router = ModalRouter(parentViewController: viewController, presentationStyle: .fullScreen, transitionStyle: .coverVertical)
+                let coordinator = ProfilePhoneContactsCoordinator(router: router, animated: true)
+                return owner.present(coordinator: coordinator, router: router)
+            }
+            .sink()
+            .store(in: cancelBag)
+
+        viewModel
+            .route
+            .receive(on: RunLoop.main)
             .filter { $0 == .editAvatar }
             .flatMapLatest(with: self) { owner, _ -> CoordinatingResult<RouterResult<Void>> in
                 let router = ModalRouter(parentViewController: viewController, presentationStyle: .fullScreen, transitionStyle: .coverVertical)

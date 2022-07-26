@@ -5,6 +5,7 @@
 "general.pause" = "Pause";
 "general.cancel" = "Cancel";
 "general.ok" = "Ok";
+"general.back" = "Back";
 "general.internal.server.error" = "There was a server error. Please try again.";
 "general.timeout" = "The request timed out. Please try again.";
 "general.search" = "Search";
@@ -41,6 +42,7 @@
 "register.name.avatar.image.picker" = "Select the source of your avatar";
 "register.contacts.import.button" = "Import contacts";
 "register.contacts.import.deselect" = "Deselect All";
+"register.contacts.import.select" = "Select All";
 "register.contacts.import.empty" = "There are no contacts to import";
 "register.contacts.skip" = "Skip for now";
 "register.contacts.import.alert.allow" = "Allow";
@@ -53,6 +55,7 @@
 "register.phone.alert.reject.description" = "Vexl only works by anonymously using your contacts to connect you with other users.";
 "register.facebook.contacts.title" = "Expand your network with Facebook";
 "register.facebook.import.button" = "Import Facebook contacts";
+"register.contacts.update.button" = "Update";
 "error.register.invalid.validation.code" = "The validation code is invalid";
 "error.register.invalid.challenge" = "There was an error validating the user";
 "error.register.invalid.email" = "The email is invalid";
@@ -72,10 +75,23 @@
 "user.profile.report.issue" = "Report issue";
 "user.profile.request.data" = "Request known data";
 "user.profile.logout" = "Delete account";
+"user.profile.czech.crown" = "Czech crown";
+"user.profile.logout.info" = "Can’t find logout? There’s no such a thing.\nBut you can delete account.";
+"user.profile.vexl.support" = "If you like Vexl, support it’s improvement by sending some Bitcoins as donation!";
+"user.profile.refuse.snap.chat" = "Refuse users to snap the chat";
+"user.profile.private.settings.title" = "Private settings";
+"user.profile.private.settings.subtitle" = "Unlock to access your identity and contacts";
 "user.profile.edit.name.title" = "Edit name";
+"user.profile.edit.name.subtitle" = "Space for additional copy. You can lorem\nipsum dolor sit ametum roma von carpa di.";
 "user.profile.edit.name.action" = "Save";
 "user.profile.edit.avatar.title" = "Change profile picture";
 "user.profile.edit.avatar.action" = "Upload new photo";
+"user.profile.delete.account.title" = "Delete account?";
+"user.profile.delete.account.subtitle" = "Do you really want to delete your account? You will never be able to undo this action.";
+"user.profile.delete.account.no" = "Nope";
+"user.profile.delete.account.yes.delete" = "Yes, delete";
+"user.profile.delete.account.yes" = "Yes";
+"user.profile.delete.account.title.sure" = "You sure?";
 "user.profile.join.vexl.title" = "Join Vexl";
 "user.profile.join.vexl.button.title" = "Got it";
 "user.profile.donate.title" = "Give love";
@@ -108,7 +124,7 @@
 "marketplace.buy.add" = "+";
 "marketplace.detail.upTo" = "Up to %@";
 "marketplace.detail.friend.first" = "Friend";
-"marketplace.detail.friend.second" = "Friend of Friend";
+"marketplace.detail.friend.second" = "Friend of a Friend";
 "marketplace.detail.sell" = "To sell";
 "marketplace.detail.buy" = "To buy";
 "marketplace.detail.user.sell" = "%@ is selling";
@@ -164,7 +180,7 @@
 "offer.create.advanced.friend.source.facebook" = "Facebook";
 "offer.create.advanced.friend.level.first" = "1st degree";
 "offer.create.advanced.friend.level.second" = "2nd degree";
-"offer.create.advanced.friend.description" = "Trade with your friends only. \nOr with friends of your friends.";
+"offer.create.advanced.friend.description" = "Trade with your friends only. \nTrade with friends of your friends.";
 "offer.create.advanced.type.lightning" = "Lightning";
 "offer.create.advanced.type.chain" = "On chain";
 "offer.create.description" = "Description";

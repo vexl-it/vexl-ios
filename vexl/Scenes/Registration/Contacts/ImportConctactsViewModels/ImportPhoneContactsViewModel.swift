@@ -12,15 +12,20 @@ import Cleevio
 
 final class ImportPhoneContactsViewModel: ImportContactsViewModel {
     override func fetchContacts() throws {
-        let contacts = contactsManager.fetchPhoneContacts()
-        let phones = contacts.map(\.phone)
+        @Inject var encryptionService: EncryptionServiceType
 
-        contactsManager
-            .getActivePhoneContacts(phones)
+        let contacts = contactsManager.fetchPhoneContacts()
+
+        encryptionService.hashContacts(contacts: contacts)
             .track(activity: primaryActivity)
-            .materialize()
-            .compactMap(\.value)
-            .eraseToAnyPublisher()
+            .withUnretained(self)
+            .flatMap { owner, hashedPhones in
+                owner.contactsManager
+                    .getActivePhoneContacts(hashedPhones.map(\.1))
+                    .track(activity: owner.primaryActivity)
+                    .materialize()
+                    .compactMap(\.value)
+            }
             .withUnretained(self)
             .sink { owner, availableContacts in
                 owner.currentState = availableContacts.isEmpty ? .empty : .content
