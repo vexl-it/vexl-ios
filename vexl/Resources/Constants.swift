@@ -123,4 +123,5 @@ struct Constants {
     static let defaultDeleteTime = "7" // days will be selected as default too
 
     static let contactsHashingPassword = "VexlVexl"
+    static let localEncryptionPassowrd = "tmpPassword"
 }

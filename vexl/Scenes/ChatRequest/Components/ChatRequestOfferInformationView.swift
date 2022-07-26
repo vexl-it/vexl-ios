@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ChatRequestOfferInformationView: View {
 
-    let data: OfferDetailViewData
+    @ObservedObject var data: OfferDetailViewData
 
     var body: some View {
         VStack(alignment: .leading, spacing: .zero) {

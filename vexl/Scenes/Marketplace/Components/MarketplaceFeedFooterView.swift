@@ -14,6 +14,7 @@ struct MarketplaceFeedFooterView: View {
     let isRequested: Bool
     let friendLevel: String
     let offerType: OfferType
+    var avatar: Data?
     let action: () -> Void
 
     private var title: String {
@@ -25,7 +26,8 @@ struct MarketplaceFeedFooterView: View {
             ContactAvatarInfo(
                 isAvatarWithOpacity: isRequested,
                 title: title,
-                subtitle: friendLevel
+                subtitle: friendLevel,
+                avatar: avatar
             )
 
             Button(action: action) {

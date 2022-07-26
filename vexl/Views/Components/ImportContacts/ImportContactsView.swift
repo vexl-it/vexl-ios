@@ -41,7 +41,7 @@ struct ImportContactsView: View {
                     })
                 }
             }
-                .padding(.horizontal, Appearance.GridGuide.mediumPadding1)
+                .padding(.horizontal, Appearance.GridGuide.point)
         }
     }
 }
