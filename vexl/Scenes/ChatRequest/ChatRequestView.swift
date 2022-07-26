@@ -23,11 +23,11 @@ struct ChatRequestView: View {
             TabView {
                 ForEach(viewModel.offerRequests) { request in
                     ChatRequestOfferView(data: request,
-                                         accept: { id in
-                        viewModel.action.send(.acceptTap(id: id))
+                                         accept: { chat in
+                        viewModel.action.send(.acceptTap(chat: chat))
                     },
-                                         decline: { id in
-                        viewModel.action.send(.rejectTap(id: id))
+                                         decline: { chat in
+                        viewModel.action.send(.rejectTap(chat: chat))
                     })
                         .padding(.horizontal, Appearance.GridGuide.padding)
                 }

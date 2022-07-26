@@ -69,9 +69,11 @@ class OfferRepository: OfferRepositoryType {
     func createOrUpdateOffer(offerPayloads: [OfferPayload]) -> AnyPublisher<[ManagedOffer], Error> {
         let context = persistence.viewContext
         guard let userInboxID = userRepository.user?.profile?.keyPair?.inbox?.objectID,
-              let userInbox = persistence.loadSyncroniously(type: ManagedInbox.self, context: context, objectID: userInboxID),
-              !offerPayloads.isEmpty else {
+              let userInbox = persistence.loadSyncroniously(type: ManagedInbox.self, context: context, objectID: userInboxID) else {
             return Fail(error: PersistenceError.insufficientData).eraseToAnyPublisher()
+        }
+        guard !offerPayloads.isEmpty else {
+            return Just([]).setFailureType(to: Error.self).eraseToAnyPublisher()
         }
         return persistence.insert(context: context) { [persistence] context in
             offerPayloads.compactMap { payload in
@@ -88,7 +90,8 @@ class OfferRepository: OfferRepositoryType {
                 return payload.decrypt(context: context, userInbox: userInbox, into: offer)
                     .flatMap { offer -> ManagedOffer in
                         let profile = ManagedProfile(context: context)
-
+                        
+                        // creating new chat from requesting offer
                         profile.avatar = UIImage(named: R.image.profile.avatar.name)?.pngData() // TODO: generate random avatar
                         profile.name = Constants.randomName // TODO: generate random name
 

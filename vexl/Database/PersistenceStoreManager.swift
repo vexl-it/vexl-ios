@@ -162,7 +162,7 @@ final class PersistenceStoreManager: PersistenceStoreManagerType {
     }
 
     func wipe() -> AnyPublisher<Void, Error> {
-        let context = newBackgroundContext()
+        let context = newEditContext()
         return Future<Void, Error> { [weak self] promise in
             guard let owner = self else {
                 return
