@@ -11,6 +11,7 @@ import CoreData
 
 protocol ContactsRepositoryType {
     func save(contacts: [(ContactInformation, String)]) -> AnyPublisher<[ManagedContact], Error>
+    func getContacts(hashes: [String]) -> AnyPublisher<[ManagedContact], Error>
 }
 
 final class ContactsRepository: ContactsRepositoryType {
@@ -32,5 +33,19 @@ final class ContactsRepository: ContactsRepositoryType {
                 return managedContact
             }
         }
+    }
+
+    func getContacts(hashes: [String]) -> AnyPublisher<[ManagedContact], Error> {
+        guard !hashes.isEmpty else {
+            return Just([]).setFailureType(to: Error.self).eraseToAnyPublisher()
+        }
+        let context = persistence.viewContext
+        let array = NSArray(array: hashes)
+        return persistence.load(
+            type: ManagedContact.self,
+            context: context,
+            sortDescriptors: [NSSortDescriptor(key: "name", ascending: true)],
+            predicate: NSPredicate(format: "hmacHash contains[cd] %@", array)
+        )
     }
 }

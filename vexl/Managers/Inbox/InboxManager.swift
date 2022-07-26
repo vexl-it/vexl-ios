@@ -22,13 +22,17 @@ final class InboxManager: InboxManagerType {
     private var cancelBag = CancelBag()
 
     func syncInboxes() {
-        let userOfferInboxes = userRepository.user?.offers?.allObjects as? [ManagedInbox] ?? []
+        let userOffers = userRepository.user?.offers?.allObjects as? [ManagedOffer] ?? []
+        let userOfferInboxes = userOffers.compactMap(\.inbox)
+
         let userInbox = userRepository.user?.profile?.keyPair?.inbox
         var inboxes = userOfferInboxes + [userInbox].compactMap { $0 }
         inboxes = inboxes.filter { $0.syncItem == nil }
 
         let inboxPublishers = inboxes.map { inbox in
             self.syncInbox(inbox)
+                .materialize()
+                .compactMap(\.value)
         }
 
         Publishers.MergeMany(inboxPublishers)
@@ -97,7 +101,8 @@ final class InboxManager: InboxManagerType {
         return deleteChat
             .map { Result.success($0) }
             .catch { _ in
-                Just(Result.failure(InboxError.inboxSyncFailed)).setFailureType(to: Error.self)
+                Just(Result.failure(InboxError.inboxSyncFailed))
+                    .setFailureType(to: Error.self)
                     .eraseToAnyPublisher()
             }
             .eraseToAnyPublisher()
