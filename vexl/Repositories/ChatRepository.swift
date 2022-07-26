@@ -31,7 +31,6 @@ class ChatRepository: ChatRepositoryType {
             message.type = .messagingRequest
             message.contentType = .communicationRequest
             message.time = Date().timeIntervalSince1970
-            message.contentType = .anonymousRequest
 
             chat.id = UUID().uuidString
             chat.receiverKeyPair = offer.receiverPublicKey
