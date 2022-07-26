@@ -14,6 +14,7 @@ protocol ChatManagerType {
     func send(payload: MessagePayload, chat: ManagedChat) ->AnyPublisher<Void, Error>
     func delete(chat: ManagedChat) -> AnyPublisher<Void, Error>
     func requestIdentity(chat: ManagedChat) -> AnyPublisher<Void, Error>
+    func communicationResponse(chat: ManagedChat, confirmation: Bool) -> AnyPublisher<Void, Error>
 }
 
 final class ChatManager: ChatManagerType {
@@ -21,6 +22,7 @@ final class ChatManager: ChatManagerType {
     @Inject var chatRepository: ChatRepositoryType
     @Inject var chatService: ChatServiceType
     @Inject var userRepository: UserRepositoryType
+    @Inject var cryptoService: CryptoServiceType
 
     func requestCommunication(offer: ManagedOffer, receiverPublicKey: String, messagePayload: MessagePayload) -> AnyPublisher<Void, Error> {
         guard let payload = messagePayload.asString else {
@@ -92,6 +94,39 @@ final class ChatManager: ChatManagerType {
             .sendMessage(inboxKeys: inboxKeys, receiverPublicKey: receiverPublicKey, message: message, messageType: .deleteChat)
             .flatMap { [inboxRepository] in
                 inboxRepository.createOrUpdateChats(receivedPayloads: [payload], inbox: inbox)
+            }
+            .eraseToAnyPublisher()
+    }
+
+    func communicationResponse(chat: ManagedChat, confirmation: Bool) -> AnyPublisher<Void, Error> {
+        guard let inbox = chat.inbox,
+              let inboxKeys = inbox.keyPair?.keys,
+              let receiverPublicKey = chat.receiverKeyPair?.publicKey,
+              let payload = MessagePayload.communicationConfirmation(
+                isConfirmed: confirmation,
+                inboxPublicKey: inboxKeys.publicKey,
+                contactInboxKey: receiverPublicKey
+              ) else {
+            return Fail(error: PersistenceError.insufficientData)
+                .eraseToAnyPublisher()
+        }
+
+        return chatService.requestChallenge(publicKey: inboxKeys.publicKey)
+            .flatMap { [cryptoService] challenge in
+                cryptoService.signECDSA(keys: inboxKeys, message: challenge.challenge)
+            }
+            .flatMap { [chatService] signature in
+                chatService
+                    .communicationConfirmation(confirmation: confirmation,
+                                               message: payload,
+                                               inboxKeys: inboxKeys,
+                                               requesterPublicKey: receiverPublicKey,
+                                               signature: signature)
+            }
+            .flatMap { [inboxRepository] in
+                confirmation
+                    ? inboxRepository.createOrUpdateChats(receivedPayloads: [payload], inbox: inbox)
+                    : inboxRepository.deleteChats(recevedPayloads: [payload], inbox: inbox)
             }
             .eraseToAnyPublisher()
     }

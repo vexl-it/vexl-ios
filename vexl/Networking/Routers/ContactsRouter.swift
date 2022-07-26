@@ -83,7 +83,7 @@ enum ContactsRouter: ApiRouter {
             return ["level": friendLevel.rawValue,
                     "limit": pageLimit]
         case let .getCommonFriends(publicKeys):
-            return ["offerIds": publicKeys.joined(separator: ",")]
+            return ["publicKeys": publicKeys.joined(separator: ",")]
         }
     }
 
