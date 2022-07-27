@@ -27,22 +27,30 @@ struct MarketplaceView: View {
     }
 
     private var marketPlaceContent: some View {
-        VStack(spacing: Appearance.GridGuide.mediumPadding1) {
-            marketPlaceHeader
+        ScrollView(.vertical, showsIndicators: false) {
+            RefreshContainer(topPadding: 50,
+                             isRefreshing: $viewModel.isRefreshing,
+                             content: {
+                VStack(spacing: Appearance.GridGuide.mediumPadding1) {
+                    marketPlaceHeader
 
-            ForEach(viewModel.marketplaceFeedItems) { item in
-                MarketplaceFeedView(data: item,
-                                    displayFooter: false,
-                                    detailAction: { _ in
-                    viewModel.action.send(.offerDetailTapped(offer: item.offer))
-                },
-                                    requestAction: { _ in
-                    viewModel.action.send(.requestOfferTapped(offer: item.offer))
-                })
-                .padding(.horizontal, Appearance.GridGuide.point)
-            }
+                    ForEach(viewModel.marketplaceFeedItems) { item in
+                        MarketplaceFeedView(data: item,
+                                            displayFooter: false,
+                                            detailAction: { _ in
+                            viewModel.action.send(.offerDetailTapped(offer: item.offer))
+                        },
+                                            requestAction: { _ in
+                            viewModel.action.send(.requestOfferTapped(offer: item.offer))
+                        })
+                        .padding(.horizontal, Appearance.GridGuide.point)
+                    }
+                }
+                .animation(.easeInOut, value: viewModel.marketplaceFeedItems)
+            })
         }
-        .animation(.easeInOut, value: viewModel.marketplaceFeedItems)
+        .coordinateSpace(name: RefreshControlView.coordinateSpace)
+
     }
 
     private var marketPlaceHeader: some View {
