@@ -19,7 +19,7 @@ final class ReportIssueSheetViewModel: BottomActionSheetViewModelProtocol {
     var colorScheme: IdentityBottomActionSheet.ColorScheme = .main
 
     var title: String {
-        L.userProfileReportErrorTitle()
+        L.userProfileReportIssueTitle()
     }
 
     var content: ReportIssueActionSheetContent {
@@ -31,7 +31,7 @@ struct ReportIssueActionSheetContent: View {
 
     var body: some View {
         VStack {
-            Text(L.userProfileReportErrorSubtitle())
+            Text(L.userProfileReportIssueSubtitle())
                 .textStyle(.paragraph)
                 .foregroundColor(Appearance.Colors.gray3)
                 .padding(.vertical, Appearance.GridGuide.padding)
@@ -45,7 +45,7 @@ struct ReportIssueActionSheetContent: View {
                     .background(Appearance.Colors.gray5)
                     .cornerRadius(Appearance.GridGuide.buttonCorner)
 
-                Text(verbatim: Constants.supportEmail)
+                Text(verbatim: L.userProfileReportIssueEmail())
                     .textStyle(.paragraph)
                     .foregroundColor(Appearance.Colors.primaryText)
             }

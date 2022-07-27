@@ -38,7 +38,7 @@ final class UserProfileViewController<T: View>: BaseViewController<T>, MFMailCom
         let deviceSystemVersion = UIDevice.current.systemVersion
         controller.setMessageBody(
             """
-            \(L.userProfileReportErrorEmailbody())
+            \(L.userProfileReportIssueText())
             \(appVersion) - \(deviceModelName) - \(deviceSystemVersion)
             """,
             isHTML: false
