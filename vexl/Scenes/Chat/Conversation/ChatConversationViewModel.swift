@@ -12,7 +12,7 @@ import SwiftUI
 final class ChatConversationViewModel: ObservableObject {
 
     enum UserAction: Equatable {
-        case imageTapped(sectionId: String, messageId: String)
+        case imageTapped(image: Data?)
         case revealTapped
     }
 
@@ -85,17 +85,9 @@ final class ChatConversationViewModel: ObservableObject {
 
     private func setupActionBindings() {
         action
-            .compactMap { action -> (sectionId: String, messageId: String)? in
-                if case let .imageTapped(sectionId, messageId) = action { return (sectionId: sectionId, messageId: messageId) }
-                return nil
-            }
-            .withUnretained(self)
-            .compactMap { owner, ids -> Data? in
-                guard let section = owner.messages.first(where: { $0.id == ids.sectionId }),
-                      let message = section.messages.first(where: { $0.id == ids.messageId }) else {
-                          return nil
-                      }
-                return message.image
+            .compactMap { action -> Data? in
+                guard case let .imageTapped(image) = action else { return nil }
+                return image
             }
             .subscribe(displayExpandedImage)
             .store(in: cancelBag)
