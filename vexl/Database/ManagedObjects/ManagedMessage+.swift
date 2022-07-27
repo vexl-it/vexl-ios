@@ -13,11 +13,6 @@ extension ManagedMessage {
         set { typeRawType = newValue.rawValue }
     }
 
-    var contentType: ContentType {
-        get { contentTypeRawType.flatMap(ContentType.init) ?? .none }
-        set { contentTypeRawType = newValue.rawValue }
-    }
-
     var date: Date {
         get { Date(timeIntervalSince1970: time) }
         set { time = newValue.timeIntervalSince1970 }

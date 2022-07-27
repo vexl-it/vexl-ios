@@ -36,7 +36,6 @@
         <relationship name="profile" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ManagedProfile" inverseName="keyPair" inverseEntity="ManagedProfile"/>
     </entity>
     <entity name="ManagedMessage" representedClassName="ManagedMessage" syncable="YES" codeGenerationType="class">
-        <attribute name="contentTypeRawType" optional="YES" attributeType="String"/>
         <attribute name="id" optional="YES" attributeType="String"/>
         <attribute name="image" optional="YES" attributeType="String"/>
         <attribute name="isContact" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
@@ -102,7 +101,7 @@
         <element name="ManagedContact" positionX="-1060.67578125" positionY="-241.9453125" width="128" height="134"/>
         <element name="ManagedInbox" positionX="-562.71484375" positionY="-370.265625" width="128" height="118"/>
         <element name="ManagedKeyPair" positionX="-343.26171875" positionY="-227.74609375" width="128" height="133"/>
-        <element name="ManagedMessage" positionX="-110.484375" positionY="-455.828125" width="128" height="193"/>
+        <element name="ManagedMessage" positionX="-110.484375" positionY="-455.828125" width="128" height="178"/>
         <element name="ManagedOffer" positionX="-870.50390625" positionY="-571.98046875" width="128" height="404"/>
         <element name="ManagedProfile" positionX="-568.91015625" positionY="-80.58984375" width="128" height="178"/>
         <element name="ManagedSyncItem" positionX="-591.86328125" positionY="-567.52734375" width="128" height="74"/>

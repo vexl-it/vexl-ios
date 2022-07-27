@@ -29,7 +29,6 @@ class ChatRepository: ChatRepositoryType {
             message.chat = chat
             message.text = requestMessage
             message.type = .messagingRequest
-            message.contentType = .communicationRequest
             message.time = Date().timeIntervalSince1970
 
             chat.id = UUID().uuidString

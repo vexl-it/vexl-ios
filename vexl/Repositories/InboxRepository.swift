@@ -72,7 +72,6 @@ class InboxRepository: InboxRepositoryType {
         message.chat = chat
         message.text = payload.text
         message.image = payload.image
-        message.contentType = payload.contentType
         message.time = payload.time
         message.type = payload.messageType
         message.isContact = payload.isFromContact

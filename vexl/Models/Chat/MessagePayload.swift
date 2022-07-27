@@ -7,17 +7,6 @@
 
 import Foundation
 
-enum ContentType: String {
-    case text = "TEXT"
-    case image = "IMAGE"
-    case anonymousRequest = "ANON_REQUEST"
-    case anonymousRequestResponse = "ANON_REQUEST_RESPONSE"
-    case communicationRequest = "COMMUNICATION_REQUEST"
-    case communicationRequestResponse = "COMMUNICATION_REQUEST_RESPONSE"
-    case deleteChat = "DELETE_CHAT"
-    case none
-}
-
 /// The struct used to contained the data that comes from the server using `EncryptedChatMessage`.
 /// This will be stored in the databased and used for populating the Inbox and Chat user interfaces.
 struct MessagePayload: Codable {
@@ -32,17 +21,11 @@ struct MessagePayload: Codable {
     let image: String?
     /// Message type send by the backend
     var messageTypeValue: String
-    /// Message type for the content used internally in the device
-    var contentTypeValue: String
     let time: TimeInterval
     /// Information of the sender, will contain data once the identity reveal is accepted.
     var user: ChatUser?
 
     var isFromContact = true
-
-    var contentType: ContentType {
-        ContentType(rawValue: contentTypeValue) ?? .none
-    }
 
     var messageType: MessageType {
         MessageType(rawValue: messageTypeValue) ?? .invalid
@@ -50,17 +33,6 @@ struct MessagePayload: Codable {
 
     var shouldBeStored: Bool {
         ![MessageType.revealRejected, .revealApproval, .deleteChat].contains(messageType)
-    }
-
-    var previewText: String {
-        switch contentType {
-        case .text, .communicationRequestResponse:
-            return text ?? ""
-        case .image:
-            return L.chatMessageConversationImage()
-        default:
-            return ""
-        }
     }
 
     var avatar: Data? {
@@ -74,7 +46,6 @@ struct MessagePayload: Codable {
     var asString: String? {
         var json: [String: Any] = [
             "uuid": id,
-            "type": contentTypeValue,
             "time": time.milliseconds
         ]
 
@@ -87,8 +58,11 @@ struct MessagePayload: Codable {
         }
 
         if let user = user {
-            json["username"] = user.name
-            json["userAvatar"] = user.image
+            let jsonUser = [
+                "name": user.name,
+                "image": user.image
+            ]
+            json["user"] = jsonUser
         }
 
         guard let data = try? JSONSerialization.data(withJSONObject: json, options: .prettyPrinted) else {
@@ -114,24 +88,22 @@ extension MessagePayload {
     init?(chatMessage: EncryptedChatMessage, key: ECCKeys, inboxPublicKey: String) {
         guard let json = chatMessage.asJSON(with: key),
               let id = json["uuid"] as? String,
-              let contentType = json["type"] as? String,
               let time = json["time"] as? Int else {
                   return nil
               }
 
         let text = json["text"] as? String
         let image = json["image"] as? String
+        let jsonUser = json["deanonymizedUser"] as? [String: String]
 
         self.contactInboxKey = chatMessage.senderPublicKey
         self.inboxKey = inboxPublicKey
         self.id = id
         self.text = text
         self.image = image
-        self.contentTypeValue = contentType
         self.messageTypeValue = chatMessage.messageType
         self.time = TimeInterval(time) / 1_000
-        self.user = ChatUser(name: json["username"] as? String,
-                             image: json["userAvatar"] as? String)
+        self.user = ChatUser(name: jsonUser?["name"], image: jsonUser?["image"])
     }
 
     /// Use this initializer to manually create a message,
@@ -140,7 +112,6 @@ extension MessagePayload {
     // swiftlint: disable function_default_parameter_at_end
     private init?(inboxPublicKey: String,
                   messageType: MessageType,
-                  contentType: ContentType,
                   text: String,
                   image: String? = nil,
                   contactInboxKey: String,
@@ -151,7 +122,6 @@ extension MessagePayload {
         self.text = text
         self.inboxKey = inboxPublicKey
         self.messageTypeValue = messageType.rawValue
-        self.contentTypeValue = contentType.rawValue
         self.time = Date().timeIntervalSince1970
         self.image = image
         self.isFromContact = false
@@ -167,7 +137,6 @@ extension MessagePayload {
         MessagePayload(
             inboxPublicKey: inboxPublicKey,
             messageType: .messagingRequest,
-            contentType: .communicationRequest,
             text: text,
             contactInboxKey: contactInboxKey
         )
@@ -177,7 +146,6 @@ extension MessagePayload {
         MessagePayload(
             inboxPublicKey: inboxPublicKey,
             messageType: isConfirmed ? .messagingApproval : .messagingRejection,
-            contentType: .communicationRequestResponse,
             text: L.chatMessageConversationRequestAccepted(),
             contactInboxKey: contactInboxKey
         )
@@ -188,11 +156,9 @@ extension MessagePayload {
             return nil
         }
 
-        let type: ContentType = image != nil ? .image : .text
         let parsedMessage = MessagePayload(
             inboxPublicKey: inboxPublicKey,
             messageType: .message,
-            contentType: type,
             text: text,
             image: image,
             contactInboxKey: contactInboxKey
@@ -208,7 +174,6 @@ extension MessagePayload {
         let parsedMessage = MessagePayload(
             inboxPublicKey: inboxPublicKey,
             messageType: .revealRequest,
-            contentType: .anonymousRequest,
             text: "",
             image: nil,
             contactInboxKey: contactInboxKey,
@@ -226,7 +191,6 @@ extension MessagePayload {
         let parsedMessage = MessagePayload(
             inboxPublicKey: inboxPublicKey,
             messageType: isAccepted ? .revealApproval : .revealApproval,
-            contentType: .anonymousRequestResponse,
             text: "",
             image: nil,
             contactInboxKey: contactInboxKey,
@@ -239,7 +203,6 @@ extension MessagePayload {
         let parsedMessage = MessagePayload(
             inboxPublicKey: inboxPublicKey,
             messageType: .deleteChat,
-            contentType: .deleteChat,
             text: "",
             image: nil,
             contactInboxKey: contactInboxKey
