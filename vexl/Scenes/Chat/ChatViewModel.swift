@@ -201,6 +201,10 @@ final class ChatViewModel: ViewModelType, ObservableObject {
     }
 
     func identityRevealResponse(isAccepted: Bool) {
-        // TODO: send identity reveal response
+        chatManager
+            .identityResponse(allow: isAccepted, chat: chat)
+            .track(activity: primaryActivity)
+            .sink()
+            .store(in: cancelBag)
     }
 }
