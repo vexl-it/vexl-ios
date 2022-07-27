@@ -58,6 +58,7 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
         case editAvatar
         case importContacts
         case importFacebook
+        case reportIssue
     }
 
     var route: CoordinatingSubject<Route> = .init()
@@ -179,6 +180,12 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
             .filter { $0 == .facebook }
             .map { _ -> Route in .importFacebook }
             .sink()
+            .store(in: cancelBag)
+
+        option
+            .filter { $0 == .reportIssue }
+            .map { _ -> Route in .reportIssue }
+            .subscribe(route)
             .store(in: cancelBag)
 
         option

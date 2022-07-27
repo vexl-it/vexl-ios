@@ -85,6 +85,7 @@
 "user.profile.edit.name.subtitle" = "Space for additional copy. You can lorem\nipsum dolor sit ametum roma von carpa di.";
 "user.profile.edit.name.action" = "Save";
 "user.profile.edit.avatar.title" = "Change profile picture";
+"user.profile.edit.avatar.subtitle" = "Space for additional copy. You can lorem ipsum dolor sit ametum roma von.";
 "user.profile.edit.avatar.action" = "Upload new photo";
 "user.profile.delete.account.title" = "Delete account?";
 "user.profile.delete.account.subtitle" = "Do you really want to delete your account? You will never be able to undo this action.";
@@ -103,6 +104,17 @@
 "user.profile.currency.eur" = "Euro";
 "user.profile.currency.usd" = "United states dollar";
 "user.profile.currency.dismissButton" = "Done";
+"user.profile.report.issue.subject" = "Vexl: Issue report";
+"user.profile.report.issue.text" = "I'm contacting you due to ...";
+"user.profile.report.issue.email" = "support@vexl.it";
+"user.profile.report.issue.error.no.app.found" = "No email application found";
+"user.profile.report.issue.title" = "Something went wrong?";
+"user.profile.report.issue.subtitle" = "Feel free to get in touch with our support.";
+"user.profile.report.issue.confirm" = "Got it";
+"user.profile.request.data.title" = "Request known data";
+"user.profile.request.data.subtitle" = "Download package with everything we know about you.";
+"user.profile.request.confirm.button" = "Download";
+"user.profile.request.dismiss.button" = "Back";
 "marketplace.currency.bitcoin" = "Bitcoin";
 "marketplace.currency.variation.1day" = "%1$@% today";
 "marketplace.currency.variation.1week" = "%1$@% last week";
