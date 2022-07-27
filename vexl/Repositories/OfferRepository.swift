@@ -8,9 +8,10 @@
 import Foundation
 import CoreData
 import Combine
+import UIKit
 
 protocol OfferRepositoryType {
-    func createOffer(provider: @escaping (ManagedOffer) -> Void) -> AnyPublisher<ManagedOffer, Error>
+    func createOffer(keys: ECCKeys, provider: @escaping (ManagedOffer) -> Void) -> AnyPublisher<ManagedOffer, Error>
 
     func update(offer: ManagedOffer, provider: @escaping (ManagedOffer) -> Void) -> AnyPublisher<ManagedOffer, Error>
 
@@ -27,14 +28,12 @@ class OfferRepository: OfferRepositoryType {
     @Inject private var persistence: PersistenceStoreManagerType
     @Inject private var userRepository: UserRepositoryType
 
-    func createOffer(provider: @escaping (ManagedOffer) -> Void) -> AnyPublisher<ManagedOffer, Error> {
+    func createOffer(keys: ECCKeys, provider: @escaping (ManagedOffer) -> Void) -> AnyPublisher<ManagedOffer, Error> {
         persistence.insert(context: persistence.viewContext) { [userRepository] context in
 
             let offer = ManagedOffer(context: context)
             let inbox = ManagedInbox(context: context)
             let keyPair = ManagedKeyPair(context: context)
-
-            let keys = ECCKeys()
 
             keyPair.publicKey = keys.publicKey
             keyPair.privateKey = keys.privateKey
@@ -45,6 +44,7 @@ class OfferRepository: OfferRepositoryType {
             offer.inbox = inbox
 
             provider(offer)
+
             offer.syncItem = ManagedSyncItem(context: context)
             offer.syncItem?.type = .insert
             offer.user = userRepository.getUser(for: context)
@@ -69,9 +69,11 @@ class OfferRepository: OfferRepositoryType {
     func createOrUpdateOffer(offerPayloads: [OfferPayload]) -> AnyPublisher<[ManagedOffer], Error> {
         let context = persistence.viewContext
         guard let userInboxID = userRepository.user?.profile?.keyPair?.inbox?.objectID,
-              let userInbox = persistence.loadSyncroniously(type: ManagedInbox.self, context: context, objectID: userInboxID),
-              !offerPayloads.isEmpty else {
+              let userInbox = persistence.loadSyncroniously(type: ManagedInbox.self, context: context, objectID: userInboxID) else {
             return Fail(error: PersistenceError.insufficientData).eraseToAnyPublisher()
+        }
+        guard !offerPayloads.isEmpty else {
+            return Just([]).setFailureType(to: Error.self).eraseToAnyPublisher()
         }
         return persistence.insert(context: context) { [persistence] context in
             offerPayloads.compactMap { payload in
@@ -86,6 +88,17 @@ class OfferRepository: OfferRepositoryType {
                 }
                 let offer = ManagedOffer(context: context)
                 return payload.decrypt(context: context, userInbox: userInbox, into: offer)
+                    .flatMap { offer -> ManagedOffer in
+                        let profile = ManagedProfile(context: context)
+                        
+                        // creating new chat from requesting offer
+                        profile.avatar = UIImage(named: R.image.profile.avatar.name)?.pngData() // TODO: generate random avatar
+                        profile.name = Constants.randomName // TODO: generate random name
+
+                        offer.receiverPublicKey?.profile = profile
+
+                        return offer
+                    }
             }
         }
     }
@@ -148,7 +161,7 @@ class OfferRepository: OfferRepositoryType {
                 predicate: NSPredicate(format: "%@ contains[cd] id", NSArray(array: ids))
             )
             .flatMap { [persistence] offers -> AnyPublisher<Void, Error> in
-                persistence.delete(context: context, editor: { offers })
+                persistence.delete(context: context, editor: { _ in offers })
             }
             .eraseToAnyPublisher()
     }

@@ -13,7 +13,7 @@ import SwiftUI
 
 struct ChatConversationItem: Identifiable, Hashable {
 
-    let id = UUID()
+    let id: String
     let text: String?
     let image: Data?
     let previewImage: Data?
@@ -22,7 +22,35 @@ struct ChatConversationItem: Identifiable, Hashable {
 
     let imageView: Image
 
-    init(type: ItemType, isContact: Bool, text: String? = nil, image: String? = nil) {
+    init(message: ManagedMessage) {
+        let itemType: ChatConversationItem.ItemType = {
+            switch message.contentType {
+            case .text:
+                return .text
+            case .image:
+                return .image
+            case .communicationRequestResponse:
+                return .start
+            case .anonymousRequest:
+                return message.isContact ? .receiveIdentityReveal : .requestIdentityReveal
+            case .anonymousRequestResponse:
+                return message.type == .revealApproval ? .approveIdentityReveal : .rejectIdentityReveal
+            case .deleteChat, .communicationRequest, .none:
+                return .noContent
+            }
+        }()
+
+        self.id = message.id ?? UUID().uuidString
+        self.text = message.text
+        self.type = itemType
+        self.isContact = message.isContact
+        self.image = message.image?.dataFromBase64
+        self.previewImage = message.image?.dataFromBase64(withCompression: Constants.imageCompressionQuality)
+        self.imageView = Image(data: previewImage, placeholder: "")
+    }
+
+    init(type: ItemType, isContact: Bool, id: String? = nil, text: String? = nil, image: String? = nil) {
+        self.id = id ?? UUID().uuidString
         self.text = text
         self.type = type
         self.isContact = isContact
@@ -56,7 +84,7 @@ struct ChatConversationItem: Identifiable, Hashable {
 }
 
 extension Array where Element == ChatConversationItem {
-    mutating func updateRevealIdentities(isAccepted: Bool, chatUser: ParsedChatMessage.ChatUser?) {
+    mutating func updateRevealIdentities(isAccepted: Bool, chatUser: MessagePayload.ChatUser?) {
         let identityItems = self.enumerated()
             .filter { $0.element.type == .receiveIdentityReveal || $0.element.type == .requestIdentityReveal }
 

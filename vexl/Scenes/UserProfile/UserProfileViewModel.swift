@@ -175,10 +175,11 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
             .subscribe(route)
             .store(in: cancelBag)
 
+        // TODO: - Subscribe to route once the problems with facebook are fixed.
         option
             .filter { $0 == .facebook }
             .map { _ -> Route in .importFacebook }
-            .subscribe(route)
+            .sink()
             .store(in: cancelBag)
 
         option

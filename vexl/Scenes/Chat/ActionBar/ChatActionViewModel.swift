@@ -18,7 +18,8 @@ final class ChatActionViewModel {
     private let cancelBag: CancelBag = .init()
     var offer: ManagedOffer?
 
-    init() {
+    init(offer: ManagedOffer?) {
+        self.offer = offer
         setupActionBindings()
     }
 
@@ -39,11 +40,10 @@ final class ChatActionViewModel {
             .store(in: cancelBag)
 
         sharedAction
+            .filter { $0 == .showOffer }
             .withUnretained(self)
-            .filter { owner, action in
-                action == .showOffer && owner.offer != nil
-            }
-            .map { owner, _ -> ChatViewModel.Route in .showOfferTapped(offer: owner.offer) }
+            .compactMap { owner, _ in owner.offer }
+            .map(ChatViewModel.Route.showOfferTapped(offer: ))
             .subscribe(route)
             .store(in: cancelBag)
     }

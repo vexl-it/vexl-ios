@@ -28,8 +28,7 @@ final class SyncQueueManager: SyncQueueManagerType {
     @Inject private var offerService: OfferServiceType
     @Inject private var chatService: ChatServiceType
 
-    @Fetched(contextType: .background)
-    private var queue: [ManagedSyncItem]
+    @Fetched private var queue: [ManagedSyncItem]
 
     private var cancelBag: CancelBag = .init()
     private var runningItems: [NSManagedObjectID: SyncQueueItemStatus] = [:]
