@@ -94,6 +94,18 @@ final class UserProfileCoordinator: BaseCoordinator<Void> {
         viewModel
             .route
             .receive(on: RunLoop.main)
+            .filter { $0 == .importFacebook }
+            .flatMapLatest(with: self) { owner, _ -> CoordinatingResult<RouterResult<Void>> in
+                let router = ModalRouter(parentViewController: viewController, presentationStyle: .fullScreen, transitionStyle: .coverVertical)
+                let coordinator = ProfileFacebookContactsCoordinator(router: router, animated: true)
+                return owner.present(coordinator: coordinator, router: router)
+            }
+            .sink()
+            .store(in: cancelBag)
+
+        viewModel
+            .route
+            .receive(on: RunLoop.main)
             .filter { $0 == .donate }
             .flatMapLatest(with: self) { owner, _ -> CoordinatingResult<RouterResult<BottomActionSheetActionType>> in
                 let router = ModalRouter(parentViewController: viewController, presentationStyle: .overFullScreen, transitionStyle: .crossDissolve)

@@ -57,6 +57,7 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
         case editName
         case editAvatar
         case importContacts
+        case importFacebook
     }
 
     var route: CoordinatingSubject<Route> = .init()
@@ -171,6 +172,13 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
             .withUnretained(self)
             .map { _ -> Route in .importContacts }
             .subscribe(route)
+            .store(in: cancelBag)
+
+        // TODO: - Subscribe to route once the problems with facebook are fixed.
+        option
+            .filter { $0 == .facebook }
+            .map { _ -> Route in .importFacebook }
+            .sink()
             .store(in: cancelBag)
 
         option

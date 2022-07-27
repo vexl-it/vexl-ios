@@ -2,16 +2,15 @@
 //  ImportContactsProfileViewModel.swift
 //  vexl
 //
-//  Created by Diego Espinoza on 18/07/22.
+//  Created by Diego Espinoza on 20/07/22.
 //
 
 import Foundation
 import Cleevio
-import Combine
 
-// TODO: - Complete the implementation once the facebook issue (not fetching contacts) is solved.
+// TODO: - complete the implementation once the facebook issue (not fetching contacts) is solved.
 
-final class ProfilePhoneContactsViewModel: ViewModelType, ObservableObject {
+final class ProfileFacebookContactsViewModel: ViewModelType, ObservableObject {
 
     enum UserAction: Equatable {
         case dismissTap
@@ -39,7 +38,7 @@ final class ProfilePhoneContactsViewModel: ViewModelType, ObservableObject {
     }
 
     var route: CoordinatingSubject<Route> = .init()
-    var importContactViewModel = ProfileImportPhonesViewModel()
+    var importContactViewModel = ProfileImportFacebookViewModel()
 
     // MARK: - Variables
 
@@ -55,12 +54,6 @@ final class ProfilePhoneContactsViewModel: ViewModelType, ObservableObject {
 
         importContactViewModel
             .dismiss
-            .map { _ -> Route in .dismissTapped }
-            .subscribe(route)
-            .store(in: cancelBag)
-
-        importContactViewModel
-            .completed
             .map { _ -> Route in .dismissTapped }
             .subscribe(route)
             .store(in: cancelBag)
