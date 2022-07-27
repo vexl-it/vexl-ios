@@ -30,6 +30,7 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
     @Published var selectedOption: OfferType = .buy
     @Published private var buyFeed: [OfferDetailViewData] = []
     @Published private var sellFeed: [OfferDetailViewData] = []
+    @Published var isRefreshing = false
 
     // MARK: - Actions Bindings
 
