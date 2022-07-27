@@ -26,7 +26,7 @@ class InboxRepository: InboxRepositoryType {
             return Just(()).setFailureType(to: Error.self).eraseToAnyPublisher()
         }
         let isUserInbox = userRepository.user?.profile?.keyPair?.inbox == unsafeContextInbox
-        return persistence.insert(context: persistence.viewContext) { [weak self, persistence] context -> [ManagedChat] in
+        return persistence.insert(context: persistence.newEditContext()) { [weak self, persistence] context -> [ManagedChat] in
             guard let inbox = persistence.loadSyncroniously(type: ManagedInbox.self, context: context, objectID: unsafeContextInbox.objectID) else {
                 return []
             }
@@ -44,7 +44,7 @@ class InboxRepository: InboxRepositoryType {
                 let keyPair = ManagedKeyPair(context: context)
                 let profile = ManagedProfile(context: context)
 
-                // creating new chat from request
+                // creating new chat from receiver request
                 profile.avatar = UIImage(named: R.image.profile.avatar.name)?.pngData() // TODO: generate random avatar
                 profile.name = Constants.randomName // TODO: generate random name
 
@@ -82,13 +82,25 @@ class InboxRepository: InboxRepositoryType {
         switch message.type {
         case .revealRequest:
             if payload.isFromContact {
-                chat.isRequestingReveal = true
+                chat.receiverKeyPair?.profile?.secretAvatar = payload.user?.image?.dataFromBase64
+                chat.receiverKeyPair?.profile?.secretName = payload.user?.name
             }
         case .revealApproval:
-            chat.isRequestingReveal = false
+            chat.gotRevealedResponse = true
             chat.isRevealed = true
+            if payload.isFromContact {
+                if let name = payload.user?.name {
+                    chat.receiverKeyPair?.profile?.name = name
+                }
+                if let avatar = payload.user?.image?.dataFromBase64 {
+                    chat.receiverKeyPair?.profile?.avatar = avatar
+                }
+            } else {
+                chat.receiverKeyPair?.profile?.avatar = chat.receiverKeyPair?.profile?.secretAvatar
+                chat.receiverKeyPair?.profile?.name = chat.receiverKeyPair?.profile?.secretName
+            }
         case .revealRejected:
-            chat.isRequestingReveal = false
+            chat.gotRevealedResponse = true
             chat.isRevealed = false
         case .messagingRequest:
             chat.isApproved = false

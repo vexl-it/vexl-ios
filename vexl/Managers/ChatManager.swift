@@ -14,6 +14,7 @@ protocol ChatManagerType {
     func send(payload: MessagePayload, chat: ManagedChat) ->AnyPublisher<Void, Error>
     func delete(chat: ManagedChat) -> AnyPublisher<Void, Error>
     func requestIdentity(chat: ManagedChat) -> AnyPublisher<Void, Error>
+    func identityResponse(allow: Bool, chat: ManagedChat) -> AnyPublisher<Void, Error>
     func communicationResponse(chat: ManagedChat, confirmation: Bool) -> AnyPublisher<Void, Error>
 }
 
@@ -69,7 +70,7 @@ final class ChatManager: ChatManagerType {
                 .eraseToAnyPublisher()
         }
         return chatService
-            .sendMessage(inboxKeys: inboxKeys, receiverPublicKey: receiverPublicKey, message: message, messageType: .deleteChat)
+            .sendMessage(inboxKeys: inboxKeys, receiverPublicKey: receiverPublicKey, message: message, messageType: payload.messageType)
             .flatMap { [inboxRepository] in
                 inboxRepository.deleteChats(recevedPayloads: [payload], inbox: inbox)
             }
@@ -91,7 +92,7 @@ final class ChatManager: ChatManagerType {
                 .eraseToAnyPublisher()
         }
         return chatService
-            .sendMessage(inboxKeys: inboxKeys, receiverPublicKey: receiverPublicKey, message: message, messageType: .deleteChat)
+            .sendMessage(inboxKeys: inboxKeys, receiverPublicKey: receiverPublicKey, message: message, messageType: payload.messageType)
             .flatMap { [inboxRepository] in
                 inboxRepository.createOrUpdateChats(receivedPayloads: [payload], inbox: inbox)
             }
