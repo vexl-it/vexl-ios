@@ -168,7 +168,6 @@ final class ChatViewModel: ViewModelType, ObservableObject {
             }
             .withUnretained(self)
             .sink { owner, _ in
-                owner.chatConversationViewModel.addMessage(owner.currentMessage, image: owner.selectedImage)
                 owner.selectedImage = nil
                 owner.currentMessage = ""
             }
