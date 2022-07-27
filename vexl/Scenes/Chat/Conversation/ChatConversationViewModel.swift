@@ -19,6 +19,9 @@ final class ChatConversationViewModel: ObservableObject {
     @Inject var inboxManager: InboxManagerType
     @Inject var chatService: ChatServiceType
 
+    @Fetched(fetchImmediately: false, sortDescriptors: [ NSSortDescriptor(key: "time", ascending: true) ])
+    var fetchedMessages: [ManagedMessage]
+
     @Published var messages: [ChatConversationSection] = []
     @Published var username: String = Constants.randomName
     @Published var avatar: Data?
@@ -38,49 +41,34 @@ final class ChatConversationViewModel: ObservableObject {
     init(chat: ManagedChat) {
         self.chat = chat
 
-        let profile = chat.receiverKeyPair?.profile
-
-        let avatarPublisher = profile?.publisher(for: \.avatar).share()
-        avatarPublisher?.assign(to: &$avatar)
-        avatarPublisher?.map { Image(data: $0, placeholder: R.image.marketplace.defaultAvatar.name) }.assign(to: &$avatarImage)
-        profile?.publisher(for: \.name).filterNil().assign(to: &$username)
-
-        setupInboxManagerBinding()
+        setupDataBinding()
         setupActionBindings()
     }
 
-    func updateContact(name: String, avatar: String?) {
-        avatarImage = Image(data: avatar?.dataFromBase64, placeholder: R.image.marketplace.defaultAvatar.name)
-        username = name
-        self.avatar = avatar?.dataFromBase64
-    }
+    private func setupDataBinding() {
+        let profile = chat.receiverKeyPair?.profile
+        let avatarPublisher = profile?.publisher(for: \.avatar).share()
 
-    func updateDisplayedRevealMessages(isAccepted: Bool, user: MessagePayload.ChatUser?) {
-        if let user = user, isAccepted {
-            messages.updateRevealIdentitiesItems(isAccepted: isAccepted, chatUser: user)
-        } else {
-            messages.updateRevealIdentitiesItems(isAccepted: isAccepted, chatUser: user)
-        }
-    }
+        avatarPublisher?
+            .assign(to: &$avatar)
+        avatarPublisher?
+            .map { Image(data: $0, placeholder: R.image.marketplace.defaultAvatar.name) }
+            .assign(to: &$avatarImage)
+        profile?
+            .publisher(for: \.name).filterNil().assign(to: &$username)
 
-    func addMessage(_ message: String, image: Data?) {
-        messages.appendItem(.createInput(text: message,
-                                         image: image?.base64EncodedString()))
-    }
+        $fetchedMessages.load(predicate: NSPredicate(format: """
+            chat == %@
+            AND typeRawType != '\(MessageType.revealRejected.rawValue)'
+            AND typeRawType != '\(MessageType.revealApproval.rawValue)'
+        """, chat
+        ))
 
-    func addIdentityRequest() {
-        messages.appendItem(.createIdentityRequest())
-    }
-
-    private func setupInboxManagerBinding() {
-        chat.publisher(for: \.messages)
-            .map { $0?.sortedArray(using: [ NSSortDescriptor(key: "time", ascending: true) ]) }
-            .compactMap { $0 as? [ManagedMessage] }
-            .withUnretained(self)
-            .sink(receiveValue: { owner, messages in
-                owner.showChatMessages(messages, filter: [.revealRejected, .revealApproval])
-            })
-            .store(in: cancelBag)
+        $fetchedMessages.publisher
+            .map(\.objects)
+            .map { $0.map(ChatConversationItem.init) }
+            .map { [ ChatConversationSection(date: Date(), messages: $0) ] }
+            .assign(to: &$messages)
     }
 
     private func setupActionBindings() {
@@ -99,25 +87,11 @@ final class ChatConversationViewModel: ObservableObject {
             .store(in: cancelBag)
     }
 
-    private func showChatMessages(_ messages: [ManagedMessage], filter: [MessageType]) {
-        let conversationItems = messages.compactMap { message -> ChatConversationItem? in
-
-            guard !filter.contains(message.type) else {
-                return nil
-            }
-            return ChatConversationItem(message: message)
-        }
-        self.messages = [ChatConversationSection(date: Date(), messages: conversationItems)]
-    }
-
-     private func updateRevealedUser(messages: [MessagePayload]) {
-        if let revealMessage = messages.first(where: { $0.messageType == .revealApproval }),
-           let user = revealMessage.user {
-            updateContact(name: user.name, avatar: user.image)
-            updateDisplayedRevealMessages(isAccepted: true, user: user)
-            updateContactInformation.send(user)
-        } else if messages.contains(where: { $0.messageType == .revealRejected }) {
-            updateDisplayedRevealMessages(isAccepted: false, user: nil)
-        }
+    private func filterMessaged(_ messages: [ManagedMessage], filter: [MessageType]) -> [ChatConversationSection] {
+        let filteredMessages = messages
+            .filter { !filter.contains($0.type) }
+            .map { ChatConversationItem(message: $0) }
+        let section = ChatConversationSection(date: Date(), messages: filteredMessages)
+        return [section]
     }
 }

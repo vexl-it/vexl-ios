@@ -81,7 +81,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
 
     init(chat: ManagedChat) {
         self.chat = chat
-        self.chatActionViewModel = ChatActionViewModel(offer: chat.receiverKeyPair?.offer)
+        self.chatActionViewModel = ChatActionViewModel(chat: chat)
         self.chatConversationViewModel = ChatConversationViewModel(chat: chat)
 
         setupChildViewModelBindings()
