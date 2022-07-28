@@ -198,11 +198,11 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
     }
 
     func setup() {
+        setupCurrencyBindings()
         setupDataBindings()
         setupActivity()
         setupBindings()
         setupDeleteBinding()
-        setupCurrencyBindings()
     }
 
     // MARK: - Bindings
@@ -210,6 +210,7 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
     private func setupDataBindings() {
         if let offer = offer {
             description = offer.offerDescription ?? ""
+            currency = offer.currency ?? .usd
             currentAmountRange = Int(offer.minAmount)...Int(offer.maxAmount)
             selectedFeeOption = offer.feeState ?? .withoutFee
             feeAmount = offer.feeAmount
@@ -318,8 +319,7 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
             .asVoid()
             .withUnretained(self)
             .flatMap { owner -> AnyPublisher<ManagedOffer, Never> in
-                let provider: (ManagedOffer) -> Void = { [weak self] offer in
-                    guard let owner = self else { return }
+                let provider: (ManagedOffer) -> Void = { offer in
                     offer.id = nil
                     offer.groupUuid = GroupUUID.none
                     offer.currency = owner.currency
