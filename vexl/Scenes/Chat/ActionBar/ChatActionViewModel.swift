@@ -10,6 +10,9 @@ import Cleevio
 
 final class ChatActionViewModel {
 
+    @Fetched(fetchImmediately: false)
+    var fetchedMessages: [ManagedMessage]
+
     @Published var userIsRevealed = false
 
     var action: ActionSubject<ChatActionView.ChatActionOption> = .init()
@@ -18,8 +21,21 @@ final class ChatActionViewModel {
     private let cancelBag: CancelBag = .init()
     var offer: ManagedOffer?
 
-    init(offer: ManagedOffer?) {
-        self.offer = offer
+    init(chat: ManagedChat) {
+        $fetchedMessages.load(predicate: NSPredicate(format: """
+            chat == %@
+            AND (
+                typeRawType == '\(MessageType.revealApproval.rawValue)'
+                OR typeRawType == '\(MessageType.revealRejected.rawValue)'
+                OR typeRawType == '\(MessageType.revealRequest.rawValue)'
+            )
+        """, chat))
+
+        $fetchedMessages.publisher
+            .map(\.objects.isEmpty.not)
+            .assign(to: &$userIsRevealed)
+
+        self.offer = chat.receiverKeyPair?.offer
         setupActionBindings()
     }
 

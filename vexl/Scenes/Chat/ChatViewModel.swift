@@ -81,7 +81,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
 
     init(chat: ManagedChat) {
         self.chat = chat
-        self.chatActionViewModel = ChatActionViewModel(offer: chat.receiverKeyPair?.offer)
+        self.chatActionViewModel = ChatActionViewModel(chat: chat)
         self.chatConversationViewModel = ChatConversationViewModel(chat: chat)
 
         setupChildViewModelBindings()
@@ -168,7 +168,6 @@ final class ChatViewModel: ViewModelType, ObservableObject {
             }
             .withUnretained(self)
             .sink { owner, _ in
-                owner.chatConversationViewModel.addMessage(owner.currentMessage, image: owner.selectedImage)
                 owner.selectedImage = nil
                 owner.currentMessage = ""
             }
@@ -202,6 +201,10 @@ final class ChatViewModel: ViewModelType, ObservableObject {
     }
 
     func identityRevealResponse(isAccepted: Bool) {
-        // TODO: send identity reveal response
+        chatManager
+            .identityResponse(allow: isAccepted, chat: chat)
+            .track(activity: primaryActivity)
+            .sink()
+            .store(in: cancelBag)
     }
 }

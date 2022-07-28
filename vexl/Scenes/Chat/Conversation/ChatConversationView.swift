@@ -31,10 +31,10 @@ struct ChatConversationView: View {
                                                 text: message.text,
                                                 style: message.isContact ? .contact : .user)
                                 .onTapGesture {
-                                    viewModel.action.send(.imageTapped(sectionId: section.id, messageId: message.id))
+                                    viewModel.action.send(.imageTapped(image: message.image))
                                 }
                         case .requestIdentityReveal:
-                            ChatRevealIdentityView(image: nil,
+                            ChatRevealIdentityView(image: viewModel.avatar,
                                                    isRequest: true,
                                                    revealAction: nil)
                         case .receiveIdentityReveal:
