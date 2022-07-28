@@ -28,7 +28,6 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
 
     @Published var primaryActivity: Activity = .init()
     @Published var selectedOption: OfferType = .buy
-    @Published var isRefreshing = false
     @Published private var buyFeed: [OfferDetailViewData] = []
     @Published private var sellFeed: [OfferDetailViewData] = []
 
