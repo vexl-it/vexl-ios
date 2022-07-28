@@ -176,9 +176,8 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
         offer == nil
     }
 
-    var minFee: Double = 0
-    var maxFee: Double = 0
-    var currencySymbol = ""
+    var minFee: Double = Constants.OfferInitialData.minFee
+    var maxFee: Double = Constants.OfferInitialData.maxFee
     var offerKey: ECCKeys
     let offerType: OfferType
 
@@ -199,6 +198,7 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
     }
 
     func setup() {
+        setupCurrencyBindings()
         setupDataBindings()
         setupActivity()
         setupBindings()
@@ -210,6 +210,7 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
     private func setupDataBindings() {
         if let offer = offer {
             description = offer.offerDescription ?? ""
+            currency = offer.currency ?? .usd
             currentAmountRange = Int(offer.minAmount)...Int(offer.maxAmount)
             selectedFeeOption = offer.feeState ?? .withoutFee
             feeAmount = offer.feeAmount
@@ -220,6 +221,22 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
             selectedPriceTrigger = offer.activePriceState ?? .none
             selectedPriceTriggerAmount = "\(Int(offer.activePriceValue))"
         }
+    }
+
+    private func setupCurrencyBindings() {
+        $currency
+            .withUnretained(self)
+            .sink { owner, option in
+                switch option {
+                case .eur, .usd:
+                    owner.amountRange = Constants.OfferInitialData.minOffer...Constants.OfferInitialData.maxOffer
+                    owner.currentAmountRange = Constants.OfferInitialData.minOffer...Constants.OfferInitialData.maxOffer
+                case .czk:
+                    owner.amountRange = Constants.OfferInitialData.minOffer...Constants.OfferInitialData.maxOfferCZK
+                    owner.currentAmountRange = Constants.OfferInitialData.minOffer...Constants.OfferInitialData.maxOfferCZK
+                }
+            }
+            .store(in: cancelBag)
     }
 
     private func setupActivity() {
@@ -302,8 +319,7 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
             .asVoid()
             .withUnretained(self)
             .flatMap { owner -> AnyPublisher<ManagedOffer, Never> in
-                let provider: (ManagedOffer) -> Void = { [weak self] offer in
-                    guard let owner = self else { return }
+                let provider: (ManagedOffer) -> Void = { offer in
                     offer.id = nil
                     offer.groupUuid = GroupUUID.none
                     offer.currency = owner.currency

@@ -244,6 +244,7 @@
 		F175ABA227F4A8F8000DAB15 /* UserAvailable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F175ABA127F4A8F8000DAB15 /* UserAvailable.swift */; };
 		F175ABAA27F4FC3F000DAB15 /* ImportPhoneContactsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F175ABA927F4FC3E000DAB15 /* ImportPhoneContactsViewModel.swift */; };
 		F175ABAC27F4FF30000DAB15 /* ImportFacebookContactsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F175ABAB27F4FF30000DAB15 /* ImportFacebookContactsViewModel.swift */; };
+		F17ACAAF289210EE00E05408 /* OfferCurrencyPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F17ACAAE289210EE00E05408 /* OfferCurrencyPickerView.swift */; };
 		F1886211280EC49B00659786 /* Image+Base64.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1886210280EC49B00659786 /* Image+Base64.swift */; };
 		F188621F28105A0A00659786 /* UserOffersCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F188621E28105A0A00659786 /* UserOffersCoordinator.swift */; };
 		F188622128105A1200659786 /* UserOffersViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F188622028105A1200659786 /* UserOffersViewModel.swift */; };
@@ -625,6 +626,7 @@
 		F175ABA127F4A8F8000DAB15 /* UserAvailable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAvailable.swift; sourceTree = "<group>"; };
 		F175ABA927F4FC3E000DAB15 /* ImportPhoneContactsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportPhoneContactsViewModel.swift; sourceTree = "<group>"; };
 		F175ABAB27F4FF30000DAB15 /* ImportFacebookContactsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportFacebookContactsViewModel.swift; sourceTree = "<group>"; };
+		F17ACAAE289210EE00E05408 /* OfferCurrencyPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferCurrencyPickerView.swift; sourceTree = "<group>"; };
 		F1886210280EC49B00659786 /* Image+Base64.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Image+Base64.swift"; sourceTree = "<group>"; };
 		F188621E28105A0A00659786 /* UserOffersCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserOffersCoordinator.swift; sourceTree = "<group>"; };
 		F188622028105A1200659786 /* UserOffersViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserOffersViewModel.swift; sourceTree = "<group>"; };
@@ -1703,12 +1705,12 @@
 				F188624C2811553B00659786 /* Components */,
 				4FBF623E283FBF4700DDBE71 /* RequestOffer */,
 				F1B5321D2820976E009D4E0C /* UserOffers */,
-				F1886245281154FF00659786 /* CreateOffer */,
+				F1886245281154FF00659786 /* OfferSettings */,
 			);
 			path = Offer;
 			sourceTree = "<group>";
 		};
-		F1886245281154FF00659786 /* CreateOffer */ = {
+		F1886245281154FF00659786 /* OfferSettings */ = {
 			isa = PBXGroup;
 			children = (
 				F188624F281170F200659786 /* Components */,
@@ -1716,7 +1718,7 @@
 				F18862462811550C00659786 /* OfferSettingsCoordinator.swift */,
 				F188624A2811551E00659786 /* OfferSettingsView.swift */,
 			);
-			path = CreateOffer;
+			path = OfferSettings;
 			sourceTree = "<group>";
 		};
 		F188624C2811553B00659786 /* Components */ = {
@@ -1742,6 +1744,7 @@
 				F188625E2811E53400659786 /* OfferPaymentMethodView.swift */,
 				F188626028129ED600659786 /* OfferTriggersView.swift */,
 				F13B26612818A7EC0011F2FB /* OfferDescriptionView.swift */,
+				F17ACAAE289210EE00E05408 /* OfferCurrencyPickerView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -2575,6 +2578,7 @@
 				F1F5F194283E9FC500968366 /* OfferPaymentIconView.swift in Sources */,
 				F11441DA284681EC00307D39 /* MultipleOptionPickerView.swift in Sources */,
 				B0FE523F280E822400A77EC3 /* CryptoService.swift in Sources */,
+				F17ACAAF289210EE00E05408 /* OfferCurrencyPickerView.swift in Sources */,
 				F1485646284FD451003213D7 /* ChatConversationView.swift in Sources */,
 				F1A9452D27F67FD5009B5AE3 /* PhoneConfirmation.swift in Sources */,
 				B03BC707287BF9DD00E355D3 /* Keychain.swift in Sources */,
