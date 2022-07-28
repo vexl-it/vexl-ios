@@ -11,16 +11,11 @@ import Combine
 
 private typealias OfferAndSenderKeys = (offerKey: OfferKeys, senderPublicKey: String)
 private typealias IndexAndConfirmation = (chat: ManagedChat, confirmation: Bool)
-private typealias OfferAndMessage = (offer: ManagedOffer, message: MessagePayload)
 
 final class ChatRequestViewModel: ViewModelType, ObservableObject {
 
     // MARK: - Dependency Bindings
 
-    @Inject var chatService: ChatServiceType
-    @Inject var offerService: OfferServiceType
-    @Inject var cryptoService: CryptoServiceType
-    @Inject var authenticationManager: AuthenticationManagerType
     @Inject var chatManager: ChatManagerType
 
     // MARK: - Persistence Bindings

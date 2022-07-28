@@ -12,7 +12,6 @@ import Combine
 final class RequestOfferViewModel: ViewModelType, ObservableObject {
 
     @Inject var authenticationManager: AuthenticationManagerType
-    @Inject private var chatService: ChatServiceType
     @Inject var persistence: PersistenceStoreManagerType
     @Inject var chatManager: ChatManagerType
 
