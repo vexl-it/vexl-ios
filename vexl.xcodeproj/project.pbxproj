@@ -116,6 +116,7 @@
 		B08F399A27AE7D87008B344F /* OnboardingCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B08F399927AE7D87008B344F /* OnboardingCoordinator.swift */; };
 		B08F399C27AE7D8D008B344F /* OnboardingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B08F399B27AE7D8D008B344F /* OnboardingViewModel.swift */; };
 		B08F399E27AE7D92008B344F /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B08F399D27AE7D92008B344F /* OnboardingView.swift */; };
+		B0B0A059288EDDAE00E81776 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B0A058288EDDAE00E81776 /* NotificationManager.swift */; };
 		B0B0A05B2891AC3E00E81776 /* Bool+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B0A05A2891AC3E00E81776 /* Bool+.swift */; };
 		B0E9BB272815C5750012BF1D /* String+Encryptable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E9BB262815C5750012BF1D /* String+Encryptable.swift */; };
 		B0E9BB2A2815C7190012BF1D /* AES.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E9BB292815C7190012BF1D /* AES.swift */; };
@@ -496,6 +497,7 @@
 		B08F399927AE7D87008B344F /* OnboardingCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingCoordinator.swift; sourceTree = "<group>"; };
 		B08F399B27AE7D8D008B344F /* OnboardingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewModel.swift; sourceTree = "<group>"; };
 		B08F399D27AE7D92008B344F /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		B0B0A058288EDDAE00E81776 /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
 		B0B0A05A2891AC3E00E81776 /* Bool+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bool+.swift"; sourceTree = "<group>"; };
 		B0E9BB262815C5750012BF1D /* String+Encryptable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Encryptable.swift"; sourceTree = "<group>"; };
 		B0E9BB292815C7190012BF1D /* AES.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AES.swift; sourceTree = "<group>"; };
@@ -1086,6 +1088,7 @@
 				B03BC704287B56CC00E355D3 /* NetworkManager.swift */,
 				B0501B9F2884B45E00A44E18 /* OfferManager.swift */,
 				B03910662889E6D80034358C /* ChatManager.swift */,
+				B0B0A058288EDDAE00E81776 /* NotificationManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -2415,6 +2418,7 @@
 				B007A75C287226DC00CFA5C9 /* ManagedMessage+.swift in Sources */,
 				F1F5F19D283FE53A00968366 /* ChatRequestViewModel.swift in Sources */,
 				F148563E284FD451003213D7 /* ChatViewModel.swift in Sources */,
+				B0B0A059288EDDAE00E81776 /* NotificationManager.swift in Sources */,
 				F1485642284FD451003213D7 /* ChatBlockConfirmationView.swift in Sources */,
 				F1BFA957280223BD00F4E745 /* UserProfileViewModel.swift in Sources */,
 				F1BFA97328043D6300F4E745 /* Image+.swift in Sources */,

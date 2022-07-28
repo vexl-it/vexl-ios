@@ -53,6 +53,8 @@ target 'vexl' do
     # Charts
     pod 'SwiftUICharts', :git => 'https://github.com/willdale/SwiftUICharts.git', :tag => '2.9.9'
 
+    pod 'Firebase/Messaging'
+
     target 'vexlTests' do
     end
 
