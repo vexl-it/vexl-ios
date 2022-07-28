@@ -7,27 +7,44 @@
 
 import Foundation
 import Combine
+import Cleevio
 
 protocol SyncInboxManagerType {
-    func startSyncingInboxes(every: TimeInterval)
+    func startSyncingInboxes()
     func stopSyncingInboxes()
 }
 
 final class SyncInboxManager: SyncInboxManagerType {
 
     @Inject private var inboxManager: InboxManagerType
-    private var cancellable: AnyCancellable?
+    @Inject private var notificationManager: NotificationManagerType
 
-    func startSyncingInboxes(every interval: TimeInterval) {
-        cancellable = Timer.publish(every: interval, on: RunLoop.main, in: .default)
-            .autoconnect()
+    private var cancellable: AnyCancellable?
+    private let cancelBag: CancelBag = .init()
+
+    func startSyncingInboxes() {
+        stopSyncingInboxes()
+        notificationManager.isRegisteredForNotifications
             .withUnretained(self)
-            .sink(receiveValue: { owner, _ in
-                owner.inboxManager.syncInboxes()
-            })
+            .sink { owner, isRegistered in
+                if !isRegistered {
+                    if owner.cancellable == nil {
+                        owner.cancellable = Timer.publish(every: Constants.inboxSyncPollInterval, on: RunLoop.main, in: .default)
+                            .autoconnect()
+                            .withUnretained(owner)
+                            .sink(receiveValue: { owner, _ in
+                                owner.inboxManager.syncInboxes()
+                            })
+                    }
+                } else {
+                    owner.cancellable = nil
+                }
+            }
+            .store(in: cancelBag)
     }
 
     func stopSyncingInboxes() {
+        cancelBag.cancel()
         cancellable = nil
     }
 }

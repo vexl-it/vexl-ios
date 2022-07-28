@@ -36,6 +36,6 @@ final class TabBarViewModel: ViewModelType {
     init() {
         cryptocurrencyManager.startPollingCoinData()
         cryptocurrencyManager.fetchChart(option: cryptocurrencyManager.currentTimeline.value)
-        syncInboxManager.startSyncingInboxes(every: Constants.inboxSyncPollInterval)
+        syncInboxManager.startSyncingInboxes()
     }
 }
