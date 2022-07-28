@@ -54,6 +54,7 @@ struct RefreshControlView: View {
 
             ZStack {
                 ProgressView()
+                    .progressViewStyle(CircularProgressViewStyle(tint: Appearance.Colors.whiteText))
                     .opacity(shouldShowProgressRefresh ? 1 : 0)
                     .animation(.easeInOut, value: shouldShowProgressRefresh)
             }
