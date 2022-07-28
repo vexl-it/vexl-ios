@@ -12,11 +12,7 @@ import Combine
 
 final class OfferSettingsViewModel: ViewModelType, ObservableObject {
 
-    @Inject var authenticationManager: AuthenticationManagerType
     @Inject var offerRepository: OfferRepositoryType
-    @Inject var chatService: ChatServiceType
-    @Inject var contactsMananger: ContactsManagerType
-    @Inject var contactsService: ContactsServiceType
     @Inject var offerService: OfferServiceType
 
     enum UserAction: Equatable {
