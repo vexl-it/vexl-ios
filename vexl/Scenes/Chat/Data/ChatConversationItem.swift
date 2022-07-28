@@ -64,8 +64,6 @@ final class ChatConversationItem: Identifiable, Hashable, ObservableObject {
                 }
                 .assign(to: &$type)
         }
-
-
     }
 
     static func == (lhs: ChatConversationItem, rhs: ChatConversationItem) -> Bool {

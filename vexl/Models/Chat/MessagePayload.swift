@@ -94,7 +94,7 @@ extension MessagePayload {
 
         let text = json["text"] as? String
         let image = json["image"] as? String
-        let jsonUser = json["deanonymizedUser"] as? [String: String]
+        let jsonUser = json["user"] as? [String: String]
 
         self.contactInboxKey = chatMessage.senderPublicKey
         self.inboxKey = inboxPublicKey
