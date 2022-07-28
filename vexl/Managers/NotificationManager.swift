@@ -23,9 +23,12 @@ final class NotificationManager: NSObject, NotificationManagerType {
     @Inject var inboxManager: InboxManagerType
 
     private var fcmTokenValue: CurrentValueSubject<String?, Never> = .init(nil)
+    private var authorisationStatus: CurrentValueSubject<UNAuthorizationStatus?, Never> = .init(nil)
 
     var isRegisteredForNotifications: AnyPublisher<Bool, Never> {
-        Just(UIApplication.shared.isRegisteredForRemoteNotifications).eraseToAnyPublisher()
+        authorisationStatus
+            .map { $0 == UNAuthorizationStatus.authorized }
+            .eraseToAnyPublisher()
     }
 
     var notificationToken: AnyPublisher<String, Never> {
@@ -43,7 +46,7 @@ final class NotificationManager: NSObject, NotificationManagerType {
     override init() {
         super.init()
         if UIApplication.shared.isRegisteredForRemoteNotifications {
-            updateTokens()
+            update()
         }
         Messaging.messaging().delegate = self
         UNUserNotificationCenter.current().delegate = self
@@ -54,13 +57,13 @@ final class NotificationManager: NSObject, NotificationManagerType {
         center.requestAuthorization(options: [.alert, .sound, .badge]) { [weak self] granted, _ in
             guard granted else { return }
             DispatchQueue.main.async { [weak self] in
-                self?.updateTokens()
+                self?.update()
             }
         }
         UIApplication.shared.registerForRemoteNotifications()
     }
 
-    private func updateTokens() {
+    private func update() {
         UIApplication.shared.registerForRemoteNotifications()
         Messaging.messaging().token { [weak self] token, _ in
             if let token = token {
@@ -68,6 +71,16 @@ final class NotificationManager: NSObject, NotificationManagerType {
                 self?.fcmTokenValue.send(token)
             }
         }
+        Future { promise in
+            UNUserNotificationCenter.current().getNotificationSettings { settings in
+                promise(.success(settings.authorizationStatus))
+            }
+        }
+        .withUnretained(self)
+        .sink { owner, status in
+            owner.authorisationStatus.send(status)
+        }
+        .store(in: cancelBag)
     }
 }
 
