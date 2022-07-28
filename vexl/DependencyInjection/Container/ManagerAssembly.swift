@@ -73,5 +73,10 @@ class ManagerAssembly: Assembly {
             ChatManager()
         }
         .inObjectScope(.container)
+
+        container.register(NotificationManagerType.self) { _ in
+            NotificationManager()
+        }
+        .inObjectScope(.container)
     }
 }

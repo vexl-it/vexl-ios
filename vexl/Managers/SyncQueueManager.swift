@@ -27,6 +27,7 @@ final class SyncQueueManager: SyncQueueManagerType {
     @Inject private var userRepository: UserRepositoryType
     @Inject private var offerService: OfferServiceType
     @Inject private var chatService: ChatServiceType
+    @Inject private var notificationManager: NotificationManagerType
 
     @Fetched private var queue: [ManagedSyncItem]
 
@@ -194,13 +195,27 @@ final class SyncQueueManager: SyncQueueManagerType {
 
         let context = $queue.context
 
-        return chatService
-            .createInbox(
-                publicKey: publicKey,
-                pushToken: Constants.pushNotificationToken
-            )
-            .flatMap { [persistence] _ -> AnyPublisher<Void, Error> in
-                persistence.delete(context: context, object: item)
+        let notificationToken = notificationManager
+            .isRegisteredForNotifications
+            .flatMap { [notificationManager] isRegistered -> AnyPublisher<String, Never> in
+                guard isRegistered else {
+                    return Just(Constants.pushNotificationToken)
+                        .eraseToAnyPublisher()
+                }
+                return notificationManager.notificationToken
+            }
+
+        return notificationToken
+            .flatMap { [chatService, persistence] token in
+                chatService
+                    .createInbox(
+                        publicKey: publicKey,
+                        pushToken: token
+                    )
+                    .flatMap { _ -> AnyPublisher<Void, Error> in
+                        persistence.delete(context: context, object: item)
+                    }
+                    .eraseToAnyPublisher()
             }
             .eraseToAnyPublisher()
     }

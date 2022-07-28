@@ -14,6 +14,8 @@ protocol InboxRepositoryType {
     func createOrUpdateChats(receivedPayloads: [MessagePayload], inbox: ManagedInbox) -> AnyPublisher<Void, Error>
 
     func deleteChats(recevedPayloads: [MessagePayload], inbox: ManagedInbox) -> AnyPublisher<Void, Error>
+
+    func getInbox(with publicKey: String) -> AnyPublisher<ManagedInbox?, Error>
 }
 
 class InboxRepository: InboxRepositoryType {
@@ -110,6 +112,13 @@ class InboxRepository: InboxRepositoryType {
         case .invalid, .deleteChat, .messagingRejection, .message:
             break
         }
+    }
+
+    func getInbox(with publicKey: String) -> AnyPublisher<ManagedInbox?, Error> {
+        persistence
+            .load(type: ManagedInbox.self, context: persistence.viewContext, predicate: NSPredicate(format: "keyPair.publicKey == '\(publicKey)'"))
+            .map(\.first)
+            .eraseToAnyPublisher()
     }
 
     func deleteChats(recevedPayloads payloads: [MessagePayload], inbox unsafeContextInbox: ManagedInbox) -> AnyPublisher<Void, Error> {

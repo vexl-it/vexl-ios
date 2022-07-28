@@ -19,6 +19,7 @@ final class RegisterPhoneViewModel: ViewModelType {
     @Inject var cryptoService: CryptoServiceType
     @Inject var chatService: ChatServiceType
     @Inject var contactsService: ContactsServiceType
+    @Inject var notificationManager: NotificationManagerType
 
     // MARK: - View State
 
@@ -297,11 +298,22 @@ final class RegisterPhoneViewModel: ViewModelType {
                     .eraseToAnyPublisher()
             }
 
-        let createInbox = createUserBE
-            .flatMapLatest(with: self) { owner, _ in
+        let notificationToken = createUserBE
+            .flatMap { [notificationManager] _ in
+                notificationManager.isRegisteredForNotifications
+                    .flatMap { isRegistered -> AnyPublisher<String, Never> in
+                        guard isRegistered else {
+                            return Just(Constants.pushNotificationToken)
+                                .eraseToAnyPublisher()
+                        }
+                        return notificationManager.notificationToken
+                    }
+            }
+
+        let createInbox = notificationToken
+            .flatMapLatest(with: self) { owner, token in
                 owner.chatService
-                    .createInbox(publicKey: owner.newKeys.publicKey,
-                                 pushToken: Constants.pushNotificationToken)
+                    .createInbox(publicKey: owner.newKeys.publicKey, pushToken: token)
                     .track(activity: owner.primaryActivity)
                     .materialize()
                     .compactMap(\.value)
