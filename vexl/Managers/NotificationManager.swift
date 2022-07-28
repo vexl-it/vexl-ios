@@ -67,7 +67,6 @@ final class NotificationManager: NSObject, NotificationManagerType {
         UIApplication.shared.registerForRemoteNotifications()
         Messaging.messaging().token { [weak self] token, _ in
             if let token = token {
-                print("[NOTIFICATIONS] loaded fcm token: \(token)")
                 self?.fcmTokenValue.send(token)
             }
         }
@@ -115,7 +114,6 @@ extension NotificationManager: UNUserNotificationCenterDelegate {
 
 extension NotificationManager: MessagingDelegate {
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
-        print("[NOTIFICATIONS] received fcm token: \(fcmToken)")
         fcmTokenValue.send(fcmToken)
     }
 }
