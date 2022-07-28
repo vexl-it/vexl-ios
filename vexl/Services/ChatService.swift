@@ -37,8 +37,7 @@ protocol ChatServiceType {
 
 final class ChatService: BaseService, ChatServiceType {
 
-    // TODO: [vexl chat encryption] Uncomment this when enabling encryption on chat service
-//    @Inject private var cryptoService: CryptoServiceType
+    @Inject private var cryptoService: CryptoServiceType
 
     // MARK: - Create inbox and request messaging permission
 
@@ -48,14 +47,11 @@ final class ChatService: BaseService, ChatServiceType {
     }
 
     func requestCommunication(inboxPublicKey: String, message: String) -> AnyPublisher<Void, Error> {
-        // TODO: [vexl chat encryption] Uncomment this when enabling encryption on chat service
-//            owner.cryptoService
-//                .encryptECIES(publicKey: inboxPublicKey, secret: message)
-        Just(message)
-            .setFailureType(to: Error.self)
-            .flatMapLatest(with: self) { owner, encryptedMessage in
-                owner.request(endpoint: ChatRouter.request(inboxPublicKey: inboxPublicKey, message: encryptedMessage))
-            }
+            cryptoService
+                .encryptECIES(publicKey: inboxPublicKey, secret: message)
+                .flatMapLatest(with: self) { owner, encryptedMessage in
+                    owner.request(endpoint: ChatRouter.request(inboxPublicKey: inboxPublicKey, message: encryptedMessage))
+                }
             .eraseToAnyPublisher()
     }
 
@@ -65,11 +61,8 @@ final class ChatService: BaseService, ChatServiceType {
                                    requesterPublicKey: String,
                                    signature: String) -> AnyPublisher<Void, Error> {
         if let parsedMessage = message, let messageAsString = parsedMessage.asString {
-            // TODO: [vexl chat encryption] Uncomment this when enabling encryption on chat service
-//            return cryptoService
-//                .encryptECIES(publicKey: requesterPublicKey, secret: messageAsString)
-            return Just(messageAsString)
-                .setFailureType(to: Error.self)
+            return cryptoService
+                .encryptECIES(publicKey: requesterPublicKey, secret: messageAsString)
                 .flatMapLatest(with: self) { owner, encryptedMessage in
                     owner.request(endpoint: ChatRouter.requestConfirmation(confirmed: confirmation,
                                                                            message: encryptedMessage,
@@ -108,11 +101,8 @@ final class ChatService: BaseService, ChatServiceType {
                      receiverPublicKey: String,
                      message: String,
                      messageType: MessageType) -> AnyPublisher<Void, Error> {
-        // TODO: [vexl chat encryption] Uncomment this when enabling encryption on chat service
-//        cryptoService
-//            .encryptECIES(publicKey: receiverPublicKey, secret: message)
-        Just(message)
-            .setFailureType(to: Error.self)
+        cryptoService
+            .encryptECIES(publicKey: receiverPublicKey, secret: message)
             .flatMapLatest(with: self) { owner, encryptedMessage in
                 owner.request(endpoint: ChatRouter.sendMessage(senderPublicKey: inboxKeys.publicKey,
                                                                receiverPublicKey: receiverPublicKey,

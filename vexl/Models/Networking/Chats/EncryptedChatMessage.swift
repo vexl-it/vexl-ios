@@ -49,9 +49,8 @@ struct EncryptedChatMessage: Codable {
             - key: inbox key used to encrypt the message
      */
     func asJSON(with key: ECCKeys) -> [String: Any]? {
-        // TODO: [vexl chat encryption] Uncomment this when enabling encryption on chat service
-        guard // let decryptedMessage = try? message.ecc.decrypt(keys: key),
-              let data = message.data(using: .utf8),
+        guard let decryptedMessage = try? message.ecc.decrypt(keys: key),
+              let data = decryptedMessage.data(using: .utf8),
               let json = try? JSONSerialization.jsonObject(with: data, options: .mutableContainers) else { return nil }
         return json as? [String: Any]
     }
@@ -63,9 +62,8 @@ struct EncryptedChatMessage: Codable {
             - key: inbox key used to encrypt the message
      */
     func asString(with key: ECCKeys) -> String? {
-        // TODO: [vexl chat encryption] Uncomment this when enabling encryption on chat service
-        guard //let decryptedMessage = try? message.ecc.decrypt(keys: key),
-              let data = message.data(using: .utf8)  else { return nil }
+        guard let decryptedMessage = try? message.ecc.decrypt(keys: key),
+              let data = decryptedMessage.data(using: .utf8)  else { return nil }
         return String(data: data, encoding: .utf8)
     }
 }
