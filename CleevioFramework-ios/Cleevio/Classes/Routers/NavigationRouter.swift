@@ -68,12 +68,12 @@ extension NavigationRouter: Router {
 
     public func perform(_ popAction: PopAction, animated: Bool, completion: (() -> Void)? = nil) {
         var animated = animated
-        
+
         if animated {
             CATransaction.begin()
             CATransaction.setCompletionBlock(completion)
         }
-        
+
         switch animation {
         case .easeInEaseOut where animated == true:
             let transition = CATransition()
@@ -94,7 +94,7 @@ extension NavigationRouter: Router {
         case .toParent:
             navigationController.popViewController(animated: animated)
         }
-        
+
         if animated {
             CATransaction.commit()
         } else {
