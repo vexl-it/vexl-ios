@@ -103,11 +103,6 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
         setupDataBindings()
         setupActionBindings()
         setupInbox()
-        $isRefreshing
-            .sink { b in
-                print(b)
-            }
-            .store(in: cancelBag)
     }
 
     func applyFilter(_ filter: OfferFilter) {
