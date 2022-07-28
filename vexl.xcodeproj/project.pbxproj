@@ -245,7 +245,11 @@
 		F175ABA227F4A8F8000DAB15 /* UserAvailable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F175ABA127F4A8F8000DAB15 /* UserAvailable.swift */; };
 		F175ABAA27F4FC3F000DAB15 /* ImportPhoneContactsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F175ABA927F4FC3E000DAB15 /* ImportPhoneContactsViewModel.swift */; };
 		F175ABAC27F4FF30000DAB15 /* ImportFacebookContactsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F175ABAB27F4FF30000DAB15 /* ImportFacebookContactsViewModel.swift */; };
+<<<<<<< HEAD
 		F17ACAAF289210EE00E05408 /* OfferCurrencyPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F17ACAAE289210EE00E05408 /* OfferCurrencyPickerView.swift */; };
+=======
+		F17ACAAD2891F2B500E05408 /* RefreshContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F17ACAAC2891F2B500E05408 /* RefreshContainer.swift */; };
+>>>>>>> da62950c0e33b1b0bd48e7fa09882e52b9155cf7
 		F1886211280EC49B00659786 /* Image+Base64.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1886210280EC49B00659786 /* Image+Base64.swift */; };
 		F188621F28105A0A00659786 /* UserOffersCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F188621E28105A0A00659786 /* UserOffersCoordinator.swift */; };
 		F188622128105A1200659786 /* UserOffersViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F188622028105A1200659786 /* UserOffersViewModel.swift */; };
@@ -630,7 +634,11 @@
 		F175ABA127F4A8F8000DAB15 /* UserAvailable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAvailable.swift; sourceTree = "<group>"; };
 		F175ABA927F4FC3E000DAB15 /* ImportPhoneContactsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportPhoneContactsViewModel.swift; sourceTree = "<group>"; };
 		F175ABAB27F4FF30000DAB15 /* ImportFacebookContactsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportFacebookContactsViewModel.swift; sourceTree = "<group>"; };
+<<<<<<< HEAD
 		F17ACAAE289210EE00E05408 /* OfferCurrencyPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferCurrencyPickerView.swift; sourceTree = "<group>"; };
+=======
+		F17ACAAC2891F2B500E05408 /* RefreshContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefreshContainer.swift; sourceTree = "<group>"; };
+>>>>>>> da62950c0e33b1b0bd48e7fa09882e52b9155cf7
 		F1886210280EC49B00659786 /* Image+Base64.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Image+Base64.swift"; sourceTree = "<group>"; };
 		F188621E28105A0A00659786 /* UserOffersCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserOffersCoordinator.swift; sourceTree = "<group>"; };
 		F188622028105A1200659786 /* UserOffersViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserOffersViewModel.swift; sourceTree = "<group>"; };
@@ -1387,6 +1395,7 @@
 				F11441C0284681EC00307D39 /* LoadingIndicatorView.swift */,
 				F11441C1284681EC00307D39 /* SegmentedPickerView.swift */,
 				F11441C5284681EC00307D39 /* LinkTextView.swift */,
+				F17ACAAC2891F2B500E05408 /* RefreshContainer.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -2479,6 +2488,7 @@
 				4FBF6242283FBF6B00DDBE71 /* RequestOfferViewModel.swift in Sources */,
 				F12A150127DFC1D70096543E /* ImportContactItemView.swift in Sources */,
 				F1BFA96E2803A49300F4E745 /* UserProfileView+Item.swift in Sources */,
+				F17ACAAD2891F2B500E05408 /* RefreshContainer.swift in Sources */,
 				F11441D5284681EC00307D39 /* LoadingDotsView.swift in Sources */,
 				B08F397A27AE7112008B344F /* Codable+.swift in Sources */,
 				F11441CA284681EC00307D39 /* HeaderTitleView.swift in Sources */,
