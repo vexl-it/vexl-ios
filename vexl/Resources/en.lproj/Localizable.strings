@@ -75,7 +75,7 @@
 "user.profile.report.issue" = "Report issue";
 "user.profile.request.data" = "Request known data";
 "user.profile.logout" = "Delete account";
-"user.profile.czech.crown" = "Czech crown";
+"user.profile.currency" = "Currency";
 "user.profile.logout.info" = "Can’t find logout? There’s no such a thing.\nBut you can delete account.";
 "user.profile.vexl.support" = "If you like Vexl, support it’s improvement by sending some Bitcoins as donation!";
 "user.profile.refuse.snap.chat" = "Refuse users to snap the chat";
@@ -204,6 +204,9 @@
 "offer.update.action.title" = "Update sell offer";
 "offer.create.buy.action.title" = "Create buy offer";
 "offer.update.buy.action.title" = "Update buy offer";
+"offer.currency.usd.title" = "USD";
+"offer.currency.eur.title" = "EUR";
+"offer.currency.czk.title" = "CZK";
 "request.title.normal" = "Offer";
 "request.title.requesting" = "Sending";
 "request.placeholder" = "e.g. let's trade my friend...";

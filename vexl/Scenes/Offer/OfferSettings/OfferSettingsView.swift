@@ -33,9 +33,14 @@ struct OfferSettingsView: View {
                     OfferDescriptionView(text: $viewModel.description)
                         .padding(.bottom, Appearance.GridGuide.padding)
 
-                    OfferAmountRangeView(currencySymbol: viewModel.currency.sign,
-                                         currentValue: $viewModel.currentAmountRange,
-                                         sliderBounds: viewModel.amountRange)
+                    Group {
+                        OfferCurrencyPickerView(selectedOption: $viewModel.currency)
+                            .padding(.bottom, Appearance.GridGuide.padding)
+
+                        OfferAmountRangeView(currencySymbol: viewModel.currency.sign,
+                                             currentValue: $viewModel.currentAmountRange,
+                                             sliderBounds: viewModel.amountRange)
+                    }
 
                     OfferFeePickerView(feeLabel: "\(viewModel.feeValue)%",
                                        selectedOption: $viewModel.selectedFeeOption,
