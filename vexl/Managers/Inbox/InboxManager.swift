@@ -11,6 +11,8 @@ import Cleevio
 
 protocol InboxManagerType {
     func syncInboxes()
+
+    func syncInbox(with publicKey: String)
 }
 
 final class InboxManager: InboxManagerType {
@@ -37,6 +39,18 @@ final class InboxManager: InboxManagerType {
 
         Publishers.MergeMany(inboxPublishers)
             .collect()
+            .sink()
+            .store(in: cancelBag)
+    }
+
+    func syncInbox(with publicKey: String) {
+        inboxRepository
+            .getInbox(with: publicKey)
+            .filterNil()
+            .withUnretained(self)
+            .flatMap { owner, inbox in
+                owner.syncInbox(inbox)
+            }
             .sink()
             .store(in: cancelBag)
     }
