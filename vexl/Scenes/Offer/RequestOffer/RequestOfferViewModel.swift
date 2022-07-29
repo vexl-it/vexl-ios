@@ -59,7 +59,7 @@ final class RequestOfferViewModel: ViewModelType, ObservableObject {
 
     // MARK: - Variables
 
-    var username: String = Constants.randomName
+    var username: String = L.generalAnonymous()
 
     private let offer: ManagedOffer
     private let cancelBag: CancelBag = .init()

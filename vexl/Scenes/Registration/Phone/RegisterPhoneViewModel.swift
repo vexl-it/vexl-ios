@@ -303,7 +303,7 @@ final class RegisterPhoneViewModel: ViewModelType {
                 notificationManager.isRegisteredForNotifications
                     .flatMap { isRegistered -> AnyPublisher<String, Never> in
                         guard isRegistered else {
-                            return Just(Constants.pushNotificationToken)
+                            return Just(Constants.fakePushNotificationToken)
                                 .eraseToAnyPublisher()
                         }
                         return notificationManager.notificationToken

@@ -23,7 +23,7 @@ final class ChatConversationViewModel: ObservableObject {
     var fetchedMessages: [ManagedMessage]
 
     @Published var messages: [ChatConversationSection] = []
-    @Published var username: String = Constants.randomName
+    @Published var username: String = L.generalAnonymous()
     @Published var avatar: Data?
 
     var updateContactInformation: ActionSubject<MessagePayload.ChatUser> = .init()
@@ -47,7 +47,7 @@ final class ChatConversationViewModel: ObservableObject {
 
     private func setupDataBinding() {
         let profile = chat.receiverKeyPair?.profile
-        let avatarPublisher = profile?.publisher(for: \.avatar).share()
+        let avatarPublisher = profile?.publisher(for: \.avatarData).map { _ in profile?.avatar }.share()
 
         avatarPublisher?
             .assign(to: &$avatar)

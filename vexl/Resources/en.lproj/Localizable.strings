@@ -9,6 +9,7 @@
 "general.internal.server.error" = "There was a server error. Please try again.";
 "general.timeout" = "The request timed out. Please try again.";
 "general.search" = "Search";
+"general.anonymous" = "Anonymous";
 "next" = "Next";
 "skip" = "Skip";
 "got.it" = "Got it!";

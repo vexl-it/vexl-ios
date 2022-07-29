@@ -40,7 +40,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
     @Published var error: Error?
     @Published var showImagePicker = false
     @Published var showImagePickerActionSheet = false
-    @Published var username: String = Constants.randomName
+    @Published var username: String = L.generalAnonymous()
     @Published var avatar: Data?
 
     var errorIndicator: ErrorIndicator { primaryActivity.error }
@@ -113,7 +113,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
     private func setupUpdateUIBindings() {
         let profile = chat.receiverKeyPair?.profile
 
-        profile?.publisher(for: \.avatar).assign(to: &$avatar)
+        profile?.publisher(for: \.avatarData).map { _ in profile?.avatar }.assign(to: &$avatar)
         profile?.publisher(for: \.name).filterNil().assign(to: &$username)
         chat.publisher(for: \.isRevealed).assign(to: &$userIsRevealed)
     }

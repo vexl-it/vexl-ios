@@ -48,7 +48,7 @@ class InboxRepository: InboxRepositoryType {
 
                 // creating new chat from receiver request
                 profile.avatar = UIImage(named: R.image.profile.avatar.name)?.pngData() // TODO: generate random avatar
-                profile.name = Constants.randomName // TODO: generate random name
+                profile.generateRandomName()
 
                 keyPair.profile = profile
                 keyPair.publicKey = payload.contactInboxKey

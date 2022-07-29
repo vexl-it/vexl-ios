@@ -199,7 +199,7 @@ final class SyncQueueManager: SyncQueueManagerType {
             .isRegisteredForNotifications
             .flatMap { [notificationManager] isRegistered -> AnyPublisher<String, Never> in
                 guard isRegistered else {
-                    return Just(Constants.pushNotificationToken)
+                    return Just(Constants.fakePushNotificationToken)
                         .eraseToAnyPublisher()
                 }
                 return notificationManager.notificationToken

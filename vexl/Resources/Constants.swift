@@ -112,8 +112,7 @@ struct Constants {
     static let notAvailable = "N/A"
 
     // TODO: - remove when we have real random names
-    static let pushNotificationToken = "03df25c845d460bcdad7802d2vf6fc1dfde97283bf75cc993eb6dca835ea2e2f"
-    static let randomName = "Anonymous"
+    static let fakePushNotificationToken = "03df25c845d460bcdad7802d2vf6fc1dfde97283bf75cc993eb6dca835ea2e2f"
 
     // MARK: - Units used for converting time to seconds
 
@@ -126,4 +125,11 @@ struct Constants {
     static let contactsHashingPassword = "VexlVexl"
     static let supportEmail = "support@vexl.it"
     static let localEncryptionPassowrd = "tmpPassword"
+
+    static let randomNameSyllables = [
+        "bo", "da", "ga", "ge", "chi", "ka", "ko", "ku",
+        "ma", "mi", "mo", "na", "no", "ro", "ri", "ru",
+        "sa", "se", "su", "shi", "she", "sha", "sho",
+        "ta", "te", "to", "yu", "za", "zo"
+    ]
 }
