@@ -1,20 +1,12 @@
 //
-//  Bool+Crypto.swift
+//  Bool+.swift
 //  vexl
 //
-//  Created by Adam Salih on 07.07.2022.
+//  Created by Adam Salih on 27.07.2022.
 //
 
 import Foundation
 
 extension Bool {
-    /// returns "true" and "false" as string
-    var string: String { "\(self)" }
-
-    init?(_ value: String) {
-        guard let val = [true, false].first(where: { $0.string == value }) else {
-            return nil
-        }
-        self = val
-    }
+    var not: Bool { !self }
 }

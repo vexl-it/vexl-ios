@@ -12,6 +12,7 @@ import Alamofire
 enum UserRouter: ApiRouter {
     case me
     case createUser(username: String, avatar: String?, imageExtension: String)
+    case updateUser(username: String, avatar: String?, imageExtension: String)
     case deleteUser
     case confirmPhone(phoneNumber: String)
     case validateCode(id: Int, code: String, key: String)
@@ -29,12 +30,14 @@ enum UserRouter: ApiRouter {
             return .post
         case .deleteUser:
             return .delete
+        case .updateUser:
+            return .put
         }
     }
 
     var additionalHeaders: [Header] {
         switch self {
-        case .createUser, .validateUsername, .facebookSignature, .bitcoin, .deleteUser, .bitcoinChart:
+        case .createUser, .validateUsername, .facebookSignature, .bitcoin, .deleteUser, .bitcoinChart, .updateUser:
             return securityHeader
         default:
             return []
@@ -43,7 +46,7 @@ enum UserRouter: ApiRouter {
 
     var path: String {
         switch self {
-        case .me, .deleteUser:
+        case .me, .deleteUser, .updateUser:
             return "user/me"
         case .createUser:
             return "user"
@@ -68,7 +71,8 @@ enum UserRouter: ApiRouter {
         switch self {
         case .me, .facebookSignature, .bitcoin, .deleteUser:
             return [:]
-        case let .createUser(username, avatar, imageExtension):
+        case let .createUser(username, avatar, imageExtension),
+             let .updateUser(username, avatar, imageExtension):
             guard let avatar = avatar else {
                 return ["username": username]
             }

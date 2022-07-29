@@ -51,4 +51,15 @@ enum Currency: String, Codable, CaseIterable, Identifiable {
             return L.userProfileCurrencyCzk()
         }
     }
+
+    var label: String {
+        switch self {
+        case .usd:
+            return L.offerCurrencyUsdTitle()
+        case .eur:
+            return L.offerCurrencyEurTitle()
+        case .czk:
+            return L.offerCurrencyCzkTitle()
+        }
+    }
 }

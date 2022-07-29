@@ -9,6 +9,8 @@
 import UIKit
 import SwiftyBeaver
 import FBSDKCoreKit
+import Firebase
+import FirebaseMessaging
 #if DEBUG || DEVEL
 import AlamofireNetworkActivityLogger
 #endif
@@ -29,11 +31,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         NetworkActivityLogger.shared.level = .debug
         #endif
 
+        // Firebase messaging
+        FirebaseApp.configure()
+
         // Global appearance
         Appearance.setGlobalAppearance()
-
-        // Setup database
-        DictionaryDB.setupDatabase()
 
         return true
     }

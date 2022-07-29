@@ -10,15 +10,32 @@ import Cleevio
 
 final class ChatActionViewModel {
 
+    @Fetched(fetchImmediately: false)
+    var fetchedMessages: [ManagedMessage]
+
     @Published var userIsRevealed = false
 
     var action: ActionSubject<ChatActionView.ChatActionOption> = .init()
     var route: CoordinatingSubject<ChatViewModel.Route> = .init()
 
     private let cancelBag: CancelBag = .init()
-    var offer: Offer?
+    var offer: ManagedOffer?
 
-    init() {
+    init(chat: ManagedChat) {
+        $fetchedMessages.load(predicate: NSPredicate(format: """
+            chat == %@
+            AND (
+                typeRawType == '\(MessageType.revealApproval.rawValue)'
+                OR typeRawType == '\(MessageType.revealRejected.rawValue)'
+                OR typeRawType == '\(MessageType.revealRequest.rawValue)'
+            )
+        """, chat))
+
+        $fetchedMessages.publisher
+            .map(\.objects.isEmpty.not)
+            .assign(to: &$userIsRevealed)
+
+        self.offer = chat.receiverKeyPair?.offer
         setupActionBindings()
     }
 
@@ -39,11 +56,10 @@ final class ChatActionViewModel {
             .store(in: cancelBag)
 
         sharedAction
+            .filter { $0 == .showOffer }
             .withUnretained(self)
-            .filter { owner, action in
-                action == .showOffer && owner.offer != nil
-            }
-            .map { owner, _ -> ChatViewModel.Route in .showOfferTapped(offer: owner.offer) }
+            .compactMap { owner, _ in owner.offer }
+            .map(ChatViewModel.Route.showOfferTapped(offer: ))
             .subscribe(route)
             .store(in: cancelBag)
     }

@@ -23,6 +23,7 @@ struct MarketplaceView: View {
         .animation(.easeInOut, value: viewModel.selectedOption)
         .background(Color.black.edgesIgnoringSafeArea(.all))
         .navigationBarHidden(true)
+        .onAppear(perform: { viewModel.action.send(.fetchNewOffers) })
     }
 
     private var marketPlaceContent: some View {
@@ -32,11 +33,11 @@ struct MarketplaceView: View {
             ForEach(viewModel.marketplaceFeedItems) { item in
                 MarketplaceFeedView(data: item,
                                     displayFooter: false,
-                                    detailAction: { id in
-                    viewModel.action.send(.offerDetailTapped(id: id))
+                                    detailAction: { _ in
+                    viewModel.action.send(.offerDetailTapped(offer: item.offer))
                 },
-                                    requestAction: { id in
-                    viewModel.action.send(.requestOfferTapped(id: id))
+                                    requestAction: { _ in
+                    viewModel.action.send(.requestOfferTapped(offer: item.offer))
                 })
                 .padding(.horizontal, Appearance.GridGuide.point)
             }

@@ -11,7 +11,7 @@ import Cleevio
 
 final class RegisterContactsCoordinator: BaseCoordinator<RouterResult<Void>> {
 
-    @Inject var authenticationManager: AuthenticationManagerType
+    @Inject var userRepository: UserRepositoryType
 
     private let router: Router
     private let animated: Bool
@@ -22,8 +22,10 @@ final class RegisterContactsCoordinator: BaseCoordinator<RouterResult<Void>> {
     }
 
     override func start() -> CoordinatingResult<RouterResult<Void>> {
-        let viewModel = RegisterContactsViewModel(username: authenticationManager.currentUser?.username ?? "",
-                                                  avatar: authenticationManager.currentUser?.avatarImage)
+        let viewModel = RegisterContactsViewModel(
+            username: userRepository.user?.profile?.name ?? "",
+            avatar: userRepository.user?.profile?.avatar
+        )
         let viewController = RegisterViewController(currentPage: 2,
                                                     numberOfPages: 3,
                                                     rootView: RegisterContactsView(viewModel: viewModel),

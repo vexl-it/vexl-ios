@@ -11,6 +11,8 @@ import Cleevio
 
 final class WelcomeViewModel: ViewModelType {
 
+    @Inject var notificationManager: NotificationManagerType
+
     // MARK: - Actions Bindings
 
     enum UserAction: Equatable {
@@ -45,6 +47,13 @@ final class WelcomeViewModel: ViewModelType {
     }
 
     private func setupActions() {
+        $hasAgreedTermsAndConditions
+            .filter { $0 }
+            .sink(receiveValue: { [notificationManager] _ in
+                notificationManager.requestToken()
+            })
+            .store(in: cancelBag)
+
         action
             .filter { $0 == .continueTap }
             .withUnretained(self)

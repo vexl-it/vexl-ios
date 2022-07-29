@@ -17,7 +17,7 @@ extension UserProfileViewModel {
 
     enum Option: Int, Identifiable {
 
-        case profilePicture = 0
+        case editAvatar = 0
         case editName
 
         case contacts
@@ -40,7 +40,7 @@ extension UserProfileViewModel {
 
         var title: String {
             switch self {
-            case .profilePicture:
+            case .editAvatar:
                 return L.userProfileChangePicture()
             case .editName:
                 return L.userProfileEditName()
@@ -78,7 +78,7 @@ extension UserProfileViewModel {
 
         var iconName: String {
             switch self {
-            case .profilePicture:
+            case .editAvatar:
                 return R.image.profile.profilePicture.name
             case .editName:
                 return R.image.profile.editName.name
@@ -107,7 +107,7 @@ extension UserProfileViewModel {
 
         static var groupedOptions: [OptionGroup] {
             [
-                OptionGroup(id: 1, options: [.profilePicture, .editName]),
+                OptionGroup(id: 1, options: [.editAvatar, .editName]),
                 OptionGroup(id: 2, options: [.contacts, .facebook]),
                 OptionGroup(id: 3, options: [.pinFaceId, .currency, .allowScreenshots]),
                 OptionGroup(id: 4, options: [.termsAndPrivacy, .faq, .reportIssue]),

@@ -6,14 +6,15 @@
 //
 
 import SwiftUI
+import Cleevio
 
-typealias ChatRequestOfferViewData = ChatRequestOfferView.ViewData
+typealias ChatRequestOfferViewData = ChatRequestOfferView.ViewModel
 
 struct ChatRequestOfferView: View {
 
-    let data: ChatRequestOfferViewData
-    let accept: (String) -> Void
-    let decline: (String) -> Void
+    @ObservedObject var data: ChatRequestOfferViewData
+    let accept: (ManagedChat) -> Void
+    let decline: (ManagedChat) -> Void
 
     var body: some View {
         VStack(alignment: .center, spacing: .zero) {
@@ -58,14 +59,14 @@ struct ChatRequestOfferView: View {
             actionButton(title: L.chatRequestDecline(),
                          backgroundColor: Appearance.Colors.yellow20,
                          action: {
-                decline(data.id)
+                decline(data.chat)
             })
                 .foregroundColor(Appearance.Colors.yellow100)
 
             actionButton(title: L.chatRequestAccept(),
                          backgroundColor: Appearance.Colors.yellow100,
                          action: {
-                accept(data.id)
+                accept(data.chat)
             })
                 .foregroundColor(Appearance.Colors.primaryText)
         }
@@ -86,12 +87,50 @@ struct ChatRequestOfferView: View {
 
 extension ChatRequestOfferView {
 
-    struct ViewData: Identifiable, Hashable {
-        let id = UUID().uuidString
+    class ViewModel: Identifiable, Hashable, ObservableObject {
+        @Inject var contactRepository: ContactsRepositoryType
+
+        @Published var friends: [ChatRequestFriendViewData] = []
+
+        var chat: ManagedChat
+
+        let id: String
         let contactName: String
         let contactFriendLevel: String
         let requestText: String
-        let friends: [ChatRequestFriendViewData]
         let offer: OfferDetailViewData
+
+        private let cancelBag: CancelBag = .init()
+
+        init?(chat: ManagedChat) {
+            guard let offer = chat.receiverKeyPair?.offer else {
+                return nil
+            }
+            self.chat = chat
+            id = chat.id ?? UUID().uuidString
+            contactName = chat.receiverKeyPair?.profile?.name ?? L.generalAnonymous()
+            contactFriendLevel = chat.receiverKeyPair?.offer?.friendLevel?.label ?? ""
+            let messages: Set<ManagedMessage>? = chat.messages as? Set<ManagedMessage>
+            requestText = messages?.first(where: { $0.type == .messagingRequest })?.text ?? ""
+            self.offer = .init(offer: offer)
+
+            self.contactRepository
+                .getContacts(hashes: offer.commonFriends ?? [])
+                .map { contacts in
+                    contacts.map { contact in
+                        ChatRequestFriendViewData(name: contact.name ?? "", image: contact.avatar)
+                    }
+                }
+                .sink()
+                .store(in: cancelBag)
+        }
+
+        static func == (lhs: ChatRequestOfferView.ViewModel, rhs: ChatRequestOfferView.ViewModel) -> Bool {
+            lhs.id == rhs.id
+        }
+
+        func hash(into hasher: inout Hasher) {
+            hasher.combine(id)
+        }
     }
 }

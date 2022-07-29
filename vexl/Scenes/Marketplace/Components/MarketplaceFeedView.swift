@@ -9,7 +9,7 @@ import SwiftUI
 
 struct MarketplaceFeedView: View {
 
-    let data: OfferDetailViewData
+    @ObservedObject var data: OfferDetailViewData
     let displayFooter: Bool
     let detailAction: (String) -> Void
     let requestAction: (String) -> Void
@@ -29,7 +29,8 @@ struct MarketplaceFeedView: View {
             MarketplaceFeedFooterView(username: data.username,
                                       isRequested: data.isRequested,
                                       friendLevel: data.friendLevel,
-                                      offerType: data.offerType) {
+                                      offerType: data.offerType,
+                                      avatar: data.avatar) {
                 requestAction(data.id)
             }
             .padding(.bottom, Appearance.GridGuide.padding)
@@ -41,8 +42,8 @@ struct MarketplaceFeedView: View {
 #if DEBUG || DEVEL
 struct MarketplaceFeedViewViewPreview: PreviewProvider {
     static var previews: some View {
-        let data = OfferDetailViewData(offer: .stub, isRequested: false)
-        let data2 = OfferDetailViewData(offer: .stub2, isRequested: true)
+        let data = OfferDetailViewData(offer: .stub)
+        let data2 = OfferDetailViewData(offer: .stub)
 
         return ZStack {
             Color.black
