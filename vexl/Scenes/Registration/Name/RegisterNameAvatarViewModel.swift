@@ -13,8 +13,7 @@ import Cleevio
 final class RegisterNameAvatarViewModel: ViewModelType {
 
     @Inject var userService: UserServiceType
-    @Inject var chatService: ChatServiceType
-    @Inject var userSecurity: UserSecurityType
+    @Inject var userRepository: UserRepositoryType
 
     enum ImageSource {
         case photoAlbum, camera
@@ -180,24 +179,22 @@ final class RegisterNameAvatarViewModel: ViewModelType {
                 return avatar.base64Publisher
                     .track(activity: owner.primaryActivity)
             }
-            .flatMapLatest(with: self) { owner, base64 in
+            .flatMapLatest(with: self) { owner, base64 -> AnyPublisher<(User, String?), Never> in
                 owner.userService
                     .createUser(username: owner.username,
                                 avatar: base64)
                     .track(activity: owner.primaryActivity)
                     .materialize()
                     .compactMap(\.value)
+                    .map { ($0, base64) }
                     .eraseToAnyPublisher()
             }
-            .flatMapLatest(with: self) { owner, _ in
-                owner.chatService
-                    .createInbox(offerKey: owner.userSecurity.userKeys,
-                                 pushToken: Constants.pushNotificationToken)
+            .flatMapLatest(with: self, { owner, user in
+                owner.userRepository
+                    .update(with: user.0, avatar: user.1?.dataFromBase64)
                     .track(activity: owner.primaryActivity)
-                    .materialize()
-                    .compactMap(\.value)
-                    .eraseToAnyPublisher()
-            }
+                    .receive(on: RunLoop.main)
+            })
             .withUnretained(self)
             .sink { owner, _ in
                 owner.route.send(.continueTapped)

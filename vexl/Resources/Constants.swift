@@ -46,29 +46,40 @@ struct Constants {
     enum KeychainKeys: RawRepresentable {
         init?(rawValue: String) { nil }
 
-        case dummyKey
-        case accessToken
-        case refreshToken
-        case userSecurity
+        case facebookID
+        case facebookToken
+        case facebookHash
+        case facebookSignature
         case userSignature
         case privateKey(publicKey: String)
 
         var rawValue: String {
             switch self {
-            case .dummyKey:
-                return "dummyKey"
-            case .accessToken:
-                return "accessToken"
-            case .refreshToken:
-                return "refreshToken"
-            case .userSecurity:
-                return "userSecurity"
             case .privateKey(let publicKey):
                 return "publickey-\(publicKey)"
+            case .facebookID:
+                return "facebookID"
+            case .facebookToken:
+                return "facebookToken"
             case .userSignature:
                 return "userSignature"
+            case .facebookHash:
+                return "facebookHash"
+            case .facebookSignature:
+                return "facebookSignature"
             }
         }
+    }
+
+    // MARK: - Offer initial data
+
+    struct OfferInitialData {
+        static let minOffer: Int = 0
+        static let maxOffer: Int = 10_000
+        static let maxOfferCZK: Int = 250_000
+        static let minFee: Double = 1
+        static let maxFee: Double = 25
+        static let currency: Currency = .usd
     }
 
     // MARK: - Decoder
@@ -101,8 +112,7 @@ struct Constants {
     static let notAvailable = "N/A"
 
     // TODO: - remove when we have real random names
-    static let pushNotificationToken = "03df25c845d460bcdad7802d2vf6fc1dfde97283bf75cc993eb6dca835ea2e2f"
-    static let randomName = "Random Name"
+    static let fakePushNotificationToken = "03df25c845d460bcdad7802d2vf6fc1dfde97283bf75cc993eb6dca835ea2e2f"
 
     // MARK: - Units used for converting time to seconds
 
@@ -112,7 +122,14 @@ struct Constants {
 
     static let defaultDeleteTime = "7" // days will be selected as default too
 
-    // TODO: - change to real password when available
-
     static let contactsHashingPassword = "VexlVexl"
+    static let supportEmail = "support@vexl.it"
+    static let localEncryptionPassowrd = "tmpPassword"
+
+    static let randomNameSyllables = [
+        "bo", "da", "ga", "ge", "chi", "ka", "ko", "ku",
+        "ma", "mi", "mo", "na", "no", "ro", "ri", "ru",
+        "sa", "se", "su", "shi", "she", "sha", "sho",
+        "ta", "te", "to", "yu", "za", "zo"
+    ]
 }

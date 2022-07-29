@@ -11,8 +11,12 @@ import Combine
 
 final class RequestOfferViewModel: ViewModelType, ObservableObject {
 
-    @Inject var userSecurity: UserSecurityType
-    @Inject private var chatService: ChatServiceType
+    @Inject var authenticationManager: AuthenticationManagerType
+    @Inject var persistence: PersistenceStoreManagerType
+    @Inject var chatManager: ChatManagerType
+
+    @Fetched(fetchImmediately: false)
+    var fetchedCommonFriends: [ManagedContact]
 
     enum State {
         case normal
@@ -34,13 +38,14 @@ final class RequestOfferViewModel: ViewModelType, ObservableObject {
     @Published var error: Error?
     @Published var state: State = .normal
     @Published var requestText: String = ""
+    @Published var commonFriends: [ManagedContact] = []
 
     var errorIndicator: ErrorIndicator {
         primaryActivity.error
     }
 
     var offerViewData: OfferDetailViewData {
-        OfferDetailViewData(offer: offer, isRequested: false)
+        OfferDetailViewData(offer: offer)
     }
 
     // MARK: - Coordinator Bindings
@@ -54,15 +59,28 @@ final class RequestOfferViewModel: ViewModelType, ObservableObject {
 
     // MARK: - Variables
 
-    var username: String = Constants.randomName
+    var username: String = L.generalAnonymous()
 
-    private let offer: Offer
+    private let offer: ManagedOffer
     private let cancelBag: CancelBag = .init()
 
-    init(offer: Offer) {
+    init(offer: ManagedOffer) {
         self.offer = offer
+        setupDataBindings()
         setupActivityBindings()
         setupActionBindings()
+    }
+
+    private func setupDataBindings() {
+        if let commonFriends = offer.commonFriends, !commonFriends.isEmpty {
+            let array = NSArray(array: offer.commonFriends ?? [])
+            $fetchedCommonFriends
+                .load(predicate: NSPredicate(format: "hmacHash contains[cd] %@", array))
+
+            $fetchedCommonFriends.publisher
+                .map(\.objects)
+                .assign(to: &$commonFriends)
+        }
     }
 
     private func setupActivityBindings() {
@@ -90,20 +108,33 @@ final class RequestOfferViewModel: ViewModelType, ObservableObject {
         userAction
             .filter { $0 == .sendRequest }
             .withUnretained(self)
-            .compactMap { owner, _ -> String? in
-                ParsedChatMessage
-                    .communicationRequest(inboxPublicKey: owner.offer.offerPublicKey,
+            .compactMap { owner, _ -> MessagePayload? in
+                guard let publicKey = owner.offer.inbox?.keyPair?.publicKey else {
+                    return nil
+                }
+                return MessagePayload
+                    .communicationRequest(inboxPublicKey: publicKey,
                                           text: owner.requestText,
-                                          contactInboxKey: owner.userSecurity.userKeys.publicKey)?
-                    .asString
+                                          contactInboxKey: owner.authenticationManager.userKeys.publicKey)
             }
-            .flatMapLatest(with: self) { owner, message -> AnyPublisher<Void, Never> in
+            .flatMapLatest(with: self) { owner, payload -> AnyPublisher<Void, Never> in
                 owner.state = .requesting
-                return owner.chatService
-                    .requestCommunication(inboxPublicKey: owner.offer.offerPublicKey, message: message)
+                guard let publicKey = owner.offer.receiverPublicKey?.publicKey else {
+                    return Just(()).eraseToAnyPublisher()
+                }
+                return owner.chatManager
+                    .requestCommunication(offer: owner.offer, receiverPublicKey: publicKey, messagePayload: payload)
                     .trackError(owner.primaryActivity.error)
             }
-            .map { _ in Route.requestSent }
+            .flatMap { [persistence, offer] _ in
+                persistence.update(context: persistence.viewContext) { _ in
+                    offer.isRequested = true
+                    return offer
+                }
+                .asVoid()
+                .justOnError()
+            }
+            .map { Route.requestSent }
             .subscribe(route)
             .store(in: cancelBag)
     }

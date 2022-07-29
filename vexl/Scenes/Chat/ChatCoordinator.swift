@@ -13,22 +13,18 @@ private typealias ActionSheetResult = CoordinatingResult<RouterResult<BottomActi
 
 final class ChatCoordinator: BaseCoordinator<RouterResult<Void>> {
 
-    private let inboxKeys: ECCKeys
-    private let receiverPublicKey: String
-    private let offerType: OfferType?
     private let router: Router
     private let animated: Bool
+    private let chat: ManagedChat
 
-    init(inboxKeys: ECCKeys, receiverPublicKey: String, offerType: OfferType?, router: Router, animated: Bool) {
-        self.inboxKeys = inboxKeys
-        self.receiverPublicKey = receiverPublicKey
-        self.offerType = offerType
+    init(chat: ManagedChat, router: Router, animated: Bool) {
+        self.chat = chat
         self.router = router
         self.animated = animated
     }
 
     override func start() -> CoordinatingResult<RouterResult<Void>> {
-        let viewModel = ChatViewModel(inboxKeys: inboxKeys, receiverPublicKey: receiverPublicKey, offerType: offerType)
+        let viewModel = ChatViewModel(chat: chat)
         let viewController = BaseViewController(rootView: ChatView(viewModel: viewModel))
 
         router.present(viewController, animated: animated)
@@ -51,7 +47,7 @@ final class ChatCoordinator: BaseCoordinator<RouterResult<Void>> {
 
         viewModel
             .route
-            .compactMap { action -> Offer? in
+            .compactMap { action -> ManagedOffer? in
                 if case let .showOfferTapped(offer) = action { return offer }
                 return nil
             }

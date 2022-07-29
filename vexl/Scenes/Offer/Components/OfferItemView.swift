@@ -13,7 +13,7 @@ struct OfferItemView: View {
         static let editOfferButtonHeight: CGFloat = 48
     }
 
-    let data: OfferDetailViewData
+    @ObservedObject var data: OfferDetailViewData
     let editOfferAction: () -> Void
 
     var body: some View {
@@ -55,7 +55,7 @@ struct OfferItemView: View {
 #if DEBUG || DEVEL
 struct OfferItemViewPreview: PreviewProvider {
     static var previews: some View {
-        let data = OfferDetailViewData(offer: .stub, isRequested: true)
+        let data = OfferDetailViewData(offer: .stub)
         ZStack {
             Color.black
                 .edgesIgnoringSafeArea(.all)

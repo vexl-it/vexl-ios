@@ -15,9 +15,11 @@ final class RegisterPhoneViewModel: ViewModelType {
     // MARK: - Property Injection
 
     @Inject var userService: UserServiceType
-    @Inject var authenticationManager: AuthenticationManagerType
-    @Inject var userSecurity: UserSecurityType
+    @Inject var userRepository: UserRepositoryType
     @Inject var cryptoService: CryptoServiceType
+    @Inject var chatService: ChatServiceType
+    @Inject var contactsService: ContactsServiceType
+    @Inject var notificationManager: NotificationManagerType
 
     // MARK: - View State
 
@@ -108,11 +110,11 @@ final class RegisterPhoneViewModel: ViewModelType {
 
     // MARK: - Timer
 
-    private var timer: Timer.TimerPublisher?
     private let cancelBag: CancelBag = .init()
+    private var timer: Timer.TimerPublisher?
+    private let newKeys: ECCKeys = .init() // Generates new pair of keys
 
     init() {
-        userSecurity.generateUserKey()
         setupActivity()
         setupPhoneInputActionBindings()
         setupValidationActionBindings()
@@ -194,9 +196,11 @@ final class RegisterPhoneViewModel: ViewModelType {
             .flatMap { owner, verificationId in
                 owner
                     .userService
-                    .confirmValidationCode(id: verificationId,
-                                           code: owner.validationCode,
-                                           key: owner.userSecurity.userKeys.publicKey)
+                    .confirmValidationCode(
+                        id: verificationId,
+                        code: owner.validationCode,
+                        key: owner.newKeys.publicKey
+                    )
                     .track(activity: owner.primaryActivity)
                     .materialize()
                     .map(\.value)
@@ -226,12 +230,13 @@ final class RegisterPhoneViewModel: ViewModelType {
             .eraseToAnyPublisher()
     }
 
+    // swiftlint:disable:next function_body_length
     private func setupChallengeActionBindings() {
-        let challengeSuccess: AnyPublisher<ChallengeValidation, Never> = codeInputSuccess
+        let resolveChallenge: AnyPublisher<ChallengeValidation, Never> = codeInputSuccess
             .withUnretained(self)
             .flatMap { owner, response in
                 owner.cryptoService
-                    .signECDSA(keys: owner.userSecurity.userKeys, message: response.challenge)
+                    .signECDSA(keys: owner.newKeys, message: response.challenge)
                     .track(activity: owner.primaryActivity)
                     .materialize()
                     .compactMap { $0.value }
@@ -240,7 +245,7 @@ final class RegisterPhoneViewModel: ViewModelType {
             .flatMap { owner, signature in
                 owner
                     .userService
-                    .validateChallenge(key: owner.userSecurity.userKeys.publicKey, signature: signature)
+                    .validateChallenge(key: owner.newKeys.publicKey, signature: signature)
                     .track(activity: owner.primaryActivity)
                     .materialize()
                     .compactMap { $0.value }
@@ -255,14 +260,71 @@ final class RegisterPhoneViewModel: ViewModelType {
                 }
             })
             .map(\.1)
+            .share()
+            .eraseToAnyPublisher()
+
+        let challengeSuccess = resolveChallenge
             .filter(\.challengeVerified)
             .eraseToAnyPublisher()
 
-        challengeSuccess
+        resolveChallenge
+            .filter { !$0.challengeVerified }
+            .sink { _ in
+                // TODO: Handle failed challenge
+            }
+            .store(in: cancelBag)
+
+        let createUser = challengeSuccess
             .withUnretained(self)
-            .sink { owner, _ in
+            .flatMap { owner, response in
+                owner.userRepository
+                    .createNewUser(newKeys: owner.newKeys, signature: response.signature, hash: response.hash)
+                    .asVoid()
+                    .materialize()
+                    .track(activity: owner.primaryActivity)
+                    .compactMap(\.value)
+                    .receive(on: RunLoop.main)
+            }
+
+        let zip = Publishers.Zip(createUser, userRepository.userPublisher.filterNil().receive(on: RunLoop.main))
+
+        let createUserBE = zip
+            .flatMapLatest(with: self) { owner, _ in
+                owner.contactsService
+                    .createUser(forFacebook: false)
+                    .track(activity: owner.primaryActivity)
+                    .materialize()
+                    .compactMap(\.value)
+                    .eraseToAnyPublisher()
+            }
+
+        let notificationToken = createUserBE
+            .flatMap { [notificationManager] _ in
+                notificationManager.isRegisteredForNotifications
+                    .flatMap { isRegistered -> AnyPublisher<String, Never> in
+                        guard isRegistered else {
+                            return Just(Constants.fakePushNotificationToken)
+                                .eraseToAnyPublisher()
+                        }
+                        return notificationManager.notificationToken
+                    }
+            }
+
+        let createInbox = notificationToken
+            .flatMapLatest(with: self) { owner, token in
+                owner.chatService
+                    .createInbox(publicKey: owner.newKeys.publicKey, pushToken: token)
+                    .track(activity: owner.primaryActivity)
+                    .materialize()
+                    .compactMap(\.value)
+                    .eraseToAnyPublisher()
+            }
+
+        createInbox
+            .asVoid()
+            .withUnretained(self)
+            .sink { owner in
                 owner.route.send(.continueTapped)
-                owner.clearState()
             }
             .store(in: cancelBag)
     }

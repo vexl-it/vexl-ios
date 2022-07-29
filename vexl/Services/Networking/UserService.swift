@@ -16,6 +16,7 @@ protocol UserServiceType {
     func validateChallenge(key: String, signature: String) -> AnyPublisher<ChallengeValidation, Error>
     func validateUsername(username: String) -> AnyPublisher<UserAvailable, Error>
     func createUser(username: String, avatar: String?) -> AnyPublisher<User, Error>
+    func updateUser(username: String, avatar: String?) -> AnyPublisher<EditUser, Error>
     func deleteUser() -> AnyPublisher<Void, Error>
     func facebookSignature(id: String) -> AnyPublisher<ChallengeValidation, Error>
     func getBitcoinData() -> AnyPublisher<CoinData, Error>
@@ -23,9 +24,6 @@ protocol UserServiceType {
 }
 
 final class UserService: BaseService, UserServiceType {
-
-    @Inject var userSecurity: UserSecurityType
-    @Inject var authenticationManager: AuthenticationManagerType
 
     func me() -> AnyPublisher<User, Error> {
         request(type: User.self, endpoint: UserRouter.me)
@@ -44,11 +42,6 @@ final class UserService: BaseService, UserServiceType {
 
     func validateChallenge(key: String, signature: String) -> AnyPublisher<ChallengeValidation, Error> {
         request(type: ChallengeValidation.self, endpoint: UserRouter.validateChallenge(signature: signature, key: key))
-            .withUnretained(self)
-            .handleEvents(receiveOutput: { owner, response in
-                owner.userSecurity.setHash(response)
-            })
-            .map { $0.1 }
             .eraseToAnyPublisher()
     }
 
@@ -61,13 +54,13 @@ final class UserService: BaseService, UserServiceType {
         request(type: User.self, endpoint: UserRouter.createUser(username: username,
                                                                  avatar: avatar,
                                                                  imageExtension: Constants.jpegFormat))
-            .withUnretained(self)
-            .handleEvents(receiveOutput: { owner, response in
-                let avatarData = avatar?.dataFromBase64
-                owner.authenticationManager.setUser(response, withAvatar: avatarData)
-            })
-            .map(\.1)
             .eraseToAnyPublisher()
+    }
+
+    func updateUser(username: String, avatar: String?) -> AnyPublisher<EditUser, Error> {
+        request(type: EditUser.self, endpoint: UserRouter.updateUser(username: username,
+                                                                     avatar: avatar,
+                                                                     imageExtension: Constants.jpegFormat))
     }
 
     func deleteUser() -> AnyPublisher<Void, Error> {
@@ -76,11 +69,6 @@ final class UserService: BaseService, UserServiceType {
 
     func facebookSignature(id: String) -> AnyPublisher<ChallengeValidation, Error> {
         request(type: ChallengeValidation.self, endpoint: UserRouter.facebookSignature(id: id))
-            .withUnretained(self)
-            .handleEvents(receiveOutput: { owner, response in
-                owner.userSecurity.setFacebookSignature(response)
-            })
-            .map { $0.1 }
             .eraseToAnyPublisher()
     }
 

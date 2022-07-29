@@ -7,11 +7,11 @@
 
 import SwiftUI
 
-typealias InboxItem = InboxItemView.ViewData
+typealias InboxItem = InboxItemView.ViewModel
 
 struct InboxItemView: View {
 
-    var data: ViewData
+    @ObservedObject var data: ViewModel
 
     private var offerLabel: String {
         guard let offerType = data.offerType else {
@@ -62,12 +62,38 @@ struct InboxItemView: View {
 
 extension InboxItemView {
 
-    struct ViewData: Identifiable, Hashable {
-        let id = UUID()
-        let avatar: Data?
-        let username: String
-        let detail: String
-        let time: String
-        let offerType: OfferType?
+    final class ViewModel: Identifiable, Hashable, ObservableObject {
+        let chat: ManagedChat
+
+        @Published private var lastMessage: ManagedMessage?
+
+        var id: String { chat.id ?? UUID().uuidString }
+        var avatar: Data? { chat.receiverKeyPair?.profile?.avatar }
+        var username: String { chat.receiverKeyPair?.profile?.name ?? L.generalAnonymous() }
+        var detail: String { lastMessage?.text ?? "" }
+        var time: String { lastMessage?.formatedDate ?? "" }
+        var offerType: OfferType? { chat.receiverKeyPair?.offer?.type }
+
+        init(chat: ManagedChat) {
+            self.chat = chat
+
+            chat
+                .publisher(for: \.messages)
+                .map { messages in
+                    messages?
+                        .sortedArray(
+                            using: [ NSSortDescriptor(key: "time", ascending: true) ]
+                        ).last as? ManagedMessage
+                }
+                .assign(to: &$lastMessage)
+        }
+
+        func hash(into hasher: inout Hasher) {
+            hasher.combine(id)
+        }
+
+        static func == (lhs: InboxItemView.ViewModel, rhs: InboxItemView.ViewModel) -> Bool {
+            lhs.id == rhs.id
+        }
     }
 }

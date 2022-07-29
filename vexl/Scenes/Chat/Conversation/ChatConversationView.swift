@@ -31,10 +31,10 @@ struct ChatConversationView: View {
                                                 text: message.text,
                                                 style: message.isContact ? .contact : .user)
                                 .onTapGesture {
-                                    viewModel.action.send(.imageTapped(sectionId: section.id.uuidString, messageId: message.id.uuidString))
+                                    viewModel.action.send(.imageTapped(image: message.image))
                                 }
                         case .requestIdentityReveal:
-                            ChatRevealIdentityView(image: nil,
+                            ChatRevealIdentityView(image: viewModel.avatar,
                                                    isRequest: true,
                                                    revealAction: nil)
                         case .receiveIdentityReveal:
@@ -69,8 +69,7 @@ struct ChatConversationView: View {
 
 struct ChatConversationViewPreview: PreviewProvider {
     static var previews: some View {
-        ChatConversationView(viewModel: .init(inboxKeys: ECCKeys(),
-                                              receiverPublicKey: "12345"))
+        ChatConversationView(viewModel: .init(chat: .stub))
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .previewDevice("iPhone 11")
     }

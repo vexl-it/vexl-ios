@@ -11,22 +11,29 @@ import Combine
 
 final class UserOffersViewModel: ViewModelType, ObservableObject {
 
-    @Inject var offerService: OfferServiceType
-    @Inject var userSecurity: UserSecurityType
+    @Inject var authenticationManager: AuthenticationManagerType
+
+    // MARK: - Fetched Bindings
+
+    @Fetched(
+        fetchImmediately: false,
+        sortDescriptors: [ NSSortDescriptor(key: "createdAt", ascending: false) ]
+    )
+    var fetchedOffers: [ManagedOffer]
 
     // MARK: - Action Binding
 
     enum UserAction: Equatable {
         case dismissTap
         case createOfferTap
-        case editOfferTap(id: String)
+        case editOfferTap(offer: ManagedOffer)
     }
 
     let action: ActionSubject<UserAction> = .init()
 
     // MARK: - View Bindings
 
-    @Published var userOffers: [Offer] = []
+    @Published var userOffers: [ManagedOffer] = []
     @Published var offerSortingOption: OfferSortOption = .newest
 
     @Published var primaryActivity: Activity = .init()
@@ -45,7 +52,7 @@ final class UserOffersViewModel: ViewModelType, ObservableObject {
     enum Route: Equatable {
         case dismissTapped
         case createOfferTapped
-        case editOfferTapped(offer: Offer)
+        case editOfferTapped(offer: ManagedOffer)
     }
 
     var route: CoordinatingSubject<Route> = .init()
@@ -74,13 +81,12 @@ final class UserOffersViewModel: ViewModelType, ObservableObject {
     }
 
     var offerItems: [OfferDetailViewData] {
-        userOffers.map { OfferDetailViewData(offer: $0, isRequested: false) }
+        userOffers.map { OfferDetailViewData(offer: $0) }
     }
 
     init(offerType: OfferType) {
         self.offerType = offerType
         setupActivityBindings()
-        setupBindings()
         setupDataBindings()
         setupActionBindings()
     }
@@ -96,17 +102,15 @@ final class UserOffersViewModel: ViewModelType, ObservableObject {
             .assign(to: &$error)
     }
 
-    private func setupBindings() {
-        $offerSortingOption
-            .withUnretained(self)
-            .sink { owner, option in
-                owner.sortOffers(withOption: option)
-            }
-            .store(in: cancelBag)
-    }
-
     private func setupDataBindings() {
-        fetchOffers()
+        $fetchedOffers
+            .load(
+                predicate: .init(format: "offerTypeRawType == '\(offerType.rawValue)' AND user != nil")
+            )
+
+        $fetchedOffers.publisher
+            .map(\.objects)
+            .assign(to: &$userOffers)
     }
 
     private func setupActionBindings() {
@@ -119,17 +123,12 @@ final class UserOffersViewModel: ViewModelType, ObservableObject {
             .store(in: cancelBag)
 
         action
-            .compactMap { action -> String? in
-                if case let .editOfferTap(id) = action { return id }
+            .compactMap { action -> ManagedOffer? in
+                if case let .editOfferTap(offer) = action { return offer }
                 return nil
             }
-            .withUnretained(self)
-            .sink { owner, id in
-                guard let offer = owner.userOffers.first(where: { $0.offerId == id }) else {
-                    return
-                }
-                owner.route.send(.editOfferTapped(offer: offer))
-            }
+            .map(Route.editOfferTapped(offer:))
+            .subscribe(route)
             .store(in: cancelBag)
 
         action
@@ -139,48 +138,13 @@ final class UserOffersViewModel: ViewModelType, ObservableObject {
                 owner.route.send(.dismissTapped)
             }
             .store(in: cancelBag)
-    }
 
-    private func fetchOffers() {
-        Just(())
-            .flatMapLatest(with: self) { owner, _ in
-                owner.offerService
-                    .getStoredOffers(fromType: owner.offerType == .buy ? .buy : .sell, fromSource: .created)
-                    .track(activity: owner.primaryActivity)
-                    .materialize()
-                    .compactMap(\.value)
-                    .map { $0.map(\.offerId) }
-            }
-            .filter { !$0.isEmpty }
-            .flatMapLatest(with: self) { owner, ids in
-                owner.offerService
-                    .getUserOffers(offerIds: ids)
-                    .track(activity: owner.primaryActivity)
-                    .materialize()
-                    .compactMap(\.value)
-            }
+        $offerSortingOption
             .withUnretained(self)
-            .sink { owner, encryptedOffers in
-                owner.userOffers = encryptedOffers.compactMap {
-                    try? Offer(encryptedOffer: $0, keys: owner.userSecurity.userKeys, source: .created)
-                }
-                owner.sortOffers(withOption: owner.offerSortingOption)
+            .sink { owner, option in
+                owner.$fetchedOffers
+                    .load(sortDescriptors: [ NSSortDescriptor(key: "createdAt", ascending: option == .oldest) ])
             }
             .store(in: cancelBag)
-    }
-
-    private func sortOffers(withOption option: OfferSortOption) {
-        userOffers = userOffers.sorted { first, second in
-            switch option {
-            case .newest:
-                return first.createdDate.compare(second.createdDate) == .orderedDescending
-            case .oldest:
-                return first.createdDate.compare(second.createdDate) == .orderedAscending
-            }
-        }
-    }
-
-    func refreshOffers() {
-        fetchOffers()
     }
 }

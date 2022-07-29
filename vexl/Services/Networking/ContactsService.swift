@@ -22,6 +22,8 @@ protocol ContactsServiceType {
                         pageLimit: Int?) -> AnyPublisher<UserContacts, Error>
     func deleteUser() -> AnyPublisher<Void, Error>
     func countPhoneContacts() -> AnyPublisher<Int, Error>
+
+    func getCommonFriends(publicKeys: [String]) -> AnyPublisher<[String: [String]], Error>
 }
 
 final class ContactsService: BaseService, ContactsServiceType {
@@ -63,19 +65,20 @@ final class ContactsService: BaseService, ContactsServiceType {
                         hasFacebookAccount: Bool,
                         pageLimit: Int?) -> AnyPublisher<UserContacts, Error> {
 
-        let facebookContacts: AnyPublisher<Paged<ContactKey>, Error>
-        let phoneContacts = getContacts(fromFacebook: false, friendLevel: friendLevel, pageLimit: pageLimit)
-
-        if hasFacebookAccount {
-            facebookContacts = getContacts(fromFacebook: true, friendLevel: friendLevel, pageLimit: pageLimit)
-        } else {
-            facebookContacts = Future { promise in
-                promise(.success(.empty))
-            }
+        getContacts(fromFacebook: false, friendLevel: friendLevel, pageLimit: pageLimit)
             .eraseToAnyPublisher()
-        }
-
-        return Publishers.Zip(phoneContacts, facebookContacts)
+            .withUnretained(self)
+            .flatMap { owner, contacts -> AnyPublisher<(Paged<ContactKey>, Paged<ContactKey>), Error> in
+                if hasFacebookAccount {
+                    return owner.getContacts(fromFacebook: true, friendLevel: friendLevel, pageLimit: pageLimit)
+                        .map { (contacts, $0) }
+                        .eraseToAnyPublisher()
+                } else {
+                    return Just((contacts, .empty))
+                        .setFailureType(to: Error.self)
+                        .eraseToAnyPublisher()
+                }
+            }
             .map { UserContacts(phone: $0.0, facebook: $0.1) }
             .eraseToAnyPublisher()
     }
@@ -87,6 +90,12 @@ final class ContactsService: BaseService, ContactsServiceType {
     func countPhoneContacts() -> AnyPublisher<Int, Error> {
         request(type: ContactsCount.self, endpoint: ContactsRouter.countPhoneContacts)
             .map(\.count)
+            .eraseToAnyPublisher()
+    }
+
+    func getCommonFriends(publicKeys: [String]) -> AnyPublisher<[String: [String]], Error> {
+        request(type: CommonFriends.self, endpoint: ContactsRouter.getCommonFriends(publicKeys: publicKeys))
+            .map(\.asDictionary)
             .eraseToAnyPublisher()
     }
 }

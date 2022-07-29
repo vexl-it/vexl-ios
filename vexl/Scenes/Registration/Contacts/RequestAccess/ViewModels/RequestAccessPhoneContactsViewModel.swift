@@ -40,15 +40,6 @@ final class RequestAccessPhoneContactsViewModel: RequestAccessContactsViewModel 
     private func setupBindings() {
         accessConfirmed
             .withUnretained(self)
-            .flatMap { owner, _ in
-                owner.contactsService
-                    .createUser(forFacebook: false)
-                    .track(activity: owner.primaryActivity)
-                    .materialize()
-                    .compactMap(\.value)
-                    .eraseToAnyPublisher()
-            }
-            .withUnretained(self)
             .sink { owner, _ in
                 owner.currentState = .completed
             }

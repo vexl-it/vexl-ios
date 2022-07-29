@@ -10,23 +10,29 @@ import Cleevio
 import Combine
 
 private typealias OfferAndSenderKeys = (offerKey: OfferKeys, senderPublicKey: String)
-private typealias IndexAndConfirmation = (index: Int, confirmation: Bool)
-private typealias OfferAndMessage = (offer: Offer, message: ParsedChatMessage)
+private typealias IndexAndConfirmation = (chat: ManagedChat, confirmation: Bool)
 
 final class ChatRequestViewModel: ViewModelType, ObservableObject {
 
-    @Inject var userSecurity: UserSecurityType
-    @Inject var chatService: ChatServiceType
-    @Inject var offerService: OfferServiceType
-    @Inject var cryptoService: CryptoServiceType
+    // MARK: - Dependency Bindings
+
+    @Inject var chatManager: ChatManagerType
+
+    // MARK: - Persistence Bindings
+
+    @Fetched(
+        sortDescriptors: [ NSSortDescriptor(key: "lastMessageDate", ascending: false) ],
+        predicate: NSPredicate(format: "isRequesting == true AND isApproved == false")
+    )
+    var fetchedRequests: [ManagedChat]
 
     // MARK: - Action Binding
 
     enum UserAction: Equatable {
         case dismissTap
         case continueTap
-        case acceptTap(id: String)
-        case rejectTap(id: String)
+        case acceptTap(chat: ManagedChat)
+        case rejectTap(chat: ManagedChat)
     }
 
     let action: ActionSubject<UserAction> = .init()
@@ -77,18 +83,12 @@ final class ChatRequestViewModel: ViewModelType, ObservableObject {
     }
 
     private func setupDataBindings() {
-        offerService
-            .getStoredOffers(fromType: .all, fromSource: .all)
-            .track(activity: primaryActivity)
-            .materialize()
-            .compactMap(\.value)
-            .map { $0.map(\.keysWithId) }
-            .withUnretained(self)
-            .flatMap { owner, keys in
-                owner.prepareRequestedMessages(storedOfferKeys: keys)
+        $fetchedRequests.publisher
+            .map(\.objects)
+            .map { chats in
+                chats.compactMap(ChatRequestOfferViewData.init)
             }
-            .sink()
-            .store(in: cancelBag)
+            .assign(to: &$offerRequests)
     }
 
     private func setupActionBindings() {
@@ -102,143 +102,21 @@ final class ChatRequestViewModel: ViewModelType, ObservableObject {
             .subscribe(route)
             .store(in: cancelBag)
 
-        let request = action
-            .withUnretained(self)
-            .compactMap { owner, action -> IndexAndConfirmation? in
+        action
+            .compactMap { action -> IndexAndConfirmation? in
                 switch action {
-                case let .acceptTap(id):
-                    if let index = owner.offerRequests.firstIndex(where: { $0.id == id }) {
-                        return IndexAndConfirmation(index: index, confirmation: true)
-                    }
-                    return nil
-                case let .rejectTap(id):
-                    if let index = owner.offerRequests.firstIndex(where: { $0.id == id }) {
-                        return IndexAndConfirmation(index: index, confirmation: false)
-                    }
-                    return nil
+                case let .acceptTap(chat):
+                    return IndexAndConfirmation(chat: chat, confirmation: true)
+                case let .rejectTap(chat):
+                    return IndexAndConfirmation(chat: chat, confirmation: false)
                 default:
                     return nil
                 }
             }
-
-        request
-            .flatMapLatest(with: self) { owner, indexAndConfirmation in
-                owner.communicationRequest(index: indexAndConfirmation.index, isConfirmed: indexAndConfirmation.confirmation)
+            .flatMap { [chatManager] chat, confirmation in
+                chatManager.communicationResponse(chat: chat, confirmation: confirmation)
             }
-            .withUnretained(self)
-            .sink { owner, indexAndConfirmation in
-                owner.removeConfirmedRequest(atIndex: indexAndConfirmation.index)
-            }
+            .sink()
             .store(in: cancelBag)
-    }
-
-    // MARK: - Helper methods for presenting the request that are pending of approval/rejection
-
-    private func prepareRequestedMessages(storedOfferKeys: [OfferKeys]) -> AnyPublisher<Void, Never> {
-        chatService
-            .getStoredRequestMessages()
-            .track(activity: primaryActivity)
-            .materialize()
-            .compactMap(\.value)
-            .flatMapLatest(with: self) { owner, parsedMessages -> AnyPublisher<(offers: [Offer], messages: [ParsedChatMessage]), Never> in
-                owner.fetchUserOffers(offerKeys: storedOfferKeys)
-                    .map { (offers: $0, messages: parsedMessages) }
-                    .eraseToAnyPublisher()
-            }
-            .withUnretained(self)
-            .handleEvents(receiveOutput: { owner, offersAndMessages in
-                owner.saveRequestedOffers(offersAndMessages.offers,
-                                          offerKeys: storedOfferKeys,
-                                          parsedMessages: offersAndMessages.messages)
-            })
-            .asVoid()
-            .eraseToAnyPublisher()
-    }
-
-    private func fetchUserOffers(offerKeys: [OfferKeys]) -> AnyPublisher<[Offer], Never> {
-        offerService
-            .getUserOffers(offerIds: offerKeys.map(\.id))
-            .track(activity: primaryActivity)
-            .materialize()
-            .compactMap(\.value)
-            .map { Offer.createOffers(from: $0, withKey: self.userSecurity.userKeys, source: .fetched) }
-            .eraseToAnyPublisher()
-    }
-
-    private func saveRequestedOffers(_ offers: [Offer], offerKeys: [OfferKeys], parsedMessages: [ParsedChatMessage]) {
-
-        var offerRequestViewData: [ChatRequestOfferViewData] = []
-        var offerAndSender: [OfferAndSenderKeys] = []
-
-        for message in parsedMessages {
-            if let offer = offers.first(where: { $0.offerPublicKey == message.inboxKey }),
-               let key = offerKeys.first(where: { $0.id == offer.offerId }) {
-
-                let senderPublicKey = message.contactInboxKey
-                let viewData = ChatRequestOfferViewData(contactName: Constants.randomName,
-                                                        contactFriendLevel: offer.friendLevel.label,
-                                                        requestText: message.text ?? "",
-                                                        friends: [],
-                                                        offer: .init(offer: offer, isRequested: false))
-
-                offerRequestViewData.append(viewData)
-                offerAndSender.append(OfferAndSenderKeys(offerKey: key, senderPublicKey: senderPublicKey))
-            }
-        }
-
-        offerRequests = offerRequestViewData
-        offerAndSenderKeys = offerAndSender
-    }
-
-    // MARK: - Helper methods for sending the confirmation request to the BE
-
-    private func communicationRequest(index: Int, isConfirmed: Bool) -> AnyPublisher<IndexAndConfirmation, Never> {
-        let keys = offerAndSenderKeys[index]
-        let generateSignature = validateSignature(forOfferIndex: index, confirmation: isConfirmed, withInboxKey: keys.offerKey.keys)
-            .track(activity: primaryActivity)
-            .materialize()
-            .compactMap(\.value)
-
-        return generateSignature
-            .flatMapLatest(with: self) { owner, signature -> AnyPublisher<IndexAndConfirmation, Never> in
-                let message = ParsedChatMessage
-                    .communicationConfirmation(isConfirmed: isConfirmed,
-                                               inboxPublicKey: keys.offerKey.publicKey,
-                                               contactInboxKey: keys.senderPublicKey)
-
-                return owner.chatService
-                    .communicationConfirmation(confirmation: isConfirmed,
-                                               message: message,
-                                               inboxKeys: keys.offerKey.keys,
-                                               requesterPublicKey: keys.senderPublicKey,
-                                               signature: signature)
-                    .track(activity: owner.primaryActivity)
-                    .materialize()
-                    .compactMap(\.value)
-                    .map {
-                        IndexAndConfirmation(index: index,
-                                             confirmation: isConfirmed)
-                    }
-                    .eraseToAnyPublisher()
-            }
-            .eraseToAnyPublisher()
-    }
-
-    private func validateSignature(forOfferIndex index: Int,
-                                   confirmation: Bool,
-                                   withInboxKey offerKeys: ECCKeys) -> AnyPublisher<String, Error> {
-        chatService.requestChallenge(publicKey: offerKeys.publicKey)
-            .flatMapLatest(with: self) { owner, challenge in
-                owner.cryptoService.signECDSA(keys: offerKeys,
-                                              message: challenge.challenge)
-                    .eraseToAnyPublisher()
-            }
-            .eraseToAnyPublisher()
-    }
-
-    private func removeConfirmedRequest(atIndex index: Int) {
-        var offers = offerRequests
-        offers.remove(at: index)
-        offerRequests = offers
     }
 }
