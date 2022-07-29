@@ -62,5 +62,11 @@ final class ChatActionViewModel {
             .map(ChatViewModel.Route.showOfferTapped(offer: ))
             .subscribe(route)
             .store(in: cancelBag)
+
+        sharedAction
+            .filter { $0 == .blockUser }
+            .map { _ -> ChatViewModel.Route in .showBlockTapped }
+            .subscribe(route)
+            .store(in: cancelBag)
     }
 }

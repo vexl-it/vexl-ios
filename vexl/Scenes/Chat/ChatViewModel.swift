@@ -56,6 +56,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
         case showRevealIdentityTapped
         case showRevealIdentityResponseTapped
         case showRevealIdentityModal(isUserResponse: Bool, username: String, avatar: String?)
+        case showBlockTapped
     }
 
     var route: CoordinatingSubject<Route> = .init()
@@ -203,6 +204,14 @@ final class ChatViewModel: ViewModelType, ObservableObject {
     func identityRevealResponse(isAccepted: Bool) {
         chatManager
             .identityResponse(allow: isAccepted, chat: chat)
+            .track(activity: primaryActivity)
+            .sink()
+            .store(in: cancelBag)
+    }
+
+    func blockMessages() {
+        chatManager
+            .setBlockMessaging(isBlocked: isBlocked, chat: chat)
             .track(activity: primaryActivity)
             .sink()
             .store(in: cancelBag)
