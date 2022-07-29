@@ -62,7 +62,7 @@ struct MessagePayload: Codable {
                 "name": user.name,
                 "image": user.image
             ]
-            json["user"] = jsonUser
+            json["deanonymizedUser"] = jsonUser
         }
 
         guard let data = try? JSONSerialization.data(withJSONObject: json, options: .prettyPrinted) else {
@@ -94,7 +94,7 @@ extension MessagePayload {
 
         let text = json["text"] as? String
         let image = json["image"] as? String
-        let jsonUser = json["user"] as? [String: String]
+        let jsonUser = json["deanonymizedUser"] as? [String: String]
 
         self.contactInboxKey = chatMessage.senderPublicKey
         self.inboxKey = inboxPublicKey
