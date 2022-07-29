@@ -111,7 +111,6 @@ struct Constants {
 
     static let notAvailable = "N/A"
 
-    // TODO: - remove when we have real random names
     static let fakePushNotificationToken = "03df25c845d460bcdad7802d2vf6fc1dfde97283bf75cc993eb6dca835ea2e2f"
 
     // MARK: - Units used for converting time to seconds
