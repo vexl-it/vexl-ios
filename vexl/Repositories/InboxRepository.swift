@@ -83,7 +83,9 @@ class InboxRepository: InboxRepositoryType {
         switch message.type {
         case .revealRequest:
             if payload.isFromContact {
-                chat.receiverKeyPair?.profile?.secretAvatar = payload.user?.image?.dataFromBase64
+                if let imageURL = payload.user?.image, let avatarURL = URL(string: imageURL), let avatar = try? Data(contentsOf: avatarURL) {
+                    chat.receiverKeyPair?.profile?.secretAvatar = avatar
+                }
                 chat.receiverKeyPair?.profile?.secretName = payload.user?.name
             }
         case .revealApproval:
@@ -93,7 +95,7 @@ class InboxRepository: InboxRepositoryType {
                 if let name = payload.user?.name {
                     chat.receiverKeyPair?.profile?.name = name
                 }
-                if let avatar = payload.user?.image?.dataFromBase64 {
+                if let imageURL = payload.user?.image, let avatarURL = URL(string: imageURL), let avatar = try? Data(contentsOf: avatarURL) {
                     chat.receiverKeyPair?.profile?.avatar = avatar
                 }
             } else {
@@ -103,6 +105,8 @@ class InboxRepository: InboxRepositoryType {
         case .revealRejected:
             chat.gotRevealedResponse = true
             chat.isRevealed = false
+            chat.receiverKeyPair?.profile?.secretName = nil
+            chat.receiverKeyPair?.profile?.secretAvatar = nil
         case .messagingRequest:
             chat.isApproved = false
             chat.isRequesting = true

@@ -85,8 +85,7 @@ final class ChatManager: ChatManagerType {
                 inboxPublicKey: inboxKeys.publicKey,
                 contactInboxKey: receiverPublicKey,
                 username: userRepository.user?.profile?.name,
-                // TODO: change avatar to URL value
-                avatar: nil
+                avatar: userRepository.user?.profile?.avatarURL
               ),
               let message = payload.asString else {
             return Fail(error: PersistenceError.insufficientData)
@@ -142,8 +141,7 @@ final class ChatManager: ChatManagerType {
                 contactInboxKey: receiverPublicKey,
                 isAccepted: allow,
                 username: allow ? userRepository.user?.profile?.name : nil,
-                // TODO: change avatar to URL value
-                avatar: nil // allow ? userRepository.user?.profile?.avatarURL
+                avatar: allow ? userRepository.user?.profile?.avatarURL : nil
               ),
               let message = payload.asString else {
             return Fail(error: PersistenceError.insufficientData)

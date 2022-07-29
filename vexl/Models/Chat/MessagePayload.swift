@@ -62,7 +62,7 @@ struct MessagePayload: Codable {
                 "name": user.name,
                 "image": user.image
             ]
-            json["user"] = jsonUser
+            json["deanonymizedUser"] = jsonUser
         }
 
         guard let data = try? JSONSerialization.data(withJSONObject: json, options: .prettyPrinted) else {
