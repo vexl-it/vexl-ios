@@ -40,7 +40,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
     @Published var error: Error?
     @Published var showImagePicker = false
     @Published var showImagePickerActionSheet = false
-    @Published var username: String = Constants.randomName
+    @Published var username: String = L.generalAnonymous()
     @Published var avatar: Data?
 
     var errorIndicator: ErrorIndicator { primaryActivity.error }

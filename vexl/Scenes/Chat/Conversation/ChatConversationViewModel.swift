@@ -23,7 +23,7 @@ final class ChatConversationViewModel: ObservableObject {
     var fetchedMessages: [ManagedMessage]
 
     @Published var messages: [ChatConversationSection] = []
-    @Published var username: String = Constants.randomName
+    @Published var username: String = L.generalAnonymous()
     @Published var avatar: Data?
 
     var updateContactInformation: ActionSubject<MessagePayload.ChatUser> = .init()

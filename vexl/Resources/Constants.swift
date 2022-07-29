@@ -125,4 +125,11 @@ struct Constants {
     static let contactsHashingPassword = "VexlVexl"
     static let supportEmail = "support@vexl.it"
     static let localEncryptionPassowrd = "tmpPassword"
+
+    static let randomNameSyllables = [
+        "bo", "da", "ga", "ge", "chi", "ka", "ko", "ku",
+        "ma", "mi", "mo", "na", "no", "ro", "ri", "ru",
+        "sa", "se", "su", "shi", "she", "sha", "sho",
+        "ta", "te", "to", "yu", "za", "zo"
+    ]
 }

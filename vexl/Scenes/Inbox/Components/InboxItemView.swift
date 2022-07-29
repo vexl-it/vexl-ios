@@ -69,7 +69,7 @@ extension InboxItemView {
 
         var id: String { chat.id ?? UUID().uuidString }
         var avatar: Data? { chat.receiverKeyPair?.profile?.avatar }
-        var username: String { chat.receiverKeyPair?.profile?.name ?? Constants.randomName }
+        var username: String { chat.receiverKeyPair?.profile?.name ?? L.generalAnonymous() }
         var detail: String { lastMessage?.text ?? "" }
         var time: String { lastMessage?.formatedDate ?? "" }
         var offerType: OfferType? { chat.receiverKeyPair?.offer?.type }

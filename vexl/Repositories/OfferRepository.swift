@@ -90,10 +90,10 @@ class OfferRepository: OfferRepositoryType {
                 return payload.decrypt(context: context, userInbox: userInbox, into: offer)
                     .flatMap { offer -> ManagedOffer in
                         let profile = ManagedProfile(context: context)
-                        
+
                         // creating new chat from requesting offer
                         profile.avatar = UIImage(named: R.image.profile.avatar.name)?.pngData() // TODO: generate random avatar
-                        profile.name = Constants.randomName // TODO: generate random name
+                        profile.generateRandomName()
 
                         offer.receiverPublicKey?.profile = profile
 

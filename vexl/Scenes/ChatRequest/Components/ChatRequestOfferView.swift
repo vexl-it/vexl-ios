@@ -108,7 +108,7 @@ extension ChatRequestOfferView {
             }
             self.chat = chat
             id = chat.id ?? UUID().uuidString
-            contactName = chat.receiverKeyPair?.profile?.name ?? Constants.randomName
+            contactName = chat.receiverKeyPair?.profile?.name ?? L.generalAnonymous()
             contactFriendLevel = chat.receiverKeyPair?.offer?.friendLevel?.label ?? ""
             let messages: Set<ManagedMessage>? = chat.messages as? Set<ManagedMessage>
             requestText = messages?.first(where: { $0.type == .messagingRequest })?.text ?? ""

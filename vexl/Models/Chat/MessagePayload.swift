@@ -40,7 +40,7 @@ struct MessagePayload: Codable {
     }
 
     var username: String? {
-        user?.name ?? Constants.randomName
+        user?.name ?? L.generalAnonymous()
     }
 
     var asString: String? {

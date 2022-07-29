@@ -124,7 +124,7 @@ extension OfferInformationDetailView {
         @Published var isRequested: Bool = false
         @Published var id: String = UUID().uuidString
         @Published var avatar: Data?
-        @Published var username: String = Constants.randomName
+        @Published var username: String = L.generalAnonymous()
         @Published var title: String = ""
         @Published var friendLevel: String = OfferFriendDegree.firstDegree.rawValue
         @Published var paymentMethods: [OfferPaymentMethodOption] = []
