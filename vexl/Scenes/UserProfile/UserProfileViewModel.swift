@@ -115,14 +115,16 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
     }
 
     private func setupUpdateUser() {
-        userRepository.user?.profile?
+        let profile = userRepository.user?.profile
+
+        profile?
             .publisher(for: \.name)
             .map { $0 ?? "" }
             .assign(to: &$username)
 
-        userRepository.user?.profile?
-            .publisher(for: \.avatar)
-            .compactMap { $0 }
+        profile?
+            .publisher(for: \.avatarData)
+            .compactMap { _ in profile?.avatar }
             .assign(to: &$avatar)
     }
 

@@ -159,7 +159,7 @@ extension OfferInformationDetailView {
 
             offer.publisher(for: \.isRequested).assign(to: &$isRequested)
             offer.publisher(for: \.id).filterNil().assign(to: &$id)
-            profile?.publisher(for: \.avatar).assign(to: &$avatar)
+            profile?.publisher(for: \.avatarData).compactMap{ _ in profile?.avatar }.assign(to: &$avatar)
             profile?.publisher(for: \.name).filterNil().assign(to: &$username)
             offer.publisher(for: \.offerDescription).filterNil().assign(to: &$title)
             offer.publisher(for: \.friendDegreeRawType).map { _ in offer.friendLevel?.label }.filterNil().assign(to: &$friendLevel)

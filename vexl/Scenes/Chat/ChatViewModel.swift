@@ -113,7 +113,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
     private func setupUpdateUIBindings() {
         let profile = chat.receiverKeyPair?.profile
 
-        profile?.publisher(for: \.avatar).assign(to: &$avatar)
+        profile?.publisher(for: \.avatarData).map { _ in profile?.avatar }.assign(to: &$avatar)
         profile?.publisher(for: \.name).filterNil().assign(to: &$username)
         chat.publisher(for: \.isRevealed).assign(to: &$userIsRevealed)
     }

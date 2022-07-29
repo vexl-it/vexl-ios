@@ -5,9 +5,14 @@
 //  Created by Adam Salih on 03.07.2022.
 //
 
-import Foundation
+import UIKit
 
 extension ManagedProfile {
+
+    var avatar: Data? {
+        get { avatarData ?? UIImage(named: R.image.profile.avatar.name)?.pngData() }// TODO: generate random avatar
+        set { avatarData = newValue }
+    }
 
     func generateRandomName() {
         self.name = (0..<3)

@@ -47,7 +47,7 @@ final class ChatConversationViewModel: ObservableObject {
 
     private func setupDataBinding() {
         let profile = chat.receiverKeyPair?.profile
-        let avatarPublisher = profile?.publisher(for: \.avatar).share()
+        let avatarPublisher = profile?.publisher(for: \.avatarData).map { _ in profile?.avatar }.share()
 
         avatarPublisher?
             .assign(to: &$avatar)
