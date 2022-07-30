@@ -135,6 +135,10 @@ final class ChatViewModel: ViewModelType, ObservableObject {
             }
             .store(in: cancelBag)
     }
+    
+    private func setupInboxBindings() {
+        inboxManager
+    }
 
     private func setupChatInputBindings() {
         let inputMessage = sharedAction
