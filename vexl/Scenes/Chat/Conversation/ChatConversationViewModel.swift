@@ -28,7 +28,8 @@ final class ChatConversationViewModel: ObservableObject {
 
     var updateContactInformation: ActionSubject<MessagePayload.ChatUser> = .init()
     var displayExpandedImage: ActionSubject<Data> = .init()
-    var identityRevealResponse: ActionSubject<Void> = .init()
+    var identityRevealResponseTap: ActionSubject<Void> = .init()
+    var identityRevealResponseReceived: ActionSubject<Void> = .init()
 
     var action: ActionSubject<UserAction> = .init()
 
@@ -83,7 +84,7 @@ final class ChatConversationViewModel: ObservableObject {
         action
             .filter { $0 == .revealTapped }
             .asVoid()
-            .subscribe(identityRevealResponse)
+            .subscribe(identityRevealResponseTap)
             .store(in: cancelBag)
     }
 
