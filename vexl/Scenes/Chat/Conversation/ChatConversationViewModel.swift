@@ -33,7 +33,7 @@ final class ChatConversationViewModel: ObservableObject {
 
     var action: ActionSubject<UserAction> = .init()
 
-    @Published var avatarImage: Image = Image(R.image.marketplace.defaultAvatar.name)
+    @Published var avatarImage: Image = Image(R.image.chat.rejectReveal.name)
     var rejectImage: Image = Image(R.image.chat.rejectReveal.name)
 
     private let chat: ManagedChat
@@ -49,6 +49,9 @@ final class ChatConversationViewModel: ObservableObject {
     private func setupDataBinding() {
         let profile = chat.receiverKeyPair?.profile
         let avatarPublisher = profile?.publisher(for: \.avatarData).map { _ in profile?.avatar }.share()
+
+        avatar = profile?.avatar
+        avatarImage = Image(data: profile?.avatar, placeholder: R.image.marketplace.defaultAvatar.name)
 
         avatarPublisher?
             .assign(to: &$avatar)
