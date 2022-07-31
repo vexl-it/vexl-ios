@@ -108,21 +108,6 @@ final class ChatViewModel: ViewModelType, ObservableObject {
             .map { _ -> Route in .showRevealIdentityResponseTapped }
             .subscribe(route)
             .store(in: cancelBag)
-
-        chatConversationViewModel
-            .identityRevealResponseReceived
-            .withUnretained(self)
-            .compactMap { owner, _ -> Route? in
-                guard let name = owner.chat.receiverKeyPair?.profile?.name else {
-                    return nil
-                }
-
-                return .showRevealIdentityModal(isUserResponse: false,
-                                                username: name,
-                                                avatar: owner.chat.receiverKeyPair?.profile?.avatar?.base64EncodedString())
-            }
-            .subscribe(route)
-            .store(in: cancelBag)
     }
 
     private func setupUpdateUIBindings() {

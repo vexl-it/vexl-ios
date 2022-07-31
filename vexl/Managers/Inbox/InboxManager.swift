@@ -10,7 +10,6 @@ import Combine
 import Cleevio
 
 protocol InboxManagerType {
-    var completedSync: AnyPublisher<[MessagePayload], Never> { get }
     func syncInboxes()
 
     func syncInbox(with publicKey: String)
@@ -22,11 +21,6 @@ final class InboxManager: InboxManagerType {
     @Inject var chatService: ChatServiceType
     @Inject var userRepository: UserRepositoryType
 
-    var completedSync: AnyPublisher<[MessagePayload], Never> {
-        _completedSync.eraseToAnyPublisher()
-    }
-
-    private var _completedSync: PassthroughSubject<[MessagePayload], Never> = .init()
     private var cancelBag = CancelBag()
 
     func syncInboxes() {

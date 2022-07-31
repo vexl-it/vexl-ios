@@ -29,7 +29,6 @@ final class ChatConversationViewModel: ObservableObject {
     var updateContactInformation: ActionSubject<MessagePayload.ChatUser> = .init()
     var displayExpandedImage: ActionSubject<Data> = .init()
     var identityRevealResponseTap: ActionSubject<Void> = .init()
-    var identityRevealResponseReceived: ActionSubject<Void> = .init()
 
     var action: ActionSubject<UserAction> = .init()
 
