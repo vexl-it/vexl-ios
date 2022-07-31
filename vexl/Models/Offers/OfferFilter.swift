@@ -16,7 +16,7 @@ struct OfferFilter: Equatable {
     var selectedPaymentMethodOptions: [OfferPaymentMethodOption] = []
     var selectedBTCOptions: [OfferAdvancedBTCOption] = []
     var selectedFriendDegreeOption: OfferFriendDegree = .firstDegree
-    var currency: Currency = Constants.OfferInitialData.currency
+    var currency: Currency?
 
     var predicate: NSPredicate {
         var format = """
@@ -25,6 +25,12 @@ struct OfferFilter: Equatable {
         AND feeStateRawType == '\(selectedFeeOption.rawValue)'
         AND friendDegreeRawType == '\(selectedFriendDegreeOption.rawValue)'
         """
+
+        if let currency = currency {
+            format += """
+                AND currencyRawType == '\(currency.rawValue)'
+            """
+        }
 
         if selectedFeeOption == .withFee {
             format += """

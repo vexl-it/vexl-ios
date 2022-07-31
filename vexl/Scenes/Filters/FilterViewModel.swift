@@ -81,8 +81,10 @@ final class FilterViewModel: ViewModelType, ObservableObject {
         setupBindings()
     }
 
-    private func setupCurrencyBindings(currency: Currency) {
-        self.currency = currency
+    private func setupCurrencyBindings(currency: Currency?) {
+        if let currency = currency {
+            self.currency = currency
+        }
 
         $currency
             .withUnretained(self)
