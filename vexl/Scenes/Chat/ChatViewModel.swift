@@ -220,16 +220,15 @@ final class ChatViewModel: ViewModelType, ObservableObject {
             .identityResponse(allow: isAccepted, chat: chat)
             .track(activity: primaryActivity)
             .withUnretained(self)
-            .compactMap { owner, _ -> Route? in
+            .sink(receiveValue: { owner, _ in
                 guard let name = owner.chat.receiverKeyPair?.profile?.name else {
-                    return nil
+                    return
                 }
 
-                return .showRevealIdentityModal(isUserResponse: true,
-                                                username: name,
-                                                avatar: owner.chat.receiverKeyPair?.profile?.avatar?.base64EncodedString())
-            }
-            .subscribe(route)
+                owner.route.send(.showRevealIdentityModal(isUserResponse: true,
+                                                          username: name,
+                                                          avatar: owner.chat.receiverKeyPair?.profile?.avatar?.base64EncodedString()))
+            })
             .store(in: cancelBag)
     }
 }
