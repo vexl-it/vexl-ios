@@ -76,9 +76,27 @@ final class FilterViewModel: ViewModelType, ObservableObject {
         selectedPaymentMethodOptions = offerFilter.selectedPaymentMethodOptions
         selectedBTCOptions = offerFilter.selectedBTCOptions
         selectedFriendDegreeOption = offerFilter.selectedFriendDegreeOption
-
+        setupCurrencyBindings(currency: offerFilter.currency)
         setupDataBindings()
         setupBindings()
+    }
+
+    private func setupCurrencyBindings(currency: Currency) {
+        self.currency = currency
+
+        $currency
+            .withUnretained(self)
+            .sink { owner, option in
+                switch option {
+                case .eur, .usd:
+                    owner.amountRange = Constants.OfferInitialData.minOffer...Constants.OfferInitialData.maxOffer
+                    owner.currentAmountRange = Constants.OfferInitialData.minOffer...Constants.OfferInitialData.maxOffer
+                case .czk:
+                    owner.amountRange = Constants.OfferInitialData.minOffer...Constants.OfferInitialData.maxOfferCZK
+                    owner.currentAmountRange = Constants.OfferInitialData.minOffer...Constants.OfferInitialData.maxOfferCZK
+                }
+            }
+            .store(in: cancelBag)
     }
 
     private func setupDataBindings() {
@@ -108,6 +126,7 @@ final class FilterViewModel: ViewModelType, ObservableObject {
                 owner.offerFilter.selectedPaymentMethodOptions = owner.selectedPaymentMethodOptions
                 owner.offerFilter.selectedBTCOptions = owner.selectedBTCOptions
                 owner.offerFilter.selectedFriendDegreeOption = owner.selectedFriendDegreeOption
+                owner.offerFilter.currency = owner.currency
 
                 owner.route.send(.applyFilterTapped(owner.offerFilter))
             }

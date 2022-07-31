@@ -16,6 +16,7 @@ struct OfferFilter: Equatable {
     var selectedPaymentMethodOptions: [OfferPaymentMethodOption] = []
     var selectedBTCOptions: [OfferAdvancedBTCOption] = []
     var selectedFriendDegreeOption: OfferFriendDegree = .firstDegree
+    var currency: Currency = Constants.OfferInitialData.currency
 
     var predicate: NSPredicate {
         var format = """

@@ -36,8 +36,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         // Global appearance
         Appearance.setGlobalAppearance()
-
+        whereIsMySQLite()
         return true
+    }
+
+    func whereIsMySQLite() {
+        let path = FileManager
+            .default
+            .urls(for: .applicationSupportDirectory, in: .userDomainMask)
+            .last?
+            .absoluteString
+            .replacingOccurrences(of: "file://", with: "")
+            .removingPercentEncoding
+
+        print("db path: \(path ?? "Not found")")
     }
 
     // MARK: UISceneSession Lifecycle
