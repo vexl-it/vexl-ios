@@ -36,7 +36,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         // Global appearance
         Appearance.setGlobalAppearance()
-        whereIsMySQLite()
         return true
     }
 
@@ -49,7 +48,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             .replacingOccurrences(of: "file://", with: "")
             .removingPercentEncoding
 
-        print("db path: \(path ?? "Not found")")
+        log.addDestination(ConsoleDestination())
+        log.debug("db path: \(path ?? "Not found")", context: nil)
     }
 
     // MARK: UISceneSession Lifecycle

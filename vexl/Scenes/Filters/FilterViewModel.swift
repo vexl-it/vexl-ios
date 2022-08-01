@@ -89,13 +89,17 @@ final class FilterViewModel: ViewModelType, ObservableObject {
         $currency
             .withUnretained(self)
             .sink { owner, option in
+                let minOffer = Constants.OfferInitialData.minOffer
+                let maxOffer = Constants.OfferInitialData.maxOffer
+                let maxOfferCZK = Constants.OfferInitialData.maxOfferCZK
+
                 switch option {
                 case .eur, .usd:
-                    owner.amountRange = Constants.OfferInitialData.minOffer...Constants.OfferInitialData.maxOffer
-                    owner.currentAmountRange = Constants.OfferInitialData.minOffer...Constants.OfferInitialData.maxOffer
+                    owner.amountRange = minOffer...maxOffer
+                    owner.currentAmountRange = minOffer...maxOffer
                 case .czk:
-                    owner.amountRange = Constants.OfferInitialData.minOffer...Constants.OfferInitialData.maxOfferCZK
-                    owner.currentAmountRange = Constants.OfferInitialData.minOffer...Constants.OfferInitialData.maxOfferCZK
+                    owner.amountRange = minOffer...maxOfferCZK
+                    owner.currentAmountRange = minOffer...maxOfferCZK
                 }
             }
             .store(in: cancelBag)
