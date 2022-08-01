@@ -78,7 +78,6 @@ final class ChatViewModel: ViewModelType, ObservableObject {
     var chatActionViewModel: ChatActionViewModel
     var chatConversationViewModel: ChatConversationViewModel
     @Published var userIsRevealed = false
-    private let isBlocked = false
 
     init(chat: ManagedChat) {
         self.chat = chat
@@ -211,9 +210,12 @@ final class ChatViewModel: ViewModelType, ObservableObject {
 
     func blockMessages() {
         chatManager
-            .setBlockMessaging(isBlocked: isBlocked, chat: chat)
+            .setBlockMessaging(isBlocked: !chatActionViewModel.isChatBlocked, chat: chat)
             .track(activity: primaryActivity)
-            .sink()
+            .withUnretained(self)
+            .sink(receiveValue: { owner in
+                owner.chatActionViewModel.isChatBlocked.toggle()
+            })
             .store(in: cancelBag)
     }
 }

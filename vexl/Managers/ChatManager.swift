@@ -179,6 +179,12 @@ final class ChatManager: ChatManagerType {
                                    signature: signature,
                                    isBlocked: isBlocked)
             }
+            .withUnretained(self)
+            .flatMap { owner in
+                owner.chatRepository
+                    .setBlockChat(chat: chat, isBlocked: isBlocked)
+            }
+            .asVoid()
             .eraseToAnyPublisher()
     }
 }

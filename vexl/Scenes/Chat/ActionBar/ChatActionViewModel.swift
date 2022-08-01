@@ -8,12 +8,13 @@
 import Foundation
 import Cleevio
 
-final class ChatActionViewModel {
+final class ChatActionViewModel: ObservableObject {
 
     @Fetched(fetchImmediately: false)
     var fetchedMessages: [ManagedMessage]
 
     @Published var userIsRevealed = false
+    @Published var isChatBlocked = false
 
     var action: ActionSubject<ChatActionView.ChatActionOption> = .init()
     var route: CoordinatingSubject<ChatViewModel.Route> = .init()
@@ -36,6 +37,7 @@ final class ChatActionViewModel {
             .assign(to: &$userIsRevealed)
 
         self.offer = chat.receiverKeyPair?.offer
+        self.isChatBlocked = chat.isBlocked
         setupActionBindings()
     }
 
@@ -64,7 +66,10 @@ final class ChatActionViewModel {
             .store(in: cancelBag)
 
         sharedAction
-            .filter { $0 == .blockUser }
+            .withUnretained(self)
+            .filter { owner, action -> Bool in
+                action == .blockUser && !owner.isChatBlocked
+            }
             .map { _ -> ChatViewModel.Route in .showBlockTapped }
             .subscribe(route)
             .store(in: cancelBag)
