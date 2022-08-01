@@ -28,7 +28,7 @@ final class ChatConversationViewModel: ObservableObject {
 
     var updateContactInformation: ActionSubject<MessagePayload.ChatUser> = .init()
     var displayExpandedImage: ActionSubject<Data> = .init()
-    var identityRevealResponse: ActionSubject<Void> = .init()
+    var identityRevealResponseTap: ActionSubject<Void> = .init()
 
     var action: ActionSubject<UserAction> = .init()
 
@@ -48,6 +48,9 @@ final class ChatConversationViewModel: ObservableObject {
     private func setupDataBinding() {
         let profile = chat.receiverKeyPair?.profile
         let avatarPublisher = profile?.publisher(for: \.avatarData).map { _ in profile?.avatar }.share()
+
+        avatar = profile?.avatar
+        avatarImage = Image(data: profile?.avatar, placeholder: R.image.marketplace.defaultAvatar.name)
 
         avatarPublisher?
             .assign(to: &$avatar)
@@ -83,7 +86,7 @@ final class ChatConversationViewModel: ObservableObject {
         action
             .filter { $0 == .revealTapped }
             .asVoid()
-            .subscribe(identityRevealResponse)
+            .subscribe(identityRevealResponseTap)
             .store(in: cancelBag)
     }
 
