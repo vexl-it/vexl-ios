@@ -32,7 +32,7 @@ final class ChatConversationViewModel: ObservableObject {
 
     var action: ActionSubject<UserAction> = .init()
 
-    @Published var avatarImage: Image = Image(R.image.chat.rejectReveal.name)
+    @Published var avatarImage: Image = Image(R.image.marketplace.defaultAvatar.name)
     var rejectImage: Image = Image(R.image.chat.rejectReveal.name)
 
     private let chat: ManagedChat
