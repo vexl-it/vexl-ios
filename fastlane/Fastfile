@@ -91,6 +91,18 @@ platform :ios do
 
 		match(
 			git_branch: match_repository,
+			type: "development",
+			app_identifier: staging_identifier
+		)
+
+		match(
+			git_branch: match_repository,
+			type: "development",
+			app_identifier: appstore_identifier
+		)
+
+		match(
+			git_branch: match_repository,
 			type: "adhoc",
 			app_identifier: devel_identifier
 		)
