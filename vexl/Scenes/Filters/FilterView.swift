@@ -76,6 +76,8 @@ struct FilterView: View {
 
     private var amount: some View {
         VStack(spacing: Appearance.GridGuide.point) {
+            OfferCurrencyPickerView(selectedOption: $viewModel.currency)
+
             OfferAmountRangeView(
                 currencySymbol: viewModel.currency.sign,
                 currentValue: $viewModel.currentAmountRange,
