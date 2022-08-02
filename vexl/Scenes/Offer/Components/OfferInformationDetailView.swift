@@ -163,7 +163,7 @@ extension OfferInformationDetailView {
             profile?.publisher(for: \.name).filterNil().assign(to: &$username)
             offer.publisher(for: \.offerDescription).filterNil().assign(to: &$title)
             offer.publisher(for: \.friendDegreeRawType).map { _ in offer.friendLevel?.label }.filterNil().assign(to: &$friendLevel)
-            offer.publisher(for: \.paymentMethodRawTypes).map { _ in offer.paymentMethods }.filterNil().assign(to: &$paymentMethods)
+            offer.paymentMethodsPublisher.assign(to: &$paymentMethods)
             offer.publisher(for: \.feeAmount).filter { $0 > 0 }.map { "\($0)%" }.filterNil().assign(to: &$fee)
             offer.publisher(for: \.offerTypeRawType).map { _ in offer.type }.filterNil().assign(to: &$offerType)
             offer.publisher(for: \.createdAt).filterNil().assign(to: &$createdDate)

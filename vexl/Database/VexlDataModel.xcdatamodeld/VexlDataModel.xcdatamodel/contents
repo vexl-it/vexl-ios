@@ -4,6 +4,7 @@
         <attribute name="gotRevealedResponse" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="id" optional="YES" attributeType="String"/>
         <attribute name="isApproved" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="isBlocked" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="isRequesting" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="isRevealed" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="lastMessageDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
@@ -50,10 +51,14 @@
         <relationship name="chat" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ManagedChat" inverseName="messages" inverseEntity="ManagedChat"/>
     </entity>
     <entity name="ManagedOffer" representedClassName="ManagedOffer" syncable="YES" codeGenerationType="class">
+        <attribute name="acceptsBankTransfer" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="acceptsCash" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="acceptsOnChain" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="acceptsOnLighting" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="acceptsRevolut" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="active" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="activePriceStateRawType" optional="YES" attributeType="String"/>
         <attribute name="activePriceValue" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
-        <attribute name="btcNetworkRawTypes" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromDataTransformer" customClassName="[String]"/>
         <attribute name="commonFriends" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromDataTransformer" customClassName="[String]"/>
         <attribute name="createdAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="currencyRawType" optional="YES" attributeType="String"/>
@@ -70,7 +75,6 @@
         <attribute name="modifiedAt" optional="YES" attributeType="String"/>
         <attribute name="offerDescription" optional="YES" attributeType="String"/>
         <attribute name="offerTypeRawType" optional="YES" attributeType="String"/>
-        <attribute name="paymentMethodRawTypes" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromDataTransformer" customClassName="[String]"/>
         <relationship name="inbox" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ManagedInbox" inverseName="offers" inverseEntity="ManagedInbox"/>
         <relationship name="receiverPublicKey" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ManagedKeyPair" inverseName="offer" inverseEntity="ManagedKeyPair"/>
         <relationship name="syncItem" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ManagedSyncItem" inverseName="offer" inverseEntity="ManagedSyncItem"/>
@@ -101,7 +105,7 @@
         <relationship name="profile" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ManagedProfile" inverseName="currentUser" inverseEntity="ManagedProfile"/>
     </entity>
     <elements>
-        <element name="ManagedChat" positionX="-333.91796875" positionY="-454.86328125" width="162.57421875" height="178"/>
+        <element name="ManagedChat" positionX="-333.91796875" positionY="-454.86328125" width="162.57421875" height="179"/>
         <element name="ManagedContact" positionX="-1060.67578125" positionY="-241.9453125" width="128" height="134"/>
         <element name="ManagedInbox" positionX="-562.71484375" positionY="-370.265625" width="128" height="118"/>
         <element name="ManagedKeyPair" positionX="-343.26171875" positionY="-227.74609375" width="128" height="133"/>

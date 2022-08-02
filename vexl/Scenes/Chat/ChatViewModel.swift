@@ -56,6 +56,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
         case showRevealIdentityTapped
         case showRevealIdentityResponseTapped
         case showRevealIdentityModal(isUserResponse: Bool, username: String, avatar: String?)
+        case showBlockTapped
     }
 
     var route: CoordinatingSubject<Route> = .init()
@@ -77,7 +78,6 @@ final class ChatViewModel: ViewModelType, ObservableObject {
     var chatActionViewModel: ChatActionViewModel
     var chatConversationViewModel: ChatConversationViewModel
     @Published var userIsRevealed = false
-    private let isBlocked = false
 
     init(chat: ManagedChat) {
         self.chat = chat
@@ -104,7 +104,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
             .store(in: cancelBag)
 
         chatConversationViewModel
-            .identityRevealResponse
+            .identityRevealResponseTap
             .map { _ -> Route in .showRevealIdentityResponseTapped }
             .subscribe(route)
             .store(in: cancelBag)
@@ -204,7 +204,27 @@ final class ChatViewModel: ViewModelType, ObservableObject {
         chatManager
             .identityResponse(allow: isAccepted, chat: chat)
             .track(activity: primaryActivity)
-            .sink()
+            .withUnretained(self)
+            .sink(receiveValue: { owner, _ in
+                guard let name = owner.chat.receiverKeyPair?.profile?.name else {
+                    return
+                }
+
+                owner.route.send(.showRevealIdentityModal(isUserResponse: true,
+                                                          username: name,
+                                                          avatar: owner.chat.receiverKeyPair?.profile?.avatar?.base64EncodedString()))
+            })
+            .store(in: cancelBag)
+    }
+
+    func blockMessages() {
+        chatManager
+            .setBlockMessaging(isBlocked: !chatActionViewModel.isChatBlocked, chat: chat)
+            .track(activity: primaryActivity)
+            .withUnretained(self)
+            .sink(receiveValue: { owner in
+                owner.chatActionViewModel.isChatBlocked.toggle()
+            })
             .store(in: cancelBag)
     }
 }
