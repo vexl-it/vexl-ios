@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Combine
 
 extension ManagedOffer {
     var currency: Currency? {
@@ -30,18 +31,55 @@ extension ManagedOffer {
 
     var paymentMethods: [OfferPaymentMethodOption] {
         get {
-            let methods = paymentMethodRawTypes ?? []
-            return methods.compactMap(OfferPaymentMethodOption.init)
+            [
+                acceptsCash ? .cash : nil,
+                acceptsRevolut ? .revolut : nil,
+                acceptsBankTransfer ? .bank : nil
+            ].compactMap { $0 }
         }
-        set { paymentMethodRawTypes = newValue.map(\.rawValue) }
+        set {
+            let set = Set(newValue)
+            acceptsCash = set.contains(.cash)
+            acceptsRevolut = set.contains(.revolut)
+            acceptsBankTransfer = set.contains(.bank)
+        }
+    }
+
+    var paymentMethodsPublisher: AnyPublisher<[OfferPaymentMethodOption], Never> {
+        Publishers.CombineLatest3(
+                publisher(for: \.acceptsCash),
+                publisher(for: \.acceptsRevolut),
+                publisher(for: \.acceptsBankTransfer)
+        )
+        .asVoid()
+        .withUnretained(self)
+        .compactMap { $0.paymentMethods }
+        .eraseToAnyPublisher()
     }
 
     var btcNetworks: [OfferAdvancedBTCOption] {
         get {
-            let networks = btcNetworkRawTypes ?? []
-            return networks.compactMap(OfferAdvancedBTCOption.init)
+            [
+                acceptsOnChain ? .onChain : nil,
+                acceptsOnLighting ? .lightning : nil
+            ].compactMap { $0 }
         }
-        set { btcNetworkRawTypes = newValue.map(\.rawValue) }
+        set {
+            let set = Set(newValue)
+            acceptsOnChain = set.contains(.onChain)
+            acceptsOnLighting = set.contains(.lightning)
+        }
+    }
+
+    var btcNetworksPublisher: AnyPublisher<[OfferAdvancedBTCOption], Never> {
+        Publishers.CombineLatest(
+            publisher(for: \.acceptsOnChain),
+            publisher(for: \.acceptsOnLighting)
+        )
+        .asVoid()
+        .withUnretained(self)
+        .compactMap { $0.btcNetworks }
+        .eraseToAnyPublisher()
     }
 
     var friendLevel: OfferFriendDegree? {
