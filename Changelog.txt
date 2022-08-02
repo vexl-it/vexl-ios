@@ -8,5 +8,6 @@
 - Capitalize first letter in generated names
 - Graph percentages
 - Report issue view now appears when email is tapped.
+- Fixed currency symbol position
 
 ### Known Issues
