@@ -14,6 +14,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
 
     @Inject var inboxManager: InboxManagerType
     @Inject var chatManager: ChatManagerType
+    @Inject var contactsRepository: ContactsRepositoryType
 
     enum ImageSource {
         case photoAlbum, camera
@@ -57,6 +58,8 @@ final class ChatViewModel: ViewModelType, ObservableObject {
         case showRevealIdentityResponseTapped
         case showRevealIdentityModal(isUserResponse: Bool, username: String, avatar: String?)
         case showBlockTapped
+        case showCommonFriendsTapped
+        case showCommonFriendsModal(contacts: [ManagedContact])
     }
 
     var route: CoordinatingSubject<Route> = .init()
@@ -94,6 +97,22 @@ final class ChatViewModel: ViewModelType, ObservableObject {
     private func setupChildViewModelBindings() {
         chatActionViewModel
             .route
+            .filter { $0 != .showCommonFriendsTapped }
+            .subscribe(route)
+            .store(in: cancelBag)
+
+        chatActionViewModel
+            .route
+            .filter { $0 == .showCommonFriendsTapped }
+            .withUnretained(self)
+            .flatMap { owner, _ -> AnyPublisher<[ManagedContact], Never> in
+                let commonFriends = owner.offer?.commonFriends ?? []
+                return owner.contactsRepository
+                    .getCommonFriends(hashes: commonFriends)
+                    .track(activity: owner.primaryActivity)
+                    .eraseToAnyPublisher()
+            }
+            .map { contacts -> Route in .showCommonFriendsModal(contacts: contacts) }
             .subscribe(route)
             .store(in: cancelBag)
 
