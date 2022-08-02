@@ -7,5 +7,6 @@
 - Second degree friends offer encryption
 - Capitalize first letter in generated names
 - Graph percentages
+- Report issue view now appears when email is tapped.
 
 ### Known Issues
