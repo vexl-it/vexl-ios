@@ -33,7 +33,7 @@ enum Currency: String, Codable, CaseIterable, Identifiable {
     var position: HorizontalPosition {
         switch self {
         case .eur:
-            return .left
+            return .right
         case .usd:
             return .left
         case .czk:
