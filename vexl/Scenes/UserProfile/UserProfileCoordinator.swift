@@ -126,6 +126,10 @@ final class UserProfileCoordinator: BaseCoordinator<Void> {
                                          transitionStyle: .crossDissolve)
                 return owner.presentActionSheet(router: router, viewModel: ReportIssueSheetViewModel())
             }
+            .filter { result in
+                if case let .finished(actionType) = result { return actionType == .contentAction }
+                return false
+            }
             .sink { _ in
                 viewController.presentEmailComposer()
             }
