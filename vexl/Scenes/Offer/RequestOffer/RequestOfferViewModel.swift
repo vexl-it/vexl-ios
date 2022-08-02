@@ -75,7 +75,7 @@ final class RequestOfferViewModel: ViewModelType, ObservableObject {
         if let commonFriends = offer.commonFriends, !commonFriends.isEmpty {
             let array = NSArray(array: offer.commonFriends ?? [])
             $fetchedCommonFriends
-                .load(predicate: NSPredicate(format: "hmacHash contains[cd] %@", array))
+                .load(predicate: NSPredicate(format: "hmacHash IN %@", array))
 
             $fetchedCommonFriends.publisher
                 .map(\.objects)
