@@ -39,14 +39,28 @@ struct OfferFilter: Equatable {
             predicateList.append(NSPredicate(format: "minAmount >= %d", currentAmountRange.lowerBound))
         }
 
-        // TODO: filter location
-
         if !selectedPaymentMethodOptions.isEmpty {
-
+            selectedPaymentMethodOptions.forEach { option in
+                switch option {
+                case .cash:
+                    predicateList.append(NSPredicate(format: "acceptsCash == YES"))
+                case .revolut:
+                    predicateList.append(NSPredicate(format: "acceptsRevolut == YES"))
+                case .bank:
+                    predicateList.append(NSPredicate(format: "acceptsBankTransfer == YES"))
+                }
+            }
         }
 
         if !selectedBTCOptions.isEmpty {
-
+            selectedBTCOptions.forEach { option in
+                switch option {
+                case .onChain:
+                    predicateList.append(NSPredicate(format: "acceptsOnChain == YES"))
+                case .lightning:
+                    predicateList.append(NSPredicate(format: "acceptsOnLighting == YES"))
+                }
+            }
         }
 
         return NSCompoundPredicate(andPredicateWithSubpredicates: predicateList)
