@@ -53,7 +53,7 @@ extension ManagedOffer {
         )
         .asVoid()
         .withUnretained(self)
-        .compactMap { $0.paymentMethods }
+        .map(\.paymentMethods)
         .eraseToAnyPublisher()
     }
 
@@ -78,7 +78,7 @@ extension ManagedOffer {
         )
         .asVoid()
         .withUnretained(self)
-        .compactMap { $0.btcNetworks }
+        .map(\.btcNetworks)
         .eraseToAnyPublisher()
     }
 
