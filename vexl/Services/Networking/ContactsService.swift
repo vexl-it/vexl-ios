@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 
-typealias UserContacts = (phone: Paged<ContactKey>, facebook: Paged<ContactKey>)
+typealias UserContacts = (phone: [ContactKey], facebook: [ContactKey])
 
 protocol ContactsServiceType {
     func createUser(forFacebook isFacebook: Bool) -> AnyPublisher<Void, Error>
@@ -16,7 +16,7 @@ protocol ContactsServiceType {
     func getActivePhoneContacts(_ contacts: [String]) -> AnyPublisher<ContactsAvailable, Error>
     func getActiveFacebookContacts(id: String, accessToken: String) -> AnyPublisher<FacebookUserData, Error>
     func getFacebookContacts(id: String, accessToken: String) -> AnyPublisher<FacebookUserData, Error>
-    func getContacts(fromFacebook: Bool, friendLevel: ContactFriendLevel, pageLimit: Int?) -> AnyPublisher<Paged<ContactKey>, Error>
+    func getContacts(fromFacebook: Bool, friendLevel: ContactFriendLevel, pageLimit: Int?) -> AnyPublisher<[ContactKey], Error>
     func getAllContacts(friendLevel: ContactFriendLevel,
                         hasFacebookAccount: Bool,
                         pageLimit: Int?) -> AnyPublisher<UserContacts, Error>
@@ -53,12 +53,20 @@ final class ContactsService: BaseService, ContactsServiceType {
             .eraseToAnyPublisher()
     }
 
-    func getContacts(fromFacebook: Bool, friendLevel: ContactFriendLevel, pageLimit: Int?) -> AnyPublisher<Paged<ContactKey>, Error> {
-        request(type: Paged<ContactKey>.self,
-                endpoint: ContactsRouter.getContacts(useFacebookHeader: fromFacebook,
-                                                     friendLevel: friendLevel,
-                                                     pageLimit: pageLimit))
-            .eraseToAnyPublisher()
+    func getContacts(fromFacebook: Bool, friendLevel: ContactFriendLevel, pageLimit: Int?) -> AnyPublisher<[ContactKey], Error> {
+        request(
+            type: Paged<ContactKey>.self,
+            endpoint: ContactsRouter.getContacts(
+                useFacebookHeader: fromFacebook,
+                friendLevel: friendLevel,
+                pageLimit: pageLimit
+            )
+        )
+        .map { pagedContacts in
+            let pubKeys = Set(pagedContacts.items.map(\.publicKey))
+            return pubKeys.map(ContactKey.init)
+        }
+        .eraseToAnyPublisher()
     }
 
     func getAllContacts(friendLevel: ContactFriendLevel,
@@ -68,13 +76,13 @@ final class ContactsService: BaseService, ContactsServiceType {
         getContacts(fromFacebook: false, friendLevel: friendLevel, pageLimit: pageLimit)
             .eraseToAnyPublisher()
             .withUnretained(self)
-            .flatMap { owner, contacts -> AnyPublisher<(Paged<ContactKey>, Paged<ContactKey>), Error> in
+            .flatMap { owner, contacts -> AnyPublisher<([ContactKey], [ContactKey]), Error> in
                 if hasFacebookAccount {
                     return owner.getContacts(fromFacebook: true, friendLevel: friendLevel, pageLimit: pageLimit)
                         .map { (contacts, $0) }
                         .eraseToAnyPublisher()
                 } else {
-                    return Just((contacts, .empty))
+                    return Just((contacts, []))
                         .setFailureType(to: Error.self)
                         .eraseToAnyPublisher()
                 }

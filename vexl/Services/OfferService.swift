@@ -144,8 +144,8 @@ extension OfferService {
                 pageLimit: Constants.pageMaxLimit
             )
             .map { contacts -> [ContactKey] in
-                let contacts = contacts.phone.items
-                    + contacts.facebook.items
+                let contacts = contacts.phone
+                    + contacts.facebook
                     + [ContactKey(publicKey: userPublicKey)]
                 return Array(Set(contacts))
             }
