@@ -1,8 +1,8 @@
 - Requires uninstall: ⚠️ YES ⚠️
 
 ### Improvements
-- Persistence now supported in the 
 
 ### Fixes
+- Crash in filter
 
 ### Known Issues
