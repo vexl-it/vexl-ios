@@ -37,7 +37,7 @@ struct OfferSettingsView: View {
                         OfferCurrencyPickerView(selectedOption: $viewModel.currency)
                             .padding(.bottom, Appearance.GridGuide.padding)
 
-                        OfferAmountRangeView(currencySymbol: viewModel.currency.sign,
+                        OfferAmountRangeView(currency: viewModel.currency,
                                              currentValue: $viewModel.currentAmountRange,
                                              sliderBounds: viewModel.amountRange)
                     }

@@ -8,16 +8,28 @@
 import SwiftUI
 
 struct RangePickerView: View {
-    let currencySymbol: String
+    let currency: Currency
     let currentValue: Binding<ClosedRange<Int>>
     let sliderBounds: ClosedRange<Int>
 
     var minValue: String {
-        "\(currencySymbol)\(currentValue.wrappedValue.lowerBound)"
+        let minValue = "\(currentValue.wrappedValue.lowerBound)"
+        switch currency.position {
+        case .left:
+            return "\(currency.sign)\(minValue)"
+        case .right:
+            return "\(minValue)\(currency.sign)"
+        }
     }
 
     var maxValue: String {
-        "\(currencySymbol)\(currentValue.wrappedValue.upperBound)"
+        let maxValue = "\(currentValue.wrappedValue.upperBound)"
+        switch currency.position {
+        case .left:
+            return "\(currency.sign)\(maxValue)"
+        case .right:
+            return "\(maxValue)\(currency.sign)"
+        }
     }
 
     var body: some View {
@@ -143,7 +155,7 @@ struct RangePickerView: View {
 #if DEBUG || DEVEL
 struct RangePickerViewPreview: PreviewProvider {
     static var previews: some View {
-        RangePickerView(currencySymbol: "$",
+        RangePickerView(currency: .usd,
                         currentValue: .constant(3...8),
                         sliderBounds: 1...10)
             .frame(height: 200)

@@ -79,7 +79,7 @@ struct FilterView: View {
             OfferCurrencyPickerView(selectedOption: $viewModel.currency)
 
             OfferAmountRangeView(
-                currencySymbol: viewModel.currency.sign,
+                currency: viewModel.currency,
                 currentValue: $viewModel.currentAmountRange,
                 sliderBounds: viewModel.amountRange
             )
