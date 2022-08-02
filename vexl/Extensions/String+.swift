@@ -17,7 +17,7 @@ extension String {
     }
 
     var capitalizeFirstLetter: String {
-        prefix(1).uppercased() + self.lowercased().dropFirst()
+        prefix(1).uppercased() + lowercased().dropFirst()
     }
 
     func removeWhitespaces() -> String {
