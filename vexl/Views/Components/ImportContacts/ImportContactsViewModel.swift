@@ -240,7 +240,7 @@ class ImportContactsViewModel: ObservableObject {
         hasSelectedItem = areSelected
     }
 
-    func fetchContacts() throws {
-        fatalError("Must implement fetch contacts")
-    }
+//    func fetchContacts() throws {
+//        fatalError("Must implement fetch contacts")
+//    }
 }

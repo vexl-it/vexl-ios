@@ -198,4 +198,16 @@ extension UserProfileCoordinator {
         .prefix(1)
         .eraseToAnyPublisher()
     }
+
+    private func presentGroups(router: Router) -> ActionSheetResult {
+        coordinate(to: BottomActionSheetCoordinator(router: router, viewModel: JoinVexlViewModel()))
+        .flatMap { result -> CoordinatingResult<RouterResult<BottomActionSheetActionType>> in
+            guard result != .dismissedByRouter else {
+                return Just(result).eraseToAnyPublisher()
+            }
+            return router.dismiss(animated: true, returning: result)
+        }
+        .prefix(1)
+        .eraseToAnyPublisher()
+    }
 }

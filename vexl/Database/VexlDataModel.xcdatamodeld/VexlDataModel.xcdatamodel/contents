@@ -20,6 +20,9 @@
         <attribute name="phoneNumber" optional="YES" attributeType="String"/>
         <attribute name="sourceRawType" optional="YES" attributeType="String"/>
     </entity>
+    <entity name="ManagedGroup" representedClassName="ManagedGroup" syncable="YES" codeGenerationType="class">
+        <relationship name="profiles" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ManagedProfile" inverseName="groups" inverseEntity="ManagedProfile"/>
+    </entity>
     <entity name="ManagedInbox" representedClassName="ManagedInbox" syncable="YES" codeGenerationType="class">
         <attribute name="typeRawValue" optional="YES" attributeType="String"/>
         <relationship name="chats" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ManagedChat" inverseName="inbox" inverseEntity="ManagedChat"/>
@@ -82,6 +85,7 @@
         <attribute name="secretAvatar" optional="YES" attributeType="Binary"/>
         <attribute name="secretName" optional="YES" attributeType="String"/>
         <relationship name="currentUser" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ManagedUser" inverseName="profile" inverseEntity="ManagedUser"/>
+        <relationship name="groups" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ManagedGroup" inverseName="profiles" inverseEntity="ManagedGroup"/>
         <relationship name="keyPair" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ManagedKeyPair" inverseName="profile" inverseEntity="ManagedKeyPair"/>
     </entity>
     <entity name="ManagedSyncItem" representedClassName="ManagedSyncItem" syncable="YES" codeGenerationType="class">
@@ -103,8 +107,9 @@
         <element name="ManagedKeyPair" positionX="-343.26171875" positionY="-227.74609375" width="128" height="133"/>
         <element name="ManagedMessage" positionX="-110.484375" positionY="-455.828125" width="128" height="178"/>
         <element name="ManagedOffer" positionX="-870.50390625" positionY="-571.98046875" width="128" height="404"/>
-        <element name="ManagedProfile" positionX="-568.91015625" positionY="-80.58984375" width="128" height="164"/>
+        <element name="ManagedProfile" positionX="-566.8828125" positionY="-92.77734375" width="128" height="193"/>
         <element name="ManagedSyncItem" positionX="-591.86328125" positionY="-567.52734375" width="128" height="74"/>
         <element name="ManagedUser" positionX="-1013.984375" positionY="-50.265625" width="165.6171875" height="118"/>
+        <element name="ManagedGroup" positionX="-304.7421875" positionY="12.1796875" width="128" height="58"/>
     </elements>
 </model>
