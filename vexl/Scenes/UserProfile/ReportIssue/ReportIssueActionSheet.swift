@@ -23,11 +23,15 @@ final class ReportIssueSheetViewModel: BottomActionSheetViewModelProtocol {
     }
 
     var content: ReportIssueActionSheetContent {
-        ReportIssueActionSheetContent()
+        ReportIssueActionSheetContent { [weak self] in
+            self?.actionPublisher.send(.contentAction)
+        }
     }
 }
 
 struct ReportIssueActionSheetContent: View {
+
+    var action: () -> Void
 
     var body: some View {
         VStack {
@@ -49,6 +53,9 @@ struct ReportIssueActionSheetContent: View {
                     .textStyle(.paragraph)
                     .foregroundColor(Appearance.Colors.primaryText)
             }
+            .onTapGesture {
+                action()
+            }
             .padding([.horizontal, .bottom], Appearance.GridGuide.point)
             .frame(maxWidth: .infinity, alignment: .leading)
         }
@@ -59,7 +66,7 @@ struct ReportIssueActionSheetContent: View {
 
 struct ReportIssueActionSheetContentPreview: PreviewProvider {
     static var previews: some View {
-        ReportIssueActionSheetContent()
+        ReportIssueActionSheetContent {}
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color.white)
             .previewDevice("iPhone 11")
