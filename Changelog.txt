@@ -5,5 +5,7 @@
 ### Fixes
 - Crash in filter
 - Second degree friends offer encryption
+- Capitalize first letter in generated names
+- Graph percentages
 
 ### Known Issues
