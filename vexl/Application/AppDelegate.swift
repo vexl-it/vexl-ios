@@ -36,7 +36,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         // Global appearance
         Appearance.setGlobalAppearance()
-        whereIsMySQLite()
         return true
     }
 
