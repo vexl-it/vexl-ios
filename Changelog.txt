@@ -4,5 +4,6 @@
 
 ### Fixes
 - Crash in filter
+- Second degree friends offer encryption
 
 ### Known Issues
