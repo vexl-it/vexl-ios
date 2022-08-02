@@ -76,13 +76,13 @@ struct OfferPayload: Codable {
         let activePriceValue = try offer.activePriceValue.ecc.encrypt(publicKey: encryptionPublicKey)
         let active = try offer.active.ecc.encrypt(publicKey: encryptionPublicKey)
         let commonFriends = try commonFriends.map({ try $0.ecc.encrypt(publicKey: encryptionPublicKey) })
+        let paymentMethods = try offer.paymentMethods.map(\.rawValue).map({ try $0.ecc.encrypt(publicKey: encryptionPublicKey) })
+        let btcNetwork = try offer.btcNetworks.map(\.rawValue).map({ try $0.ecc.encrypt(publicKey: encryptionPublicKey) })
         guard
             let offerPublicKey = try offer.inbox?.keyPair?.publicKey?.ecc.encrypt(publicKey: encryptionPublicKey),
             let description = try offer.offerDescription?.ecc.encrypt(publicKey: encryptionPublicKey),
             let feeState = try offer.feeStateRawType?.ecc.encrypt(publicKey: encryptionPublicKey),
             let locationState = try offer.locationStateRawType?.ecc.encrypt(publicKey: encryptionPublicKey),
-            let paymentMethods: [String] = try offer.paymentMethodRawTypes?.map({ try $0.ecc.encrypt(publicKey: encryptionPublicKey) }),
-            let btcNetwork: [String] = try offer.btcNetworkRawTypes?.map({ try $0.ecc.encrypt(publicKey: encryptionPublicKey) }),
             let friendLevel = try offer.friendDegreeRawType?.ecc.encrypt(publicKey: encryptionPublicKey),
             let offerType = try offer.offerTypeRawType?.ecc.encrypt(publicKey: encryptionPublicKey),
             let activePriceState = try offer.activePriceStateRawType?.ecc.encrypt(publicKey: encryptionPublicKey),
