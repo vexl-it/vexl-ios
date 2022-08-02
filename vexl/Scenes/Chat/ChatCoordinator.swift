@@ -63,6 +63,22 @@ final class ChatCoordinator: BaseCoordinator<RouterResult<Void>> {
             .sink()
             .store(in: cancelBag)
 
+        viewModel
+            .route
+            .compactMap { action -> [ManagedContact]? in
+                if case let .showCommonFriendsModal(contacts) = action { return contacts }
+                return nil
+            }
+            .withUnretained(self)
+            .flatMap { owner, contacts -> CoordinatingResult<RouterResult<BottomActionSheetActionType>> in
+                let router = ModalRouter(parentViewController: viewController,
+                                         presentationStyle: .overFullScreen,
+                                         transitionStyle: .crossDissolve)
+                return owner.presentActionSheet(router: router, viewModel: ChatCommonFriendsSheetViewModel(contacts: contacts))
+            }
+            .sink()
+            .store(in: cancelBag)
+
         let dismiss = viewModel
             .route
             .filter { $0 == .dismissTapped }

@@ -155,7 +155,7 @@ struct RequestOfferView: View {
             VStack {
                 HStack {
                     ForEach(chunk.element) { contact in
-                        Image(data: contact.avatar, placeholder: "PinFaceId")
+                        Image(data: contact.avatar, placeholder: R.image.marketplace.defaultAvatar.name)
                             .resizable()
                             .aspectRatio(contentMode: .fill)
                             .frame(size: Appearance.GridGuide.iconSize)

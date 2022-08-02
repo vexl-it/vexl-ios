@@ -46,6 +46,12 @@ final class ChatActionViewModel: ObservableObject {
             .share()
 
         sharedAction
+            .filter { $0 == .commonFriends }
+            .map { _ -> ChatViewModel.Route in .showCommonFriendsTapped }
+            .subscribe(route)
+            .store(in: cancelBag)
+
+        sharedAction
             .filter { $0 == .revealIdentity }
             .map { _ -> ChatViewModel.Route in .showRevealIdentityTapped }
             .subscribe(route)
