@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="20086" systemVersion="21E258" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="19574" systemVersion="21G72" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="ManagedChat" representedClassName="ManagedChat" syncable="YES" codeGenerationType="class">
         <attribute name="gotRevealedResponse" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="id" optional="YES" attributeType="String"/>
         <attribute name="isApproved" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="isBlocked" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="isRequesting" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="isRevealed" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="lastMessageDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
@@ -97,7 +98,7 @@
         <relationship name="profile" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ManagedProfile" inverseName="currentUser" inverseEntity="ManagedProfile"/>
     </entity>
     <elements>
-        <element name="ManagedChat" positionX="-333.91796875" positionY="-454.86328125" width="162.57421875" height="178"/>
+        <element name="ManagedChat" positionX="-333.91796875" positionY="-454.86328125" width="162.57421875" height="179"/>
         <element name="ManagedContact" positionX="-1060.67578125" positionY="-241.9453125" width="128" height="134"/>
         <element name="ManagedInbox" positionX="-562.71484375" positionY="-370.265625" width="128" height="118"/>
         <element name="ManagedKeyPair" positionX="-343.26171875" positionY="-227.74609375" width="128" height="133"/>
