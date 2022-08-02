@@ -41,9 +41,13 @@ struct OfferFilter: Equatable {
 
         // TODO: filter location
 
-        // TODO: Add payment predicates
+        if !selectedPaymentMethodOptions.isEmpty {
 
-        // TODO: Add btc option predicates
+        }
+
+        if !selectedBTCOptions.isEmpty {
+
+        }
 
         return NSCompoundPredicate(andPredicateWithSubpredicates: predicateList)
     }
