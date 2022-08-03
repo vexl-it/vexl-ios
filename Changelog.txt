@@ -1,6 +1,7 @@
 - Requires uninstall: ⚠️ YES ⚠️
 
 ### Improvements
+- Marketplace main button now changes if user has offers
 
 ### Fixes
 - Crash in filter
