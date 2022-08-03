@@ -9,5 +9,6 @@
 - Graph percentages
 - Report issue view now appears when email is tapped.
 - Fixed currency symbol position
+- Dismiss chat after adding delete
 
 ### Known Issues
