@@ -109,10 +109,9 @@ extension UserProfileViewModel {
             [
                 OptionGroup(id: 1, options: [.editAvatar, .editName]),
                 OptionGroup(id: 2, options: [.contacts, .facebook]),
-                OptionGroup(id: 3, options: [.pinFaceId, .currency, .allowScreenshots]),
+                OptionGroup(id: 3, options: [.currency]),
                 OptionGroup(id: 4, options: [.termsAndPrivacy, .faq, .reportIssue]),
-                OptionGroup(id: 5, options: [.requestData]),
-                OptionGroup(id: 6, options: [.logout])
+                OptionGroup(id: 5, options: [.logout])
             ]
         }
     }
