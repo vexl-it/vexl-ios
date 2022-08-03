@@ -349,6 +349,7 @@
 		F1DE2557288E0C6600A93E2E /* ProfileImportPhonesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1DE2556288E0C6600A93E2E /* ProfileImportPhonesViewModel.swift */; };
 		F1DF4A41289435AC008E5C87 /* ChatBlockActionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1DF4A40289435AC008E5C87 /* ChatBlockActionSheet.swift */; };
 		F1DF4A432898B457008E5C87 /* ChatCommonFriendsActionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1DF4A422898B457008E5C87 /* ChatCommonFriendsActionSheet.swift */; };
+		F1DF4A46289ACB9C008E5C87 /* DeleteAccountActionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1DF4A45289ACB9C008E5C87 /* DeleteAccountActionSheet.swift */; };
 		F1F5F194283E9FC500968366 /* OfferPaymentIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1F5F193283E9FC500968366 /* OfferPaymentIconView.swift */; };
 		F1F5F199283FE52D00968366 /* ChatRequestCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1F5F198283FE52D00968366 /* ChatRequestCoordinator.swift */; };
 		F1F5F19B283FE53300968366 /* ChatRequestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1F5F19A283FE53300968366 /* ChatRequestView.swift */; };
@@ -742,6 +743,7 @@
 		F1DE2556288E0C6600A93E2E /* ProfileImportPhonesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImportPhonesViewModel.swift; sourceTree = "<group>"; };
 		F1DF4A40289435AC008E5C87 /* ChatBlockActionSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatBlockActionSheet.swift; sourceTree = "<group>"; };
 		F1DF4A422898B457008E5C87 /* ChatCommonFriendsActionSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatCommonFriendsActionSheet.swift; sourceTree = "<group>"; };
+		F1DF4A45289ACB9C008E5C87 /* DeleteAccountActionSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAccountActionSheet.swift; sourceTree = "<group>"; };
 		F1E7029A2889C2D100EBB087 /* EditProfileNameView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfileNameView.swift; sourceTree = "<group>"; };
 		F1E7029B2889C2D100EBB087 /* EditProfileNameCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfileNameCoordinator.swift; sourceTree = "<group>"; };
 		F1E7029C2889C2D100EBB087 /* EditProfileNameViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfileNameViewModel.swift; sourceTree = "<group>"; };
@@ -1973,6 +1975,7 @@
 		F1BFA951280223BD00F4E745 /* UserProfile */ = {
 			isa = PBXGroup;
 			children = (
+				F1DF4A44289ACB89008E5C87 /* DeleteAccount */,
 				F1A43DC0288E335A0032A11F /* ReportIssue */,
 				F19B37E3288E0D6400412D78 /* EditName */,
 				F1B365D6288882CD0069788D /* ImportFacebook */,
@@ -2046,6 +2049,14 @@
 				F1D204F62864FADC006A5671 /* SyncInboxManager.swift */,
 			);
 			path = Inbox;
+			sourceTree = "<group>";
+		};
+		F1DF4A44289ACB89008E5C87 /* DeleteAccount */ = {
+			isa = PBXGroup;
+			children = (
+				F1DF4A45289ACB9C008E5C87 /* DeleteAccountActionSheet.swift */,
+			);
+			path = DeleteAccount;
 			sourceTree = "<group>";
 		};
 		F1F5F197283FE51F00968366 /* ChatRequest */ = {
@@ -2458,6 +2469,7 @@
 				4FBF620E283CE3FB00DDBE71 /* OfferFilter.swift in Sources */,
 				F1485649284FD451003213D7 /* ChatDateView.swift in Sources */,
 				F1B93ED7286D15D5008DAA90 /* OfferSource.swift in Sources */,
+				F1DF4A46289ACB9C008E5C87 /* DeleteAccountActionSheet.swift in Sources */,
 				B08F397227AE7112008B344F /* Formatters.swift in Sources */,
 				F11441DF284681EC00307D39 /* Line.swift in Sources */,
 				F11441CF284681EC00307D39 /* ExpandingTextView.swift in Sources */,
