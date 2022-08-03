@@ -207,7 +207,8 @@ final class ChatViewModel: ViewModelType, ObservableObject {
         chatManager
             .delete(chat: chat)
             .track(activity: primaryActivity)
-            .sink()
+            .map { _ -> Route in .dismissTapped }
+            .subscribe(route)
             .store(in: cancelBag)
     }
 
