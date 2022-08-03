@@ -37,7 +37,7 @@ struct OfferSettingsView: View {
                         OfferCurrencyPickerView(selectedOption: $viewModel.currency)
                             .padding(.bottom, Appearance.GridGuide.padding)
 
-                        OfferAmountRangeView(currencySymbol: viewModel.currency.sign,
+                        OfferAmountRangeView(currency: viewModel.currency,
                                              currentValue: $viewModel.currentAmountRange,
                                              sliderBounds: viewModel.amountRange)
                     }
@@ -60,7 +60,8 @@ struct OfferSettingsView: View {
                     OfferPaymentMethodView(selectedOptions: $viewModel.selectedPaymentMethodOptions)
                         .padding(.top, Appearance.GridGuide.largePadding1)
 
-                    OfferTriggersView(showDeleteTrigger: viewModel.showDeleteTrigger,
+                    OfferTriggersView(currencySymbol: viewModel.currency.sign,
+                                      showDeleteTrigger: viewModel.showDeleteTrigger,
                                       selectedActivateOption: $viewModel.selectedPriceTrigger,
                                       selectedActivateAmount: $viewModel.selectedPriceTriggerAmount,
                                       deleteTime: $viewModel.deleteTime,

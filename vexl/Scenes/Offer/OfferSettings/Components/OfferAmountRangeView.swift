@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct OfferAmountRangeView: View {
-    let currencySymbol: String
+    let currency: Currency
     let currentValue: Binding<ClosedRange<Int>>
     let sliderBounds: ClosedRange<Int>
 
@@ -22,7 +22,9 @@ struct OfferAmountRangeView: View {
             }
             .foregroundColor(Appearance.Colors.whiteText)
 
-            RangePickerView(currencySymbol: currencySymbol, currentValue: currentValue, sliderBounds: sliderBounds)
+            RangePickerView(currency: currency,
+                            currentValue: currentValue,
+                            sliderBounds: sliderBounds)
         }
     }
 }
@@ -30,7 +32,7 @@ struct OfferAmountRangeView: View {
 #if DEBUG || DEVEL
 struct OfferAmountRangeViewPreview: PreviewProvider {
     static var previews: some View {
-        OfferAmountRangeView(currencySymbol: "$",
+        OfferAmountRangeView(currency: .usd,
                              currentValue: .constant(3...8),
                              sliderBounds: 1...10)
             .previewDevice("iPhone 11")
