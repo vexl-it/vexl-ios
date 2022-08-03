@@ -349,6 +349,7 @@
 		F1DE2557288E0C6600A93E2E /* ProfileImportPhonesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1DE2556288E0C6600A93E2E /* ProfileImportPhonesViewModel.swift */; };
 		F1DF4A41289435AC008E5C87 /* ChatBlockActionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1DF4A40289435AC008E5C87 /* ChatBlockActionSheet.swift */; };
 		F1DF4A432898B457008E5C87 /* ChatCommonFriendsActionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1DF4A422898B457008E5C87 /* ChatCommonFriendsActionSheet.swift */; };
+		F1DF4A48289B2941008E5C87 /* RefreshContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1DF4A47289B2941008E5C87 /* RefreshContainer.swift */; };
 		F1F5F194283E9FC500968366 /* OfferPaymentIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1F5F193283E9FC500968366 /* OfferPaymentIconView.swift */; };
 		F1F5F199283FE52D00968366 /* ChatRequestCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1F5F198283FE52D00968366 /* ChatRequestCoordinator.swift */; };
 		F1F5F19B283FE53300968366 /* ChatRequestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1F5F19A283FE53300968366 /* ChatRequestView.swift */; };
@@ -742,6 +743,7 @@
 		F1DE2556288E0C6600A93E2E /* ProfileImportPhonesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImportPhonesViewModel.swift; sourceTree = "<group>"; };
 		F1DF4A40289435AC008E5C87 /* ChatBlockActionSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatBlockActionSheet.swift; sourceTree = "<group>"; };
 		F1DF4A422898B457008E5C87 /* ChatCommonFriendsActionSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatCommonFriendsActionSheet.swift; sourceTree = "<group>"; };
+		F1DF4A47289B2941008E5C87 /* RefreshContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RefreshContainer.swift; sourceTree = "<group>"; };
 		F1E7029A2889C2D100EBB087 /* EditProfileNameView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfileNameView.swift; sourceTree = "<group>"; };
 		F1E7029B2889C2D100EBB087 /* EditProfileNameCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfileNameCoordinator.swift; sourceTree = "<group>"; };
 		F1E7029C2889C2D100EBB087 /* EditProfileNameViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfileNameViewModel.swift; sourceTree = "<group>"; };
@@ -1383,6 +1385,7 @@
 				F11441B8284681EC00307D39 /* Pickers */,
 				F11441C2284681EC00307D39 /* Lines */,
 				F11441AF284681EC00307D39 /* TextFields */,
+				F1DF4A47289B2941008E5C87 /* RefreshContainer.swift */,
 				F11441B3284681EC00307D39 /* ImagePickerView.swift */,
 				F11441B4284681EC00307D39 /* ContactAvatarInfo.swift */,
 				F11441B5284681EC00307D39 /* FetchImage.swift */,
@@ -2422,6 +2425,7 @@
 				B08F391727AE7112008B344F /* AuthenticationManager.swift in Sources */,
 				F1886257281193CA00659786 /* OfferLocationPickerView.swift in Sources */,
 				B08F394B27AE7112008B344F /* ServerError.swift in Sources */,
+				F1DF4A48289B2941008E5C87 /* RefreshContainer.swift in Sources */,
 				F14D29C927BFEA1400D1CD85 /* OnboardingView+Presentation.swift in Sources */,
 				F1A9454427F81211009B5AE3 /* ContactsAvailable.swift in Sources */,
 				B0EEE11A27B14D3D0097031E /* WelcomeView.swift in Sources */,

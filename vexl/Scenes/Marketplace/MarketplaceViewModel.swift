@@ -28,6 +28,7 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
 
     @Published var primaryActivity: Activity = .init()
     @Published var selectedOption: OfferType = .buy
+    @Published var isRefreshing = false
     @Published private var buyFeed: [OfferDetailViewData] = []
     @Published private var sellFeed: [OfferDetailViewData] = []
 
@@ -102,6 +103,7 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
         setupDataBindings()
         setupActionBindings()
         setupInbox()
+        setupRefreshBindings()
     }
 
     func applyFilter(_ filter: OfferFilter) {
@@ -201,5 +203,18 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
             .map { offer in Route.showRequestOffer(offer) }
             .subscribe(route)
             .store(in: cancelBag)
+    }
+
+    private func setupRefreshBindings() {
+        $isRefreshing
+            .withUnretained(self)
+            .sink { owner, _ in
+                owner.offerManager.sync()
+            }
+            .store(in: cancelBag)
+
+        offerManager.didFinishSyncing
+            .map { false }
+            .assign(to: &$isRefreshing)
     }
 }
