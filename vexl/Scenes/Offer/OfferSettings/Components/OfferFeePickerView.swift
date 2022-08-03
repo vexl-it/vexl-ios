@@ -50,7 +50,7 @@ struct OfferFeePickerView: View {
 }
 
 extension OfferFeePickerView {
-    enum Option: String {
+    enum Option: String, CaseIterable {
         case withFee = "WITH_FEE"
         case withoutFee = "WITHOUT_FEE"
 

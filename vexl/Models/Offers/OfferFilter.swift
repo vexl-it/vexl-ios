@@ -10,28 +10,40 @@ import Foundation
 struct OfferFilter: Equatable {
     let type: OfferType
     var currentAmountRange: ClosedRange<Int>?
-    var selectedFeeOption: OfferFeeOption = .withoutFee
+    var selectedFeeOptions: [OfferFeeOption] = []
     var feeAmount: Double = 0
     var locations: [OfferLocationItemData] = []
     var selectedPaymentMethodOptions: [OfferPaymentMethodOption] = []
     var selectedBTCOptions: [OfferAdvancedBTCOption] = []
-    var selectedFriendDegreeOption: OfferFriendDegree = .firstDegree
+    var selectedFriendDegreeOptions: [OfferFriendDegree] = []
     var currency: Currency?
 
     var predicate: NSPredicate {
         let userPredicate = NSPredicate(format: "user == nil")
         let offerPredicate = NSPredicate(format: "offerTypeRawType == %@", type.rawValue)
-        let feePredicate = NSPredicate(format: "feeStateRawType == %@", selectedFeeOption.rawValue)
-        let friendPredicate = NSPredicate(format: "friendDegreeRawType == %@", selectedFriendDegreeOption.rawValue)
 
-        var predicateList = [userPredicate, offerPredicate, feePredicate, friendPredicate]
+        var predicateList = [userPredicate, offerPredicate]
 
         if let currency = currency {
             predicateList.append(NSPredicate(format: "currencyRawType == %@", currency.rawValue))
         }
 
-        if selectedFeeOption == .withFee {
-            predicateList.append(NSPredicate(format: "feeAmount == %@", feeAmount))
+        let feePredicates = selectedFeeOptions.map { feeOption in
+            NSPredicate(format: "feeStateRawType == %@", feeOption.rawValue)
+        }
+
+        if !feePredicates.isEmpty {
+            let feePredicate = NSCompoundPredicate(orPredicateWithSubpredicates: feePredicates)
+            predicateList.append(feePredicate)
+        }
+
+        let friendDegreePredicates = selectedFriendDegreeOptions.map { friendDegree in
+            NSPredicate(format: "friendDegreeRawType == %@", friendDegree.rawValue)
+        }
+
+        if !friendDegreePredicates.isEmpty {
+            let friendDegreePredicate = NSCompoundPredicate(orPredicateWithSubpredicates: friendDegreePredicates)
+            predicateList.append(friendDegreePredicate)
         }
 
         if let currentAmountRange = currentAmountRange {
@@ -68,12 +80,13 @@ struct OfferFilter: Equatable {
 
     mutating func reset(with amountRange: ClosedRange<Int>?) {
         currentAmountRange = amountRange
-        selectedFeeOption = .withoutFee
+        selectedFeeOptions = []
         feeAmount = 0
         locations = []
         selectedPaymentMethodOptions = []
         selectedBTCOptions = []
-        selectedFriendDegreeOption = .firstDegree
+        selectedFriendDegreeOptions = []
+        currency = nil
     }
 }
 
