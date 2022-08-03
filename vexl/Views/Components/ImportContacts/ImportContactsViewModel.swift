@@ -35,22 +35,19 @@ class ImportContactsViewModel: ObservableObject {
 
     enum UserAction: Equatable {
         case itemSelected(Bool, ContactInformation)
-        case unselectAll
-        case selectAll
         case importContacts
         case dismiss
+        case searchActionTapped
 
         static func == (lhs: UserAction, rhs: UserAction) -> Bool {
             switch (lhs, rhs) {
             case (.itemSelected, .itemSelected):
                 return true
-            case (.unselectAll, .unselectAll):
-                return true
             case (.importContacts, .importContacts):
                 return true
             case (.dismiss, .dismiss):
                 return true
-            case (.selectAll, .selectAll):
+            case (.searchActionTapped, .searchActionTapped):
                 return true
             default:
                 return false
@@ -110,6 +107,10 @@ class ImportContactsViewModel: ObservableObject {
         }
     }
 
+    var searchActionTitle: String {
+        hasSelectedItem ? L.registerContactsImportDeselect() : L.registerContactsImportSelect()
+    }
+
     let cancelBag: CancelBag = .init()
 
     // MARK: - Init
@@ -148,18 +149,10 @@ class ImportContactsViewModel: ObservableObject {
             .store(in: cancelBag)
 
         action
-            .filter { $0 == .unselectAll }
+            .filter { $0 == .searchActionTapped }
             .withUnretained(self)
             .sink { owner, _ in
-                owner.selectAllItems(areSelected: false)
-            }
-            .store(in: cancelBag)
-
-        action
-            .filter { $0 == .selectAll }
-            .withUnretained(self)
-            .sink { owner, _ in
-                owner.selectAllItems(areSelected: true)
+                owner.selectAllItems(!owner.hasSelectedItem)
             }
             .store(in: cancelBag)
 
@@ -233,11 +226,11 @@ class ImportContactsViewModel: ObservableObject {
         hasSelectedItem = items.contains(where: { $0.isSelected })
     }
 
-    private func selectAllItems(areSelected: Bool) {
+    private func selectAllItems(_ isSelected: Bool) {
         for index in items.indices {
-            items[index].isSelected = areSelected
+            items[index].isSelected = isSelected
         }
-        hasSelectedItem = areSelected
+        hasSelectedItem = isSelected
     }
 
     func fetchContacts() throws {
