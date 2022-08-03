@@ -227,9 +227,11 @@ class ImportContactsViewModel: ObservableObject {
     }
 
     private func selectAllItems(_ isSelected: Bool) {
+        var items = self.items
         for index in items.indices {
             items[index].isSelected = isSelected
         }
+        self.items = items
         hasSelectedItem = isSelected
     }
 
