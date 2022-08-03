@@ -10,5 +10,6 @@
 - Report issue view now appears when email is tapped.
 - Fixed currency symbol position
 - Dismiss chat after adding delete
+- Added modal after tapping delete account
 
 ### Known Issues
