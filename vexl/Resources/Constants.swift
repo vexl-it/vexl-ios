@@ -78,7 +78,7 @@ struct Constants {
         static let maxOffer: Int = 10_000
         static let maxOfferCZK: Int = 250_000
         static let minFee: Double = 1
-        static let maxFee: Double = 25
+        static let maxFee: Double = 10
         static let currency: Currency = .usd
     }
 
