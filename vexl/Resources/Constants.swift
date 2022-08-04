@@ -119,7 +119,7 @@ struct Constants {
     static let weeksToSecondsMultiplier: TimeInterval = 604_800
     static let monthsToSecondsMultiplier: TimeInterval = 2_592_000
 
-    static let defaultDeleteTime = "7" // days will be selected as default too
+    static let defaultOfferDeleteTime = "14" // days will be selected as default too
 
     static let contactsHashingPassword = "VexlVexl"
     static let supportEmail = "support@vexl.it"
