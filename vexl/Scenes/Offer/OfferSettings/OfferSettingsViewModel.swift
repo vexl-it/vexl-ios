@@ -72,7 +72,7 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
     @Published var state: State = .loaded
     @Published var error: Error?
 
-    @Published var currency: Currency = Constants.OfferInitialData.currency
+    @Published var currency: Currency? = Constants.OfferInitialData.currency
 
     // MARK: - Coordinator Bindings
 
@@ -230,6 +230,8 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
                 case .czk:
                     owner.amountRange = Constants.OfferInitialData.minOffer...Constants.OfferInitialData.maxOfferCZK
                     owner.currentAmountRange = Constants.OfferInitialData.minOffer...Constants.OfferInitialData.maxOfferCZK
+                case .none:
+                    break
                 }
             }
             .store(in: cancelBag)

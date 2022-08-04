@@ -75,13 +75,15 @@ struct FilterView: View {
         VStack(spacing: Appearance.GridGuide.point) {
             OfferCurrencyPickerView(selectedOption: $viewModel.currency)
 
-            OfferAmountRangeView(
-                currency: viewModel.currency,
-                currentValue: $viewModel.currentAmountRange,
-                sliderBounds: viewModel.amountRange
-            )
+            if let currency = viewModel.currency {
+                OfferAmountRangeView(
+                    currency: currency,
+                    currentValue: $viewModel.currentAmountRange,
+                    sliderBounds: viewModel.amountRange
+                )
 
-            feeOptions
+                feeOptions
+            }
         }
     }
 

@@ -42,7 +42,7 @@ final class FilterViewModel: ViewModelType, ObservableObject {
     @Published var selectedBTCOptions: [OfferAdvancedBTCOption]
     @Published var selectedFriendDegreeOptions: [OfferFriendDegree]
 
-    @Published var currency: Currency = Constants.OfferInitialData.currency
+    @Published var currency: Currency?
 
     var filterType: String { offerFilter.type.title }
     var formatedFeeAmount: String {
@@ -99,6 +99,8 @@ final class FilterViewModel: ViewModelType, ObservableObject {
                 case .czk:
                     owner.amountRange = minOffer...maxOfferCZK
                     owner.currentAmountRange = minOffer...maxOfferCZK
+                case .none:
+                    break
                 }
             }
             .store(in: cancelBag)
@@ -193,6 +195,6 @@ final class FilterViewModel: ViewModelType, ObservableObject {
         selectedBTCOptions = []
         selectedFriendDegreeOptions = []
         offerFilter.reset(with: currentAmountRange)
-        currency = Constants.OfferInitialData.currency
+        currency = nil
     }
 }
