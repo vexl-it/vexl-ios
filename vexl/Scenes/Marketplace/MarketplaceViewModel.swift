@@ -89,6 +89,15 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
         }
     }
 
+    var userSelectedFilters: Bool {
+        switch selectedOption {
+        case .sell:
+            return !sellOfferFilter.isFilterEmpty
+        case .buy:
+            return !buyOfferFilter.isFilterEmpty
+        }
+    }
+
     let refresh = PassthroughSubject<Void, Never>()
     let bitcoinViewModel: BitcoinViewModel
     private var buyOfferFilter = OfferFilter(type: .buy)
