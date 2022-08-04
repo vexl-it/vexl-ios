@@ -18,8 +18,12 @@ struct MarketplaceView: View {
         StickyBitcoinView(
             bitcoinViewModel: viewModel.bitcoinViewModel,
             content: { marketPlaceContent },
-            stickyHeader: { marketPlaceHeader }
+            stickyHeader: { marketPlaceHeader },
+            expandedBitcoinGraph: { isExpanded in
+                viewModel.action.send(.graphExpanded(isExpanded: isExpanded))
+            }
         )
+        .coordinateSpace(name: RefreshControlView.coordinateSpace)
         .animation(.easeInOut, value: viewModel.selectedOption)
         .background(Color.black.edgesIgnoringSafeArea(.all))
         .navigationBarHidden(true)
@@ -27,22 +31,26 @@ struct MarketplaceView: View {
     }
 
     private var marketPlaceContent: some View {
-        VStack(spacing: Appearance.GridGuide.mediumPadding1) {
-            marketPlaceHeader
+        RefreshContainer(topPadding: Appearance.GridGuide.largePadding1,
+                         hideRefresh: viewModel.isGraphExpanded,
+                         isRefreshing: $viewModel.isRefreshing) {
+            VStack(spacing: Appearance.GridGuide.mediumPadding1) {
+                marketPlaceHeader
 
-            ForEach(viewModel.marketplaceFeedItems) { item in
-                MarketplaceFeedView(data: item,
-                                    displayFooter: false,
-                                    detailAction: { _ in
-                    viewModel.action.send(.offerDetailTapped(offer: item.offer))
-                },
-                                    requestAction: { _ in
-                    viewModel.action.send(.requestOfferTapped(offer: item.offer))
-                })
-                .padding(.horizontal, Appearance.GridGuide.point)
+                ForEach(viewModel.marketplaceFeedItems) { item in
+                    MarketplaceFeedView(data: item,
+                                        displayFooter: false,
+                                        detailAction: { _ in
+                        viewModel.action.send(.offerDetailTapped(offer: item.offer))
+                    },
+                                        requestAction: { _ in
+                        viewModel.action.send(.requestOfferTapped(offer: item.offer))
+                    })
+                    .padding(.horizontal, Appearance.GridGuide.point)
+                }
             }
+            .animation(.easeInOut, value: viewModel.marketplaceFeedItems)
         }
-        .animation(.easeInOut, value: viewModel.marketplaceFeedItems)
     }
 
     private var marketPlaceHeader: some View {
