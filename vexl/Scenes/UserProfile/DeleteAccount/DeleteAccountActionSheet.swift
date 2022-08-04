@@ -38,10 +38,10 @@ struct DeleteAccountActionSheetContent: View {
 
     var body: some View {
         Text(L.userProfileDeleteAccountSubtitle())
+            .fixedSize(horizontal: false, vertical: true)
             .textStyle(.paragraph)
             .foregroundColor(Appearance.Colors.gray3)
             .padding(.vertical, Appearance.GridGuide.padding)
-            .frame(maxWidth: .infinity, alignment: .leading)
     }
 }
 
