@@ -18,7 +18,9 @@ struct MarketplaceView: View {
         StickyBitcoinView(
             bitcoinViewModel: viewModel.bitcoinViewModel,
             content: { marketPlaceContent },
-            stickyHeader: { marketPlaceHeader },
+            stickyHeader: {
+                marketPlaceHeader.padding(.bottom, Appearance.GridGuide.point)
+            },
             expandedBitcoinGraph: { isExpanded in
                 viewModel.action.send(.graphExpanded(isExpanded: isExpanded))
             }

@@ -41,7 +41,8 @@ final class InboxViewModel: ViewModelType, ObservableObject {
 
     @Published var filter: InboxFilterOption = .all
     @Published var primaryActivity: Activity = .init()
-
+    @Published var isRefreshing = false
+    @Published var isGraphExpanded = false
     @Published var hasPendingRequests = false
     @Published var inboxItems: [InboxItem] = []
 
