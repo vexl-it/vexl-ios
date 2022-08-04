@@ -9,7 +9,7 @@ import SwiftUI
 
 struct OfferCurrencyPickerView: View {
 
-    @Binding var selectedOption: Currency
+    @Binding var selectedOption: Currency?
 
     var body: some View {
         VStack(alignment: .leading) {
@@ -24,8 +24,12 @@ struct OfferCurrencyPickerView: View {
             SingleOptionPickerView(selectedOption: $selectedOption,
                                    options: Currency.allCases,
                                    content: { option in
-                Text(option.label)
-                    .frame(maxWidth: .infinity, alignment: .center)
+                if let option = option {
+                    Text(option.label)
+                        .frame(maxWidth: .infinity, alignment: .center)
+                } else {
+                    EmptyView()
+                }
             },
                                    action: nil)
                 .padding(Appearance.GridGuide.tinyPadding)

@@ -50,7 +50,7 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
     @Published var currentAmountRange: ClosedRange<Int> = Constants.OfferInitialData.minOffer...Constants.OfferInitialData.maxOffer
 
     @Published var selectedFeeOption: OfferFeeOption = .withoutFee
-    @Published var feeAmount: Double = 0
+    @Published var feeAmount: Double = 0.1
 
     @Published var locations: [OfferLocationItemData] = []
 
@@ -65,14 +65,14 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
     @Published var selectedPriceTriggerAmount: String = "0"
 
     @Published var deleteTimeUnit: OfferTriggerDeleteTimeUnit = .days
-    @Published var deleteTime: String = Constants.defaultDeleteTime
+    @Published var deleteTime: String = Constants.defaultOfferDeleteTime
 
     @Published var isActive = true
 
     @Published var state: State = .loaded
     @Published var error: Error?
 
-    @Published var currency: Currency = Constants.OfferInitialData.currency
+    @Published var currency: Currency? = Constants.OfferInitialData.currency
 
     // MARK: - Coordinator Bindings
 
@@ -127,7 +127,7 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
     }
 
     var isCreateEnabled: Bool {
-        guard (selectedFeeOption == .withFee && feeAmount > 0) || (selectedFeeOption == .withoutFee) else {
+        guard (selectedFeeOption == .withFee && feeValue > 0) || (selectedFeeOption == .withoutFee) else {
             return false
         }
 
@@ -230,6 +230,8 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
                 case .czk:
                     owner.amountRange = Constants.OfferInitialData.minOffer...Constants.OfferInitialData.maxOfferCZK
                     owner.currentAmountRange = Constants.OfferInitialData.minOffer...Constants.OfferInitialData.maxOfferCZK
+                case .none:
+                    break
                 }
             }
             .store(in: cancelBag)

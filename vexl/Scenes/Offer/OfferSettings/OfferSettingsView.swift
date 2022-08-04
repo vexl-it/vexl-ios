@@ -37,9 +37,11 @@ struct OfferSettingsView: View {
                         OfferCurrencyPickerView(selectedOption: $viewModel.currency)
                             .padding(.bottom, Appearance.GridGuide.padding)
 
-                        OfferAmountRangeView(currency: viewModel.currency,
-                                             currentValue: $viewModel.currentAmountRange,
-                                             sliderBounds: viewModel.amountRange)
+                        if let currency = viewModel.currency {
+                            OfferAmountRangeView(currency: currency,
+                                                 currentValue: $viewModel.currentAmountRange,
+                                                 sliderBounds: viewModel.amountRange)
+                        }
                     }
 
                     OfferFeePickerView(feeLabel: "\(viewModel.feeValue)%",
@@ -60,7 +62,7 @@ struct OfferSettingsView: View {
                     OfferPaymentMethodView(selectedOptions: $viewModel.selectedPaymentMethodOptions)
                         .padding(.top, Appearance.GridGuide.largePadding1)
 
-                    OfferTriggersView(currencySymbol: viewModel.currency.sign,
+                    OfferTriggersView(currencySymbol: viewModel.currency?.sign ?? "",
                                       showDeleteTrigger: viewModel.showDeleteTrigger,
                                       selectedActivateOption: $viewModel.selectedPriceTrigger,
                                       selectedActivateAmount: $viewModel.selectedPriceTriggerAmount,

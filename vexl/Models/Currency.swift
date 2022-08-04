@@ -62,4 +62,13 @@ enum Currency: String, Codable, CaseIterable, Identifiable {
             return L.offerCurrencyCzkTitle()
         }
     }
+
+    func formattedCurrency(amount: Int) -> String {
+        switch position {
+        case .left:
+            return "\(sign) \(amount)"
+        case .right:
+            return "\(amount) \(sign)"
+        }
+    }
 }

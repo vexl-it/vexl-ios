@@ -26,7 +26,7 @@
 		4FBF6240283FBF6000DDBE71 /* RequestOfferCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FBF623F283FBF6000DDBE71 /* RequestOfferCoordinator.swift */; };
 		4FBF6242283FBF6B00DDBE71 /* RequestOfferViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FBF6241283FBF6B00DDBE71 /* RequestOfferViewModel.swift */; };
 		4FBF6244283FBF7200DDBE71 /* RequestOfferView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FBF6243283FBF7200DDBE71 /* RequestOfferView.swift */; };
-		4FBF624C2840D31C00DDBE71 /* ToggleKeyboardBaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FBF624B2840D31B00DDBE71 /* ToggleKeyboardBaseViewController.swift */; };
+		4FBF624C2840D31C00DDBE71 /* ToggleKeyboardHostingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FBF624B2840D31B00DDBE71 /* ToggleKeyboardHostingController.swift */; };
 		4FD8E3E02821B922003B165E /* CoinData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FD8E3DF2821B922003B165E /* CoinData.swift */; };
 		B007A72A2864FE4A00CFA5C9 /* CurrencySelect.swift in Sources */ = {isa = PBXBuildFile; fileRef = B007A7292864FE4A00CFA5C9 /* CurrencySelect.swift */; };
 		B007A72C2864FEBA00CFA5C9 /* BottomActionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = B007A72B2864FEBA00CFA5C9 /* BottomActionSheet.swift */; };
@@ -397,7 +397,7 @@
 		4FBF623F283FBF6000DDBE71 /* RequestOfferCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestOfferCoordinator.swift; sourceTree = "<group>"; };
 		4FBF6241283FBF6B00DDBE71 /* RequestOfferViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestOfferViewModel.swift; sourceTree = "<group>"; };
 		4FBF6243283FBF7200DDBE71 /* RequestOfferView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestOfferView.swift; sourceTree = "<group>"; };
-		4FBF624B2840D31B00DDBE71 /* ToggleKeyboardBaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToggleKeyboardBaseViewController.swift; sourceTree = "<group>"; };
+		4FBF624B2840D31B00DDBE71 /* ToggleKeyboardHostingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToggleKeyboardHostingController.swift; sourceTree = "<group>"; };
 		4FD8E3DF2821B922003B165E /* CoinData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinData.swift; sourceTree = "<group>"; };
 		57B3CAA27CF4369A28B748A7 /* Pods_vexl.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_vexl.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		625779B2774E3C48F23BBA21 /* Pods-vexl.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-vexl.release.xcconfig"; path = "Target Support Files/Pods-vexl/Pods-vexl.release.xcconfig"; sourceTree = "<group>"; };
@@ -1016,7 +1016,7 @@
 				F1B5FCD727C7040C0018729B /* RoundedCorners.swift */,
 				F175AB8827E4F493000DAB15 /* Materialize.swift */,
 				F1886210280EC49B00659786 /* Image+Base64.swift */,
-				4FBF624B2840D31B00DDBE71 /* ToggleKeyboardBaseViewController.swift */,
+				4FBF624B2840D31B00DDBE71 /* ToggleKeyboardHostingController.swift */,
 				F13721EE287F29830013BB7B /* TimeInterval+.swift */,
 			);
 			path = Helpers;
@@ -2653,7 +2653,7 @@
 				F1BFA956280223BD00F4E745 /* UserProfileView.swift in Sources */,
 				F1B5FCBE27C68EA70018729B /* OnboardingView+BottomButtons.swift in Sources */,
 				F1886255281185E900659786 /* OfferFeePickerView.swift in Sources */,
-				4FBF624C2840D31C00DDBE71 /* ToggleKeyboardBaseViewController.swift in Sources */,
+				4FBF624C2840D31C00DDBE71 /* ToggleKeyboardHostingController.swift in Sources */,
 				F11441DC284681EC00307D39 /* ContactAvatarView.swift in Sources */,
 				F1D204F22863A578006A5671 /* ChatInboxMessage.swift in Sources */,
 				F13B26622818A7EC0011F2FB /* OfferDescriptionView.swift in Sources */,
@@ -2812,7 +2812,7 @@
 				CODE_SIGN_ENTITLEMENTS = vexl/vexl.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 127;
+				CURRENT_PROJECT_VERSION = 131;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = C6T557DX87;
 				ENABLE_PREVIEWS = YES;
@@ -2844,7 +2844,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 127;
+				CURRENT_PROJECT_VERSION = 131;
 				DEVELOPMENT_TEAM = SHD6TUKSPH;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
@@ -2928,7 +2928,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = vexl/vexlDebug.entitlements;
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 127;
+				CURRENT_PROJECT_VERSION = 131;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = C6T557DX87;
 				ENABLE_PREVIEWS = YES;
@@ -2960,7 +2960,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 127;
+				CURRENT_PROJECT_VERSION = 131;
 				DEVELOPMENT_TEAM = SHD6TUKSPH;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
@@ -3103,7 +3103,7 @@
 				CODE_SIGN_ENTITLEMENTS = vexl/vexl.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 127;
+				CURRENT_PROJECT_VERSION = 131;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = C6T557DX87;
 				ENABLE_BITCODE = YES;
@@ -3138,7 +3138,7 @@
 				CODE_SIGN_ENTITLEMENTS = vexl/vexl.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 127;
+				CURRENT_PROJECT_VERSION = 131;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = C6T557DX87;
 				ENABLE_PREVIEWS = YES;
@@ -3170,7 +3170,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 127;
+				CURRENT_PROJECT_VERSION = 131;
 				DEVELOPMENT_TEAM = SHD6TUKSPH;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
@@ -3189,7 +3189,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 127;
+				CURRENT_PROJECT_VERSION = 131;
 				DEVELOPMENT_TEAM = SHD6TUKSPH;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
