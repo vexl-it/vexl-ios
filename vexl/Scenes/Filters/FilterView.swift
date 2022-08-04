@@ -89,6 +89,15 @@ struct FilterView: View {
 
     @ViewBuilder
     private var feeOptions: some View {
+        feePicker
+
+        if viewModel.selectedFeeOptions.contains(.withFee) {
+            feeAmountSlider
+        }
+    }
+
+    @ViewBuilder
+    private var feePicker: some View {
         MultipleOptionPickerView(
             selectedOptions: $viewModel.selectedFeeOptions,
             options: OfferFeeOption.allCases,
@@ -98,26 +107,27 @@ struct FilterView: View {
             },
             action: nil
         )
+    }
 
-        if viewModel.selectedFeeOptions.contains(.withFee) {
-            VStack(alignment: .leading) {
-                Text(viewModel.formatedFeeAmount)
-                    .textStyle(.paragraphMedium)
-                    .foregroundColor(Appearance.Colors.whiteText)
-                    .padding(Appearance.GridGuide.padding)
+    @ViewBuilder
+    private var feeAmountSlider: some View {
+        VStack(alignment: .leading) {
+            Text(viewModel.formatedFeeAmount)
+                .textStyle(.paragraphMedium)
+                .foregroundColor(Appearance.Colors.whiteText)
+                .padding(Appearance.GridGuide.padding)
 
-                SliderView(
-                    thumbColor: UIColor(Appearance.Colors.whiteText),
-                    minTrackColor: UIColor(Appearance.Colors.whiteText),
-                    maxTrackColor: UIColor(Appearance.Colors.gray2),
-                    value: $viewModel.feeAmount
-                )
-                .padding(.horizontal, Appearance.GridGuide.point)
-                .padding(.bottom, Appearance.GridGuide.padding)
-            }
-            .background(Appearance.Colors.gray1)
-            .cornerRadius(Appearance.GridGuide.buttonCorner)
+            SliderView(
+                thumbColor: UIColor(Appearance.Colors.whiteText),
+                minTrackColor: UIColor(Appearance.Colors.whiteText),
+                maxTrackColor: UIColor(Appearance.Colors.gray2),
+                value: $viewModel.feeAmount
+            )
+            .padding(.horizontal, Appearance.GridGuide.point)
+            .padding(.bottom, Appearance.GridGuide.padding)
         }
+        .background(Appearance.Colors.gray1)
+        .cornerRadius(Appearance.GridGuide.buttonCorner)
     }
 
     @ViewBuilder
@@ -137,36 +147,41 @@ struct FilterView: View {
                 Image(systemName: "chevron.up")
                     .foregroundColor(Appearance.Colors.gray3)
             }
+            
             OfferAdvancedFilterBTCNetworkView(selectedOptions: $viewModel.selectedBTCOptions)
                 .padding(.top, Appearance.GridGuide.padding)
 
-            VStack(alignment: .leading) {
-                Group {
-                    Text(L.offerCreateAdvancedFriendLevelTitle())
-                        .textStyle(.paragraph)
+            friendLevelPicker
+        }
+    }
 
-                    Text(L.offerCreateAdvancedFriendDescription())
-                        .textStyle(.micro)
-                }
-                .foregroundColor(Appearance.Colors.gray3)
+    private var friendLevelPicker: some View {
+        VStack(alignment: .leading) {
+            Group {
+                Text(L.offerCreateAdvancedFriendLevelTitle())
+                    .textStyle(.paragraph)
 
-                MultipleOptionPickerView(
-                    selectedOptions: $viewModel.selectedFriendDegreeOptions,
-                    options: OfferFriendDegree.allCases,
-                    content: { option in
-                        if let option = option {
-                            Image(option.imageName)
-                                .frame(maxWidth: .infinity)
-                                .overlay(
-                                    Image(systemName: "checkmark.circle.fill")
-                                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-                                        .offset(x: -10, y: -10)
-                                )
-                        }
-                    },
-                    action: nil
-                )
+                Text(L.offerCreateAdvancedFriendDescription())
+                    .textStyle(.micro)
             }
+            .foregroundColor(Appearance.Colors.gray3)
+
+            MultipleOptionPickerView(
+                selectedOptions: $viewModel.selectedFriendDegreeOptions,
+                options: OfferFriendDegree.allCases,
+                content: { option in
+                    if let option = option {
+                        Image(option.imageName)
+                            .frame(maxWidth: .infinity)
+                            .overlay(
+                                Image(systemName: "checkmark.circle.fill")
+                                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+                                    .offset(x: -10, y: -10)
+                            )
+                    }
+                },
+                action: nil
+            )
         }
     }
 }
