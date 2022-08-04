@@ -81,6 +81,16 @@ final class InboxViewModel: ViewModelType, ObservableObject {
             .map(\.objects)
             .map { $0.map(InboxItem.init) }
             .assign(to: &$inboxItems)
+
+        $isRefreshing
+            .filter { $0 }
+            .withUnretained(self)
+            .handleEvents(receiveOutput: { owner, _ in
+                owner.inboxManager.syncInboxes()
+            })
+            .delay(for: .seconds(2), scheduler: RunLoop.main)
+            .map { _ in false }
+            .assign(to: &$isRefreshing)
     }
 
     private func setupActionBindings() {

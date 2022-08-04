@@ -33,7 +33,7 @@ struct MarketplaceView: View {
     }
 
     private var marketPlaceContent: some View {
-        RefreshContainer(topPadding: Appearance.GridGuide.largePadding1,
+        RefreshContainer(topPadding: Appearance.GridGuide.refreshContainerPadding,
                          hideRefresh: viewModel.isGraphExpanded,
                          isRefreshing: $viewModel.isRefreshing) {
             VStack(spacing: Appearance.GridGuide.mediumPadding1) {

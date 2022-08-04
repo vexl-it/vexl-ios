@@ -31,7 +31,7 @@ struct InboxView: View {
     }
 
     private var inboxContent: some View {
-        RefreshContainer(topPadding: 40,
+        RefreshContainer(topPadding: Appearance.GridGuide.refreshContainerPadding,
                          hideRefresh: viewModel.isGraphExpanded,
                          isRefreshing: $viewModel.isRefreshing) {
             VStack(alignment: .leading) {
