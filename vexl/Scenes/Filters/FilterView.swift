@@ -147,7 +147,7 @@ struct FilterView: View {
                 Image(systemName: "chevron.up")
                     .foregroundColor(Appearance.Colors.gray3)
             }
-            
+
             OfferAdvancedFilterBTCNetworkView(selectedOptions: $viewModel.selectedBTCOptions)
                 .padding(.top, Appearance.GridGuide.padding)
 

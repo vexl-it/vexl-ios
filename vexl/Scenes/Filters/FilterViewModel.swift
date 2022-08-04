@@ -46,6 +46,7 @@ final class FilterViewModel: ViewModelType, ObservableObject {
 
     var filterType: String { offerFilter.type.title }
     var formatedFeeAmount: String {
+        // TODO: use NumberFormatter for percentages
         "< \(Int(((maxFee - minFee) * feeAmount) + minFee))%"
     }
 
