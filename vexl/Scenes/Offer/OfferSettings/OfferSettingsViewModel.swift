@@ -65,7 +65,7 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
     @Published var selectedPriceTriggerAmount: String = "0"
 
     @Published var deleteTimeUnit: OfferTriggerDeleteTimeUnit = .days
-    @Published var deleteTime: String = Constants.defaultDeleteTime
+    @Published var deleteTime: String = Constants.defaultOfferDeleteTime
 
     @Published var isActive = true
 

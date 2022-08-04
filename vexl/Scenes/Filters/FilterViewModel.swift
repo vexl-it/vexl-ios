@@ -81,6 +81,10 @@ final class FilterViewModel: ViewModelType, ObservableObject {
         setupBindings()
     }
 
+    func isFriendDegreeSelected(for option: OfferFriendDegree) -> Bool {
+        selectedFriendDegreeOptions.contains(option)
+    }
+
     private func setupCurrencyBindings(currency: Currency?) {
         if let currency = currency {
             self.currency = currency

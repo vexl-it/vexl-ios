@@ -177,6 +177,7 @@ struct FilterView: View {
                                 Image(systemName: "checkmark.circle.fill")
                                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
                                     .offset(x: -10, y: -10)
+                                    .opacity(viewModel.isFriendDegreeSelected(for: option) ? 1 : 0)
                             )
                     }
                 },

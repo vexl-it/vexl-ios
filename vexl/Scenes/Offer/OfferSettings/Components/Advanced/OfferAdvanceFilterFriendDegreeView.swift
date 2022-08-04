@@ -33,6 +33,7 @@ struct OfferAdvanceFilterFriendDegreeView: View {
                             Image(systemName: "checkmark.circle.fill")
                                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
                                 .offset(x: -10, y: -10)
+                                .opacity(selectedOption == option ? 1 : 0)
                         )
                 }
             }, action: nil)
