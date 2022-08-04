@@ -50,7 +50,7 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
     @Published var currentAmountRange: ClosedRange<Int> = Constants.OfferInitialData.minOffer...Constants.OfferInitialData.maxOffer
 
     @Published var selectedFeeOption: OfferFeeOption = .withoutFee
-    @Published var feeAmount: Double = 0
+    @Published var feeAmount: Double = 1
 
     @Published var locations: [OfferLocationItemData] = []
 

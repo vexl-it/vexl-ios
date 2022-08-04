@@ -81,15 +81,40 @@ struct FilterView: View {
                 sliderBounds: viewModel.amountRange
             )
 
-            MultipleOptionPickerView(
-                selectedOptions: $viewModel.selectedFeeOptions,
-                options: OfferFeeOption.allCases,
-                content: { option in
-                    Text(option.title)
-                        .frame(maxWidth: .infinity)
-                },
-                action: nil
-            )
+            feeOptions
+        }
+    }
+
+    @ViewBuilder
+    private var feeOptions: some View {
+        MultipleOptionPickerView(
+            selectedOptions: $viewModel.selectedFeeOptions,
+            options: OfferFeeOption.allCases,
+            content: { option in
+                Text(option.title)
+                    .frame(maxWidth: .infinity)
+            },
+            action: nil
+        )
+
+        if viewModel.selectedFeeOptions.contains(.withFee) {
+            VStack(alignment: .leading) {
+                Text(viewModel.formatedFeeAmount)
+                    .textStyle(.paragraphMedium)
+                    .foregroundColor(Appearance.Colors.whiteText)
+                    .padding(Appearance.GridGuide.padding)
+
+                SliderView(
+                    thumbColor: UIColor(Appearance.Colors.whiteText),
+                    minTrackColor: UIColor(Appearance.Colors.whiteText),
+                    maxTrackColor: UIColor(Appearance.Colors.gray2),
+                    value: $viewModel.feeAmount
+                )
+                .padding(.horizontal, Appearance.GridGuide.point)
+                .padding(.bottom, Appearance.GridGuide.padding)
+            }
+            .background(Appearance.Colors.gray1)
+            .cornerRadius(Appearance.GridGuide.buttonCorner)
         }
     }
 

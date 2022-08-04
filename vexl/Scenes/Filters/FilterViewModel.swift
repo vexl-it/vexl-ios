@@ -45,8 +45,8 @@ final class FilterViewModel: ViewModelType, ObservableObject {
     @Published var currency: Currency = Constants.OfferInitialData.currency
 
     var filterType: String { offerFilter.type.title }
-    var feeValue: Int {
-        Int(((maxFee - minFee) * feeAmount) + minFee)
+    var formatedFeeAmount: String {
+        "< \(Int(((maxFee - minFee) * feeAmount) + minFee))%"
     }
 
     // MARK: - Coordinator Bindings
@@ -187,11 +187,12 @@ final class FilterViewModel: ViewModelType, ObservableObject {
     private func resetFilter() {
         currentAmountRange = amountRange
         selectedFeeOptions = []
-        feeAmount = 0
+        feeAmount = 1
         locations = []
         selectedPaymentMethodOptions = []
         selectedBTCOptions = []
         selectedFriendDegreeOptions = []
         offerFilter.reset(with: currentAmountRange)
+        currency = Constants.OfferInitialData.currency
     }
 }
