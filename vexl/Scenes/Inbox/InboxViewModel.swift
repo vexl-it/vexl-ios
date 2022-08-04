@@ -85,10 +85,15 @@ final class InboxViewModel: ViewModelType, ObservableObject {
         $isRefreshing
             .filter { $0 }
             .withUnretained(self)
-            .handleEvents(receiveOutput: { owner, _ in
-                owner.inboxManager.syncInboxes()
-            })
-            .delay(for: .seconds(2), scheduler: RunLoop.main)
+            .sink { owner, _ in
+                owner.inboxManager.userRequestedSync()
+            }
+            .store(in: cancelBag)
+
+        inboxManager
+            .didFinishSyncing
+            .withUnretained(self)
+            .filter { $0.0.isRefreshing }
             .map { _ in false }
             .assign(to: &$isRefreshing)
     }
