@@ -26,13 +26,15 @@ struct OfferAdvanceFilterFriendDegreeView: View {
             SingleOptionPickerView(selectedOption: $selectedOption,
                                    options: options,
                                    content: { option in
-                Image(option.imageName)
-                    .frame(maxWidth: .infinity)
-                    .overlay(
-                        Image(systemName: "checkmark.circle.fill")
-                            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-                            .offset(x: -10, y: -10)
-                    )
+                if let option = option {
+                    Image(option.imageName)
+                        .frame(maxWidth: .infinity)
+                        .overlay(
+                            Image(systemName: "checkmark.circle.fill")
+                                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+                                .offset(x: -10, y: -10)
+                        )
+                }
             }, action: nil)
         }
     }
