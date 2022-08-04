@@ -11,6 +11,7 @@ struct StickyBitcoinView<Content: View, Header: View>: View {
     let bitcoinViewModel: BitcoinViewModel
     let content: () -> Content
     let stickyHeader: () -> Header
+    let expandedBitcoinGraph: (Bool) -> Void
 
     @State private var bitcoinSize: CGSize = .zero
     @State private var stickHeaderIsVisible = false
@@ -36,6 +37,7 @@ struct StickyBitcoinView<Content: View, Header: View>: View {
             BitcoinView(viewModel: bitcoinViewModel)
                 .readSize(onChange: { size in
                     bitcoinSize = size
+                    expandedBitcoinGraph(size.height > 100)
                 })
 
             content()
@@ -73,7 +75,8 @@ struct StickyBitcoinViewViewPreview: PreviewProvider {
                         .padding()
                 }
             },
-            stickyHeader: { EmptyView() }
+            stickyHeader: { EmptyView() },
+            expandedBitcoinGraph: { _ in }
         )
         .background(Color.black.ignoresSafeArea())
         .previewDevice("iPhone 11")
