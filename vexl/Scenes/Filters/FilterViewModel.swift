@@ -29,7 +29,7 @@ final class FilterViewModel: ViewModelType, ObservableObject {
 
     // MARK: - View Bindings
 
-    @Published var currentAmountRange: ClosedRange<Int> = Constants.OfferInitialData.minOffer...Constants.OfferInitialData.maxOffer
+    @Published var currentAmountRange: ClosedRange<Int>
     @Published var amountRange: ClosedRange<Int> = Constants.OfferInitialData.minOffer...Constants.OfferInitialData.maxOffer
 
     @Published var selectedFeeOptions: [OfferFeeOption] = []
@@ -69,7 +69,7 @@ final class FilterViewModel: ViewModelType, ObservableObject {
 
     init(offerFilter: OfferFilter) {
         self.offerFilter = offerFilter
-        currentAmountRange = offerFilter.currentAmountRange ?? 0...0
+        currentAmountRange = offerFilter.currentAmountRange ?? Constants.OfferInitialData.minOffer...Constants.OfferInitialData.maxOffer
         selectedFeeOptions = offerFilter.selectedFeeOptions
         feeAmount = offerFilter.feeAmount
         locations = offerFilter.locations
@@ -77,7 +77,6 @@ final class FilterViewModel: ViewModelType, ObservableObject {
         selectedBTCOptions = offerFilter.selectedBTCOptions
         selectedFriendDegreeOptions = offerFilter.selectedFriendDegreeOptions
         setupCurrencyBindings(currency: offerFilter.currency)
-        setupDataBindings()
         setupBindings()
     }
 
@@ -109,9 +108,6 @@ final class FilterViewModel: ViewModelType, ObservableObject {
                 }
             }
             .store(in: cancelBag)
-    }
-
-    private func setupDataBindings() {
     }
 
     private func setupBindings() {

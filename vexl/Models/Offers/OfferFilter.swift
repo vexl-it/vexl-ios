@@ -78,6 +78,15 @@ struct OfferFilter: Equatable {
         return NSCompoundPredicate(andPredicateWithSubpredicates: predicateList)
     }
 
+    var isFilterEmpty: Bool {
+        currency == nil &&
+        selectedFeeOptions.isEmpty &&
+        locations.isEmpty &&
+        selectedPaymentMethodOptions.isEmpty &&
+        selectedBTCOptions.isEmpty &&
+        selectedFriendDegreeOptions.isEmpty
+    }
+
     mutating func reset(with amountRange: ClosedRange<Int>?) {
         currentAmountRange = amountRange
         selectedFeeOptions = []

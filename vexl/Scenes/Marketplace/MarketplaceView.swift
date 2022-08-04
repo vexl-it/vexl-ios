@@ -62,22 +62,29 @@ struct MarketplaceView: View {
         }
     }
 
+    @ViewBuilder
     private var filter: some View {
         switch viewModel.selectedOption {
         case .buy:
-            return MarketplaceFilterView(
+            MarketplaceFilterView(
                 items: viewModel.buyFilters,
+                hasFilters: viewModel.userSelectedFilters,
                 hasOffers: !viewModel.fetchedBuyOffers.isEmpty,
                 mainAction: {
                     viewModel.action.send(.showBuyOffer)
-                })
+                }
+            )
+            .animation(.easeInOut, value: viewModel.userSelectedFilters)
         case .sell:
-            return MarketplaceFilterView(
+            MarketplaceFilterView(
                 items: viewModel.sellFilters,
+                hasFilters: viewModel.userSelectedFilters,
                 hasOffers: !viewModel.fetchedSellOffers.isEmpty,
                 mainAction: {
                     viewModel.action.send(.showSellOffer)
-                })
+                }
+            )
+            .animation(.easeInOut, value: viewModel.userSelectedFilters)
         }
     }
 }
