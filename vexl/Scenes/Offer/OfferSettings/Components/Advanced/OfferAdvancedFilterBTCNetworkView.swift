@@ -16,14 +16,10 @@ struct OfferAdvancedFilterBTCNetworkView: View {
 
     var body: some View {
         VStack(alignment: .leading) {
-            HStack {
-                Text(L.offerCreateAdvancedType())
-                    .textStyle(.paragraph)
-
-                Image(systemName: "info.circle.fill")
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .foregroundColor(Appearance.Colors.gray3)
+            Text(L.offerCreateAdvancedType())
+                .textStyle(.paragraph)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .foregroundColor(Appearance.Colors.gray3)
 
             MultipleOptionPickerView(selectedOptions: $selectedOptions,
                                      options: options,

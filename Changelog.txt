@@ -1,6 +1,7 @@
 - Requires uninstall: ⚠️ YES ⚠️
 
 ### Improvements
+- Marketplace main button now changes if user has offers
 
 ### Fixes
 - Crash in filter
@@ -10,5 +11,11 @@
 - Report issue view now appears when email is tapped.
 - Fixed currency symbol position
 - Dismiss chat after adding delete
+- Added modal after tapping delete account
+- Remove default filter for second degree friends
+- Remove default filter for fee offers
+- Remove default filter currencies
+- Fix enabling of offer creation when offer has fee with 1%
+- Multiple small UI bugs in vex-481
 
 ### Known Issues

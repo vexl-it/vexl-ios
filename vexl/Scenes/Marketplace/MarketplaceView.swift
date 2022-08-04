@@ -67,14 +67,14 @@ struct MarketplaceView: View {
         case .buy:
             return MarketplaceFilterView(
                 items: viewModel.buyFilters,
-                actionTitle: L.marketplaceSellOffer(),
+                hasOffers: !viewModel.fetchedBuyOffers.isEmpty,
                 mainAction: {
                     viewModel.action.send(.showBuyOffer)
                 })
         case .sell:
             return MarketplaceFilterView(
                 items: viewModel.sellFilters,
-                actionTitle: L.marketplaceSellOffer(),
+                hasOffers: !viewModel.fetchedSellOffers.isEmpty,
                 mainAction: {
                     viewModel.action.send(.showSellOffer)
                 })

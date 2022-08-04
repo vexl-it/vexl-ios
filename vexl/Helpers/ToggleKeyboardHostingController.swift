@@ -1,5 +1,5 @@
 //
-//  ToggleKeyboardBaseViewController.swift
+//  ToggleKeyboardHostingController.swift
 //  vexl
 //
 //  Created by Daniel Fernandez Yopla on 27.05.2022.
@@ -8,8 +8,9 @@
 import SwiftUI
 import Cleevio
 
-class ToggleKeyboardBaseViewController<RootView: View>: BaseViewController<RootView> {
-    override func viewDidLoad() {
+open class ToggleKeyboardHostingController<Content: View>: BaseViewController<Content>, UIGestureRecognizerDelegate {
+
+    public override func viewDidLoad() {
         super.viewDidLoad()
         addDissmisKeyboardRecognizer()
     }
@@ -17,6 +18,7 @@ class ToggleKeyboardBaseViewController<RootView: View>: BaseViewController<RootV
     private func addDissmisKeyboardRecognizer() {
         let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         tap.cancelsTouchesInView = false
+        tap.delegate = self
         view.addGestureRecognizer(tap)
     }
 
@@ -26,5 +28,9 @@ class ToggleKeyboardBaseViewController<RootView: View>: BaseViewController<RootV
     private func dismissKeyboard() {
         view.endEditing(true)
     }
-}
 
+    public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        let isControlTapped = touch.view is UIControl
+        return !isControlTapped
+    }
+}

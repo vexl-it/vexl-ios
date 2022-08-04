@@ -13,23 +13,11 @@ struct RangePickerView: View {
     let sliderBounds: ClosedRange<Int>
 
     var minValue: String {
-        let minValue = "\(currentValue.wrappedValue.lowerBound)"
-        switch currency.position {
-        case .left:
-            return "\(currency.sign)\(minValue)"
-        case .right:
-            return "\(minValue)\(currency.sign)"
-        }
+        currency.formattedCurrency(amount: currentValue.wrappedValue.lowerBound)
     }
 
     var maxValue: String {
-        let maxValue = "\(currentValue.wrappedValue.upperBound)"
-        switch currency.position {
-        case .left:
-            return "\(currency.sign)\(maxValue)"
-        case .right:
-            return "\(maxValue)\(currency.sign)"
-        }
+        currency.formattedCurrency(amount: currentValue.wrappedValue.upperBound)
     }
 
     var body: some View {
