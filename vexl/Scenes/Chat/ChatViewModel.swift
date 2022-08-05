@@ -43,6 +43,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
     @Published var showImagePickerActionSheet = false
     @Published var username: String = L.generalAnonymous()
     @Published var avatar: Data?
+    @Published var allowsInput = true
 
     var errorIndicator: ErrorIndicator { primaryActivity.error }
     var activityIndicator: ActivityIndicator { primaryActivity.indicator }
@@ -86,12 +87,25 @@ final class ChatViewModel: ViewModelType, ObservableObject {
         self.chat = chat
         self.chatActionViewModel = ChatActionViewModel(chat: chat)
         self.chatConversationViewModel = ChatConversationViewModel(chat: chat)
+        self.allowsInput = !chat.isBlocked
 
+        setupActivityBindings()
         setupChildViewModelBindings()
         setupActionBindings()
         setupUpdateUIBindings()
         setupChatInputBindings()
         setupChatImageInputBindings()
+    }
+
+    private func setupActivityBindings() {
+        activityIndicator
+            .loading
+            .assign(to: &$isLoading)
+
+        errorIndicator
+            .errors
+            .asOptional()
+            .assign(to: &$error)
     }
 
     private func setupChildViewModelBindings() {
@@ -182,6 +196,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
             .flatMap { owner, payload in
                 owner.chatManager
                     .send(payload: payload, chat: owner.chat)
+                    .trackError(owner.primaryActivity.error)
                     .materialize()
                     .compactMap(\.value)
             }
@@ -244,6 +259,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
             .withUnretained(self)
             .sink(receiveValue: { owner in
                 owner.chatActionViewModel.isChatBlocked.toggle()
+                owner.allowsInput.toggle()
             })
             .store(in: cancelBag)
     }

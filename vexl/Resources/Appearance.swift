@@ -116,6 +116,7 @@ struct Appearance {
         static let chatRequestAvatarSize = CGSize(width: 80, height: 80)
         static let chatImageBubbleWidth: CGFloat = 200
         static let chatInputImageSize = CGSize(width: 75, height: 75)
+        static let refreshContainerPadding: CGFloat = 40
     }
 
     // MARK: - Global
@@ -152,6 +153,7 @@ struct Appearance {
     // MARK: - Fonts
 
     enum TextStyle {
+        case largeTitle
         case h1
         case h2
         case h3
@@ -176,6 +178,8 @@ struct Appearance {
 
         var font: UIFont {
             switch self {
+            case .largeTitle:
+                return R.font.ppMonumentExtendedBold(size: 64) ?? UIFont.systemFont(ofSize: 64, weight: .bold)
             case .h1:
                 return R.font.ppMonumentExtendedBold(size: 40) ?? UIFont.systemFont(ofSize: 40, weight: .bold)
             case .h2:

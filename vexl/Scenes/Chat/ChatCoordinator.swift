@@ -29,6 +29,14 @@ final class ChatCoordinator: BaseCoordinator<RouterResult<Void>> {
 
         router.present(viewController, animated: animated)
 
+        viewModel
+            .$error
+            .assign(to: &viewController.$error)
+
+        viewModel
+            .$isLoading
+            .assign(to: &viewController.$isLoading)
+
         bindDeleteRoute(viewModel: viewModel, viewController: viewController)
         bindBlockRoute(viewModel: viewModel, viewController: viewController)
         bindRevealIdentity(viewModel: viewModel, viewController: viewController)
