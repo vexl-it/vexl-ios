@@ -18,8 +18,12 @@ extension RegisterNameAvatarView {
         var body: some View {
             RegistrationCardView(title: L.registerNameAvatarInputTitle(),
                                  subtitle: L.registerNameAvatarInputSubtitle(),
+                                 subtitlePositionIsBottom: false,
                                  iconName: R.image.onboarding.eye.name,
-                                 content: nameInput.padding(.top, Appearance.GridGuide.largePadding1))
+                                 content: {
+                nameInput
+                    .padding(.top, Appearance.GridGuide.largePadding1)
+            })
                 .padding(.all, Appearance.GridGuide.point)
         }
 
