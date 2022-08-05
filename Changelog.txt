@@ -21,4 +21,6 @@
 - Fixed common friends EP
 - Fixed common friends for creators of offer in chat
 - VEX-494: bitcoin chart working
+- VEX-435: localization for CZ and SK
+
 ### Known Issues
