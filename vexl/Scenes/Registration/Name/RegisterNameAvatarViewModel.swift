@@ -134,25 +134,8 @@ final class RegisterNameAvatarViewModel: ViewModelType {
     private func setupActionBindings() {
         action
             .filter { $0 == .setUsername }
-            .flatMapLatest(with: self) { owner, _ in
-                owner.userService
-                    .validateUsername(username: owner.username)
-                    .track(activity: owner.primaryActivity)
-                    .materialize()
-                    .compactMap(\.value)
-                    .eraseToAnyPublisher()
-            }
-            .withUnretained(self)
-            .handleEvents(receiveOutput: { owner, response in
-                if !response.isAvailable {
-                    owner.error = UserError.unavailableUsername
-                }
-            })
-            .filter { $0.1.isAvailable }
-            .sink { owner, _ in
-                owner.currentState = .avatarInput
-            }
-            .store(in: cancelBag)
+            .map { _ in State.avatarInput }
+            .assign(to: &$currentState)
 
         action
             .filter { $0 == .deleteAvatar }
