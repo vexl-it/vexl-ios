@@ -116,6 +116,7 @@ struct Appearance {
         static let chatRequestAvatarSize = CGSize(width: 80, height: 80)
         static let chatImageBubbleWidth: CGFloat = 200
         static let chatInputImageSize = CGSize(width: 75, height: 75)
+        static let refreshContainerPadding: CGFloat = 40
     }
 
     // MARK: - Global
