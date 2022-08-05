@@ -1127,7 +1127,6 @@
 				F1BFA951280223BD00F4E745 /* UserProfile */,
 				B08F399127AE7CEC008B344F /* SplashScreen */,
 				B08F399827AE7D4B008B344F /* Onboarding */,
-				B0EEE11427B14D0B0097031E /* Welcome */,
 				F1B5FCCA27C6F7CC0018729B /* Registration */,
 				B0F206F227AEA4C800A44E72 /* WindowCoordinator.swift */,
 			);
@@ -1897,6 +1896,7 @@
 		F1B5FCCA27C6F7CC0018729B /* Registration */ = {
 			isa = PBXGroup;
 			children = (
+				B0EEE11427B14D0B0097031E /* Welcome */,
 				F12A14D927D677010096543E /* Contacts */,
 				F151A29527C86657000D7242 /* Name */,
 				F1B5FCCB27C6F7D40018729B /* Phone */,
