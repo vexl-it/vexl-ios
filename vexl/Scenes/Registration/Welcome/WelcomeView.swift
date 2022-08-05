@@ -39,7 +39,7 @@ struct WelcomeView: View {
 
     private var card: some View {
         VStack(spacing: .zero) {
-            Image(R.image.onboarding.vexlMain.name)
+            Image(R.image.onboarding.welcomeVexl.name)
                 .padding(.bottom, Appearance.GridGuide.largePadding2)
 
             Text(L.welcomeProductName())
