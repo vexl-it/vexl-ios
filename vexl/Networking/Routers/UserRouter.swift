@@ -85,8 +85,7 @@ enum UserRouter: ApiRouter {
                     "code": code,
                     "userPublicKey": key]
         case let .bitcoinChart(currency, option):
-            let range = option.chartEndpointRange
-            return ["from": range.from, "to": range.to, "currency": currency.rawValue]
+            return ["duration": option.duration, "currency": currency.rawValue]
         }
     }
 

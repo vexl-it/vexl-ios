@@ -51,6 +51,22 @@ enum TimelineOption: CaseIterable, Identifiable {
         }
     }
 
+    var duration: String {
+        switch self {
+        case .oneDayAgo:
+            return "DAY"
+        case .oneWeekAgo:
+            return "WEEK"
+        case .oneMonthAgo:
+            return "MONTH"
+        case .threeMonthsAgo:
+            return "THREE_MONTHS"
+        case .sixMonthsAgo:
+            return "SIX_MONTHS"
+        case .oneYearAgo:
+            return "YEAR"
+        }
+    }
     var chartEndpointRange: (from: Int, to: Int) {
         let today = Date()
         let todayFormatted = today.timeIntervalSince1970
