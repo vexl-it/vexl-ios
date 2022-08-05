@@ -9,10 +9,7 @@ import Combine
 import SwiftUI
 import Cleevio
 
-enum WelcomeResult {
-    case streamingValues
-    case finished
-}
+private typealias ActionSheetResult = CoordinatingResult<RouterResult<BottomActionSheetActionType>>
 
 final class WelcomeCoordinator: BaseCoordinator<RouterResult<Void>> {
 
@@ -39,6 +36,11 @@ final class WelcomeCoordinator: BaseCoordinator<RouterResult<Void>> {
             .receive(on: RunLoop.main)
             .filter { $0 == .continueTapped }
             .withUnretained(self)
+            .flatMap { owner, _ -> ActionSheetResult in
+                let router = ModalRouter(parentViewController: viewController, presentationStyle: .overFullScreen, transitionStyle: .crossDissolve)
+                return owner.presentActionSheet(router: router, viewModel: CurrencySelectViewModel(isOnboarding: true))
+            }
+            .withUnretained(self)
             .flatMap { owner, _ -> CoordinatingResult<RouterResult<Void>> in
                 owner.showRegisterPhone(router: owner.router)
             }
@@ -53,6 +55,19 @@ final class WelcomeCoordinator: BaseCoordinator<RouterResult<Void>> {
 }
 
 private extension WelcomeCoordinator {
+    private func presentActionSheet<ViewModel: BottomActionSheetViewModelProtocol>(router: Router,
+                                                                                   viewModel: ViewModel) -> ActionSheetResult {
+        coordinate(to: BottomActionSheetCoordinator(router: router, viewModel: viewModel))
+        .flatMap { result -> CoordinatingResult<RouterResult<BottomActionSheetActionType>> in
+            guard result != .dismissedByRouter else {
+                return Just(result).eraseToAnyPublisher()
+            }
+            return router.dismiss(animated: true, returning: result)
+        }
+        .prefix(1)
+        .eraseToAnyPublisher()
+    }
+
     func showRegisterPhone(router: Router) -> CoordinatingResult<RouterResult<Void>> {
         coordinate(to: RegisterPhoneCoordinator(router: router, animated: true))
             .flatMap { result -> CoordinatingResult<RouterResult<Void>> in
