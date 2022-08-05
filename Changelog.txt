@@ -2,6 +2,7 @@
 
 ### Improvements
 - Marketplace main button now changes if user has offers
+- Added FAQ views
 
 ### Fixes
 - Crash in filter
