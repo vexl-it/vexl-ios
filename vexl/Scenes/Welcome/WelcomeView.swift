@@ -14,46 +14,51 @@ struct WelcomeView: View {
     @ObservedObject var viewModel: WelcomeViewModel
 
     var body: some View {
-        ZStack(alignment: .top) {
-            Color.black
-                .edgesIgnoringSafeArea(.vertical)
+        VStack(spacing: .zero) {
+            card
+                .padding(.horizontal, Appearance.GridGuide.point)
 
-            LogoImageView()
-                .padding(.top, Appearance.GridGuide.largePadding1)
+            WelcomeAgreementSwitch(text: L.welcomeTermsAgreements(),
+                                   links: [L.welcomeTermsAgreementsLink(): L.welcomeTermsAgreementsUrl()],
+                                   isOn: $viewModel.hasAgreedTermsAndConditions)
+                .padding(.vertical, Appearance.GridGuide.smallPadding)
+                .padding(.horizontal, Appearance.GridGuide.point)
 
-            VStack {
-                title
-                    .padding(.horizontal, Appearance.GridGuide.mediumPadding2)
-
-                AgreementSwitch(text: L.welcomeTermsAgreements(),
-                                links: [L.welcomeTermsAgreementsLink(): L.welcomeTermsAgreementsUrl()],
-                                isOn: $viewModel.hasAgreedTermsAndConditions)
-                    .padding(.horizontal, Appearance.GridGuide.largePadding1)
-                    .padding(.bottom, Appearance.GridGuide.largePadding1)
-                    .padding(.top, Appearance.GridGuide.largePadding1)
-
-                LargeSolidButton(title: L.continue(),
-                                 font: Appearance.TextStyle.titleSmallBold.font.asFont,
-                                 style: .custom(color: .welcome),
-                                 isFullWidth: true,
-                                 isEnabled: $viewModel.hasAgreedTermsAndConditions,
-                                 action: {
-                    viewModel.send(action: .continueTap)
-                })
-                    .padding(.horizontal, Appearance.GridGuide.padding)
-            }.frame(maxHeight: .infinity, alignment: .bottom)
+            LargeSolidButton(title: L.continue(),
+                             font: Appearance.TextStyle.titleSmallBold.font.asFont,
+                             style: .main,
+                             isFullWidth: true,
+                             isEnabled: $viewModel.hasAgreedTermsAndConditions,
+                             action: {
+                viewModel.send(action: .continueTap)
+            })
+                .padding(.horizontal, Appearance.GridGuide.point)
         }
+        .background(Color.black.edgesIgnoringSafeArea(.all))
     }
 
-    private var title: some View {
-        Text(L.welcomeTitle())
-            .textStyle(.h3)
-            .multilineTextAlignment(.center)
-            .foregroundColor(.white)
-            .lineLimit(2)
-            .minimumScaleFactor(0.5)
+    private var card: some View {
+        VStack(spacing: .zero) {
+            Image(R.image.onboarding.vexlMain.name)
+                .padding(.bottom, Appearance.GridGuide.largePadding2)
+
+            Text(L.welcomeProductName())
+                .foregroundColor(Appearance.Colors.primaryText)
+                .textStyle(.largeTitle)
+                .padding(.bottom, Appearance.GridGuide.mediumPadding1)
+
+            Text(L.welcomeTitle())
+                .textStyle(.paragraphMedium)
+                .multilineTextAlignment(.center)
+                .foregroundColor(Appearance.Colors.gray3)
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(Appearance.Colors.whiteText)
+        .cornerRadius(Appearance.GridGuide.buttonCorner)
     }
 }
+
+#if DEVEL || DEBUG
 
 struct WelcomeViewPreview: PreviewProvider {
     static var previews: some View {
@@ -61,3 +66,5 @@ struct WelcomeViewPreview: PreviewProvider {
             .previewDevice("iPhone 11")
     }
 }
+
+#endif
