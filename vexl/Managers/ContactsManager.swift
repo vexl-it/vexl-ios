@@ -14,7 +14,7 @@ import FBSDKLoginKit
 protocol ContactsManagerType {
     var availableFacebookContacts: [ContactInformation] { get }
 
-    func fetchPhoneContacts() -> [ContactInformation]
+    func fetchPhoneContacts() -> AnyPublisher<[ContactInformation], Never>
     func getActivePhoneContacts(_ contacts: [String]) -> AnyPublisher<[ContactInformation], Error>
 
     func fetchFacebookContacts(id: String, accessToken: String) -> AnyPublisher<[ContactInformation], Error>
@@ -26,6 +26,7 @@ final class ContactsManager: ContactsManagerType {
     @Inject var contactsService: ContactsServiceType
     @Inject var cryptoService: CryptoServiceType
     @Inject var encryptionService: EncryptionServiceType
+    @Inject var userRepository: UserRepositoryType
 
     // MARK: - Properties
 
@@ -34,20 +35,36 @@ final class ContactsManager: ContactsManagerType {
     private var userFacebookContacts: [ContactInformation] = []
     private(set) var availableFacebookContacts: [ContactInformation] = []
 
-    func fetchPhoneContacts() -> [ContactInformation] {
-        var contacts = [ContactInformation]()
-        let keys = [CNContactPhoneNumbersKey,
-                    CNContactGivenNameKey,
-                    CNContactFamilyNameKey,
-                    CNContactImageDataKey,
-                    CNContactIdentifierKey] as [CNKeyDescriptor]
+    func fetchPhoneContacts() -> AnyPublisher<[ContactInformation], Never> {
+        userRepository.userPublisher
+            .compactMap { $0?.profile?.phoneNumber?.removeWhitespaces() }
+            .first()
+            .withUnretained(self)
+            .map { owner, userPhone in
+                owner.fetchContactsButFilter(userPhone: userPhone)
+            }
+            .eraseToAnyPublisher()
+    }
+
+    private func fetchContactsButFilter(userPhone: String) -> [ContactInformation] {
+        var contacts: [ContactInformation] = []
+        let keys = [
+            CNContactPhoneNumbersKey,
+            CNContactGivenNameKey,
+            CNContactFamilyNameKey,
+            CNContactImageDataKey,
+            CNContactIdentifierKey
+        ] as [CNKeyDescriptor]
         let request = CNContactFetchRequest(keysToFetch: keys)
 
         let contactStore = CNContactStore()
 
         do {
             try contactStore.enumerateContacts(with: request) { contact, _ in
-                let phone = contact.phoneNumbers.first?.value.stringValue ?? ""
+                guard let phone = contact.phoneNumbers.first?.value.stringValue, !userPhone.contains(phone.removeWhitespaces()) else {
+                    return
+                }
+
                 let avatar = contact.imageData
                 let userContact = ContactInformation(id: contact.identifier,
                                                      name: "\(contact.givenName) \(contact.familyName)",

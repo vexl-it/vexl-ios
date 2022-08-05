@@ -18,7 +18,6 @@ enum UserRouter: ApiRouter {
     case validateCode(id: Int, code: String, key: String)
     case validateChallenge(signature: String, key: String)
     case facebookSignature(id: String)
-    case validateUsername(username: String)
     case bitcoin
     case bitcoinChart(currency: Currency, option: TimelineOption)
 
@@ -26,7 +25,7 @@ enum UserRouter: ApiRouter {
         switch self {
         case .me, .facebookSignature, .bitcoin, .bitcoinChart:
             return .get
-        case .createUser, .confirmPhone, .validateCode, .validateChallenge, .validateUsername:
+        case .createUser, .confirmPhone, .validateCode, .validateChallenge:
             return .post
         case .deleteUser:
             return .delete
@@ -37,7 +36,7 @@ enum UserRouter: ApiRouter {
 
     var additionalHeaders: [Header] {
         switch self {
-        case .createUser, .validateUsername, .facebookSignature, .bitcoin, .deleteUser, .bitcoinChart, .updateUser:
+        case .createUser, .facebookSignature, .bitcoin, .deleteUser, .bitcoinChart, .updateUser:
             return securityHeader
         default:
             return []
@@ -54,8 +53,6 @@ enum UserRouter: ApiRouter {
             return "user/confirmation/phone"
         case .validateCode:
             return "user/confirmation/code"
-        case .validateUsername:
-            return "user/username/availability"
         case .validateChallenge:
             return "user/confirmation/challenge"
         case let .facebookSignature(id):
@@ -83,8 +80,6 @@ enum UserRouter: ApiRouter {
                     "signature": signature]
         case let .confirmPhone(phoneNumber):
             return ["phoneNumber": phoneNumber]
-        case let .validateUsername(username):
-            return ["username": username]
         case let .validateCode(id, code, key):
             return ["id": id,
                     "code": code,

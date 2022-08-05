@@ -243,7 +243,6 @@
 		F175AB9B27F1432E000DAB15 /* ContactsRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F175AB9A27F1432E000DAB15 /* ContactsRouter.swift */; };
 		F175AB9D27F147B5000DAB15 /* ContactsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F175AB9C27F147B5000DAB15 /* ContactsManager.swift */; };
 		F175ABA027F4A7EC000DAB15 /* RegistryError.swift in Sources */ = {isa = PBXBuildFile; fileRef = F175AB9F27F4A7EC000DAB15 /* RegistryError.swift */; };
-		F175ABA227F4A8F8000DAB15 /* UserAvailable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F175ABA127F4A8F8000DAB15 /* UserAvailable.swift */; };
 		F175ABAA27F4FC3F000DAB15 /* ImportPhoneContactsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F175ABA927F4FC3E000DAB15 /* ImportPhoneContactsViewModel.swift */; };
 		F175ABAC27F4FF30000DAB15 /* ImportFacebookContactsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F175ABAB27F4FF30000DAB15 /* ImportFacebookContactsViewModel.swift */; };
 		F17ACAAF289210EE00E05408 /* OfferCurrencyPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F17ACAAE289210EE00E05408 /* OfferCurrencyPickerView.swift */; };
@@ -637,7 +636,6 @@
 		F175AB9A27F1432E000DAB15 /* ContactsRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsRouter.swift; sourceTree = "<group>"; };
 		F175AB9C27F147B5000DAB15 /* ContactsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsManager.swift; sourceTree = "<group>"; };
 		F175AB9F27F4A7EC000DAB15 /* RegistryError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistryError.swift; sourceTree = "<group>"; };
-		F175ABA127F4A8F8000DAB15 /* UserAvailable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAvailable.swift; sourceTree = "<group>"; };
 		F175ABA927F4FC3E000DAB15 /* ImportPhoneContactsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportPhoneContactsViewModel.swift; sourceTree = "<group>"; };
 		F175ABAB27F4FF30000DAB15 /* ImportFacebookContactsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportFacebookContactsViewModel.swift; sourceTree = "<group>"; };
 		F17ACAAE289210EE00E05408 /* OfferCurrencyPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferCurrencyPickerView.swift; sourceTree = "<group>"; };
@@ -1713,7 +1711,6 @@
 			isa = PBXGroup;
 			children = (
 				F1A9452B27F67FC6009B5AE3 /* Confirmation */,
-				F175ABA127F4A8F8000DAB15 /* UserAvailable.swift */,
 			);
 			path = Users;
 			sourceTree = "<group>";
@@ -2624,7 +2621,6 @@
 				F1B30113287CA5BB00C86F83 /* OfferSettingsViewModel.swift in Sources */,
 				F13B2671281D4AB00011F2FB /* ContactKey.swift in Sources */,
 				F1D20128282AB6EF006DF4AB /* CryptocurrencyValueManager.swift in Sources */,
-				F175ABA227F4A8F8000DAB15 /* UserAvailable.swift in Sources */,
 				B0E9BB322815D2B60012BF1D /* CryptographicError.swift in Sources */,
 				4FBF6240283FBF6000DDBE71 /* RequestOfferCoordinator.swift in Sources */,
 				4F481E78284768840051D3B9 /* ChatService.swift in Sources */,
@@ -2844,7 +2840,7 @@
 				CODE_SIGN_ENTITLEMENTS = vexl/vexl.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 133;
+				CURRENT_PROJECT_VERSION = 138;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = C6T557DX87;
 				ENABLE_PREVIEWS = YES;
@@ -2876,7 +2872,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 133;
+				CURRENT_PROJECT_VERSION = 138;
 				DEVELOPMENT_TEAM = SHD6TUKSPH;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
@@ -2960,7 +2956,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = vexl/vexlDebug.entitlements;
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 133;
+				CURRENT_PROJECT_VERSION = 138;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = C6T557DX87;
 				ENABLE_PREVIEWS = YES;
@@ -2992,7 +2988,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 133;
+				CURRENT_PROJECT_VERSION = 138;
 				DEVELOPMENT_TEAM = SHD6TUKSPH;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
@@ -3135,7 +3131,7 @@
 				CODE_SIGN_ENTITLEMENTS = vexl/vexl.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 133;
+				CURRENT_PROJECT_VERSION = 138;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = C6T557DX87;
 				ENABLE_BITCODE = YES;
@@ -3170,7 +3166,7 @@
 				CODE_SIGN_ENTITLEMENTS = vexl/vexl.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 133;
+				CURRENT_PROJECT_VERSION = 138;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = C6T557DX87;
 				ENABLE_PREVIEWS = YES;
@@ -3202,7 +3198,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 133;
+				CURRENT_PROJECT_VERSION = 138;
 				DEVELOPMENT_TEAM = SHD6TUKSPH;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
@@ -3221,7 +3217,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 133;
+				CURRENT_PROJECT_VERSION = 138;
 				DEVELOPMENT_TEAM = SHD6TUKSPH;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
