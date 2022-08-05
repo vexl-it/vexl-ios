@@ -56,10 +56,10 @@ final class ChatCommonFriendsSheetViewModel: BottomActionSheetViewModelProtocol 
         contactService
             .getCommonFriends(publicKeys: [receiverPK])
             .map { $0[receiverPK] ?? [] }
-            .flatMap({ [contactRepository] hashes in
+            .flatMap { [contactRepository] hashes in
                 contactRepository
                     .getCommonFriends(hashes: hashes)
-            })
+            }
             .map { contacts -> [ChatCommonFriendViewData] in
                 contacts.compactMap { contact in
                     guard let name = contact.name else {
@@ -74,6 +74,7 @@ final class ChatCommonFriendsSheetViewModel: BottomActionSheetViewModelProtocol 
             }
             .map { ContentState.content($0) }
             .catch { error in Just(.error(error)) }
+            .delay(for: .milliseconds(500), scheduler: RunLoop.main)
             .withUnretained(self)
             .sink { owner, state in
                 owner.commonFriendsState = state
@@ -87,22 +88,27 @@ struct ChatCommonFriendsActionSheetContent: View {
     let friendsState: ContentState<[ChatCommonFriendViewData]>
 
     var body: some View {
-        switch friendsState {
-        case let .content(friends):
-            if !friends.isEmpty {
-                ChatCommonFriendsView(friends: friends,
-                                      dismiss: {})
-                    .background(Appearance.Colors.gray6)
-                    .cornerRadius(Appearance.GridGuide.buttonCorner)
-                    .padding(.bottom, Appearance.GridGuide.point)
-            } else {
-                Text("empty")
+        VStack(alignment: .center) {
+            switch friendsState {
+            case let .content(friends):
+                if !friends.isEmpty {
+                    ChatCommonFriendsView(friends: friends,
+                                          dismiss: {})
+                        .background(Appearance.Colors.gray6)
+                        .cornerRadius(Appearance.GridGuide.buttonCorner)
+                        .padding(.bottom, Appearance.GridGuide.point)
+                } else {
+                    Text(L.chatMessageCommonFriendEmpty())
+                }
+            case .loading:
+                ProgressView()
+                    .progressViewStyle(CircularProgressViewStyle())
+            case .error:
+                Text(L.generalInternalServerError())
             }
-        case .loading:
-            LoadingView()
-        case .error:
-            Text("error")
         }
+        .frame(height: UIScreen.main.bounds.height * 0.35)
+        .frame(maxWidth: .infinity, alignment: .center)
     }
 }
 

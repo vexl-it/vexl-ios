@@ -6,6 +6,7 @@
 "general.cancel" = "Cancel";
 "general.ok" = "Ok";
 "general.back" = "Back";
+"general.save" = "Save";
 "general.internal.server.error" = "There was a server error. Please try again.";
 "general.timeout" = "The request timed out. Please try again.";
 "general.search" = "Search";
@@ -23,6 +24,7 @@
 "welcome.terms.agreements.link" = "Terms of Use";
 "welcome.terms.agreements.url" = "https://google.com";
 "welcome.button" = "Continue";
+"welcome.product.name" = "vexl";
 "terms.of.use.title" = "Terms\nof Use";
 "terms.of.use.faq.button" = "Don’t have a time to read all this? Take a look on Frequently Asked Questions.";
 "terms.of.use.terms.bookmark" = "Terms of Use";
@@ -31,6 +33,7 @@
 "terms.of.use.policy.markdown" = "# Replace with real data\n\n[link](https://google.com)\n\n## Team\n\n* **Name Surname** - work position\n* **Name Surname** - work position";
 "register.phone.number.input.title" = "What’s your phone number?";
 "register.phone.number.input.subtitle" = "Your number will be anonymous";
+"register.phone.number.not.valid" = "Phone number is invalid";
 "register.phone.code.input.title" = "We've just sent you a code";
 "register.phone.code.input.subtitle" = "Enter it bellow to verify %@";
 "register.phone.code.input.retry" = "Didn’t receive code? Resend in %@ s";
@@ -48,6 +51,11 @@
 "register.name.avatar.camera" = "Camera";
 "register.name.avatar.photo.album" = "Photo Album";
 "register.name.avatar.image.picker" = "Select the source of your avatar";
+"anonymize.user.title" = "This is your identity";
+"anonymize.user.title2" = "Identity anonymized!";
+"anonymize.user.note" = "Nobody will see your identity until your allow it";
+"anonymize.user.note2" = "This is how other users will see you until you reveal your real identity.";
+"anonymize.user.btn" = "Anonymize";
 "register.contacts.import.button" = "Import contacts";
 "register.contacts.import.deselect" = "Deselect All";
 "register.contacts.import.select" = "Select All";
@@ -172,7 +180,7 @@
 "filter.offers" = "Filter offers";
 "offer.create.fee.none" = "Without fee";
 "offer.create.fee.ok" = "With fee";
-"offer.create.trade.style.online" = "Online OK";
+"offer.create.trade.style.online" = "Online";
 "offer.create.trade.style.personal" = "Only in person";
 "offer.create.trigger.active" = "Active when price is";
 "offer.create.trigger.title" = "Triggers";
@@ -206,6 +214,7 @@
 "offer.create.advanced.type.chain" = "On chain";
 "offer.create.description" = "Description";
 "offer.create.description.placeholder" = "Enter offer description";
+"offer.create.currency" = "Currency";
 "offer.create.advanced.title" = "Advanced";
 "offer.create.advanced.type" = "Type";
 "offer.create.advanced.friend.level.title" = "Friend level";
@@ -234,6 +243,7 @@
 "chat.message.reveal.identity" = "Reveal identity";
 "chat.message.offer" = "My offer";
 "chat.message.common.friend" = "Common friends";
+"chat.message.common.friend.empty" = "You don't share any common friends";
 "chat.message.delete.chat" = "Delete chat";
 "chat.message.block.user" = "Block user";
 "chat.message.input.placeholder" = "Type something";
@@ -307,3 +317,4 @@
 "faq.screen.six.subtitle" = "Vexl is designed to never collect or store any sensitive information. Vexl messages and other content cannot be accessed by us or other third parties because they are always end-to-end encrypted, private, and secure. Our Terms of Service and Privacy Policy are available below.";
 "faq.screen.seven.title" = "How do I contact Vexl?";
 "faq.screen.seven.subtitle" = "You can always reach out to us via email: support@vexl.it. For a private comms, you can also send us an e2ee mail. Or you can meet us during your next P2P trade! 😻";
+"permission.camera.denied" = "Přístup ke kameře byl zakázán";
