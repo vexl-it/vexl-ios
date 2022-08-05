@@ -146,6 +146,7 @@ extension OfferService {
             .map { contacts -> [ContactKey] in
                 let contacts = contacts.phone
                     + contacts.facebook
+                    + [ContactKey(publicKey: userPublicKey)]
                 return Array(Set(contacts))
             }
 
@@ -160,7 +161,7 @@ extension OfferService {
                 contacts.map { contact -> (ContactKey, [String]) in
                     let commonFriends = hashes[contact.publicKey] ?? []
                     return (contact, commonFriends)
-                } + [(ContactKey(publicKey: userPublicKey), [])]
+                }
             }
 
         return commonFriends

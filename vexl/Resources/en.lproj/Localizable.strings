@@ -33,6 +33,7 @@
 "terms.of.use.policy.markdown" = "# Replace with real data\n\n[link](https://google.com)\n\n## Team\n\n* **Name Surname** - work position\n* **Name Surname** - work position";
 "register.phone.number.input.title" = "What’s your phone number?";
 "register.phone.number.input.subtitle" = "Your number will be anonymous";
+"register.phone.number.not.valid" = "Phone number is invalid";
 "register.phone.code.input.title" = "We've just sent you a code";
 "register.phone.code.input.subtitle" = "Enter it bellow to verify %@";
 "register.phone.code.input.retry" = "Didn’t receive code? Resend in %@ s";
@@ -242,6 +243,7 @@
 "chat.message.reveal.identity" = "Reveal identity";
 "chat.message.offer" = "My offer";
 "chat.message.common.friend" = "Common friends";
+"chat.message.common.friend.empty" = "You don't share any common friends";
 "chat.message.delete.chat" = "Delete chat";
 "chat.message.block.user" = "Block user";
 "chat.message.input.placeholder" = "Type something";
