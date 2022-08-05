@@ -14,10 +14,23 @@ final class ImportPhoneContactsViewModel: ImportContactsViewModel {
     override func fetchContacts() throws {
         @Inject var encryptionService: EncryptionServiceType
 
-        let contacts = contactsManager.fetchPhoneContacts()
-
-        encryptionService.hashContacts(contacts: contacts)
-            .track(activity: primaryActivity)
+        Just(())
+            .withUnretained(self)
+            .flatMap { owner in
+                owner.contactsManager
+                    .fetchPhoneContacts()
+                    .track(activity: owner.primaryActivity)
+                    .materialize()
+                    .compactMap(\.value)
+            }
+            .withUnretained(self)
+            .flatMap { owner, contacts in
+                encryptionService
+                    .hashContacts(contacts: contacts)
+                    .track(activity: owner.primaryActivity)
+                    .materialize()
+                    .compactMap(\.value)
+            }
             .withUnretained(self)
             .flatMap { owner, hashedPhones in
                 owner.contactsManager
