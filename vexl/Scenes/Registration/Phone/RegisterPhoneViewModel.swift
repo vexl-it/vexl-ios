@@ -278,7 +278,7 @@ final class RegisterPhoneViewModel: ViewModelType {
             .withUnretained(self)
             .flatMap { owner, response in
                 owner.userRepository
-                    .createNewUser(newKeys: owner.newKeys, signature: response.signature, hash: response.hash)
+                    .createNewUser(newKeys: owner.newKeys, signature: response.signature, hash: response.hash, phoneNumber: owner.phoneNumber)
                     .asVoid()
                     .materialize()
                     .track(activity: owner.primaryActivity)
