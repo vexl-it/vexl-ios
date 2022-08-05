@@ -59,18 +59,20 @@ struct ChatView: View {
                 .frame(maxHeight: .infinity)
                 .padding(.bottom, Appearance.GridGuide.point)
 
-            ChatInputView(text: $viewModel.currentMessage,
-                          image: viewModel.selectedImageData,
-                          sendAction: {
-                viewModel.action.send(.messageSend)
-            },
-                          cameraAction: {
-                viewModel.action.send(.cameraTap)
-            },
-                          deleteImageAction: {
-                viewModel.action.send(.deleteImageTap)
-            })
-                .padding([.horizontal, .bottom], Appearance.GridGuide.padding)
+            if viewModel.allowsInput {
+                ChatInputView(text: $viewModel.currentMessage,
+                              image: viewModel.selectedImageData,
+                              sendAction: {
+                    viewModel.action.send(.messageSend)
+                },
+                              cameraAction: {
+                    viewModel.action.send(.cameraTap)
+                },
+                              deleteImageAction: {
+                    viewModel.action.send(.deleteImageTap)
+                })
+                    .padding([.horizontal, .bottom], Appearance.GridGuide.padding)
+            }
         }
     }
 }
