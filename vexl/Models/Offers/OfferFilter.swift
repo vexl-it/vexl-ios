@@ -10,28 +10,38 @@ import Foundation
 struct OfferFilter: Equatable {
     let type: OfferType
     var currentAmountRange: ClosedRange<Int>?
-    var selectedFeeOption: OfferFeeOption = .withoutFee
-    var feeAmount: Double = 0
+    var selectedFeeOptions: [OfferFeeOption] = []
+    var feeAmount: Double = 1
     var locations: [OfferLocationItemData] = []
     var selectedPaymentMethodOptions: [OfferPaymentMethodOption] = []
     var selectedBTCOptions: [OfferAdvancedBTCOption] = []
-    var selectedFriendDegreeOption: OfferFriendDegree = .firstDegree
+    var selectedFriendDegreeOptions: [OfferFriendDegree] = []
     var currency: Currency?
 
     var predicate: NSPredicate {
         let userPredicate = NSPredicate(format: "user == nil")
         let offerPredicate = NSPredicate(format: "offerTypeRawType == %@", type.rawValue)
-        let feePredicate = NSPredicate(format: "feeStateRawType == %@", selectedFeeOption.rawValue)
-        let friendPredicate = NSPredicate(format: "friendDegreeRawType == %@", selectedFriendDegreeOption.rawValue)
 
-        var predicateList = [userPredicate, offerPredicate, feePredicate, friendPredicate]
+        var predicateList = [userPredicate, offerPredicate]
 
         if let currency = currency {
             predicateList.append(NSPredicate(format: "currencyRawType == %@", currency.rawValue))
         }
 
-        if selectedFeeOption == .withFee {
-            predicateList.append(NSPredicate(format: "feeAmount == %@", feeAmount))
+        if !selectedFeeOptions.isEmpty {
+            let feePredicates = selectedFeeOptions
+                .map { NSPredicate(format: "feeStateRawType == %@", $0.rawValue) }
+            predicateList.append(NSCompoundPredicate(orPredicateWithSubpredicates: feePredicates))
+
+            if selectedFeeOptions.contains(.withFee) {
+                predicateList.append(NSPredicate(format: "feeAmount <= \(feeAmount)"))
+            }
+        }
+
+        if !selectedFriendDegreeOptions.isEmpty {
+            let friendDegreePredicates = selectedFriendDegreeOptions
+                .map { NSPredicate(format: "friendDegreeRawType == %@", $0.rawValue) }
+            predicateList.append(NSCompoundPredicate(orPredicateWithSubpredicates: friendDegreePredicates))
         }
 
         if let currentAmountRange = currentAmountRange {
@@ -40,40 +50,52 @@ struct OfferFilter: Equatable {
         }
 
         if !selectedPaymentMethodOptions.isEmpty {
-            selectedPaymentMethodOptions.forEach { option in
+            let paymentMethodPredicates: [NSPredicate] = selectedPaymentMethodOptions.map { option in
                 switch option {
                 case .cash:
-                    predicateList.append(NSPredicate(format: "acceptsCash == YES"))
+                    return NSPredicate(format: "acceptsCash == YES")
                 case .revolut:
-                    predicateList.append(NSPredicate(format: "acceptsRevolut == YES"))
+                    return NSPredicate(format: "acceptsRevolut == YES")
                 case .bank:
-                    predicateList.append(NSPredicate(format: "acceptsBankTransfer == YES"))
+                    return NSPredicate(format: "acceptsBankTransfer == YES")
                 }
             }
+            predicateList.append(NSCompoundPredicate(orPredicateWithSubpredicates: paymentMethodPredicates))
         }
 
         if !selectedBTCOptions.isEmpty {
-            selectedBTCOptions.forEach { option in
+            let btcOptionPredicates: [NSPredicate] = selectedBTCOptions.map { option in
                 switch option {
                 case .onChain:
-                    predicateList.append(NSPredicate(format: "acceptsOnChain == YES"))
+                    return NSPredicate(format: "acceptsOnChain == YES")
                 case .lightning:
-                    predicateList.append(NSPredicate(format: "acceptsOnLighting == YES"))
+                    return NSPredicate(format: "acceptsOnLighting == YES")
                 }
             }
+            predicateList.append(NSCompoundPredicate(orPredicateWithSubpredicates: btcOptionPredicates))
         }
 
         return NSCompoundPredicate(andPredicateWithSubpredicates: predicateList)
     }
 
+    var isFilterEmpty: Bool {
+        currency == nil &&
+        selectedFeeOptions.isEmpty &&
+        locations.isEmpty &&
+        selectedPaymentMethodOptions.isEmpty &&
+        selectedBTCOptions.isEmpty &&
+        selectedFriendDegreeOptions.isEmpty
+    }
+
     mutating func reset(with amountRange: ClosedRange<Int>?) {
         currentAmountRange = amountRange
-        selectedFeeOption = .withoutFee
-        feeAmount = 0
+        selectedFeeOptions = []
+        feeAmount = 1
         locations = []
         selectedPaymentMethodOptions = []
         selectedBTCOptions = []
-        selectedFriendDegreeOption = .firstDegree
+        selectedFriendDegreeOptions = []
+        currency = nil
     }
 }
 

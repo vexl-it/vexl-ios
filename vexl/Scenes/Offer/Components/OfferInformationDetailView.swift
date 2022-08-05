@@ -135,12 +135,7 @@ extension OfferInformationDetailView {
         var amount: String {
             guard let currency = offer.currency else { return "" }
             let maxAmount = Int(offer.maxAmount)
-            switch currency.position {
-            case .left:
-                return "\(currency.sign)\(maxAmount)"
-            case .right:
-                return "\(maxAmount)\(currency.sign)"
-            }
+            return currency.formattedCurrency(amount: maxAmount)
         }
 
         var paymentIcons: [String] {
