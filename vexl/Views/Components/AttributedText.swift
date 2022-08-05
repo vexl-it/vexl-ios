@@ -17,7 +17,7 @@ struct AttributedText: View {
             .frame(height: height)
     }
 
-    struct InternalTextView: UIViewRepresentable {
+    private struct InternalTextView: UIViewRepresentable {
 
         var attributedText: NSAttributedString
         @Binding var dynamicHeight: CGFloat
@@ -32,9 +32,15 @@ struct AttributedText: View {
         }
 
         func updateUIView(_ uiView: UILabel, context: Context) {
-            uiView.attributedText = attributedText
-            DispatchQueue.main.async {
-                dynamicHeight = uiView.sizeThatFits(CGSize(width: uiView.bounds.width, height: CGFloat.greatestFiniteMagnitude)).height
+            if attributedText != uiView.attributedText {
+                uiView.attributedText = attributedText
+            }
+
+            let height = uiView.sizeThatFits(CGSize(width: uiView.bounds.width, height: CGFloat.greatestFiniteMagnitude)).height
+            if dynamicHeight != height {
+                DispatchQueue.main.async {
+                    dynamicHeight = height
+                }
             }
         }
     }

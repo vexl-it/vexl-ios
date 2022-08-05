@@ -22,15 +22,18 @@ struct FAQContent: Identifiable {
 
     let title: String
     let description: [Description]
+    let attributedDescription: NSAttributedString
 
-    var attributedDescription: NSAttributedString {
+    init(title: String, description: [Description]) {
+        self.title = title
+        self.description = description
         let mutableAttributedString = NSMutableAttributedString()
         for element in description {
             let attributes: [NSAttributedString.Key: Any] = [.foregroundColor: element.color,
                                                              .font: element.font]
             mutableAttributedString.append(.init(string: element.text, attributes: attributes))
         }
-        return mutableAttributedString
+        self.attributedDescription = mutableAttributedString
     }
 
     static var content: [FAQContent] {
@@ -56,9 +59,9 @@ struct FAQContent: Identifiable {
             .init(title: L.faqScene7Title(), description: [.init(text: L.faqScene7Description1(),
                                                                  font: Appearance.TextStyle.paragraphSmall.font,
                                                                  color: R.color.gray3()!),
-                                                            .init(text: L.faqScene7Description2(),
-                                                                  font: Appearance.TextStyle.paragraphSmallBold.font,
-                                                                  color: R.color.black1()!),
+                                                           .init(text: L.faqScene7Description2(),
+                                                                 font: Appearance.TextStyle.paragraphSmallBold.font,
+                                                                 color: R.color.black1()!),
                                                            .init(text: L.faqScene7Description3(),
                                                                  font: Appearance.TextStyle.paragraphSmall.font,
                                                                  color: R.color.gray3()!)])
