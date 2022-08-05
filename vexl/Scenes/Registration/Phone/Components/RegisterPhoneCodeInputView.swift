@@ -27,17 +27,21 @@ struct RegisterPhoneCodeInputView: View {
                              subtitlePositionIsBottom: false,
                              iconName: R.image.onboarding.eye.name,
                              content: {
-            phoneInputView
-                .padding(.top, Appearance.GridGuide.largePadding1)
+            codeInputView
+                .padding(.top, Appearance.GridGuide.padding)
         })
     }
 
-    private var phoneInputView: some View {
+    private var codeInputView: some View {
         VStack {
-            BorderedTextField(placeholder: "", textStyle: .paragraphMedium, text: $code)
-                .multilineTextAlignment(.center)
+            PlaceholderTextField(placeholder: "", text: $code)
+                .textStyle(.paragraphMedium)
+                .multilineTextAlignment(.leading)
                 .foregroundColor(Appearance.Colors.primaryText)
                 .keyboardType(.numberPad)
+                .padding()
+                .background(Appearance.Colors.gray6)
+                .cornerRadius(Appearance.GridGuide.buttonCorner)
                 .disabled(!isEnabled)
 
             if displayRetry {
@@ -45,8 +49,8 @@ struct RegisterPhoneCodeInputView: View {
                     retryAction()
                 } label: {
                     Text(isCodeDisabled ? "\(L.registerPhoneCodeInputRetry("\(remainingTime)"))" : L.registerPhoneCodeInputSendCode())
-                        .foregroundColor(isCodeDisabled ? Appearance.Colors.gray2 : Appearance.Colors.purple4)
-                        .textStyle(isCodeDisabled ? .paragraph : .paragraphBold)
+                        .foregroundColor(isCodeDisabled ? Appearance.Colors.gray2 : Appearance.Colors.primaryText)
+                        .textStyle(isCodeDisabled ? .description : .descriptionBold)
                         .frame(maxWidth: .infinity)
                         .padding(.top, Appearance.GridGuide.padding)
                 }

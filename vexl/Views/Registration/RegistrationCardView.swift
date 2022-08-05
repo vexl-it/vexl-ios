@@ -35,6 +35,7 @@ struct RegistrationCardView<Content>: View where Content: View {
             }
         }
         .padding(.all, Appearance.GridGuide.padding)
+        .padding(.bottom, Appearance.GridGuide.largePadding2)
         .frame(maxWidth: .infinity, alignment: .leading)
         .modifier(CardViewModifier())
     }
@@ -47,7 +48,7 @@ struct RegistrationCardView<Content>: View where Content: View {
 
             Text(subtitle)
                 .foregroundColor(Appearance.Colors.gray2)
-                .textStyle(.paragraph)
+                .textStyle(.description)
                 .lineLimit(2)
                 .minimumScaleFactor(0.5)
         }
