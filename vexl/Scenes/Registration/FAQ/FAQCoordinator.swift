@@ -25,7 +25,12 @@ final class FAQCoordinator: BaseCoordinator<RouterResult<Void>> {
 
         router.present(viewController, animated: animated)
 
-        return Empty(completeImmediately: false)
+        let dismiss = viewModel
+            .route
+            .filter { $0 == .continueTapped }
+            .map { _ -> RouterResult<Void> in .dismiss }
+
+        return dismiss
             .eraseToAnyPublisher()
     }
 }
