@@ -19,5 +19,5 @@
 - Multiple small UI bugs in vex-481
 - Fixed common friends EP
 - Fixed common friends for creators of offer in chat
-
+- VEX-494: bitcoin chart working
 ### Known Issues
