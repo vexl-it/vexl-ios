@@ -6,6 +6,7 @@
 "general.cancel" = "Cancel";
 "general.ok" = "Ok";
 "general.back" = "Back";
+"general.done" = "Done";
 "general.save" = "Save";
 "general.internal.server.error" = "There was a server error. Please try again.";
 "general.timeout" = "The request timed out. Please try again.";

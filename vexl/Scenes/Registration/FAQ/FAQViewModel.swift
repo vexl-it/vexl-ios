@@ -45,16 +45,16 @@ final class FAQViewModel: ViewModelType, ObservableObject {
 
     var nextButtonTitle: String {
         if currentIndex == content.count - 1 {
-            return "Continue"
+            return L.generalDone()
         } else {
-            return "Next"
+            return L.next()
         }
     }
     var backButtonTitle: String {
         if currentIndex == 0 {
-            return "Close"
+            return L.generalClose()
         } else {
-            return "Back"
+            return L.generalBack()
         }
     }
 

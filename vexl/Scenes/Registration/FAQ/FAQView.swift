@@ -54,7 +54,7 @@ struct FAQView: View {
                 .padding([.horizontal, .top], Appearance.GridGuide.smallPadding)
 
             HStack {
-                Text("Frequently Asked Questions")
+                Text(L.faqTitle())
                     .textStyle(.paragraphSemibold)
                     .frame(maxWidth: .infinity, alignment: .leading)
 
