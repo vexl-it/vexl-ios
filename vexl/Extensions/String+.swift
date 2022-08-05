@@ -23,7 +23,7 @@ extension String {
     func removeWhitespaces() -> String {
         return components(separatedBy: .whitespaces).joined()
     }
-    
+
     func configureAttributedText() -> NSMutableAttributedString {
         var attributedString = NSMutableAttributedString(string: self)
 

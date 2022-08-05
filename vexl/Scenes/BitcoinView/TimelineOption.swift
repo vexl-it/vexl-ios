@@ -34,23 +34,6 @@ enum TimelineOption: CaseIterable, Identifiable {
         }
     }
 
-    func variation(percentage: String) -> String {
-        switch self {
-        case .oneDayAgo:
-            return L.marketplaceCurrencyVariation1day(percentage)
-        case .oneWeekAgo:
-            return L.marketplaceCurrencyVariation1week(percentage)
-        case .oneMonthAgo:
-            return L.marketplaceCurrencyVariation1month(percentage)
-        case .threeMonthsAgo:
-            return L.marketplaceCurrencyVariation3month(percentage)
-        case .sixMonthsAgo:
-            return L.marketplaceCurrencyVariation6month(percentage)
-        case .oneYearAgo:
-            return L.marketplaceCurrencyVariation1year(percentage)
-        }
-    }
-
     var duration: String {
         switch self {
         case .oneDayAgo:
@@ -67,7 +50,18 @@ enum TimelineOption: CaseIterable, Identifiable {
             return "YEAR"
         }
     }
-    var chartEndpointRange: (from: Int, to: Int) {
+
+    var timeline: [String] {
+        let dates = getDateIntervals(by: self == .oneWeekAgo ? 7 : 5)
+
+        if self == .oneDayAgo {
+            return dates.map { Formatters.hourFormatter.string(from: $0) }
+        } else {
+            return dates.map { Formatters.shortDateFormatter.string(from: $0) }
+        }
+    }
+
+    private var chartEndpointRange: (from: Int, to: Int) {
         let today = Date()
         let todayFormatted = today.timeIntervalSince1970
         let optionTimeInterval: TimeInterval = {
@@ -93,21 +87,29 @@ enum TimelineOption: CaseIterable, Identifiable {
         return (from: Int(fromFormatted), to: Int(todayFormatted))
     }
 
-    var timeline: [String] {
-        let dates = getDateIntervals(by: self == .oneWeekAgo ? 7 : 5)
-
-        if self == .oneDayAgo {
-            return dates.map { Formatters.hourFormatter.string(from: $0) }
-        } else {
-            return dates.map { Formatters.shortDateFormatter.string(from: $0) }
+    func variation(percentage: String) -> String {
+        switch self {
+        case .oneDayAgo:
+            return L.marketplaceCurrencyVariation1day(percentage)
+        case .oneWeekAgo:
+            return L.marketplaceCurrencyVariation1week(percentage)
+        case .oneMonthAgo:
+            return L.marketplaceCurrencyVariation1month(percentage)
+        case .threeMonthsAgo:
+            return L.marketplaceCurrencyVariation3month(percentage)
+        case .sixMonthsAgo:
+            return L.marketplaceCurrencyVariation6month(percentage)
+        case .oneYearAgo:
+            return L.marketplaceCurrencyVariation1year(percentage)
         }
     }
 
     private func getDateIntervals(by count: Int) -> [Date] {
+        let totalSteps = count - 1
         let range = chartEndpointRange
-        let step = (range.to - range.from) / count
+        let step = (range.to - range.from) / totalSteps
 
-        return (0..<count)
+        return (0...totalSteps)
             .map { range.from + ($0 * step) }
             .map { Date(timeIntervalSince1970: Double($0)) }
     }
