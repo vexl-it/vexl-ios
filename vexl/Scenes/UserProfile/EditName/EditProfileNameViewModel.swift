@@ -74,21 +74,9 @@ final class EditProfileNameViewModel: ViewModelType, ObservableObject {
             .subscribe(route)
             .store(in: cancelBag)
 
-        let validateName = action
+        let updateUser = action
             .withUnretained(self)
             .filter { $0.1 == .updateName && !$0.0.currentName.isEmpty }
-            .flatMap { owner, _ in
-                owner.userService
-                    .validateUsername(username: owner.currentName)
-                    .track(activity: owner.primaryActivity)
-                    .materialize()
-                    .compactMap(\.value)
-                    .map(\.isAvailable)
-            }
-
-        let updateUser = validateName
-            .filter { $0 }
-            .withUnretained(self)
             .flatMap { owner, _ in
                 owner.userService
                     .updateUser(username: owner.currentName,
