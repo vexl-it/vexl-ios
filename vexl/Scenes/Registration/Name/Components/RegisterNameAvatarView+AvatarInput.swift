@@ -17,24 +17,14 @@ extension RegisterNameAvatarView {
         var deleteAction: () -> Void
 
         var body: some View {
-            RegistrationHeaderCardView(title: L.registerNameAvatarImageTitle(),
-                                       subtitle: L.registerNameAvatarImageSubtitle(),
-                                       iconName: R.image.onboarding.eye.name,
-                                       header: greetingView,
-                                       content: addAvatarButton)
+            RegistrationCardView(title: L.registerNameAvatarImageTitle(),
+                                 subtitle: L.registerNameAvatarImageSubtitle(),
+                                 subtitlePositionIsBottom: false,
+                                 iconName: R.image.onboarding.eye.name,
+                                 content: {
+                addAvatarButton
+            })
                 .padding(.all, Appearance.GridGuide.point)
-        }
-
-        var greetingView: some View {
-            HStack {
-                Image(R.image.onboarding.wave.name)
-
-                Text(L.registerNameAvatarImageHeader(name))
-                    .foregroundColor(Appearance.Colors.purple4)
-                    .textStyle(.h3)
-                    .lineLimit(1)
-                    .minimumScaleFactor(0.5)
-            }
         }
 
         var addAvatarButton: some View {
