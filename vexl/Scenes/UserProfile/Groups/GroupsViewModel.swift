@@ -50,7 +50,7 @@ final class GroupsViewModel: ViewModelType, ObservableObject {
     }
 
     private func setupDataBindings() {
-        userRepository.user?.profile?
+        userRepository.user?
             .publisher(for: \.groups)
             .compactMap { $0?.allObjects as? [ManagedGroup] }
             .assign(to: &$groups)

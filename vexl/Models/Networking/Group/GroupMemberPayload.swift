@@ -16,10 +16,10 @@ struct GroupMemberPayload: Codable {
     let publicKeys: [String]
 
     init?(group: ManagedGroup) {
-        guard let uuid = group.uuid, let publicKeys = group.members else {
+        guard let uuid = group.uuid, let members = group.members?.allObjects as? [ManagedAnonymisedProfile] else {
             return nil
         }
         self.groupUuid = uuid
-        self.publicKeys = publicKeys
+        self.publicKeys = members.compactMap(\.publicKey)
     }
 }
