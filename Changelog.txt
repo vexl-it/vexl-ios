@@ -3,7 +3,7 @@
 ### Improvements
 - Marketplace main button now changes if user has offers
 - Added FAQ views
-- Added Group list scene to user profile
+- VEX-441: Added Group list scene to user profile
 
 ### Fixes
 - VEX-437: Crash in filter
