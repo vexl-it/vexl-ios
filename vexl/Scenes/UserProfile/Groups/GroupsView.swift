@@ -24,8 +24,8 @@ struct GroupsView: View {
             .padding(.top, Appearance.GridGuide.largePadding1)
 
             LargeSolidButton(
-                title: "+" + L.groupsJoinButton(),
-                font: Appearance.TextStyle.titleSmallBold.font.asFont,
+                title: "+ " + L.groupsJoinButton(),
+                font: Appearance.TextStyle.paragraphSmallSemiBold.font.asFont,
                 style: .secondary,
                 isFullWidth: true,
                 isEnabled: .constant(true),
@@ -39,10 +39,10 @@ struct GroupsView: View {
                     }
                 }
             }
-
         }
-        .padding([.horizontal, .top], Appearance.GridGuide.padding)
+        .padding([.horizontal], Appearance.GridGuide.padding)
         .background(Color.black.ignoresSafeArea())
+        .navigationBarHidden(true)
     }
 }
 
