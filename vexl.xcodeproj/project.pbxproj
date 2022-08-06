@@ -139,6 +139,10 @@
 		B0FE523F280E822400A77EC3 /* CryptoService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0FE523E280E822400A77EC3 /* CryptoService.swift */; };
 		B0FE5249280E93D200A77EC3 /* ECCKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0FE5248280E93D200A77EC3 /* ECCKeys.swift */; };
 		B0FEDE5A28801D620030220A /* EncryptionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0FEDE5928801D620030220A /* EncryptionService.swift */; };
+		B0FF5F68289EACBA0026E4C4 /* GroupService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0FF5F67289EACBA0026E4C4 /* GroupService.swift */; };
+		B0FF5F6B289EFAF30026E4C4 /* GroupPayload.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0FF5F6A289EFAF30026E4C4 /* GroupPayload.swift */; };
+		B0FF5F6D289EFB210026E4C4 /* GroupMemberPayload.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0FF5F6C289EFB210026E4C4 /* GroupMemberPayload.swift */; };
+		B0FF5F6F289EFB430026E4C4 /* GroupRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0FF5F6E289EFB430026E4C4 /* GroupRouter.swift */; };
 		C1A0B48D6D54EB5D7D8929FB /* Pods_vexl_vexlTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D776C4D0B95B9F6E229AF7E4 /* Pods_vexl_vexlTests.framework */; };
 		F1042BA227BEADB70048C2F0 /* WelcomeAgreementSwitch.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1042BA127BEADB70048C2F0 /* WelcomeAgreementSwitch.swift */; };
 		F1042BA527BEF0360048C2F0 /* OnboardingView+PageControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1042BA427BEF0360048C2F0 /* OnboardingView+PageControl.swift */; };
@@ -537,6 +541,10 @@
 		B0FE5244280E845000A77EC3 /* vexl-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "vexl-Bridging-Header.h"; sourceTree = "<group>"; };
 		B0FE5248280E93D200A77EC3 /* ECCKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ECCKeys.swift; sourceTree = "<group>"; };
 		B0FEDE5928801D620030220A /* EncryptionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptionService.swift; sourceTree = "<group>"; };
+		B0FF5F67289EACBA0026E4C4 /* GroupService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupService.swift; sourceTree = "<group>"; };
+		B0FF5F6A289EFAF30026E4C4 /* GroupPayload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupPayload.swift; sourceTree = "<group>"; };
+		B0FF5F6C289EFB210026E4C4 /* GroupMemberPayload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupMemberPayload.swift; sourceTree = "<group>"; };
+		B0FF5F6E289EFB430026E4C4 /* GroupRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupRouter.swift; sourceTree = "<group>"; };
 		D2644FB5ADC4F80BBF36B73B /* Pods-vexl-vexlTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-vexl-vexlTests.release.xcconfig"; path = "Target Support Files/Pods-vexl-vexlTests/Pods-vexl-vexlTests.release.xcconfig"; sourceTree = "<group>"; };
 		D776C4D0B95B9F6E229AF7E4 /* Pods_vexl_vexlTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_vexl_vexlTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DF8AC1A170DAA6A83E1E979B /* Pods-vexl.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-vexl.debug.xcconfig"; path = "Target Support Files/Pods-vexl/Pods-vexl.debug.xcconfig"; sourceTree = "<group>"; };
@@ -1212,6 +1220,7 @@
 				B08F391B27AE7112008B344F /* BaseService.swift */,
 				B08F392D27AE7112008B344F /* UserService.swift */,
 				F175AB9827F0D2D8000DAB15 /* ContactsService.swift */,
+				B0FF5F67289EACBA0026E4C4 /* GroupService.swift */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -1273,6 +1282,7 @@
 				F175AB9A27F1432E000DAB15 /* ContactsRouter.swift */,
 				F13B266828194A060011F2FB /* OffersRouter.swift */,
 				4F481E75284767480051D3B9 /* ChatRouter.swift */,
+				B0FF5F6E289EFB430026E4C4 /* GroupRouter.swift */,
 			);
 			path = Routers;
 			sourceTree = "<group>";
@@ -1329,6 +1339,15 @@
 				F1B5FCBB27C67DB00018729B /* WelcomeViewController.swift */,
 			);
 			path = Welcome;
+			sourceTree = "<group>";
+		};
+		B0FF5F69289EFAE60026E4C4 /* Group */ = {
+			isa = PBXGroup;
+			children = (
+				B0FF5F6A289EFAF30026E4C4 /* GroupPayload.swift */,
+				B0FF5F6C289EFB210026E4C4 /* GroupMemberPayload.swift */,
+			);
+			path = Group;
 			sourceTree = "<group>";
 		};
 		F1042BA027BEAD7C0048C2F0 /* Components */ = {
@@ -1722,6 +1741,7 @@
 				F13B266328192BAC0011F2FB /* Offers */,
 				F1A9453E27F811CA009B5AE3 /* Contacts */,
 				F175AB8327E4CC04000DAB15 /* Users */,
+				B0FF5F69289EFAE60026E4C4 /* Group */,
 				F13B266E281D4A510011F2FB /* Paged.swift */,
 			);
 			path = Networking;
@@ -2007,7 +2027,6 @@
 		F1BFA951280223BD00F4E745 /* UserProfile */ = {
 			isa = PBXGroup;
 			children = (
-				F1BFA96F2803A59F00F4E745 /* Components */,
 				F1DF4A44289ACB89008E5C87 /* DeleteAccount */,
 				F1A43DC0288E335A0032A11F /* ReportIssue */,
 				F19B37E3288E0D6400412D78 /* EditName */,
@@ -2591,6 +2610,7 @@
 				F1B5FCD627C703BF0018729B /* View+.swift in Sources */,
 				F114420128495E1900307D39 /* LargeSolidButton.swift in Sources */,
 				B08F396627AE7112008B344F /* Constants.swift in Sources */,
+				B0FF5F6D289EFB210026E4C4 /* GroupMemberPayload.swift in Sources */,
 				F13B265E281899250011F2FB /* OfferAdvancedFilterBTCNetworkView.swift in Sources */,
 				B08F391527AE7112008B344F /* ApiService.swift in Sources */,
 				F188627028169A3700659786 /* MarketplaceCoordinator.swift in Sources */,
@@ -2601,6 +2621,7 @@
 				F1D200A628252C44006DF4AB /* TabBarController.swift in Sources */,
 				F175AB9927F0D2D8000DAB15 /* ContactsService.swift in Sources */,
 				B007A76328730BDF00CFA5C9 /* Fetched.swift in Sources */,
+				B0FF5F6B289EFAF30026E4C4 /* GroupPayload.swift in Sources */,
 				F11441C9284681EC00307D39 /* CardModifier.swift in Sources */,
 				4FBF6244283FBF7200DDBE71 /* RequestOfferView.swift in Sources */,
 				B08F399C27AE7D8D008B344F /* OnboardingViewModel.swift in Sources */,
@@ -2720,6 +2741,7 @@
 				B08F394127AE7112008B344F /* Shortcuts.swift in Sources */,
 				F1B93ED5286D12D7008DAA90 /* OfferType.swift in Sources */,
 				F11441E8284682B200307D39 /* ChatRequestOfferView.swift in Sources */,
+				B0FF5F68289EACBA0026E4C4 /* GroupService.swift in Sources */,
 				4F481E7228466B320051D3B9 /* TimelineOption.swift in Sources */,
 				F1B5FCD827C7040C0018729B /* RoundedCorners.swift in Sources */,
 				F151A29D27C866C7000D7242 /* RegisterNameAvatarView.swift in Sources */,
@@ -2734,6 +2756,7 @@
 				B03910692889E9F90034358C /* ChatRepository.swift in Sources */,
 				F175ABA027F4A7EC000DAB15 /* RegistryError.swift in Sources */,
 				B0B0A05B2891AC3E00E81776 /* Bool+.swift in Sources */,
+				B0FF5F6F289EFB430026E4C4 /* GroupRouter.swift in Sources */,
 				B08F397027AE7112008B344F /* UserRouter.swift in Sources */,
 				F1886211280EC49B00659786 /* Image+Base64.swift in Sources */,
 				F188622128105A1200659786 /* UserOffersViewModel.swift in Sources */,

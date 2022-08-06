@@ -22,6 +22,15 @@
         <attribute name="sourceRawType" optional="YES" attributeType="String"/>
     </entity>
     <entity name="ManagedGroup" representedClassName="ManagedGroup" syncable="YES" codeGenerationType="class">
+        <attribute name="closureAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="code" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="createdAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="expirationAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="logo" optional="YES" attributeType="Binary"/>
+        <attribute name="logoURL" optional="YES" attributeType="URI"/>
+        <attribute name="members" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromDataTransformer" customClassName="[String]"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="uuid" optional="YES" attributeType="String"/>
         <relationship name="profiles" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ManagedProfile" inverseName="groups" inverseEntity="ManagedProfile"/>
     </entity>
     <entity name="ManagedInbox" representedClassName="ManagedInbox" syncable="YES" codeGenerationType="class">
@@ -106,14 +115,14 @@
     </entity>
     <elements>
         <element name="ManagedChat" positionX="-333.91796875" positionY="-454.86328125" width="162.57421875" height="179"/>
-        <element name="ManagedContact" positionX="-1060.67578125" positionY="-241.9453125" width="128" height="134"/>
+        <element name="ManagedContact" positionX="-1073.49609375" positionY="-251.14453125" width="128" height="134"/>
+        <element name="ManagedGroup" positionX="-304.7421875" positionY="12.1796875" width="128" height="193"/>
         <element name="ManagedInbox" positionX="-562.71484375" positionY="-370.265625" width="128" height="118"/>
         <element name="ManagedKeyPair" positionX="-343.26171875" positionY="-227.74609375" width="128" height="133"/>
         <element name="ManagedMessage" positionX="-110.484375" positionY="-455.828125" width="128" height="178"/>
-        <element name="ManagedOffer" positionX="-870.50390625" positionY="-571.98046875" width="128" height="404"/>
+        <element name="ManagedOffer" positionX="-892.38671875" positionY="-589.39453125" width="128" height="463"/>
         <element name="ManagedProfile" positionX="-566.8828125" positionY="-92.77734375" width="128" height="193"/>
         <element name="ManagedSyncItem" positionX="-591.86328125" positionY="-567.52734375" width="128" height="74"/>
         <element name="ManagedUser" positionX="-1013.984375" positionY="-50.265625" width="165.6171875" height="118"/>
-        <element name="ManagedGroup" positionX="-304.7421875" positionY="12.1796875" width="128" height="58"/>
     </elements>
 </model>
