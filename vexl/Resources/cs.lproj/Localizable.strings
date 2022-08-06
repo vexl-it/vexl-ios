@@ -47,7 +47,7 @@
 "register.name.avatar.input.placeholder" = "Tvoje jméno nebo přezdívka";
 "register.name.avatar.image.title" = "Jak vypadáš?";
 "register.name.avatar.image.subtitle" = "Bez tvého svolení nikdo tvou fotku neuvidí.";
-"register.name.avatar.image.header" = "Nazdar %@";
+"register.name.avatar.image.header" = "Nazdar, %@!";
 "register.name.avatar.phone.validated" = "Telefon ověřen.\nČas nastavit tvůj profil.";
 "register.name.avatar.camera" = "Foťák";
 "register.name.avatar.photo.album" = "Knihovna";

@@ -70,7 +70,7 @@ struct Appearance {
         static let containerCorner: CGFloat = 10
         static let buttonCorner: CGFloat = 12
         static let tabBarCorner: CGFloat = 16
-        static let requestCorner: CGFloat = 20
+        static let requestAvatarCorner: CGFloat = 20
 
         // MARK: Margins
 

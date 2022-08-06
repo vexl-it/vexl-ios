@@ -23,7 +23,7 @@ struct ChatIdentityRevealView: View {
                       placeholder: R.image.marketplace.defaultAvatar.name)
                     .resizable()
                     .frame(size: Appearance.GridGuide.chatImageSize)
-                    .cornerRadius(Appearance.GridGuide.requestCorner)
+                    .cornerRadius(Appearance.GridGuide.requestAvatarCorner)
                     .padding(.bottom, Appearance.GridGuide.mediumPadding2)
 
                 Text(viewModel.username)

@@ -1,8 +1,10 @@
 - Requires uninstall: ⚠️ YES ⚠️
 
 ### Improvements
-- Marketplace main button now changes if user has offers
-- Added FAQ views
+- VEX-415: Marketplace main button now changes if user has offers
+- VEX-387: Added FAQ views
+- VEX-389/509/391: Updated Register Phone
+- VEX-510/511: Updated Register name and avatar
 
 ### Fixes
 - VEX-437: Crash in filter
