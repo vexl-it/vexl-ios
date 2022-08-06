@@ -81,7 +81,7 @@ struct RequestAccessContactsView: View {
     }
 }
 
-struct RegisterContactsPhoneViewPreview: PreviewProvider {
+struct RequestAccessContactsViewPreview: PreviewProvider {
     static var previews: some View {
         RequestAccessContactsView(viewModel: .init(username: "Diego", avatar: nil, activity: .init(indicator: nil, error: nil)))
             .frame(maxWidth: .infinity, maxHeight: .infinity)

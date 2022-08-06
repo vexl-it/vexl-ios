@@ -2,7 +2,7 @@
 //  RegisterPhoneContactsViewModel.swift
 //  vexl
 //
-//  Created by Diego Espinoza on 7/03/22.
+//  Created by Diego Espinoza on 6/08/22.
 //
 
 import Foundation
@@ -10,7 +10,7 @@ import Combine
 import Cleevio
 import SwiftUI
 
-final class RegisterContactsViewModel: ViewModelType {
+final class RegisterFacebookContactsViewModel: ViewModelType {
 
     @Inject var authenticationManager: AuthenticationManager
     @Inject var userService: UserServiceType
@@ -19,9 +19,7 @@ final class RegisterContactsViewModel: ViewModelType {
     // MARK: - View State
 
     enum ViewState {
-        case phone
-        case importPhoneContacts
-        case facebook
+        case requestAccess
         case importFacebookContacts
     }
 
@@ -59,10 +57,8 @@ final class RegisterContactsViewModel: ViewModelType {
 
     // MARK: - Subviews View Models and State
 
-    @Published var currentState: ViewState = .phone
-    var phoneViewModel: RequestAccessPhoneContactsViewModel
+    @Published var currentState: ViewState = .requestAccess
     var facebookViewModel: RequestAccessFacebookContactsViewModel
-    var importPhoneContactsViewModel: ImportPhoneContactsViewModel
     var importFacebookContactsViewModel: ImportFacebookContactsViewModel
 
     // MARK: - Variables
@@ -70,13 +66,9 @@ final class RegisterContactsViewModel: ViewModelType {
     private let cancelBag: CancelBag = .init()
 
     init(username: String, avatar: Data?) {
-        phoneViewModel = RequestAccessPhoneContactsViewModel(username: username, avatar: avatar, activity: primaryActivity)
-        importPhoneContactsViewModel = ImportPhoneContactsViewModel()
         facebookViewModel = RequestAccessFacebookContactsViewModel(username: username, avatar: avatar, activity: primaryActivity)
         importFacebookContactsViewModel = ImportFacebookContactsViewModel()
         setupActivity()
-        setupRequestPhoneContactsBindings()
-        setupImportPhoneContactsBindings()
         setupRequestFacebookContactsBindings()
         setupImportFacebookContactsBindings()
     }
@@ -91,14 +83,6 @@ final class RegisterContactsViewModel: ViewModelType {
             .asOptional()
             .assign(to: &$error)
 
-        importPhoneContactsViewModel
-            .$loading
-            .assign(to: &$loading)
-
-        importPhoneContactsViewModel
-            .$error
-            .assign(to: &$error)
-
         importFacebookContactsViewModel
             .$loading
             .assign(to: &$loading)
@@ -106,26 +90,6 @@ final class RegisterContactsViewModel: ViewModelType {
         importFacebookContactsViewModel
             .$error
             .assign(to: &$error)
-    }
-
-    private func setupRequestPhoneContactsBindings() {
-        phoneViewModel.contactsImported
-            .withUnretained(self)
-            .sink { owner, _ in
-                owner.currentState = .importPhoneContacts
-                try? owner.importPhoneContactsViewModel.fetchContacts()
-            }
-            .store(in: cancelBag)
-    }
-
-    private func setupImportPhoneContactsBindings() {
-        importPhoneContactsViewModel.completed
-            .withUnretained(self)
-            .sink { owner, _ in
-                owner.currentState = .facebook
-                owner.importPhoneContactsViewModel.currentState = .loading
-            }
-            .store(in: cancelBag)
     }
 
     private func setupRequestFacebookContactsBindings() {

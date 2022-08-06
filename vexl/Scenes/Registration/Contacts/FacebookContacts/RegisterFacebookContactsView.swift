@@ -2,24 +2,20 @@
 //  RegisterPhoneContactsView.swift
 //  vexl
 //
-//  Created by Diego Espinoza on 7/03/22.
+//  Created by Diego Espinoza on 6/08/22.
 //
 
+import Foundation
 import SwiftUI
-import Cleevio
 
-struct RegisterContactsView: View {
+struct RegisterFacebookContactsView: View {
 
-    @ObservedObject var viewModel: RegisterContactsViewModel
+    @ObservedObject var viewModel: RegisterFacebookContactsViewModel
 
     var body: some View {
         VStack {
             switch viewModel.currentState {
-            case .phone:
-                RequestAccessContactsView(viewModel: viewModel.phoneViewModel)
-            case .importPhoneContacts:
-                ImportContactsView(viewModel: viewModel.importPhoneContactsViewModel)
-            case .facebook:
+            case .requestAccess:
                 RequestAccessContactsView(viewModel: viewModel.facebookViewModel)
             case .importFacebookContacts:
                 ImportContactsView(viewModel: viewModel.importFacebookContactsViewModel)
@@ -31,8 +27,8 @@ struct RegisterContactsView: View {
     }
 }
 
-struct RegisterContactsViewPreview: PreviewProvider {
+struct RegisterFacebookContactsViewPreview: PreviewProvider {
     static var previews: some View {
-        RegisterContactsView(viewModel: .init(username: "Diego", avatar: nil))
+        RegisterFacebookContactsView(viewModel: .init(username: "Diego", avatar: nil))
     }
 }

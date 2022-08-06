@@ -2,14 +2,14 @@
 //  RegisterPhoneContactsCoordinator.swift
 //  vexl
 //
-//  Created by Diego Espinoza on 7/03/22.
+//  Created by Diego Espinoza on 6/08/22.
 //
 
 import Foundation
 import Combine
 import Cleevio
 
-final class RegisterContactsCoordinator: BaseCoordinator<RouterResult<Void>> {
+final class RegisterFacebookContactsCoordinator: BaseCoordinator<RouterResult<Void>> {
 
     @Inject var userRepository: UserRepositoryType
 
@@ -22,13 +22,13 @@ final class RegisterContactsCoordinator: BaseCoordinator<RouterResult<Void>> {
     }
 
     override func start() -> CoordinatingResult<RouterResult<Void>> {
-        let viewModel = RegisterContactsViewModel(
+        let viewModel = RegisterFacebookContactsViewModel(
             username: userRepository.user?.profile?.name ?? "",
             avatar: userRepository.user?.profile?.avatar
         )
-        let viewController = RegisterViewController(currentPage: 2,
-                                                    numberOfPages: 3,
-                                                    rootView: RegisterContactsView(viewModel: viewModel),
+        let viewController = RegisterViewController(currentPage: 3,
+                                                    numberOfPages: 4,
+                                                    rootView: RegisterFacebookContactsView(viewModel: viewModel),
                                                     showBackButton: false)
 
         router.present(viewController, animated: animated)
