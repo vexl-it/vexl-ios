@@ -27,9 +27,16 @@ final class WelcomeCoordinator: BaseCoordinator<RouterResult<Void>> {
         let viewController = WelcomeViewController(rootView: WelcomeView(viewModel: viewModel))
         router.present(viewController, animated: animated)
 
-        // MARK: Routers
-
-        // MARK: Routing actions
+        viewModel
+            .route
+            .filter { $0 == .termsAndConditionsTapped }
+            .withUnretained(self)
+            .flatMap { owner, _ -> CoordinatingResult<RouterResult<Void>> in
+                let router = ModalRouter(parentViewController: viewController, presentationStyle: .overFullScreen)
+                return owner.showTermsAndConditions(router: router)
+            }
+            .sink()
+            .store(in: cancelBag)
 
         let finished = viewModel
             .route
@@ -71,6 +78,20 @@ private extension WelcomeCoordinator {
         }
         .prefix(1)
         .eraseToAnyPublisher()
+    }
+
+    func showTermsAndConditions(router: Router) -> CoordinatingResult<RouterResult<Void>> {
+        coordinate(to: TermsAndConditionsCoordinator(router: router, animated: true))
+            .flatMap { result -> CoordinatingResult<RouterResult<Void>> in
+                switch result {
+                case .dismiss:
+                    return router.dismiss(animated: true, returning: result)
+                case .finished, .dismissedByRouter:
+                    return Just(result).eraseToAnyPublisher()
+                }
+            }
+            .prefix(1)
+            .eraseToAnyPublisher()
     }
 
     func showFAQ(router: Router) -> CoordinatingResult<RouterResult<Void>> {

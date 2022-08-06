@@ -22,6 +22,8 @@
 "onboarding.intro.message.request" = "request identity for the offers you like and trade.";
 "welcome.title" = "Welcome! Ready to get started?";
 "welcome.terms.agreements" = "I agree to Terms of Use";
+"welcome.terms.agreements.one" = "I agree to";
+"welcome.terms.agreements.two" = "Terms of Use";
 "welcome.terms.agreements.link" = "Terms of Use";
 "welcome.terms.agreements.url" = "https://google.com";
 "welcome.button" = "Continue";

@@ -185,6 +185,9 @@
 		F1156ADB289ED49F00B9A5B9 /* RegisterFacebookContactsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1156AD8289ED49F00B9A5B9 /* RegisterFacebookContactsViewModel.swift */; };
 		F1156ADC289ED49F00B9A5B9 /* RegisterFacebookContactsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1156AD9289ED49F00B9A5B9 /* RegisterFacebookContactsView.swift */; };
 		F1156ADD289ED49F00B9A5B9 /* RegisterFacebookContactsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1156ADA289ED49F00B9A5B9 /* RegisterFacebookContactsCoordinator.swift */; };
+		F1156AE2289F25E500B9A5B9 /* TermsAndConditionsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1156AE1289F25E500B9A5B9 /* TermsAndConditionsCoordinator.swift */; };
+		F1156AE4289F260200B9A5B9 /* TermsAndConditionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1156AE3289F260200B9A5B9 /* TermsAndConditionsViewModel.swift */; };
+		F1156AE6289F260900B9A5B9 /* TermsAndConditionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1156AE5289F260900B9A5B9 /* TermsAndConditionsView.swift */; };
 		F12A14E427D692DB0096543E /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12A14E327D692DB0096543E /* RegisterViewController.swift */; };
 		F12A14E827D6A8690096543E /* RequestAccessContactsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12A14E727D6A8690096543E /* RequestAccessContactsView.swift */; };
 		F12A14F027D912410096543E /* RequestAccessContactsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12A14EF27D912410096543E /* RequestAccessContactsViewModel.swift */; };
@@ -591,6 +594,9 @@
 		F1156AD8289ED49F00B9A5B9 /* RegisterFacebookContactsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterFacebookContactsViewModel.swift; sourceTree = "<group>"; };
 		F1156AD9289ED49F00B9A5B9 /* RegisterFacebookContactsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterFacebookContactsView.swift; sourceTree = "<group>"; };
 		F1156ADA289ED49F00B9A5B9 /* RegisterFacebookContactsCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterFacebookContactsCoordinator.swift; sourceTree = "<group>"; };
+		F1156AE1289F25E500B9A5B9 /* TermsAndConditionsCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsAndConditionsCoordinator.swift; sourceTree = "<group>"; };
+		F1156AE3289F260200B9A5B9 /* TermsAndConditionsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsAndConditionsViewModel.swift; sourceTree = "<group>"; };
+		F1156AE5289F260900B9A5B9 /* TermsAndConditionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsAndConditionsView.swift; sourceTree = "<group>"; };
 		F12A14E327D692DB0096543E /* RegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
 		F12A14E727D6A8690096543E /* RequestAccessContactsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestAccessContactsView.swift; sourceTree = "<group>"; };
 		F12A14EF27D912410096543E /* RequestAccessContactsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestAccessContactsViewModel.swift; sourceTree = "<group>"; };
@@ -1561,6 +1567,16 @@
 			path = ViewModels;
 			sourceTree = "<group>";
 		};
+		F1156AE0289F25D300B9A5B9 /* TermsConditions */ = {
+			isa = PBXGroup;
+			children = (
+				F1156AE1289F25E500B9A5B9 /* TermsAndConditionsCoordinator.swift */,
+				F1156AE3289F260200B9A5B9 /* TermsAndConditionsViewModel.swift */,
+				F1156AE5289F260900B9A5B9 /* TermsAndConditionsView.swift */,
+			);
+			path = TermsConditions;
+			sourceTree = "<group>";
+		};
 		F12A14D927D677010096543E /* Contacts */ = {
 			isa = PBXGroup;
 			children = (
@@ -1967,6 +1983,7 @@
 			isa = PBXGroup;
 			children = (
 				B0EEE11427B14D0B0097031E /* Welcome */,
+				F1156AE0289F25D300B9A5B9 /* TermsConditions */,
 				F1DF4A49289C9E85008E5C87 /* FAQ */,
 				F1B5FCCB27C6F7D40018729B /* Phone */,
 				F12A14D927D677010096543E /* Contacts */,
@@ -2470,6 +2487,7 @@
 				B0501BA02884B45E00A44E18 /* OfferManager.swift in Sources */,
 				B08F396A27AE7112008B344F /* URLRequest+.swift in Sources */,
 				F188627728169A3700659786 /* MarketplaceViewModel.swift in Sources */,
+				F1156AE6289F260900B9A5B9 /* TermsAndConditionsView.swift in Sources */,
 				F1B30111287C770D00C86F83 /* OfferTriggerActiveView.swift in Sources */,
 				F148564C284FD452003213D7 /* ChatView.swift in Sources */,
 				F175AB9727ECC159000DAB15 /* SecurityHeader.swift in Sources */,
@@ -2632,6 +2650,7 @@
 				4F2416A328490B3C00B4A437 /* ChatInbox.swift in Sources */,
 				F148564F284FD5E2003213D7 /* InboxManager.swift in Sources */,
 				F1D200A628252C44006DF4AB /* TabBarController.swift in Sources */,
+				F1156AE2289F25E500B9A5B9 /* TermsAndConditionsCoordinator.swift in Sources */,
 				F175AB9927F0D2D8000DAB15 /* ContactsService.swift in Sources */,
 				B007A76328730BDF00CFA5C9 /* Fetched.swift in Sources */,
 				B0FF5F6B289EFAF30026E4C4 /* GroupPayload.swift in Sources */,
@@ -2707,6 +2726,7 @@
 				B03BC707287BF9DD00E355D3 /* Keychain.swift in Sources */,
 				B007A79028762EE300CFA5C9 /* FacebookManager.swift in Sources */,
 				F1483CC4285A407C0054B7A2 /* ChatImageBubbleView.swift in Sources */,
+				F1156AE4289F260200B9A5B9 /* TermsAndConditionsViewModel.swift in Sources */,
 				F1B5321C28202B36009D4E0C /* OfferItemView.swift in Sources */,
 				F11441DE284681EC00307D39 /* SegmentedPickerView.swift in Sources */,
 				F1BDC978285BF9D600F86581 /* ChatExpandedImageView.swift in Sources */,

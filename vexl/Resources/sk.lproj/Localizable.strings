@@ -22,6 +22,8 @@
 "onboarding.intro.message.request" = "Líbí se ti něčí nabídka? Spojte se a vexlujte!";
 "welcome.title" = "Chceš začít vexlovat?";
 "welcome.terms.agreements" = "Souhlasím s podmínkami";
+"welcome.terms.agreements.one" = "Souhlasím s";
+"welcome.terms.agreements.two" = "podmínkami";
 "welcome.terms.agreements.link" = "podmínkami";
 "welcome.terms.agreements.url" = "https://google.com";
 "welcome.button" = "Pokračovat";

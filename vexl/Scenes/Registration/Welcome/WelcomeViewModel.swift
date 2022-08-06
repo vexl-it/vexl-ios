@@ -17,6 +17,7 @@ final class WelcomeViewModel: ViewModelType {
 
     enum UserAction: Equatable {
         case continueTap
+        case linkTap
     }
 
     let action: ActionSubject<UserAction> = .init()
@@ -32,6 +33,7 @@ final class WelcomeViewModel: ViewModelType {
 
     enum Route: Equatable {
         case continueTapped
+        case termsAndConditionsTapped
     }
 
     var route: CoordinatingSubject<Route> = .init()
@@ -56,10 +58,14 @@ final class WelcomeViewModel: ViewModelType {
 
         action
             .filter { $0 == .continueTap }
-            .withUnretained(self)
-            .sink { owner, _ in
-                owner.route.send(.continueTapped)
-            }
+            .map { _ -> Route in .continueTapped }
+            .subscribe(route)
+            .store(in: cancelBag)
+
+        action
+            .filter { $0 == .linkTap }
+            .map { _ -> Route in .termsAndConditionsTapped }
+            .subscribe(route)
             .store(in: cancelBag)
     }
 }

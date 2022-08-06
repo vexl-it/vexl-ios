@@ -8,21 +8,14 @@
 import SwiftUI
 
 struct WelcomeAgreementSwitch: View {
-    let text: String
-    let links: [String: String]
     @Binding var isOn: Bool
+    var linkAction: () -> Void
 
     var body: some View {
         HStack(alignment: .center, spacing: Appearance.GridGuide.mediumPadding1) {
             Image(R.image.onboarding.welcomeNote.name)
 
-            LinkTextView(text: L.welcomeTermsAgreements(),
-                         links: [L.welcomeTermsAgreementsLink(): L.welcomeTermsAgreementsUrl()],
-                         font: Appearance.TextStyle.paragraph.font,
-                         linkFont: Appearance.TextStyle.paragraph.font,
-                         textColor: UIColor(Appearance.Colors.gray3),
-                         linkColor: UIColor.white,
-                         textAlignment: .left)
+            agreementLink
 
             Toggle("", isOn: $isOn)
                 .labelsHidden()
@@ -32,15 +25,30 @@ struct WelcomeAgreementSwitch: View {
         .background(Appearance.Colors.gray1)
         .cornerRadius(Appearance.GridGuide.buttonCorner)
     }
+
+    private var agreementLink: some View {
+        HStack(spacing: Appearance.GridGuide.tinyPadding) {
+            Text(L.welcomeTermsAgreementsOne())
+                .foregroundColor(Appearance.Colors.gray3)
+                .textStyle(.paragraphMedium)
+
+            Button {
+                linkAction()
+            } label: {
+                Text(L.welcomeTermsAgreementsTwo())
+                    .foregroundColor(Appearance.Colors.whiteText)
+                    .textStyle(.paragraphMedium)
+            }
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+    }
 }
 
 #if DEVEL || DEBUG
 
 struct WelcomeAgreementSwitchPreview: PreviewProvider {
     static var previews: some View {
-        WelcomeAgreementSwitch(text: "hello",
-                               links: [:],
-                               isOn: .constant(true))
+        WelcomeAgreementSwitch(isOn: .constant(true)) {}
             .previewDevice("iPhone 11")
     }
 }
