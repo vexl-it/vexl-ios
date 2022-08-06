@@ -37,15 +37,15 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
     @Published var isLoading = false
     @Published var error: Error?
 
+    @Published var username: String = ""
+    @Published var avatar: Data?
+
     var errorIndicator: ErrorIndicator {
         primaryActivity.error
     }
     var activityIndicator: ActivityIndicator {
         primaryActivity.indicator
     }
-
-    @Published var username: String = ""
-    @Published var avatar: Data?
 
     // MARK: - Coordinator Bindings
 
@@ -59,6 +59,7 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
         case importContacts
         case importFacebook
         case reportIssue
+        case showGroups
         case deleteAccount
     }
 
@@ -79,8 +80,6 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
         setupDataBindings()
         setupBindings()
         setupUpdateUser()
-        self.username = userRepository.user?.profile?.name ?? ""
-        self.avatar = userRepository.user?.profile?.avatar
     }
 
     func subtitle(for item: UserProfileViewModel.Option) -> String? {
@@ -132,18 +131,14 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
     private func setupBindings() {
         action
             .filter { $0 == .joinVexl }
-            .withUnretained(self)
-            .sink { owner, _ in
-                owner.route.send(.joinVexl)
-            }
+            .map { _ in .joinVexl }
+            .subscribe(route)
             .store(in: cancelBag)
 
         action
             .filter { $0 == .donate }
-            .withUnretained(self)
-            .sink { owner, _ in
-                owner.route.send(.donate)
-            }
+            .map { _ in .donate }
+            .subscribe(route)
             .store(in: cancelBag)
 
         let option = action
@@ -173,8 +168,7 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
 
         option
             .filter { $0 == .contacts }
-            .withUnretained(self)
-            .map { _ -> Route in .importContacts }
+            .map { _ in .importContacts }
             .subscribe(route)
             .store(in: cancelBag)
 
@@ -188,6 +182,12 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
         option
             .filter { $0 == .reportIssue }
             .map { _ -> Route in .reportIssue }
+            .subscribe(route)
+            .store(in: cancelBag)
+
+        option
+            .filter { $0 == .groups }
+            .map { _ -> Route in .showGroups }
             .subscribe(route)
             .store(in: cancelBag)
 
