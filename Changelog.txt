@@ -5,6 +5,8 @@
 - VEX-387: Added FAQ views
 - VEX-389/509/391: Updated Register Phone
 - VEX-510/511: Updated Register name and avatar
+- VEX-441: Added Group list scene to user profile
+- VEX-513: Updated import phone contacts
 
 ### Fixes
 - VEX-437: Crash in filter

@@ -98,7 +98,7 @@ struct RegisterNameAvatarView: View {
                          action: {
             action()
         })
-            .padding(.horizontal, Appearance.GridGuide.padding)
+            .padding(.horizontal, Appearance.GridGuide.point)
             .padding(.bottom, Appearance.GridGuide.padding)
     }
 }
