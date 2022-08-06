@@ -71,6 +71,7 @@ struct RequestAccessContactsView: View {
                     .textStyle(.paragraphSmallMedium)
                     .foregroundColor(Appearance.Colors.gray2)
             }
+            .padding(.bottom, Appearance.GridGuide.padding)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
         .background(Appearance.Colors.whiteText)
@@ -80,8 +81,9 @@ struct RequestAccessContactsView: View {
 
 struct RequestAccessContactsViewPreview: PreviewProvider {
     static var previews: some View {
-        RequestAccessContactsView(viewModel: .init(activity: .init(indicator: nil, error: nil)))
+        RequestAccessContactsView(viewModel: RequestAccessFacebookContactsViewModel(activity: .init(indicator: nil, error: nil)))
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color.black.edgesIgnoringSafeArea(.all))
+            .previewDevice("iPhone 11")
     }
 }
