@@ -22,10 +22,7 @@ final class RegisterPhoneContactsCoordinator: BaseCoordinator<RouterResult<Void>
     }
 
     override func start() -> CoordinatingResult<RouterResult<Void>> {
-        let viewModel = RegisterPhoneContactsViewModel(
-            username: userRepository.user?.profile?.name ?? "",
-            avatar: userRepository.user?.profile?.avatar
-        )
+        let viewModel = RegisterPhoneContactsViewModel()
         let viewController = RegisterViewController(currentPage: 2,
                                                     numberOfPages: 4,
                                                     rootView: RegisterPhoneContactsView(viewModel: viewModel),

@@ -11,14 +11,17 @@ import Cleevio
 struct RegisterPhoneContactsView: View {
 
     @ObservedObject var viewModel: RegisterPhoneContactsViewModel
+    private let transition = AnyTransition.asymmetric(insertion: .move(edge: .trailing), removal: .scale).combined(with: .opacity)
 
     var body: some View {
         VStack {
             switch viewModel.currentState {
             case .requestAccess:
                 RequestAccessContactsView(viewModel: viewModel.phoneViewModel)
+                    .transition(transition)
             case .importPhoneContacts:
                 ImportContactsView(viewModel: viewModel.importPhoneContactsViewModel)
+                    .transition(transition)
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -29,6 +32,6 @@ struct RegisterPhoneContactsView: View {
 
 struct RegisterPhoneContactsViewPreview: PreviewProvider {
     static var previews: some View {
-        RegisterPhoneContactsView(viewModel: .init(username: "Diego", avatar: nil))
+        RegisterPhoneContactsView(viewModel: .init())
     }
 }

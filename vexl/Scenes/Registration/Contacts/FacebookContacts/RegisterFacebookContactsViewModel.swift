@@ -65,8 +65,8 @@ final class RegisterFacebookContactsViewModel: ViewModelType {
 
     private let cancelBag: CancelBag = .init()
 
-    init(username: String, avatar: Data?) {
-        facebookViewModel = RequestAccessFacebookContactsViewModel(username: username, avatar: avatar, activity: primaryActivity)
+    init() {
+        facebookViewModel = RequestAccessFacebookContactsViewModel(activity: primaryActivity)
         importFacebookContactsViewModel = ImportFacebookContactsViewModel()
         setupActivity()
         setupRequestFacebookContactsBindings()

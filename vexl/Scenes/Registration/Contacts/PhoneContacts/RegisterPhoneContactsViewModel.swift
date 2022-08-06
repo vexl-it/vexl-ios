@@ -65,8 +65,8 @@ final class RegisterPhoneContactsViewModel: ViewModelType {
 
     private let cancelBag: CancelBag = .init()
 
-    init(username: String, avatar: Data?) {
-        phoneViewModel = RequestAccessPhoneContactsViewModel(username: username, avatar: avatar, activity: primaryActivity)
+    init() {
+        phoneViewModel = RequestAccessPhoneContactsViewModel(activity: primaryActivity)
         importPhoneContactsViewModel = ImportPhoneContactsViewModel()
         setupActivity()
         setupRequestPhoneContactsBindings()
