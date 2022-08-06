@@ -28,6 +28,8 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
 
     @Published var primaryActivity: Activity = .init()
     @Published var selectedOption: OfferType = .buy
+    @Published var isRefreshing = false
+    @Published var isGraphExpanded = false
     @Published private var buyFeed: [OfferDetailViewData] = []
     @Published private var sellFeed: [OfferDetailViewData] = []
 
@@ -41,6 +43,7 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
         case offerDetailTapped(offer: ManagedOffer)
         case requestOfferTapped(offer: ManagedOffer)
         case fetchNewOffers
+        case graphExpanded(isExpanded: Bool)
     }
 
     let action: ActionSubject<UserAction> = .init()
@@ -89,6 +92,15 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
         }
     }
 
+    var userSelectedFilters: Bool {
+        switch selectedOption {
+        case .sell:
+            return !sellOfferFilter.isFilterEmpty
+        case .buy:
+            return !buyOfferFilter.isFilterEmpty
+        }
+    }
+
     let refresh = PassthroughSubject<Void, Never>()
     let bitcoinViewModel: BitcoinViewModel
     private var buyOfferFilter = OfferFilter(type: .buy)
@@ -102,6 +114,7 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
         setupDataBindings()
         setupActionBindings()
         setupInbox()
+        setupRefreshBindings()
     }
 
     func applyFilter(_ filter: OfferFilter) {
@@ -201,5 +214,32 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
             .map { offer in Route.showRequestOffer(offer) }
             .subscribe(route)
             .store(in: cancelBag)
+
+        userAction
+            .compactMap { action -> Bool? in
+                guard case let .graphExpanded(isExpanded) = action else {
+                    return nil
+                }
+                return isExpanded
+            }
+            .withUnretained(self)
+            .sink { owner, isExpanded in
+                owner.isGraphExpanded = isExpanded
+            }
+            .store(in: cancelBag)
+    }
+
+    private func setupRefreshBindings() {
+        $isRefreshing
+            .filter { $0 }
+            .withUnretained(self)
+            .sink { owner, _ in
+                owner.offerManager.sync()
+            }
+            .store(in: cancelBag)
+
+        offerManager.didFinishSyncing
+            .map { false }
+            .assign(to: &$isRefreshing)
     }
 }

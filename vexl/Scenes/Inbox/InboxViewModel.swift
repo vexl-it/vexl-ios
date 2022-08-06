@@ -41,7 +41,8 @@ final class InboxViewModel: ViewModelType, ObservableObject {
 
     @Published var filter: InboxFilterOption = .all
     @Published var primaryActivity: Activity = .init()
-
+    @Published var isRefreshing = false
+    @Published var isGraphExpanded = false
     @Published var hasPendingRequests = false
     @Published var inboxItems: [InboxItem] = []
 
@@ -80,6 +81,21 @@ final class InboxViewModel: ViewModelType, ObservableObject {
             .map(\.objects)
             .map { $0.map(InboxItem.init) }
             .assign(to: &$inboxItems)
+
+        $isRefreshing
+            .filter { $0 }
+            .withUnretained(self)
+            .sink { owner, _ in
+                owner.inboxManager.userRequestedSync()
+            }
+            .store(in: cancelBag)
+
+        inboxManager
+            .didFinishSyncing
+            .withUnretained(self)
+            .filter { $0.0.isRefreshing }
+            .map { _ in false }
+            .assign(to: &$isRefreshing)
     }
 
     private func setupActionBindings() {

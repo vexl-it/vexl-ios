@@ -29,10 +29,10 @@ final class FilterViewModel: ViewModelType, ObservableObject {
 
     // MARK: - View Bindings
 
-    @Published var currentAmountRange: ClosedRange<Int> = Constants.OfferInitialData.minOffer...Constants.OfferInitialData.maxOffer
+    @Published var currentAmountRange: ClosedRange<Int>
     @Published var amountRange: ClosedRange<Int> = Constants.OfferInitialData.minOffer...Constants.OfferInitialData.maxOffer
 
-    @Published var selectedFeeOption: OfferFeeOption
+    @Published var selectedFeeOptions: [OfferFeeOption] = []
     @Published var feeAmount: Double
 
     @Published var locations: [OfferLocationItemData]
@@ -40,14 +40,14 @@ final class FilterViewModel: ViewModelType, ObservableObject {
     @Published var selectedPaymentMethodOptions: [OfferPaymentMethodOption]
 
     @Published var selectedBTCOptions: [OfferAdvancedBTCOption]
-    @Published var selectedFriendDegreeOption: OfferFriendDegree
+    @Published var selectedFriendDegreeOptions: [OfferFriendDegree]
 
-    @Published var currency: Currency = Constants.OfferInitialData.currency
+    @Published var currency: Currency?
 
     var filterType: String { offerFilter.type.title }
-    var feeValue: Int {
-        guard selectedFeeOption == .withFee else { return 0 }
-        return Int(((maxFee - minFee) * feeAmount) + minFee)
+    var formatedFeeAmount: String {
+        // TODO: use NumberFormatter for percentages
+        "< \(Int(((maxFee - minFee) * feeAmount) + minFee))%"
     }
 
     // MARK: - Coordinator Bindings
@@ -69,16 +69,19 @@ final class FilterViewModel: ViewModelType, ObservableObject {
 
     init(offerFilter: OfferFilter) {
         self.offerFilter = offerFilter
-        currentAmountRange = offerFilter.currentAmountRange ?? 0...0
-        selectedFeeOption = offerFilter.selectedFeeOption
+        currentAmountRange = offerFilter.currentAmountRange ?? Constants.OfferInitialData.minOffer...Constants.OfferInitialData.maxOffer
+        selectedFeeOptions = offerFilter.selectedFeeOptions
         feeAmount = offerFilter.feeAmount
         locations = offerFilter.locations
         selectedPaymentMethodOptions = offerFilter.selectedPaymentMethodOptions
         selectedBTCOptions = offerFilter.selectedBTCOptions
-        selectedFriendDegreeOption = offerFilter.selectedFriendDegreeOption
+        selectedFriendDegreeOptions = offerFilter.selectedFriendDegreeOptions
         setupCurrencyBindings(currency: offerFilter.currency)
-        setupDataBindings()
         setupBindings()
+    }
+
+    func isFriendDegreeSelected(for option: OfferFriendDegree) -> Bool {
+        selectedFriendDegreeOptions.contains(option)
     }
 
     private func setupCurrencyBindings(currency: Currency?) {
@@ -100,12 +103,11 @@ final class FilterViewModel: ViewModelType, ObservableObject {
                 case .czk:
                     owner.amountRange = minOffer...maxOfferCZK
                     owner.currentAmountRange = minOffer...maxOfferCZK
+                case .none:
+                    break
                 }
             }
             .store(in: cancelBag)
-    }
-
-    private func setupDataBindings() {
     }
 
     private func setupBindings() {
@@ -126,12 +128,12 @@ final class FilterViewModel: ViewModelType, ObservableObject {
             .withUnretained(self)
             .sink { owner, _ in
                 owner.offerFilter.currentAmountRange = owner.currentAmountRange
-                owner.offerFilter.selectedFeeOption = owner.selectedFeeOption
+                owner.offerFilter.selectedFeeOptions = owner.selectedFeeOptions
                 owner.offerFilter.feeAmount = owner.feeAmount
                 owner.offerFilter.locations = owner.locations
                 owner.offerFilter.selectedPaymentMethodOptions = owner.selectedPaymentMethodOptions
                 owner.offerFilter.selectedBTCOptions = owner.selectedBTCOptions
-                owner.offerFilter.selectedFriendDegreeOption = owner.selectedFriendDegreeOption
+                owner.offerFilter.selectedFriendDegreeOptions = owner.selectedFriendDegreeOptions
                 owner.offerFilter.currency = owner.currency
 
                 owner.route.send(.applyFilterTapped(owner.offerFilter))
@@ -187,12 +189,13 @@ final class FilterViewModel: ViewModelType, ObservableObject {
 
     private func resetFilter() {
         currentAmountRange = amountRange
-        selectedFeeOption = .withoutFee
-        feeAmount = 0
+        selectedFeeOptions = []
+        feeAmount = 1
         locations = []
         selectedPaymentMethodOptions = []
         selectedBTCOptions = []
-        selectedFriendDegreeOption = .firstDegree
+        selectedFriendDegreeOptions = []
         offerFilter.reset(with: currentAmountRange)
+        currency = nil
     }
 }

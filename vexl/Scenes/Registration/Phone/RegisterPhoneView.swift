@@ -12,32 +12,32 @@ import Cleevio
 struct RegisterPhoneView: View {
 
     @ObservedObject var viewModel: RegisterPhoneViewModel
+    private let transition = AnyTransition.asymmetric(insertion: .move(edge: .trailing), removal: .scale).combined(with: .opacity)
 
     var body: some View {
         VStack {
-
             if viewModel.showCodeInput {
-                CodeInputView(phoneNumber: viewModel.phoneNumber,
-                              isEnabled: viewModel.codeInputEnabled,
-                              remainingTime: viewModel.countdown,
-                              displayRetry: viewModel.currentState != .codeInputSuccess,
-                              code: $viewModel.validationCode,
-                              retryAction: {
+                RegisterPhoneCodeInputView(phoneNumber: viewModel.phoneNumber,
+                                           isEnabled: viewModel.codeInputEnabled,
+                                           remainingTime: viewModel.countdown,
+                                           displayRetry: viewModel.currentState != .codeInputSuccess,
+                                           code: $viewModel.validationCode,
+                                           retryAction: {
                     viewModel.send(action: .sendCode)
                 })
                     .padding(.all, Appearance.GridGuide.point)
+                    .transition(transition)
             } else {
-                PhoneInputView(phoneNumber: $viewModel.phoneNumber) {
-                    // TODO: - implement country picker once its done
-                }
+                RegisterPhoneNumberInputView(phoneNumber: $viewModel.phoneNumber)
                     .padding(.all, Appearance.GridGuide.point)
+                    .transition(transition)
             }
 
             Spacer()
 
             LargeSolidButton(title: viewModel.actionTitle,
                              font: Appearance.TextStyle.titleSmallBold.font.asFont,
-                             style: .custom(color: viewModel.actionColor),
+                             style: .main,
                              isFullWidth: true,
                              isEnabled: $viewModel.isActionEnabled,
                              action: {

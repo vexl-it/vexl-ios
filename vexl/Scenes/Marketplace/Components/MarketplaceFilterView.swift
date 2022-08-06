@@ -13,13 +13,14 @@ typealias MarketplaceFilterData = MarketplaceFilterView.FilterData
 struct MarketplaceFilterView: View {
 
     let items: [FilterData]
-    let actionTitle: String
+    let hasFilters: Bool
+    let hasOffers: Bool
     let mainAction: () -> Void
 
     var body: some View {
         HStack(spacing: Appearance.GridGuide.tinyPadding) {
             ForEach(items, id: \.self) { item in
-                FilterButton(title: item.title, type: item.type) {
+                FilterButton(title: item.title, type: item.type, hasFilters: hasFilters) {
                     item.action?()
                 }
             }
@@ -27,8 +28,13 @@ struct MarketplaceFilterView: View {
             Spacer()
 
             Button(action: mainAction, label: {
-                Image(systemName: "plus")
-                    .frame(size: Appearance.GridGuide.iconSize)
+                if hasOffers {
+                    Text(L.marketplaceSellOffer())
+                        .textStyle(.paragraphSmallBold)
+                } else {
+                    Image(systemName: "plus")
+                        .frame(size: Appearance.GridGuide.iconSize)
+                }
             })
             .textStyle(.paragraphBold)
             .foregroundColor(Appearance.Colors.yellow100)
@@ -64,22 +70,35 @@ extension MarketplaceFilterView {
     private struct FilterButton: View {
         let title: String
         let type: LabelType
+        let hasFilters: Bool
         let action: () -> Void
+
+        private var textStyle: Appearance.TextStyle {
+            hasFilters ? .paragraphBold : .description
+        }
+
+        private var foregroundColor: Color {
+            hasFilters ? Appearance.Colors.yellow100 : Appearance.Colors.gray3
+        }
+
+        private var backgroundColor: Color {
+            hasFilters ? Appearance.Colors.yellow20 : Appearance.Colors.gray1
+        }
 
         var body: some View {
             Button(action: action, label: {
                 HStack {
                     Text(title)
-                        .textStyle(.description)
+                        .textStyle(textStyle)
 
                     if type == .filter {
                         Image(systemName: "chevron.down")
                     }
                 }
             })
-            .foregroundColor(Appearance.Colors.gray3)
+            .foregroundColor(foregroundColor)
             .padding(Appearance.GridGuide.point)
-            .background(Appearance.Colors.gray1)
+            .background(backgroundColor)
             .cornerRadius(Appearance.GridGuide.buttonCorner)
         }
     }
@@ -96,7 +115,8 @@ struct MarketplaceFilterViewPreview: PreviewProvider {
                     action: nil
                 )
             ],
-            actionTitle: "Offer",
+            hasFilters: true,
+            hasOffers: true,
             mainAction: { }
         )
             .background(Color.black)

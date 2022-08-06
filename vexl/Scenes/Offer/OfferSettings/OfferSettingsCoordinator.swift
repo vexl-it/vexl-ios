@@ -30,7 +30,7 @@ final class OfferSettingsCoordinator: BaseCoordinator<RouterResult<Void>> {
             viewModel = OfferSettingsViewModel(offerType: offerType, offerKey: ECCKeys())
         }
 
-        let viewController = BaseViewController(rootView: OfferSettingsView(viewModel: viewModel))
+        let viewController = ToggleKeyboardHostingController(rootView: OfferSettingsView(viewModel: viewModel))
 
         viewModel
             .$error

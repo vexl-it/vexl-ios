@@ -12,8 +12,8 @@ struct OfferTriggersView: View {
     @State private var isActiveExpanded = true
 
     private let options: [Option] = [.below, .above]
-    private let currency: String = Constants.currencySymbol
 
+    let currencySymbol: String
     let showDeleteTrigger: Bool
     @Binding var selectedActivateOption: OfferTrigger
     @Binding var selectedActivateAmount: String
@@ -35,7 +35,8 @@ struct OfferTriggersView: View {
             .foregroundColor(Appearance.Colors.whiteText)
 
             if isActiveExpanded {
-                OfferTriggerActiveView(selectedOption: $selectedActivateOption,
+                OfferTriggerActiveView(currencySymbol: currencySymbol,
+                                       selectedOption: $selectedActivateOption,
                                        activeAmount: $selectedActivateAmount)
 
                 if showDeleteTrigger {
@@ -65,7 +66,8 @@ extension OfferTriggersView {
 #if DEBUG || DEVEL
 struct OfferTriggersViewPreview: PreviewProvider {
     static var previews: some View {
-        OfferTriggersView(showDeleteTrigger: true,
+        OfferTriggersView(currencySymbol: "$",
+                          showDeleteTrigger: true,
                           selectedActivateOption: .constant(.above),
                           selectedActivateAmount: .constant("12345"),
                           deleteTime: .constant("30"),

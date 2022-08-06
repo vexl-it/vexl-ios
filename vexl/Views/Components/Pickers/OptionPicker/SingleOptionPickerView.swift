@@ -11,7 +11,7 @@ struct SingleOptionPickerView<Option: Hashable, Content: View>: View {
 
     @Binding var selectedOption: Option
     let options: [Option]
-    let content: (Option) -> Content
+    @ViewBuilder let content: (Option) -> Content
     let action: ((Option) -> Void)?
 
     var body: some View {

@@ -133,8 +133,9 @@ extension OfferInformationDetailView {
         @Published var createdDate: Date = Date()
 
         var amount: String {
-            guard let sign = offer.currency?.sign else { return "" }
-            return "\(offer.maxAmount)\(sign)"
+            guard let currency = offer.currency else { return "" }
+            let maxAmount = Int(offer.maxAmount)
+            return currency.formattedCurrency(amount: maxAmount)
         }
 
         var paymentIcons: [String] {
@@ -159,7 +160,7 @@ extension OfferInformationDetailView {
 
             offer.publisher(for: \.isRequested).assign(to: &$isRequested)
             offer.publisher(for: \.id).filterNil().assign(to: &$id)
-            profile?.publisher(for: \.avatarData).compactMap{ _ in profile?.avatar }.assign(to: &$avatar)
+            profile?.publisher(for: \.avatarData).compactMap { _ in profile?.avatar }.assign(to: &$avatar)
             profile?.publisher(for: \.name).filterNil().assign(to: &$username)
             offer.publisher(for: \.offerDescription).filterNil().assign(to: &$title)
             offer.publisher(for: \.friendDegreeRawType).map { _ in offer.friendLevel?.label }.filterNil().assign(to: &$friendLevel)

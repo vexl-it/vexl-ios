@@ -33,7 +33,7 @@ enum Currency: String, Codable, CaseIterable, Identifiable {
     var position: HorizontalPosition {
         switch self {
         case .eur:
-            return .left
+            return .right
         case .usd:
             return .left
         case .czk:
@@ -60,6 +60,15 @@ enum Currency: String, Codable, CaseIterable, Identifiable {
             return L.offerCurrencyEurTitle()
         case .czk:
             return L.offerCurrencyCzkTitle()
+        }
+    }
+
+    func formattedCurrency(amount: Int) -> String {
+        switch position {
+        case .left:
+            return "\(sign) \(amount)"
+        case .right:
+            return "\(amount) \(sign)"
         }
     }
 }

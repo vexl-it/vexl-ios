@@ -14,6 +14,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
 
     @Inject var inboxManager: InboxManagerType
     @Inject var chatManager: ChatManagerType
+    @Inject var contactsRepository: ContactsRepositoryType
 
     enum ImageSource {
         case photoAlbum, camera
@@ -42,6 +43,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
     @Published var showImagePickerActionSheet = false
     @Published var username: String = L.generalAnonymous()
     @Published var avatar: Data?
+    @Published var allowsInput = true
 
     var errorIndicator: ErrorIndicator { primaryActivity.error }
     var activityIndicator: ActivityIndicator { primaryActivity.indicator }
@@ -57,6 +59,8 @@ final class ChatViewModel: ViewModelType, ObservableObject {
         case showRevealIdentityResponseTapped
         case showRevealIdentityModal(isUserResponse: Bool, username: String, avatar: String?)
         case showBlockTapped
+        case showCommonFriendsTapped
+        case showCommonFriendsModal(contacts: [ManagedContact])
     }
 
     var route: CoordinatingSubject<Route> = .init()
@@ -83,7 +87,9 @@ final class ChatViewModel: ViewModelType, ObservableObject {
         self.chat = chat
         self.chatActionViewModel = ChatActionViewModel(chat: chat)
         self.chatConversationViewModel = ChatConversationViewModel(chat: chat)
+        self.allowsInput = !chat.isBlocked
 
+        setupActivityBindings()
         setupChildViewModelBindings()
         setupActionBindings()
         setupUpdateUIBindings()
@@ -91,9 +97,36 @@ final class ChatViewModel: ViewModelType, ObservableObject {
         setupChatImageInputBindings()
     }
 
+    private func setupActivityBindings() {
+        activityIndicator
+            .loading
+            .assign(to: &$isLoading)
+
+        errorIndicator
+            .errors
+            .asOptional()
+            .assign(to: &$error)
+    }
+
     private func setupChildViewModelBindings() {
         chatActionViewModel
             .route
+            .filter { $0 != .showCommonFriendsTapped }
+            .subscribe(route)
+            .store(in: cancelBag)
+
+        chatActionViewModel
+            .route
+            .filter { $0 == .showCommonFriendsTapped }
+            .withUnretained(self)
+            .flatMap { owner, _ -> AnyPublisher<[ManagedContact], Never> in
+                let commonFriends = owner.offer?.commonFriends ?? []
+                return owner.contactsRepository
+                    .getCommonFriends(hashes: commonFriends)
+                    .track(activity: owner.primaryActivity)
+                    .eraseToAnyPublisher()
+            }
+            .map { contacts -> Route in .showCommonFriendsModal(contacts: contacts) }
             .subscribe(route)
             .store(in: cancelBag)
 
@@ -163,6 +196,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
             .flatMap { owner, payload in
                 owner.chatManager
                     .send(payload: payload, chat: owner.chat)
+                    .trackError(owner.primaryActivity.error)
                     .materialize()
                     .compactMap(\.value)
             }
@@ -188,7 +222,8 @@ final class ChatViewModel: ViewModelType, ObservableObject {
         chatManager
             .delete(chat: chat)
             .track(activity: primaryActivity)
-            .sink()
+            .map { _ -> Route in .dismissTapped }
+            .subscribe(route)
             .store(in: cancelBag)
     }
 
@@ -224,6 +259,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
             .withUnretained(self)
             .sink(receiveValue: { owner in
                 owner.chatActionViewModel.isChatBlocked.toggle()
+                owner.allowsInput.toggle()
             })
             .store(in: cancelBag)
     }

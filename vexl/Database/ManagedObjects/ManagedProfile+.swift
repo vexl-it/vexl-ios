@@ -19,5 +19,6 @@ extension ManagedProfile {
             .map { _ in Int.random(in: 0..<Constants.randomNameSyllables.count) }
             .map { Constants.randomNameSyllables[$0] }
             .joined()
+            .capitalizeFirstLetter
     }
 }

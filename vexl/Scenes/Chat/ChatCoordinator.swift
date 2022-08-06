@@ -29,6 +29,14 @@ final class ChatCoordinator: BaseCoordinator<RouterResult<Void>> {
 
         router.present(viewController, animated: animated)
 
+        viewModel
+            .$error
+            .assign(to: &viewController.$error)
+
+        viewModel
+            .$isLoading
+            .assign(to: &viewController.$isLoading)
+
         bindDeleteRoute(viewModel: viewModel, viewController: viewController)
         bindBlockRoute(viewModel: viewModel, viewController: viewController)
         bindRevealIdentity(viewModel: viewModel, viewController: viewController)
@@ -59,6 +67,29 @@ final class ChatCoordinator: BaseCoordinator<RouterResult<Void>> {
                                          presentationStyle: .overFullScreen,
                                          transitionStyle: .crossDissolve)
                 return owner.presentActionSheet(router: router, viewModel: ChatOfferSheetViewModel(offer: offer))
+            }
+            .sink()
+            .store(in: cancelBag)
+
+        viewModel
+            .route
+            .compactMap { action -> [ManagedContact]? in
+                if case let .showCommonFriendsModal(contacts) = action { return contacts }
+                return nil
+            }
+            .withUnretained(self)
+            .flatMap { owner, contacts -> CoordinatingResult<RouterResult<BottomActionSheetActionType>> in
+                owner.presentActionSheet(
+                    router: ModalRouter(
+                        parentViewController: viewController,
+                        presentationStyle: .overFullScreen,
+                        transitionStyle: .crossDissolve
+                    ),
+                    viewModel: ChatCommonFriendsSheetViewModel(
+                        chat: owner.chat,
+                        contacts: contacts
+                    )
+                )
             }
             .sink()
             .store(in: cancelBag)

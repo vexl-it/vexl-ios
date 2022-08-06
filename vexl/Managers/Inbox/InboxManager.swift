@@ -10,7 +10,10 @@ import Combine
 import Cleevio
 
 protocol InboxManagerType {
+    var didFinishSyncing: AnyPublisher<Void, Never> { get }
+    
     func syncInboxes()
+    func userRequestedSync()
 
     func syncInbox(with publicKey: String)
 }
@@ -21,7 +24,33 @@ final class InboxManager: InboxManagerType {
     @Inject var chatService: ChatServiceType
     @Inject var userRepository: UserRepositoryType
 
+    var didFinishSyncing: AnyPublisher<Void, Never> {
+        _didFinishSyncing.eraseToAnyPublisher()
+    }
+
+    private var _didFinishSyncing: PassthroughSubject<Void, Never> = .init()
+    private var isRefreshingInboxes = false
+    private var activity: Activity = .init()
     private var cancelBag = CancelBag()
+
+    init() {
+        activity.indicator
+            .loading
+            .withUnretained(self)
+            .filter { !$0.1 && $0.0.isRefreshingInboxes }
+            .sink { owner, _ in
+                owner.isRefreshingInboxes = false
+                owner._didFinishSyncing.send(())
+            }
+            .store(in: cancelBag)
+    }
+
+    func userRequestedSync() {
+        if !isRefreshingInboxes {
+            isRefreshingInboxes = true
+            syncInboxes()
+        }
+    }
 
     func syncInboxes() {
         let userOffers = userRepository.user?.offers?.allObjects as? [ManagedOffer] ?? []
@@ -33,6 +62,7 @@ final class InboxManager: InboxManagerType {
 
         let inboxPublishers = inboxes.map { inbox in
             self.syncInbox(inbox)
+                .track(activity: activity)
                 .materialize()
                 .compactMap(\.value)
         }

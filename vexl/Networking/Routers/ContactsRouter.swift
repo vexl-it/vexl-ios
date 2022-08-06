@@ -21,9 +21,9 @@ enum ContactsRouter: ApiRouter {
 
     var method: HTTPMethod {
         switch self {
-        case .getFacebookContacts, .getAvailableFacebookContacts, .getContacts, .countPhoneContacts, .getCommonFriends:
+        case .getFacebookContacts, .getAvailableFacebookContacts, .getContacts, .countPhoneContacts:
             return .get
-        case .createUser, .importContacts, .getAvailableContacts:
+        case .createUser, .importContacts, .getAvailableContacts, .getCommonFriends:
             return .post
         case .deleteUser:
             return .delete
@@ -77,13 +77,19 @@ enum ContactsRouter: ApiRouter {
         case let .importContacts(contacts):
             return ["contacts": contacts]
         case let .getContacts(_, friendLevel, pageLimit):
-            guard let pageLimit = pageLimit else {
-                return ["level": friendLevel.rawValue]
+            var params: Parameters = [:]
+            switch friendLevel {
+            case .first:
+                params["level"] = friendLevel.rawValue
+            case .second, .all:
+                params["level"] = ContactFriendLevel.all.rawValue
             }
-            return ["level": friendLevel.rawValue,
-                    "limit": pageLimit]
+            if let pageLimit = pageLimit {
+                params["limit"] = pageLimit
+            }
+            return params
         case let .getCommonFriends(publicKeys):
-            return ["publicKeys": publicKeys.joined(separator: ",")]
+            return ["publicKeys": publicKeys]
         }
     }
 

@@ -60,6 +60,7 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
         case importFacebook
         case reportIssue
         case showGroups
+        case deleteAccount
     }
 
     var route: CoordinatingSubject<Route> = .init()
@@ -192,10 +193,13 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
 
         option
             .filter { $0 == .logout }
-            .withUnretained(self)
-            .flatMap { owner, _ in
-                owner.authenticationManager.logoutUserPublisher(force: false)
-            }
+            .map { _ -> Route in .deleteAccount }
+            .subscribe(route)
+            .store(in: cancelBag)
+    }
+
+    func logoutUser() {
+        authenticationManager.logoutUserPublisher(force: false)
             .sink()
             .store(in: cancelBag)
     }

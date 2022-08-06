@@ -23,9 +23,11 @@ struct ChatCommonFriendItemView: View {
                     .textStyle(.paragraphMedium)
                     .foregroundColor(Appearance.Colors.primaryText)
 
-                Text(data.subtitle)
-                    .textStyle(.description)
-                    .foregroundColor(Appearance.Colors.gray3)
+                if let subtitle = data.subtitle {
+                    Text(subtitle)
+                        .textStyle(.description)
+                        .foregroundColor(Appearance.Colors.gray3)
+                }
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -37,7 +39,7 @@ extension ChatCommonFriendItemView {
     struct ViewData: Identifiable, Hashable {
         let id = UUID()
         let title: String
-        let subtitle: String
+        let subtitle: String?
         let avatar: Data?
 
         static var stub: ViewData {

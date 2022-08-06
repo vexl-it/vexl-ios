@@ -10,6 +10,7 @@ import Combine
 import CoreData
 
 protocol OfferManagerType {
+    var didFinishSyncing: AnyPublisher<Void, Never> { get }
     func sync()
 }
 
@@ -20,6 +21,12 @@ final class OfferManager: OfferManagerType {
     private var cancellable: AnyCancellable?
 
     @UserDefault(UserDefaultKey.lastOfferSyncDate.rawValue, defaultValue: Date()) private var lastSyncDate: Date
+
+    var didFinishSyncing: AnyPublisher<Void, Never> {
+        _didFinishSyncing.eraseToAnyPublisher()
+    }
+
+    private var _didFinishSyncing: PassthroughSubject<Void, Never> = .init()
 
     func sync() {
         guard cancellable == nil else {
@@ -35,6 +42,7 @@ final class OfferManager: OfferManagerType {
             .catch { _ in Just([]) }
             .sink(receiveValue: { [weak self] _ in
                 self?.lastSyncDate = startDate
+                self?._didFinishSyncing.send(())
                 self?.cancellable = nil
             })
     }

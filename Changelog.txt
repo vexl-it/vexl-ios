@@ -1,8 +1,39 @@
 - Requires uninstall: ⚠️ YES ⚠️
 
 ### Improvements
-- Persistence now supported in the 
+- Marketplace main button now changes if user has offers
+- Added FAQ views
 
 ### Fixes
+- VEX-437: Crash in filter
+- VEX-419: Second degree friends offer encryption
+- VEX-251: Common friends / before request identity
+- VEX-253: Common friends / after request identity
+- VEX-283: Persistence general Issues
+- VEX-323: Imported contacts
+- VEX-363: New offer with fee not working
+- VEX-378: Push notifications chat
+- VEX-357: Add currency
+- VEX-415: My offers button
+- VEX-366: Update UDIDs for new iPhones
+- VEX-325: Report issue
+- VEX-343: Pull to refresh
+- VEX-416: Offer currency
+- VEX-417: Missing common friends
+- VEX-426: Common friends are not working
+- VEX-418: Missing currency
+- VEX-362: Graph not working
+- VEX-427: Block user not working
+- VEX-430: Report issue is not working
+- VEX-431: Hide some items
+- VEX-432: Anonymous generated name should be with first uppercase
+- VEX-433: Problem with delete chat
+- VEX-481: Offer bugs
+- VEX-482: Filter bugs
+- VEX-499: API error username
+- VEX-501: Change request to BE in common friends
+- VEX-494: bitcoin chart working
+- VEX-435: localization for CZ and SK
+- VEX-438: splash and icon update
 
 ### Known Issues

@@ -11,7 +11,21 @@ import Cleevio
 
 final class SplashScreenViewModel: ViewModelType {
 
-    // MARK: - Dependnecies
+    enum AnimationState {
+        case smallLogo
+        case bigLogo
+
+        var height: CGFloat {
+            switch self {
+            case .smallLogo:
+                return 34
+            case .bigLogo:
+                return 80
+            }
+        }
+    }
+
+    // MARK: - Dependencies
 
     @Inject var initialScreenManager: InitialScreenManager
     @Inject var authenticationManager: AuthenticationManager
@@ -26,7 +40,7 @@ final class SplashScreenViewModel: ViewModelType {
 
     // MARK: - View Bindings
 
-    @Published var isLoadingCountries: Bool = false
+    @Published var animationState: AnimationState = .smallLogo
     @Published var primaryActivity: Activity = .init()
 
     // MARK: - Coordinator Bindings
@@ -44,7 +58,15 @@ final class SplashScreenViewModel: ViewModelType {
     // MARK: - Initialization
 
     init() {
+        setupAnimationUpdates()
         setupDataUpdates()
+    }
+
+    private func setupAnimationUpdates() {
+        Just(())
+            .delay(for: 0.5, scheduler: RunLoop.main)
+            .map { _ in AnimationState.bigLogo }
+            .assign(to: &$animationState)
     }
 
     private func setupDataUpdates() {
@@ -69,7 +91,7 @@ final class SplashScreenViewModel: ViewModelType {
             }
 
         Publishers.Merge(userSignedOut, refresh)
-            .delay(for: 1, scheduler: RunLoop.main) // wait for lottie animation to complete
+            .delay(for: 2, scheduler: RunLoop.main) // wait for lottie animation to complete
             .withUnretained(self)
             .sink(receiveValue: { owner, initialScreen -> Void in
                 owner.initialScreenManager.update(state: initialScreen)

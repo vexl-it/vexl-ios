@@ -16,10 +16,14 @@ extension String {
         return UnsafeMutablePointer<CChar>(mutating: nsSelf.utf8String)
     }
 
+    var capitalizeFirstLetter: String {
+        prefix(1).uppercased() + lowercased().dropFirst()
+    }
+
     func removeWhitespaces() -> String {
         return components(separatedBy: .whitespaces).joined()
     }
-    
+
     func configureAttributedText() -> NSMutableAttributedString {
         var attributedString = NSMutableAttributedString(string: self)
 

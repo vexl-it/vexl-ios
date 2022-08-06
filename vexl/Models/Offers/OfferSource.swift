@@ -61,7 +61,7 @@ enum GroupUUID: RawRepresentable {
     }
 }
 
-enum OfferFriendDegree: String {
+enum OfferFriendDegree: String, CaseIterable {
     case firstDegree = "FIRST_DEGREE"
     case secondDegree = "SECOND_DEGREE"
 
