@@ -70,6 +70,7 @@ struct RegistrationCardViewPreview: PreviewProvider {
                              content: {
             text
         })
+            .background(Color.black)
 
         RegistrationCardView(title: title,
                              subtitle: subtitle,
@@ -78,5 +79,6 @@ struct RegistrationCardViewPreview: PreviewProvider {
                              content: {
             text
         })
+            .background(Color.black)
     }
 }

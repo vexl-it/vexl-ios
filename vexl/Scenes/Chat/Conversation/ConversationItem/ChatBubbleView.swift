@@ -16,7 +16,7 @@ struct ChatBubbleView<Content: View>: View {
         content()
             .foregroundColor(style.textColor)
             .background(style.backgroundColor)
-            .cornerRadius(Appearance.GridGuide.requestCorner)
+            .cornerRadius(Appearance.GridGuide.requestAvatarCorner)
             .frame(maxWidth: .infinity, minHeight: 40, alignment: style == .contact ? .leading : .trailing)
     }
 }

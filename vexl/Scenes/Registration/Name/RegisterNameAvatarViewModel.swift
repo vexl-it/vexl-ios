@@ -22,7 +22,7 @@ final class RegisterNameAvatarViewModel: ViewModelType {
     // MARK: - View State
 
     enum State {
-        case phoneVerified
+        case startRegistration
         case usernameInput
         case avatarInput
     }
@@ -42,7 +42,7 @@ final class RegisterNameAvatarViewModel: ViewModelType {
     // MARK: - View Bindings
 
     @Published var username = ""
-    @Published var currentState: State = .phoneVerified
+    @Published var currentState: State = .startRegistration
     @Published var avatar: Data?
     @Published var isActionEnabled = false
     @Published var showImagePicker = false
@@ -57,6 +57,9 @@ final class RegisterNameAvatarViewModel: ViewModelType {
     }
     var errorIndicator: ErrorIndicator {
         primaryActivity.error
+    }
+    var avatarButtonTitle: String {
+        avatar == nil ? L.continue() : L.generalSave()
     }
 
     // MARK: - Coordinator Bindings
@@ -82,7 +85,7 @@ final class RegisterNameAvatarViewModel: ViewModelType {
         case .avatarInput:
             clearState()
             currentState = .usernameInput
-        case .phoneVerified, .usernameInput:
+        case .startRegistration, .usernameInput:
             break
         }
     }
@@ -106,7 +109,7 @@ final class RegisterNameAvatarViewModel: ViewModelType {
             .assign(to: &$isActionEnabled)
 
         $currentState
-            .filter { $0 == .phoneVerified }
+            .filter { $0 == .startRegistration }
             .delay(for: .seconds(3), scheduler: RunLoop.main)
             .withUnretained(self)
             .sink { owner, _ in

@@ -50,7 +50,7 @@ struct ChatRequestOfferView: View {
                 .padding(Appearance.GridGuide.point)
         }
         .background(Appearance.Colors.whiteText)
-        .cornerRadius(Appearance.GridGuide.requestCorner)
+        .cornerRadius(Appearance.GridGuide.requestAvatarCorner)
         .padding(.top, Appearance.GridGuide.mediumPadding1)
     }
 

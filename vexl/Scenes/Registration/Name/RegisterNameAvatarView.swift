@@ -13,37 +13,18 @@ import Combine
 struct RegisterNameAvatarView: View {
 
     @ObservedObject var viewModel: RegisterNameAvatarViewModel
+    private let transition = AnyTransition.asymmetric(insertion: .move(edge: .trailing), removal: .scale).combined(with: .opacity)
 
     var body: some View {
         VStack {
             switch viewModel.currentState {
-            case .phoneVerified:
-                PhoneVerified()
+            case .startRegistration:
+                RegisterNameAvatarStartView()
+                    .transition(transition)
             case .usernameInput:
-                NameInputView(username: $viewModel.username)
-
-                Spacer()
-
-                actionButton {
-                    viewModel.send(action: .setUsername)
-                }
-                .transaction { $0.disablesAnimations = true }
+                nameInputView
             case .avatarInput:
-                AvatarInputView(name: viewModel.username,
-                                avatar: viewModel.avatar,
-                                addAction: {
-                    viewModel.send(action: .addAvatar)
-                },
-                                deleteAction: {
-                    viewModel.send(action: .deleteAvatar)
-                })
-
-                Spacer()
-
-                actionButton {
-                    viewModel.send(action: .createUser)
-                }
-                .transaction { $0.disablesAnimations = true }
+                avatarInputView
             }
         }
         .frame(maxWidth: .infinity)
@@ -73,10 +54,45 @@ struct RegisterNameAvatarView: View {
         .animation(.easeInOut(duration: 0.5), value: viewModel.currentState)
     }
 
-    @ViewBuilder private func actionButton(with action: @escaping () -> Void) -> some View {
-        LargeSolidButton(title: L.continue(),
+    private var nameInputView: some View {
+        Group {
+            RegisterNameInputView(username: $viewModel.username)
+                .transition(transition)
+
+            Spacer()
+
+            actionButton(title: L.generalSave()) {
+                viewModel.send(action: .setUsername)
+            }
+            .transaction { $0.disablesAnimations = true }
+        }
+    }
+
+    private var avatarInputView: some View {
+        Group {
+            RegisterAvatarInputView(name: viewModel.username,
+                                    avatar: viewModel.avatar,
+                                    addAction: {
+                viewModel.send(action: .addAvatar)
+            },
+                                    deleteAction: {
+                viewModel.send(action: .deleteAvatar)
+            })
+                .transition(transition)
+
+            Spacer()
+
+            actionButton(title: viewModel.avatarButtonTitle) {
+                viewModel.send(action: .createUser)
+            }
+            .transaction { $0.disablesAnimations = true }
+        }
+    }
+
+    @ViewBuilder private func actionButton(title: String, action: @escaping () -> Void) -> some View {
+        LargeSolidButton(title: title,
                          font: Appearance.TextStyle.titleSmallBold.font.asFont,
-                         style: .custom(color: .welcome),
+                         style: .main,
                          isFullWidth: true,
                          isEnabled: $viewModel.isActionEnabled,
                          action: {
@@ -89,15 +105,21 @@ struct RegisterNameAvatarView: View {
 
 struct RegisterNameAvatarViewPreview: PreviewProvider {
 
-    static var viewModel: RegisterNameAvatarViewModel {
+    static var avatarViewModel: RegisterNameAvatarViewModel {
         let viewModel = RegisterNameAvatarViewModel()
         viewModel.currentState = .avatarInput
         return viewModel
     }
 
+    static var nameViewModel: RegisterNameAvatarViewModel {
+        let viewModel = RegisterNameAvatarViewModel()
+        viewModel.currentState = .usernameInput
+        return viewModel
+    }
+
     static var previews: some View {
         RegisterNameAvatarView(viewModel: .init())
-
-        RegisterNameAvatarView(viewModel: viewModel)
+        RegisterNameAvatarView(viewModel: nameViewModel)
+        RegisterNameAvatarView(viewModel: avatarViewModel)
     }
 }
