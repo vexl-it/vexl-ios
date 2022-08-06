@@ -137,6 +137,22 @@ final class UserProfileCoordinator: BaseCoordinator<Void> {
             }
             .store(in: cancelBag)
 
+        viewModel
+            .route
+            .receive(on: RunLoop.main)
+            .filter { $0 == .showGroups }
+            .flatMapLatest(with: self) { owner, _ -> CoordinatingResult<RouterResult<Void>> in
+                let router = ModalNavigationRouter(
+                    parentViewController: viewController,
+                    presentationStyle: .fullScreen,
+                    transitionStyle: .coverVertical
+                )
+                let coordinator = GroupsCoordinator(router: router, animated: true)
+                return owner.present(coordinator: coordinator, router: router)
+            }
+            .sink()
+            .store(in: cancelBag)
+
         return Empty(completeImmediately: false)
             .eraseToAnyPublisher()
     }

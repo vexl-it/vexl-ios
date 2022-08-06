@@ -25,7 +25,7 @@ final class GroupsViewModel: ViewModelType, ObservableObject {
     // MARK: - Action Bindings
 
     enum UserAction: Equatable {
-        case dismiss, joinGroup
+        case dismissTap, joinGroupTap
     }
 
     let action: ActionSubject<UserAction> = .init()
@@ -34,6 +34,7 @@ final class GroupsViewModel: ViewModelType, ObservableObject {
 
     enum Route: Equatable {
         case dismissTapped
+        case joinGroupTapped
     }
 
     var route: CoordinatingSubject<Route> = .init()
@@ -70,8 +71,14 @@ final class GroupsViewModel: ViewModelType, ObservableObject {
         let action = action.share()
 
         action
-            .filter { $0 == .dismiss }
+            .filter { $0 == .dismissTap }
             .map { _ -> Route in .dismissTapped }
+            .subscribe(route)
+            .store(in: cancelBag)
+
+        action
+            .filter { $0 == .joinGroupTap }
+            .map { _ -> Route in .joinGroupTapped }
             .subscribe(route)
             .store(in: cancelBag)
     }
