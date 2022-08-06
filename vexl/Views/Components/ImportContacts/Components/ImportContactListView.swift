@@ -26,8 +26,10 @@ struct ImportContactListView: View {
             switch viewModel.currentState {
             case .empty:
                 Text(L.registerContactsImportEmpty())
+                    .multilineTextAlignment(.center)
                     .foregroundColor(Appearance.Colors.primaryText)
                     .textStyle(.h3)
+                    .padding()
             case .loading:
                 EmptyView()
             case .content, .success:

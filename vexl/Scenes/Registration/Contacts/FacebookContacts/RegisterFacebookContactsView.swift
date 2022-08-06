@@ -11,14 +11,17 @@ import SwiftUI
 struct RegisterFacebookContactsView: View {
 
     @ObservedObject var viewModel: RegisterFacebookContactsViewModel
+    private let transition = AnyTransition.asymmetric(insertion: .move(edge: .trailing), removal: .scale).combined(with: .opacity)
 
     var body: some View {
         VStack {
             switch viewModel.currentState {
             case .requestAccess:
                 RequestAccessContactsView(viewModel: viewModel.facebookViewModel)
+                    .transition(transition)
             case .importFacebookContacts:
                 ImportContactsView(viewModel: viewModel.importFacebookContactsViewModel)
+                    .transition(transition)
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)

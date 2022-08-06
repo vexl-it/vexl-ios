@@ -28,6 +28,10 @@ final class RequestAccessFacebookContactsViewModel: RequestAccessContactsViewMod
         true
     }
 
+    override var image: Data? {
+        R.image.onboarding.importFacebook()?.jpegData(compressionQuality: 1)
+    }
+
     var contactsImported: ActionSubject<Result<Void, UserError>> = .init()
 
     override init(activity: Activity) {
