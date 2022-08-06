@@ -60,8 +60,9 @@ struct RequestAccessContactsView: View {
 
             Text(viewModel.title)
                 .multilineTextAlignment(.center)
-                .textStyle(.h2)
+                .textStyle(.h3)
                 .foregroundColor(Appearance.Colors.primaryText)
+                .padding(.horizontal, Appearance.GridGuide.point)
 
             HStack {
                 Image(R.image.onboarding.eye.name)
