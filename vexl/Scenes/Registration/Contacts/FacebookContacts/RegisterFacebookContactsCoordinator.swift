@@ -22,13 +22,13 @@ final class RegisterFacebookContactsCoordinator: BaseCoordinator<RouterResult<Vo
     }
 
     override func start() -> CoordinatingResult<RouterResult<Void>> {
-        let viewModel = RegisterContactsViewModel(
+        let viewModel = RegisterFacebookContactsViewModel(
             username: userRepository.user?.profile?.name ?? "",
             avatar: userRepository.user?.profile?.avatar
         )
         let viewController = RegisterViewController(currentPage: 3,
                                                     numberOfPages: 4,
-                                                    rootView: RegisterContactsView(viewModel: viewModel),
+                                                    rootView: RegisterFacebookContactsView(viewModel: viewModel),
                                                     showBackButton: false)
 
         router.present(viewController, animated: animated)

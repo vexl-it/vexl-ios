@@ -22,13 +22,13 @@ final class RegisterPhoneContactsCoordinator: BaseCoordinator<RouterResult<Void>
     }
 
     override func start() -> CoordinatingResult<RouterResult<Void>> {
-        let viewModel = RegisterContactsViewModel(
+        let viewModel = RegisterPhoneContactsViewModel(
             username: userRepository.user?.profile?.name ?? "",
             avatar: userRepository.user?.profile?.avatar
         )
         let viewController = RegisterViewController(currentPage: 2,
                                                     numberOfPages: 4,
-                                                    rootView: RegisterContactsView(viewModel: viewModel),
+                                                    rootView: RegisterPhoneContactsView(viewModel: viewModel),
                                                     showBackButton: false)
 
         router.present(viewController, animated: animated)
@@ -50,11 +50,24 @@ final class RegisterPhoneContactsCoordinator: BaseCoordinator<RouterResult<Void>
 
         let continueTap = viewModel
             .route
+            .receive(on: RunLoop.main)
             .filter { $0 == .continueTapped }
-            .map { _ in RouterResult<Void>.finished(()) }
+            .withUnretained(self)
+            .flatMap { owner, _ -> CoordinatingResult<RouterResult<Void>> in
+                owner.showFacebooKContacts(router: owner.router)
+            }
+            .filter { if case .finished = $0 { return true } else { return false } }
 
         return Publishers.Merge(skipTap, continueTap)
             .receive(on: RunLoop.main)
+            .eraseToAnyPublisher()
+    }
+}
+
+extension RegisterPhoneContactsCoordinator {
+    private func showFacebooKContacts(router: Router) -> CoordinatingResult<RouterResult<Void>> {
+        coordinate(to: RegisterFacebookContactsCoordinator(router: router, animated: true))
+            .prefix(1)
             .eraseToAnyPublisher()
     }
 }

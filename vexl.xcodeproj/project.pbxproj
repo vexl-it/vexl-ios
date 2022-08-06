@@ -1497,6 +1497,7 @@
 		F1156AD0289ED40E00B9A5B9 /* PhoneContacts */ = {
 			isa = PBXGroup;
 			children = (
+				F175ABA927F4FC3E000DAB15 /* ImportPhoneContactsViewModel.swift */,
 				F1156AD1289ED42500B9A5B9 /* RegisterPhoneContactsCoordinator.swift */,
 				F1156AD3289ED42E00B9A5B9 /* RegisterPhoneContactsViewModel.swift */,
 				F1156AD5289ED43900B9A5B9 /* RegisterPhoneContactsView.swift */,
@@ -1507,6 +1508,7 @@
 		F1156AD7289ED47200B9A5B9 /* FacebookContacts */ = {
 			isa = PBXGroup;
 			children = (
+				F175ABAB27F4FF30000DAB15 /* ImportFacebookContactsViewModel.swift */,
 				F1156ADA289ED49F00B9A5B9 /* RegisterFacebookContactsCoordinator.swift */,
 				F1156AD9289ED49F00B9A5B9 /* RegisterFacebookContactsView.swift */,
 				F1156AD8289ED49F00B9A5B9 /* RegisterFacebookContactsViewModel.swift */,
@@ -1519,7 +1521,6 @@
 			children = (
 				F1156AD7289ED47200B9A5B9 /* FacebookContacts */,
 				F1156AD0289ED40E00B9A5B9 /* PhoneContacts */,
-				F175ABA827F4FC2B000DAB15 /* ImportConctactsViewModels */,
 				F12A14DA27D6770B0096543E /* RequestAccess */,
 				F12A14DB27D677340096543E /* RegisterContactsCoordinator.swift */,
 				F12A14DD27D677420096543E /* RegisterContactsViewModel.swift */,
@@ -1531,8 +1532,8 @@
 		F12A14DA27D6770B0096543E /* RequestAccess */ = {
 			isa = PBXGroup;
 			children = (
-				F12A150227E1A43A0096543E /* ViewModels */,
 				F12A14F827D99DD00096543E /* Components */,
+				F12A150227E1A43A0096543E /* ViewModels */,
 				F12A14E727D6A8690096543E /* RequestAccessContactsView.swift */,
 				F12A14EF27D912410096543E /* RequestAccessContactsViewModel.swift */,
 			);
@@ -1570,9 +1571,9 @@
 		F12A150227E1A43A0096543E /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				F12A150727E1A4940096543E /* RequestAccessAlert.swift */,
 				F12A150327E1A4520096543E /* RequestAccessPhoneContactsViewModel.swift */,
 				F12A150527E1A47D0096543E /* RequestAccessFacebookContactsViewModel.swift */,
-				F12A150727E1A4940096543E /* RequestAccessAlert.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -1712,7 +1713,7 @@
 			path = Components;
 			sourceTree = "<group>";
 		};
-		F151A29527C86657000D7242 /* Name */ = {
+		F151A29527C86657000D7242 /* NameAvatar */ = {
 			isa = PBXGroup;
 			children = (
 				F151A2A527C962B9000D7242 /* Components */,
@@ -1720,7 +1721,7 @@
 				F151A29827C86683000D7242 /* RegisterNameAvatarViewModel.swift */,
 				F151A29C27C866C7000D7242 /* RegisterNameAvatarView.swift */,
 			);
-			path = Name;
+			path = NameAvatar;
 			sourceTree = "<group>";
 		};
 		F151A2A527C962B9000D7242 /* Components */ = {
@@ -1751,15 +1752,6 @@
 				F1A9452B27F67FC6009B5AE3 /* Confirmation */,
 			);
 			path = Users;
-			sourceTree = "<group>";
-		};
-		F175ABA827F4FC2B000DAB15 /* ImportConctactsViewModels */ = {
-			isa = PBXGroup;
-			children = (
-				F175ABA927F4FC3E000DAB15 /* ImportPhoneContactsViewModel.swift */,
-				F175ABAB27F4FF30000DAB15 /* ImportFacebookContactsViewModel.swift */,
-			);
-			path = ImportConctactsViewModels;
 			sourceTree = "<group>";
 		};
 		F188621D2810587100659786 /* Offer */ = {
@@ -1954,7 +1946,7 @@
 				F1DF4A49289C9E85008E5C87 /* FAQ */,
 				F1B5FCCB27C6F7D40018729B /* Phone */,
 				F12A14D927D677010096543E /* Contacts */,
-				F151A29527C86657000D7242 /* Name */,
+				F151A29527C86657000D7242 /* NameAvatar */,
 				F12A14E327D692DB0096543E /* RegisterViewController.swift */,
 			);
 			path = Registration;

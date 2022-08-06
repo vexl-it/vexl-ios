@@ -10,19 +10,15 @@ import Cleevio
 
 struct RegisterPhoneContactsView: View {
 
-    @ObservedObject var viewModel: RegisterContactsViewModel
+    @ObservedObject var viewModel: RegisterPhoneContactsViewModel
 
     var body: some View {
         VStack {
             switch viewModel.currentState {
-            case .phone:
+            case .requestAccess:
                 RequestAccessContactsView(viewModel: viewModel.phoneViewModel)
             case .importPhoneContacts:
                 ImportContactsView(viewModel: viewModel.importPhoneContactsViewModel)
-            case .facebook:
-                RequestAccessContactsView(viewModel: viewModel.facebookViewModel)
-            case .importFacebookContacts:
-                ImportContactsView(viewModel: viewModel.importFacebookContactsViewModel)
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -36,4 +32,3 @@ struct RegisterPhoneContactsViewPreview: PreviewProvider {
         RegisterPhoneContactsView(viewModel: .init(username: "Diego", avatar: nil))
     }
 }
-

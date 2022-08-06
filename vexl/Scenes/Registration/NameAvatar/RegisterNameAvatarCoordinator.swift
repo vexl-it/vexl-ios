@@ -67,7 +67,7 @@ class RegisterNameAvatarCoordinator: BaseCoordinator<RouterResult<Void>> {
 
 extension RegisterNameAvatarCoordinator {
     private func showRegisterPhoneContacts(router: Router) -> CoordinatingResult<RouterResult<Void>> {
-        coordinate(to: RegisterContactsCoordinator(router: router, animated: true))
+        coordinate(to: RegisterPhoneContactsCoordinator(router: router, animated: true))
             .prefix(1)
             .eraseToAnyPublisher()
     }

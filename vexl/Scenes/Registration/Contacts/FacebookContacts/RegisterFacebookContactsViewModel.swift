@@ -5,34 +5,139 @@
 //  Created by Diego Espinoza on 6/08/22.
 //
 
-import SwiftUI
+import Foundation
+import Combine
 import Cleevio
+import SwiftUI
 
-struct RegisterFacebookContactsView: View {
+final class RegisterFacebookContactsViewModel: ViewModelType {
 
-    @ObservedObject var viewModel: RegisterContactsViewModel
+    @Inject var authenticationManager: AuthenticationManager
+    @Inject var userService: UserServiceType
+    @Inject var contactsService: ContactsServiceType
 
-    var body: some View {
-        VStack {
-            switch viewModel.currentState {
-            case .phone:
-                RequestAccessContactsView(viewModel: viewModel.phoneViewModel)
-            case .importPhoneContacts:
-                ImportContactsView(viewModel: viewModel.importPhoneContactsViewModel)
-            case .facebook:
-                RequestAccessContactsView(viewModel: viewModel.facebookViewModel)
-            case .importFacebookContacts:
-                ImportContactsView(viewModel: viewModel.importFacebookContactsViewModel)
-            }
-        }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color.black.edgesIgnoringSafeArea(.all))
-        .animation(.easeInOut(duration: 0.5), value: viewModel.currentState)
+    // MARK: - View State
+
+    enum ViewState {
+        case requestAccess
+        case importFacebookContacts
     }
-}
 
-struct RegisterFacebookContactsViewPreview: PreviewProvider {
-    static var previews: some View {
-        RegisterFacebookContactsView(viewModel: .init(username: "Diego", avatar: nil))
+    // MARK: - Actions Bindings
+
+    enum UserAction: Equatable {
+        case nextTap
+    }
+
+    let action: ActionSubject<UserAction> = .init()
+
+    // MARK: - Activities
+
+    var primaryActivity: Activity = .init()
+    var errorIndicator: ErrorIndicator {
+        primaryActivity.error
+    }
+    var activityIndicator: ActivityIndicator {
+        primaryActivity.indicator
+    }
+
+    // MARK: - View Bindings
+
+    @Published var loading = false
+    @Published var error: Error?
+
+    // MARK: - Coordinator Bindings
+
+    enum Route: Equatable {
+        case skipTapped
+        case continueTapped
+    }
+
+    var route: CoordinatingSubject<Route> = .init()
+
+    // MARK: - Subviews View Models and State
+
+    @Published var currentState: ViewState = .requestAccess
+    var facebookViewModel: RequestAccessFacebookContactsViewModel
+    var importFacebookContactsViewModel: ImportFacebookContactsViewModel
+
+    // MARK: - Variables
+
+    private let cancelBag: CancelBag = .init()
+
+    init(username: String, avatar: Data?) {
+        facebookViewModel = RequestAccessFacebookContactsViewModel(username: username, avatar: avatar, activity: primaryActivity)
+        importFacebookContactsViewModel = ImportFacebookContactsViewModel()
+        setupActivity()
+        setupRequestFacebookContactsBindings()
+        setupImportFacebookContactsBindings()
+    }
+
+    private func setupActivity() {
+        activityIndicator
+            .loading
+            .assign(to: &$loading)
+
+        errorIndicator
+            .errors
+            .asOptional()
+            .assign(to: &$error)
+
+        importFacebookContactsViewModel
+            .$loading
+            .assign(to: &$loading)
+
+        importFacebookContactsViewModel
+            .$error
+            .assign(to: &$error)
+    }
+
+    private func setupRequestFacebookContactsBindings() {
+        facebookViewModel.skipped
+            .withUnretained(self)
+            .sink { owner, _ in
+                owner.route.send(.skipTapped)
+            }
+            .store(in: cancelBag)
+
+        facebookViewModel.contactsImported
+            .compactMap { result -> Error? in
+                if case .failure(let error) = result {
+                    return error
+                }
+                return nil
+            }
+            .assign(to: &$error)
+
+        facebookViewModel.contactsImported
+            .filter { result in
+                if case .success = result {
+                    return true
+                }
+                return false
+            }
+            .withUnretained(self)
+            .sink { owner, _ in
+                owner.currentState = .importFacebookContacts
+                owner.fetchFacebookContacts()
+            }
+            .store(in: cancelBag)
+    }
+
+    private func fetchFacebookContacts() {
+        do {
+            try importFacebookContactsViewModel.fetchContacts()
+        } catch let facebookError {
+            error = facebookError
+        }
+    }
+
+    private func setupImportFacebookContactsBindings() {
+        importFacebookContactsViewModel.completed
+            .withUnretained(self)
+            .sink { owner, _ in
+                owner.route.send(.continueTapped)
+            }
+            .store(in: cancelBag)
     }
 }

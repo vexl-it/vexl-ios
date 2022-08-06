@@ -19,10 +19,8 @@ final class RegisterPhoneContactsViewModel: ViewModelType {
     // MARK: - View State
 
     enum ViewState {
-        case phone
+        case requestAccess
         case importPhoneContacts
-        case facebook
-        case importFacebookContacts
     }
 
     // MARK: - Actions Bindings
@@ -59,11 +57,9 @@ final class RegisterPhoneContactsViewModel: ViewModelType {
 
     // MARK: - Subviews View Models and State
 
-    @Published var currentState: ViewState = .phone
+    @Published var currentState: ViewState = .requestAccess
     var phoneViewModel: RequestAccessPhoneContactsViewModel
-    var facebookViewModel: RequestAccessFacebookContactsViewModel
     var importPhoneContactsViewModel: ImportPhoneContactsViewModel
-    var importFacebookContactsViewModel: ImportFacebookContactsViewModel
 
     // MARK: - Variables
 
@@ -72,13 +68,9 @@ final class RegisterPhoneContactsViewModel: ViewModelType {
     init(username: String, avatar: Data?) {
         phoneViewModel = RequestAccessPhoneContactsViewModel(username: username, avatar: avatar, activity: primaryActivity)
         importPhoneContactsViewModel = ImportPhoneContactsViewModel()
-        facebookViewModel = RequestAccessFacebookContactsViewModel(username: username, avatar: avatar, activity: primaryActivity)
-        importFacebookContactsViewModel = ImportFacebookContactsViewModel()
         setupActivity()
         setupRequestPhoneContactsBindings()
         setupImportPhoneContactsBindings()
-        setupRequestFacebookContactsBindings()
-        setupImportFacebookContactsBindings()
     }
 
     private func setupActivity() {
@@ -98,14 +90,6 @@ final class RegisterPhoneContactsViewModel: ViewModelType {
         importPhoneContactsViewModel
             .$error
             .assign(to: &$error)
-
-        importFacebookContactsViewModel
-            .$loading
-            .assign(to: &$loading)
-
-        importFacebookContactsViewModel
-            .$error
-            .assign(to: &$error)
     }
 
     private func setupRequestPhoneContactsBindings() {
@@ -122,59 +106,8 @@ final class RegisterPhoneContactsViewModel: ViewModelType {
         importPhoneContactsViewModel.completed
             .withUnretained(self)
             .sink { owner, _ in
-                owner.currentState = .facebook
-                owner.importPhoneContactsViewModel.currentState = .loading
-            }
-            .store(in: cancelBag)
-    }
-
-    private func setupRequestFacebookContactsBindings() {
-        facebookViewModel.skipped
-            .withUnretained(self)
-            .sink { owner, _ in
-                owner.route.send(.skipTapped)
-            }
-            .store(in: cancelBag)
-
-        facebookViewModel.contactsImported
-            .compactMap { result -> Error? in
-                if case .failure(let error) = result {
-                    return error
-                }
-                return nil
-            }
-            .assign(to: &$error)
-
-        facebookViewModel.contactsImported
-            .filter { result in
-                if case .success = result {
-                    return true
-                }
-                return false
-            }
-            .withUnretained(self)
-            .sink { owner, _ in
-                owner.currentState = .importFacebookContacts
-                owner.fetchFacebookContacts()
-            }
-            .store(in: cancelBag)
-    }
-
-    private func fetchFacebookContacts() {
-        do {
-            try importFacebookContactsViewModel.fetchContacts()
-        } catch let facebookError {
-            error = facebookError
-        }
-    }
-
-    private func setupImportFacebookContactsBindings() {
-        importFacebookContactsViewModel.completed
-            .withUnretained(self)
-            .sink { owner, _ in
                 owner.route.send(.continueTapped)
             }
             .store(in: cancelBag)
     }
 }
-
