@@ -22,6 +22,7 @@ struct RegisterNameInputView: View {
             nameInput
                 .padding(.top, Appearance.GridGuide.padding)
         })
+            .padding(.all, Appearance.GridGuide.point)
     }
 
     private var nameInput: some View {
