@@ -110,6 +110,7 @@ final class InboxManager: InboxManagerType {
             .eraseToAnyPublisher()
 
         let messagePayloads = encryptedMessages
+            .filter { !$0.isEmpty }
             .flatMap { messages in
                 messages.publisher
                     .compactMap { MessagePayload(chatMessage: $0, key: inboxKeys, inboxPublicKey: inboxKeys.publicKey) }
