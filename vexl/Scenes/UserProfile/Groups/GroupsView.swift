@@ -23,16 +23,15 @@ struct GroupsView: View {
             .padding(.horizontal, Appearance.GridGuide.mediumPadding1)
             .padding(.top, Appearance.GridGuide.largePadding1)
 
-            LargeSolidButton(
-                title: "+ " + L.groupsJoinButton(),
-                font: Appearance.TextStyle.paragraphSmallSemiBold.font.asFont,
-                style: .secondary,
-                isFullWidth: true,
-                isEnabled: .constant(true),
-                action: { viewModel.action.send(.joinGroupTap) }
-            )
-
             ScrollView {
+                LargeSolidButton(
+                    title: "+ " + L.groupsJoinButton(),
+                    font: Appearance.TextStyle.paragraphSmallSemiBold.font.asFont,
+                    style: .secondary,
+                    isFullWidth: true,
+                    isEnabled: .constant(true),
+                    action: { viewModel.action.send(.joinGroupTap) }
+                )
                 VStack {
                     ForEach(viewModel.groups) { group in
                         GroupCell(group: group)
