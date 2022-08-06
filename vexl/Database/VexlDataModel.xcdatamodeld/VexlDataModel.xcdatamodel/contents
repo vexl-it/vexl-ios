@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="20086" systemVersion="21E258" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="ManagedAnonymisedProfile" representedClassName="ManagedAnonymisedProfile" syncable="YES" codeGenerationType="class">
+        <attribute name="publicKey" optional="YES" attributeType="String"/>
+        <relationship name="group" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ManagedGroup" inverseName="members" inverseEntity="ManagedGroup"/>
+    </entity>
     <entity name="ManagedChat" representedClassName="ManagedChat" syncable="YES" codeGenerationType="class">
         <attribute name="gotRevealedResponse" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="id" optional="YES" attributeType="String"/>
@@ -20,6 +24,18 @@
         <attribute name="name" optional="YES" attributeType="String"/>
         <attribute name="phoneNumber" optional="YES" attributeType="String"/>
         <attribute name="sourceRawType" optional="YES" attributeType="String"/>
+    </entity>
+    <entity name="ManagedGroup" representedClassName="ManagedGroup" syncable="YES" codeGenerationType="class">
+        <attribute name="closureAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="code" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="createdAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="expirationAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="logo" optional="YES" attributeType="Binary"/>
+        <attribute name="logoURL" optional="YES" attributeType="URI"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="uuid" optional="YES" attributeType="String"/>
+        <relationship name="members" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ManagedAnonymisedProfile" inverseName="group" inverseEntity="ManagedAnonymisedProfile"/>
+        <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ManagedUser" inverseName="groups" inverseEntity="ManagedUser"/>
     </entity>
     <entity name="ManagedInbox" representedClassName="ManagedInbox" syncable="YES" codeGenerationType="class">
         <attribute name="typeRawValue" optional="YES" attributeType="String"/>
@@ -97,18 +113,21 @@
         <attribute name="encryptedSignature" optional="YES" attributeType="String"/>
         <attribute name="userHash" optional="YES" attributeType="String"/>
         <attribute name="userId" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <relationship name="groups" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ManagedGroup" inverseName="user" inverseEntity="ManagedGroup"/>
         <relationship name="offers" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ManagedOffer" inverseName="user" inverseEntity="ManagedOffer"/>
         <relationship name="profile" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ManagedProfile" inverseName="currentUser" inverseEntity="ManagedProfile"/>
     </entity>
     <elements>
         <element name="ManagedChat" positionX="-333.91796875" positionY="-454.86328125" width="162.57421875" height="179"/>
-        <element name="ManagedContact" positionX="-1060.67578125" positionY="-241.9453125" width="128" height="134"/>
+        <element name="ManagedContact" positionX="-1073.49609375" positionY="-251.14453125" width="128" height="134"/>
+        <element name="ManagedGroup" positionX="-993.60546875" positionY="162.875" width="128" height="193"/>
         <element name="ManagedInbox" positionX="-562.71484375" positionY="-370.265625" width="128" height="118"/>
         <element name="ManagedKeyPair" positionX="-343.26171875" positionY="-227.74609375" width="128" height="133"/>
         <element name="ManagedMessage" positionX="-110.484375" positionY="-455.828125" width="128" height="178"/>
-        <element name="ManagedOffer" positionX="-870.50390625" positionY="-571.98046875" width="128" height="449"/>
-        <element name="ManagedProfile" positionX="-568.91015625" positionY="-80.58984375" width="128" height="164"/>
+        <element name="ManagedOffer" positionX="-892.38671875" positionY="-589.39453125" width="128" height="463"/>
+        <element name="ManagedProfile" positionX="-566.8828125" positionY="-92.77734375" width="128" height="178"/>
         <element name="ManagedSyncItem" positionX="-591.86328125" positionY="-567.52734375" width="128" height="74"/>
-        <element name="ManagedUser" positionX="-1013.984375" positionY="-50.265625" width="165.6171875" height="118"/>
+        <element name="ManagedUser" positionX="-1013.984375" positionY="-50.265625" width="165.6171875" height="133"/>
+        <element name="ManagedAnonymisedProfile" positionX="-729.87109375" positionY="268.921875" width="170.62890625" height="73"/>
     </elements>
 </model>
