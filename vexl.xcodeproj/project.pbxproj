@@ -178,9 +178,6 @@
 		F1156ADB289ED49F00B9A5B9 /* RegisterFacebookContactsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1156AD8289ED49F00B9A5B9 /* RegisterFacebookContactsViewModel.swift */; };
 		F1156ADC289ED49F00B9A5B9 /* RegisterFacebookContactsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1156AD9289ED49F00B9A5B9 /* RegisterFacebookContactsView.swift */; };
 		F1156ADD289ED49F00B9A5B9 /* RegisterFacebookContactsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1156ADA289ED49F00B9A5B9 /* RegisterFacebookContactsCoordinator.swift */; };
-		F12A14DC27D677340096543E /* RegisterContactsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12A14DB27D677340096543E /* RegisterContactsCoordinator.swift */; };
-		F12A14DE27D677420096543E /* RegisterContactsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12A14DD27D677420096543E /* RegisterContactsViewModel.swift */; };
-		F12A14E027D6774C0096543E /* RegisterContactsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12A14DF27D6774C0096543E /* RegisterContactsView.swift */; };
 		F12A14E427D692DB0096543E /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12A14E327D692DB0096543E /* RegisterViewController.swift */; };
 		F12A14E827D6A8690096543E /* RequestAccessContactsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12A14E727D6A8690096543E /* RequestAccessContactsView.swift */; };
 		F12A14EB27D6B1CF0096543E /* RequestAccessPortraitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12A14EA27D6B1CF0096543E /* RequestAccessPortraitView.swift */; };
@@ -581,9 +578,6 @@
 		F1156AD8289ED49F00B9A5B9 /* RegisterFacebookContactsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterFacebookContactsViewModel.swift; sourceTree = "<group>"; };
 		F1156AD9289ED49F00B9A5B9 /* RegisterFacebookContactsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterFacebookContactsView.swift; sourceTree = "<group>"; };
 		F1156ADA289ED49F00B9A5B9 /* RegisterFacebookContactsCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterFacebookContactsCoordinator.swift; sourceTree = "<group>"; };
-		F12A14DB27D677340096543E /* RegisterContactsCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterContactsCoordinator.swift; sourceTree = "<group>"; };
-		F12A14DD27D677420096543E /* RegisterContactsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterContactsViewModel.swift; sourceTree = "<group>"; };
-		F12A14DF27D6774C0096543E /* RegisterContactsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterContactsView.swift; sourceTree = "<group>"; };
 		F12A14E327D692DB0096543E /* RegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
 		F12A14E727D6A8690096543E /* RequestAccessContactsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestAccessContactsView.swift; sourceTree = "<group>"; };
 		F12A14EA27D6B1CF0096543E /* RequestAccessPortraitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestAccessPortraitView.swift; sourceTree = "<group>"; };
@@ -1497,7 +1491,7 @@
 		F1156AD0289ED40E00B9A5B9 /* PhoneContacts */ = {
 			isa = PBXGroup;
 			children = (
-				F175ABA927F4FC3E000DAB15 /* ImportPhoneContactsViewModel.swift */,
+				F1156ADF289EDCB200B9A5B9 /* ViewModels */,
 				F1156AD1289ED42500B9A5B9 /* RegisterPhoneContactsCoordinator.swift */,
 				F1156AD3289ED42E00B9A5B9 /* RegisterPhoneContactsViewModel.swift */,
 				F1156AD5289ED43900B9A5B9 /* RegisterPhoneContactsView.swift */,
@@ -1508,7 +1502,7 @@
 		F1156AD7289ED47200B9A5B9 /* FacebookContacts */ = {
 			isa = PBXGroup;
 			children = (
-				F175ABAB27F4FF30000DAB15 /* ImportFacebookContactsViewModel.swift */,
+				F1156ADE289EDCA000B9A5B9 /* ViewModels */,
 				F1156ADA289ED49F00B9A5B9 /* RegisterFacebookContactsCoordinator.swift */,
 				F1156AD9289ED49F00B9A5B9 /* RegisterFacebookContactsView.swift */,
 				F1156AD8289ED49F00B9A5B9 /* RegisterFacebookContactsViewModel.swift */,
@@ -1516,15 +1510,30 @@
 			path = FacebookContacts;
 			sourceTree = "<group>";
 		};
+		F1156ADE289EDCA000B9A5B9 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				F12A150527E1A47D0096543E /* RequestAccessFacebookContactsViewModel.swift */,
+				F175ABAB27F4FF30000DAB15 /* ImportFacebookContactsViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		F1156ADF289EDCB200B9A5B9 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				F12A150327E1A4520096543E /* RequestAccessPhoneContactsViewModel.swift */,
+				F175ABA927F4FC3E000DAB15 /* ImportPhoneContactsViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
 		F12A14D927D677010096543E /* Contacts */ = {
 			isa = PBXGroup;
 			children = (
+				F12A14DA27D6770B0096543E /* RequestAccess */,
 				F1156AD7289ED47200B9A5B9 /* FacebookContacts */,
 				F1156AD0289ED40E00B9A5B9 /* PhoneContacts */,
-				F12A14DA27D6770B0096543E /* RequestAccess */,
-				F12A14DB27D677340096543E /* RegisterContactsCoordinator.swift */,
-				F12A14DD27D677420096543E /* RegisterContactsViewModel.swift */,
-				F12A14DF27D6774C0096543E /* RegisterContactsView.swift */,
 			);
 			path = Contacts;
 			sourceTree = "<group>";
@@ -1533,7 +1542,7 @@
 			isa = PBXGroup;
 			children = (
 				F12A14F827D99DD00096543E /* Components */,
-				F12A150227E1A43A0096543E /* ViewModels */,
+				F12A150727E1A4940096543E /* RequestAccessAlert.swift */,
 				F12A14E727D6A8690096543E /* RequestAccessContactsView.swift */,
 				F12A14EF27D912410096543E /* RequestAccessContactsViewModel.swift */,
 			);
@@ -1566,16 +1575,6 @@
 				F12A150027DFC1D70096543E /* ImportContactItemView.swift */,
 			);
 			path = Components;
-			sourceTree = "<group>";
-		};
-		F12A150227E1A43A0096543E /* ViewModels */ = {
-			isa = PBXGroup;
-			children = (
-				F12A150727E1A4940096543E /* RequestAccessAlert.swift */,
-				F12A150327E1A4520096543E /* RequestAccessPhoneContactsViewModel.swift */,
-				F12A150527E1A47D0096543E /* RequestAccessFacebookContactsViewModel.swift */,
-			);
-			path = ViewModels;
 			sourceTree = "<group>";
 		};
 		F13B265A281897890011F2FB /* Advanced */ = {
@@ -2429,7 +2428,6 @@
 				F1DF4A41289435AC008E5C87 /* ChatBlockActionSheet.swift in Sources */,
 				B08F392C27AE7112008B344F /* ApiInterceptor.swift in Sources */,
 				F1B5FCCF27C6F7E80018729B /* RegisterPhoneViewModel.swift in Sources */,
-				F12A14DE27D677420096543E /* RegisterContactsViewModel.swift in Sources */,
 				B007A72A2864FE4A00CFA5C9 /* CurrencySelect.swift in Sources */,
 				F1A9453C27F7E01D009B5AE3 /* ChallengeValidation.swift in Sources */,
 				F18862512811710100659786 /* OfferStatusView.swift in Sources */,
@@ -2451,7 +2449,6 @@
 				F148564C284FD452003213D7 /* ChatView.swift in Sources */,
 				F175AB9727ECC159000DAB15 /* SecurityHeader.swift in Sources */,
 				F1156AD6289ED43900B9A5B9 /* RegisterPhoneContactsView.swift in Sources */,
-				F12A14DC27D677340096543E /* RegisterContactsCoordinator.swift in Sources */,
 				F1485644284FD451003213D7 /* ChatCommonFriendItemView.swift in Sources */,
 				B007A73128659A8700CFA5C9 /* BottomActionSheetView.swift in Sources */,
 				F1DF4A51289D59BA008E5C87 /* AttributedText.swift in Sources */,
@@ -2536,7 +2533,6 @@
 				B01C01ED2862F06D00A29F85 /* Currency.swift in Sources */,
 				B007A74B2871EB2900CFA5C9 /* UserRepository.swift in Sources */,
 				B0F206F127AE94C400A44E72 /* InitialScreenManager.swift in Sources */,
-				F12A14E027D6774C0096543E /* RegisterContactsView.swift in Sources */,
 				4F481E76284767480051D3B9 /* ChatRouter.swift in Sources */,
 				F1B3010F287A53C900C86F83 /* ChatConversationViewModel.swift in Sources */,
 				4F700CBE2844C4C20085139F /* StickyBitcoinView.swift in Sources */,
