@@ -28,18 +28,10 @@ final class RequestAccessFacebookContactsViewModel: RequestAccessContactsViewMod
         true
     }
 
-    override var portraitColor: Color {
-        Appearance.Colors.purple1
-    }
-
-    override var portraitTextColor: Color {
-        Appearance.Colors.purple5
-    }
-
     var contactsImported: ActionSubject<Result<Void, UserError>> = .init()
 
-    override init(username: String, avatar: Data?, activity: Activity) {
-        super.init(username: username, avatar: avatar, activity: activity)
+    override init(activity: Activity) {
+        super.init(activity: activity)
         setupBindings()
     }
 

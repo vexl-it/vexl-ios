@@ -29,6 +29,6 @@ struct RegisterFacebookContactsView: View {
 
 struct RegisterFacebookContactsViewPreview: PreviewProvider {
     static var previews: some View {
-        RegisterFacebookContactsView(viewModel: .init(username: "Diego", avatar: nil))
+        RegisterFacebookContactsView(viewModel: .init())
     }
 }

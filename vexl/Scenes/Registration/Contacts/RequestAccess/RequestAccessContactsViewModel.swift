@@ -58,22 +58,17 @@ class RequestAccessContactsViewModel: ObservableObject {
 
     // MARK: - Variables
 
-    var username: String
-    var avatar: Data?
     var title: String { "" }
+    var image: Data? { nil }
     var subtitle: String { "" }
     var importButton: String { "" }
     var displaySkipButton: Bool { false }
-    var portraitColor: Color { Appearance.Colors.green100 }
-    var portraitTextColor: Color { Appearance.Colors.green20 }
 
     let cancelBag: CancelBag = .init()
 
     // MARK: - Init
 
-    init(username: String, avatar: Data?, activity: Activity) {
-        self.username = username
-        self.avatar = avatar
+    init(activity: Activity) {
         self.primaryActivity = activity
         $currentState
             .withUnretained(self)

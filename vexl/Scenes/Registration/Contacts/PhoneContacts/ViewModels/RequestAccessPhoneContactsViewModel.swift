@@ -28,12 +28,16 @@ final class RequestAccessPhoneContactsViewModel: RequestAccessContactsViewModel 
         false
     }
 
+    override var image: Data? {
+        R.image.onboarding.importPhone()?.jpegData(compressionQuality: 1)
+    }
+
     // MARK: - phone actions
 
     var contactsImported: ActionSubject<Void> = .init()
 
-    override init(username: String, avatar: Data?, activity: Activity) {
-        super.init(username: username, avatar: avatar, activity: activity)
+    override init(activity: Activity) {
+        super.init(activity: activity)
         setupBindings()
     }
 
