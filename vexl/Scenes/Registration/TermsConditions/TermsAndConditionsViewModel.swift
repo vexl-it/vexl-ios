@@ -11,12 +11,27 @@ import Combine
 
 final class TermsAndConditionsViewModel: ViewModelType {
 
+    enum Section: CaseIterable {
+        case termsOfUse
+        case policy
+
+        var label: String {
+            switch self {
+            case .termsOfUse:
+                return L.termsOfUseTermsBookmark()
+            case .policy:
+                return L.termsOfUsePolicyBookmark()
+            }
+        }
+    }
+
     @Inject var notificationManager: NotificationManagerType
 
     // MARK: - Actions Bindings
 
     enum UserAction: Equatable {
-        case continueTap
+        case faqTap
+        case dismissTap
     }
 
     let action: ActionSubject<UserAction> = .init()
@@ -25,13 +40,24 @@ final class TermsAndConditionsViewModel: ViewModelType {
 
     @Published var primaryActivity: Activity = .init()
     @Published var hasAgreedTermsAndConditions = false
+    @Published var currentSection: Section = .termsOfUse
 
-    var userFinished = false
+    var currentContent: [TermsAndConditionsContent] {
+        switch currentSection {
+        case .termsOfUse:
+            return termsContent
+        case .policy:
+            return policyConent
+        }
+    }
+    private let termsContent: [TermsAndConditionsContent] = TermsAndConditionsContent.termsContent
+    private let policyConent: [TermsAndConditionsContent] = TermsAndConditionsContent.policyContent
 
     // MARK: - Coordinator Bindings
 
     enum Route: Equatable {
         case dismissTapped
+        case faqTapped
     }
 
     var route: CoordinatingSubject<Route> = .init()
@@ -47,6 +73,18 @@ final class TermsAndConditionsViewModel: ViewModelType {
     }
 
     private func setupActions() {
+        let action = action.share()
 
+        action
+            .filter { $0 == .dismissTap }
+            .map { _ -> Route in .dismissTapped }
+            .subscribe(route)
+            .store(in: cancelBag)
+
+        action
+            .filter { $0 == .faqTap }
+            .map { _ -> Route in .faqTapped }
+            .subscribe(route)
+            .store(in: cancelBag)
     }
 }

@@ -188,6 +188,7 @@
 		F1156AE2289F25E500B9A5B9 /* TermsAndConditionsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1156AE1289F25E500B9A5B9 /* TermsAndConditionsCoordinator.swift */; };
 		F1156AE4289F260200B9A5B9 /* TermsAndConditionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1156AE3289F260200B9A5B9 /* TermsAndConditionsViewModel.swift */; };
 		F1156AE6289F260900B9A5B9 /* TermsAndConditionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1156AE5289F260900B9A5B9 /* TermsAndConditionsView.swift */; };
+		F1156AE8289F313900B9A5B9 /* TermsAndConditionsContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1156AE7289F313900B9A5B9 /* TermsAndConditionsContent.swift */; };
 		F12A14E427D692DB0096543E /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12A14E327D692DB0096543E /* RegisterViewController.swift */; };
 		F12A14E827D6A8690096543E /* RequestAccessContactsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12A14E727D6A8690096543E /* RequestAccessContactsView.swift */; };
 		F12A14F027D912410096543E /* RequestAccessContactsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12A14EF27D912410096543E /* RequestAccessContactsViewModel.swift */; };
@@ -597,6 +598,7 @@
 		F1156AE1289F25E500B9A5B9 /* TermsAndConditionsCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsAndConditionsCoordinator.swift; sourceTree = "<group>"; };
 		F1156AE3289F260200B9A5B9 /* TermsAndConditionsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsAndConditionsViewModel.swift; sourceTree = "<group>"; };
 		F1156AE5289F260900B9A5B9 /* TermsAndConditionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsAndConditionsView.swift; sourceTree = "<group>"; };
+		F1156AE7289F313900B9A5B9 /* TermsAndConditionsContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsAndConditionsContent.swift; sourceTree = "<group>"; };
 		F12A14E327D692DB0096543E /* RegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
 		F12A14E727D6A8690096543E /* RequestAccessContactsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestAccessContactsView.swift; sourceTree = "<group>"; };
 		F12A14EF27D912410096543E /* RequestAccessContactsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestAccessContactsViewModel.swift; sourceTree = "<group>"; };
@@ -1573,6 +1575,7 @@
 				F1156AE1289F25E500B9A5B9 /* TermsAndConditionsCoordinator.swift */,
 				F1156AE3289F260200B9A5B9 /* TermsAndConditionsViewModel.swift */,
 				F1156AE5289F260900B9A5B9 /* TermsAndConditionsView.swift */,
+				F1156AE7289F313900B9A5B9 /* TermsAndConditionsContent.swift */,
 			);
 			path = TermsConditions;
 			sourceTree = "<group>";
@@ -2471,6 +2474,7 @@
 				F1DF4A41289435AC008E5C87 /* ChatBlockActionSheet.swift in Sources */,
 				B08F392C27AE7112008B344F /* ApiInterceptor.swift in Sources */,
 				F1B5FCCF27C6F7E80018729B /* RegisterPhoneViewModel.swift in Sources */,
+				F1156AE8289F313900B9A5B9 /* TermsAndConditionsContent.swift in Sources */,
 				B007A72A2864FE4A00CFA5C9 /* CurrencySelect.swift in Sources */,
 				F1A9453C27F7E01D009B5AE3 /* ChallengeValidation.swift in Sources */,
 				F18862512811710100659786 /* OfferStatusView.swift in Sources */,

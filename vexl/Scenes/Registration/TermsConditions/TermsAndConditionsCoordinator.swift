@@ -24,12 +24,39 @@ final class TermsAndConditionsCoordinator: BaseCoordinator<RouterResult<Void>> {
         let viewController = BaseViewController(rootView: TermsAndConditionsView(viewModel: viewModel))
         router.present(viewController, animated: animated)
 
+        viewModel
+            .route
+            .filter { $0 == .faqTapped }
+            .withUnretained(self)
+            .flatMap { owner, _ -> CoordinatingResult<RouterResult<Void>> in
+                let router = ModalRouter(parentViewController: viewController, presentationStyle: .overFullScreen)
+                return owner.showFAQ(router: router)
+            }
+            .sink()
+            .store(in: cancelBag)
+
         let dismiss = viewModel
             .route
             .filter { $0 == .dismissTapped }
             .map { _ -> RouterResult<Void> in .dismiss }
 
         return dismiss
+            .eraseToAnyPublisher()
+    }
+}
+
+extension TermsAndConditionsCoordinator {
+    func showFAQ(router: Router) -> CoordinatingResult<RouterResult<Void>> {
+        coordinate(to: FAQCoordinator(router: router, animated: true))
+            .flatMap { result -> CoordinatingResult<RouterResult<Void>> in
+                switch result {
+                case .dismiss:
+                    return router.dismiss(animated: true, returning: result)
+                case .finished, .dismissedByRouter:
+                    return Just(result).eraseToAnyPublisher()
+                }
+            }
+            .prefix(1)
             .eraseToAnyPublisher()
     }
 }
