@@ -46,6 +46,37 @@ final class RegisterAnonymizeViewModel: ViewModelType {
         input.avatar
     }
 
+    var identityText: String {
+        switch currentState {
+        case .identity:
+            return "This is your identity"
+        case .anonymized:
+            return "Identity anonymized!"
+        }
+    }
+
+    var subtitle: String {
+        switch currentState {
+        case .identity:
+            return "Nobody will see your identity until you allow it"
+        case .anonymized:
+            return "This is how other users will see you until you reveal your real identity."
+        }
+    }
+
+    var buttonTitle: String {
+        switch currentState {
+        case .identity:
+            return "Anonymize"
+        case .anonymized:
+            return "Continue"
+        }
+    }
+
+    var showSubtitleIcon: Bool {
+        currentState == .identity
+    }
+
     @Published var currentState: State = .identity
 
     @Published var loading = false

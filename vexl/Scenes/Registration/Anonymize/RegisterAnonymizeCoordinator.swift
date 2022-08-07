@@ -26,7 +26,7 @@ class RegisterAnonymizeCoordinator: BaseCoordinator<RouterResult<Void>> {
         let viewController = RegisterViewController(currentPage: 1,
                                                     numberOfPages: 4,
                                                     rootView: RegisterAnonymizeView(viewModel: viewModel),
-                                                    showBackButton: false)
+                                                    showBackButton: true)
         router.present(viewController, animated: animated)
 
         // MARK: - ViewModel Bindings
@@ -39,6 +39,10 @@ class RegisterAnonymizeCoordinator: BaseCoordinator<RouterResult<Void>> {
             .$loading
             .assign(to: &viewController.$isLoading)
 
+        let dismiss = viewController
+            .onBack
+            .map { _ -> RouterResult<Void> in .dismiss }
+
         let finished = viewModel
             .route
             .receive(on: RunLoop.main)
@@ -49,7 +53,7 @@ class RegisterAnonymizeCoordinator: BaseCoordinator<RouterResult<Void>> {
             }
             .filter { if case .finished = $0 { return true } else { return false } }
 
-        return finished
+        return finished.merge(with: dismiss)
             .receive(on: RunLoop.main)
             .eraseToAnyPublisher()
     }
