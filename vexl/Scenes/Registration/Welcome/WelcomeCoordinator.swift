@@ -109,7 +109,7 @@ private extension WelcomeCoordinator {
     }
 
     func showRegisterPhone(router: Router) -> CoordinatingResult<RouterResult<Void>> {
-        coordinate(to: RegisterPhoneCoordinator(router: router, animated: true))
+        coordinate(to: RegisterNameAvatarCoordinator(router: router, animated: true))
             .flatMap { result -> CoordinatingResult<RouterResult<Void>> in
                 switch result {
                 case .dismiss:
