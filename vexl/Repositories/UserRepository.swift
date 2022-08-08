@@ -17,7 +17,7 @@ protocol UserRepositoryType {
 
     func createNewUser(newKeys: ECCKeys, signature: String?, hash: String?, phoneNumber: String) -> AnyPublisher<ManagedUser, Error>
     func getUser(for context: NSManagedObjectContext) -> ManagedUser?
-    func update(with userResponse: User, avatar: Data?) -> AnyPublisher<ManagedUser, Error>
+    func update(with userResponse: User, avatar: Data?, anonymizedUsername: String) -> AnyPublisher<ManagedUser, Error>
     func update(username: String, avatarURL: String?, avatar: Data?) -> AnyPublisher<Void, Error>
 }
 
@@ -76,7 +76,7 @@ final class UserRepository: UserRepositoryType {
         return persistenceManager.loadSyncroniously(type: ManagedUser.self, context: context, objectID: objId)
     }
 
-    func update(with userResponse: User, avatar: Data?) -> AnyPublisher<ManagedUser, Error> {
+    func update(with userResponse: User, avatar: Data?, anonymizedUsername: String) -> AnyPublisher<ManagedUser, Error> {
         guard let user = user else {
             return Fail(error: PersistenceError.insufficientData)
                 .eraseToAnyPublisher()
@@ -86,6 +86,7 @@ final class UserRepository: UserRepositoryType {
             user.profile?.name = userResponse.username
             user.profile?.avatarURL = userResponse.avatarURL
             user.profile?.avatar = avatar
+            user.profile?.anonymizedUsername = anonymizedUsername
             return user
         }
     }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="20086" systemVersion="21E258" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="20086" systemVersion="21F79" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="ManagedAnonymisedProfile" representedClassName="ManagedAnonymisedProfile" syncable="YES" codeGenerationType="class">
         <attribute name="publicKey" optional="YES" attributeType="String"/>
         <relationship name="group" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ManagedGroup" inverseName="members" inverseEntity="ManagedGroup"/>
@@ -94,13 +94,14 @@
         <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ManagedUser" inverseName="offers" inverseEntity="ManagedUser"/>
     </entity>
     <entity name="ManagedProfile" representedClassName="ManagedProfile" syncable="YES" codeGenerationType="class">
+        <attribute name="anonymizedUsername" optional="YES" attributeType="String"/>
         <attribute name="avatarData" optional="YES" attributeType="Binary"/>
         <attribute name="avatarURL" optional="YES" attributeType="String"/>
         <attribute name="name" optional="YES" attributeType="String"/>
         <attribute name="phoneNumber" optional="YES" attributeType="String"/>
         <attribute name="phoneNumberHmac" optional="YES" attributeType="String"/>
-        <attribute name="secretAvatar" optional="YES" attributeType="Binary"/>
-        <attribute name="secretName" optional="YES" attributeType="String"/>
+        <attribute name="realAvatarBeforeReveal" optional="YES" attributeType="Binary"/>
+        <attribute name="realNameBeforeReveal" optional="YES" attributeType="String"/>
         <relationship name="currentUser" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ManagedUser" inverseName="profile" inverseEntity="ManagedUser"/>
         <relationship name="keyPair" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ManagedKeyPair" inverseName="profile" inverseEntity="ManagedKeyPair"/>
     </entity>
@@ -118,6 +119,7 @@
         <relationship name="profile" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ManagedProfile" inverseName="currentUser" inverseEntity="ManagedProfile"/>
     </entity>
     <elements>
+        <element name="ManagedAnonymisedProfile" positionX="-729.87109375" positionY="268.921875" width="170.62890625" height="73"/>
         <element name="ManagedChat" positionX="-333.91796875" positionY="-454.86328125" width="162.57421875" height="179"/>
         <element name="ManagedContact" positionX="-1073.49609375" positionY="-251.14453125" width="128" height="134"/>
         <element name="ManagedGroup" positionX="-993.60546875" positionY="162.875" width="128" height="193"/>
@@ -125,9 +127,8 @@
         <element name="ManagedKeyPair" positionX="-343.26171875" positionY="-227.74609375" width="128" height="133"/>
         <element name="ManagedMessage" positionX="-110.484375" positionY="-455.828125" width="128" height="178"/>
         <element name="ManagedOffer" positionX="-892.38671875" positionY="-589.39453125" width="128" height="463"/>
-        <element name="ManagedProfile" positionX="-566.8828125" positionY="-92.77734375" width="128" height="178"/>
+        <element name="ManagedProfile" positionX="-566.8828125" positionY="-92.77734375" width="128" height="179"/>
         <element name="ManagedSyncItem" positionX="-591.86328125" positionY="-567.52734375" width="128" height="74"/>
         <element name="ManagedUser" positionX="-1013.984375" positionY="-50.265625" width="165.6171875" height="133"/>
-        <element name="ManagedAnonymisedProfile" positionX="-729.87109375" positionY="268.921875" width="170.62890625" height="73"/>
     </elements>
 </model>

@@ -39,7 +39,7 @@ final class RegisterAnonymizeViewModel: ViewModelType {
     // MARK: - View Bindings
 
     var username: String {
-        secretName ?? input.username
+        anonymizedUsername ?? input.username
     }
 
     var avatar: Data? {
@@ -82,7 +82,7 @@ final class RegisterAnonymizeViewModel: ViewModelType {
     @Published var loading = false
     @Published var error: Error?
     @Published var showAnimationOverlay = false
-    @Published var secretName: String?
+    @Published var anonymizedUsername: String?
     static let animationDuration: CGFloat = 1.5
 
     var primaryActivity: Activity = .init()
@@ -140,7 +140,7 @@ final class RegisterAnonymizeViewModel: ViewModelType {
                     if owner.currentState == .identity {
                         owner.currentState = .anonymized
                     }
-                    owner.secretName = ManagedProfile.generateRandomName()
+                    owner.anonymizedUsername = ManagedProfile.generateRandomName()
                 }
             }
             .store(in: cancelBag)
@@ -166,7 +166,7 @@ final class RegisterAnonymizeViewModel: ViewModelType {
             }
             .flatMapLatest(with: self, { owner, user in
                 owner.userRepository
-                    .update(with: user.0, avatar: user.1?.dataFromBase64)
+                    .update(with: user.0, avatar: user.1?.dataFromBase64, anonymizedUsername: owner.anonymizedUsername ?? "")
                     .track(activity: owner.primaryActivity)
                     .receive(on: RunLoop.main)
             })
