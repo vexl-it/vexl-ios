@@ -15,7 +15,11 @@ struct RegisterAnonymizeView: View {
     @State private var size: CGSize = .zero
     @State private var animationOffset: CGFloat = .zero
 
-    private let anonymizeSize: CGSize = .init(width: 128, height: 128)
+    enum UIProperties {
+        static let anonymizeSize: CGSize = .init(width: 128, height: 128)
+        static let shuffleButtonSize: CGSize = .init(width: cornerRadius, height: cornerRadius)
+        static let cornerRadius: CGFloat = 32
+    }
 
     var body: some View {
         ZStack {
@@ -96,23 +100,23 @@ struct RegisterAnonymizeView: View {
                 Image(R.image.profile.avatar.name)
                     .resizable()
                     .scaledToFill()
-                    .frame(size: anonymizeSize)
+                    .frame(size: UIProperties.anonymizeSize)
                     .clipped()
-                    .cornerRadius(32)
+                    .cornerRadius(UIProperties.cornerRadius)
             } else {
                 Image(data: viewModel.avatar, placeholder: R.image.profile.avatar.name)
                     .resizable()
                     .scaledToFill()
-                    .frame(size: anonymizeSize)
+                    .frame(size: UIProperties.anonymizeSize)
                     .clipped()
-                    .cornerRadius(32)
+                    .cornerRadius(UIProperties.cornerRadius)
             }
 
             Button(action: { viewModel.send(action: .anonymize) }, label: {
                 Circle()
                     .strokeBorder(.black, lineWidth: 4)
                     .background(Circle().fill(Appearance.Colors.yellow100))
-                    .frame(width: 32, height: 32)
+                    .frame(size: UIProperties.shuffleButtonSize)
                     .overlay(
                         Image(R.image.onboarding.shuffle.name)
                     )
