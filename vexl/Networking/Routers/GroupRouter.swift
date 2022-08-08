@@ -78,6 +78,6 @@ enum GroupRouter: ApiRouter {
     }
 
     var url: String {
-        Constants.API.userBaseURLString
+        Constants.API.contactsBaseURLString
     }
 }
