@@ -49,27 +49,27 @@ final class RegisterAnonymizeViewModel: ViewModelType {
     var identityText: String {
         switch currentState {
         case .identity:
-            return "This is your identity"
+            return L.anonymizeUserTitle()
         case .anonymized:
-            return "Identity anonymized!"
+            return L.anonymizeUserTitle2()
         }
     }
 
     var subtitle: String {
         switch currentState {
         case .identity:
-            return "Nobody will see your identity until you allow it"
+            return L.anonymizeUserNote()
         case .anonymized:
-            return "This is how other users will see you until you reveal your real identity."
+            return L.anonymizeUserNote2()
         }
     }
 
     var buttonTitle: String {
         switch currentState {
         case .identity:
-            return "Anonymize"
+            return L.anonymizeUserBtn()
         case .anonymized:
-            return "Continue"
+            return L.continue()
         }
     }
 
