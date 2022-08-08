@@ -10,7 +10,7 @@ import Combine
 import SwiftUI
 import Cleevio
 
-struct AnonymizeInput {
+struct AnonymizeInput: Equatable {
     let username: String
     let avatar: Data?
 }
@@ -39,7 +39,7 @@ final class RegisterAnonymizeViewModel: ViewModelType {
     // MARK: - View Bindings
 
     var username: String {
-        input.username
+        secretName ?? input.username
     }
 
     var avatar: Data? {
@@ -81,6 +81,9 @@ final class RegisterAnonymizeViewModel: ViewModelType {
 
     @Published var loading = false
     @Published var error: Error?
+    @Published var showAnimationOverlay = false
+    @Published var secretName: String?
+    static let animationDuration: CGFloat = 1.5
 
     var primaryActivity: Activity = .init()
     var activityIndicator: ActivityIndicator {
@@ -121,9 +124,26 @@ final class RegisterAnonymizeViewModel: ViewModelType {
 
     private func setupActionBindings() {
         action
-            .filter { $0 == .anonymize }
-            .map { _ in State.anonymized }
-            .assign(to: &$currentState)
+            .withUnretained(self)
+            .filter { owner, action in
+                action == .anonymize && !owner.showAnimationOverlay
+            }
+            .withUnretained(self)
+            .sink { owner, _ in
+                owner.showAnimationOverlay = true
+
+                after(Self.animationDuration) {
+                    owner.showAnimationOverlay = false
+                }
+
+                after(Self.animationDuration / 2) {
+                    if owner.currentState == .identity {
+                        owner.currentState = .anonymized
+                    }
+                    owner.secretName = ManagedProfile.generateRandomName()
+                }
+            }
+            .store(in: cancelBag)
     }
 
     private func setupCreateUserBindings() {

@@ -52,10 +52,15 @@ class RegisterNameAvatarCoordinator: BaseCoordinator<RouterResult<Void>> {
         let finished = viewModel
             .route
             .receive(on: RunLoop.main)
-            .filter { $0 == .continueTapped }
+            .map { route -> AnonymizeInput in
+                switch route {
+                case .continueTapped(let input):
+                    return input
+                }
+            }
             .withUnretained(self)
-            .flatMap { owner, _ -> CoordinatingResult<RouterResult<Void>> in
-                owner.showAnonymizeUser(router: owner.router)
+            .flatMap { owner, input -> CoordinatingResult<RouterResult<Void>> in
+                owner.showAnonymizeUser(router: owner.router, input: input)
             }
             .filter { if case .finished = $0 { return true } else { return false } }
 
@@ -66,12 +71,12 @@ class RegisterNameAvatarCoordinator: BaseCoordinator<RouterResult<Void>> {
 }
 
 extension RegisterNameAvatarCoordinator {
-    private func showAnonymizeUser(router: Router) -> CoordinatingResult<RouterResult<Void>> {
+    private func showAnonymizeUser(router: Router, input: AnonymizeInput) -> CoordinatingResult<RouterResult<Void>> {
         coordinate(
             to: RegisterAnonymizeCoordinator(
                 router: router,
                 animated: true,
-                input: .init(username: "Daniel", avatar: nil)
+                input: input
             )
         )
         .prefix(1)
