@@ -22,6 +22,8 @@
 "onboarding.intro.message.request" = "Líbí se ti něčí nabídka? Spojte se a vexlujte!";
 "welcome.title" = "Chceš začít vexlovat?";
 "welcome.terms.agreements" = "Souhlasím s podmínkami";
+"welcome.terms.agreements.one" = "Souhlasím s";
+"welcome.terms.agreements.two" = "podmínkami";
 "welcome.terms.agreements.link" = "podmínkami";
 "welcome.terms.agreements.url" = "https://google.com";
 "welcome.button" = "Pokračovat";
@@ -32,6 +34,14 @@
 "terms.of.use.policy.bookmark" = "Ochrana soukromí";
 "terms.of.use.markdown" = "# Just testing markdown\n\n[link](https://google.com)\n\n## Team\n\n* **Name Surname** - work position\n* **Name Surname** - work position";
 "terms.of.use.policy.markdown" = "# Replace with real data\n\n[link](https://google.com)\n\n## Team\n\n* **Name Surname** - work position\n* **Name Surname** - work position";
+"terms.of.use.terms.one.title" = "1.   Welcome";
+"terms.of.use.terms.one.description" = "We would like to thank you for your choice to use  Vexl. We know that you are eager to go ahead and start using it right away, but we kindly ask you to spare a few minutes to read through the Terms of Service first. We value your time, so we promise that we will keep it as brief as possible. If you agree with everything that you read here, you may then go ahead and start using Vexl.";
+"terms.of.use.terms.two.title" = "2.   Parties";
+"terms.of.use.terms.two.description" = "Let's start with introductions, so you know, who hides under the terms “we” and “you” frequently used throughout this document.\n\nWe are a commercial company Vexl s.r.o. with a registered office at Kundratka 2359/17a, Libeň, 180 00 Prague 8, Czech Republic. While this is probably sufficient information for you,  law dictates that we must  also mention that our Id. No. is  172 70 642 and we are registered in the commercial register kept by the Commercial court in Prague under file No. 369216.\n\nBy “you” we mean anybody, whether you are an individual or legal person, who uses Vexl in any way.\n\nIt probably goes without saying, but your legal capacity must not be limited to the extent that it could prevent you from accepting these Terms of Service and using Vexl. To make things simpler, let's just agree that you must be at least 18 years old to use Vexl.";
+"terms.of.use.terms.three.title" = "3. About Vexl";
+"terms.of.use.terms.three.description.one" = "To put it simply, Vexl is a service (which includes an application) that allows users interested in buying or selling Bitcoin to connect with each other to discuss their offers and agree upon trades. What is more, Vexl accomplishes that while collecting and storing almost no information about the users. Once the users are connected they may discuss the potential trade via private and secure (end-to-end encrypted) chat.\n\n";
+"terms.of.use.terms.three.description.two" = "Important notice: ";
+"terms.of.use.terms.three.description.three" = "Vexl itself does not offer any instruments to facilitate Bitcoin transactions between the users. We do not monitor whether any trades took place between any of our users. The only objective of Vexl is to provide the users a safe and simple to use platform for finding and contacting each other and for discussing the terms of the trade.";
 "register.phone.number.input.title" = "Zadej své telefonní číslo";
 "register.phone.number.input.subtitle" = "Tvůj telefon bude 100\%% anonymní";
 "register.phone.number.not.valid" = "Telefonní číslo není správně";

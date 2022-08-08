@@ -18,9 +18,9 @@ struct WelcomeView: View {
             card
                 .padding(.horizontal, Appearance.GridGuide.point)
 
-            WelcomeAgreementSwitch(text: L.welcomeTermsAgreements(),
-                                   links: [L.welcomeTermsAgreementsLink(): L.welcomeTermsAgreementsUrl()],
-                                   isOn: $viewModel.hasAgreedTermsAndConditions)
+            WelcomeAgreementSwitch(isOn: $viewModel.hasAgreedTermsAndConditions) {
+                viewModel.action.send(.linkTap)
+            }
                 .padding(.vertical, Appearance.GridGuide.smallPadding)
                 .padding(.horizontal, Appearance.GridGuide.point)
 
