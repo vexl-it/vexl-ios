@@ -241,6 +241,7 @@
 "request.placeholder" = "e.g. let's trade my friend...";
 "request.button" = "Send request";
 "request.common.friends" = "%d common friends";
+"request.common.friends.empty.state" = "You don't have common friends";
 "chat.main.title" = "Chat";
 "chat.filter.all" = "All";
 "chat.filter.buy" = "Buyers";
@@ -257,7 +258,7 @@
 "chat.message.common.friend.empty" = "You don't share any common friends";
 "chat.message.delete.chat" = "Delete chat";
 "chat.message.block.user" = "Block user";
-"chat.message.input.placeholder" = "Type something";
+"chat.message.input.placeholder" = "Type something...";
 "chat.message.started" = "• Chat has started";
 "chat.message.delete.title" = "Delete chat?";
 "chat.message.delete.description" = "Are you done trading? Closing chat means that you are finished with the trade. Closing the chat deletes all chat history. ";

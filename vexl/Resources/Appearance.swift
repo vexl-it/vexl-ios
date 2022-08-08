@@ -153,6 +153,7 @@ struct Appearance {
     // MARK: - Fonts
 
     enum TextStyle {
+        case ultraLargeTitle
         case largeTitle
         case h1
         case h2
@@ -179,6 +180,8 @@ struct Appearance {
 
         var font: UIFont {
             switch self {
+            case .ultraLargeTitle:
+                return R.font.ppMonumentExtendedBold(size: 80) ?? UIFont.systemFont(ofSize: 80, weight: .bold)
             case .largeTitle:
                 return R.font.ppMonumentExtendedBold(size: 64) ?? UIFont.systemFont(ofSize: 64, weight: .bold)
             case .h1:
