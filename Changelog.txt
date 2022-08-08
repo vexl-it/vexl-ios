@@ -3,5 +3,6 @@
 ### Improvements
 
 ### Fixes
+- VEX-525: Fixed common friends on chat request screen
 
 ### Known Issues
