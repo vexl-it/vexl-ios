@@ -1,6 +1,7 @@
 - Requires uninstall: ⚠️ YES ⚠️
 
 ### Improvements
+- VEX-446 Offer creation (only on debug & devel)
 
 ### Fixes
 
