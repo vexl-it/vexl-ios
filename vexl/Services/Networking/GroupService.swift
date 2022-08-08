@@ -11,7 +11,7 @@ import Combine
 protocol GroupServiceType {
     func leave(group: ManagedGroup) -> AnyPublisher<Void, Error>
     func getGroup(code: Int) -> AnyPublisher<GroupPayload, Error>
-    func createGroup(group: ManagedGroup) -> AnyPublisher<GroupPayload, Error>
+    func createGroup(payload: GroupPayload) -> AnyPublisher<GroupPayload, Error>
     func getNewMembers(groups: [ManagedGroup]) -> AnyPublisher<[GroupMemberPayload], Error>
     func joinGroup(code: Int) -> AnyPublisher<Void, Error>
     func getExpiredGroups(groups: [ManagedGroup]) -> AnyPublisher<[GroupPayload], Error>
@@ -31,12 +31,8 @@ final class GroupService: BaseService, GroupServiceType {
         request(type: GroupPayload.self, endpoint: GroupRouter.getGroup(code: code))
     }
 
-    func createGroup(group: ManagedGroup) -> AnyPublisher<GroupPayload, Error> {
-        guard let payload = GroupPayload(group: group) else {
-            return Fail(error: PersistenceError.insufficientData)
-                .eraseToAnyPublisher()
-        }
-        return request(
+    func createGroup(payload: GroupPayload) -> AnyPublisher<GroupPayload, Error> {
+        request(
             type: GroupPayload.self,
             endpoint: GroupRouter.createGroup(
                 groupPayload: payload

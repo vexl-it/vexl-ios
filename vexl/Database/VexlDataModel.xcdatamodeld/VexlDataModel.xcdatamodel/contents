@@ -29,7 +29,7 @@
         <attribute name="closureAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="code" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="createdAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
-        <attribute name="expirationAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="expiration" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="logo" optional="YES" attributeType="Binary"/>
         <attribute name="logoURL" optional="YES" attributeType="URI"/>
         <attribute name="name" optional="YES" attributeType="String"/>
@@ -118,6 +118,7 @@
         <relationship name="profile" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ManagedProfile" inverseName="currentUser" inverseEntity="ManagedProfile"/>
     </entity>
     <elements>
+        <element name="ManagedAnonymisedProfile" positionX="-729.87109375" positionY="268.921875" width="170.62890625" height="73"/>
         <element name="ManagedChat" positionX="-333.91796875" positionY="-454.86328125" width="162.57421875" height="179"/>
         <element name="ManagedContact" positionX="-1073.49609375" positionY="-251.14453125" width="128" height="134"/>
         <element name="ManagedGroup" positionX="-993.60546875" positionY="162.875" width="128" height="193"/>
@@ -128,6 +129,5 @@
         <element name="ManagedProfile" positionX="-566.8828125" positionY="-92.77734375" width="128" height="178"/>
         <element name="ManagedSyncItem" positionX="-591.86328125" positionY="-567.52734375" width="128" height="74"/>
         <element name="ManagedUser" positionX="-1013.984375" positionY="-50.265625" width="165.6171875" height="133"/>
-        <element name="ManagedAnonymisedProfile" positionX="-729.87109375" positionY="268.921875" width="170.62890625" height="73"/>
     </elements>
 </model>
