@@ -4,5 +4,6 @@
 
 ### Fixes
 - VEX-525: Fixed common friends on chat request screen
+- VEX-512: Anonymize user
 
 ### Known Issues
