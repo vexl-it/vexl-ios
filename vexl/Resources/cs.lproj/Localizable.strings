@@ -241,6 +241,7 @@
 "request.placeholder" = "např. pojď zavexlit, kámo!";
 "request.button" = "Odeslat žádost";
 "request.common.friends" = "%d společných přátel";
+"request.common.friends.empty.state" = "Nemáte společné přátele";
 "chat.main.title" = "Chat";
 "chat.filter.all" = "Vše";
 "chat.filter.buy" = "Kupující";
@@ -257,7 +258,7 @@
 "chat.message.common.friend.empty" = "Nemáte žádné společné přátele";
 "chat.message.delete.chat" = "Vymazat chat";
 "chat.message.block.user" = "Zablokovat uživatele";
-"chat.message.input.placeholder" = "Napiš něco";
+"chat.message.input.placeholder" = "Napiš něco...";
 "chat.message.started" = "• Chat byl zahájen";
 "chat.message.delete.title" = "Vymazat chat?";
 "chat.message.delete.description" = "Dovexlováno? Chat uzavři až po dokončení transakce, uzavřením se smaže celá historie chatu.";
@@ -298,6 +299,7 @@
 "groups.title" = "Skupiny";
 "groups.leave.button" = "Odejít";
 "groups.item.members" = "%@ členové";
+"groups.enter.camera.denied" = "Vexl has no access to the camera";
 "groups.enter.code" = "Vložit kód ručně";
 "groups.scan.code" = "Nascanovat QR pro připojení do skupiny";
 "groups.enter.code.description" = "Vyplňte aktivační kód níže";

@@ -25,16 +25,10 @@ struct GroupsScanQRView: View {
 
             } else if viewModel.isCameraAvailable && !viewModel.showCamera {
                 VStack {
-                    Text("Vexl has no access to the camera")
+                    Text(L.groupsEnterCameraDenied())
                         .foregroundColor(Appearance.Colors.whiteText)
                         .textStyle(.paragraphSemibold)
                         .padding(.bottom, Appearance.GridGuide.padding)
-
-                    Text("Go to Settings and grant access to the camera functionality.")
-                        .multilineTextAlignment(.center)
-                        .foregroundColor(Appearance.Colors.gray3)
-                        .textStyle(.paragraphSmall)
-                        .padding(.horizontal, Appearance.GridGuide.largePadding2)
                 }
             } else {
                 Button(L.continue()) {
@@ -48,7 +42,7 @@ struct GroupsScanQRView: View {
             }
 
             VStack {
-                Text("Scan QR code to join a group")
+                Text(L.groupsScanCode())
                     .foregroundColor(Appearance.Colors.whiteText)
                     .textStyle(.paragraphSmallSemiBold)
 
@@ -60,7 +54,7 @@ struct GroupsScanQRView: View {
                     HStack {
                         Image(R.image.profile.qrManual.name)
 
-                        Text("Enter code manually")
+                        Text(L.groupsEnterCode())
                             .textStyle(.paragraphSmallSemiBold)
                             .foregroundColor(Appearance.Colors.primaryText)
                     }
