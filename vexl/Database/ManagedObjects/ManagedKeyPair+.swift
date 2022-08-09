@@ -20,4 +20,8 @@ extension ManagedKeyPair {
         }
         return ECCKeys(pubKey: pubK, privKey: privateKey)
     }
+
+    var offer: ManagedOffer? {
+        receiversOffer ?? userOffer
+    }
 }

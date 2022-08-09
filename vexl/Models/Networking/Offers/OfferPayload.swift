@@ -35,7 +35,7 @@ struct OfferPayload: Codable {
     let offerType: String
     let currency: String
 
-    var offerId: String = ""
+    var offerId: String?
     var createdAt: String = ""
     var modifiedAt: String = ""
 
@@ -190,10 +190,10 @@ struct OfferPayload: Codable {
             offer.btcNetworks = btcNetworks
             offer.commonFriends = commonFirends
 
-            if offer.receiverPublicKey == nil {
+            if offer.receiversPublicKey == nil {
                 let offerKeyPair = ManagedKeyPair(context: context)
                 offerKeyPair.publicKey = offerPublicKey
-                offer.receiverPublicKey = offerKeyPair
+                offerKeyPair.receiversOffer = offer
             }
 
             if offer.inbox == nil {
