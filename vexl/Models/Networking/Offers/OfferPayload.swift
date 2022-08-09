@@ -35,7 +35,7 @@ struct OfferPayload: Codable {
     let offerType: String
     let currency: String
 
-    var offerId: String = ""
+    var offerId: String?
     var createdAt: String = ""
     var modifiedAt: String = ""
 
