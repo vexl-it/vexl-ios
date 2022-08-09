@@ -21,8 +21,13 @@ struct GroupsScanQRView: View {
                     }
                     .edgesIgnoringSafeArea(.all)
 
-                Color.black
-                    .opacity(0.4)
+                Rectangle()
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .foregroundColor(Color.black)
+                    .opacity(0.8)
+                    .mask(cutoutMask(width: min(300, UIScreen.main.width * 0.75))
+                            .compositingGroup()
+                            .luminanceToAlpha())
                     .edgesIgnoringSafeArea(.all)
             } else if viewModel.isCameraAvailable && !viewModel.showCamera {
                 VStack {
@@ -67,6 +72,18 @@ struct GroupsScanQRView: View {
         .background(Color.black.edgesIgnoringSafeArea(.all))
         .onAppear {
             viewModel.action.send(.cameraAccessRequest)
+        }
+    }
+
+    @ViewBuilder
+    private func cutoutMask(width: CGFloat) -> some View {
+        ZStack {
+            Rectangle()
+                .foregroundColor(Color.white)
+
+            RoundedRectangle(cornerRadius: Appearance.GridGuide.buttonCorner)
+                .foregroundColor(Color.black)
+                .frame(width: width, height: width)
         }
     }
 }
