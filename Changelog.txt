@@ -1,6 +1,7 @@
 - Requires uninstall: ⚠️ YES ⚠️
 
 ### Improvements
+- VEX-530: Remove OfferID dependence
 
 ### Fixes
 - VEX-525: Fixed common friends on chat request screen
