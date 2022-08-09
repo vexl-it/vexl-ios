@@ -111,6 +111,13 @@ struct RegisterNameAvatarViewPreview: PreviewProvider {
         return viewModel
     }
 
+    static var avatarImageViewModel: RegisterNameAvatarViewModel {
+        let viewModel = RegisterNameAvatarViewModel()
+        viewModel.currentState = .avatarInput
+        viewModel.avatar = R.image.onboarding.testAvatar()!.jpegData(compressionQuality: 1)
+        return viewModel
+    }
+
     static var nameViewModel: RegisterNameAvatarViewModel {
         let viewModel = RegisterNameAvatarViewModel()
         viewModel.currentState = .usernameInput
@@ -121,5 +128,6 @@ struct RegisterNameAvatarViewPreview: PreviewProvider {
         RegisterNameAvatarView(viewModel: .init())
         RegisterNameAvatarView(viewModel: nameViewModel)
         RegisterNameAvatarView(viewModel: avatarViewModel)
+        RegisterNameAvatarView(viewModel: avatarImageViewModel)
     }
 }
