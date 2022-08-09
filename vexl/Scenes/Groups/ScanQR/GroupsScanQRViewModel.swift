@@ -51,6 +51,7 @@ final class GroupsScanQRViewModel: ViewModelType, ObservableObject {
     // MARK: - Variables
 
     private let cancelBag: CancelBag = .init()
+    let scanInterval = 1.0
 
     // MARK: - Initialization
 

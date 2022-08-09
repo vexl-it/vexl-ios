@@ -300,6 +300,7 @@
 		F1A9454627F81278009B5AE3 /* ContactInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1A9454527F81278009B5AE3 /* ContactInformation.swift */; };
 		F1AC480828A1D92D00722F96 /* CameraPreviewViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1AC480728A1D92D00722F96 /* CameraPreviewViewDelegate.swift */; };
 		F1AC480A28A1D98F00722F96 /* CameraScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1AC480928A1D98F00722F96 /* CameraScannerView.swift */; };
+		F1AC480C28A1E48E00722F96 /* GroupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1AC480B28A1E48E00722F96 /* GroupViewController.swift */; };
 		F1B30107287A40DC00C86F83 /* ChatIdentityActionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B30106287A40DC00C86F83 /* ChatIdentityActionSheet.swift */; };
 		F1B3010A287A464600C86F83 /* ChatActionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B30109287A464600C86F83 /* ChatActionViewModel.swift */; };
 		F1B3010F287A53C900C86F83 /* ChatConversationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B3010E287A53C900C86F83 /* ChatConversationViewModel.swift */; };
@@ -717,6 +718,7 @@
 		F1A9454527F81278009B5AE3 /* ContactInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactInformation.swift; sourceTree = "<group>"; };
 		F1AC480728A1D92D00722F96 /* CameraPreviewViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraPreviewViewDelegate.swift; sourceTree = "<group>"; };
 		F1AC480928A1D98F00722F96 /* CameraScannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraScannerView.swift; sourceTree = "<group>"; };
+		F1AC480B28A1E48E00722F96 /* GroupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupViewController.swift; sourceTree = "<group>"; };
 		F1B30106287A40DC00C86F83 /* ChatIdentityActionSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatIdentityActionSheet.swift; sourceTree = "<group>"; };
 		F1B30109287A464600C86F83 /* ChatActionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatActionViewModel.swift; sourceTree = "<group>"; };
 		F1B3010E287A53C900C86F83 /* ChatConversationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatConversationViewModel.swift; sourceTree = "<group>"; };
@@ -1598,6 +1600,7 @@
 			isa = PBXGroup;
 			children = (
 				F1156AEB28A19B2A00B9A5B9 /* ScanQR */,
+				F1AC480B28A1E48E00722F96 /* GroupViewController.swift */,
 			);
 			path = Groups;
 			sourceTree = "<group>";
@@ -2668,6 +2671,7 @@
 				F12A14F527D96FDC0096543E /* ImportContactsViewModel.swift in Sources */,
 				B03BC703287B51C500E355D3 /* ManagedSyncItem+.swift in Sources */,
 				B08F391C27AE7112008B344F /* BaseService.swift in Sources */,
+				F1AC480C28A1E48E00722F96 /* GroupViewController.swift in Sources */,
 				F1C6D09E27BDDD4C009BD506 /* TextStyle.swift in Sources */,
 				F1B365D8288882EA0069788D /* ProfileFacebookContactsCoordinator.swift in Sources */,
 				4FBF6209283CD5C000DDBE71 /* OfferAdvancedFilterFriendSourceView.swift in Sources */,

@@ -22,15 +22,19 @@ final class GroupsScanQRCoordinator: BaseCoordinator<RouterResult<Void>> {
     override func start() -> CoordinatingResult<RouterResult<Void>> {
 
         let viewModel = GroupsScanQRViewModel()
-        let viewController = BaseViewController(rootView: GroupsScanQRView(viewModel: viewModel))
+        let viewController = GroupViewController(rootView: GroupsScanQRView(viewModel: viewModel))
         router.present(viewController, animated: animated)
+
+        let back = viewController
+            .onBack
+            .map { _ -> RouterResult<Void> in .dismiss }
 
         let dismiss = viewModel
             .route
             .filter { $0 == .dismissTapped }
             .map { _ -> RouterResult<Void> in .dismiss }
 
-        return dismiss
+        return Publishers.Merge(back, dismiss)
             .eraseToAnyPublisher()
     }
 }

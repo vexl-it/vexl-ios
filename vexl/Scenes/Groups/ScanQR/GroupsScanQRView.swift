@@ -14,7 +14,15 @@ struct GroupsScanQRView: View {
     var body: some View {
         ZStack {
             if viewModel.isCameraAvailable && viewModel.showCamera {
-                Text("Should show camera")
+                CameraScannerView()
+                    .interval(delay: viewModel.scanInterval)
+                    .onScan { code in
+                        viewModel.action.send(.codeScan(code: code))
+                    }
+
+                Color.black
+                    .opacity(0.5)
+
             } else if viewModel.isCameraAvailable && !viewModel.showCamera {
                 VStack {
                     Text("Vexl has no access to the camera")
@@ -40,6 +48,12 @@ struct GroupsScanQRView: View {
             }
 
             VStack {
+                Text("Scan QR code to join a group")
+                    .foregroundColor(Appearance.Colors.whiteText)
+                    .textStyle(.paragraphSmallSemiBold)
+
+                Spacer()
+
                 Button {
                     viewModel.action.send(.manualInputTap)
                 } label: {
