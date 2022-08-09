@@ -25,6 +25,18 @@ final class GroupsScanQRCoordinator: BaseCoordinator<RouterResult<Void>> {
         let viewController = GroupViewController(rootView: GroupsScanQRView(viewModel: viewModel))
         router.present(viewController, animated: animated)
 
+        let manualInput = viewModel
+            .route
+            .filter { $0 == .manualInputTapped }
+            .withUnretained(self)
+            .flatMap { owner, _ in
+                owner.presentGroupInput(router: owner.router)
+            }
+            .filter { result in
+                if case .finished = result { return true }
+                return false
+            }
+
         let back = viewController
             .onBack
             .map { _ -> RouterResult<Void> in .dismiss }
@@ -34,7 +46,21 @@ final class GroupsScanQRCoordinator: BaseCoordinator<RouterResult<Void>> {
             .filter { $0 == .dismissTapped }
             .map { _ -> RouterResult<Void> in .dismiss }
 
-        return Publishers.Merge(back, dismiss)
+        return Publishers.Merge3(back, dismiss, manualInput)
             .eraseToAnyPublisher()
+    }
+}
+
+extension GroupsScanQRCoordinator {
+    private func presentGroupInput(router: Router) -> CoordinatingResult<RouterResult<Void>> {
+        coordinate(to: GroupsInputCoordinator(router: router, animated: true))
+        .flatMap { result -> CoordinatingResult<RouterResult<Void>> in
+            guard result != .dismissedByRouter else {
+                return Just(result).eraseToAnyPublisher()
+            }
+            return router.dismiss(animated: true, returning: result)
+        }
+        .prefix(1)
+        .eraseToAnyPublisher()
     }
 }
