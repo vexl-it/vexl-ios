@@ -29,16 +29,12 @@ final class GroupsInputCoordinator: BaseCoordinator<RouterResult<Void>> {
             .route
             .map { _ -> RouterResult<Void> in .finished(()) }
 
-        let back = viewController
-            .onBack
-            .map { _ -> RouterResult<Void> in .dismiss }
-
         let dismiss = viewModel
             .route
             .filter { $0 == .dismissTapped }
             .map { _ -> RouterResult<Void> in .dismiss }
 
-        return Publishers.Merge3(back, dismiss, continueTap)
+        return Publishers.Merge(dismiss, continueTap)
             .eraseToAnyPublisher()
     }
 }
