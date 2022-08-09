@@ -78,9 +78,8 @@ struct RegisterNameAvatarView: View {
                                     deleteAction: {
                 viewModel.send(action: .deleteAvatar)
             })
+                .frame(maxHeight: .infinity)
                 .transition(transition)
-
-            Spacer()
 
             actionButton(title: viewModel.avatarButtonTitle) {
                 viewModel.send(action: .createUser)
@@ -98,8 +97,7 @@ struct RegisterNameAvatarView: View {
                          action: {
             action()
         })
-            .padding(.horizontal, Appearance.GridGuide.point)
-            .padding(.bottom, Appearance.GridGuide.padding)
+            .padding([.horizontal, .bottom], Appearance.GridGuide.point)
     }
 }
 
@@ -118,8 +116,8 @@ struct RegisterNameAvatarViewPreview: PreviewProvider {
     }
 
     static var previews: some View {
+        RegisterNameAvatarView(viewModel: avatarViewModel)
         RegisterNameAvatarView(viewModel: .init())
         RegisterNameAvatarView(viewModel: nameViewModel)
-        RegisterNameAvatarView(viewModel: avatarViewModel)
     }
 }

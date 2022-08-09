@@ -23,11 +23,11 @@ struct RegisterAvatarInputView: View {
                              subtitle: L.registerNameAvatarImageSubtitle(),
                              subtitlePositionIsBottom: false,
                              iconName: R.image.onboarding.eye.name,
+                             bottomPadding: Appearance.GridGuide.padding,
                              content: {
             addAvatarButton
-                .frame(maxHeight: .infinity)
         })
-            .padding(.all, Appearance.GridGuide.point)
+            .padding([.horizontal, .bottom], Appearance.GridGuide.point)
     }
 
     var addAvatarButton: some View {

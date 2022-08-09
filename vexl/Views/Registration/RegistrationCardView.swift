@@ -14,10 +14,11 @@ struct RegistrationCardView<Content>: View where Content: View {
     let subtitle: String
     let subtitlePositionIsBottom: Bool
     let iconName: String?
+    let bottomPadding: CGFloat
     let content: () -> Content
 
     var body: some View {
-        VStack(alignment: .leading, spacing: Appearance.GridGuide.point) {
+        VStack(alignment: .leading) {
 
             Text(title)
                 .textStyle(.h3)
@@ -35,7 +36,7 @@ struct RegistrationCardView<Content>: View where Content: View {
             }
         }
         .padding(.all, Appearance.GridGuide.padding)
-        .padding(.bottom, Appearance.GridGuide.largePadding2)
+        .padding(.bottom, bottomPadding)
         .frame(maxWidth: .infinity, alignment: .leading)
         .modifier(CardViewModifier())
     }
@@ -52,7 +53,7 @@ struct RegistrationCardView<Content>: View where Content: View {
                 .lineLimit(2)
                 .minimumScaleFactor(0.5)
         }
-        .padding(.top, Appearance.GridGuide.padding)
+        .padding(.top, Appearance.GridGuide.smallPadding)
     }
 }
 
@@ -67,6 +68,7 @@ struct RegistrationCardViewPreview: PreviewProvider {
                              subtitle: subtitle,
                              subtitlePositionIsBottom: true,
                              iconName: R.image.onboarding.eye.name,
+                             bottomPadding: Appearance.GridGuide.padding,
                              content: {
             text
         })
@@ -76,6 +78,7 @@ struct RegistrationCardViewPreview: PreviewProvider {
                              subtitle: subtitle,
                              subtitlePositionIsBottom: false,
                              iconName: nil,
+                             bottomPadding: Appearance.GridGuide.padding,
                              content: {
             text
         })
