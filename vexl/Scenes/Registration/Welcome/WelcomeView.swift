@@ -40,7 +40,9 @@ struct WelcomeView: View {
     private var card: some View {
         VStack(spacing: .zero) {
             Image(R.image.onboarding.welcomeVexl.name)
-                .padding(.bottom, Appearance.GridGuide.largePadding2)
+                .resizable()
+                .scaledToFit()
+                .padding(.vertical, Appearance.GridGuide.largePadding1)
 
             Text(L.welcomeProductName())
                 .foregroundColor(Appearance.Colors.primaryText)
@@ -51,6 +53,7 @@ struct WelcomeView: View {
                 .textStyle(.paragraphMedium)
                 .multilineTextAlignment(.center)
                 .foregroundColor(Appearance.Colors.gray3)
+                .padding(.bottom, Appearance.GridGuide.point)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Appearance.Colors.whiteText)
@@ -63,7 +66,6 @@ struct WelcomeView: View {
 struct WelcomeViewPreview: PreviewProvider {
     static var previews: some View {
         WelcomeView(viewModel: .init())
-            .previewDevice("iPhone 11")
     }
 }
 
