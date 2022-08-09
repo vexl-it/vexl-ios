@@ -378,6 +378,7 @@
 		F1DF4A4F289C9F16008E5C87 /* FAQView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1DF4A4E289C9F16008E5C87 /* FAQView.swift */; };
 		F1DF4A51289D59BA008E5C87 /* AttributedText.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1DF4A50289D59BA008E5C87 /* AttributedText.swift */; };
 		F1DF4A53289D6BE4008E5C87 /* FAQContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1DF4A52289D6BE4008E5C87 /* FAQContent.swift */; };
+		F1F0FBD128A2FB3000C783D3 /* GroupsLeaveActionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1F0FBD028A2FB3000C783D3 /* GroupsLeaveActionSheet.swift */; };
 		F1F5F194283E9FC500968366 /* OfferPaymentIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1F5F193283E9FC500968366 /* OfferPaymentIconView.swift */; };
 		F1F5F199283FE52D00968366 /* ChatRequestCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1F5F198283FE52D00968366 /* ChatRequestCoordinator.swift */; };
 		F1F5F19B283FE53300968366 /* ChatRequestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1F5F19A283FE53300968366 /* ChatRequestView.swift */; };
@@ -807,6 +808,7 @@
 		F1E7029A2889C2D100EBB087 /* EditProfileNameView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfileNameView.swift; sourceTree = "<group>"; };
 		F1E7029B2889C2D100EBB087 /* EditProfileNameCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfileNameCoordinator.swift; sourceTree = "<group>"; };
 		F1E7029C2889C2D100EBB087 /* EditProfileNameViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfileNameViewModel.swift; sourceTree = "<group>"; };
+		F1F0FBD028A2FB3000C783D3 /* GroupsLeaveActionSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupsLeaveActionSheet.swift; sourceTree = "<group>"; };
 		F1F5F193283E9FC500968366 /* OfferPaymentIconView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferPaymentIconView.swift; sourceTree = "<group>"; };
 		F1F5F198283FE52D00968366 /* ChatRequestCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRequestCoordinator.swift; sourceTree = "<group>"; };
 		F1F5F19A283FE53300968366 /* ChatRequestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRequestView.swift; sourceTree = "<group>"; };
@@ -1605,6 +1607,7 @@
 		F1156AE928A19AFC00B9A5B9 /* Groups */ = {
 			isa = PBXGroup;
 			children = (
+				F1F0FBCF28A2F9E000C783D3 /* Leave */,
 				F1A61A3B28A1F97200904F3F /* Input */,
 				F1156AEB28A19B2A00B9A5B9 /* ScanQR */,
 				F1AC480B28A1E48E00722F96 /* GroupViewController.swift */,
@@ -2219,6 +2222,14 @@
 			path = FAQ;
 			sourceTree = "<group>";
 		};
+		F1F0FBCF28A2F9E000C783D3 /* Leave */ = {
+			isa = PBXGroup;
+			children = (
+				F1F0FBD028A2FB3000C783D3 /* GroupsLeaveActionSheet.swift */,
+			);
+			path = Leave;
+			sourceTree = "<group>";
+		};
 		F1F5F197283FE51F00968366 /* ChatRequest */ = {
 			isa = PBXGroup;
 			children = (
@@ -2565,6 +2576,7 @@
 				F1B365D1288608680069788D /* ProfilePhoneContactsCoordinator.swift in Sources */,
 				F1A43DC2288E33D30032A11F /* ReportIssueActionSheet.swift in Sources */,
 				F188625D2811E3E700659786 /* OfferTradeLocationPickerView.swift in Sources */,
+				F1F0FBD128A2FB3000C783D3 /* GroupsLeaveActionSheet.swift in Sources */,
 				F11441F328468B5600307D39 /* CloseButton.swift in Sources */,
 				F151A29727C8667A000D7242 /* RegisterNameAvatarCoordinator.swift in Sources */,
 				B007A73A2868B66500CFA5C9 /* JoinVexl.swift in Sources */,
