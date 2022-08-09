@@ -19,10 +19,11 @@ struct GroupsScanQRView: View {
                     .onScan { code in
                         viewModel.action.send(.codeScan(code: code))
                     }
+                    .edgesIgnoringSafeArea(.all)
 
                 Color.black
-                    .opacity(0.5)
-
+                    .opacity(0.4)
+                    .edgesIgnoringSafeArea(.all)
             } else if viewModel.isCameraAvailable && !viewModel.showCamera {
                 VStack {
                     Text(L.groupsEnterCameraDenied())
@@ -42,10 +43,6 @@ struct GroupsScanQRView: View {
             }
 
             VStack {
-                Text(L.groupsScanCode())
-                    .foregroundColor(Appearance.Colors.whiteText)
-                    .textStyle(.paragraphSmallSemiBold)
-
                 Spacer()
 
                 Button {
@@ -68,6 +65,9 @@ struct GroupsScanQRView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color.black.edgesIgnoringSafeArea(.all))
+        .onAppear {
+            viewModel.action.send(.cameraAccessRequest)
+        }
     }
 }
 

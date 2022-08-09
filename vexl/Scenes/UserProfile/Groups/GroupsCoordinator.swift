@@ -22,7 +22,7 @@ final class GroupsCoordinator: BaseCoordinator<RouterResult<Void>> {
     override func start() -> CoordinatingResult<RouterResult<Void>> {
 
         let viewModel = GroupsViewModel()
-        let viewController = BaseViewController(rootView: GroupsView(viewModel: viewModel))
+        let viewController = GroupViewController(rootView: GroupsView(viewModel: viewModel))
         router.present(viewController, animated: animated)
 
         viewModel

@@ -131,6 +131,10 @@ struct Appearance {
             $0.backgroundImage = UIImage()
             $0.shadowColor = .clear
             $0.backgroundColor = color
+            $0.titleTextAttributes = [
+                NSAttributedString.Key.foregroundColor: UIColor(Appearance.Colors.whiteText),
+                NSAttributedString.Key.font: Appearance.TextStyle.paragraphSmallSemiBold.font
+            ]
         }
 
         return appearance
@@ -147,6 +151,7 @@ struct Appearance {
             $0.isTranslucent = true
             $0.shadowImage = UIImage()
             $0.setBackgroundImage(UIImage(), for: .default)
+            $0.tintColor = .white
         }
     }
 
