@@ -101,7 +101,7 @@ class OfferRepository: OfferRepositoryType {
                         profile.avatar = UIImage(named: R.image.profile.avatar.name)?.pngData() // TODO: generate random avatar
                         profile.generateRandomName()
 
-                        offer.receiverPublicKey?.profile = profile
+                        offer.receiversPublicKey?.profile = profile
 
                         return offer
                     }

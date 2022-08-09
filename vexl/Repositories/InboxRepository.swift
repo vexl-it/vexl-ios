@@ -58,7 +58,7 @@ class InboxRepository: InboxRepositoryType {
                 chat.inbox = inbox
 
                 if !isUserInbox, inbox.offers?.count == 1, let offer = inbox.offers?.first(where: { _ in true }) as? ManagedOffer {
-                    keyPair.offer = offer
+                    keyPair.userOffer = offer
                 }
 
                 self?.populateMessage(message: message, chat: chat, payload: payload)
