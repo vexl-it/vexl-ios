@@ -71,7 +71,7 @@ struct MarketplaceView: View {
             MarketplaceFilterView(
                 items: viewModel.buyFilters,
                 hasFilters: viewModel.userSelectedFilters,
-                hasOffers: !viewModel.fetchedBuyOffers.isEmpty,
+                hasOffers: viewModel.createdBuyOffers,
                 mainAction: {
                     viewModel.action.send(.showBuyOffer)
                 }
@@ -81,7 +81,7 @@ struct MarketplaceView: View {
             MarketplaceFilterView(
                 items: viewModel.sellFilters,
                 hasFilters: viewModel.userSelectedFilters,
-                hasOffers: !viewModel.fetchedSellOffers.isEmpty,
+                hasOffers: viewModel.createdSellOffers,
                 mainAction: {
                     viewModel.action.send(.showSellOffer)
                 }
