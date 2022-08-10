@@ -53,7 +53,7 @@ struct RegistrationCardView<Content>: View where Content: View {
                 .lineLimit(2)
                 .minimumScaleFactor(0.5)
         }
-        .padding(.top, Appearance.GridGuide.smallPadding)
+        .padding(.top, Appearance.GridGuide.point)
     }
 }
 

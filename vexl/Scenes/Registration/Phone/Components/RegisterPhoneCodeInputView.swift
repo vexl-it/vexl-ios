@@ -26,7 +26,7 @@ struct RegisterPhoneCodeInputView: View {
                              subtitle: L.registerPhoneCodeInputSubtitle(phoneNumber),
                              subtitlePositionIsBottom: false,
                              iconName: R.image.onboarding.eye.name,
-                             bottomPadding: Appearance.GridGuide.point,
+                             bottomPadding: .zero,
                              content: {
             codeInputView
                 .padding(.top, Appearance.GridGuide.padding)
