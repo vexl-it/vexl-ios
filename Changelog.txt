@@ -9,5 +9,6 @@
 - VEX-525: Fixed common friends on chat request screen
 - VEX-512: Anonymize user
 - VEX-241: Crash fixed while scrolling in create offer
+- VEX-545: Fix reject reveal identity
 
 ### Known Issues
