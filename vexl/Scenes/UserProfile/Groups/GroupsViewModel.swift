@@ -36,6 +36,7 @@ final class GroupsViewModel: ViewModelType, ObservableObject {
     enum Route: Equatable {
         case dismissTapped
         case joinGroupTapped
+        case leaveGroupTapped(group: ManagedGroup)
     }
 
     var route: CoordinatingSubject<Route> = .init()
@@ -116,13 +117,17 @@ final class GroupsViewModel: ViewModelType, ObservableObject {
                 }
                 return group
             }
-            .flatMap { [groupManager, primaryActivity] group in
-                groupManager
-                    .leave(group: group)
-                    .track(activity: primaryActivity)
-                    .materialize()
-                    .compactMap(\.value)
+            .map { group -> Route in
+                .leaveGroupTapped(group: group)
             }
+            .subscribe(route)
+            .store(in: cancelBag)
+    }
+
+    func leave(group: ManagedGroup) {
+        groupManager
+            .leave(group: group)
+            .track(activity: primaryActivity)
             .sink()
             .store(in: cancelBag)
     }

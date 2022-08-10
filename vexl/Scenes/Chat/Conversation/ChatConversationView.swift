@@ -47,12 +47,14 @@ struct ChatConversationView: View {
                             ChatRevealIdentityResponseView(username: viewModel.username,
                                                            avatarImage: viewModel.avatarImage,
                                                            rejectImage: viewModel.rejectImage,
-                                                           isAccepted: false)
+                                                           isAccepted: false,
+                                                           isRecevinng: message.isContact)
                         case .approveIdentityReveal:
                             ChatRevealIdentityResponseView(username: viewModel.username,
                                                            avatarImage: viewModel.avatarImage,
                                                            rejectImage: viewModel.rejectImage,
-                                                           isAccepted: true)
+                                                           isAccepted: true,
+                                                           isRecevinng: message.isContact)
                         case .noContent:
                             EmptyView()
                         }

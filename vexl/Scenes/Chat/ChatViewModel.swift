@@ -241,7 +241,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
             .track(activity: primaryActivity)
             .withUnretained(self)
             .sink(receiveValue: { owner, _ in
-                guard let name = owner.chat.receiverKeyPair?.profile?.name else {
+                guard let name = owner.chat.receiverKeyPair?.profile?.name, isAccepted else {
                     return
                 }
 

@@ -43,8 +43,7 @@ struct RegisterPhoneView: View {
                              action: {
                 viewModel.send(action: viewModel.showCodeInput ? .validateCode : .sendPhoneNumber)
             })
-                .padding(.horizontal, Appearance.GridGuide.padding)
-                .padding(.bottom, Appearance.GridGuide.padding)
+                .padding([.horizontal, .bottom], Appearance.GridGuide.point)
                 .transaction { $0.disablesAnimations = true }
         }
         .background(Color.black.edgesIgnoringSafeArea(.all))

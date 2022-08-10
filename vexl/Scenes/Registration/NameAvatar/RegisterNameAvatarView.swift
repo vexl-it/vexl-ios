@@ -27,7 +27,7 @@ struct RegisterNameAvatarView: View {
                 avatarInputView
             }
         }
-        .frame(maxWidth: .infinity)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color.black.edgesIgnoringSafeArea(.all))
         .actionSheet(isPresented: $viewModel.showImagePickerActionSheet, content: {
             ActionSheet(title: Text(L.registerNameAvatarImagePicker()),
@@ -80,8 +80,6 @@ struct RegisterNameAvatarView: View {
             })
                 .transition(transition)
 
-            Spacer()
-
             actionButton(title: viewModel.avatarButtonTitle) {
                 viewModel.send(action: .createUser)
             }
@@ -98,8 +96,7 @@ struct RegisterNameAvatarView: View {
                          action: {
             action()
         })
-            .padding(.horizontal, Appearance.GridGuide.point)
-            .padding(.bottom, Appearance.GridGuide.padding)
+            .padding([.horizontal, .bottom], Appearance.GridGuide.point)
     }
 }
 
@@ -125,9 +122,13 @@ struct RegisterNameAvatarViewPreview: PreviewProvider {
     }
 
     static var previews: some View {
+        NavigationView {
+            RegisterNameAvatarView(viewModel: avatarViewModel)
+                .previewDevice("iPhone 11")
+        }
         RegisterNameAvatarView(viewModel: .init())
+            .previewDevice("iPhone 11")
         RegisterNameAvatarView(viewModel: nameViewModel)
-        RegisterNameAvatarView(viewModel: avatarViewModel)
-        RegisterNameAvatarView(viewModel: avatarImageViewModel)
+            .previewDevice("iPhone 11")
     }
 }

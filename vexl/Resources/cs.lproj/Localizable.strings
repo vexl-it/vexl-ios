@@ -223,6 +223,8 @@
 "offer.create.advanced.friend.description" = "Vexluj jenom s přáteli. \nNebo i s přáteli přátel.";
 "offer.create.advanced.type.lightning" = "Lightning";
 "offer.create.advanced.type.chain" = "On-chain";
+"offer.create.advanced.group.title" = "Skupina";
+"offer.create.advanced.group.description" = "";
 "offer.create.description" = "Popis";
 "offer.create.description.placeholder" = "Popiš svou nabídku";
 "offer.create.currency" = "Měna";
@@ -293,12 +295,14 @@
 "chat.message.identity.request.subtitle" = "Odesláním žádosti souhlasíš i se svým odhalením.";
 "chat.message.identity.request.send" = "Odeslat žádost";
 "chat.message.identity.request.cancel" = "Zpět";
+"chat.message.identity.reveal.reject.received" = "Byl jsi odmítnut";
 "chat.message.identity.reveal.reject" = "Odmítnul jsi";
 "chat.message.identity.reveal.approved" = "Identita odhalena!";
 "groups.join.button" = "Přidat se ke skupině";
 "groups.title" = "Skupiny";
 "groups.leave.button" = "Odejít";
 "groups.item.members" = "%@ členové";
+"groups.enter.camera.denied" = "Vexl has no access to the camera";
 "groups.enter.code" = "Vložit kód ručně";
 "groups.scan.code" = "Nascanovat QR pro připojení do skupiny";
 "groups.enter.code.description" = "Vyplňte aktivační kód níže";

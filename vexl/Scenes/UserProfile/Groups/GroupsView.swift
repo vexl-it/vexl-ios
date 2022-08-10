@@ -80,7 +80,7 @@ struct GroupCell: View {
                     .foregroundColor(Appearance.Colors.whiteText)
                 HStack {
                     Image(R.image.member.name)
-                    Text(L.groupsItemMembers("\(viewModel.meemberCount)"))
+                    Text(L.groupsItemMembers("\(viewModel.memberCount)"))
                         .textStyle(Appearance.TextStyle.paragraphSmall)
                         .foregroundColor(Appearance.Colors.whiteText)
                         .frame(maxWidth: .infinity, alignment: .leading)
