@@ -26,12 +26,38 @@ final class GroupsScanQRCoordinator: BaseCoordinator<RouterResult<Void>> {
         viewController.title = L.groupsScanCode()
         router.present(viewController, animated: animated)
 
+        let manualInput = viewModel
+            .route
+            .filter { $0 == .manualInputTapped }
+            .withUnretained(self)
+            .flatMap { owner, _ in
+                owner.presentGroupInput(router: owner.router)
+            }
+            .filter { result in
+                if case .finished = result { return true }
+                return false
+            }
+
         let dismiss = viewModel
             .route
             .filter { $0 == .dismissTapped }
             .map { _ -> RouterResult<Void> in .dismiss }
 
-        return dismiss
+        return Publishers.Merge(dismiss, manualInput)
             .eraseToAnyPublisher()
+    }
+}
+
+extension GroupsScanQRCoordinator {
+    private func presentGroupInput(router: Router) -> CoordinatingResult<RouterResult<Void>> {
+        coordinate(to: GroupsInputCoordinator(router: router, animated: true))
+        .flatMap { result -> CoordinatingResult<RouterResult<Void>> in
+            guard result != .dismissedByRouter else {
+                return Just(result).eraseToAnyPublisher()
+            }
+            return router.dismiss(animated: true, returning: result)
+        }
+        .prefix(1)
+        .eraseToAnyPublisher()
     }
 }
