@@ -42,7 +42,8 @@ struct WelcomeView: View {
             Image(R.image.onboarding.welcomeVexl.name)
                 .resizable()
                 .scaledToFit()
-                .padding(.vertical, Appearance.GridGuide.largePadding1)
+                .padding(.top, Appearance.GridGuide.largePadding1)
+                .padding(.bottom, Appearance.GridGuide.padding)
 
             Text(L.welcomeProductName())
                 .foregroundColor(Appearance.Colors.primaryText)
@@ -53,7 +54,7 @@ struct WelcomeView: View {
                 .textStyle(.paragraphMedium)
                 .multilineTextAlignment(.center)
                 .foregroundColor(Appearance.Colors.gray3)
-                .padding(.bottom, Appearance.GridGuide.point)
+                .padding(.bottom, Appearance.GridGuide.mediumPadding2)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Appearance.Colors.whiteText)
@@ -66,6 +67,10 @@ struct WelcomeView: View {
 struct WelcomeViewPreview: PreviewProvider {
     static var previews: some View {
         WelcomeView(viewModel: .init())
+            .previewDevice("iPhone SE")
+
+        WelcomeView(viewModel: .init())
+            .previewDevice("iPhone 11")
     }
 }
 
