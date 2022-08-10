@@ -64,6 +64,9 @@ private struct RegisterAvatarAddImageView: View {
                             .cornerRadius(Appearance.GridGuide.requestAvatarCorner)
                     } else {
                         Image(R.image.onboarding.addAvatar.name)
+                            .resizable()
+                            .scaledToFill()
+                            .frame(size: defaultImageSize)
                     }
                 }
 

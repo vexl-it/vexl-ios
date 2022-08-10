@@ -59,7 +59,7 @@ final class OfferSettingsCoordinator: BaseCoordinator<RouterResult<Void>> {
             .dismissedByRouter(type: Void.self)
 
         return Publishers.Merge3(dismiss, dismissByRouter, finished)
-            .receive(on: RunLoop.main)
+            .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()
     }
 }

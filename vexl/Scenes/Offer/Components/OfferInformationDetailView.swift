@@ -156,7 +156,7 @@ extension OfferInformationDetailView {
 
         init(offer: ManagedOffer) {
             self.offer = offer
-            let profile = offer.receiverPublicKey?.profile
+            let profile = offer.receiversPublicKey?.profile
 
             offer.publisher(for: \.isRequested).assign(to: &$isRequested)
             offer.publisher(for: \.id).filterNil().assign(to: &$id)

@@ -119,7 +119,7 @@ final class RequestOfferViewModel: ViewModelType, ObservableObject {
             }
             .flatMapLatest(with: self) { owner, payload -> AnyPublisher<Void, Never> in
                 owner.state = .requesting
-                guard let publicKey = owner.offer.receiverPublicKey?.publicKey else {
+                guard let publicKey = owner.offer.receiversPublicKey?.publicKey else {
                     return Just(()).eraseToAnyPublisher()
                 }
                 return owner.chatManager
