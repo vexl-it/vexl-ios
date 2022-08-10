@@ -64,17 +64,15 @@ struct InboxView: View {
                     .foregroundColor(.white)
                     .frame(maxWidth: .infinity, alignment: .leading)
 
-                if viewModel.hasPendingRequests {
-                    Button {
-                        viewModel.action.send(.requestTap)
-                    } label: {
-                        Image(R.image.chat.request.name)
-                            .frame(size: Appearance.GridGuide.iconSize)
-                    }
-                    .padding(Appearance.GridGuide.point)
-                    .background(Appearance.Colors.gray1)
-                    .cornerRadius(Appearance.GridGuide.buttonCorner)
+                Button {
+                    viewModel.action.send(.requestTap)
+                } label: {
+                    Image(viewModel.requestImageName)
+                        .frame(size: Appearance.GridGuide.iconSize)
                 }
+                .padding(Appearance.GridGuide.point)
+                .background(Appearance.Colors.gray1)
+                .cornerRadius(Appearance.GridGuide.buttonCorner)
             }
             .padding(.top, Appearance.GridGuide.mediumPadding2)
             .padding(.horizontal, Appearance.GridGuide.padding)
