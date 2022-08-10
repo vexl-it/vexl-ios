@@ -27,7 +27,7 @@ struct RegisterNameAvatarView: View {
                 avatarInputView
             }
         }
-        .frame(maxWidth: .infinity)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color.black.edgesIgnoringSafeArea(.all))
         .actionSheet(isPresented: $viewModel.showImagePickerActionSheet, content: {
             ActionSheet(title: Text(L.registerNameAvatarImagePicker()),
@@ -78,7 +78,6 @@ struct RegisterNameAvatarView: View {
                                     deleteAction: {
                 viewModel.send(action: .deleteAvatar)
             })
-                .frame(maxHeight: .infinity)
                 .transition(transition)
 
             actionButton(title: viewModel.avatarButtonTitle) {
@@ -123,8 +122,13 @@ struct RegisterNameAvatarViewPreview: PreviewProvider {
     }
 
     static var previews: some View {
-        RegisterNameAvatarView(viewModel: avatarViewModel)
+        NavigationView {
+            RegisterNameAvatarView(viewModel: avatarViewModel)
+                .previewDevice("iPhone 11")
+        }
         RegisterNameAvatarView(viewModel: .init())
+            .previewDevice("iPhone 11")
         RegisterNameAvatarView(viewModel: nameViewModel)
+            .previewDevice("iPhone 11")
     }
 }

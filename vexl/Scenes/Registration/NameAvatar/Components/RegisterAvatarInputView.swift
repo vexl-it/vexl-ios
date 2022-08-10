@@ -25,7 +25,11 @@ struct RegisterAvatarInputView: View {
                              iconName: R.image.onboarding.eye.name,
                              bottomPadding: Appearance.GridGuide.padding,
                              content: {
-            addAvatarButton
+            VStack {
+                Spacer()
+                addAvatarButton
+                Spacer()
+            }
         })
             .padding([.horizontal, .bottom], Appearance.GridGuide.point)
     }
@@ -83,8 +87,7 @@ private struct RegisterAvatarAddImageView: View {
                 }
             }
         }
-        .padding(.top, Appearance.GridGuide.mediumPadding2)
-        .padding(.bottom, Appearance.GridGuide.largePadding2)
+        .padding(.top, Appearance.GridGuide.mediumPadding1)
         .frame(maxWidth: .infinity)
     }
 }
