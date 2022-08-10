@@ -68,6 +68,7 @@ struct BottomActionSheet<ContentView: View>: View {
                     VStack(alignment: .center) {
                         Image(imageName)
                             .resizable()
+                            .scaledToFit()
                             .frame(size: Appearance.GridGuide.largeIconSize)
                             .frame(alignment: .center)
                     }

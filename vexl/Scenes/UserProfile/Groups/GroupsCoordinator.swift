@@ -9,6 +9,8 @@ import Foundation
 import Cleevio
 import Combine
 
+private typealias ActionSheetResult = CoordinatingResult<RouterResult<BottomActionSheetActionType>>
+
 final class GroupsCoordinator: BaseCoordinator<RouterResult<Void>> {
 
     let animated: Bool
@@ -43,6 +45,19 @@ final class GroupsCoordinator: BaseCoordinator<RouterResult<Void>> {
             .sink()
             .store(in: cancelBag)
 
+        viewModel
+            .route
+            .filter { $0 == .leaveGroupTapped }
+            .withUnretained(self)
+            .flatMap { owner, _ -> ActionSheetResult in
+                let router = ModalRouter(parentViewController: viewController,
+                                         presentationStyle: .overFullScreen,
+                                         transitionStyle: .crossDissolve)
+                return owner.presentGroupLeaveActionSheet(router: router)
+            }
+            .sink()
+            .store(in: cancelBag)
+
         let dismiss = viewModel
             .route
             .filter { $0 == .dismissTapped }
@@ -57,6 +72,18 @@ extension GroupsCoordinator {
     private func presentGroupScanQR(router: Router) -> CoordinatingResult<RouterResult<Void>> {
         coordinate(to: GroupsScanQRCoordinator(router: router, animated: true))
         .flatMap { result -> CoordinatingResult<RouterResult<Void>> in
+            guard result != .dismissedByRouter else {
+                return Just(result).eraseToAnyPublisher()
+            }
+            return router.dismiss(animated: true, returning: result)
+        }
+        .prefix(1)
+        .eraseToAnyPublisher()
+    }
+
+    private func presentGroupLeaveActionSheet(router: Router) -> ActionSheetResult {
+        coordinate(to: BottomActionSheetCoordinator(router: router, viewModel: GroupsLeaveSheetViewModel()))
+        .flatMap { result -> CoordinatingResult<RouterResult<BottomActionSheetActionType>> in
             guard result != .dismissedByRouter else {
                 return Just(result).eraseToAnyPublisher()
             }
