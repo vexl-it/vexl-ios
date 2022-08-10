@@ -66,7 +66,7 @@ struct GroupCell: View {
         HStack(alignment: .center) {
             Group {
                 if let image = viewModel.logoImage {
-                    Image(uiImage: image)
+                    image
                 } else {
                     EmptyGroupLogoSmall(name: $viewModel.name)
                 }
@@ -80,7 +80,7 @@ struct GroupCell: View {
                     .foregroundColor(Appearance.Colors.whiteText)
                 HStack {
                     Image(R.image.member.name)
-                    Text(L.groupsItemMembers("\(viewModel.memberCount)"))
+                    Text(L.groupsItemMembers("\(viewModel.meemberCount)"))
                         .textStyle(Appearance.TextStyle.paragraphSmall)
                         .foregroundColor(Appearance.Colors.whiteText)
                         .frame(maxWidth: .infinity, alignment: .leading)
@@ -108,8 +108,7 @@ struct EmptyGroupLogoSmall: View {
 
     var body: some View {
         ZStack {
-            Rectangle()
-                .foregroundColor(Color(R.color.gray1.name))
+            Appearance.Colors.gray1
             if let char = name.first, let strChar = String(char) {
                 Text(strChar)
                     .textStyle(Appearance.TextStyle.h3)
@@ -126,7 +125,7 @@ final class GroupCellViewModel: ObservableObject, Identifiable {
 
     let id: String
 
-    @Published var logoImage: UIImage?
+    @Published var logoImage: Image?
     @Published var name: String
     @Published var memberCount: Int
 
@@ -143,6 +142,7 @@ final class GroupCellViewModel: ObservableObject, Identifiable {
             .publisher(for: \.logo)
             .filterNil()
             .compactMap(UIImage.init)
+            .map(Image.init)
             .assign(to: &$logoImage)
 
         group

@@ -42,7 +42,7 @@ struct GroupPayload: Codable {
     init(name: String, logo: UIImage, expiration: Date, closureAt: Date) {
         self.name = name
         self.logoData = logo.jpegData(compressionQuality: 1)
-        self.logoExtension = logoData.flatMap { _ in "jpg" }
+        self.logoExtension = logoData == nil ? nil : "jpg"
         self.expiration = Int(expiration.timeIntervalSince1970)
         self.closure = Int(closureAt.timeIntervalSince1970)
     }
@@ -64,6 +64,7 @@ struct GroupPayload: Codable {
         memberCount = group.members?.count ?? 0
     }
 
+    @discardableResult
     func decode(context: NSManagedObjectContext, userRepository: UserRepositoryType, into group: ManagedGroup) -> ManagedGroup? {
         guard let uuid = uuid,
               let logoUrl = logoUrl,

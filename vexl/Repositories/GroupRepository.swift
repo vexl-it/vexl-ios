@@ -34,7 +34,7 @@ final class GroupRepository: GroupRepositoryType {
                         predicate: NSPredicate(format: "uuid == '\(uuid)'")
                     )
                     if let group = groups.first {
-                        _ = payload.decode(context: context, userRepository: userRepository, into: group)
+                        payload.decode(context: context, userRepository: userRepository, into: group)
                         return nil
                     }
                 }
