@@ -33,7 +33,7 @@ class ChatRepository: ChatRepositoryType {
             message.time = Date().timeIntervalSince1970
 
             chat.id = UUID().uuidString
-            chat.receiverKeyPair = offer.receiverPublicKey
+            chat.receiverKeyPair = offer.receiversPublicKey
             chat.inbox = offer.inbox
 
             chat.lastMessageDate = message.date

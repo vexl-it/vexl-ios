@@ -1,8 +1,13 @@
 - Requires uninstall: ⚠️ YES ⚠️
 
 ### Improvements
-- VEX-446 Offer creation (only on debug & devel)
+- VEX-446 Group creation (only on debug & devel)
+- VEX-530: Remove OfferID dependence
+- VEX-540: Logout user when user receives unathorized response from BE
 
 ### Fixes
+- VEX-525: Fixed common friends on chat request screen
+- VEX-512: Anonymize user
+- VEX-241: Crash fixed while scrolling in create offer
 
 ### Known Issues

@@ -25,7 +25,6 @@ struct RegisterNameAvatarStartView: View {
     }
 }
 
-// swiftlint:disable type_name
 struct RegisterNameAvatarStartViewPreview: PreviewProvider {
     static var previews: some View {
         RegisterNameAvatarStartView()

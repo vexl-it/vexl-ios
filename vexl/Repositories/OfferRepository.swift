@@ -68,7 +68,8 @@ class OfferRepository: OfferRepositoryType {
 
     func createOrUpdateOffer(offerPayloads: [OfferPayload]) -> AnyPublisher<[ManagedOffer], Error> {
         let context = persistence.viewContext
-        guard let userInboxID = userRepository.user?.profile?.keyPair?.inbox?.objectID,
+        guard let userKeys = userRepository.user?.profile?.keyPair?.keys,
+              let userInboxID = userRepository.user?.profile?.keyPair?.inbox?.objectID,
               let userInbox = persistence.loadSyncroniously(type: ManagedInbox.self, context: context, objectID: userInboxID) else {
             return Fail(error: PersistenceError.insufficientData).eraseToAnyPublisher()
         }
@@ -77,13 +78,18 @@ class OfferRepository: OfferRepositoryType {
         }
         return persistence.insert(context: context) { [persistence] context in
             offerPayloads.compactMap { payload in
-                let offers = persistence.loadSyncroniously(
-                    type: ManagedOffer.self,
-                    context: context,
-                    predicate: NSPredicate(format: "id == '\(payload.offerId)'")
-                )
-                if let offer = offers.first {
-                    _ = payload.decrypt(context: context, userInbox: userInbox, into: offer)
+                guard let offerPublicKey = try? payload.offerPublicKey.ecc.decrypt(keys: userKeys) else {
+                    return nil
+                }
+                let pks = persistence.loadSyncroniously(
+                        type: ManagedKeyPair.self,
+                        context: context,
+                        predicate: NSPredicate(format: "publicKey == '\(offerPublicKey)'")
+                    )
+                if let localOfferKey = pks.first {
+                    if let offer = localOfferKey.offer {
+                        _ = payload.decrypt(context: context, userInbox: userInbox, into: offer)
+                    }
                     return nil
                 }
                 let offer = ManagedOffer(context: context)
@@ -95,7 +101,7 @@ class OfferRepository: OfferRepositoryType {
                         profile.avatar = UIImage(named: R.image.profile.avatar.name)?.pngData() // TODO: generate random avatar
                         profile.generateRandomName()
 
-                        offer.receiverPublicKey?.profile = profile
+                        offer.receiversPublicKey?.profile = profile
 
                         return offer
                     }
