@@ -1,6 +1,7 @@
 - Requires uninstall: ⚠️ YES ⚠️
 
 ### Improvements
+- VEX-446 Group creation (only on debug & devel)
 - VEX-530: Remove OfferID dependence
 - VEX-540: Logout user when user receives unathorized response from BE
 

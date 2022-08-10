@@ -122,6 +122,8 @@ struct OfferPayload: Codable {
     }
 
     // swiftlint:disable:next function_body_length
+    
+    @discardableResult
     func decrypt(context: NSManagedObjectContext, userInbox: ManagedInbox, into offer: ManagedOffer) -> ManagedOffer? {
         guard let keys = userInbox.keyPair?.keys else {
             return nil

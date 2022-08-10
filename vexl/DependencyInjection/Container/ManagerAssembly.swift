@@ -78,5 +78,10 @@ class ManagerAssembly: Assembly {
             NotificationManager()
         }
         .inObjectScope(.container)
+
+        container.register(GroupManagerType.self) { _ in
+            GroupManager()
+        }
+        .inObjectScope(.container)
     }
 }

@@ -9,8 +9,6 @@ import Foundation
 import Cleevio
 import Combine
 
-private typealias ActionSheetResult = CoordinatingResult<RouterResult<BottomActionSheetActionType>>
-
 final class GroupsCoordinator: BaseCoordinator<RouterResult<Void>> {
 
     let animated: Bool
@@ -47,15 +45,32 @@ final class GroupsCoordinator: BaseCoordinator<RouterResult<Void>> {
 
         viewModel
             .route
-            .filter { $0 == .leaveGroupTapped }
+            .compactMap { route -> ManagedGroup? in
+                guard case let .leaveGroupTapped(group) = route else {
+                    return nil
+                }
+                return group
+            }
             .withUnretained(self)
-            .flatMap { owner, _ -> ActionSheetResult in
+            .flatMap { owner, group -> AnyPublisher<ManagedGroup, Never> in
                 let router = ModalRouter(parentViewController: viewController,
                                          presentationStyle: .overFullScreen,
                                          transitionStyle: .crossDissolve)
                 return owner.presentGroupLeaveActionSheet(router: router)
+                    .compactMap(\.value)
+                    .compactMap { result in
+                        switch result {
+                        case .primary:
+                            return group
+                        case .secondary, .contentAction:
+                            return nil
+                        }
+                    }
+                    .eraseToAnyPublisher()
             }
-            .sink()
+            .sink(receiveValue: { group in
+                viewModel.leave(group: group)
+            })
             .store(in: cancelBag)
 
         let dismiss = viewModel
@@ -81,7 +96,7 @@ extension GroupsCoordinator {
         .eraseToAnyPublisher()
     }
 
-    private func presentGroupLeaveActionSheet(router: Router) -> ActionSheetResult {
+    private func presentGroupLeaveActionSheet(router: Router) -> CoordinatingResult<RouterResult<BottomActionSheetActionType>> {
         coordinate(to: BottomActionSheetCoordinator(router: router, viewModel: GroupsLeaveSheetViewModel()))
         .flatMap { result -> CoordinatingResult<RouterResult<BottomActionSheetActionType>> in
             guard result != .dismissedByRouter else {
