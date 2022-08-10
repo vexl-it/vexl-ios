@@ -58,7 +58,7 @@ class InboxRepository: InboxRepositoryType {
                 chat.inbox = inbox
 
                 if !isUserInbox, inbox.offers?.count == 1, let offer = inbox.offers?.first(where: { _ in true }) as? ManagedOffer {
-                    keyPair.offer = offer
+                    keyPair.userOffer = offer
                 }
 
                 self?.populateMessage(message: message, chat: chat, payload: payload)
@@ -84,9 +84,9 @@ class InboxRepository: InboxRepositoryType {
         case .revealRequest:
             if payload.isFromContact {
                 if let imageURL = payload.user?.image, let avatarURL = URL(string: imageURL), let avatar = try? Data(contentsOf: avatarURL) {
-                    chat.receiverKeyPair?.profile?.secretAvatar = avatar
+                    chat.receiverKeyPair?.profile?.realAvatarBeforeReveal = avatar
                 }
-                chat.receiverKeyPair?.profile?.secretName = payload.user?.name
+                chat.receiverKeyPair?.profile?.realNameBeforeReveal = payload.user?.name
             }
         case .revealApproval:
             chat.gotRevealedResponse = true
@@ -99,14 +99,14 @@ class InboxRepository: InboxRepositoryType {
                     chat.receiverKeyPair?.profile?.avatar = avatar
                 }
             } else {
-                chat.receiverKeyPair?.profile?.avatar = chat.receiverKeyPair?.profile?.secretAvatar
-                chat.receiverKeyPair?.profile?.name = chat.receiverKeyPair?.profile?.secretName
+                chat.receiverKeyPair?.profile?.avatar = chat.receiverKeyPair?.profile?.realAvatarBeforeReveal
+                chat.receiverKeyPair?.profile?.name = chat.receiverKeyPair?.profile?.realNameBeforeReveal
             }
         case .revealRejected:
             chat.gotRevealedResponse = true
             chat.isRevealed = false
-            chat.receiverKeyPair?.profile?.secretName = nil
-            chat.receiverKeyPair?.profile?.secretAvatar = nil
+            chat.receiverKeyPair?.profile?.realNameBeforeReveal = nil
+            chat.receiverKeyPair?.profile?.realAvatarBeforeReveal = nil
         case .messagingRequest:
             chat.isApproved = false
             chat.isRequesting = true

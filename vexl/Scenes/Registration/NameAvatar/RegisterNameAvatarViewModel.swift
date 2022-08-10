@@ -65,7 +65,7 @@ final class RegisterNameAvatarViewModel: ViewModelType {
     // MARK: - Coordinator Bindings
 
     enum Route: Equatable {
-        case continueTapped
+        case continueTapped(AnonymizeInput)
     }
 
     var route: CoordinatingSubject<Route> = .init()
@@ -160,34 +160,11 @@ final class RegisterNameAvatarViewModel: ViewModelType {
     private func setupCreateUserBindings() {
         action
             .filter { $0 == .createUser }
-            .flatMapLatest(with: self) { owner, _ -> AnyPublisher<String?, Never> in
-                guard let avatar = owner.avatar else { return Just<String?>(nil).eraseToAnyPublisher() }
-                return avatar.base64Publisher
-                    .track(activity: owner.primaryActivity)
-            }
-            .flatMapLatest(with: self) { owner, base64 -> AnyPublisher<(User, String?), Never> in
-                owner.userService
-                    .createUser(username: owner.username,
-                                avatar: base64)
-                    .track(activity: owner.primaryActivity)
-                    .materialize()
-                    .compactMap(\.value)
-                    .map { ($0, base64) }
-                    .eraseToAnyPublisher()
-            }
-            .flatMapLatest(with: self, { owner, user in
-                owner.userRepository
-                    .update(with: user.0, avatar: user.1?.dataFromBase64)
-                    .track(activity: owner.primaryActivity)
-                    .receive(on: RunLoop.main)
-            })
             .withUnretained(self)
-            .sink { owner, _ in
-                owner.route.send(.continueTapped)
-                owner.currentState = .usernameInput
-                owner.username = ""
-                owner.avatar = nil
+            .map { owner, _ in
+                Route.continueTapped(AnonymizeInput(username: owner.username, avatar: owner.avatar))
             }
+            .subscribe(route)
             .store(in: cancelBag)
     }
 

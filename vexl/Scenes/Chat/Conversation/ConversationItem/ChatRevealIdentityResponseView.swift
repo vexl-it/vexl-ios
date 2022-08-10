@@ -13,6 +13,7 @@ struct ChatRevealIdentityResponseView: View {
     let avatarImage: Image
     let rejectImage: Image
     let isAccepted: Bool
+    let isRecevinng: Bool
 
     private var displayImage: Image {
         if isAccepted {
@@ -20,6 +21,14 @@ struct ChatRevealIdentityResponseView: View {
         } else {
             return rejectImage
         }
+    }
+
+    var title: String {
+        isAccepted
+            ? username
+            : isRecevinng
+                ? L.chatMessageIdentityRevealRejectReceived()
+                : L.chatMessageIdentityRevealReject()
     }
 
     var body: some View {
@@ -48,7 +57,7 @@ struct ChatRevealIdentityResponseView: View {
                     .frame(maxWidth: .infinity)
             }
 
-            Text(isAccepted ? username : L.chatMessageIdentityRevealReject())
+            Text(title)
                 .foregroundColor(Appearance.Colors.whiteText)
                 .textStyle(.titleSmallSemiBold)
                 .padding(.bottom, Appearance.GridGuide.mediumPadding1)
@@ -67,12 +76,12 @@ struct ChatRevealIdentityResponseViewPreview: PreviewProvider {
             ChatRevealIdentityResponseView(username: "Username",
                                            avatarImage: Image(data: image, placeholder: ""),
                                            rejectImage: Image(data: image, placeholder: ""),
-                                           isAccepted: true)
+                                           isAccepted: true, isRecevinng: false)
 
             ChatRevealIdentityResponseView(username: "Username",
                                            avatarImage: Image(data: image, placeholder: ""),
                                            rejectImage: Image(data: image, placeholder: ""),
-                                           isAccepted: false)
+                                           isAccepted: false, isRecevinng: true)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color.black)

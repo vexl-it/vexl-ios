@@ -190,7 +190,7 @@ extension MessagePayload {
         let chatUser = ChatUser(name: username, image: avatar)
         let parsedMessage = MessagePayload(
             inboxPublicKey: inboxPublicKey,
-            messageType: isAccepted ? .revealApproval : .revealApproval,
+            messageType: isAccepted ? .revealApproval : .revealRejected,
             text: "",
             image: nil,
             contactInboxKey: contactInboxKey,

@@ -223,6 +223,8 @@
 "offer.create.advanced.friend.description" = "Trade with your friends only. \nTrade with friends of your friends.";
 "offer.create.advanced.type.lightning" = "Lightning";
 "offer.create.advanced.type.chain" = "On chain";
+"offer.create.advanced.group.title" = "Group";
+"offer.create.advanced.group.description" = "Select if you wan’t to see offers only from specific group";
 "offer.create.description" = "Description";
 "offer.create.description.placeholder" = "Enter offer description";
 "offer.create.currency" = "Currency";
@@ -293,6 +295,7 @@
 "chat.message.identity.request.subtitle" = "By sending request you agree with revealing of your own identity too.";
 "chat.message.identity.request.send" = "Send request";
 "chat.message.identity.request.cancel" = "Back";
+"chat.message.identity.reveal.reject.received" = "Request have been declined";
 "chat.message.identity.reveal.reject" = "You have declined";
 "chat.message.identity.reveal.approved" = "Identity revealed!";
 "groups.join.button" = "Join New Group";
