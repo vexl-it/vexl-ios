@@ -172,6 +172,8 @@ struct FilterView: View {
                 content: { option in
                     if let option = option {
                         Image(option.imageName)
+                            .resizable()
+                            .scaledToFit()
                             .frame(maxWidth: .infinity)
                             .overlay(
                                 Image(systemName: "checkmark.circle.fill")
