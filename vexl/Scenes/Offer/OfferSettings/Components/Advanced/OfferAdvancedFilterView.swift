@@ -53,6 +53,11 @@ struct OfferAdvancedFilterViewPreview: PreviewProvider {
                                 selectedFriendDegreeOption: .constant(.firstDegree))
             .previewDevice("iPhone 11")
             .background(Color.black)
+        
+        OfferAdvancedFilterView(selectedTypeOptions: .constant([]),
+                                selectedFriendDegreeOption: .constant(.firstDegree))
+            .previewDevice("iPhone SE")
+            .background(Color.black)
     }
 }
 #endif

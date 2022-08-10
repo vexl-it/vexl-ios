@@ -12,7 +12,7 @@ struct WelcomeAgreementSwitch: View {
     var linkAction: () -> Void
 
     var body: some View {
-        HStack(alignment: .center, spacing: Appearance.GridGuide.mediumPadding1) {
+        HStack(alignment: .center, spacing: Appearance.GridGuide.padding) {
             Image(R.image.onboarding.welcomeNote.name)
 
             agreementLink
@@ -29,18 +29,19 @@ struct WelcomeAgreementSwitch: View {
     private var agreementLink: some View {
         HStack(spacing: Appearance.GridGuide.tinyPadding) {
             Text(L.welcomeTermsAgreementsOne())
-                .foregroundColor(Appearance.Colors.gray3)
                 .textStyle(.paragraphMedium)
-
-            Button {
-                linkAction()
-            } label: {
-                Text(L.welcomeTermsAgreementsTwo())
-                    .foregroundColor(Appearance.Colors.whiteText)
-                    .textStyle(.paragraphMedium)
-            }
+                .foregroundColor(Appearance.Colors.gray3)
+            +
+            Text(" ")
+            +
+            Text(L.welcomeTermsAgreementsTwo())
+                .textStyle(.paragraphMedium)
+                .foregroundColor(Appearance.Colors.whiteText)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
+        .onTapGesture {
+            linkAction()
+        }
     }
 }
 
@@ -49,7 +50,7 @@ struct WelcomeAgreementSwitch: View {
 struct WelcomeAgreementSwitchPreview: PreviewProvider {
     static var previews: some View {
         WelcomeAgreementSwitch(isOn: .constant(true)) {}
-            .previewDevice("iPhone 11")
+            .padding(.horizontal, Appearance.GridGuide.point)
     }
 }
 

@@ -205,6 +205,7 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
 
     private func setupDataBindings() {
         if let offer = offer {
+            isActive = offer.active
             description = offer.offerDescription ?? ""
             currency = offer.currency ?? .usd
             currentAmountRange = Int(offer.minAmount)...Int(offer.maxAmount)
@@ -331,9 +332,9 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
                     offer.btcNetworks = owner.selectedBTCOption
                     offer.friendLevel = owner.selectedFriendDegreeOption
                     offer.type = owner.offerType
-                    offer.activePriceState = OfferTrigger.none
-                    offer.activePriceValue = 0.0
-                    offer.active = true
+                    offer.activePriceState = owner.selectedPriceTrigger
+                    offer.activePriceValue = owner.priceTriggerAmount
+                    offer.active = owner.isActive
                     offer.expirationDate = Date(timeIntervalSince1970: owner.expiration)
                     offer.createdAt = Date()
                 }
