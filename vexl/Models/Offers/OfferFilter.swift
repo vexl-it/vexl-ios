@@ -45,8 +45,13 @@ struct OfferFilter: Equatable {
         }
 
         if let currentAmountRange = currentAmountRange {
-            predicateList.append(NSPredicate(format: "maxAmount <= %d", currentAmountRange.upperBound))
-            predicateList.append(NSPredicate(format: "minAmount >= %d", currentAmountRange.lowerBound))
+            let amountRangePredicate: [NSPredicate] = [
+                NSPredicate(format: "maxAmount >= %d AND maxAmount <= %d", currentAmountRange.lowerBound, currentAmountRange.upperBound),
+                NSPredicate(format: "minAmount >= %d AND minAmount <= %d", currentAmountRange.lowerBound, currentAmountRange.upperBound),
+                NSPredicate(format: "%d >= minAmount AND %d <= maxAmmount", currentAmountRange.lowerBound, currentAmountRange.lowerBound),
+                NSPredicate(format: "%d >= minAmount AND %d <= maxAmmount", currentAmountRange.upperBound, currentAmountRange.upperBound)
+            ]
+            predicateList.append(NSCompoundPredicate(orPredicateWithSubpredicates: amountRangePredicate))
         }
 
         if !selectedPaymentMethodOptions.isEmpty {
