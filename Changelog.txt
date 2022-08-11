@@ -4,11 +4,18 @@
 - VEX-446 Group creation (only on debug & devel)
 - VEX-530: Remove OfferID dependence
 - VEX-540: Logout user when user receives unathorized response from BE
+- VEX-528: Updated the sorting for the offers and updated the offer type color
+- VEX-533: Modified the layout so that small screen iPhones have better experience
+- VEX-518: Updated condition for My Offer button
+- VEX-561: Improved filter of offer amount
 
 ### Fixes
 - VEX-525: Fixed common friends on chat request screen
 - VEX-512: Anonymize user
 - VEX-241: Crash fixed while scrolling in create offer
 - VEX-545: Fix reject reveal identity
+- VEX-544: Fixed crash when tapping filters in chat
+- VEX-279: Added back button when the requests are empty
+
 
 ### Known Issues
