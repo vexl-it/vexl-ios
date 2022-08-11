@@ -10,7 +10,9 @@ import Cleevio
 
 struct RegisterPhoneNumberInputView: View {
 
-    @Binding var phoneNumber: String
+    @Binding var text: String
+    var regionCode: String
+    var phoneNumber: String
 
     var body: some View {
         RegistrationCardView(title: L.registerPhoneNumberInputTitle(),
@@ -27,7 +29,9 @@ struct RegisterPhoneNumberInputView: View {
     private var phoneInputView: some View {
         PhoneNumberTextFieldView(placeholder: "",
                                  font: Appearance.TextStyle.paragraphMedium.font,
-                                 text: $phoneNumber)
+                                 regionCode: regionCode,
+                                 phoneNumber: phoneNumber,
+                                 text: $text)
             .foregroundColor(Appearance.Colors.primaryText)
             .keyboardType(.phonePad)
             .padding(Appearance.GridGuide.padding)
@@ -41,7 +45,9 @@ struct RegisterPhoneNumberInputView: View {
 
 struct RegisterPhone_PhoneInputViewPreview: PreviewProvider {
     static var previews: some View {
-        RegisterPhoneNumberInputView(phoneNumber: .constant("123 123 123 123"))
+        RegisterPhoneNumberInputView(text: .constant("+51 999 555 444"),
+                                     regionCode: "PE",
+                                     phoneNumber: "999 555 444")
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color.black)
     }

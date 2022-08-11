@@ -9,6 +9,7 @@ import Foundation
 import Combine
 import Cleevio
 import SwiftUI
+import PhoneNumberKit
 
 final class RegisterPhoneViewModel: ViewModelType {
 
@@ -104,6 +105,23 @@ final class RegisterPhoneViewModel: ViewModelType {
         case .codeInputSuccess:
             return SolidButtonColor.success
         }
+    }
+
+    private var parsedPhoneNumber: PhoneNumber? {
+        try? Formatters.phoneNumberFormatter.parse(phoneNumber)
+    }
+
+    var currentRegionCode: String {
+        guard let region = parsedPhoneNumber?.regionID else {
+            return Locale.current.regionCode ?? ""
+        }
+        return "\(region)"
+    }
+    var currentPhoneNumber: String {
+        guard let number = parsedPhoneNumber?.nationalNumber else {
+            return ""
+        }
+        return "\(number)"
     }
 
     private var phoneVerificationId: Int?
@@ -403,7 +421,6 @@ final class RegisterPhoneViewModel: ViewModelType {
     }
 
     private func clearState() {
-        phoneNumber = ""
         validationCode = ""
         currentState = .phoneInput
         phoneVerificationId = nil

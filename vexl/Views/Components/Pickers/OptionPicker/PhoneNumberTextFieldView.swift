@@ -13,13 +13,15 @@ struct PhoneNumberTextFieldView: UIViewRepresentable {
 
     let placeholder: String
     let font: UIFont
+    let regionCode: String
+    let phoneNumber: String
     @Binding var text: String
 
     func updateUIView(_ uiView: PhoneNumberTextField, context: Context) {
     }
 
     func makeUIView(context: Context) -> PhoneNumberTextField {
-        let phoneNumberTextField = VexlPhoneNumberTextField()
+        let phoneNumberTextField = VexlPhoneNumberTextField(regionCode: regionCode, phoneNumber: phoneNumber)
         phoneNumberTextField.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         phoneNumberTextField.addTarget(context.coordinator, action: #selector(Coordinator.onTextChange), for: .editingChanged)
         phoneNumberTextField.placeholder = placeholder
@@ -47,26 +49,40 @@ struct PhoneNumberTextFieldView: UIViewRepresentable {
 }
 
 private class VexlPhoneNumberTextField: PhoneNumberTextField {
+
     override var defaultRegion: String {
         get {
-            Locale.current.regionCode ?? ""
+            currentRegionCode
         }
         set { }
     }
 
-    init() {
+    private var currentPhoneNumber = ""
+    private var currentRegionCode = ""
+
+    init(regionCode: String, phoneNumber: String) {
+        self.currentPhoneNumber = phoneNumber
+        self.currentRegionCode = regionCode
         super.init(frame: .zero)
-        setInitialCountryCode()
+        setPhoneNumber()
     }
 
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        setInitialCountryCode()
+        setPhoneNumber()
     }
 
-    private func setInitialCountryCode() {
-        if let countryCode = Formatters.phoneNumberFormatter.countryCode(for: defaultRegion) {
-            text = "+\(countryCode)"
+    private func setPhoneNumber() {
+        var calculatedText = ""
+
+        if let countryCode = Formatters.phoneNumberFormatter.countryCode(for: self.currentRegionCode), !currentRegionCode.isEmpty {
+            calculatedText = "+\(countryCode) "
         }
+
+        if !currentPhoneNumber.isEmpty {
+            calculatedText += "\(currentPhoneNumber)"
+        }
+
+        self.text = calculatedText
     }
 }
