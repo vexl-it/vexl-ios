@@ -29,7 +29,7 @@
         <attribute name="closureAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="code" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="createdAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
-        <attribute name="expirationAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="expiration" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="logo" optional="YES" attributeType="Binary"/>
         <attribute name="logoURL" optional="YES" attributeType="URI"/>
         <attribute name="name" optional="YES" attributeType="String"/>

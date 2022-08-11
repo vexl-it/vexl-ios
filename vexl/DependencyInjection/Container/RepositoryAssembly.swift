@@ -33,5 +33,10 @@ final class RepositoryAssembly: Assembly {
             ChatRepository()
         }
         .inObjectScope(.container)
+
+        container.register(GroupRepositoryType.self) { _ in
+            GroupRepository()
+        }
+        .inObjectScope(.container)
     }
 }

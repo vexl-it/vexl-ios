@@ -46,8 +46,7 @@ extension ApiInterceptor {
     }
 
     public func refreshAuthorization(_ session: Session) -> AnyPublisher<Void, Error> {
-        // FIXME: uncomment the logout call when BE stops sending 401
-//        logoutUser()
+        logoutUser()
         return Just<Void>(())
             .setFailureType(to: Error.self)
             .eraseToAnyPublisher()

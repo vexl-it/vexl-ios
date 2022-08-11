@@ -28,6 +28,8 @@ struct OfferAdvanceFilterFriendDegreeView: View {
                                    content: { option in
                 if let option = option {
                     Image(option.imageName)
+                        .resizable()
+                        .scaledToFit()
                         .frame(maxWidth: .infinity)
                         .overlay(
                             Image(systemName: "checkmark.circle.fill")
@@ -49,6 +51,11 @@ struct OfferAdvanceFilterFriendDegreeViewPreview: PreviewProvider {
             selectedOption: .constant(.firstDegree)
         )
         .previewDevice("iPhone 11")
+
+        OfferAdvanceFilterFriendDegreeView(
+            selectedOption: .constant(.firstDegree)
+        )
+        .previewDevice("iPhone SE")
     }
 }
 #endif

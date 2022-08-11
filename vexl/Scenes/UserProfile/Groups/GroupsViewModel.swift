@@ -14,10 +14,11 @@ final class GroupsViewModel: ViewModelType, ObservableObject {
     // MARK: - Dependency Bindings
 
     @Inject var userRepository: UserRepositoryType
+    @Inject var groupManager: GroupManagerType
 
     // MARK: - View Bindings
 
-    @Published var groups: [ManagedGroup] = []
+    @Published var groupViewModels: [GroupCellViewModel] = []
     @Published var primaryActivity: Activity = .init()
     @Published var isLoading = false
     @Published var error: Error?
@@ -25,7 +26,7 @@ final class GroupsViewModel: ViewModelType, ObservableObject {
     // MARK: - Action Bindings
 
     enum UserAction: Equatable {
-        case dismissTap, joinGroupTap
+        case dismissTap, joinGroupTap, createGroupTap, leaveGroupTap(group: ManagedGroup)
     }
 
     let action: ActionSubject<UserAction> = .init()
@@ -35,6 +36,7 @@ final class GroupsViewModel: ViewModelType, ObservableObject {
     enum Route: Equatable {
         case dismissTapped
         case joinGroupTapped
+        case leaveGroupTapped(group: ManagedGroup)
     }
 
     var route: CoordinatingSubject<Route> = .init()
@@ -53,7 +55,12 @@ final class GroupsViewModel: ViewModelType, ObservableObject {
         userRepository.user?
             .publisher(for: \.groups)
             .compactMap { $0?.allObjects as? [ManagedGroup] }
-            .assign(to: &$groups)
+            .map { [action] groups in
+                groups.map { group in
+                    GroupCellViewModel(group: group, action: action)
+                }
+            }
+            .assign(to: &$groupViewModels)
     }
 
     private func setupActivityBindings() {
@@ -80,6 +87,48 @@ final class GroupsViewModel: ViewModelType, ObservableObject {
             .filter { $0 == .joinGroupTap }
             .map { _ -> Route in .joinGroupTapped }
             .subscribe(route)
+            .store(in: cancelBag)
+
+        action
+            .filter { $0 == .createGroupTap }
+            .asVoid()
+            .flatMap { [groupManager, primaryActivity] in
+                groupManager.createGroup(
+                    name: (0..<3)
+                        .map { _ in Int.random(in: 0..<Constants.randomNameSyllables.count) }
+                        .map { Constants.randomNameSyllables[$0] }
+                        .joined()
+                        .capitalizeFirstLetter + " Group" ,
+                    logo: R.image.chainCamp()!,
+                    expiration: Date(timeIntervalSinceNow: 60 * 60 * 24 * 14),
+                    closureAt: Date(timeIntervalSinceNow: 60 * 60 * 24 * 7)
+                )
+                .track(activity: primaryActivity)
+                .materialize()
+                .compactMap(\.value)
+            }
+            .sink()
+            .store(in: cancelBag)
+
+        action
+            .compactMap { action -> ManagedGroup? in
+                guard case let .leaveGroupTap(group) = action else {
+                    return nil
+                }
+                return group
+            }
+            .map { group -> Route in
+                .leaveGroupTapped(group: group)
+            }
+            .subscribe(route)
+            .store(in: cancelBag)
+    }
+
+    func leave(group: ManagedGroup) {
+        groupManager
+            .leave(group: group)
+            .track(activity: primaryActivity)
+            .sink()
             .store(in: cancelBag)
     }
 }

@@ -101,6 +101,12 @@ struct CreateOfferViewPreview: PreviewProvider {
 
         OfferSettingsView(viewModel: .init(offerType: .buy, offerKey: ECCKeys()))
             .previewDevice("iPhone 11")
+
+        OfferSettingsView(viewModel: .init(offerType: .sell, offerKey: ECCKeys()))
+            .previewDevice("iPod touch (7th generation)")
+
+        OfferSettingsView(viewModel: .init(offerType: .buy, offerKey: ECCKeys()))
+            .previewDevice("iPhone SE")
     }
 }
 #endif

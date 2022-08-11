@@ -55,7 +55,9 @@ final class InboxViewModel: ViewModelType, ObservableObject {
     }
 
     var route: CoordinatingSubject<Route> = .init()
-
+    var requestImageName: String {
+        hasPendingRequests ? R.image.chat.request.name : R.image.chat.requestEmpty.name
+    }
     // MARK: - Variables
 
     let bitcoinViewModel: BitcoinViewModel

@@ -88,7 +88,7 @@ class OfferRepository: OfferRepositoryType {
                     )
                 if let localOfferKey = pks.first {
                     if let offer = localOfferKey.offer {
-                        _ = payload.decrypt(context: context, userInbox: userInbox, into: offer)
+                        payload.decrypt(context: context, userInbox: userInbox, into: offer)
                     }
                     return nil
                 }

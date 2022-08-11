@@ -18,9 +18,10 @@ struct RegisterNameInputView: View {
                              subtitle: L.registerNameAvatarInputSubtitle(),
                              subtitlePositionIsBottom: true,
                              iconName: R.image.onboarding.eye.name,
+                             bottomPadding: Appearance.GridGuide.padding,
                              content: {
             nameInput
-                .padding(.top, Appearance.GridGuide.padding)
+                .padding(.top, Appearance.GridGuide.point)
         })
             .padding(.all, Appearance.GridGuide.point)
     }

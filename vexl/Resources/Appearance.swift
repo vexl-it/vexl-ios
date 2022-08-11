@@ -131,6 +131,10 @@ struct Appearance {
             $0.backgroundImage = UIImage()
             $0.shadowColor = .clear
             $0.backgroundColor = color
+            $0.titleTextAttributes = [
+                NSAttributedString.Key.foregroundColor: UIColor(Appearance.Colors.whiteText),
+                NSAttributedString.Key.font: Appearance.TextStyle.paragraphSmallSemiBold.font
+            ]
         }
 
         return appearance
@@ -147,12 +151,14 @@ struct Appearance {
             $0.isTranslucent = true
             $0.shadowImage = UIImage()
             $0.setBackgroundImage(UIImage(), for: .default)
+            $0.tintColor = .white
         }
     }
 
     // MARK: - Fonts
 
     enum TextStyle {
+        case ultraLargeTitle
         case largeTitle
         case h1
         case h2
@@ -179,6 +185,8 @@ struct Appearance {
 
         var font: UIFont {
             switch self {
+            case .ultraLargeTitle:
+                return R.font.ppMonumentExtendedBold(size: 80) ?? UIFont.systemFont(ofSize: 80, weight: .bold)
             case .largeTitle:
                 return R.font.ppMonumentExtendedBold(size: 64) ?? UIFont.systemFont(ofSize: 64, weight: .bold)
             case .h1:

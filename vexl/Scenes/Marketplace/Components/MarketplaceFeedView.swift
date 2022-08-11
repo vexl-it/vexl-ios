@@ -26,7 +26,7 @@ struct MarketplaceFeedView: View {
                 detailAction(data.id)
             }
 
-            MarketplaceFeedFooterView(username: data.username,
+            MarketplaceFeedFooterView(attributedTitle: data.attributedOfferTitle,
                                       isRequested: data.isRequested,
                                       friendLevel: data.friendLevel,
                                       offerType: data.offerType,
