@@ -19,7 +19,7 @@ struct PhoneNumberTextFieldView: UIViewRepresentable {
     }
 
     func makeUIView(context: Context) -> PhoneNumberTextField {
-        let phoneNumberTextField = PhoneNumberTextField()
+        let phoneNumberTextField = VexlPhoneNumberTextField()
         phoneNumberTextField.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         phoneNumberTextField.addTarget(context.coordinator, action: #selector(Coordinator.onTextChange), for: .editingChanged)
         phoneNumberTextField.placeholder = placeholder
@@ -42,6 +42,31 @@ struct PhoneNumberTextFieldView: UIViewRepresentable {
         @objc
         func onTextChange(textField: UITextField) {
             parent.text = textField.text!
+        }
+    }
+}
+
+private class VexlPhoneNumberTextField: PhoneNumberTextField {
+    override var defaultRegion: String {
+        get {
+            Locale.current.regionCode ?? ""
+        }
+        set { }
+    }
+
+    init() {
+        super.init(frame: .zero)
+        setInitialCountryCode()
+    }
+
+    required init(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        setInitialCountryCode()
+    }
+
+    private func setInitialCountryCode() {
+        if let countryCode = Formatters.phoneNumberFormatter.countryCode(for: defaultRegion) {
+            text = "+\(countryCode)"
         }
     }
 }
