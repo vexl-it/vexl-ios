@@ -224,7 +224,7 @@
 "offer.create.advanced.type.lightning" = "Lightning";
 "offer.create.advanced.type.chain" = "On chain";
 "offer.create.advanced.group.title" = "Group";
-"offer.create.advanced.group.description" = "Select if you wan’t to see offers only from specific group";
+"offer.create.advanced.group.description" = "Select if you want to see\noffers only from specific group";
 "offer.create.description" = "Description";
 "offer.create.description.placeholder" = "Enter offer description";
 "offer.create.currency" = "Currency";

@@ -49,12 +49,8 @@ struct OfferSettingsView: View {
                                        feeValue: $viewModel.feeAmount)
 
                     OfferLocationPickerView(items: viewModel.locations,
-                                            addLocation: {
-                        viewModel.action.send(.addLocation)
-                    },
-                                            deleteLocation: { id in
-                        viewModel.action.send(.deleteLocation(id: id))
-                    })
+                                            addLocation: { viewModel.action.send(.addLocation) },
+                                            deleteLocation: { id in viewModel.action.send(.deleteLocation(id: id)) })
                         .padding(.top, Appearance.GridGuide.largePadding1)
 
                     OfferTradeLocationPickerView(selectedOption: $viewModel.selectedTradeStyleOption)
@@ -72,7 +68,9 @@ struct OfferSettingsView: View {
 
                     OfferAdvancedFilterView(
                         selectedTypeOptions: $viewModel.selectedBTCOption,
-                        selectedFriendDegreeOption: $viewModel.selectedFriendDegreeOption
+                        selectedFriendDegreeOption: $viewModel.selectedFriendDegreeOption,
+                        groups: $viewModel.groups,
+                        selectedGroup: $viewModel.selectedGroup
                     )
                     .padding(.top, Appearance.GridGuide.largePadding1)
 
@@ -81,9 +79,7 @@ struct OfferSettingsView: View {
                                      style: .main,
                                      isFullWidth: true,
                                      isEnabled: .constant(viewModel.isCreateEnabled),
-                                     action: {
-                        viewModel.action.send(.createOffer)
-                    })
+                                     action: { viewModel.action.send(.createOffer) })
                         .padding(.vertical, Appearance.GridGuide.largePadding1)
                 }
             }

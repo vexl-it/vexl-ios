@@ -12,6 +12,9 @@ struct OfferAdvancedFilterView: View {
     @Binding var selectedTypeOptions: [OfferAdvancedBTCOption]
     @Binding var selectedFriendDegreeOption: OfferFriendDegree
 
+    @Binding var groups: [ManagedGroup]
+    @Binding var selectedGroup: ManagedGroup?
+
     @State private var isExpanded = true
 
     var body: some View {
@@ -40,6 +43,9 @@ struct OfferAdvancedFilterView: View {
 
                 OfferAdvanceFilterFriendDegreeView(selectedOption: $selectedFriendDegreeOption)
                     .padding(.top, Appearance.GridGuide.mediumPadding1)
+
+                OfferAdvanceFilterGroupView(groups: $groups, selectedGroup: $selectedGroup)
+                    .padding(.top, Appearance.GridGuide.mediumPadding1)
             }
         }
         .animation(.easeInOut(duration: 0.25), value: isExpanded)
@@ -49,13 +55,21 @@ struct OfferAdvancedFilterView: View {
 #if DEBUG || DEVEL
 struct OfferAdvancedFilterViewPreview: PreviewProvider {
     static var previews: some View {
-        OfferAdvancedFilterView(selectedTypeOptions: .constant([]),
-                                selectedFriendDegreeOption: .constant(.firstDegree))
+        OfferAdvancedFilterView(
+                selectedTypeOptions: .constant([]),
+                selectedFriendDegreeOption: .constant(.firstDegree),
+                groups: .constant([]),
+                selectedGroup: .constant(nil)
+            )
             .previewDevice("iPhone 11")
             .background(Color.black)
-        
-        OfferAdvancedFilterView(selectedTypeOptions: .constant([]),
-                                selectedFriendDegreeOption: .constant(.firstDegree))
+
+        OfferAdvancedFilterView(
+                selectedTypeOptions: .constant([]),
+                selectedFriendDegreeOption: .constant(.firstDegree),
+                groups: .constant([]),
+                selectedGroup: .constant(nil)
+            )
             .previewDevice("iPhone SE")
             .background(Color.black)
     }

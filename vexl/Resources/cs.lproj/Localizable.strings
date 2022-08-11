@@ -224,7 +224,7 @@
 "offer.create.advanced.type.lightning" = "Lightning";
 "offer.create.advanced.type.chain" = "On-chain";
 "offer.create.advanced.group.title" = "Skupina";
-"offer.create.advanced.group.description" = "";
+"offer.create.advanced.group.description" = "Select if you want to see\noffers only from specific group";
 "offer.create.description" = "Popis";
 "offer.create.description.placeholder" = "Popiš svou nabídku";
 "offer.create.currency" = "Měna";

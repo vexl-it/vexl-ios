@@ -15,6 +15,9 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
     @Inject var offerRepository: OfferRepositoryType
     @Inject var offerService: OfferServiceType
 
+    @Fetched(sortDescriptors: [ NSSortDescriptor(key: "name", ascending: true) ])
+    var fetchedGroups: [ManagedGroup]
+
     enum UserAction: Equatable {
         case activate
         case delete
@@ -68,6 +71,9 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
     @Published var deleteTime: String = Constants.defaultOfferDeleteTime
 
     @Published var isActive = true
+
+    @Published var groups: [ManagedGroup] = []
+    @Published var selectedGroup: ManagedGroup?
 
     @Published var state: State = .loaded
     @Published var error: Error?
@@ -218,6 +224,11 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
             selectedPriceTrigger = offer.activePriceState ?? .none
             selectedPriceTriggerAmount = "\(Int(offer.activePriceValue))"
         }
+
+        $fetchedGroups
+            .publisher
+            .map(\.objects)
+            .assign(to: &$groups)
     }
 
     private func setupCurrencyBindings() {
@@ -318,9 +329,9 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
             .asVoid()
             .withUnretained(self)
             .flatMap { owner -> AnyPublisher<ManagedOffer, Never> in
-                let provider: (ManagedOffer) -> Void = { offer in
+                let provider: (ManagedOffer) -> Void = { [weak owner] offer in
                     offer.id = nil
-                    offer.groupUuid = GroupUUID.none
+                    offer.groupUuid = owner.offer.flatMap
                     offer.currency = owner.currency
                     offer.minAmount = Double(owner.currentAmountRange.lowerBound)
                     offer.maxAmount = Double(owner.currentAmountRange.upperBound)
