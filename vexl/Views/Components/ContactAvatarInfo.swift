@@ -17,6 +17,7 @@ struct ContactAvatarInfo: View {
     let avatar: Data?
     let isAvatarWithOpacity: Bool
     let title: String
+    let attributedTitle: NSAttributedString?
     let subtitle: String
     let style: Style
 
@@ -34,11 +35,13 @@ struct ContactAvatarInfo: View {
 
     init(isAvatarWithOpacity: Bool,
          title: String,
+         attributedTitle: NSAttributedString? = nil,
          subtitle: String,
          style: Style = .regular,
          avatar: Data? = nil) {
         self.isAvatarWithOpacity = isAvatarWithOpacity
         self.title = title
+        self.attributedTitle = attributedTitle
         self.subtitle = subtitle
         self.style = style
         self.avatar = avatar
@@ -59,9 +62,13 @@ struct ContactAvatarInfo: View {
             }
 
             VStack(alignment: .leading) {
-                Text(title)
-                    .textStyle(titleStyle)
-                    .foregroundColor(Appearance.Colors.whiteText)
+                if let attributedTitle = attributedTitle {
+                    AttributedText(attributedText: attributedTitle)
+                } else {
+                    Text(title)
+                        .textStyle(titleStyle)
+                        .foregroundColor(Appearance.Colors.whiteText)
+                }
 
                 Text(subtitle)
                     .textStyle(subtitleStyle)
