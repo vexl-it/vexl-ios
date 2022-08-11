@@ -86,7 +86,7 @@ struct OfferPayload: Codable {
             let friendLevel = try offer.friendDegreeRawType?.ecc.encrypt(publicKey: encryptionPublicKey),
             let offerType = try offer.offerTypeRawType?.ecc.encrypt(publicKey: encryptionPublicKey),
             let activePriceState = try offer.activePriceStateRawType?.ecc.encrypt(publicKey: encryptionPublicKey),
-            let groupUuid = try offer.groupUuidRawType?.ecc.encrypt(publicKey: encryptionPublicKey),
+            let groupUuid = try offer.groupUuid?.rawValue.ecc.encrypt(publicKey: encryptionPublicKey),
             let currency = try offer.currencyRawType?.ecc.encrypt(publicKey: encryptionPublicKey)
         else {
             throw EncryptionError.dataEncryption
@@ -173,7 +173,6 @@ struct OfferPayload: Codable {
             }
 
             offer.id = offerId
-            offer.groupUuid = GroupUUID(rawValue: groupUuid)
             offer.createdAt = Formatters.dateApiFormatter.date(from: createdAt)
             offer.modifiedAt = modifiedAt
             offer.currency = currency
@@ -196,6 +195,17 @@ struct OfferPayload: Codable {
                 let offerKeyPair = ManagedKeyPair(context: context)
                 offerKeyPair.publicKey = offerPublicKey
                 offerKeyPair.receiversOffer = offer
+            }
+
+            switch GroupUUID(rawValue: groupUuid) {
+            case .none:
+                break
+            case let .id(uuid):
+                @Inject var persistence: PersistenceStoreManagerType
+                let group = persistence
+                    .loadSyncroniously(type: ManagedGroup.self, context: context, predicate: NSPredicate(format: "uuid == '\(uuid)'"))
+                    .first
+                offer.group = group
             }
 
             if offer.inbox == nil {

@@ -94,19 +94,17 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
 
     var expiration: TimeInterval {
         let time = Double(deleteTime) ?? 0
-        let currentTimestamp = Date().timeIntervalSince1970
-        var additionalSeconds: TimeInterval
-
-        switch deleteTimeUnit {
-        case .days:
-            additionalSeconds = time * Constants.daysToSecondsMultiplier
-        case .weeks:
-            additionalSeconds = time * Constants.weeksToSecondsMultiplier
-        case .months:
-            additionalSeconds = time * Constants.monthsToSecondsMultiplier
-        }
-
-        return currentTimestamp + additionalSeconds
+        let additionalSeconds: TimeInterval = {
+            switch deleteTimeUnit {
+            case .days:
+                return time * Constants.daysToSecondsMultiplier
+            case .weeks:
+                return time * Constants.weeksToSecondsMultiplier
+            case .months:
+                return time * Constants.monthsToSecondsMultiplier
+            }
+        }()
+        return Date().timeIntervalSince1970 + additionalSeconds
     }
 
     var feeValue: Int {
@@ -330,8 +328,8 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
             .withUnretained(self)
             .flatMap { owner -> AnyPublisher<ManagedOffer, Never> in
                 let provider: (ManagedOffer) -> Void = { [weak owner] offer in
-                    offer.id = nil
-                    offer.groupUuid = owner.offer.flatMap
+                    guard let owner = owner else { return }
+                    offer.group = owner.selectedGroup
                     offer.currency = owner.currency
                     offer.minAmount = Double(owner.currentAmountRange.lowerBound)
                     offer.maxAmount = Double(owner.currentAmountRange.upperBound)
