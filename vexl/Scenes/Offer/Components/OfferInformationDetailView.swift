@@ -154,6 +154,17 @@ extension OfferInformationDetailView {
             return label
         }
 
+        var attributedOfferTitle: NSAttributedString {
+            let string = NSMutableAttributedString(string: username,
+                                                   attributes: [.font: Appearance.TextStyle.paragraphSmallSemiBold.font,
+                                                                .foregroundColor: UIColor(Appearance.Colors.whiteText)])
+            string.append(NSAttributedString(string: offerType == .buy ? L.marketplaceDetailUserBuy("") : L.marketplaceDetailUserSell("") ,
+                                             attributes: [.font: Appearance.TextStyle.paragraphSmallSemiBold.font,
+                                                          .foregroundColor: offerType == .buy ? UIColor(Appearance.Colors.green100) :
+                                                                                                UIColor(Appearance.Colors.pink100)]))
+            return string
+        }
+
         init(offer: ManagedOffer) {
             self.offer = offer
             let profile = offer.receiversPublicKey?.profile

@@ -4,6 +4,7 @@
 - VEX-446 Group creation (only on debug & devel)
 - VEX-530: Remove OfferID dependence
 - VEX-540: Logout user when user receives unathorized response from BE
+- VEX-528: Updated the sorting for the offers and updated the offer type color
 - VEX-533: Modified the layout so that small screen iPhones have better experience
 - VEX-518: Updated condition for My Offer button
 
