@@ -14,6 +14,7 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
 
     @Inject var offerRepository: OfferRepositoryType
     @Inject var offerService: OfferServiceType
+    @Inject var mapyService: MapyServiceType
 
     @Fetched(sortDescriptors: [ NSSortDescriptor(key: "name", ascending: true) ])
     var fetchedGroups: [ManagedGroup]

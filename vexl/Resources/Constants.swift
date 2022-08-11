@@ -39,6 +39,7 @@ struct Constants {
         static let contactsBaseURLString = "\(contactsApiHostname)/api/\(apiVersion)"
         static let offersBaseURLString = "\(offersApiHostname)/api/\(apiVersion)"
         static let chatBaseURLString = "\(chatApiHostname)/api/\(apiVersion)"
+        static let mapyBaseURLString = "https://api.mapy.cz/"
     }
 
     // MARK: - Keychain keys

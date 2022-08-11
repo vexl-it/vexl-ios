@@ -53,6 +53,7 @@ struct OfferAdvancedFilterView: View {
     }
 }
 
+
 #if DEBUG || DEVEL
 struct OfferAdvancedFilterViewPreview: PreviewProvider {
     static var previews: some View {
@@ -76,3 +77,4 @@ struct OfferAdvancedFilterViewPreview: PreviewProvider {
     }
 }
 #endif
+
