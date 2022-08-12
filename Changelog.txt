@@ -20,5 +20,6 @@
 - VEX-545: Fix reject reveal identity
 - VEX-544: Fixed crash when tapping filters in chat
 - VEX-279: Added back button when the requests are empty
+- VEX-572: fixed problems with anonymize dismiss
 
 ### Known Issues
