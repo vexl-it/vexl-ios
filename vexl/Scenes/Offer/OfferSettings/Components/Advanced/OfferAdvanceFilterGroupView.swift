@@ -14,7 +14,7 @@ struct OfferAdvanceFilterGroupView: View {
     private let cellSize: Double = (UIScreen.main.width - 10 - (6 * Appearance.GridGuide.padding)) / 2.0
 
     var body: some View {
-        VStack(alignment: .leading) {
+        LazyVStack(alignment: .leading) {
             HStack {
                 VStack {
                     Text(L.offerCreateAdvancedGroupTitle())
