@@ -13,6 +13,18 @@ struct OptionPickerItemView<Content: View>: View {
     let content: () -> Content
     let action: () -> Void
 
+    var foregroundColor: Color {
+        isSelected
+            ? Appearance.Colors.whiteText
+            : Appearance.Colors.gray4
+    }
+
+    var backgroundColor: Color {
+        isSelected
+            ? Appearance.Colors.gray2
+            : Appearance.Colors.gray1
+    }
+
     var body: some View {
         Button {
             action()

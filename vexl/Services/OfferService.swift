@@ -150,7 +150,13 @@ extension OfferService {
                 return Array(Set(contacts))
             }
 
-        let commonFriends = contacts
+        let groupMembersAndContacts = contacts
+            .map { contacts -> [ContactKey] in
+                let members = offer.group?.members?.allObjects as? [ManagedAnonymisedProfile] ?? []
+                return contacts + members.compactMap(\.publicKey).map(ContactKey.init)
+            }
+
+        let commonFriends = groupMembersAndContacts
             .flatMap { [contactsService] contacts in
                 contactsService
                     .getCommonFriends(publicKeys: contacts.map(\.publicKey))

@@ -35,6 +35,7 @@
         <attribute name="name" optional="YES" attributeType="String"/>
         <attribute name="uuid" optional="YES" attributeType="String"/>
         <relationship name="members" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ManagedAnonymisedProfile" inverseName="group" inverseEntity="ManagedAnonymisedProfile"/>
+        <relationship name="offers" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ManagedOffer" inverseName="group" inverseEntity="ManagedOffer"/>
         <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ManagedUser" inverseName="groups" inverseEntity="ManagedUser"/>
     </entity>
     <entity name="ManagedInbox" representedClassName="ManagedInbox" syncable="YES" codeGenerationType="class">
@@ -80,7 +81,6 @@
         <attribute name="feeAmount" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="feeStateRawType" optional="YES" attributeType="String"/>
         <attribute name="friendDegreeRawType" optional="YES" attributeType="String"/>
-        <attribute name="groupUuidRawType" optional="YES" attributeType="String"/>
         <attribute name="id" optional="YES" attributeType="String"/>
         <attribute name="isRequested" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="locationStateRawType" optional="YES" attributeType="String"/>
@@ -89,6 +89,7 @@
         <attribute name="modifiedAt" optional="YES" attributeType="String"/>
         <attribute name="offerDescription" optional="YES" attributeType="String"/>
         <attribute name="offerTypeRawType" optional="YES" attributeType="String"/>
+        <relationship name="group" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ManagedGroup" inverseName="offers" inverseEntity="ManagedGroup"/>
         <relationship name="inbox" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ManagedInbox" inverseName="offers" inverseEntity="ManagedInbox"/>
         <relationship name="receiversPublicKey" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ManagedKeyPair" inverseName="receiversOffer" inverseEntity="ManagedKeyPair"/>
         <relationship name="requesterPublicKeys" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ManagedKeyPair" inverseName="userOffer" inverseEntity="ManagedKeyPair"/>
@@ -121,16 +122,16 @@
         <relationship name="profile" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ManagedProfile" inverseName="currentUser" inverseEntity="ManagedProfile"/>
     </entity>
     <elements>
-        <element name="ManagedAnonymisedProfile" positionX="-729.87109375" positionY="268.921875" width="170.62890625" height="73"/>
-        <element name="ManagedChat" positionX="-333.91796875" positionY="-454.86328125" width="162.57421875" height="179"/>
-        <element name="ManagedContact" positionX="-1073.49609375" positionY="-251.14453125" width="128" height="134"/>
-        <element name="ManagedGroup" positionX="-993.60546875" positionY="162.875" width="128" height="193"/>
-        <element name="ManagedInbox" positionX="-562.71484375" positionY="-370.265625" width="128" height="118"/>
-        <element name="ManagedKeyPair" positionX="-343.26171875" positionY="-227.74609375" width="128" height="148"/>
-        <element name="ManagedMessage" positionX="-110.484375" positionY="-455.828125" width="128" height="178"/>
+        <element name="ManagedAnonymisedProfile" positionX="-1077.6640625" positionY="-369.7421875" width="170.62890625" height="73"/>
+        <element name="ManagedChat" positionX="-314.09765625" positionY="-523.9609375" width="162.57421875" height="179"/>
+        <element name="ManagedContact" positionX="-889.3515625" positionY="-86.04296875" width="128" height="134"/>
+        <element name="ManagedGroup" positionX="-1261.953125" positionY="-339.99609375" width="128" height="208"/>
+        <element name="ManagedInbox" positionX="-545.4609375" positionY="-382.8515625" width="128" height="118"/>
+        <element name="ManagedKeyPair" positionX="-312.15625" positionY="-289.875" width="128" height="148"/>
+        <element name="ManagedMessage" positionX="-95.99609375" positionY="-524.015625" width="128" height="178"/>
         <element name="ManagedOffer" positionX="-892.38671875" positionY="-589.39453125" width="128" height="478"/>
-        <element name="ManagedProfile" positionX="-566.8828125" positionY="-92.77734375" width="128" height="179"/>
-        <element name="ManagedSyncItem" positionX="-591.86328125" positionY="-567.52734375" width="128" height="74"/>
-        <element name="ManagedUser" positionX="-1013.984375" positionY="-50.265625" width="165.6171875" height="133"/>
+        <element name="ManagedProfile" positionX="-633.3203125" positionY="-96.95703125" width="128" height="193"/>
+        <element name="ManagedSyncItem" positionX="-591.86328125" positionY="-567.52734375" width="128" height="88"/>
+        <element name="ManagedUser" positionX="-1185.640625" positionY="-51.8984375" width="165.6171875" height="133"/>
     </elements>
 </model>

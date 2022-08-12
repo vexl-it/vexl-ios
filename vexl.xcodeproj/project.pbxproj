@@ -79,6 +79,7 @@
 		B06A3B55287D64DC00911795 /* vexl-crypto.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = B06A3B54287D64DC00911795 /* vexl-crypto.xcframework */; };
 		B08D2AB5289FF31500A1C901 /* GroupRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = B08D2AB4289FF31500A1C901 /* GroupRepository.swift */; };
 		B08D2AB7289FFDD100A1C901 /* GroupManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B08D2AB6289FFDD100A1C901 /* GroupManager.swift */; };
+		B08D2AB928A41E3E00A1C901 /* OfferAdvanceFilterGroupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B08D2AB828A41E3E00A1C901 /* OfferAdvanceFilterGroupView.swift */; };
 		B08F38DF27AE7110008B344F /* DIContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B08F38DE27AE7110008B344F /* DIContainer.swift */; };
 		B08F38E227AE7110008B344F /* Inject.swift in Sources */ = {isa = PBXBuildFile; fileRef = B08F38E127AE7110008B344F /* Inject.swift */; };
 		B08F390327AE7110008B344F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B08F390127AE7110008B344F /* LaunchScreen.storyboard */; };
@@ -498,6 +499,7 @@
 		B06A3B54287D64DC00911795 /* vexl-crypto.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = "vexl-crypto.xcframework"; sourceTree = "<group>"; };
 		B08D2AB4289FF31500A1C901 /* GroupRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupRepository.swift; sourceTree = "<group>"; };
 		B08D2AB6289FFDD100A1C901 /* GroupManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupManager.swift; sourceTree = "<group>"; };
+		B08D2AB828A41E3E00A1C901 /* OfferAdvanceFilterGroupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferAdvanceFilterGroupView.swift; sourceTree = "<group>"; };
 		B08F38BD27AE7110008B344F /* vexl.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = vexl.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B08F38C027AE7110008B344F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B08F38C927AE7110008B344F /* Changelog.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = Changelog.txt; path = ../Changelog.txt; sourceTree = "<group>"; };
@@ -1704,6 +1706,7 @@
 				F13B265D281899250011F2FB /* OfferAdvancedFilterBTCNetworkView.swift */,
 				4FBF6208283CD5C000DDBE71 /* OfferAdvancedFilterFriendSourceView.swift */,
 				F13B265B281897DE0011F2FB /* OfferAdvanceFilterFriendDegreeView.swift */,
+				B08D2AB828A41E3E00A1C901 /* OfferAdvanceFilterGroupView.swift */,
 			);
 			path = Advanced;
 			sourceTree = "<group>";
@@ -2732,6 +2735,7 @@
 				F1B365D8288882EA0069788D /* ProfileFacebookContactsCoordinator.swift in Sources */,
 				4FBF6209283CD5C000DDBE71 /* OfferAdvancedFilterFriendSourceView.swift in Sources */,
 				F188627528169A3700659786 /* MarketplaceSegmentView.swift in Sources */,
+				B08D2AB928A41E3E00A1C901 /* OfferAdvanceFilterGroupView.swift in Sources */,
 				4F700CC02844C54E0085139F /* BitcoinViewModel.swift in Sources */,
 				F1D2012E283401D7006DF4AB /* OfferSortView.swift in Sources */,
 				B0501BAA2887419F00A44E18 /* Array+.swift in Sources */,

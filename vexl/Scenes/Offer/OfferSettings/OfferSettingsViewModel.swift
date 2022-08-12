@@ -15,6 +15,9 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
     @Inject var offerRepository: OfferRepositoryType
     @Inject var offerService: OfferServiceType
 
+    @Fetched(sortDescriptors: [ NSSortDescriptor(key: "name", ascending: true) ])
+    var fetchedGroups: [ManagedGroup]
+
     enum UserAction: Equatable {
         case activate
         case delete
@@ -69,6 +72,9 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
 
     @Published var isActive = true
 
+    @Published var groupRows: [[ManagedGroup]] = []
+    @Published var selectedGroup: ManagedGroup?
+
     @Published var state: State = .loaded
     @Published var error: Error?
 
@@ -88,19 +94,17 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
 
     var expiration: TimeInterval {
         let time = Double(deleteTime) ?? 0
-        let currentTimestamp = Date().timeIntervalSince1970
-        var additionalSeconds: TimeInterval
-
-        switch deleteTimeUnit {
-        case .days:
-            additionalSeconds = time * Constants.daysToSecondsMultiplier
-        case .weeks:
-            additionalSeconds = time * Constants.weeksToSecondsMultiplier
-        case .months:
-            additionalSeconds = time * Constants.monthsToSecondsMultiplier
-        }
-
-        return currentTimestamp + additionalSeconds
+        let additionalSeconds: TimeInterval = {
+            switch deleteTimeUnit {
+            case .days:
+                return time * Constants.daysToSecondsMultiplier
+            case .weeks:
+                return time * Constants.weeksToSecondsMultiplier
+            case .months:
+                return time * Constants.monthsToSecondsMultiplier
+            }
+        }()
+        return Date().timeIntervalSince1970 + additionalSeconds
     }
 
     var feeValue: Int {
@@ -218,6 +222,12 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
             selectedPriceTrigger = offer.activePriceState ?? .none
             selectedPriceTriggerAmount = "\(Int(offer.activePriceValue))"
         }
+
+        $fetchedGroups
+            .publisher
+            .map(\.objects)
+            .map { $0.splitIntoChunks(by: 2) }
+            .assign(to: &$groupRows)
     }
 
     private func setupCurrencyBindings() {
@@ -318,9 +328,9 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
             .asVoid()
             .withUnretained(self)
             .flatMap { owner -> AnyPublisher<ManagedOffer, Never> in
-                let provider: (ManagedOffer) -> Void = { offer in
-                    offer.id = nil
-                    offer.groupUuid = GroupUUID.none
+                let provider: (ManagedOffer) -> Void = { [weak owner] offer in
+                    guard let owner = owner else { return }
+                    offer.group = owner.selectedGroup
                     offer.currency = owner.currency
                     offer.minAmount = Double(owner.currentAmountRange.lowerBound)
                     offer.maxAmount = Double(owner.currentAmountRange.upperBound)
