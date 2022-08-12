@@ -28,7 +28,9 @@ struct RegisterPhoneView: View {
                     .padding(.all, Appearance.GridGuide.point)
                     .transition(transition)
             } else {
-                RegisterPhoneNumberInputView(phoneNumber: $viewModel.phoneNumber)
+                RegisterPhoneNumberInputView(text: $viewModel.phoneNumber,
+                                             regionCode: viewModel.currentRegionCode,
+                                             phoneNumber: viewModel.currentPhoneNumber)
                     .padding(.all, Appearance.GridGuide.point)
                     .transition(transition)
             }
