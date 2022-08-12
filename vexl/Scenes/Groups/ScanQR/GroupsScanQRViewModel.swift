@@ -11,6 +11,8 @@ import AVFoundation
 
 final class GroupsScanQRViewModel: ViewModelType, ObservableObject {
 
+    @Inject var groupManaged: GroupManagerType
+
     // MARK: - Properties for simulator/mock testing
 
     var mockCode = "111111"
@@ -42,7 +44,7 @@ final class GroupsScanQRViewModel: ViewModelType, ObservableObject {
 
     enum Route: Equatable {
         case dismissTapped
-        case codeScanned(code: String)
+        case codeScanned
         case manualInputTapped
     }
 
@@ -69,11 +71,18 @@ final class GroupsScanQRViewModel: ViewModelType, ObservableObject {
             .store(in: cancelBag)
 
         action
-            .compactMap { action -> String? in
-                if case let .codeScan(code) = action { return code }
+            .compactMap { action -> Int? in
+                if case let .codeScan(code) = action { return Int(code) }
                 return nil
             }
-            .map { code -> Route in .codeScanned(code: code) }
+            .flatMap { [groupManaged, primaryActivity] code in
+                groupManaged
+                    .joinGroup(code: code)
+                    .track(activity: primaryActivity)
+                    .materialize()
+                    .compactMap(\.value)
+            }
+            .map { _ -> Route in .codeScanned }
             .subscribe(route)
             .store(in: cancelBag)
 
