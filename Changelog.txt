@@ -9,6 +9,7 @@
 - VEX-518: Updated condition for My Offer button
 - VEX-561: Improved filter of offer amount
 - VEX-549/546: Improved phone registry so that number is stored + default country code is set
+- VEX-546: Remove currency picker from onboarding
 
 ### Fixes
 - VEX-525: Fixed common friends on chat request screen
@@ -17,6 +18,5 @@
 - VEX-545: Fix reject reveal identity
 - VEX-544: Fixed crash when tapping filters in chat
 - VEX-279: Added back button when the requests are empty
-
 
 ### Known Issues

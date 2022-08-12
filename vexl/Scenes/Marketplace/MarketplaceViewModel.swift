@@ -24,12 +24,20 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
     @Fetched(fetchImmediately: false)
     var fetchedSellOffers: [ManagedOffer]
 
+    @Fetched(fetchImmediately: false)
+    var userBuyOffers: [ManagedOffer]
+
+    @Fetched(fetchImmediately: false)
+    var userSellOffers: [ManagedOffer]
+
     // MARK: - View Bindings
 
     @Published var primaryActivity: Activity = .init()
     @Published var selectedOption: OfferType = .buy
     @Published var isRefreshing = false
     @Published var isGraphExpanded = false
+    @Published var createdBuyOffers = false
+    @Published var createdSellOffers = false
     @Published private var buyFeed: [OfferDetailViewData] = []
     @Published private var sellFeed: [OfferDetailViewData] = []
 
@@ -149,6 +157,16 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
             .map { $0.map(OfferDetailViewData.init) }
             .assign(to: &$sellFeed)
 
+        $userBuyOffers.publisher
+            .map(\.objects)
+            .map { !$0.isEmpty }
+            .assign(to: &$createdBuyOffers)
+
+        $userSellOffers.publisher
+            .map(\.objects)
+            .map { !$0.isEmpty }
+            .assign(to: &$createdSellOffers)
+
         $fetchedBuyOffers.load(
             sortDescriptors: [ NSSortDescriptor(key: "isRequested", ascending: true), NSSortDescriptor(key: "createdAt", ascending: false) ],
             predicate: buyOfferFilter.predicate
@@ -158,6 +176,16 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
             sortDescriptors: [ NSSortDescriptor(key: "isRequested", ascending: true), NSSortDescriptor(key: "createdAt", ascending: false) ],
             predicate: sellOfferFilter.predicate
         )
+
+        $userBuyOffers
+            .load(
+                predicate: .init(format: "offerTypeRawType == '\(OfferType.buy.rawValue)' AND user != nil")
+            )
+
+        $userSellOffers
+            .load(
+                predicate: .init(format: "offerTypeRawType == '\(OfferType.sell.rawValue)' AND user != nil")
+            )
     }
 
     private func setupActionBindings() {
