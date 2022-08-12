@@ -13,6 +13,7 @@ protocol GroupServiceType {
     func getGroup(code: Int) -> AnyPublisher<GroupPayload, Error>
     func createGroup(payload: GroupPayload) -> AnyPublisher<GroupPayload, Error>
     func getNewMembers(groups: [ManagedGroup]) -> AnyPublisher<[GroupMemberPayload], Error>
+    func getNewMembers(uuid: String?) -> AnyPublisher<GroupMemberPayload, Error>
     func joinGroup(code: Int) -> AnyPublisher<Void, Error>
     func getExpiredGroups(groups: [ManagedGroup]) -> AnyPublisher<[GroupPayload], Error>
     func getUserGroups() -> AnyPublisher<[GroupPayload], Error>
@@ -41,8 +42,20 @@ final class GroupService: BaseService, GroupServiceType {
     }
 
     func getNewMembers(groups: [ManagedGroup]) -> AnyPublisher<[GroupMemberPayload], Error> {
-        let payloads = groups
-            .compactMap(GroupMemberPayload.init)
+        getNewMembers(memberRequest: groups.compactMap(GroupMemberPayload.init))
+    }
+
+    func getNewMembers(uuid: String?) -> AnyPublisher<GroupMemberPayload, Error> {
+        guard let uuid = uuid else {
+            return Fail(error: PersistenceError.insufficientData)
+                .eraseToAnyPublisher()
+        }
+        return getNewMembers(memberRequest: [ GroupMemberPayload(groupUuid: uuid, publicKeys: []) ])
+            .compactMap(\.first)
+            .eraseToAnyPublisher()
+    }
+
+    private func getNewMembers(memberRequest payloads: [GroupMemberPayload]) -> AnyPublisher<[GroupMemberPayload], Error> {
         guard !payloads.isEmpty else {
             return Just([])
                 .setFailureType(to: Error.self)

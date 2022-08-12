@@ -22,4 +22,9 @@ struct GroupMemberPayload: Codable {
         self.groupUuid = uuid
         self.publicKeys = members.compactMap(\.publicKey)
     }
+
+    init(groupUuid: String, publicKeys: [String]) {
+        self.groupUuid = groupUuid
+        self.publicKeys = publicKeys
+    }
 }

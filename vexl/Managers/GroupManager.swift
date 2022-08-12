@@ -12,9 +12,11 @@ import UIKit
 protocol GroupManagerType {
     func createGroup(name: String, logo: UIImage, expiration: Date, closureAt: Date) -> AnyPublisher<Void, Error>
     func leave(group: ManagedGroup) -> AnyPublisher<Void, Error>
+    func joinGroup(code: Int) -> AnyPublisher<Void, Error>
 }
 
 final class GroupManager: GroupManagerType {
+
     @Inject var groupRepository: GroupRepositoryType
     @Inject var groupService: GroupServiceType
 
@@ -34,6 +36,25 @@ final class GroupManager: GroupManagerType {
             .flatMap { [groupRepository] in
                 groupRepository
                     .delete(group: group)
+            }
+            .eraseToAnyPublisher()
+    }
+
+    func joinGroup(code: Int) -> AnyPublisher<Void, Error> {
+        Just(())
+            .flatMap { [groupService] in
+                groupService.joinGroup(code: code)
+            }
+            .flatMap { [groupService] in
+                groupService.getGroup(code: code)
+            }
+            .flatMap { [groupService] payload in
+                groupService.getNewMembers(uuid: payload.uuid)
+                    .map { (payload, $0.publicKeys) }
+                    .eraseToAnyPublisher()
+            }
+            .flatMap { [groupRepository] groupPayload, members in
+                groupRepository.createOrUpdateGroup(payloads: [ (groupPayload, members) ])
             }
             .eraseToAnyPublisher()
     }
