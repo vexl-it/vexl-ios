@@ -84,6 +84,7 @@ final class FilterViewModel: ViewModelType, ObservableObject {
         selectedPaymentMethodOptions = offerFilter.selectedPaymentMethodOptions
         selectedBTCOptions = offerFilter.selectedBTCOptions
         selectedFriendDegreeOptions = offerFilter.selectedFriendDegreeOptions
+        selectedGroups = offerFilter.selectedGroups
         setupCurrencyBindings(currency: offerFilter.currency)
         setupBindings()
     }
@@ -143,6 +144,7 @@ final class FilterViewModel: ViewModelType, ObservableObject {
                 owner.offerFilter.selectedBTCOptions = owner.selectedBTCOptions
                 owner.offerFilter.selectedFriendDegreeOptions = owner.selectedFriendDegreeOptions
                 owner.offerFilter.currency = owner.currency
+                owner.offerFilter.selectedGroups = owner.selectedGroups
 
                 owner.route.send(.applyFilterTapped(owner.offerFilter))
             }
@@ -210,6 +212,7 @@ final class FilterViewModel: ViewModelType, ObservableObject {
         selectedBTCOptions = []
         selectedFriendDegreeOptions = []
         offerFilter.reset(with: currentAmountRange)
+        selectedGroups = []
         currency = nil
     }
 }
