@@ -72,7 +72,7 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
 
     @Published var isActive = true
 
-    @Published var groups: [ManagedGroup] = []
+    @Published var groupRows: [[ManagedGroup]] = []
     @Published var selectedGroup: ManagedGroup?
 
     @Published var state: State = .loaded
@@ -226,7 +226,8 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
         $fetchedGroups
             .publisher
             .map(\.objects)
-            .assign(to: &$groups)
+            .map { $0.splitIntoChunks(by: 2) }
+            .assign(to: &$groupRows)
     }
 
     private func setupCurrencyBindings() {

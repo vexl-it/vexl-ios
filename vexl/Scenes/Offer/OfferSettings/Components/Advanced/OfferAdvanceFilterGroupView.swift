@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct OfferAdvanceFilterGroupView: View {
-    @Binding var groups: [ManagedGroup]
+    @Binding var groupRows: [[ManagedGroup]]
     @Binding var selectedGroup: ManagedGroup?
 
     private let cellSize: Double = (UIScreen.main.width - 10 - (6 * Appearance.GridGuide.padding)) / 2.0
@@ -40,8 +40,7 @@ struct OfferAdvanceFilterGroupView: View {
             }
             .frame(maxWidth: .infinity)
 
-            let chunks = groups.splitIntoChunks(by: 2)
-            ForEach(Array(chunks.enumerated()), id: \.offset) { groupRow in
+            ForEach(Array(groupRows.enumerated()), id: \.offset) { groupRow in
                 singleSelect(for: groupRow.element)
             }
         }

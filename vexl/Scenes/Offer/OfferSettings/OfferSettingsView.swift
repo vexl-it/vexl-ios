@@ -69,7 +69,7 @@ struct OfferSettingsView: View {
                     OfferAdvancedFilterView(
                         selectedTypeOptions: $viewModel.selectedBTCOption,
                         selectedFriendDegreeOption: $viewModel.selectedFriendDegreeOption,
-                        groups: $viewModel.groups,
+                        groupRows: $viewModel.groupRows,
                         selectedGroup: $viewModel.selectedGroup
                     )
                     .padding(.top, Appearance.GridGuide.largePadding1)
