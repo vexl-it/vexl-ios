@@ -92,7 +92,8 @@ final class AuthenticationManager: AuthenticationManagerType {
         user != nil &&
         userSignature != nil &&
         user?.profile?.keyPair?.publicKey != nil &&
-        user?.profile?.keyPair?.privateKey != nil
+        user?.profile?.keyPair?.privateKey != nil &&
+        user?.profile?.name != nil
     }
 }
 
