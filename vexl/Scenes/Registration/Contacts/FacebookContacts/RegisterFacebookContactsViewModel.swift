@@ -12,6 +12,7 @@ import SwiftUI
 
 final class RegisterFacebookContactsViewModel: ViewModelType {
 
+    @Inject var initialScreenManager: InitialScreenManager
     @Inject var authenticationManager: AuthenticationManager
     @Inject var userService: UserServiceType
     @Inject var contactsService: ContactsServiceType
@@ -71,6 +72,7 @@ final class RegisterFacebookContactsViewModel: ViewModelType {
         setupActivity()
         setupRequestFacebookContactsBindings()
         setupImportFacebookContactsBindings()
+        initialScreenManager.update(onboardingState: .finished)
     }
 
     private func setupActivity() {
