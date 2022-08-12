@@ -80,6 +80,7 @@
 		B08D2AB5289FF31500A1C901 /* GroupRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = B08D2AB4289FF31500A1C901 /* GroupRepository.swift */; };
 		B08D2AB7289FFDD100A1C901 /* GroupManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B08D2AB6289FFDD100A1C901 /* GroupManager.swift */; };
 		B08D2AB928A41E3E00A1C901 /* OfferAdvanceFilterGroupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B08D2AB828A41E3E00A1C901 /* OfferAdvanceFilterGroupView.swift */; };
+		B08D2ABB28A6A34800A1C901 /* FilterGroupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B08D2ABA28A6A34800A1C901 /* FilterGroupView.swift */; };
 		B08F38DF27AE7110008B344F /* DIContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B08F38DE27AE7110008B344F /* DIContainer.swift */; };
 		B08F38E227AE7110008B344F /* Inject.swift in Sources */ = {isa = PBXBuildFile; fileRef = B08F38E127AE7110008B344F /* Inject.swift */; };
 		B08F390327AE7110008B344F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B08F390127AE7110008B344F /* LaunchScreen.storyboard */; };
@@ -500,6 +501,7 @@
 		B08D2AB4289FF31500A1C901 /* GroupRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupRepository.swift; sourceTree = "<group>"; };
 		B08D2AB6289FFDD100A1C901 /* GroupManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupManager.swift; sourceTree = "<group>"; };
 		B08D2AB828A41E3E00A1C901 /* OfferAdvanceFilterGroupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferAdvanceFilterGroupView.swift; sourceTree = "<group>"; };
+		B08D2ABA28A6A34800A1C901 /* FilterGroupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterGroupView.swift; sourceTree = "<group>"; };
 		B08F38BD27AE7110008B344F /* vexl.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = vexl.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B08F38C027AE7110008B344F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B08F38C927AE7110008B344F /* Changelog.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = Changelog.txt; path = ../Changelog.txt; sourceTree = "<group>"; };
@@ -904,6 +906,7 @@
 			isa = PBXGroup;
 			children = (
 				4FBF6212283CF54400DDBE71 /* FilterHeaderView.swift */,
+				B08D2ABA28A6A34800A1C901 /* FilterGroupView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -2921,6 +2924,7 @@
 				B08F394327AE7112008B344F /* Keychain+.swift in Sources */,
 				F11441CD284681EC00307D39 /* LargeLabelButton.swift in Sources */,
 				F175AB8727E4D5C8000DAB15 /* UIScreen+.swift in Sources */,
+				B08D2ABB28A6A34800A1C901 /* FilterGroupView.swift in Sources */,
 				F18862472811550C00659786 /* OfferSettingsCoordinator.swift in Sources */,
 				B007A7542872269B00CFA5C9 /* ManagedUser+.swift in Sources */,
 				F151A2A727C962CC000D7242 /* RegisterNameInputView.swift in Sources */,

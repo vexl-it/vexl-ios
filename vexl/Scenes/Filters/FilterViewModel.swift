@@ -11,6 +11,11 @@ import Combine
 
 final class FilterViewModel: ViewModelType, ObservableObject {
 
+    // MARK: - Fetch Bindings
+
+    @Fetched(sortDescriptors: [ NSSortDescriptor(key: "name", ascending: true) ])
+    var fetchedGroups: [ManagedGroup]
+
     // MARK: - Action Binding
 
     enum UserAction: Equatable {
@@ -41,6 +46,9 @@ final class FilterViewModel: ViewModelType, ObservableObject {
 
     @Published var selectedBTCOptions: [OfferAdvancedBTCOption]
     @Published var selectedFriendDegreeOptions: [OfferFriendDegree]
+
+    @Published var groupRows: [[ManagedGroup]] = []
+    @Published var selectedGroups: [ManagedGroup] = []
 
     @Published var currency: Currency?
 
@@ -149,6 +157,12 @@ final class FilterViewModel: ViewModelType, ObservableObject {
             .store(in: cancelBag)
 
         locationActionBindings(userAction: userAction)
+
+        $fetchedGroups
+            .publisher
+            .map(\.objects)
+            .map { $0.splitIntoChunks(by: 2) }
+            .assign(to: &$groupRows)
     }
 
     private func locationActionBindings(userAction: AnyPublisher<UserAction, Never>) {

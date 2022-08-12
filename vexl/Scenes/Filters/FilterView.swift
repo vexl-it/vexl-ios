@@ -152,6 +152,10 @@ struct FilterView: View {
                 .padding(.top, Appearance.GridGuide.padding)
 
             friendLevelPicker
+
+            if !viewModel.groupRows.isEmpty {
+                FilterGroupView(groupRows: $viewModel.groupRows, selectedGroups: $viewModel.selectedGroups)
+            }
         }
     }
 
