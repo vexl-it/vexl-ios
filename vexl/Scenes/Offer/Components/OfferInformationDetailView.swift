@@ -35,15 +35,29 @@ struct OfferInformationDetailView: View {
     }
 
     var body: some View {
-        VStack(spacing: Appearance.GridGuide.padding) {
+        VStack(spacing: Appearance.GridGuide.smallPadding) {
+            VStack(alignment: .leading, spacing: Appearance.GridGuide.smallPadding) {
 
                 Text(data.title)
                     .textStyle(.titleSmallMedium)
                     .multilineTextAlignment(.leading)
                     .foregroundColor(textColor)
                     .frame(maxWidth: .infinity, alignment: .leading)
+            }
+            .padding(.top, useInnerPadding ? Appearance.GridGuide.mediumPadding1 : 0)
+
+            VStack(spacing: Appearance.GridGuide.smallPadding) {
 
                 detail
+
+                if case .withFee = data.feeOption, let feeAmount = data.feeAmount {
+                    Text(L.marketplaceDetailFee(feeAmount))
+                        .textStyle(.paragraphMedium)
+                        .foregroundColor(Appearance.Colors.gray3)
+                        .frame(maxWidth: .infinity, alignment: .center)
+                }
+            }
+            .padding(.bottom, useInnerPadding ? Appearance.GridGuide.padding : 0)
         }
         .padding(.horizontal, useInnerPadding ? Appearance.GridGuide.padding : 0)
         .background(backgroundColor)
@@ -54,7 +68,7 @@ struct OfferInformationDetailView: View {
         HStack {
             DetailItem(label: data.offerType == .buy ? L.marketplaceDetailBuy() : L.marketplaceDetailSell(), content: {
                 Text(L.marketplaceDetailUpTo(data.amount))
-                    .foregroundColor(Appearance.Colors.gray2)
+                    .foregroundColor(Appearance.Colors.gray3)
                     .multilineTextAlignment(.center)
                     .lineLimit(3)
             })
@@ -83,7 +97,6 @@ struct OfferInformationDetailView: View {
             })
             .frame(maxWidth: .infinity)
         }
-        .padding(.bottom, useInnerPadding ? Appearance.GridGuide.padding : 0)
     }
 }
 
@@ -128,7 +141,8 @@ extension OfferInformationDetailView {
         @Published var title: String = ""
         @Published var friendLevel: String = OfferFriendDegree.firstDegree.rawValue
         @Published var paymentMethods: [OfferPaymentMethodOption] = []
-        @Published var fee: String?
+        @Published var feeOption: OfferFeeOption = .withoutFee
+        @Published var feeAmount: String?
         @Published var offerType: OfferType = .buy
         @Published var createdDate: Date = Date()
 

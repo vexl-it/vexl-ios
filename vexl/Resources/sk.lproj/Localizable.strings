@@ -169,6 +169,7 @@
 "marketplace.detail.buy" = "K nákupu";
 "marketplace.detail.user.sell" = "%@ prodává";
 "marketplace.detail.user.buy" = "%@ nakupuje";
+"marketplace.detail.fee" = "Zahrnuje %1$@ %% transakční poplatek";
 "offer.request" = "Žádost";
 "offer.requested" = "Žádost poslána";
 "offer.sell.title" = "Moje nabídky prodeje";

@@ -169,6 +169,7 @@
 "marketplace.detail.buy" = "To buy";
 "marketplace.detail.user.sell" = "%@ is selling";
 "marketplace.detail.user.buy" = "%@ is buying";
+"marketplace.detail.fee" = "Includes %1$@ %% fee for transaction";
 "offer.request" = "Request";
 "offer.requested" = "Requested";
 "offer.sell.title" = "My Sell Offers";
