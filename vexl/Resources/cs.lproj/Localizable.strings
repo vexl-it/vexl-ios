@@ -66,9 +66,9 @@
 "register.name.avatar.photo.album" = "Knihovna";
 "register.name.avatar.image.picker" = "Vyber si, odkud chceš obrázek nahrát";
 "anonymize.user.title" = "Toto je tvá identita";
-"anonymize.user.title2" = "Identity anonymized!";
+"anonymize.user.title2" = "Identita anonymizována!";
 "anonymize.user.note" = "Bez tvého svolení nikdo tvoji identitu neuvidí.";
-"anonymize.user.note2" = "This is how other users will see you until you reveal your real identity.";
+"anonymize.user.note2" = "Takto vás uvidí ostatní uživatelé, než požádáte/schválíte o odkrytí identity.";
 "anonymize.user.btn" = "Anonymizovat";
 "register.contacts.import.button" = "Import kontaktů";
 "register.contacts.import.deselect" = "Zrušit výběr";
