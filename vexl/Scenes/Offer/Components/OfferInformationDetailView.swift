@@ -6,7 +6,9 @@
 //
 
 import Foundation
+import Combine
 import SwiftUI
+import Cleevio
 
 typealias OfferDetailViewData = OfferInformationDetailView.ViewData
 
@@ -129,12 +131,19 @@ struct OfferInformationDetailView: View {
             VLine(color: Appearance.Colors.gray4, width: 1)
                 .frame(maxHeight: lineSize.height)
 
-            // TODO: - Set real location when it is implemented
-
-            DetailItem(label: "Prague", content: {
-                Image(R.image.marketplace.mapPin.name)
-                    .resizable()
-                    .frame(size: Appearance.GridGuide.feedIconSize)
+            DetailItem(label: data.locationsTitle, content: {
+                HStack(spacing: Appearance.GridGuide.point) {
+                    if data.locationState != .online || data.containsLocation {
+                        Image(R.image.marketplace.mapPin.name)
+                            .resizable()
+                            .frame(size: Appearance.GridGuide.feedIconSize)
+                    }
+                    if data.locationState == .online {
+                        Image(R.image.marketplace.tradeOnline.name)
+                            .resizable()
+                            .frame(size: Appearance.GridGuide.feedIconSize)
+                    }
+                }
             })
             .frame(maxWidth: .infinity)
         }
@@ -182,10 +191,13 @@ extension OfferInformationDetailView {
         @Published var title: String = ""
         @Published var friendLevel: String = OfferFriendDegree.firstDegree.rawValue
         @Published var paymentMethods: [OfferPaymentMethodOption] = []
+        @Published var locationState: OfferTradeLocationOption?
         @Published var feeOption: OfferFeeOption = .withoutFee
         @Published var feeAmount: String?
         @Published var offerType: OfferType = .buy
         @Published var createdDate: Date = Date()
+        @Published var locationsTitle: String = "sheesh"
+        @Published var containsLocation: Bool = true
 
         @Published var isGroupOffer: Bool = false
         @Published var groupName: String?
@@ -225,6 +237,8 @@ extension OfferInformationDetailView {
             return string
         }
 
+        private let cancelBag: CancelBag = .init()
+
         init(offer: ManagedOffer) {
             self.offer = offer
             let profile = offer.receiversPublicKey?.profile
@@ -244,8 +258,41 @@ extension OfferInformationDetailView {
             offer.publisher(for: \.offerTypeRawType).map { _ in offer.type }.filterNil().assign(to: &$offerType)
             offer.publisher(for: \.createdAt).filterNil().assign(to: &$createdDate)
             offer.publisher(for: \.group).map { $0 != nil }.assign(to: &$isGroupOffer)
+            offer.publisher(for: \.locationStateRawType).map { _ in offer.locationState }.assign(to: &$locationState)
             group?.publisher(for: \.name).assign(to: &$groupName)
             group?.publisher(for: \.logo).map { $0.flatMap(UIImage.init).flatMap(Image.init) }.assign(to: &$groupImage)
+
+            // TODO: connect locations to offer model when available
+            let cities: AnyPublisher<[String?], Never> = Just(["Prague", "Lima"])
+                .eraseToAnyPublisher()
+
+            cities
+                .map(\.isEmpty.not)
+                .assign(to: &$containsLocation)
+
+            let onlineTitle = offer
+                .publisher(for: \.locationStateRawType)
+                .map { _ in offer.locationState }
+                .map {
+                    $0 == .online ? L.offerCreateTradeStyleOnline() : nil
+                }
+
+            Publishers.CombineLatest(cities, onlineTitle)
+                .map { (cities: [String?], onlineTitle: String?) -> [String?] in
+                    if onlineTitle == nil {
+                        return Array(cities.prefix(upTo: 2))
+                    } else {
+                        // swiftlint:disable:next redundant_nil_coalescing
+                        let firstCity = cities.first ?? nil
+                        return [ firstCity, onlineTitle ]
+                    }
+                }
+                .map { titles in
+                    titles
+                        .compactMap { $0 }
+                        .joined(separator: ", ")
+                }
+                .assign(to: &$locationsTitle)
         }
 
         static var stub: OfferDetailViewData {
