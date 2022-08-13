@@ -36,14 +36,14 @@ struct OfferInformationDetailView: View {
 
     var body: some View {
         VStack(spacing: Appearance.GridGuide.padding) {
-            Text(data.title)
-                .textStyle(.paragraphMedium)
-                .multilineTextAlignment(.leading)
-                .foregroundColor(textColor)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.top, useInnerPadding ? Appearance.GridGuide.mediumPadding1 : 0)
 
-            detail
+                Text(data.title)
+                    .textStyle(.titleSmallMedium)
+                    .multilineTextAlignment(.leading)
+                    .foregroundColor(textColor)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+
+                detail
         }
         .padding(.horizontal, useInnerPadding ? Appearance.GridGuide.padding : 0)
         .background(backgroundColor)
