@@ -244,7 +244,7 @@ extension OfferInformationDetailView {
             let profile = offer.receiversPublicKey?.profile
             let group = offer.group
 
-            groupColor = Appearance.Colors.purple3
+            groupColor = group?.color ?? Appearance.Colors.purple3
 
             offer.publisher(for: \.isRequested).assign(to: &$isRequested)
             offer.publisher(for: \.id).filterNil().assign(to: &$id)
