@@ -16,6 +16,9 @@ struct OfferInformationDetailView: View {
     let showBackground: Bool
     @State private var lineSize: CGSize = .zero
 
+    private let groupLogoSize: Double = 53
+    private let groupLogoRotationAngle: Angle = .degrees(-20)
+
     private var paymentLayoutStyle: OfferPaymentIconView.LayoutStyle {
         OfferPaymentIconView.LayoutStyle(icons: data.paymentIcons)
     }
@@ -37,6 +40,19 @@ struct OfferInformationDetailView: View {
     var body: some View {
         VStack(spacing: Appearance.GridGuide.smallPadding) {
             VStack(alignment: .leading, spacing: Appearance.GridGuide.smallPadding) {
+
+                if data.isGroupOffer, let name = data.groupName {
+                    Text(name)
+                        .textStyle(.descriptionSemiBold)
+                        .foregroundColor(data.groupColor)
+                        .padding(.vertical, Appearance.GridGuide.tinyPadding)
+                        .padding(.horizontal, Appearance.GridGuide.point)
+                        .background(
+                            data.groupColor
+                                .opacity(0.1)
+                        )
+                        .cornerRadius(Appearance.GridGuide.groupLabelCorner)
+                }
 
                 Text(data.title)
                     .textStyle(.titleSmallMedium)
@@ -62,6 +78,31 @@ struct OfferInformationDetailView: View {
         .padding(.horizontal, useInnerPadding ? Appearance.GridGuide.padding : 0)
         .background(backgroundColor)
         .cornerRadius(showBackground ? Appearance.GridGuide.buttonCorner : 0)
+        .overlay(
+            groupLogo
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
+                .offset(x: -Appearance.GridGuide.padding, y: Appearance.GridGuide.point)
+        )
+    }
+
+    @ViewBuilder
+    private var groupLogo: some View {
+        Group {
+            if data.isGroupOffer {
+                if let logoImage = data.groupImage {
+                    logoImage
+                } else if let name = data.groupName {
+                    EmptyGroupLogoSmall(name: .constant(name))
+                } else {
+                    EmptyView()
+                }
+            } else {
+                EmptyView()
+            }
+        }
+        .frame(width: groupLogoSize, height: groupLogoSize)
+        .cornerRadius(groupLogoSize / 2)
+        .rotationEffect(groupLogoRotationAngle)
     }
 
     private var detail: some View {
@@ -146,6 +187,11 @@ extension OfferInformationDetailView {
         @Published var offerType: OfferType = .buy
         @Published var createdDate: Date = Date()
 
+        @Published var isGroupOffer: Bool = false
+        @Published var groupName: String?
+        @Published var groupImage: Image?
+        @Published var groupColor: Color
+
         var amount: String {
             guard let currency = offer.currency else { return "" }
             let maxAmount = Int(offer.maxAmount)
@@ -182,6 +228,9 @@ extension OfferInformationDetailView {
         init(offer: ManagedOffer) {
             self.offer = offer
             let profile = offer.receiversPublicKey?.profile
+            let group = offer.group
+
+            groupColor = Appearance.Colors.purple3
 
             offer.publisher(for: \.isRequested).assign(to: &$isRequested)
             offer.publisher(for: \.id).filterNil().assign(to: &$id)
@@ -190,9 +239,13 @@ extension OfferInformationDetailView {
             offer.publisher(for: \.offerDescription).filterNil().assign(to: &$title)
             offer.publisher(for: \.friendDegreeRawType).map { _ in offer.friendLevel?.label }.filterNil().assign(to: &$friendLevel)
             offer.paymentMethodsPublisher.assign(to: &$paymentMethods)
-            offer.publisher(for: \.feeAmount).filter { $0 > 0 }.map { "\($0)%" }.filterNil().assign(to: &$fee)
+            offer.publisher(for: \.feeStateRawType).compactMap { _ in offer.feeState }.assign(to: &$feeOption)
+            offer.publisher(for: \.feeAmount).map { Formatters.numberFormatter.string(from: NSNumber(value: $0)) }.filterNil().assign(to: &$feeAmount)
             offer.publisher(for: \.offerTypeRawType).map { _ in offer.type }.filterNil().assign(to: &$offerType)
             offer.publisher(for: \.createdAt).filterNil().assign(to: &$createdDate)
+            offer.publisher(for: \.group).map { $0 != nil }.assign(to: &$isGroupOffer)
+            group?.publisher(for: \.name).assign(to: &$groupName)
+            group?.publisher(for: \.logo).map { $0.flatMap(UIImage.init).flatMap(Image.init) }.assign(to: &$groupImage)
         }
 
         static var stub: OfferDetailViewData {
