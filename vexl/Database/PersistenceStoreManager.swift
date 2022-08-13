@@ -175,6 +175,8 @@ final class PersistenceStoreManager: PersistenceStoreManagerType {
             contacts.forEach(context.delete)
             let syncItems = owner.loadSyncroniously(type: ManagedSyncItem.self, context: context)
             syncItems.forEach(context.delete)
+            let groups = owner.loadSyncroniously(type: ManagedGroup.self, context: context)
+            groups.forEach(context.delete)
             // The rest of entities will be removedy by cascading rule
             promise(.success(()))
         }
