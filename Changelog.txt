@@ -1,8 +1,9 @@
 - Requires uninstall: ⚠️ YES ⚠️
 
 ### Improvements
-- VEX-446: Group creation (only on debug & devel)
+- VEX-446: Create group (only on debug & devel)
 - VEX-446: Offer encryption for group members
+- VEX-443: Join group
 - VEX-530: Remove OfferID dependence
 - VEX-540: Logout user when user receives unathorized response from BE
 - VEX-528: Updated the sorting for the offers and updated the offer type color
