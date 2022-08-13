@@ -60,8 +60,11 @@ enum GroupRouter: ApiRouter {
         case .getNewMembers(let groupMemberPayloads):
             return [
                 "groups": groupMemberPayloads
-                    .compactMap { payload in
-                        try? Constants.jsonEncoder.encode(payload)
+                    .map { payload in
+                        [
+                            "groupUuid": payload.groupUuid,
+                            "publicKeys": payload.publicKeys
+                        ]
                     }
             ]
         case .joinGroup(let code):

@@ -15,20 +15,20 @@ struct GroupEnvelope: Codable {
 struct GroupPayload: Codable {
     var uuid: String?
     var name: String
-    var logoUrl: URL?
+    var logoUrl: String?
     var logoData: Data?
     var logoExtension: String?
     var createdAt: Int?
-    var expiration: Int
-    var closure: Int
+    var expirationAt: Int
+    var closureAt: Int
     var code: Int?
     var memberCount: Int?
 
     var asJson: [String: Any] {
         var json: [String: Any] = [
             "name": name,
-            "expiration": expiration,
-            "closureAt": closure
+            "expiration": expirationAt,
+            "closureAt": closureAt
         ]
         if let logoData = logoData, let logoExtension = logoExtension {
             json["logo"] = [
@@ -43,8 +43,8 @@ struct GroupPayload: Codable {
         self.name = name
         self.logoData = logo.jpegData(compressionQuality: 1)
         self.logoExtension = logoData == nil ? nil : "jpg"
-        self.expiration = Int(expiration.timeIntervalSince1970)
-        self.closure = Int(closureAt.timeIntervalSince1970)
+        self.expirationAt = Int(expiration.timeIntervalSince1970)
+        self.closureAt = Int(closureAt.timeIntervalSince1970)
     }
 
     init?(group: ManagedGroup) {
@@ -52,10 +52,10 @@ struct GroupPayload: Codable {
             return nil
         }
         self.name = name
-        self.closure = Int(closureAt.timeIntervalSince1970)
-        expiration = Int(expirationDate.timeIntervalSince1970)
+        self.closureAt = Int(closureAt.timeIntervalSince1970)
+        expirationAt = Int(expirationDate.timeIntervalSince1970)
         uuid = group.uuid
-        logoUrl = group.logoURL
+        logoUrl = group.logoURL?.absoluteString
         logoData = group.logo
         if let createdAt = group.createdAt?.timeIntervalSince1970 {
             self.createdAt = Int(createdAt)
@@ -74,11 +74,13 @@ struct GroupPayload: Codable {
         }
         group.uuid = uuid
         group.name = name
-        group.logoURL = logoUrl
-        group.logo = try? Data(contentsOf: logoUrl)
+        if let url = URL(string: logoUrl) {
+            group.logoURL = url
+            group.logo = try? Data(contentsOf: url)
+        }
         group.createdAt = Date(timeIntervalSince1970: TimeInterval(createdAt))
-        group.expiration = Date(timeIntervalSince1970: TimeInterval(expiration))
-        group.closureAt = Date(timeIntervalSince1970: TimeInterval(closure))
+        group.expiration = Date(timeIntervalSince1970: TimeInterval(expirationAt))
+        group.closureAt = Date(timeIntervalSince1970: TimeInterval(closureAt))
         group.code = Int64(code)
         return group
     }

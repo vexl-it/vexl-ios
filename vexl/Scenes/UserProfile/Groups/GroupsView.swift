@@ -148,6 +148,9 @@ final class GroupCellViewModel: ObservableObject, Identifiable {
         group
             .publisher(for: \.name)
             .filterNil()
+        #if DEVEL || DEBUG
+            .map { $0 + " (\(Int(group.code)))" }
+        #endif
             .assign(to: &$name)
 
         group
