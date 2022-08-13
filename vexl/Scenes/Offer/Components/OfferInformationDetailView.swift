@@ -110,10 +110,16 @@ struct OfferInformationDetailView: View {
     private var detail: some View {
         HStack {
             DetailItem(label: data.offerType == .buy ? L.marketplaceDetailBuy() : L.marketplaceDetailSell(), content: {
-                Text(L.marketplaceDetailUpTo(data.amount))
-                    .foregroundColor(Appearance.Colors.gray3)
-                    .multilineTextAlignment(.center)
-                    .lineLimit(3)
+                HStack(alignment: .bottom, spacing: Appearance.GridGuide.tinyPadding) {
+                    Text(L.marketplaceDetailUpTo())
+                        .textStyle(.descriptionSemiBold)
+                        .foregroundColor(Appearance.Colors.gray3)
+                        .padding(.bottom, Appearance.GridGuide.tinyPadding)
+
+                    Text(data.amount)
+                        .textStyle(.titleSemiBold)
+                        .foregroundColor(Appearance.Colors.gray3)
+                }
             })
             .readSize(onChange: { size in
                 lineSize = size
@@ -196,7 +202,7 @@ extension OfferInformationDetailView {
         @Published var feeAmount: String?
         @Published var offerType: OfferType = .buy
         @Published var createdDate: Date = Date()
-        @Published var locationsTitle: String = "sheesh"
+        @Published var locationsTitle: String = ""
         @Published var containsLocation: Bool = true
 
         @Published var isGroupOffer: Bool = false
@@ -206,8 +212,7 @@ extension OfferInformationDetailView {
 
         var amount: String {
             guard let currency = offer.currency else { return "" }
-            let maxAmount = Int(offer.maxAmount)
-            return currency.formattedCurrency(amount: maxAmount)
+            return currency.formattedShortCurrency(amount: offer.maxAmount)
         }
 
         var paymentIcons: [String] {

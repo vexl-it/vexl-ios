@@ -83,4 +83,13 @@ struct Formatters {
         formatter.numberStyle = .decimal
         return formatter
     }()
+
+    static let shortNumberFormatter: NumberFormatter = {
+        let formatter = NumberFormatter()
+        formatter.maximumFractionDigits = 1
+        formatter.minimumFractionDigits = 0
+        formatter.groupingSeparator = " "
+        formatter.numberStyle = .decimal
+        return formatter
+    }()
 }

@@ -17,6 +17,7 @@
 "got.it" = "Got it!";
 "continue" = "Continue";
 "button.gotIt" = "Got it";
+"general.delete" = "Delete";
 "onboarding.intro.message.friend" = "Import friends anonymously.";
 "onboarding.intro.message.buySell" = "See your connection's buy & sell offers.";
 "onboarding.intro.message.request" = "request identity for the offers you like and trade.";
@@ -52,6 +53,8 @@
 "register.phone.code.input.verifying" = "Verifying...";
 "register.phone.code.input.success" = "Success!";
 "register.phone.number.error" = "Please enter your phone number in the correct format including country code";
+"register.phone.number.code.sent" = "Code was sent!";
+"register.phone.number.expired" = "Verification expired. Start your registration again, please";
 "register.name.avatar.input.title" = "What do your friends call you?";
 "register.name.avatar.input.subtitle" = "Nobody will see your name until you allow it";
 "register.name.avatar.input.placeholder" = "Name or nickname";
@@ -77,7 +80,7 @@
 "register.phone.contacts.title" = "Let’s find you\nfriends!";
 "register.phone.contacts.subtitle" = "Vexl doesn’t see your contacts";
 "register.phone.alert.request.title" = "Allow contacts";
-"register.phone.alert.request.description" = "Vexl needs access to your contacts in order to work. Don't worry we won’t ever see them";
+"register.phone.alert.request.description" = "Vexl needs access to your contacts in order to work.\nDon't worry we won’t ever see them";
 "register.phone.alert.reject.title" = "Really?";
 "register.phone.alert.reject.description" = "Vexl only works by anonymously using your contacts to connect you with other users.";
 "register.facebook.contacts.title" = "Expand your network with Facebook";
@@ -115,6 +118,8 @@
 "user.profile.edit.avatar.title" = "Change profile picture";
 "user.profile.edit.avatar.subtitle" = "Space for additional copy. You can lorem ipsum dolor sit ametum roma von.";
 "user.profile.edit.avatar.action" = "Upload new photo";
+"user.profile.edit.avatar.delete" = "Delete photo?";
+"user.profile.edit.avatar.empty.image.error" = "You cannot upload empty image";
 "user.profile.delete.account.title" = "Delete account?";
 "user.profile.delete.account.subtitle" = "Do you really want to delete your account? You will never be able to undo this action.";
 "user.profile.delete.account.no" = "Nope";
@@ -127,6 +132,10 @@
 "user.profile.donate.description" = "If you like Vexl, support it’s improvement by sending some Bitcoins as donation!";
 "user.profile.donate.button.donate" = "Donate";
 "user.profile.donate.button.dismiss" = "Back";
+"user.profile.delete.photo.title" = "Delete photo";
+"user.profile.delete.photo.subtitle" = "Do you really want to delete your photo? You can always upload new image if you want.";
+"user.profile.delete.photo.no" = "Nope";
+"user.profile.delete.photo.yes" = "Yes";
 "user.profile.currency.title" = "Currency";
 "user.profile.currency.czk" = "Czech crown";
 "user.profile.currency.eur" = "Euro";
@@ -162,14 +171,15 @@
 "marketplace.phone.contact" = "Phone contact";
 "marketplace.sell.offer" = "My offers";
 "marketplace.buy.add" = "+";
-"marketplace.detail.upTo" = "Up to %@";
 "marketplace.detail.friend.first" = "Friend";
 "marketplace.detail.friend.second" = "Friend of a Friend";
 "marketplace.detail.sell" = "To sell";
 "marketplace.detail.buy" = "To buy";
 "marketplace.detail.user.sell" = "%@ is selling";
 "marketplace.detail.user.buy" = "%@ is buying";
+"marketplace.detail.up.to" = "Up to";
 "marketplace.detail.fee" = "Includes %1$@ %% fee for transaction";
+"marketplace.sign.for.thousand" = "k";
 "offer.request" = "Request";
 "offer.requested" = "Requested";
 "offer.sell.title" = "My Sell Offers";
@@ -225,7 +235,7 @@
 "offer.create.advanced.type.lightning" = "Lightning";
 "offer.create.advanced.type.chain" = "On chain";
 "offer.create.advanced.group.title" = "Group";
-"offer.create.advanced.group.description" = "Select if you want to see\noffers only from specific group";
+"offer.create.advanced.group.description" = "Share offer in group";
 "offer.create.description" = "Description";
 "offer.create.description.placeholder" = "Enter offer description";
 "offer.create.currency" = "Currency";
