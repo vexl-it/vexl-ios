@@ -79,6 +79,14 @@ extension RegisterNameAvatarCoordinator {
                 input: input
             )
         )
+        .flatMap { result -> CoordinatingResult<RouterResult<Void>> in
+            switch result {
+            case .dismissedByRouter, .finished:
+                return Just(result).eraseToAnyPublisher()
+            case .dismiss:
+                return router.dismiss(animated: true, returning: result)
+            }
+        }
         .prefix(1)
         .eraseToAnyPublisher()
     }

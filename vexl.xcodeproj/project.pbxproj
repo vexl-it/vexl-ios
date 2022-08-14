@@ -70,6 +70,8 @@
 		B03BC703287B51C500E355D3 /* ManagedSyncItem+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B03BC702287B51C500E355D3 /* ManagedSyncItem+.swift */; };
 		B03BC705287B56CC00E355D3 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B03BC704287B56CC00E355D3 /* NetworkManager.swift */; };
 		B03BC707287BF9DD00E355D3 /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = B03BC706287BF9DD00E355D3 /* Keychain.swift */; };
+		B042C94E28A8445F00860F91 /* ManagedGroup+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B042C94D28A8445F00860F91 /* ManagedGroup+.swift */; };
+		B042C95028A8457800860F91 /* Color+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B042C94F28A8457800860F91 /* Color+.swift */; };
 		B0501BA02884B45E00A44E18 /* OfferManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0501B9F2884B45E00A44E18 /* OfferManager.swift */; };
 		B0501BA62887389000A44E18 /* CommonFriends.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0501BA52887389000A44E18 /* CommonFriends.swift */; };
 		B0501BAA2887419F00A44E18 /* Array+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0501BA92887419F00A44E18 /* Array+.swift */; };
@@ -80,6 +82,7 @@
 		B08D2AB5289FF31500A1C901 /* GroupRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = B08D2AB4289FF31500A1C901 /* GroupRepository.swift */; };
 		B08D2AB7289FFDD100A1C901 /* GroupManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B08D2AB6289FFDD100A1C901 /* GroupManager.swift */; };
 		B08D2AB928A41E3E00A1C901 /* OfferAdvanceFilterGroupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B08D2AB828A41E3E00A1C901 /* OfferAdvanceFilterGroupView.swift */; };
+		B08D2ABB28A6A34800A1C901 /* FilterGroupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B08D2ABA28A6A34800A1C901 /* FilterGroupView.swift */; };
 		B08F38DF27AE7110008B344F /* DIContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B08F38DE27AE7110008B344F /* DIContainer.swift */; };
 		B08F38E227AE7110008B344F /* Inject.swift in Sources */ = {isa = PBXBuildFile; fileRef = B08F38E127AE7110008B344F /* Inject.swift */; };
 		B08F390327AE7110008B344F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B08F390127AE7110008B344F /* LaunchScreen.storyboard */; };
@@ -490,6 +493,8 @@
 		B03BC702287B51C500E355D3 /* ManagedSyncItem+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ManagedSyncItem+.swift"; sourceTree = "<group>"; };
 		B03BC704287B56CC00E355D3 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		B03BC706287BF9DD00E355D3 /* Keychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keychain.swift; sourceTree = "<group>"; };
+		B042C94D28A8445F00860F91 /* ManagedGroup+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ManagedGroup+.swift"; sourceTree = "<group>"; };
+		B042C94F28A8457800860F91 /* Color+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+.swift"; sourceTree = "<group>"; };
 		B0501B9F2884B45E00A44E18 /* OfferManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferManager.swift; sourceTree = "<group>"; };
 		B0501BA52887389000A44E18 /* CommonFriends.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonFriends.swift; sourceTree = "<group>"; };
 		B0501BA92887419F00A44E18 /* Array+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+.swift"; sourceTree = "<group>"; };
@@ -500,6 +505,7 @@
 		B08D2AB4289FF31500A1C901 /* GroupRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupRepository.swift; sourceTree = "<group>"; };
 		B08D2AB6289FFDD100A1C901 /* GroupManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupManager.swift; sourceTree = "<group>"; };
 		B08D2AB828A41E3E00A1C901 /* OfferAdvanceFilterGroupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferAdvanceFilterGroupView.swift; sourceTree = "<group>"; };
+		B08D2ABA28A6A34800A1C901 /* FilterGroupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterGroupView.swift; sourceTree = "<group>"; };
 		B08F38BD27AE7110008B344F /* vexl.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = vexl.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B08F38C027AE7110008B344F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B08F38C927AE7110008B344F /* Changelog.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = Changelog.txt; path = ../Changelog.txt; sourceTree = "<group>"; };
@@ -904,6 +910,7 @@
 			isa = PBXGroup;
 			children = (
 				4FBF6212283CF54400DDBE71 /* FilterHeaderView.swift */,
+				B08D2ABA28A6A34800A1C901 /* FilterGroupView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -982,6 +989,7 @@
 				B007A75B287226DC00CFA5C9 /* ManagedMessage+.swift */,
 				B007A7932878285800CFA5C9 /* ManagedInbox+.swift */,
 				B03BC702287B51C500E355D3 /* ManagedSyncItem+.swift */,
+				B042C94D28A8445F00860F91 /* ManagedGroup+.swift */,
 			);
 			path = ManagedObjects;
 			sourceTree = "<group>";
@@ -1138,6 +1146,7 @@
 				F175AB8627E4D5C8000DAB15 /* UIScreen+.swift */,
 				F1BFA97228043D6300F4E745 /* Image+.swift */,
 				B0501BA92887419F00A44E18 /* Array+.swift */,
+				B042C94F28A8457800860F91 /* Color+.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -2672,6 +2681,7 @@
 				B08F38DF27AE7110008B344F /* DIContainer.swift in Sources */,
 				4F700CBC2844C3260085139F /* TabBarNavigationController.swift in Sources */,
 				B08F391E27AE7112008B344F /* AppDelegate.swift in Sources */,
+				B042C94E28A8445F00860F91 /* ManagedGroup+.swift in Sources */,
 				B08F394F27AE7112008B344F /* Localization.swift in Sources */,
 				B0E9BB2C2815C71E0012BF1D /* ECC.swift in Sources */,
 				F1485654284FD5FD003213D7 /* ChatChallenge.swift in Sources */,
@@ -2685,6 +2695,7 @@
 				F11441CF284681EC00307D39 /* ExpandingTextView.swift in Sources */,
 				B01C01ED2862F06D00A29F85 /* Currency.swift in Sources */,
 				B007A74B2871EB2900CFA5C9 /* UserRepository.swift in Sources */,
+				B042C95028A8457800860F91 /* Color+.swift in Sources */,
 				B0F206F127AE94C400A44E72 /* InitialScreenManager.swift in Sources */,
 				4F481E76284767480051D3B9 /* ChatRouter.swift in Sources */,
 				F1B3010F287A53C900C86F83 /* ChatConversationViewModel.swift in Sources */,
@@ -2921,6 +2932,7 @@
 				B08F394327AE7112008B344F /* Keychain+.swift in Sources */,
 				F11441CD284681EC00307D39 /* LargeLabelButton.swift in Sources */,
 				F175AB8727E4D5C8000DAB15 /* UIScreen+.swift in Sources */,
+				B08D2ABB28A6A34800A1C901 /* FilterGroupView.swift in Sources */,
 				F18862472811550C00659786 /* OfferSettingsCoordinator.swift in Sources */,
 				B007A7542872269B00CFA5C9 /* ManagedUser+.swift in Sources */,
 				F151A2A727C962CC000D7242 /* RegisterNameInputView.swift in Sources */,
@@ -3051,7 +3063,7 @@
 				CODE_SIGN_ENTITLEMENTS = vexl/vexl.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 171;
+				CURRENT_PROJECT_VERSION = 177;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = C6T557DX87;
 				ENABLE_PREVIEWS = YES;
@@ -3083,7 +3095,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 171;
+				CURRENT_PROJECT_VERSION = 177;
 				DEVELOPMENT_TEAM = SHD6TUKSPH;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
@@ -3168,7 +3180,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = vexl/vexlDebug.entitlements;
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 171;
+				CURRENT_PROJECT_VERSION = 177;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = C6T557DX87;
 				ENABLE_PREVIEWS = YES;
@@ -3200,7 +3212,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 171;
+				CURRENT_PROJECT_VERSION = 177;
 				DEVELOPMENT_TEAM = SHD6TUKSPH;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
@@ -3345,7 +3357,7 @@
 				CODE_SIGN_ENTITLEMENTS = vexl/vexl.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 171;
+				CURRENT_PROJECT_VERSION = 177;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = C6T557DX87;
 				ENABLE_BITCODE = YES;
@@ -3380,7 +3392,7 @@
 				CODE_SIGN_ENTITLEMENTS = vexl/vexl.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 171;
+				CURRENT_PROJECT_VERSION = 177;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = C6T557DX87;
 				ENABLE_PREVIEWS = YES;
@@ -3412,7 +3424,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 171;
+				CURRENT_PROJECT_VERSION = 177;
 				DEVELOPMENT_TEAM = SHD6TUKSPH;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
@@ -3431,7 +3443,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 171;
+				CURRENT_PROJECT_VERSION = 177;
 				DEVELOPMENT_TEAM = SHD6TUKSPH;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;

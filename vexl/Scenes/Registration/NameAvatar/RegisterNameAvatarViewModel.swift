@@ -14,6 +14,7 @@ final class RegisterNameAvatarViewModel: ViewModelType {
 
     @Inject var userService: UserServiceType
     @Inject var userRepository: UserRepositoryType
+    @Inject var initialScreenManager: InitialScreenManager
 
     enum ImageSource {
         case photoAlbum, camera
@@ -78,6 +79,7 @@ final class RegisterNameAvatarViewModel: ViewModelType {
         setupStateBinding()
         setupActionBindings()
         setupCreateUserBindings()
+        initialScreenManager.update(onboardingState: .nameAndAvatar)
     }
 
     func updateToPreviousState() {

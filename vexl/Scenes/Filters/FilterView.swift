@@ -121,6 +121,8 @@ struct FilterView: View {
                 thumbColor: UIColor(Appearance.Colors.whiteText),
                 minTrackColor: UIColor(Appearance.Colors.whiteText),
                 maxTrackColor: UIColor(Appearance.Colors.gray2),
+                minValue: viewModel.minFee,
+                maxValue: viewModel.maxFee,
                 value: $viewModel.feeAmount
             )
             .padding(.horizontal, Appearance.GridGuide.point)
@@ -152,6 +154,10 @@ struct FilterView: View {
                 .padding(.top, Appearance.GridGuide.padding)
 
             friendLevelPicker
+
+            if !viewModel.groupRows.isEmpty {
+                FilterGroupView(groupRows: $viewModel.groupRows, selectedGroups: $viewModel.selectedGroups)
+            }
         }
     }
 

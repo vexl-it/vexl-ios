@@ -11,6 +11,7 @@ import Cleevio
 
 final class WelcomeViewModel: ViewModelType {
 
+    @Inject var initialScreenManager: InitialScreenManager
     @Inject var notificationManager: NotificationManagerType
 
     // MARK: - Actions Bindings
@@ -46,6 +47,7 @@ final class WelcomeViewModel: ViewModelType {
 
     init() {
         setupActions()
+        initialScreenManager.update(onboardingState: .initial)
     }
 
     private func setupActions() {
