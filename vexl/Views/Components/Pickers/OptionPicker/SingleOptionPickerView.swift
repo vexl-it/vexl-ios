@@ -11,6 +11,7 @@ struct SingleOptionPickerView<Option: Hashable, Content: View>: View {
 
     @Binding var selectedOption: Option
     let options: [Option]
+    var useBackground = true
     @ViewBuilder let content: (Option) -> Content
     let action: ((Option) -> Void)?
 
@@ -18,6 +19,7 @@ struct SingleOptionPickerView<Option: Hashable, Content: View>: View {
         HStack {
             ForEach(options, id: \.self) { option in
                 OptionPickerItemView(isSelected: option == selectedOption,
+                                     useBackground: useBackground,
                                      content: {
                     content(option)
                 },
