@@ -51,7 +51,7 @@ struct Formatters {
     static let shortDateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = "d. MMM"
-        formatter.locale = Locale.current
+        formatter.locale = Locale.autoupdatingCurrent
         return formatter
     }()
 
