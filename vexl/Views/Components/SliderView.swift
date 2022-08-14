@@ -28,6 +28,8 @@ struct SliderView: UIViewRepresentable {
     var minTrackColor: UIColor?
     var maxTrackColor: UIColor?
 
+    let minValue: Double
+    let maxValue: Double
     @Binding var value: Double
 
     func makeUIView(context: Context) -> UISlider {
@@ -35,6 +37,8 @@ struct SliderView: UIViewRepresentable {
         slider.thumbTintColor = thumbColor
         slider.minimumTrackTintColor = minTrackColor
         slider.maximumTrackTintColor = maxTrackColor
+        slider.minimumValue = Float(minValue)
+        slider.maximumValue = Float(maxValue)
         slider.value = Float(value)
         slider.setThumbImage(R.image.offer.sliderThumb(), for: .normal)
         slider.setThumbImage(R.image.offer.sliderThumb(), for: .highlighted)

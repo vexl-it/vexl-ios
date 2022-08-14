@@ -44,7 +44,9 @@ struct OfferSettingsView: View {
                         }
                     }
 
-                    OfferFeePickerView(feeLabel: "\(viewModel.feeValue)%",
+                    OfferFeePickerView(feeLabel: "\(Int(viewModel.feeAmount))%",
+                                       minValue: viewModel.minFee,
+                                       maxValue: viewModel.maxFee,
                                        selectedOption: $viewModel.selectedFeeOption,
                                        feeValue: $viewModel.feeAmount)
 
