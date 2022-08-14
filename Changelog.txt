@@ -11,6 +11,7 @@
 - VEX-518: Updated condition for My Offer button
 - VEX-561: Improved filter of offer amount
 - VEX-549/546: Improved phone registry so that number is stored + default country code is set
+- VEX-548: Restore onboarding state after killing app
 - VEX-546: Remove currency picker from onboarding
 
 ### Fixes
@@ -20,5 +21,12 @@
 - VEX-545: Fix reject reveal identity
 - VEX-544: Fixed crash when tapping filters in chat
 - VEX-279: Added back button when the requests are empty
+- VEX-572: fixed problems with anonymize dismiss
+- VEX-562: Follow latest message in chat
+- VEX-599: Fixed double percentage sign in phone card on onboarding
+- VEX-610: Added padding between button and keyboard on contact import scene
+- VEX-611: Fixed missing translation on the Identity anonymization page
+- VEX-612: Fixed missing translation for months in bitcoin graph
+- VEX-363: fixed fee amount calculation
 
 ### Known Issues

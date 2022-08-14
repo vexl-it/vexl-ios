@@ -55,7 +55,7 @@ final class FilterViewModel: ViewModelType, ObservableObject {
     var filterType: String { offerFilter.type.title }
     var formatedFeeAmount: String {
         // TODO: use NumberFormatter for percentages
-        "< \(Int(((maxFee - minFee) * feeAmount) + minFee))%"
+        "< \(Int(feeAmount))%"
     }
 
     // MARK: - Coordinator Bindings
@@ -70,8 +70,8 @@ final class FilterViewModel: ViewModelType, ObservableObject {
 
     // MARK: - Variables
 
-    private var minFee: Double = Constants.OfferInitialData.minFee
-    private var maxFee: Double = Constants.OfferInitialData.maxFee
+    var minFee: Double = Constants.OfferInitialData.minFee
+    var maxFee: Double = Constants.OfferInitialData.maxFee
     private var offerFilter: OfferFilter
     private let cancelBag: CancelBag = .init()
 

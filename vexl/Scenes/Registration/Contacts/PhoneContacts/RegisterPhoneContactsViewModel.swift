@@ -12,6 +12,7 @@ import SwiftUI
 
 final class RegisterPhoneContactsViewModel: ViewModelType {
 
+    @Inject var initialScreenManager: InitialScreenManager
     @Inject var authenticationManager: AuthenticationManager
     @Inject var userService: UserServiceType
     @Inject var contactsService: ContactsServiceType
@@ -71,6 +72,7 @@ final class RegisterPhoneContactsViewModel: ViewModelType {
         setupActivity()
         setupRequestPhoneContactsBindings()
         setupImportPhoneContactsBindings()
+        initialScreenManager.update(onboardingState: .importContacts)
     }
 
     private func setupActivity() {
