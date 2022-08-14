@@ -11,6 +11,7 @@ import UIKit
 
 protocol GroupManagerType {
     func createGroup(name: String, logo: UIImage, expiration: Date, closureAt: Date) -> AnyPublisher<Void, Error>
+    func getAllGroupMembers(group: ManagedGroup?) -> AnyPublisher<[String], Error>
     func leave(group: ManagedGroup) -> AnyPublisher<Void, Error>
     func joinGroup(code: Int) -> AnyPublisher<Void, Error>
 }
@@ -26,6 +27,22 @@ final class GroupManager: GroupManagerType {
             .flatMap { [groupRepository] payload in
                 groupRepository
                     .createOrUpdateGroup(payloads: [(payload, [])])
+            }
+            .eraseToAnyPublisher()
+    }
+
+    func getAllGroupMembers(group: ManagedGroup?) -> AnyPublisher<[String], Error> {
+        guard let group = group else {
+            return Just([])
+                .setFailureType(to: Error.self)
+                .eraseToAnyPublisher()
+        }
+
+        return groupService
+            .getAllMembers(uuid: group.uuid)
+            .flatMap { [groupRepository] membersPayload in
+                groupRepository
+                    .update(group: group, members: membersPayload.publicKeys)
             }
             .eraseToAnyPublisher()
     }
@@ -49,7 +66,7 @@ final class GroupManager: GroupManagerType {
                 groupService.getGroup(code: code)
             }
             .flatMap { [groupService] payload in
-                groupService.getNewMembers(uuid: payload.uuid)
+                groupService.getAllMembers(uuid: payload.uuid)
                     .map { (payload, $0.publicKeys) }
                     .eraseToAnyPublisher()
             }
