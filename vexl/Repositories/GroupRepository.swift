@@ -72,7 +72,10 @@ final class GroupRepository: GroupRepositoryType {
                 newMember.publicKey = publicKey
                 newMember.group = group
             }
-            return Array(newMemberSet)
+
+            let allMembers = group.members?.allObjects as? [ManagedAnonymisedProfile] ?? []
+
+            return allMembers.compactMap(\.publicKey)
         }
     }
 
