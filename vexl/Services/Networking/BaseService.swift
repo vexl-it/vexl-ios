@@ -25,7 +25,9 @@ class BaseService {
         apiService.request(endpoint: endpoint)
             .receive(on: scheduler, options: nil)
             .withUnretained(self)
-            .tryMap { owner, data -> T in try owner.serialize(data: data, toObject: T.self, rootKey: endpoint.rootKey) }
+            .tryMap { owner, data -> T in
+                try owner.serialize(data: data, toObject: T.self, rootKey: endpoint.rootKey)
+            }
             .eraseToAnyPublisher()
     }
 

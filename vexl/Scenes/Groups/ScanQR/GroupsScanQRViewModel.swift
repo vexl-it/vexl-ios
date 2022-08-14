@@ -88,7 +88,7 @@ final class GroupsScanQRViewModel: ViewModelType, ObservableObject {
 
         action
             .filter { $0 == .manualInputTap }
-            .map { _ -> Route in .manualInputTapped }
+            .map { _ in .manualInputTapped }
             .subscribe(route)
             .store(in: cancelBag)
     }
