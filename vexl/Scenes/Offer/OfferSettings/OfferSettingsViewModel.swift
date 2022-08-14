@@ -215,6 +215,11 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
             selectedFriendDegreeOption = offer.friendLevel ?? .firstDegree
             selectedPriceTrigger = offer.activePriceState ?? .none
             selectedPriceTriggerAmount = "\(Int(offer.activePriceValue))"
+
+            let managedLocations = offer.locations?.allObjects as? [ManagedOfferLocation] ?? []
+            locationViewModels = managedLocations.map {
+                OfferLocationViewModel(location: $0.locationSuggestion)
+            }
         }
 
         $fetchedGroups

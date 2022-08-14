@@ -14,6 +14,7 @@
 		4F26F44A28A52C50005558E8 /* LocationSuggestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F26F44928A52C50005558E8 /* LocationSuggestion.swift */; };
 		4F26F44D28A52E65005558E8 /* OfferLocationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F26F44C28A52E65005558E8 /* OfferLocationViewModel.swift */; };
 		4F26F44F28A54D6F005558E8 /* IsFocusTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F26F44E28A54D6F005558E8 /* IsFocusTextField.swift */; };
+		4F26F45928A93D3A005558E8 /* ManagedOfferLocation+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F26F45828A93D3A005558E8 /* ManagedOfferLocation+.swift */; };
 		4F481E7228466B320051D3B9 /* TimelineOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F481E7128466B320051D3B9 /* TimelineOption.swift */; };
 		4F481E76284767480051D3B9 /* ChatRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F481E75284767480051D3B9 /* ChatRouter.swift */; };
 		4F481E78284768840051D3B9 /* ChatService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F481E77284768840051D3B9 /* ChatService.swift */; };
@@ -419,6 +420,7 @@
 		4F26F44928A52C50005558E8 /* LocationSuggestion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSuggestion.swift; sourceTree = "<group>"; };
 		4F26F44C28A52E65005558E8 /* OfferLocationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferLocationViewModel.swift; sourceTree = "<group>"; };
 		4F26F44E28A54D6F005558E8 /* IsFocusTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IsFocusTextField.swift; sourceTree = "<group>"; };
+		4F26F45828A93D3A005558E8 /* ManagedOfferLocation+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ManagedOfferLocation+.swift"; sourceTree = "<group>"; };
 		4F481E61284504050051D3B9 /* RangePickerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RangePickerView.swift; sourceTree = "<group>"; };
 		4F481E63284504050051D3B9 /* OptionPickerItemView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OptionPickerItemView.swift; sourceTree = "<group>"; };
 		4F481E64284504050051D3B9 /* SingleOptionPickerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SingleOptionPickerView.swift; sourceTree = "<group>"; };
@@ -1011,6 +1013,7 @@
 				B007A755287226AA00CFA5C9 /* ManagedProfile+.swift */,
 				B007A757287226B500CFA5C9 /* ManagedKeyPair+.swift */,
 				B007A74F2872267400CFA5C9 /* ManagedOffer+.swift */,
+				4F26F45828A93D3A005558E8 /* ManagedOfferLocation+.swift */,
 				B007A759287226D000CFA5C9 /* ManagedChat+.swift */,
 				B007A75B287226DC00CFA5C9 /* ManagedMessage+.swift */,
 				B007A7932878285800CFA5C9 /* ManagedInbox+.swift */,
@@ -2811,6 +2814,7 @@
 				F148564F284FD5E2003213D7 /* InboxManager.swift in Sources */,
 				F1D200A628252C44006DF4AB /* TabBarController.swift in Sources */,
 				F1156AE2289F25E500B9A5B9 /* TermsAndConditionsCoordinator.swift in Sources */,
+				4F26F45928A93D3A005558E8 /* ManagedOfferLocation+.swift in Sources */,
 				F175AB9927F0D2D8000DAB15 /* ContactsService.swift in Sources */,
 				B007A76328730BDF00CFA5C9 /* Fetched.swift in Sources */,
 				B0FF5F6B289EFAF30026E4C4 /* GroupPayload.swift in Sources */,

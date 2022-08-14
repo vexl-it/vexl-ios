@@ -54,7 +54,12 @@ final class OfferLocationViewModel: ViewModelType, ObservableObject, Identifiabl
     private var currentSuggestions: [LocationSuggestion] = []
     private let cancelBag: CancelBag = .init()
 
-    init() {
+    init(location: LocationSuggestion? = nil) {
+        if let location = location {
+            self.location = location
+            self.name = location.suggestion
+        }
+
         setupBindings()
         setupActions()
     }

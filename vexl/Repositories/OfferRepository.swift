@@ -39,6 +39,7 @@ class OfferRepository: OfferRepositoryType {
                 let managedLocation = ManagedOfferLocation(context: context)
                 managedLocation.lat = location.lat
                 managedLocation.lon = location.lon
+                managedLocation.name = location.suggestion
                 return managedLocation
             }
 

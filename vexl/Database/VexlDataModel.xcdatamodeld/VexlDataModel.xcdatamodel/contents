@@ -101,6 +101,7 @@
     <entity name="ManagedOfferLocation" representedClassName="ManagedOfferLocation" syncable="YES" codeGenerationType="class">
         <attribute name="lat" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="lon" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" defaultValueString=""/>
         <relationship name="offer" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ManagedOffer" inverseName="locations" inverseEntity="ManagedOffer"/>
     </entity>
     <entity name="ManagedProfile" representedClassName="ManagedProfile" syncable="YES" codeGenerationType="class">
@@ -137,9 +138,9 @@
         <element name="ManagedKeyPair" positionX="-312.15625" positionY="-289.875" width="128" height="148"/>
         <element name="ManagedMessage" positionX="-95.99609375" positionY="-524.015625" width="128" height="178"/>
         <element name="ManagedOffer" positionX="-892.38671875" positionY="-589.39453125" width="128" height="493"/>
+        <element name="ManagedOfferLocation" positionX="-731.2578125" positionY="-711.6640625" width="128" height="89"/>
         <element name="ManagedProfile" positionX="-633.3203125" positionY="-96.95703125" width="128" height="193"/>
         <element name="ManagedSyncItem" positionX="-591.86328125" positionY="-567.52734375" width="128" height="88"/>
         <element name="ManagedUser" positionX="-1185.640625" positionY="-51.8984375" width="165.6171875" height="133"/>
-        <element name="ManagedOfferLocation" positionX="-731.2578125" positionY="-711.6640625" width="128" height="74"/>
     </elements>
 </model>
