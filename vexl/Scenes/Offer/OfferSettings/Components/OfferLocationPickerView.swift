@@ -8,8 +8,6 @@
 import SwiftUI
 import AVFoundation
 
-//typealias OfferLocationItemData = OfferLocationPickerView.LocationViewData
-
 struct OfferLocationPickerView: View {
     @Binding var items: [OfferLocationViewModel]
     let addLocation: () -> Void
@@ -58,20 +56,6 @@ struct OfferLocationPickerView: View {
 }
 
 extension OfferLocationPickerView {
-
-//    struct LocationViewData: Identifiable, Hashable {
-//        var id: Int
-//        let name: String
-//        let distance: String
-//
-//        static func stub() -> [LocationViewData] {
-//            [
-//                .init(id: 1, name: "Prague", distance: "1km"),
-//                .init(id: 2, name: "Brno", distance: "2km")
-//            ]
-//        }
-//    }
-
     struct LocationView: View {
         @ObservedObject var viewModel: OfferLocationViewModel
         let deleteAction: () -> Void
@@ -129,11 +113,6 @@ extension OfferLocationPickerView {
                         text: $viewModel.name,
                         isFocused: $viewModel.isTextFieldFocused
                     )
-//                    PlaceholderTextField(
-//                        placeholder: "City",
-//                        textColor: Appearance.Colors.yellow100,
-//                        text: $viewModel.name
-//                    )
 
                     Spacer()
 
@@ -161,14 +140,16 @@ extension OfferLocationPickerView {
 }
 
 #if DEBUG || DEVEL
-//struct OfferLocationPickerViewPreview: PreviewProvider {
-//    static var previews: some View {
-//        OfferLocationPickerView(items: OfferLocationItemData.stub(),
-//                                addLocation: { },
-//                                deleteLocation: { _ in })
-//            .previewDevice("iPhone 11")
-//            .background(Color.black)
-//            .frame(height: 150)
-//    }
-//}
+struct OfferLocationPickerViewPreview: PreviewProvider {
+    static var previews: some View {
+        OfferLocationPickerView(
+            items: .constant([.init()]),
+            addLocation: { },
+            deleteLocation: { _ in }
+        )
+        .previewDevice("iPhone 11")
+        .background(Color.black)
+        .frame(height: 150)
+    }
+}
 #endif

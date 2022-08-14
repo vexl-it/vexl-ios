@@ -33,15 +33,11 @@ final class OfferLocationViewModel: ViewModelType, ObservableObject, Identifiabl
     // MARK: - View Bindings
 
     @Published var primaryActivity: Activity = .init()
-    var errorIndicator: ErrorIndicator {
-        primaryActivity.error
-    }
     var activityIndicator: ActivityIndicator {
         primaryActivity.indicator
     }
 
     @Published var state: State = .noUserInteraction
-    @Published var error: Error?
     @Published var name: String = ""
     @Published var isTextFieldFocused: Bool = false
 
@@ -54,7 +50,7 @@ final class OfferLocationViewModel: ViewModelType, ObservableObject, Identifiabl
 
     // MARK: - Variables
 
-    private var location: LocationSuggestion?
+    var location: LocationSuggestion?
     private var currentSuggestions: [LocationSuggestion] = []
     private let cancelBag: CancelBag = .init()
 
