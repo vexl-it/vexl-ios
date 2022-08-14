@@ -16,26 +16,14 @@ struct FilterView: View {
     }
 
     var body: some View {
-        ZStack(alignment: .bottom) {
-            VStack(spacing: 0) {
-                FilterHeaderView(
-                    filterType: viewModel.filterType,
-                    resetAction: { viewModel.send(action: .resetFilter) },
-                    closeAction: { viewModel.send(action: .dismissTap) }
-                )
+        VStack(spacing: 0) {
+            FilterHeaderView(
+                filterType: viewModel.filterType,
+                resetAction: { viewModel.send(action: .resetFilter) },
+                closeAction: { viewModel.send(action: .dismissTap) }
+            )
 
-                scrollableContent
-            }
-
-            LargeSolidButton(title: L.filterApply(),
-                             font: Appearance.TextStyle.titleSmallBold.font.asFont,
-                             style: .main,
-                             isFullWidth: true,
-                             isEnabled: .constant(true),
-                             action: {
-                viewModel.send(action: .applyFilter)
-            })
-                .padding(.horizontal, Appearance.GridGuide.padding)
+            scrollableContent
         }
         .background(Color.black.edgesIgnoringSafeArea(.all))
     }
@@ -46,13 +34,15 @@ struct FilterView: View {
                 Group {
                     amount
 
-//                    OfferLocationPickerView(
-//                        items: viewModel.locations,
-//                        addLocation: { viewModel.send(action: .addLocation) },
-//                        deleteLocation: { id in
-//                            viewModel.send(action: .deleteLocation(id: id))
-//                        }
-//                    )
+                    OfferLocationPickerView(
+                        items: $viewModel.locationViewModels,
+                        addLocation: {
+                            viewModel.action.send(.addLocation)
+                        },
+                        deleteLocation: { id in
+                        viewModel.action.send(.deleteLocation(id: id))
+                        }
+                    )
 
                     OfferPaymentMethodView(
                         selectedOptions: $viewModel.selectedPaymentMethodOptions
@@ -63,11 +53,20 @@ struct FilterView: View {
                         .padding(.top, Appearance.GridGuide.padding)
 
                     advancedFilter
+
+                    LargeSolidButton(title: L.filterApply(),
+                                     font: Appearance.TextStyle.titleSmallBold.font.asFont,
+                                     style: .main,
+                                     isFullWidth: true,
+                                     isEnabled: .constant(true),
+                                     action: {
+                        viewModel.send(action: .applyFilter)
+                    })
+                    .padding(.vertical, Appearance.GridGuide.largePadding1)
                 }
                 .padding(.horizontal, Appearance.GridGuide.padding)
             }
             .padding(.top, Appearance.GridGuide.padding)
-            .padding(.bottom, scrollViewBottomPadding)
         }
     }
 
