@@ -33,6 +33,7 @@ final class OfferService: BaseService, OfferServiceType {
     @Inject private var contactsService: ContactsServiceType
     @Inject private var encryptionService: EncryptionServiceType
     @Inject private var authenticationManager: AuthenticationManagerType
+    @Inject private var groupManager: GroupManagerType
 
     // MARK: - Offer Endpoints
 
@@ -143,17 +144,20 @@ extension OfferService {
                 hasFacebookAccount: authenticationManager.facebookSecurityHeader != nil,
                 pageLimit: Constants.pageMaxLimit
             )
-            .map { contacts -> [ContactKey] in
-                let contacts = contacts.phone
-                    + contacts.facebook
-                    + [ContactKey(publicKey: userPublicKey)]
-                return Array(Set(contacts))
-            }
 
         let groupMembersAndContacts = contacts
+            .flatMap { [groupManager] contacts -> AnyPublisher<[ContactKey], Never> in
+                groupManager
+                    .getAllGroupMembers(group: offer.group)
+                    .catch { _ in Just([]) }
+                    .map { $0.map(ContactKey.init) }
+                    .map { $0 + contacts.phone + contacts.facebook }
+                    .eraseToAnyPublisher()
+            }
             .map { contacts -> [ContactKey] in
-                let members = offer.group?.members?.allObjects as? [ManagedAnonymisedProfile] ?? []
-                return contacts + members.compactMap(\.publicKey).map(ContactKey.init)
+                let contacts = contacts
+                    + [ContactKey(publicKey: userPublicKey)]
+                return Array(Set(contacts))
             }
 
         let commonFriends = groupMembersAndContacts
