@@ -12,6 +12,8 @@
 		4F26F44528A51C49005558E8 /* MapyService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F26F44428A51C49005558E8 /* MapyService.swift */; };
 		4F26F44728A51D05005558E8 /* MapyRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F26F44628A51D05005558E8 /* MapyRouter.swift */; };
 		4F26F44A28A52C50005558E8 /* LocationSuggestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F26F44928A52C50005558E8 /* LocationSuggestion.swift */; };
+		4F26F44D28A52E65005558E8 /* OfferLocationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F26F44C28A52E65005558E8 /* OfferLocationViewModel.swift */; };
+		4F26F44F28A54D6F005558E8 /* IsFocusTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F26F44E28A54D6F005558E8 /* IsFocusTextField.swift */; };
 		4F481E7228466B320051D3B9 /* TimelineOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F481E7128466B320051D3B9 /* TimelineOption.swift */; };
 		4F481E76284767480051D3B9 /* ChatRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F481E75284767480051D3B9 /* ChatRouter.swift */; };
 		4F481E78284768840051D3B9 /* ChatService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F481E77284768840051D3B9 /* ChatService.swift */; };
@@ -415,6 +417,8 @@
 		4F26F44428A51C49005558E8 /* MapyService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapyService.swift; sourceTree = "<group>"; };
 		4F26F44628A51D05005558E8 /* MapyRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapyRouter.swift; sourceTree = "<group>"; };
 		4F26F44928A52C50005558E8 /* LocationSuggestion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSuggestion.swift; sourceTree = "<group>"; };
+		4F26F44C28A52E65005558E8 /* OfferLocationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferLocationViewModel.swift; sourceTree = "<group>"; };
+		4F26F44E28A54D6F005558E8 /* IsFocusTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IsFocusTextField.swift; sourceTree = "<group>"; };
 		4F481E61284504050051D3B9 /* RangePickerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RangePickerView.swift; sourceTree = "<group>"; };
 		4F481E63284504050051D3B9 /* OptionPickerItemView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OptionPickerItemView.swift; sourceTree = "<group>"; };
 		4F481E64284504050051D3B9 /* SingleOptionPickerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SingleOptionPickerView.swift; sourceTree = "<group>"; };
@@ -896,6 +900,14 @@
 				4F26F44928A52C50005558E8 /* LocationSuggestion.swift */,
 			);
 			path = Location;
+			sourceTree = "<group>";
+		};
+		4F26F44B28A52E57005558E8 /* Locations */ = {
+			isa = PBXGroup;
+			children = (
+				4F26F44C28A52E65005558E8 /* OfferLocationViewModel.swift */,
+			);
+			path = Locations;
 			sourceTree = "<group>";
 		};
 		4F700CB82844B0750085139F /* BitcoinView */ = {
@@ -1558,6 +1570,7 @@
 				F11441B0284681EC00307D39 /* ExpandingTextView.swift */,
 				F11441B1284681EC00307D39 /* BorderedTextField.swift */,
 				F11441B2284681EC00307D39 /* PlaceholderTextField.swift */,
+				4F26F44E28A54D6F005558E8 /* IsFocusTextField.swift */,
 			);
 			path = TextFields;
 			sourceTree = "<group>";
@@ -1917,6 +1930,7 @@
 		F1886245281154FF00659786 /* OfferSettings */ = {
 			isa = PBXGroup;
 			children = (
+				4F26F44B28A52E57005558E8 /* Locations */,
 				F188624F281170F200659786 /* Components */,
 				F18862482811551700659786 /* OfferSettingsViewModel.swift */,
 				F18862462811550C00659786 /* OfferSettingsCoordinator.swift */,
@@ -1944,8 +1958,8 @@
 				4FBF620A283CE08800DDBE71 /* OfferAmountRangeView.swift */,
 				F1886254281185E900659786 /* OfferFeePickerView.swift */,
 				F188625C2811E3E700659786 /* OfferTradeLocationPickerView.swift */,
-				F1886256281193CA00659786 /* OfferLocationPickerView.swift */,
 				F188625E2811E53400659786 /* OfferPaymentMethodView.swift */,
+				F1886256281193CA00659786 /* OfferLocationPickerView.swift */,
 				F188626028129ED600659786 /* OfferTriggersView.swift */,
 				F13B26612818A7EC0011F2FB /* OfferDescriptionView.swift */,
 				F17ACAAE289210EE00E05408 /* OfferCurrencyPickerView.swift */,
@@ -2715,6 +2729,7 @@
 				B01C01ED2862F06D00A29F85 /* Currency.swift in Sources */,
 				B007A74B2871EB2900CFA5C9 /* UserRepository.swift in Sources */,
 				B042C95028A8457800860F91 /* Color+.swift in Sources */,
+				4F26F44F28A54D6F005558E8 /* IsFocusTextField.swift in Sources */,
 				B0F206F127AE94C400A44E72 /* InitialScreenManager.swift in Sources */,
 				4F481E76284767480051D3B9 /* ChatRouter.swift in Sources */,
 				F1B3010F287A53C900C86F83 /* ChatConversationViewModel.swift in Sources */,
@@ -2911,6 +2926,7 @@
 				F13B266D281C8FC80011F2FB /* EncryptionError.swift in Sources */,
 				B0EEE11827B14D360097031E /* WelcomeViewModel.swift in Sources */,
 				F151A2AB27CE818C000D7242 /* RegisterNameAvatarStartView.swift in Sources */,
+				4F26F44D28A52E65005558E8 /* OfferLocationViewModel.swift in Sources */,
 				B007A73C2868B69E00CFA5C9 /* Donate.swift in Sources */,
 				F1BFA956280223BD00F4E745 /* UserProfileView.swift in Sources */,
 				F1B5FCBE27C68EA70018729B /* OnboardingView+BottomButtons.swift in Sources */,

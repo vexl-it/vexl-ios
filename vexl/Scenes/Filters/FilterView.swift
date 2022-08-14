@@ -46,13 +46,13 @@ struct FilterView: View {
                 Group {
                     amount
 
-                    OfferLocationPickerView(
-                        items: viewModel.locations,
-                        addLocation: { viewModel.send(action: .addLocation) },
-                        deleteLocation: { id in
-                            viewModel.send(action: .deleteLocation(id: id))
-                        }
-                    )
+//                    OfferLocationPickerView(
+//                        items: viewModel.locations,
+//                        addLocation: { viewModel.send(action: .addLocation) },
+//                        deleteLocation: { id in
+//                            viewModel.send(action: .deleteLocation(id: id))
+//                        }
+//                    )
 
                     OfferPaymentMethodView(
                         selectedOptions: $viewModel.selectedPaymentMethodOptions

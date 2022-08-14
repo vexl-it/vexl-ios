@@ -15,7 +15,7 @@ struct MapyResponse: Decodable {
     }
 }
 
-struct LocationSuggestion: Decodable {
+struct LocationSuggestion: Decodable, Hashable {
     let suggestion: String
     let lat: Double
     let lon: Double

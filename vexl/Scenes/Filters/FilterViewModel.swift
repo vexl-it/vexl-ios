@@ -40,7 +40,7 @@ final class FilterViewModel: ViewModelType, ObservableObject {
     @Published var selectedFeeOptions: [OfferFeeOption] = []
     @Published var feeAmount: Double
 
-    @Published var locations: [OfferLocationItemData]
+    @Published var locations: [String] // TODO: same logic that in OfferSettingsViewModel
 
     @Published var selectedPaymentMethodOptions: [OfferPaymentMethodOption]
 
@@ -172,16 +172,6 @@ final class FilterViewModel: ViewModelType, ObservableObject {
             .filter { $0 == .addLocation }
             .withUnretained(self)
             .sink { owner, _ in
-                var newLocations = owner.locations
-                let count = newLocations.count + 1
-
-                // TODO: - Manage Locations when implementing maps + coordinates
-
-                let stubLocation = OfferLocationItemData(id: count,
-                                                         name: "Prague \(count)",
-                                                         distance: "\(count)km")
-                newLocations.append(stubLocation)
-                owner.locations = newLocations
             }
             .store(in: cancelBag)
 
@@ -192,13 +182,13 @@ final class FilterViewModel: ViewModelType, ObservableObject {
             }
             .withUnretained(self)
             .sink { owner, id in
-                guard let index = owner.locations.firstIndex(where: { $0.id == id }) else {
-                    return
-                }
-
-                var newLocations = owner.locations
-                newLocations.remove(at: index)
-                owner.locations = newLocations
+//                guard let index = owner.locations.firstIndex(where: { $0.id == id }) else {
+//                    return
+//                }
+//
+//                var newLocations = owner.locations
+//                newLocations.remove(at: index)
+//                owner.locations = newLocations
             }
             .store(in: cancelBag)
     }
