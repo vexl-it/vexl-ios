@@ -102,9 +102,7 @@ final class UserRepository: UserRepositoryType {
                 user.profile?.avatarURL = avatarURL
                 user.profile?.avatar = avatar
             }
-            return user
         }
-        .asVoid()
         .eraseToAnyPublisher()
     }
 }
