@@ -95,11 +95,7 @@ struct OfferInformationDetailView: View {
                     logoImage
                 } else if let name = data.groupName {
                     EmptyGroupLogoSmall(name: .constant(name))
-                } else {
-                    EmptyView()
                 }
-            } else {
-                EmptyView()
             }
         }
         .frame(width: groupLogoSize, height: groupLogoSize)
