@@ -171,13 +171,15 @@
 "marketplace.phone.contact" = "Kontakt z telefonu";
 "marketplace.sell.offer" = "Moje nabídky";
 "marketplace.buy.add" = "+";
-"marketplace.detail.upTo" = "Max %@";
 "marketplace.detail.friend.first" = "Přítel";
 "marketplace.detail.friend.second" = "Přítel přítele";
 "marketplace.detail.sell" = "K prodeji";
 "marketplace.detail.buy" = "K nákupu";
 "marketplace.detail.user.sell" = "%@ prodává";
 "marketplace.detail.user.buy" = "%@ nakupuje";
+"marketplace.detail.up.to" = "Max";
+"marketplace.detail.fee" = "Zahrnuje %1$@ %% transakční poplatek";
+"marketplace.sign.for.thousand" = "t";
 "offer.request" = "Žádost";
 "offer.requested" = "Žádost poslána";
 "offer.sell.title" = "Moje nabídky prodeje";

@@ -6,7 +6,9 @@
 //
 
 import Foundation
+import Combine
 import SwiftUI
+import Cleevio
 
 typealias OfferDetailViewData = OfferInformationDetailView.ViewData
 
@@ -15,6 +17,9 @@ struct OfferInformationDetailView: View {
     let useInnerPadding: Bool
     let showBackground: Bool
     @State private var lineSize: CGSize = .zero
+
+    private let groupLogoSize: Double = 53
+    private let groupLogoRotationAngle: Angle = .degrees(-20)
 
     private var paymentLayoutStyle: OfferPaymentIconView.LayoutStyle {
         OfferPaymentIconView.LayoutStyle(icons: data.paymentIcons)
@@ -35,28 +40,82 @@ struct OfferInformationDetailView: View {
     }
 
     var body: some View {
-        VStack(spacing: Appearance.GridGuide.padding) {
-            Text(data.title)
-                .textStyle(.paragraphMedium)
-                .multilineTextAlignment(.leading)
-                .foregroundColor(textColor)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.top, useInnerPadding ? Appearance.GridGuide.mediumPadding1 : 0)
+        VStack(spacing: Appearance.GridGuide.smallPadding) {
+            VStack(alignment: .leading, spacing: Appearance.GridGuide.smallPadding) {
 
-            detail
+                if data.isGroupOffer, let name = data.groupName {
+                    Text(name)
+                        .textStyle(.descriptionSemiBold)
+                        .foregroundColor(data.groupColor)
+                        .padding(.vertical, Appearance.GridGuide.tinyPadding)
+                        .padding(.horizontal, Appearance.GridGuide.point)
+                        .background(
+                            data.groupColor
+                                .opacity(0.1)
+                        )
+                        .cornerRadius(Appearance.GridGuide.groupLabelCorner)
+                }
+
+                Text(data.title)
+                    .textStyle(.titleSmallMedium)
+                    .multilineTextAlignment(.leading)
+                    .foregroundColor(textColor)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+            }
+            .padding(.top, useInnerPadding ? Appearance.GridGuide.mediumPadding1 : 0)
+
+            VStack(spacing: Appearance.GridGuide.smallPadding) {
+
+                detail
+
+                if case .withFee = data.feeOption, let feeAmount = data.feeAmount {
+                    Text(L.marketplaceDetailFee(feeAmount))
+                        .textStyle(.paragraphMedium)
+                        .foregroundColor(Appearance.Colors.gray3)
+                        .frame(maxWidth: .infinity, alignment: .center)
+                }
+            }
+            .padding(.bottom, useInnerPadding ? Appearance.GridGuide.padding : 0)
         }
         .padding(.horizontal, useInnerPadding ? Appearance.GridGuide.padding : 0)
         .background(backgroundColor)
         .cornerRadius(showBackground ? Appearance.GridGuide.buttonCorner : 0)
+        .overlay(
+            groupLogo
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
+                .offset(x: -Appearance.GridGuide.padding, y: Appearance.GridGuide.point)
+        )
+    }
+
+    @ViewBuilder
+    private var groupLogo: some View {
+        Group {
+            if data.isGroupOffer {
+                if let logoImage = data.groupImage {
+                    logoImage
+                } else if let name = data.groupName {
+                    EmptyGroupLogoSmall(name: .constant(name))
+                }
+            }
+        }
+        .frame(width: groupLogoSize, height: groupLogoSize)
+        .cornerRadius(groupLogoSize / 2)
+        .rotationEffect(groupLogoRotationAngle)
     }
 
     private var detail: some View {
         HStack {
             DetailItem(label: data.offerType == .buy ? L.marketplaceDetailBuy() : L.marketplaceDetailSell(), content: {
-                Text(L.marketplaceDetailUpTo(data.amount))
-                    .foregroundColor(Appearance.Colors.gray2)
-                    .multilineTextAlignment(.center)
-                    .lineLimit(3)
+                HStack(alignment: .bottom, spacing: Appearance.GridGuide.tinyPadding) {
+                    Text(L.marketplaceDetailUpTo())
+                        .textStyle(.descriptionSemiBold)
+                        .foregroundColor(Appearance.Colors.gray3)
+                        .padding(.bottom, Appearance.GridGuide.tinyPadding)
+
+                    Text(data.amount)
+                        .textStyle(.titleSemiBold)
+                        .foregroundColor(Appearance.Colors.gray3)
+                }
             })
             .readSize(onChange: { size in
                 lineSize = size
@@ -74,16 +133,22 @@ struct OfferInformationDetailView: View {
             VLine(color: Appearance.Colors.gray4, width: 1)
                 .frame(maxHeight: lineSize.height)
 
-            // TODO: - Set real location when it is implemented
-
-            DetailItem(label: "Prague", content: {
-                Image(R.image.marketplace.mapPin.name)
-                    .resizable()
-                    .frame(size: Appearance.GridGuide.feedIconSize)
+            DetailItem(label: data.locationsTitle, content: {
+                HStack(spacing: Appearance.GridGuide.point) {
+                    if data.locationState != .online || data.containsLocation {
+                        Image(R.image.marketplace.mapPin.name)
+                            .resizable()
+                            .frame(size: Appearance.GridGuide.feedIconSize)
+                    }
+                    if data.locationState == .online {
+                        Image(R.image.marketplace.tradeOnline.name)
+                            .resizable()
+                            .frame(size: Appearance.GridGuide.feedIconSize)
+                    }
+                }
             })
             .frame(maxWidth: .infinity)
         }
-        .padding(.bottom, useInnerPadding ? Appearance.GridGuide.padding : 0)
     }
 }
 
@@ -128,14 +193,22 @@ extension OfferInformationDetailView {
         @Published var title: String = ""
         @Published var friendLevel: String = OfferFriendDegree.firstDegree.rawValue
         @Published var paymentMethods: [OfferPaymentMethodOption] = []
-        @Published var fee: String?
+        @Published var locationState: OfferTradeLocationOption?
+        @Published var feeOption: OfferFeeOption = .withoutFee
+        @Published var feeAmount: String?
         @Published var offerType: OfferType = .buy
         @Published var createdDate: Date = Date()
+        @Published var locationsTitle: String = ""
+        @Published var containsLocation: Bool = true
+
+        @Published var isGroupOffer: Bool = false
+        @Published var groupName: String?
+        @Published var groupImage: Image?
+        @Published var groupColor: Color
 
         var amount: String {
             guard let currency = offer.currency else { return "" }
-            let maxAmount = Int(offer.maxAmount)
-            return currency.formattedCurrency(amount: maxAmount)
+            return currency.formattedShortCurrency(amount: offer.maxAmount)
         }
 
         var paymentIcons: [String] {
@@ -165,9 +238,14 @@ extension OfferInformationDetailView {
             return string
         }
 
+        private let cancelBag: CancelBag = .init()
+
         init(offer: ManagedOffer) {
             self.offer = offer
             let profile = offer.receiversPublicKey?.profile
+            let group = offer.group
+
+            groupColor = group?.color ?? Appearance.Colors.purple3
 
             offer.publisher(for: \.isRequested).assign(to: &$isRequested)
             offer.publisher(for: \.id).filterNil().assign(to: &$id)
@@ -176,9 +254,46 @@ extension OfferInformationDetailView {
             offer.publisher(for: \.offerDescription).filterNil().assign(to: &$title)
             offer.publisher(for: \.friendDegreeRawType).map { _ in offer.friendLevel?.label }.filterNil().assign(to: &$friendLevel)
             offer.paymentMethodsPublisher.assign(to: &$paymentMethods)
-            offer.publisher(for: \.feeAmount).filter { $0 > 0 }.map { "\($0)%" }.filterNil().assign(to: &$fee)
+            offer.publisher(for: \.feeStateRawType).compactMap { _ in offer.feeState }.assign(to: &$feeOption)
+            offer.publisher(for: \.feeAmount).map { Formatters.numberFormatter.string(from: NSNumber(value: $0)) }.filterNil().assign(to: &$feeAmount)
             offer.publisher(for: \.offerTypeRawType).map { _ in offer.type }.filterNil().assign(to: &$offerType)
             offer.publisher(for: \.createdAt).filterNil().assign(to: &$createdDate)
+            offer.publisher(for: \.group).map { $0 != nil }.assign(to: &$isGroupOffer)
+            offer.publisher(for: \.locationStateRawType).map { _ in offer.locationState }.assign(to: &$locationState)
+            group?.publisher(for: \.name).assign(to: &$groupName)
+            group?.publisher(for: \.logo).map { $0.flatMap(UIImage.init).flatMap(Image.init) }.assign(to: &$groupImage)
+
+            // TODO: connect locations to offer model when available
+            let cities: AnyPublisher<[String?], Never> = Just(["Prague", "Lima"])
+                .eraseToAnyPublisher()
+
+            cities
+                .map(\.isEmpty.not)
+                .assign(to: &$containsLocation)
+
+            let onlineTitle = offer
+                .publisher(for: \.locationStateRawType)
+                .map { _ in offer.locationState }
+                .map {
+                    $0 == .online ? L.offerCreateTradeStyleOnline() : nil
+                }
+
+            Publishers.CombineLatest(cities, onlineTitle)
+                .map { (cities: [String?], onlineTitle: String?) -> [String?] in
+                    if onlineTitle == nil {
+                        return Array(cities.prefix(upTo: 2))
+                    } else {
+                        // swiftlint:disable:next redundant_nil_coalescing
+                        let firstCity = cities.first ?? nil
+                        return [ firstCity, onlineTitle ]
+                    }
+                }
+                .map { titles in
+                    titles
+                        .compactMap { $0 }
+                        .joined(separator: ", ")
+                }
+                .assign(to: &$locationsTitle)
         }
 
         static var stub: OfferDetailViewData {

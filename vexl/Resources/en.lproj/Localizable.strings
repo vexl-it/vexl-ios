@@ -171,13 +171,15 @@
 "marketplace.phone.contact" = "Phone contact";
 "marketplace.sell.offer" = "My offers";
 "marketplace.buy.add" = "+";
-"marketplace.detail.upTo" = "Up to %@";
 "marketplace.detail.friend.first" = "Friend";
 "marketplace.detail.friend.second" = "Friend of a Friend";
 "marketplace.detail.sell" = "To sell";
 "marketplace.detail.buy" = "To buy";
 "marketplace.detail.user.sell" = "%@ is selling";
 "marketplace.detail.user.buy" = "%@ is buying";
+"marketplace.detail.up.to" = "Up to";
+"marketplace.detail.fee" = "Includes %1$@ %% fee for transaction";
+"marketplace.sign.for.thousand" = "k";
 "offer.request" = "Request";
 "offer.requested" = "Requested";
 "offer.sell.title" = "My Sell Offers";

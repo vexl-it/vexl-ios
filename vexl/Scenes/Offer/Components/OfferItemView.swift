@@ -42,6 +42,7 @@ struct OfferItemView: View {
 
             Button(action: editOfferAction, label: {
                 Text(L.offerEdit())
+                    .textStyle(.descriptionSemiBold)
                     .foregroundColor(Appearance.Colors.yellow100)
             })
             .padding()
