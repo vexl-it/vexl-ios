@@ -21,5 +21,6 @@
 - VEX-544: Fixed crash when tapping filters in chat
 - VEX-279: Added back button when the requests are empty
 - VEX-572: fixed problems with anonymize dismiss
+- VEX-610: Added padding between button and keyboard on contact import scene
 
 ### Known Issues
