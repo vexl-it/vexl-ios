@@ -92,7 +92,7 @@ struct Appearance {
         // MARK: Avatar
 
         static let tinyIconSize = CGSize(width: 6, height: 6)
-        static let avatarSize = CGSize(width: 190, height: 190)
+        static let avatarPickerSize = CGSize(width: 128, height: 128)
         static let smallIconSize = CGSize(width: 12, height: 12)
         static let iconSize = CGSize(width: 24, height: 24)
         static let mediumIconSize = CGSize(width: 48, height: 48)
