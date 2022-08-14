@@ -63,26 +63,19 @@ struct FilterGroupView: View {
                                         .offset(x: -10, y: -10)
                                         .opacity(selectedGroups.contains(group) ? 1 : 0)
                                 )
-                        } else {
-                            ZStack {
-                                Rectangle()
-                                    .foregroundColor(.clear)
-                                if let char = group.name?.first {
-                                    Text(String(char))
-                                        .textStyle(Appearance.TextStyle.ultraLargeTitle)
-                                        .foregroundColor(Appearance.Colors.whiteText)
-                                }
-                            }
-                            .frame(maxWidth: cellSize, maxHeight: cellSize)
-                            .aspectRatio(1, contentMode: .fill)
-                            .fixedSize(horizontal: false, vertical: true)
-                            .cornerRadius(Appearance.GridGuide.buttonCorner)
-                            .overlay(
-                                Image(systemName: "checkmark.circle.fill")
-                                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-                                    .offset(x: -10, y: -10)
-                                    .opacity(selectedGroups.contains(group) ? 1 : 0)
-                            )
+                        } else if let char = group.name?.first {
+                            Text(String(char))
+                                .textStyle(Appearance.TextStyle.ultraLargeTitle)
+                                .foregroundColor(Appearance.Colors.whiteText)
+                                .frame(maxWidth: cellSize, maxHeight: cellSize)
+                                .aspectRatio(1, contentMode: .fill)
+                                .cornerRadius(Appearance.GridGuide.buttonCorner)
+                                .overlay(
+                                    Image(systemName: "checkmark.circle.fill")
+                                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+                                        .offset(x: -10, y: -10)
+                                        .opacity(selectedGroups.contains(group) ? 1 : 0)
+                                )
                         }
                     }
                 },
