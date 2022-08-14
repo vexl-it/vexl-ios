@@ -24,4 +24,6 @@
 - VEX-599: Fixed double percentage sign in phone card on onboarding
 - VEX-611: Fixed missing translation on the Identity anonymization page
 - VEX-612: Fixed missing translation for months in bitcoin graph
+- VEX-363: fixed fee amount calculation
+
 ### Known Issues

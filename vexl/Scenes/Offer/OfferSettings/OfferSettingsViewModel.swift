@@ -53,7 +53,7 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
     @Published var currentAmountRange: ClosedRange<Int> = Constants.OfferInitialData.minOffer...Constants.OfferInitialData.maxOffer
 
     @Published var selectedFeeOption: OfferFeeOption = .withoutFee
-    @Published var feeAmount: Double = 0.1
+    @Published var feeAmount: Double = Constants.OfferInitialData.minFee
 
     @Published var locations: [OfferLocationItemData] = []
 
@@ -107,13 +107,6 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
         return Date().timeIntervalSince1970 + additionalSeconds
     }
 
-    var feeValue: Int {
-        guard selectedFeeOption == .withFee else {
-            return 0
-        }
-        return Int(((maxFee - minFee) * feeAmount) + minFee)
-    }
-
     var priceTriggerAmount: Double {
         guard let amount = Double(selectedPriceTriggerAmount) else {
             return 0
@@ -131,7 +124,7 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
     }
 
     var isCreateEnabled: Bool {
-        guard (selectedFeeOption == .withFee && feeValue > 0) || (selectedFeeOption == .withoutFee) else {
+        guard (selectedFeeOption == .withFee && feeAmount > 0) || (selectedFeeOption == .withoutFee) else {
             return false
         }
 
@@ -336,7 +329,7 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
                     offer.maxAmount = Double(owner.currentAmountRange.upperBound)
                     offer.offerDescription = owner.description
                     offer.feeState = owner.selectedFeeOption
-                    offer.feeAmount = Double(owner.feeValue)
+                    offer.feeAmount = owner.feeAmount
                     offer.locationState = owner.selectedTradeStyleOption
                     offer.paymentMethods = owner.selectedPaymentMethodOptions
                     offer.btcNetworks = owner.selectedBTCOption
