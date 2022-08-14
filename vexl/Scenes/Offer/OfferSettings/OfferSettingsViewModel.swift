@@ -341,7 +341,11 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
                         .eraseToAnyPublisher()
                 } else {
                     return owner.offerRepository
-                        .createOffer(keys: owner.offerKey, provider: provider)
+                        .createOffer(
+                            keys: owner.offerKey,
+                            locations: owner.locationViewModels.compactMap(\.location),
+                            provider: provider
+                        )
                         .materialize()
                         .compactMap(\.value)
                         .eraseToAnyPublisher()

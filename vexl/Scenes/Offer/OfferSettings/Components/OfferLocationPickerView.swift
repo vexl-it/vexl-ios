@@ -87,24 +87,6 @@ extension OfferLocationPickerView {
             }
         }
 
-        private func suggestionsView(suggestions: [LocationSuggestion]) -> some View {
-            ScrollView {
-                VStack {
-                    ForEach(suggestions, id: \.self) { suggestionInfo in
-                        Text(suggestionInfo.suggestion)
-                            .textStyle(.paragraphMedium)
-                            .foregroundColor(.white)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .padding()
-                            .onTapGesture {
-                                viewModel.send(action: .suggestionTap(suggestionInfo))
-                            }
-                    }
-                }
-            }
-            .frame(height: 200)
-        }
-
         private var locationInput: some View {
             HStack {
                 HStack {
@@ -135,6 +117,24 @@ extension OfferLocationPickerView {
                 }
                 .padding(.leading, Appearance.GridGuide.padding)
             }
+        }
+
+        private func suggestionsView(suggestions: [LocationSuggestion]) -> some View {
+            ScrollView {
+                VStack {
+                    ForEach(suggestions, id: \.self) { suggestionInfo in
+                        Text(suggestionInfo.suggestion)
+                            .textStyle(.paragraphMedium)
+                            .foregroundColor(.white)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding()
+                            .onTapGesture {
+                                viewModel.send(action: .suggestionTap(suggestionInfo))
+                            }
+                    }
+                }
+            }
+            .frame(height: 200)
         }
     }
 }
