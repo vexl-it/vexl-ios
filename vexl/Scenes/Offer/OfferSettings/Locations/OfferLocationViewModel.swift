@@ -46,6 +46,7 @@ final class OfferLocationViewModel: ViewModelType, ObservableObject, Identifiabl
     // MARK: - Variables
 
     var location: LocationSuggestion?
+    private var didUserPickFromSuggestions = false
     private let cancelBag: CancelBag = .init()
 
     init(location: LocationSuggestion? = nil) {
@@ -63,6 +64,7 @@ final class OfferLocationViewModel: ViewModelType, ObservableObject, Identifiabl
                 switch action {
                 case .suggestionTap(let suggestionInfo):
                     owner.name = suggestionInfo.suggestion
+                    owner.didUserPickFromSuggestions = true
                     owner.isTextFieldFocused = false
                     owner.location = suggestionInfo
                 }
@@ -73,8 +75,17 @@ final class OfferLocationViewModel: ViewModelType, ObservableObject, Identifiabl
     private func setupBindings() {
         $isTextFieldFocused
             .filter { !$0 }
-            .map { _ in State.noUserInteraction }
-            .assign(to: &$state)
+            .withUnretained(self)
+            .sink { owner, _ in
+                owner.state = .noUserInteraction
+
+                if !owner.didUserPickFromSuggestions {
+                    owner.name = ""
+                }
+
+                owner.didUserPickFromSuggestions = false
+            }
+            .store(in: cancelBag)
 
         $name
             .dropFirst()
@@ -84,6 +95,9 @@ final class OfferLocationViewModel: ViewModelType, ObservableObject, Identifiabl
 
         $name
             .filter { !$0.isEmpty }
+            .handleEvents(receiveOutput: { [weak self] _ in
+                self?.location = nil
+            })
             .debounce(for: 0.3, scheduler: DispatchQueue.main)
             .withUnretained(self)
             .flatMap { owner, text in

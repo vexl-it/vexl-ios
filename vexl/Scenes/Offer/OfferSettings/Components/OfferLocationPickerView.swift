@@ -124,6 +124,7 @@ extension OfferLocationPickerView {
                             .foregroundColor(.white)
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .padding()
+                            .background(Color.black)
                             .onTapGesture {
                                 viewModel.send(action: .suggestionTap(suggestionInfo))
                             }
