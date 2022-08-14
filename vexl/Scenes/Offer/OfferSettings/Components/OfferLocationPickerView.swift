@@ -79,10 +79,6 @@ extension OfferLocationPickerView {
                         .padding()
                 case .noUserInteraction:
                     EmptyView()
-                case .loading:
-                    ProgressView()
-                        .progressViewStyle(CircularProgressViewStyle(tint: Appearance.Colors.whiteText))
-                        .padding()
                 }
             }
         }

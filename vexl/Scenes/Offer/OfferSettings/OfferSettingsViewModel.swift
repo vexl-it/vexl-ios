@@ -340,7 +340,11 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
                 }
                 if let offer = owner.offer {
                     return owner.offerRepository
-                        .update(offer: offer, provider: provider)
+                        .update(
+                            offer: offer,
+                            locations: owner.locationViewModels.compactMap(\.location),
+                            provider: provider
+                        )
                         .materialize()
                         .compactMap(\.value)
                         .eraseToAnyPublisher()

@@ -21,7 +21,6 @@ final class OfferLocationViewModel: ViewModelType, ObservableObject, Identifiabl
     enum State: Equatable {
         case noUserInteraction
         case empty
-        case loading
         case results([LocationSuggestion])
         case error
     }
@@ -33,10 +32,6 @@ final class OfferLocationViewModel: ViewModelType, ObservableObject, Identifiabl
     // MARK: - View Bindings
 
     @Published var primaryActivity: Activity = .init()
-    var activityIndicator: ActivityIndicator {
-        primaryActivity.indicator
-    }
-
     @Published var state: State = .noUserInteraction
     @Published var name: String = ""
     @Published var isTextFieldFocused: Bool = false
@@ -51,14 +46,11 @@ final class OfferLocationViewModel: ViewModelType, ObservableObject, Identifiabl
     // MARK: - Variables
 
     var location: LocationSuggestion?
-    private var currentSuggestions: [LocationSuggestion] = []
     private let cancelBag: CancelBag = .init()
 
     init(location: LocationSuggestion? = nil) {
-        if let location = location {
-            self.location = location
-            self.name = location.suggestion
-        }
+        self.location = location
+        self.name = location?.suggestion ?? ""
 
         setupBindings()
         setupActions()
@@ -79,15 +71,6 @@ final class OfferLocationViewModel: ViewModelType, ObservableObject, Identifiabl
     }
 
     private func setupBindings() {
-        activityIndicator
-            .loading
-            .withUnretained(self)
-            .filter { owner, isLoading in
-                isLoading && owner.currentSuggestions.isEmpty
-            }
-            .map { _ in State.loading }
-            .assign(to: &$state)
-
         $isTextFieldFocused
             .filter { !$0 }
             .map { _ in State.noUserInteraction }
@@ -105,11 +88,7 @@ final class OfferLocationViewModel: ViewModelType, ObservableObject, Identifiabl
             .withUnretained(self)
             .flatMap { owner, text in
                 owner.mapyService.getSuggestions(for: text)
-                    .track(activity: owner.primaryActivity)
             }
-            .handleEvents(receiveOutput: { [weak self] suggestions in
-                self?.currentSuggestions = suggestions
-            })
             .map { suggestions -> State in
                 suggestions.isEmpty ? .empty : .results(suggestions)
             }
@@ -127,8 +106,6 @@ extension OfferLocationViewModel.State {
         case (.noUserInteraction, .noUserInteraction):
             return true
         case (.empty, .empty):
-            return true
-        case (.loading, .loading):
             return true
         case (.error, .error):
             return true

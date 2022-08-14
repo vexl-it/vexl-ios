@@ -13,8 +13,7 @@ import UIKit
 protocol OfferRepositoryType {
     func createOffer(keys: ECCKeys, locations: [LocationSuggestion], provider: @escaping (ManagedOffer) -> Void) -> AnyPublisher<ManagedOffer, Error>
 
-    // locations here as well?
-    func update(offer: ManagedOffer, provider: @escaping (ManagedOffer) -> Void) -> AnyPublisher<ManagedOffer, Error>
+    func update(offer: ManagedOffer, locations: [LocationSuggestion], provider: @escaping (ManagedOffer) -> Void) -> AnyPublisher<ManagedOffer, Error>
 
     func createOrUpdateOffer(offerPayloads: [OfferPayload]) -> AnyPublisher<[ManagedOffer], Error>
 
@@ -67,8 +66,22 @@ class OfferRepository: OfferRepositoryType {
         }
     }
 
-    func update(offer: ManagedOffer, provider: @escaping (ManagedOffer) -> Void) -> AnyPublisher<ManagedOffer, Error> {
+    func update(
+        offer: ManagedOffer,
+        locations: [LocationSuggestion],
+        provider: @escaping (ManagedOffer) -> Void
+    ) -> AnyPublisher<ManagedOffer, Error> {
         persistence.update(context: persistence.viewContext) { context in
+            let managedLocations = locations.map { location -> ManagedOfferLocation in
+                let managedLocation = ManagedOfferLocation(context: context)
+                managedLocation.lat = location.lat
+                managedLocation.lon = location.lon
+                managedLocation.name = location.suggestion
+                return managedLocation
+            }
+
+            offer.locations = NSSet(array: managedLocations)
+
             provider(offer)
 
             if offer.syncItem != nil {
