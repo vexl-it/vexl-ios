@@ -46,6 +46,10 @@ final class RegisterAnonymizeViewModel: ViewModelType {
         input.avatar
     }
 
+    var anonymizedAvatar: String {
+        return anonymizedAvatars[anonymizedAvatarIndex]
+    }
+
     var identityText: String {
         switch currentState {
         case .identity:
@@ -103,6 +107,10 @@ final class RegisterAnonymizeViewModel: ViewModelType {
 
     private let cancelBag: CancelBag = .init()
     private let input: AnonymizeInput
+    private var anonymizedAvatarIndex = 0
+    private let anonymizedAvatars = [R.image.avatars.defaultAvatar1.name,
+                                     R.image.avatars.defaultAvatar2.name,
+                                     R.image.avatars.defaultAvatar3.name]
 
     init(input: AnonymizeInput) {
         self.input = input
@@ -141,6 +149,7 @@ final class RegisterAnonymizeViewModel: ViewModelType {
                         owner.currentState = .anonymized
                     }
                     owner.anonymizedUsername = ManagedProfile.generateRandomName()
+                    owner.anonymizedAvatarIndex = Int.random(in: 0..<owner.anonymizedAvatars.count)
                 }
             }
             .store(in: cancelBag)

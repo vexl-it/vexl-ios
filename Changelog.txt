@@ -13,6 +13,7 @@
 - VEX-549/546: Improved phone registry so that number is stored + default country code is set
 - VEX-548: Restore onboarding state after killing app
 - VEX-546: Remove currency picker from onboarding
+- VEX-573/574: Anonymize button removed before first action + random avatar selected
 
 ### Fixes
 - VEX-525: Fixed common friends on chat request screen

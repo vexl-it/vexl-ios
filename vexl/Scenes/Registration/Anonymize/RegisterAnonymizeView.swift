@@ -97,12 +97,23 @@ struct RegisterAnonymizeView: View {
     private var avatarView: some View {
         ZStack(alignment: .topTrailing) {
             if viewModel.currentState == .anonymized {
-                Image(R.image.profile.avatar.name)
+                Image(viewModel.anonymizedAvatar)
                     .resizable()
                     .scaledToFill()
                     .frame(size: UIProperties.anonymizeSize)
                     .clipped()
                     .cornerRadius(UIProperties.cornerRadius)
+
+                Button(action: { viewModel.send(action: .anonymize) }, label: {
+                    Circle()
+                        .strokeBorder(.black, lineWidth: 4)
+                        .background(Circle().fill(Appearance.Colors.yellow100))
+                        .frame(size: UIProperties.shuffleButtonSize)
+                        .overlay(
+                            Image(R.image.onboarding.shuffle.name)
+                        )
+                        .offset(x: 5, y: -5)
+                })
             } else {
                 Image(data: viewModel.avatar, placeholder: R.image.profile.avatar.name)
                     .resizable()
@@ -111,17 +122,6 @@ struct RegisterAnonymizeView: View {
                     .clipped()
                     .cornerRadius(UIProperties.cornerRadius)
             }
-
-            Button(action: { viewModel.send(action: .anonymize) }, label: {
-                Circle()
-                    .strokeBorder(.black, lineWidth: 4)
-                    .background(Circle().fill(Appearance.Colors.yellow100))
-                    .frame(size: UIProperties.shuffleButtonSize)
-                    .overlay(
-                        Image(R.image.onboarding.shuffle.name)
-                    )
-                    .offset(x: 5, y: -5)
-            })
         }
     }
 
@@ -133,14 +133,34 @@ struct RegisterAnonymizeView: View {
 }
 
 struct RegisterAnonymizeViewPreview: PreviewProvider {
-    static var previews: some View {
+    static var identityViewModel: RegisterAnonymizeViewModel {
         let avatar = R.image.onboarding.testAvatar()?.jpegData(compressionQuality: 1)
         let input = AnonymizeInput(
             username: "Daniel Fernandez",
             avatar: avatar
         )
+        return RegisterAnonymizeViewModel(input: input)
+    }
+
+    static var anonymizeViewModel: RegisterAnonymizeViewModel {
+        let avatar = R.image.onboarding.testAvatar()?.jpegData(compressionQuality: 1)
+        let input = AnonymizeInput(
+            username: "Daniel Fernandez",
+            avatar: avatar
+        )
+        let viewModel = RegisterAnonymizeViewModel(input: input)
+        viewModel.currentState = .anonymized
+        return viewModel
+    }
+
+    static var previews: some View {
         RegisterAnonymizeView(
-            viewModel: .init(input: input)
+            viewModel: identityViewModel
+        )
+        .background(Color.black.ignoresSafeArea())
+
+        RegisterAnonymizeView(
+            viewModel: anonymizeViewModel
         )
         .background(Color.black.ignoresSafeArea())
     }
