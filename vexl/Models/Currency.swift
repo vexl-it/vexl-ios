@@ -64,6 +64,7 @@ enum Currency: String, Codable, CaseIterable, Identifiable {
     }
 
     func formattedCurrency(amount: Int) -> String {
+        // TODO: Discuss if we want to use number formatters here
         switch position {
         case .left:
             return "\(sign) \(amount)"
@@ -73,6 +74,7 @@ enum Currency: String, Codable, CaseIterable, Identifiable {
     }
 
     func formattedShortCurrency(amount: Double) -> String {
+        // TODO: Discuss if we want to use number formatters here
         var amount = amount
         let isBigNumber = amount > 1_000
         amount = isBigNumber ? amount / 1_000 : amount
