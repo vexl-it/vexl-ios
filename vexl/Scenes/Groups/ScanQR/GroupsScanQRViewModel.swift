@@ -82,7 +82,7 @@ final class GroupsScanQRViewModel: ViewModelType, ObservableObject {
                     .materialize()
                     .compactMap(\.value)
             }
-            .map { _ -> Route in .codeScanned }
+            .map { _ in .codeScanned }
             .subscribe(route)
             .store(in: cancelBag)
 
