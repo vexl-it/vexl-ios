@@ -12,13 +12,28 @@ import Cleevio
 extension InitialScreenManager {
     enum State {
         case splashScreen
-        case onboarding
+        case welcome
+        case registerName
+        case registerContacts
         case home
+    }
+
+    enum OnboardingState: String {
+        case initial
+        case nameAndAvatar
+        case importContacts
+        case finished
     }
 }
 
 final class InitialScreenManager {
     @Inject var authenticationManager: AuthenticationManagerType
+    @UserDefault(UserDefaultKey.onboardingState.rawValue, defaultValue: OnboardingState.initial.rawValue)
+    private var _onboardingState: String
+
+    private var onboardingState: OnboardingState {
+        OnboardingState(rawValue: _onboardingState) ?? .initial
+    }
 
     @Published private(set) var state: State = .splashScreen
 
@@ -30,15 +45,25 @@ final class InitialScreenManager {
         guard !initialLoadingInProgress else {
             return .splashScreen
         }
-        if authenticationManager.isUserLoggedIn {
-            return .home
-        } else {
-            return .onboarding
+
+        switch onboardingState {
+        case .initial:
+            return .welcome
+        case .nameAndAvatar:
+            return .registerName
+        case .importContacts:
+            return .registerContacts
+        case .finished:
+            return authenticationManager.isUserLoggedIn ? .home : .welcome
         }
     }
 
     func update(state: State) {
         self.state = state
+    }
+
+    func update(onboardingState: OnboardingState) {
+        self._onboardingState = onboardingState.rawValue
     }
 
     func finishInitialLoading() {
