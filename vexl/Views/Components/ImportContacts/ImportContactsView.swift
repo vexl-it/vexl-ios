@@ -13,36 +13,37 @@ struct ImportContactsView: View {
     @ObservedObject var viewModel: ImportContactsViewModel
 
     var body: some View {
-        VStack(spacing: .zero) {
+        VStack(spacing: Appearance.GridGuide.point) {
             ImportContactListView(viewModel: viewModel)
-                .padding(.horizontal, Appearance.GridGuide.point)
-                .padding(.vertical, Appearance.GridGuide.padding)
 
-            HStack {
-                if viewModel.showBackButton {
-                    LargeSolidButton(title: L.generalBack(),
-                                     font: Appearance.TextStyle.titleSmallBold.font.asFont,
-                                     style: .secondary,
-                                     isFullWidth: true,
-                                     isEnabled: .constant(true),
-                                     action: {
+            if viewModel.showBackButton {
+                LargeSolidButton(
+                    title: L.generalBack(),
+                    font: Appearance.TextStyle.titleSmallBold.font.asFont,
+                    style: .secondary,
+                    isFullWidth: true,
+                    isEnabled: .constant(true),
+                    action: {
                         viewModel.action.send(.dismiss)
-                    })
-                }
-
-                if viewModel.showActionButton {
-                    LargeSolidButton(title: viewModel.actionTitle,
-                                     font: Appearance.TextStyle.titleSmallBold.font.asFont,
-                                     style: .main,
-                                     isFullWidth: true,
-                                     isEnabled: .constant(true),
-                                     action: {
-                        viewModel.action.send(.importContacts)
-                    })
-                }
+                    }
+                )
             }
-                .padding(.horizontal, Appearance.GridGuide.point)
+
+            if viewModel.showActionButton {
+                LargeSolidButton(
+                    title: viewModel.actionTitle,
+                    font: Appearance.TextStyle.titleSmallBold.font.asFont,
+                    style: .main,
+                    isFullWidth: true,
+                    isEnabled: .constant(true),
+                    action: {
+                        viewModel.action.send(.importContacts)
+                    }
+                )
+            }
         }
+        .padding([.horizontal, .bottom], Appearance.GridGuide.point)
+        .padding(.top, Appearance.GridGuide.padding)
     }
 }
 

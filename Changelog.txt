@@ -22,6 +22,7 @@
 - VEX-279: Added back button when the requests are empty
 - VEX-572: fixed problems with anonymize dismiss
 - VEX-599: Fixed double percentage sign in phone card on onboarding
+- VEX-610: Added padding between button and keyboard on contact import scene
 - VEX-611: Fixed missing translation on the Identity anonymization page
 - VEX-612: Fixed missing translation for months in bitcoin graph
 - VEX-363: fixed fee amount calculation
