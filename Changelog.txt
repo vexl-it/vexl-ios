@@ -15,6 +15,7 @@
 - VEX-549/546: Improved phone registry so that number is stored + default country code is set
 - VEX-548: Restore onboarding state after killing app
 - VEX-546: Remove currency picker from onboarding
+- VEX-573/574: Anonymize button removed before first action + random avatar selected
 - VEX-541: Update number of contact friends number
 - VEX-601: Avatar picker now has correct size
 - VEX-570: Added labels to friends degree picker
