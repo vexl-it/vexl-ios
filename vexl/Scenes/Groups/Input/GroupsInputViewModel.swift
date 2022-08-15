@@ -11,6 +11,8 @@ import Combine
 
 final class GroupsInputViewModel: ViewModelType, ObservableObject {
 
+    @Inject var groupManager: GroupManagerType
+
     // MARK: - Actions Bindings
 
     enum UserAction: Equatable {
@@ -52,6 +54,17 @@ final class GroupsInputViewModel: ViewModelType, ObservableObject {
 
         action
             .filter { $0 == .continueTap }
+            .asVoid()
+            .withUnretained(self)
+            .map(\.groupCode)
+            .compactMap(Int.init)
+            .flatMap { [groupManager, primaryActivity] code in
+                groupManager
+                    .joinGroup(code: code)
+                    .track(activity: primaryActivity)
+                    .materialize()
+                    .compactMap(\.value)
+            }
             .map { _ -> Route in .continueTapped }
             .subscribe(route)
             .store(in: cancelBag)

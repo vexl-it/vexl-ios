@@ -16,6 +16,7 @@ struct OfferFilter: Equatable {
     var selectedPaymentMethodOptions: [OfferPaymentMethodOption] = []
     var selectedBTCOptions: [OfferAdvancedBTCOption] = []
     var selectedFriendDegreeOptions: [OfferFriendDegree] = []
+    var selectedGroups: [ManagedGroup] = []
     var currency: Currency?
 
     var predicate: NSPredicate {
@@ -78,6 +79,12 @@ struct OfferFilter: Equatable {
                 }
             }
             predicateList.append(NSCompoundPredicate(orPredicateWithSubpredicates: btcOptionPredicates))
+        }
+
+        if !selectedGroups.isEmpty {
+            let groupPredicates = selectedGroups
+                .map { NSPredicate(format: "group == %@", $0) }
+            predicateList.append(NSCompoundPredicate(orPredicateWithSubpredicates: groupPredicates))
         }
 
         return NSCompoundPredicate(andPredicateWithSubpredicates: predicateList)
