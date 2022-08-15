@@ -51,7 +51,7 @@ struct Formatters {
     static let shortDateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = "d. MMM"
-        formatter.locale = Locale(identifier: "en_US_POSIX")
+        formatter.locale = Locale.autoupdatingCurrent
         return formatter
     }()
 
@@ -78,6 +78,15 @@ struct Formatters {
     static let numberFormatter: NumberFormatter = {
         let formatter = NumberFormatter()
         formatter.maximumFractionDigits = 2
+        formatter.minimumFractionDigits = 0
+        formatter.groupingSeparator = " "
+        formatter.numberStyle = .decimal
+        return formatter
+    }()
+
+    static let shortNumberFormatter: NumberFormatter = {
+        let formatter = NumberFormatter()
+        formatter.maximumFractionDigits = 1
         formatter.minimumFractionDigits = 0
         formatter.groupingSeparator = " "
         formatter.numberStyle = .decimal

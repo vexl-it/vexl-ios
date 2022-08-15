@@ -30,6 +30,7 @@
         <attribute name="code" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="createdAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="expiration" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="hexColor" optional="YES" attributeType="String"/>
         <attribute name="logo" optional="YES" attributeType="Binary"/>
         <attribute name="logoURL" optional="YES" attributeType="URI"/>
         <attribute name="name" optional="YES" attributeType="String"/>
@@ -125,7 +126,7 @@
         <element name="ManagedAnonymisedProfile" positionX="-1077.6640625" positionY="-369.7421875" width="170.62890625" height="73"/>
         <element name="ManagedChat" positionX="-314.09765625" positionY="-523.9609375" width="162.57421875" height="179"/>
         <element name="ManagedContact" positionX="-889.3515625" positionY="-86.04296875" width="128" height="134"/>
-        <element name="ManagedGroup" positionX="-1261.953125" positionY="-339.99609375" width="128" height="208"/>
+        <element name="ManagedGroup" positionX="-1261.953125" positionY="-339.99609375" width="128" height="209"/>
         <element name="ManagedInbox" positionX="-545.4609375" positionY="-382.8515625" width="128" height="118"/>
         <element name="ManagedKeyPair" positionX="-312.15625" positionY="-289.875" width="128" height="148"/>
         <element name="ManagedMessage" positionX="-95.99609375" positionY="-524.015625" width="128" height="178"/>

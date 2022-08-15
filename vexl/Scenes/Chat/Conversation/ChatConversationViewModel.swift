@@ -23,6 +23,7 @@ final class ChatConversationViewModel: ObservableObject {
     var fetchedMessages: [ManagedMessage]
 
     @Published var messages: [ChatConversationSection] = []
+    @Published var lastMessageID: String?
     @Published var username: String = L.generalAnonymous()
     @Published var avatar: Data?
 
@@ -58,7 +59,9 @@ final class ChatConversationViewModel: ObservableObject {
             .map { Image(data: $0, placeholder: R.image.marketplace.defaultAvatar.name) }
             .assign(to: &$avatarImage)
         profile?
-            .publisher(for: \.name).filterNil().assign(to: &$username)
+            .publisher(for: \.name)
+            .filterNil()
+            .assign(to: &$username)
 
         $fetchedMessages.load(predicate: NSPredicate(format: """
             chat == %@
@@ -72,6 +75,10 @@ final class ChatConversationViewModel: ObservableObject {
             .map { $0.map(ChatConversationItem.init) }
             .map { [ ChatConversationSection(date: Date(), messages: $0) ] }
             .assign(to: &$messages)
+
+        $messages
+            .map(\.last?.messages.last?.id)
+            .assign(to: &$lastMessageID)
     }
 
     private func setupActionBindings() {

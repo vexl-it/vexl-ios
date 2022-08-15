@@ -10,6 +10,7 @@ import Combine
 
 protocol GroupRepositoryType {
     func createOrUpdateGroup(payloads: [(GroupPayload, [String])]) -> AnyPublisher<Void, Error>
+    func update(group unsafeGroup: ManagedGroup, members: [String]) -> AnyPublisher<[String], Error>
     func delete(group: ManagedGroup) -> AnyPublisher<Void, Error>
 }
 
@@ -53,6 +54,29 @@ final class GroupRepository: GroupRepositoryType {
         }
         .asVoid()
         .eraseToAnyPublisher()
+    }
+
+    func update(group unsafeGroup: ManagedGroup, members: [String]) -> AnyPublisher<[String], Error> {
+        persistence.update(context: persistence.newEditContext()) { [persistence] context in
+            guard let group = persistence.loadSyncroniously(type: ManagedGroup.self, context: context, objectID: unsafeGroup.objectID) else {
+                return []
+            }
+            let currentMemberProfileSet = group.members as? Set<ManagedAnonymisedProfile> ?? .init()
+            let currentMemberSet = currentMemberProfileSet.compactMap(\.publicKey)
+
+            var newMemberSet = Set(members)
+            newMemberSet.subtract(currentMemberSet)
+
+            newMemberSet.forEach { publicKey in
+                let newMember = ManagedAnonymisedProfile(context: context)
+                newMember.publicKey = publicKey
+                newMember.group = group
+            }
+
+            let allMembers = group.members?.allObjects as? [ManagedAnonymisedProfile] ?? []
+
+            return allMembers.compactMap(\.publicKey)
+        }
     }
 
     func delete(group unsafeGroup: ManagedGroup) -> AnyPublisher<Void, Error> {

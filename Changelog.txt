@@ -1,8 +1,11 @@
 - Requires uninstall: ⚠️ YES ⚠️
 
 ### Improvements
-- VEX-446: Group creation (only on debug & devel)
+- VEX-446: Create group (only on debug & devel)
 - VEX-446: Offer encryption for group members
+- VEX-443: Join group
+- VEX-445: Update offer card to support group
+- VEX-447: Offer group filter
 - VEX-530: Remove OfferID dependence
 - VEX-540: Logout user when user receives unathorized response from BE
 - VEX-528: Updated the sorting for the offers and updated the offer type color
@@ -13,6 +16,9 @@
 - VEX-548: Restore onboarding state after killing app
 - VEX-546: Remove currency picker from onboarding
 - VEX-541: Update number of contact friends number
+- VEX-601: Avatar picker now has correct size
+- VEX-570: Added labels to friends degree picker
+- VEX-638: Encrypt offer for groups dynamically
 
 ### Fixes
 - VEX-525: Fixed common friends on chat request screen
@@ -22,5 +28,12 @@
 - VEX-544: Fixed crash when tapping filters in chat
 - VEX-279: Added back button when the requests are empty
 - VEX-572: fixed problems with anonymize dismiss
+- VEX-562: Follow latest message in chat
+- VEX-599: Fixed double percentage sign in phone card on onboarding
+- VEX-610: Added padding between button and keyboard on contact import scene
+- VEX-611: Fixed missing translation on the Identity anonymization page
+- VEX-612: Fixed missing translation for months in bitcoin graph
+- VEX-363: fixed fee amount calculation
+- VEX-582: added fee label to offer card
 
 ### Known Issues
