@@ -39,7 +39,7 @@ enum GroupRouter: ApiRouter {
         case .getGroup, .createGroup:
             return "groups"
         case .getNewMembers:
-            return "groups/members/new"
+            return "groups/members"
         case .joinGroup:
             return "groups/join"
         case .getExpiredGroups:
@@ -60,8 +60,11 @@ enum GroupRouter: ApiRouter {
         case .getNewMembers(let groupMemberPayloads):
             return [
                 "groups": groupMemberPayloads
-                    .compactMap { payload in
-                        try? Constants.jsonEncoder.encode(payload)
+                    .map { payload in
+                        [
+                            "groupUuid": payload.groupUuid,
+                            "publicKeys": payload.publicKeys
+                        ]
                     }
             ]
         case .joinGroup(let code):
