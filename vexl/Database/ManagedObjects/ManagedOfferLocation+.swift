@@ -11,4 +11,8 @@ extension ManagedOfferLocation {
     var locationSuggestion: LocationSuggestion {
         LocationSuggestion(suggestion: city ?? "", lat: lat, lon: lon)
     }
+
+    var offerLocation: OfferLocation? {
+        OfferLocation(managedLocation: self)
+    }
 }
