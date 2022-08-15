@@ -74,6 +74,7 @@ final class OfferLocationViewModel: ViewModelType, ObservableObject, Identifiabl
 
     private func setupBindings() {
         $isTextFieldFocused
+            .dropFirst()
             .filter { !$0 }
             .withUnretained(self)
             .sink { owner, _ in

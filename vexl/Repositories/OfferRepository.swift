@@ -38,7 +38,7 @@ class OfferRepository: OfferRepositoryType {
                 let managedLocation = ManagedOfferLocation(context: context)
                 managedLocation.lat = location.lat
                 managedLocation.lon = location.lon
-                managedLocation.name = location.suggestion
+                managedLocation.city = location.suggestion
                 return managedLocation
             }
 
@@ -76,8 +76,12 @@ class OfferRepository: OfferRepositoryType {
                 let managedLocation = ManagedOfferLocation(context: context)
                 managedLocation.lat = location.lat
                 managedLocation.lon = location.lon
-                managedLocation.name = location.suggestion
+                managedLocation.city = location.suggestion
                 return managedLocation
+            }
+
+            (offer.locations as? Set<ManagedOfferLocation>)?.forEach { location in
+                context.delete(location)
             }
 
             offer.locations = NSSet(array: managedLocations)

@@ -90,6 +90,7 @@ struct IsFocusTextField: UIViewRepresentable {
             string: placeholder
         )
         textField.textColor = R.color.yellow100()
+        textField.autocorrectionType = .no
         textField.attributedPlaceholder = NSAttributedString(
             string: placeholder,
             attributes: [.foregroundColor: R.color.gray4() ?? .gray]

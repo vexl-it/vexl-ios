@@ -9,6 +9,6 @@ import Foundation
 
 extension ManagedOfferLocation {
     var locationSuggestion: LocationSuggestion {
-        LocationSuggestion(suggestion: name ?? "", lat: lat, lon: lon)
+        LocationSuggestion(suggestion: city ?? "", lat: lat, lon: lon)
     }
 }

@@ -80,7 +80,7 @@ final class FilterViewModel: ViewModelType, ObservableObject {
         currentAmountRange = offerFilter.currentAmountRange ?? Constants.OfferInitialData.minOffer...Constants.OfferInitialData.maxOffer
         selectedFeeOptions = offerFilter.selectedFeeOptions
         feeAmount = offerFilter.feeAmount
-//        locations = offerFilter.locations
+        locationViewModels = offerFilter.locations.map(OfferLocationViewModel.init)
         selectedPaymentMethodOptions = offerFilter.selectedPaymentMethodOptions
         selectedBTCOptions = offerFilter.selectedBTCOptions
         selectedFriendDegreeOptions = offerFilter.selectedFriendDegreeOptions
@@ -139,7 +139,7 @@ final class FilterViewModel: ViewModelType, ObservableObject {
                 owner.offerFilter.currentAmountRange = owner.currentAmountRange
                 owner.offerFilter.selectedFeeOptions = owner.selectedFeeOptions
                 owner.offerFilter.feeAmount = owner.feeAmount
-//                owner.offerFilter.locations = owner.locations
+                owner.offerFilter.locations = owner.locationViewModels.compactMap(\.location)
                 owner.offerFilter.selectedPaymentMethodOptions = owner.selectedPaymentMethodOptions
                 owner.offerFilter.selectedBTCOptions = owner.selectedBTCOptions
                 owner.offerFilter.selectedFriendDegreeOptions = owner.selectedFriendDegreeOptions

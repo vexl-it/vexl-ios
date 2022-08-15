@@ -17,8 +17,8 @@ struct MapyResponse: Decodable {
 
 struct LocationSuggestion: Decodable, Hashable {
     let suggestion: String
-    let lat: Double
-    let lon: Double
+    let lat: Float
+    let lon: Float
 
     enum CodingKeys: String, CodingKey {
         case suggestion = "suggestFirstRow"
