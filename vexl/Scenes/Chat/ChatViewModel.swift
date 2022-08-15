@@ -215,6 +215,11 @@ final class ChatViewModel: ViewModelType, ObservableObject {
             .subscribe(route)
             .store(in: cancelBag)
 
+        inboxManager
+            .didDeleteChat
+            .map { _ -> Route in .dismissTapped }
+            .subscribe(route)
+            .store(in: cancelBag)
         // TODO: dismiss on delete ManagedObject
     }
 

@@ -75,6 +75,7 @@ final class ChatManager: ChatManagerType {
             .flatMap { [inboxRepository] in
                 inboxRepository.deleteChats(recevedPayloads: [payload], inbox: inbox)
             }
+            .asVoid()
             .eraseToAnyPublisher()
     }
 
@@ -129,6 +130,8 @@ final class ChatManager: ChatManagerType {
                 confirmation
                     ? inboxRepository.createOrUpdateChats(receivedPayloads: [payload], inbox: inbox)
                     : inboxRepository.deleteChats(recevedPayloads: [payload], inbox: inbox)
+                        .asVoid()
+                        .eraseToAnyPublisher()
             }
             .eraseToAnyPublisher()
     }
