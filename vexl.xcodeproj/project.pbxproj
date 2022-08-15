@@ -387,6 +387,7 @@
 		F1DF4A4F289C9F16008E5C87 /* FAQView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1DF4A4E289C9F16008E5C87 /* FAQView.swift */; };
 		F1DF4A51289D59BA008E5C87 /* AttributedText.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1DF4A50289D59BA008E5C87 /* AttributedText.swift */; };
 		F1DF4A53289D6BE4008E5C87 /* FAQContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1DF4A52289D6BE4008E5C87 /* FAQContent.swift */; };
+		F1EE5EFC28AAF36200E4EF76 /* UserOfferAttributedText.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1EE5EFB28AAF36200E4EF76 /* UserOfferAttributedText.swift */; };
 		F1F0FBD128A2FB3000C783D3 /* GroupsLeaveActionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1F0FBD028A2FB3000C783D3 /* GroupsLeaveActionSheet.swift */; };
 		F1F5F194283E9FC500968366 /* OfferPaymentIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1F5F193283E9FC500968366 /* OfferPaymentIconView.swift */; };
 		F1F5F199283FE52D00968366 /* ChatRequestCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1F5F198283FE52D00968366 /* ChatRequestCoordinator.swift */; };
@@ -826,6 +827,7 @@
 		F1E7029A2889C2D100EBB087 /* EditProfileNameView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfileNameView.swift; sourceTree = "<group>"; };
 		F1E7029B2889C2D100EBB087 /* EditProfileNameCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfileNameCoordinator.swift; sourceTree = "<group>"; };
 		F1E7029C2889C2D100EBB087 /* EditProfileNameViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfileNameViewModel.swift; sourceTree = "<group>"; };
+		F1EE5EFB28AAF36200E4EF76 /* UserOfferAttributedText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserOfferAttributedText.swift; sourceTree = "<group>"; };
 		F1F0FBD028A2FB3000C783D3 /* GroupsLeaveActionSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupsLeaveActionSheet.swift; sourceTree = "<group>"; };
 		F1F5F193283E9FC500968366 /* OfferPaymentIconView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferPaymentIconView.swift; sourceTree = "<group>"; };
 		F1F5F198283FE52D00968366 /* ChatRequestCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRequestCoordinator.swift; sourceTree = "<group>"; };
@@ -1494,6 +1496,7 @@
 		F11441A9284681EC00307D39 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				F1EE5EFA28AAF35100E4EF76 /* AttributedText */,
 				F1156AF228A1CAC200B9A5B9 /* CameraScannerView */,
 				F12A14F127D96FB00096543E /* ImportContacts */,
 				F11441AA284681EC00307D39 /* Buttons */,
@@ -1511,7 +1514,6 @@
 				F11441C0284681EC00307D39 /* LoadingIndicatorView.swift */,
 				F11441C1284681EC00307D39 /* SegmentedPickerView.swift */,
 				F11441C5284681EC00307D39 /* LinkTextView.swift */,
-				F1DF4A50289D59BA008E5C87 /* AttributedText.swift */,
 				F1A33E16289D71A500351997 /* PageControl.swift */,
 			);
 			path = Components;
@@ -2257,6 +2259,15 @@
 			path = FAQ;
 			sourceTree = "<group>";
 		};
+		F1EE5EFA28AAF35100E4EF76 /* AttributedText */ = {
+			isa = PBXGroup;
+			children = (
+				F1DF4A50289D59BA008E5C87 /* AttributedText.swift */,
+				F1EE5EFB28AAF36200E4EF76 /* UserOfferAttributedText.swift */,
+			);
+			path = AttributedText;
+			sourceTree = "<group>";
+		};
 		F1F0FBCF28A2F9E000C783D3 /* Leave */ = {
 			isa = PBXGroup;
 			children = (
@@ -2648,6 +2659,7 @@
 				B08F394B27AE7112008B344F /* ServerError.swift in Sources */,
 				F1DF4A48289B2941008E5C87 /* RefreshContainer.swift in Sources */,
 				F14D29C927BFEA1400D1CD85 /* OnboardingView+Presentation.swift in Sources */,
+				F1EE5EFC28AAF36200E4EF76 /* UserOfferAttributedText.swift in Sources */,
 				F1A9454427F81211009B5AE3 /* ContactsAvailable.swift in Sources */,
 				B0EEE11A27B14D3D0097031E /* WelcomeView.swift in Sources */,
 				F1BFA959280223BD00F4E745 /* UserProfileCoordinator.swift in Sources */,

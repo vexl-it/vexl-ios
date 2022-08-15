@@ -260,7 +260,8 @@
 "chat.filter.buy" = "Buyers";
 "chat.filter.sell" = "Sellers";
 "chat.messageMe" = "me:";
-"chat.request.name" = "%@ requested your identity.";
+"chat.request.identity.contact" = "%@ requested your identity.";
+"chat.request.identity.user" = "You requested identity reveal.";
 "chat.request.main.title" = "%@ Requests";
 "chat.request.accept" = "Accept";
 "chat.request.decline" = "Decline";
