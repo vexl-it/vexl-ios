@@ -17,6 +17,7 @@ final class MapyService: BaseService, MapyServiceType {
         request(type: MapyResponse.self, endpoint: MapyRouter.suggestions(text: text))
             .map(\.result)
             .map { $0.map { $0.userData } }
+            .map { $0.filter { !$0.city.isEmpty && $0.city.contains(text) } }
             .eraseToAnyPublisher()
     }
 }

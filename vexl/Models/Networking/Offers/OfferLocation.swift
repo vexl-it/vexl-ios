@@ -60,6 +60,6 @@ struct OfferLocation: Codable, Hashable {
         self.latitude = locationSuggestion.lat
         self.longitude = locationSuggestion.lon
         self.radius = radius
-        self.city = locationSuggestion.suggestion
+        self.city = locationSuggestion.city
     }
 }

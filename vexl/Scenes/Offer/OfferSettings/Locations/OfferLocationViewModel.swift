@@ -63,7 +63,7 @@ final class OfferLocationViewModel: ViewModelType, ObservableObject, Identifiabl
             .sink { owner, action in
                 switch action {
                 case .suggestionTap(let suggestionInfo):
-                    owner.name = suggestionInfo.suggestion
+                    owner.name = suggestionInfo.city
                     owner.didUserPickFromSuggestions = true
                     owner.isTextFieldFocused = false
                     owner.location = OfferLocation(locationSuggestion: suggestionInfo, radius: 1)
@@ -125,7 +125,7 @@ extension OfferLocationViewModel.State {
         case (.error, .error):
             return true
         case let (.results(lhsSuggestions), .results(rhsSuggestions)):
-            return lhsSuggestions.map(\.suggestion) == rhsSuggestions.map(\.suggestion)
+            return lhsSuggestions.map(\.city) == rhsSuggestions.map(\.city)
         default:
             return false
         }

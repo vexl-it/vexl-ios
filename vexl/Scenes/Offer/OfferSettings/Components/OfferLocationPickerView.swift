@@ -119,7 +119,7 @@ extension OfferLocationPickerView {
             ScrollView {
                 VStack {
                     ForEach(suggestions, id: \.self) { suggestionInfo in
-                        Text(suggestionInfo.suggestion)
+                        Text(suggestionInfo.city)
                             .textStyle(.paragraphMedium)
                             .foregroundColor(.white)
                             .frame(maxWidth: .infinity, alignment: .leading)
