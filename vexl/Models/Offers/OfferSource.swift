@@ -92,6 +92,15 @@ enum OfferFriendDegree: String, CaseIterable {
         }
     }
 
+    var offerLabel: String {
+        switch self {
+        case .firstDegree:
+            return L.offerCreateAdvancedFriendLevelFirst()
+        case .secondDegree:
+            return L.offerCreateAdvancedFriendLevelSecond()
+        }
+    }
+
     var convertToContactFriendLevel: ContactFriendLevel {
         switch self {
         case .firstDegree:

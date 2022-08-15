@@ -20,6 +20,7 @@ struct Appearance {
 
         static let black1 = Color(R.color.black1.name)
         static let purple1 = Color(R.color.purple1.name)
+        static let purple3 = Color(R.color.purple3.name)
         static let purple4 = Color(R.color.purple4.name)
         static let purple5 = Color(R.color.purple5.name)
         static let gray1 = Color(R.color.gray1.name)
@@ -67,6 +68,7 @@ struct Appearance {
 
         // MARK: Corner Radius
 
+        static let groupLabelCorner: CGFloat = 8
         static let containerCorner: CGFloat = 10
         static let buttonCorner: CGFloat = 12
         static let tabBarCorner: CGFloat = 16

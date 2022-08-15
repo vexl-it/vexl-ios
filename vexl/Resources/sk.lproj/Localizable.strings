@@ -17,6 +17,7 @@
 "got.it" = "Rozumím!";
 "continue" = "Pokračovat";
 "button.gotIt" = "Rozumím";
+"general.delete" = "Delete";
 "onboarding.intro.message.friend" = "Anonymní import přátel.";
 "onboarding.intro.message.buySell" = "Nabídky a poptávky od tvých kontaktů.";
 "onboarding.intro.message.request" = "Líbí se ti něčí nabídka? Spojte se a vexlujte!";
@@ -43,7 +44,7 @@
 "terms.of.use.terms.three.description.two" = "Important notice: ";
 "terms.of.use.terms.three.description.three" = "Vexl itself does not offer any instruments to facilitate Bitcoin transactions between the users. We do not monitor whether any trades took place between any of our users. The only objective of Vexl is to provide the users a safe and simple to use platform for finding and contacting each other and for discussing the terms of the trade.";
 "register.phone.number.input.title" = "Zadej své telefonní číslo";
-"register.phone.number.input.subtitle" = "Tvůj telefon bude 100\%% anonymní";
+"register.phone.number.input.subtitle" = "Tvůj telefon bude stoprocentně anonymní";
 "register.phone.number.not.valid" = "Telefonní číslo není správně";
 "register.phone.code.input.title" = "Poslali jsme ti kód";
 "register.phone.code.input.subtitle" = "Zadej ho níže a ověř %@";
@@ -52,6 +53,8 @@
 "register.phone.code.input.verifying" = "Ověřuji...";
 "register.phone.code.input.success" = "Povedlo se!";
 "register.phone.number.error" = "Zadej své číslo ve správném formátu včetně předvolby";
+"register.phone.number.code.sent" = "";
+"register.phone.number.expired" = "";
 "register.name.avatar.input.title" = "Jak ti kamarádi říkají?";
 "register.name.avatar.input.subtitle" = "Bez tvého svolení tvé jméno nikdo neuvidí.";
 "register.name.avatar.input.placeholder" = "Tvoje jméno nebo přezdívka";
@@ -63,9 +66,9 @@
 "register.name.avatar.photo.album" = "Knihovna";
 "register.name.avatar.image.picker" = "Vyber si, odkud chceš obrázek nahrát";
 "anonymize.user.title" = "Toto je tvá identita";
-"anonymize.user.title2" = "Identity anonymized!";
+"anonymize.user.title2" = "Identita anonymizována!";
 "anonymize.user.note" = "Bez tvého svolení nikdo tvoji identitu neuvidí.";
-"anonymize.user.note2" = "This is how other users will see you until you reveal your real identity.";
+"anonymize.user.note2" = "Takto vás uvidí ostatní uživatelé, než požádáte/schválíte o odkrytí identity.";
 "anonymize.user.btn" = "Anonymizovat";
 "register.contacts.import.button" = "Import kontaktů";
 "register.contacts.import.deselect" = "Zrušit výběr";
@@ -77,7 +80,7 @@
 "register.phone.contacts.title" = "Najít kamarády";
 "register.phone.contacts.subtitle" = "Vexl nevidí tvoje kontakty";
 "register.phone.alert.request.title" = "Povolit kontakty";
-"register.phone.alert.request.description" = "Vexl potřebuje přístup k tvým kontaktům. Nemusíš ale mít obavy, nikdo je neuvidí.";
+"register.phone.alert.request.description" = "Vexl potřebuje přístup k tvým kontaktům.\nNemusíš ale mít obavy, nikdo je neuvidí.";
 "register.phone.alert.reject.title" = "Opravdu?";
 "register.phone.alert.reject.description" = "Vexl potřebuje tvoje kontakty k tomu, aby tě anonymně spojil s ostatními vexláky.";
 "register.facebook.contacts.title" = "Propoj s Facebookem a rozšiř svůj dosah";
@@ -115,6 +118,8 @@
 "user.profile.edit.avatar.title" = "Change profile picture";
 "user.profile.edit.avatar.subtitle" = "Space for additional copy. You can lorem ipsum dolor sit ametum roma von.";
 "user.profile.edit.avatar.action" = "Upload new photo";
+"user.profile.edit.avatar.delete" = "";
+"user.profile.edit.avatar.empty.image.error" = "";
 "user.profile.delete.account.title" = "Delete account?";
 "user.profile.delete.account.subtitle" = "Do you really want to delete your account? You will never be able to undo this action.";
 "user.profile.delete.account.no" = "Nope";
@@ -127,6 +132,10 @@
 "user.profile.donate.description" = "Pokud se ti Vexl líbí, budeme rádi za trochu Bitcoinu na jeho další vylepšování.";
 "user.profile.donate.button.donate" = "Darovat";
 "user.profile.donate.button.dismiss" = "Zpět";
+"user.profile.delete.photo.title" = "";
+"user.profile.delete.photo.subtitle" = "";
+"user.profile.delete.photo.no" = "";
+"user.profile.delete.photo.yes" = "";
 "user.profile.currency.title" = "Měna";
 "user.profile.currency.czk" = "Česká koruna";
 "user.profile.currency.eur" = "Euro";
@@ -162,13 +171,15 @@
 "marketplace.phone.contact" = "Kontakt z telefonu";
 "marketplace.sell.offer" = "Moje nabídky";
 "marketplace.buy.add" = "+";
-"marketplace.detail.upTo" = "Max %@";
 "marketplace.detail.friend.first" = "Přítel";
 "marketplace.detail.friend.second" = "Přítel přítele";
 "marketplace.detail.sell" = "K prodeji";
 "marketplace.detail.buy" = "K nákupu";
 "marketplace.detail.user.sell" = "%@ prodává";
 "marketplace.detail.user.buy" = "%@ nakupuje";
+"marketplace.detail.up.to" = "Max";
+"marketplace.detail.fee" = "Zahrnuje %1$@ %% transakční poplatek";
+"marketplace.sign.for.thousand" = "t";
 "offer.request" = "Žádost";
 "offer.requested" = "Žádost poslána";
 "offer.sell.title" = "Moje nabídky prodeje";
@@ -224,7 +235,7 @@
 "offer.create.advanced.type.lightning" = "Lightning";
 "offer.create.advanced.type.chain" = "On-chain";
 "offer.create.advanced.group.title" = "Skupina";
-"offer.create.advanced.group.description" = "Select if you want to see\noffers only from specific group";
+"offer.create.advanced.group.description" = "Sdílej offer ve skupině";
 "offer.create.description" = "Popis";
 "offer.create.description.placeholder" = "Popiš svou nabídku";
 "offer.create.currency" = "Měna";
