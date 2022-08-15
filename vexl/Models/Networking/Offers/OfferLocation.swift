@@ -10,14 +10,12 @@ import Foundation
 struct OfferLocation: Codable, Hashable {
     let latitude: Float
     let longitude: Float
-    let radius: Float
     let city: String
 
     var asString: String? {
         let json: [String: Any] = [
             "latitude": latitude,
             "longitude": longitude,
-            "radius": radius,
             "city": city
         ]
 
@@ -37,7 +35,6 @@ struct OfferLocation: Codable, Hashable {
 
         self.latitude = managedLocation.lat
         self.longitude = managedLocation.lon
-        self.radius = 1
         self.city = city
     }
 
@@ -56,10 +53,9 @@ struct OfferLocation: Codable, Hashable {
     ///
     /// Use this init when creating from autocomplete on offer creation, update or filter
     ///
-    init?(locationSuggestion: LocationSuggestion, radius: Float) {
+    init?(locationSuggestion: LocationSuggestion) {
         self.latitude = locationSuggestion.lat
         self.longitude = locationSuggestion.lon
-        self.radius = radius
         self.city = locationSuggestion.city
     }
 }

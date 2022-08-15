@@ -30,7 +30,7 @@ enum MapyRouter: ApiRouter {
         case .suggestions(let text):
             return [
                 "phrase": text,
-                "count": 5,
+                "count": 10,
                 "lang": "cs"
             ]
         }

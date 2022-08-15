@@ -66,7 +66,7 @@ final class OfferLocationViewModel: ViewModelType, ObservableObject, Identifiabl
                     owner.name = suggestionInfo.city
                     owner.didUserPickFromSuggestions = true
                     owner.isTextFieldFocused = false
-                    owner.location = OfferLocation(locationSuggestion: suggestionInfo, radius: 1)
+                    owner.location = OfferLocation(locationSuggestion: suggestionInfo)
                 }
             }
             .store(in: cancelBag)
@@ -78,13 +78,12 @@ final class OfferLocationViewModel: ViewModelType, ObservableObject, Identifiabl
             .filter { !$0 }
             .withUnretained(self)
             .sink { owner, _ in
-                owner.state = .noUserInteraction
-
                 if !owner.didUserPickFromSuggestions {
                     owner.name = ""
                 }
 
                 owner.didUserPickFromSuggestions = false
+                owner.state = .noUserInteraction
             }
             .store(in: cancelBag)
 

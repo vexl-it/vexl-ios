@@ -59,6 +59,7 @@ extension OfferLocationPickerView {
     struct LocationView: View {
         @ObservedObject var viewModel: OfferLocationViewModel
         let deleteAction: () -> Void
+        @State private var suggestionSize: CGSize = .zero
 
         var body: some View {
             VStack {
@@ -85,22 +86,11 @@ extension OfferLocationPickerView {
 
         private var locationInput: some View {
             HStack {
-                HStack {
-                    IsFocusTextField(
-                        placeholder: "City",
-                        text: $viewModel.name,
-                        isFocused: $viewModel.isTextFieldFocused
-                    )
-
-                    Spacer()
-
-                    VLine(color: Appearance.Colors.gray2,
-                          width: 2)
-                        .padding(.trailing, Appearance.GridGuide.smallPadding)
-
-                    Text("1km")
-                        .foregroundColor(Appearance.Colors.whiteText)
-                }
+                IsFocusTextField(
+                    placeholder: "City",
+                    text: $viewModel.name,
+                    isFocused: $viewModel.isTextFieldFocused
+                )
                 .padding(Appearance.GridGuide.mediumPadding1)
                 .background(Appearance.Colors.gray1)
                 .cornerRadius(Appearance.GridGuide.buttonCorner)
@@ -119,19 +109,34 @@ extension OfferLocationPickerView {
             ScrollView {
                 VStack {
                     ForEach(suggestions, id: \.self) { suggestionInfo in
-                        Text(suggestionInfo.city)
-                            .textStyle(.paragraphMedium)
-                            .foregroundColor(.white)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .padding()
-                            .background(Color.black)
-                            .onTapGesture {
-                                viewModel.send(action: .suggestionTap(suggestionInfo))
+                        VStack {
+                            Group {
+                                Text(suggestionInfo.city)
+                                    .textStyle(.paragraphMedium)
+
+                                Text(String(format: "%@, %@", suggestionInfo.region, suggestionInfo.country))
+                                    .textStyle(.paragraphSmall)
                             }
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .foregroundColor(.white)
+                        }
+                        .padding()
+                        .readSize(onChange: {
+                            if suggestionSize.height.isZero {
+                                suggestionSize = $0
+                            }
+                        })
+                        .background(Color.black)
+                        .onTapGesture {
+                            viewModel.send(action: .suggestionTap(suggestionInfo))
+                        }
+
+                        HLine(color: Appearance.Colors.whiteOpaque,
+                              height: 1)
                     }
                 }
             }
-            .frame(height: 200)
+            .frame(height: min(200, CGFloat(suggestions.count + 1) * suggestionSize.height))
         }
     }
 }

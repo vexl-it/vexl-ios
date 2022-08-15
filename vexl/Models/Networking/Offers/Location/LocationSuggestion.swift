@@ -29,7 +29,7 @@ struct LocationSuggestion: Decodable, Hashable {
         case lat = "latitude"
         case lon = "longitude"
     }
-    
+
     init(city: String, lat: Float, lon: Float) {
         self.city = city
         self.lat = lat
@@ -37,19 +37,12 @@ struct LocationSuggestion: Decodable, Hashable {
         self.region = ""
         self.country = ""
     }
-}
 
-//mapper = {
-//    it?.result?.map { a ->
-//        LocationSuggestion(
-//            a.userData.municipality,
-//            a.userData.region,
-//            a.userData.country,
-//            BigDecimal(a.userData.latitude),
-//            BigDecimal(a.userData.longitude)
-//        )
-//    }
-//    ?.filter { a -> a.city.isNotBlank() }
-//    ?.distinctBy { a -> a.city }
-//    ?.filter { a -> a.city.contains(query, ignoreCase = true) }.orEmpty()
-//}
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(city)
+    }
+
+    static func == (lhs: LocationSuggestion, rhs: LocationSuggestion) -> Bool {
+        lhs.city == rhs.city
+    }
+}
