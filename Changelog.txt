@@ -36,5 +36,6 @@
 - VEX-612: Fixed missing translation for months in bitcoin graph
 - VEX-363: fixed fee amount calculation
 - VEX-582: added fee label to offer card
+- VEX-657: Common friends scrolling is now horizontal
 
 ### Known Issues
