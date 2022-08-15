@@ -87,6 +87,10 @@ struct OfferFilter: Equatable {
             predicateList.append(NSCompoundPredicate(orPredicateWithSubpredicates: groupPredicates))
         }
 
+        if !locations.isEmpty {
+            
+        }
+
         return NSCompoundPredicate(andPredicateWithSubpredicates: predicateList)
     }
 
