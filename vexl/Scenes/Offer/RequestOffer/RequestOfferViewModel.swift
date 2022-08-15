@@ -129,9 +129,7 @@ final class RequestOfferViewModel: ViewModelType, ObservableObject {
             .flatMap { [persistence, offer] _ in
                 persistence.update(context: persistence.viewContext) { _ in
                     offer.isRequested = true
-                    return offer
                 }
-                .asVoid()
                 .justOnError()
             }
             .map { Route.requestSent }

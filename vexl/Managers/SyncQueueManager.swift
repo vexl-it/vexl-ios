@@ -138,9 +138,7 @@ final class SyncQueueManager: SyncQueueManagerType {
                 owner.persistence
                     .update(context: owner.$queue.context) { _ in
                         offer.id = offerPayload.offerId
-                        return offer
                     }
-                    .asVoid()
                     .eraseToAnyPublisher()
             }
             .eraseToAnyPublisher()
@@ -172,9 +170,7 @@ final class SyncQueueManager: SyncQueueManagerType {
                 owner.persistence
                     .update(context: owner.$queue.context) { _ in
                         offer.id = offerPayload.offerId
-                        return offer
                     }
-                    .asVoid()
                     .eraseToAnyPublisher()
             }
             .eraseToAnyPublisher()

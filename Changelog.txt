@@ -1,8 +1,10 @@
 - Requires uninstall: ⚠️ YES ⚠️
 
 ### Improvements
-- VEX-446: Group creation (only on debug & devel)
+- VEX-446: Create group (only on debug & devel)
 - VEX-446: Offer encryption for group members
+- VEX-443: Join group
+- VEX-445: Update offer card to support group
 - VEX-447: Offer group filter
 - VEX-530: Remove OfferID dependence
 - VEX-540: Logout user when user receives unathorized response from BE
@@ -13,6 +15,7 @@
 - VEX-549/546: Improved phone registry so that number is stored + default country code is set
 - VEX-548: Restore onboarding state after killing app
 - VEX-546: Remove currency picker from onboarding
+- VEX-638: Encrypt offer for groups dynamically
 
 ### Fixes
 - VEX-525: Fixed common friends on chat request screen
@@ -28,5 +31,6 @@
 - VEX-611: Fixed missing translation on the Identity anonymization page
 - VEX-612: Fixed missing translation for months in bitcoin graph
 - VEX-363: fixed fee amount calculation
+- VEX-582: added fee label to offer card
 
 ### Known Issues
