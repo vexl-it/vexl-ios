@@ -88,7 +88,9 @@ struct OfferFilter: Equatable {
         }
 
         if !locations.isEmpty {
-            
+            let locationPredicates = locations
+                .map { NSPredicate(format: "ANY locations.city == %@", $0.city) }
+            predicateList.append(NSCompoundPredicate(orPredicateWithSubpredicates: locationPredicates))
         }
 
         return NSCompoundPredicate(andPredicateWithSubpredicates: predicateList)
