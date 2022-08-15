@@ -79,7 +79,11 @@ extension InboxItemView {
             case .message:
                 return "\(message.isContact ? "\(L.chatMessageMe()) " : "")\(message.text ?? "")"
             case .revealRequest:
-                return message.isContact ? L.chatRequestIdentityContact(username) : L.chatRequestIdentityUser()
+                return message.isContact ? L.chatRequestIdentityReceive() : L.chatRequestIdentitySent()
+            case .revealApproval:
+                return L.chatRequestIdentityApprove()
+            case .revealRejected:
+                return L.chatRequestIdentityDecline()
             default:
                 return ""
             }
@@ -88,7 +92,11 @@ extension InboxItemView {
             guard let message = lastMessage else { return nil }
             switch message.type {
             case .revealRequest:
-                return R.image.onboarding.eye.name
+                return R.image.chat.revealRequestIcon.name
+            case .revealApproval:
+                return R.image.chat.revealApprovedIcon.name
+            case .revealRejected:
+                return R.image.chat.revealDeclineIcon.name
             default:
                 return nil
             }
@@ -96,7 +104,7 @@ extension InboxItemView {
         var detailColor: Color {
             guard let message = lastMessage else { return Appearance.Colors.gray4 }
             switch message.type {
-            case .revealRequest:
+            case .revealRequest, .revealRejected, .revealApproval:
                 return Appearance.Colors.whiteText
             default:
                 return Appearance.Colors.gray4
@@ -105,7 +113,7 @@ extension InboxItemView {
         var detailTextStyle: Appearance.TextStyle {
             guard let message = lastMessage else { return .paragraphSmall }
             switch message.type {
-            case .revealRequest:
+            case .revealRequest, .revealRejected, .revealApproval:
                 return .paragraphSmallBold
             default:
                 return .paragraphSmall

@@ -260,8 +260,10 @@
 "chat.filter.buy" = "Kupující";
 "chat.filter.sell" = "Prodávající";
 "chat.messageMe" = "já:";
-"chat.request.identity.contact" = "%@ si vyžádal tvou identitu.";
-"chat.request.identity.user" = "You requested identity reveal.";
+"chat.request.identity.sent" = "Identity reveal request sent!";
+"chat.request.identity.receive" = "Identity reveal request received!";
+"chat.request.identity.decline" = "Declined to reveal identity";
+"chat.request.identity.approve" = "Identity revealed!";
 "chat.request.main.title" = "%@ Žádosti";
 "chat.request.accept" = "Přijmout";
 "chat.request.decline" = "Odmítnout";

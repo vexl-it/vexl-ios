@@ -20,7 +20,7 @@
 - VEX-601: Avatar picker now has correct size
 - VEX-570: Added labels to friends degree picker
 - VEX-638: Encrypt offer for groups dynamically
-- VEX-562: Showing message in the inbox list when the its a reveal identity request.
+- VEX-562/VEX-655: Showing message in the inbox list when the its a reveal identity request, approval and decline.
 
 ### Fixes
 - VEX-525: Fixed common friends on chat request screen
