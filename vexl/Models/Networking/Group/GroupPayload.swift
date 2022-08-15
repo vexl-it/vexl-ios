@@ -27,7 +27,7 @@ struct GroupPayload: Codable {
     var asJson: [String: Any] {
         var json: [String: Any] = [
             "name": name,
-            "expiration": expirationAt,
+            "expirationAt": expirationAt,
             "closureAt": closureAt
         ]
         if let logoData = logoData, let logoExtension = logoExtension {

@@ -26,7 +26,8 @@ class BaseService {
             .receive(on: scheduler, options: nil)
             .withUnretained(self)
             .tryMap { owner, data -> T in
-                try owner.serialize(data: data, toObject: T.self, rootKey: endpoint.rootKey)
+                // swiftlint:disable:next force_try
+                try! owner.serialize(data: data, toObject: T.self, rootKey: endpoint.rootKey)
             }
             .eraseToAnyPublisher()
     }

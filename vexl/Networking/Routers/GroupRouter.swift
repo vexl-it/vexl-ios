@@ -39,7 +39,7 @@ enum GroupRouter: ApiRouter {
         case .getGroup, .createGroup:
             return "groups"
         case .getNewMembers:
-            return "groups/members/new"
+            return "groups/members"
         case .joinGroup:
             return "groups/join"
         case .getExpiredGroups:
