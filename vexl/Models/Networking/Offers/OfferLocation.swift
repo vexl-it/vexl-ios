@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct OfferLocation: Codable {
+struct OfferLocation: Codable, Hashable {
     let latitude: Float
     let longitude: Float
     let radius: Float
@@ -27,6 +27,9 @@ struct OfferLocation: Codable {
         return String(data: data, encoding: .utf8)
     }
 
+    ///
+    /// Use this init when creating from local storage
+    ///
     init?(managedLocation: ManagedOfferLocation) {
         guard let city = managedLocation.city,
               managedLocation.lat > 0,
@@ -38,6 +41,9 @@ struct OfferLocation: Codable {
         self.city = city
     }
 
+    ///
+    /// Use this init when initializing from Networking
+    ///
     init?(string: String) {
         guard let data = string.data(using: .utf8) else { return nil }
         do {
@@ -45,5 +51,15 @@ struct OfferLocation: Codable {
         } catch {
             return nil
         }
+    }
+
+    ///
+    /// Use this init when creating from autocomplete on offer creation, update or filter
+    ///
+    init?(locationSuggestion: LocationSuggestion, radius: Float) {
+        self.latitude = locationSuggestion.lat
+        self.longitude = locationSuggestion.lon
+        self.radius = radius
+        self.city = locationSuggestion.suggestion
     }
 }

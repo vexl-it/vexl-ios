@@ -218,7 +218,7 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
 
             let managedLocations = offer.locations?.allObjects as? [ManagedOfferLocation] ?? []
             locationViewModels = managedLocations.map {
-                OfferLocationViewModel(location: $0.locationSuggestion)
+                OfferLocationViewModel(location: $0.offerLocation)
             }
         }
 

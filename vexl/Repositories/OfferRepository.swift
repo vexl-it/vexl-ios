@@ -11,9 +11,9 @@ import Combine
 import UIKit
 
 protocol OfferRepositoryType {
-    func createOffer(keys: ECCKeys, locations: [LocationSuggestion], provider: @escaping (ManagedOffer) -> Void) -> AnyPublisher<ManagedOffer, Error>
+    func createOffer(keys: ECCKeys, locations: [OfferLocation], provider: @escaping (ManagedOffer) -> Void) -> AnyPublisher<ManagedOffer, Error>
 
-    func update(offer: ManagedOffer, locations: [LocationSuggestion], provider: @escaping (ManagedOffer) -> Void) -> AnyPublisher<ManagedOffer, Error>
+    func update(offer: ManagedOffer, locations: [OfferLocation], provider: @escaping (ManagedOffer) -> Void) -> AnyPublisher<ManagedOffer, Error>
 
     func createOrUpdateOffer(offerPayloads: [OfferPayload]) -> AnyPublisher<[ManagedOffer], Error>
 
@@ -30,15 +30,15 @@ class OfferRepository: OfferRepositoryType {
 
     func createOffer(
         keys: ECCKeys,
-        locations: [LocationSuggestion],
+        locations: [OfferLocation],
         provider: @escaping (ManagedOffer) -> Void
     ) -> AnyPublisher<ManagedOffer, Error> {
         persistence.insert(context: persistence.viewContext) { [userRepository] context in
             let managedLocations = locations.map { location -> ManagedOfferLocation in
                 let managedLocation = ManagedOfferLocation(context: context)
-                managedLocation.lat = location.lat
-                managedLocation.lon = location.lon
-                managedLocation.city = location.suggestion
+                managedLocation.lat = location.latitude
+                managedLocation.lon = location.longitude
+                managedLocation.city = location.city
                 return managedLocation
             }
 
@@ -68,15 +68,15 @@ class OfferRepository: OfferRepositoryType {
 
     func update(
         offer: ManagedOffer,
-        locations: [LocationSuggestion],
+        locations: [OfferLocation],
         provider: @escaping (ManagedOffer) -> Void
     ) -> AnyPublisher<ManagedOffer, Error> {
         persistence.update(context: persistence.viewContext) { context in
             let managedLocations = locations.map { location -> ManagedOfferLocation in
                 let managedLocation = ManagedOfferLocation(context: context)
-                managedLocation.lat = location.lat
-                managedLocation.lon = location.lon
-                managedLocation.city = location.suggestion
+                managedLocation.lat = location.latitude
+                managedLocation.lon = location.longitude
+                managedLocation.city = location.city
                 return managedLocation
             }
 

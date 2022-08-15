@@ -12,7 +12,7 @@ struct OfferFilter: Equatable {
     var currentAmountRange: ClosedRange<Int>?
     var selectedFeeOptions: [OfferFeeOption] = []
     var feeAmount: Double = 1
-    var locations: [LocationSuggestion] = []
+    var locations: [OfferLocation] = []
     var selectedPaymentMethodOptions: [OfferPaymentMethodOption] = []
     var selectedBTCOptions: [OfferAdvancedBTCOption] = []
     var selectedFriendDegreeOptions: [OfferFriendDegree] = []

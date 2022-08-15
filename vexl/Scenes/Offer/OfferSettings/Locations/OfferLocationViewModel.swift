@@ -45,13 +45,13 @@ final class OfferLocationViewModel: ViewModelType, ObservableObject, Identifiabl
 
     // MARK: - Variables
 
-    var location: LocationSuggestion?
+    var location: OfferLocation?
     private var didUserPickFromSuggestions = false
     private let cancelBag: CancelBag = .init()
 
-    init(location: LocationSuggestion? = nil) {
+    init(location: OfferLocation? = nil) {
         self.location = location
-        self.name = location?.suggestion ?? ""
+        self.name = location?.city ?? ""
 
         setupBindings()
         setupActions()
@@ -66,7 +66,7 @@ final class OfferLocationViewModel: ViewModelType, ObservableObject, Identifiabl
                     owner.name = suggestionInfo.suggestion
                     owner.didUserPickFromSuggestions = true
                     owner.isTextFieldFocused = false
-                    owner.location = suggestionInfo
+                    owner.location = OfferLocation(locationSuggestion: suggestionInfo, radius: 1)
                 }
             }
             .store(in: cancelBag)
