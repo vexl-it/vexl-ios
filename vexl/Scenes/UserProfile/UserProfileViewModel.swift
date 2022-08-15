@@ -31,6 +31,9 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
 
     // MARK: - View Bindings
 
+    @Fetched(fetchImmediately: false)
+    private var contacts: [ManagedContact]
+
     @Published var numberOfContacts: Int = 0
 
     @Published var primaryActivity: Activity = .init()
@@ -77,7 +80,6 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
     init(bitcoinViewModel: BitcoinViewModel) {
         self.bitcoinViewModel = bitcoinViewModel
         setupActivity()
-        setupDataBindings()
         setupBindings()
         setupUpdateUser()
     }
@@ -105,15 +107,6 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
             .assign(to: &$error)
     }
 
-    private func setupDataBindings() {
-        contactService
-            .countPhoneContacts()
-            .track(activity: primaryActivity)
-            .materialize()
-            .compactMap(\.value)
-            .assign(to: &$numberOfContacts)
-    }
-
     private func setupUpdateUser() {
         let profile = userRepository.user?.profile
 
@@ -126,6 +119,16 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
             .publisher(for: \.avatarData)
             .compactMap { _ in profile?.avatar }
             .assign(to: &$avatar)
+
+        $contacts
+            .publisher
+            .map(\.objects)
+            .map { $0.count }
+            .assign(to: &$numberOfContacts)
+
+        $contacts
+            .load(sortDescriptors: nil,
+                  predicate: NSPredicate(format: "sourceRawType == %@", "phone"))
     }
 
     private func setupBindings() {

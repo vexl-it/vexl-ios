@@ -51,7 +51,7 @@ private struct RegisterAvatarAddImageView: View {
     var addAction: () -> Void
     var deleteAction: () -> Void
 
-    private let defaultImageSize: CGSize = Appearance.GridGuide.avatarSize
+    private let defaultImageSize: CGSize = Appearance.GridGuide.avatarPickerSize
 
     var body: some View {
         VStack(alignment: .center) {
