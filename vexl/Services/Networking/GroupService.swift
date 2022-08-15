@@ -13,7 +13,7 @@ protocol GroupServiceType {
     func getGroup(code: Int) -> AnyPublisher<GroupPayload, Error>
     func createGroup(payload: GroupPayload) -> AnyPublisher<GroupPayload, Error>
     func getNewMembers(groups: [ManagedGroup]) -> AnyPublisher<[GroupMemberPayload], Error>
-    func getNewMembers(uuid: String?) -> AnyPublisher<GroupMemberPayload, Error>
+    func getAllMembers(uuid: String?) -> AnyPublisher<GroupMemberPayload, Error>
     func joinGroup(code: Int) -> AnyPublisher<Void, Error>
     func getExpiredGroups(groups: [ManagedGroup]) -> AnyPublisher<[GroupPayload], Error>
     func getUserGroups() -> AnyPublisher<[GroupPayload], Error>
@@ -45,7 +45,7 @@ final class GroupService: BaseService, GroupServiceType {
         getNewMembers(memberRequest: groups.compactMap(GroupMemberPayload.init))
     }
 
-    func getNewMembers(uuid: String?) -> AnyPublisher<GroupMemberPayload, Error> {
+    func getAllMembers(uuid: String?) -> AnyPublisher<GroupMemberPayload, Error> {
         guard let uuid = uuid else {
             return Fail(error: PersistenceError.insufficientData)
                 .eraseToAnyPublisher()

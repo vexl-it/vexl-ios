@@ -41,7 +41,7 @@ protocol PersistenceStoreManagerType {
         objectID: NSManagedObjectID
     ) -> T?
 
-    func update<T: NSManagedObject>(context: NSManagedObjectContext, editor: @escaping (NSManagedObjectContext) -> T) -> AnyPublisher<T, Error>
+    func update<T>(context: NSManagedObjectContext, editor: @escaping (NSManagedObjectContext) -> T) -> AnyPublisher<T, Error>
 
     func delete<T: NSManagedObject>(context: NSManagedObjectContext, object: T) -> AnyPublisher<Void, Error>
     func delete<T: NSManagedObject>(context: NSManagedObjectContext, editor: @escaping (NSManagedObjectContext) -> [T]) -> AnyPublisher<Void, Error>
@@ -262,7 +262,7 @@ final class PersistenceStoreManager: PersistenceStoreManagerType {
         return object
     }
 
-    func update<T: NSManagedObject>(context: NSManagedObjectContext, editor: @escaping (NSManagedObjectContext) -> T) -> AnyPublisher<T, Error> {
+    func update<T>(context: NSManagedObjectContext, editor: @escaping (NSManagedObjectContext) -> T) -> AnyPublisher<T, Error> {
         Future { promise in
             context.perform {
                 promise(.success(editor(context)))
