@@ -16,10 +16,10 @@ struct Constants {
 
     struct API {
         #if APPSTORE
-        private static let userApiHostname = "https://user.vexl.staging.cleevio.io"
-        private static let contactsApiHostname = "https://contact.vexl.staging.cleevio.io"
-        private static let offersApiHostname = "https://offer.vexl.staging.cleevio.io"
-        private static let chatApiHostname = "https://chat.vexl.staging.cleevio.io"
+        private static let userApiHostname = "https://user.vexl.it"
+        private static let contactsApiHostname = "https://contact.vexl.it"
+        private static let offersApiHostname = "https://offer.vexl.it"
+        private static let chatApiHostname = "https://chat.vexl.it"
         #elseif STAGING
         private static let userApiHostname = "https://user.vexl.staging.cleevio.io"
         private static let contactsApiHostname = "https://contact.vexl.staging.cleevio.io"
