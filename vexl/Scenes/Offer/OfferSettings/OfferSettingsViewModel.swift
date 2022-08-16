@@ -133,7 +133,7 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
             return false
         }
 
-        return !description.isEmpty
+        return !description.isEmpty && !locationViewModels.compactMap(\.location).isEmpty
     }
 
     var headerTitle: String {
@@ -288,7 +288,9 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
             .filter { $0 == .addLocation }
             .withUnretained(self)
             .sink { owner, _ in
-                owner.locationViewModels.append(.init())
+                let locationViewModel = OfferLocationViewModel()
+                owner.setupLocationBindings(for: locationViewModel)
+                owner.locationViewModels.append(locationViewModel)
             }
             .store(in: cancelBag)
 
@@ -389,6 +391,15 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
             .withUnretained(self)
             .sink { owner, _ in
                 owner.route.send(.offerDeleted)
+            }
+            .store(in: cancelBag)
+    }
+
+    private func setupLocationBindings(for locationViewModel: OfferLocationViewModel) {
+        locationViewModel.$name
+            .withUnretained(self)
+            .sink { owner, _ in
+                owner.objectWillChange.send()
             }
             .store(in: cancelBag)
     }
