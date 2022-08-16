@@ -80,12 +80,14 @@ final class RequestAccessFacebookContactsViewModel: RequestAccessContactsViewMod
             .filter(\.1.challengeVerified)
             .flatMap { [notificationManager] _ in
                 notificationManager.isRegisteredForNotifications
-                    .flatMap { isRegistered -> AnyPublisher<String, Never> in
+                    .flatMap { isRegistered -> AnyPublisher<String?, Never> in
                         guard isRegistered else {
-                            return Just(Constants.fakePushNotificationToken)
+                            return Just(nil)
                                 .eraseToAnyPublisher()
                         }
                         return notificationManager.notificationToken
+                            .asOptional()
+                            .eraseToAnyPublisher()
                     }
             }
             .withUnretained(self)
