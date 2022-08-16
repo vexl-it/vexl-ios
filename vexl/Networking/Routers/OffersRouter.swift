@@ -13,6 +13,7 @@ enum OffersRouter: ApiRouter {
     case getOffers(pageLimit: Int?)
     case getUserOffers(offerIds: [String])
     case getNewOffers(pageLimit: Int?, lastSyncDate: Date)
+    case createNewPrivateParts(offerID: String, offerPayloads: [OfferPayload])
 
     case deleteOffers(offerIds: [String])
     case updateOffer(offer: [OfferPayload], offerId: String)
@@ -21,7 +22,7 @@ enum OffersRouter: ApiRouter {
         switch self {
         case .getOffers, .getUserOffers, .getNewOffers:
             return .get
-        case .createOffer:
+        case .createOffer, .createNewPrivateParts:
             return .post
         case .deleteOffers:
             return .delete
@@ -42,6 +43,8 @@ enum OffersRouter: ApiRouter {
             return "offers/me"
         case .createOffer, .getUserOffers, .deleteOffers, .updateOffer:
             return "offers"
+        case .createNewPrivateParts:
+            return "offers/private-part"
         }
     }
 
@@ -70,6 +73,12 @@ enum OffersRouter: ApiRouter {
             let offers = offer.map { $0.asJson }
             return ["offerId": offerId,
                     "offerPrivateCreateList": offers]
+        case let .createNewPrivateParts(offerID, offers):
+            let offers = offers.map { $0.asJson }
+            return [
+                "offerId": offerID,
+                "privateParts": offers
+            ]
         }
     }
 
