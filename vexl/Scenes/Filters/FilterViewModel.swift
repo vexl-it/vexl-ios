@@ -21,7 +21,7 @@ final class FilterViewModel: ViewModelType, ObservableObject {
     enum UserAction: Equatable {
         case dismissTap
         case addLocation
-        case deleteLocation(id: Int)
+        case deleteLocation(id: String)
         case resetFilter
         case applyFilter
     }
@@ -40,8 +40,6 @@ final class FilterViewModel: ViewModelType, ObservableObject {
     @Published var selectedFeeOptions: [OfferFeeOption] = []
     @Published var feeAmount: Double
 
-    @Published var locations: [OfferLocationItemData]
-
     @Published var selectedPaymentMethodOptions: [OfferPaymentMethodOption]
 
     @Published var selectedBTCOptions: [OfferAdvancedBTCOption]
@@ -51,6 +49,8 @@ final class FilterViewModel: ViewModelType, ObservableObject {
     @Published var selectedGroups: [ManagedGroup] = []
 
     @Published var currency: Currency?
+
+    @Published var locationViewModels: [OfferLocationViewModel] = []
 
     var filterType: String { offerFilter.type.title }
     var formatedFeeAmount: String {
@@ -80,7 +80,7 @@ final class FilterViewModel: ViewModelType, ObservableObject {
         currentAmountRange = offerFilter.currentAmountRange ?? Constants.OfferInitialData.minOffer...Constants.OfferInitialData.maxOffer
         selectedFeeOptions = offerFilter.selectedFeeOptions
         feeAmount = offerFilter.feeAmount
-        locations = offerFilter.locations
+        locationViewModels = offerFilter.locations.map(OfferLocationViewModel.init)
         selectedPaymentMethodOptions = offerFilter.selectedPaymentMethodOptions
         selectedBTCOptions = offerFilter.selectedBTCOptions
         selectedFriendDegreeOptions = offerFilter.selectedFriendDegreeOptions
@@ -139,7 +139,7 @@ final class FilterViewModel: ViewModelType, ObservableObject {
                 owner.offerFilter.currentAmountRange = owner.currentAmountRange
                 owner.offerFilter.selectedFeeOptions = owner.selectedFeeOptions
                 owner.offerFilter.feeAmount = owner.feeAmount
-                owner.offerFilter.locations = owner.locations
+                owner.offerFilter.locations = owner.locationViewModels.compactMap(\.location)
                 owner.offerFilter.selectedPaymentMethodOptions = owner.selectedPaymentMethodOptions
                 owner.offerFilter.selectedBTCOptions = owner.selectedBTCOptions
                 owner.offerFilter.selectedFriendDegreeOptions = owner.selectedFriendDegreeOptions
@@ -172,33 +172,24 @@ final class FilterViewModel: ViewModelType, ObservableObject {
             .filter { $0 == .addLocation }
             .withUnretained(self)
             .sink { owner, _ in
-                var newLocations = owner.locations
-                let count = newLocations.count + 1
-
-                // TODO: - Manage Locations when implementing maps + coordinates
-
-                let stubLocation = OfferLocationItemData(id: count,
-                                                         name: "Prague \(count)",
-                                                         distance: "\(count)km")
-                newLocations.append(stubLocation)
-                owner.locations = newLocations
+                owner.locationViewModels.append(.init())
             }
             .store(in: cancelBag)
 
         userAction
-            .compactMap { action -> Int? in
+            .compactMap { action -> String? in
                 if case let .deleteLocation(id) = action { return id }
                 return nil
             }
             .withUnretained(self)
             .sink { owner, id in
-                guard let index = owner.locations.firstIndex(where: { $0.id == id }) else {
+                guard let index = owner.locationViewModels.firstIndex(where: { $0.id == id }) else {
                     return
                 }
 
-                var newLocations = owner.locations
+                var newLocations = owner.locationViewModels
                 newLocations.remove(at: index)
-                owner.locations = newLocations
+                owner.locationViewModels = newLocations
             }
             .store(in: cancelBag)
     }
@@ -207,7 +198,7 @@ final class FilterViewModel: ViewModelType, ObservableObject {
         currentAmountRange = amountRange
         selectedFeeOptions = []
         feeAmount = 1
-        locations = []
+        locationViewModels = []
         selectedPaymentMethodOptions = []
         selectedBTCOptions = []
         selectedFriendDegreeOptions = []
