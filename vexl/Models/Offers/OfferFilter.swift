@@ -22,8 +22,9 @@ struct OfferFilter: Equatable {
     var predicate: NSPredicate {
         let userPredicate = NSPredicate(format: "user == nil")
         let offerPredicate = NSPredicate(format: "offerTypeRawType == %@", type.rawValue)
+        let activePredicate = NSPredicate(format: "active == TRUE")
 
-        var predicateList = [userPredicate, offerPredicate]
+        var predicateList = [userPredicate, offerPredicate, activePredicate]
 
         if let currency = currency {
             predicateList.append(NSPredicate(format: "currencyRawType == %@", currency.rawValue))
