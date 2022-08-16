@@ -43,5 +43,6 @@
 - VEX-582: added fee label to offer card
 - VEX-657: Common friends scrolling is now horizontal
 - VEX-576: filter inactive offers
+- VEX-643: Fixed issue with avatar not appear after identity has been revealed
 
 ### Known Issues
