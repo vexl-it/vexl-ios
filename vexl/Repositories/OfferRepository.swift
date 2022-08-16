@@ -20,6 +20,8 @@ protocol OfferRepositoryType {
     func getOffer(with publicKey: String) -> AnyPublisher<ManagedOffer, Error>
     func getOffers(fromType type: OfferType?, fromSource source: OfferSource?) -> AnyPublisher<[ManagedOffer], Error>
 
+    func sync(offers: [ManagedOffer], withPublicKeys: [String]) -> AnyPublisher<Void, Error>
+
     func deleteOffers(with ids: [String]) -> AnyPublisher<Void, Error>
 }
 
@@ -57,10 +59,12 @@ class OfferRepository: OfferRepositoryType {
 
             provider(offer)
 
-            offer.syncItem = ManagedSyncItem(context: context)
-            offer.syncItem?.type = .insert
             offer.user = userRepository.getUser(for: context)
             offer.locations = NSSet(array: managedLocations)
+
+            let item = ManagedSyncItem(context: context)
+            item.type = .insert
+            item.offer = offer
 
             return offer
         }
@@ -88,10 +92,9 @@ class OfferRepository: OfferRepositoryType {
 
             provider(offer)
 
-            if offer.syncItem != nil {
-                offer.syncItem = ManagedSyncItem(context: context)
-                offer.syncItem?.type = .update
-            }
+            let item = ManagedSyncItem(context: context)
+            item.type = .update
+            item.offer = offer
 
             return offer
         }
@@ -187,6 +190,22 @@ class OfferRepository: OfferRepositoryType {
             context: persistence.viewContext,
             predicate: predicate
         )
+    }
+
+    func sync(offers unsafeOffers: [ManagedOffer], withPublicKeys publicKeys: [String]) -> AnyPublisher<Void, Error> {
+        persistence.update(context: persistence.newEditContext()) { context in
+            let offers = unsafeOffers
+                .map(\.objectID)
+                .map(context.object(with: ))
+                .compactMap { $0 as? ManagedOffer }
+
+            offers.forEach { offer in
+                let item = ManagedSyncItem(context: context)
+                item.publicKeys = publicKeys
+                item.type = .offerEncryptionUpdate
+                item.offer = offer
+            }
+        }
     }
 
     func deleteOffers(with ids: [String]) -> AnyPublisher<Void, Error> {
