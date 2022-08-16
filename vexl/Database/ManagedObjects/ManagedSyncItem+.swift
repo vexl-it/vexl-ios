@@ -11,6 +11,7 @@ import CoreData
 enum SyncType: Int {
     case update
     case insert
+    case offerEncryptionUpdate
 }
 
 extension ManagedSyncItem {

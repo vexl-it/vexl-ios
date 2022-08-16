@@ -246,9 +246,11 @@
 "offer.update.action.title" = "Aktualizovat nabídku prodeje";
 "offer.create.buy.action.title" = "Vytvořit poptávku nákupu";
 "offer.update.buy.action.title" = "Aktualizovat poptávku nákupu";
+"offer.location.placeholder" = "Město";
 "offer.currency.usd.title" = "USD";
 "offer.currency.eur.title" = "EUR";
 "offer.currency.czk.title" = "CZK";
+"offer.location.suggestions.empty" = "No suggestions";
 "request.title.normal" = "Nabídka";
 "request.title.requesting" = "Odesílám";
 "request.placeholder" = "např. pojď zavexlit, kámo!";
@@ -260,7 +262,10 @@
 "chat.filter.buy" = "Kupující";
 "chat.filter.sell" = "Prodávající";
 "chat.messageMe" = "já:";
-"chat.request.name" = "%@ si vyžádal tvou identitu.";
+"chat.request.identity.sent" = "Identity reveal request sent!";
+"chat.request.identity.receive" = "Identity reveal request received!";
+"chat.request.identity.decline" = "Declined to reveal identity";
+"chat.request.identity.approve" = "Identity revealed!";
 "chat.request.main.title" = "%@ Žádosti";
 "chat.request.accept" = "Přijmout";
 "chat.request.decline" = "Odmítnout";

@@ -150,11 +150,10 @@ struct RequestOfferView: View {
 
     @ViewBuilder
     private var commonFriends: some View {
-        let chunks = viewModel.commonFriends.splitIntoChunks(by: 2)
-        ForEach(Array(chunks.enumerated()), id: \.offset) { chunk in
-            VStack {
-                HStack {
-                    ForEach(chunk.element) { contact in
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(spacing: Appearance.GridGuide.padding) {
+                ForEach(viewModel.commonFriends) { contact in
+                    HStack {
                         Image(data: contact.avatar, placeholder: R.image.marketplace.defaultAvatar.name)
                             .resizable()
                             .aspectRatio(contentMode: .fill)
