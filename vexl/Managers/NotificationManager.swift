@@ -35,6 +35,7 @@ final class NotificationManager: NSObject, NotificationManagerType {
 
     @Inject var groupManager: GroupManagerType
     @Inject var inboxManager: InboxManagerType
+    @Inject var offerManager: OfferManagerType
 
     private var fcmTokenValue: CurrentValueSubject<String?, Never> = .init(nil)
     private var authorisationStatus: CurrentValueSubject<UNAuthorizationStatus?, Never> = .init(nil)
@@ -120,6 +121,9 @@ extension NotificationManager: UNUserNotificationCenterDelegate {
                 groupManager.updateOffersForNewMembers(groupUUID: groupUUID)
             }
         case .newAppUser:
+            if let publicKey = notification.request.content.userInfo["user_public_key"] as? String {
+                offerManager.syncUserOffers(withPublicKeys: [publicKey])
+            }
         }
 
         var presentationOptions: UNNotificationPresentationOptions = []
