@@ -47,5 +47,9 @@ class ServiceAssembly: Assembly {
         container.register(GroupServiceType.self) { _ in
             GroupService()
         }
+
+        container.register(MapyServiceType.self) { _ in
+            MapyService()
+        }
     }
 }

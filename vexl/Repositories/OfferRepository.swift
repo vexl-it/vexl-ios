@@ -11,9 +11,9 @@ import Combine
 import UIKit
 
 protocol OfferRepositoryType {
-    func createOffer(keys: ECCKeys, provider: @escaping (ManagedOffer) -> Void) -> AnyPublisher<ManagedOffer, Error>
+    func createOffer(keys: ECCKeys, locations: [OfferLocation], provider: @escaping (ManagedOffer) -> Void) -> AnyPublisher<ManagedOffer, Error>
 
-    func update(offer: ManagedOffer, provider: @escaping (ManagedOffer) -> Void) -> AnyPublisher<ManagedOffer, Error>
+    func update(offer: ManagedOffer, locations: [OfferLocation], provider: @escaping (ManagedOffer) -> Void) -> AnyPublisher<ManagedOffer, Error>
 
     func createOrUpdateOffer(offerPayloads: [OfferPayload]) -> AnyPublisher<[ManagedOffer], Error>
 
@@ -30,11 +30,23 @@ class OfferRepository: OfferRepositoryType {
     @Inject private var persistence: PersistenceStoreManagerType
     @Inject private var userRepository: UserRepositoryType
 
-    func createOffer(keys: ECCKeys, provider: @escaping (ManagedOffer) -> Void) -> AnyPublisher<ManagedOffer, Error> {
+    func createOffer(
+        keys: ECCKeys,
+        locations: [OfferLocation],
+        provider: @escaping (ManagedOffer) -> Void
+    ) -> AnyPublisher<ManagedOffer, Error> {
         persistence.insert(context: persistence.viewContext) { [userRepository] context in
+            let managedLocations = locations.map { location -> ManagedOfferLocation in
+                let managedLocation = ManagedOfferLocation(context: context)
+                managedLocation.lat = location.latitude
+                managedLocation.lon = location.longitude
+                managedLocation.city = location.city
+                return managedLocation
+            }
 
             let offer = ManagedOffer(context: context)
             let inbox = ManagedInbox(context: context)
+
             let keyPair = ManagedKeyPair(context: context)
 
             keyPair.publicKey = keys.publicKey
@@ -48,6 +60,7 @@ class OfferRepository: OfferRepositoryType {
             provider(offer)
 
             offer.user = userRepository.getUser(for: context)
+            offer.locations = NSSet(array: managedLocations)
 
             let item = ManagedSyncItem(context: context)
             item.type = .insert
@@ -57,8 +70,26 @@ class OfferRepository: OfferRepositoryType {
         }
     }
 
-    func update(offer: ManagedOffer, provider: @escaping (ManagedOffer) -> Void) -> AnyPublisher<ManagedOffer, Error> {
+    func update(
+        offer: ManagedOffer,
+        locations: [OfferLocation],
+        provider: @escaping (ManagedOffer) -> Void
+    ) -> AnyPublisher<ManagedOffer, Error> {
         persistence.update(context: persistence.viewContext) { context in
+            let managedLocations = locations.map { location -> ManagedOfferLocation in
+                let managedLocation = ManagedOfferLocation(context: context)
+                managedLocation.lat = location.latitude
+                managedLocation.lon = location.longitude
+                managedLocation.city = location.city
+                return managedLocation
+            }
+
+            (offer.locations as? Set<ManagedOfferLocation>)?.forEach { location in
+                context.delete(location)
+            }
+
+            offer.locations = NSSet(array: managedLocations)
+
             provider(offer)
 
             let item = ManagedSyncItem(context: context)

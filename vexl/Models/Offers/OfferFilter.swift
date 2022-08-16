@@ -12,7 +12,7 @@ struct OfferFilter: Equatable {
     var currentAmountRange: ClosedRange<Int>?
     var selectedFeeOptions: [OfferFeeOption] = []
     var feeAmount: Double = 1
-    var locations: [OfferLocationItemData] = []
+    var locations: [OfferLocation] = []
     var selectedPaymentMethodOptions: [OfferPaymentMethodOption] = []
     var selectedBTCOptions: [OfferAdvancedBTCOption] = []
     var selectedFriendDegreeOptions: [OfferFriendDegree] = []
@@ -85,6 +85,12 @@ struct OfferFilter: Equatable {
             let groupPredicates = selectedGroups
                 .map { NSPredicate(format: "group == %@", $0) }
             predicateList.append(NSCompoundPredicate(orPredicateWithSubpredicates: groupPredicates))
+        }
+
+        if !locations.isEmpty {
+            let locationPredicates = locations
+                .map { NSPredicate(format: "ANY locations.city == %@", $0.city) }
+            predicateList.append(NSCompoundPredicate(orPredicateWithSubpredicates: locationPredicates))
         }
 
         return NSCompoundPredicate(andPredicateWithSubpredicates: predicateList)
