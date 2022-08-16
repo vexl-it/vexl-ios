@@ -69,12 +69,12 @@ extension OfferLocationPickerView {
                 case .results(let suggestions):
                     suggestionsView(suggestions: suggestions)
                 case .empty:
-                    Text("No suggestions")
+                    Text(L.offerLocationSuggestionsEmpty())
                         .textStyle(.paragraphMedium)
                         .foregroundColor(.white)
                         .padding()
                 case .error:
-                    Text("There was some error")
+                    Text(L.generalInternalServerError())
                         .textStyle(.paragraphMedium)
                         .foregroundColor(.white)
                         .padding()
@@ -87,7 +87,7 @@ extension OfferLocationPickerView {
         private var locationInput: some View {
             HStack {
                 IsFocusTextField(
-                    placeholder: "City",
+                    placeholder: L.offerLocationPlaceholder(),
                     text: $viewModel.name,
                     isFocused: $viewModel.isTextFieldFocused
                 )

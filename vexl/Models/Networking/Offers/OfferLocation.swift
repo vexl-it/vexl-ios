@@ -8,9 +8,9 @@
 import Foundation
 
 struct OfferLocation: Codable, Hashable {
-    let latitude: Float
-    let longitude: Float
-    let city: String
+    var latitude: Float
+    var longitude: Float
+    var city: String
 
     var asString: String? {
         let json: [String: Any] = [
