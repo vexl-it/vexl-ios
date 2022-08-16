@@ -33,7 +33,9 @@ protocol NotificationManagerType {
 
 final class NotificationManager: NSObject, NotificationManagerType {
 
+    @Inject var groupManager: GroupManagerType
     @Inject var inboxManager: InboxManagerType
+    @Inject var offerManager: OfferManagerType
 
     private var fcmTokenValue: CurrentValueSubject<String?, Never> = .init(nil)
     private var authorisationStatus: CurrentValueSubject<UNAuthorizationStatus?, Never> = .init(nil)
@@ -108,15 +110,22 @@ extension NotificationManager: UNUserNotificationCenterDelegate {
     func userNotificationCenter(_ center: UNUserNotificationCenter,
                                 willPresent notification: UNNotification,
                                 withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-        let type: NotificationType = .message
+        let typeRawValue: String? = notification.request.content.userInfo["type"] as? String
+        let type: NotificationType? = typeRawValue.flatMap(NotificationType.init)
         switch type {
         case .message, .requestReveal, .approveReveal, .disapproveReveal, .requestMessaging, .approveMessaging, .disaproveMessaging, .deleteChat:
             if let inboxPK = notification.request.content.userInfo["inbox"] as? String {
                 inboxManager.syncInbox(with: inboxPK)
             }
         case .groupNewMember:
-            break
+            if let groupUUID = notification.request.content.userInfo["group_uuid"] as? String {
+                groupManager.updateOffersForNewMembers(groupUUID: groupUUID)
+            }
         case .newAppUser:
+            if let publicKey = notification.request.content.userInfo["public_key"] as? String {
+                offerManager.syncUserOffers(withPublicKeys: [publicKey])
+            }
+        case .none:
             break
         }
 

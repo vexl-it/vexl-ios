@@ -122,7 +122,7 @@ struct OfferPayload: Codable {
     }
 
     // swiftlint:disable:next function_body_length
-    
+
     @discardableResult
     func decrypt(context: NSManagedObjectContext, userInbox: ManagedInbox, into offer: ManagedOffer) -> ManagedOffer? {
         guard let keys = userInbox.keyPair?.keys else {
@@ -152,6 +152,8 @@ struct OfferPayload: Codable {
                 }
                 return nil
             }
+
+            let groupUuid = try self.groupUuid.ecc.decrypt(keys: keys)
 
             guard let minAmount = Double(minAmountString),
                   let maxAmount = Double(maxAmountString),
