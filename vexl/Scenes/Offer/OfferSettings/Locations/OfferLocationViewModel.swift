@@ -85,7 +85,11 @@ final class OfferLocationViewModel: ViewModelType, ObservableObject, Identifiabl
         $name
             .filter { !$0.isEmpty }
             .handleEvents(receiveOutput: { [weak self] text in
-                self?.location?.city = text
+                if self?.location == nil {
+                    self?.location = OfferLocation(city: text)
+                } else {
+                    self?.location?.city = text
+                }
             })
             .debounce(for: 0.3, scheduler: DispatchQueue.main)
             .withUnretained(self)

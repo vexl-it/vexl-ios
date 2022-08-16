@@ -53,9 +53,18 @@ struct OfferLocation: Codable, Hashable {
     ///
     /// Use this init when creating from autocomplete on offer creation, update or filter
     ///
-    init?(locationSuggestion: LocationSuggestion) {
+    init(locationSuggestion: LocationSuggestion) {
         self.latitude = locationSuggestion.lat
         self.longitude = locationSuggestion.lon
         self.city = locationSuggestion.city
+    }
+
+    ///
+    /// This init is meant to use when user is typing on OfferLocationPickerView but haven't pick any suggesiton yet
+    ///
+    init(city: String = "", latitude: Float = 0, longitude: Float = 0) {
+        self.latitude = latitude
+        self.longitude = longitude
+        self.city = city
     }
 }
