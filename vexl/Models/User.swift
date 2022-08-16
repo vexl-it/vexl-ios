@@ -16,12 +16,6 @@ struct User: Codable {
 
     var facebookId: String?
     var facebookToken: String?
-    var avatarURL: String? {
-        guard let avatar = avatar else {
-            return nil
-        }
-        return "\(Constants.API.userBaseURLString)/\(avatar)"
-    }
 
     var avatarImage: Data?
 }
