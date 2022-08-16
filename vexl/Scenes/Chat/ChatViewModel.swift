@@ -217,6 +217,10 @@ final class ChatViewModel: ViewModelType, ObservableObject {
 
         inboxManager
             .didDeleteChat
+            .withUnretained(self)
+            .filter { owner, contactPublicKey -> Bool in
+                owner.chat.receiverKeyPair?.publicKey == contactPublicKey
+            }
             .map { _ -> Route in .dismissTapped }
             .subscribe(route)
             .store(in: cancelBag)
