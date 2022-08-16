@@ -11,6 +11,19 @@ import UserNotifications
 import FirebaseMessaging
 import Cleevio
 
+enum NotificationType: String {
+    case message = "MESSAGE"
+    case requestReveal = "REQUEST_REVEAL"
+    case approveReveal = "APPROVE_REVEAL"
+    case disapproveReveal = "DISAPPROVE_REVEAL"
+    case requestMessaging = "REQUEST_MESSAGING"
+    case approveMessaging = "APPROVE_MESSAGING"
+    case disaproveMessaging = "DISAPPROVE_MESSAGING"
+    case deleteChat = "DELETE_CHAT"
+    case groupNewMember = "GROUP_NEW_MEMBER"
+    case newAppUser = "NEW_APP_USER"
+}
+
 protocol NotificationManagerType {
     var notificationToken: AnyPublisher<String, Never> { get }
     var isRegisteredForNotifications: AnyPublisher<Bool, Never> { get }
@@ -95,9 +108,14 @@ extension NotificationManager: UNUserNotificationCenterDelegate {
     func userNotificationCenter(_ center: UNUserNotificationCenter,
                                 willPresent notification: UNNotification,
                                 withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-
-        if let inboxPK = notification.request.content.userInfo["inbox"] as? String {
-            inboxManager.syncInbox(with: inboxPK)
+        let type: NotificationType = .message
+        switch type {
+        case .message, .requestReveal, .approveReveal, .disapproveReveal, .requestMessaging, .approveMessaging, .disaproveMessaging, .deleteChat:
+            if let inboxPK = notification.request.content.userInfo["inbox"] as? String {
+                inboxManager.syncInbox(with: inboxPK)
+            }
+        case .groupNewMember:
+        case .newAppUser:
         }
 
         var presentationOptions: UNNotificationPresentationOptions = []
