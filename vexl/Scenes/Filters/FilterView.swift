@@ -40,7 +40,7 @@ struct FilterView: View {
                             viewModel.action.send(.addLocation)
                         },
                         deleteLocation: { id in
-                        viewModel.action.send(.deleteLocation(id: id))
+                            viewModel.action.send(.deleteLocation(id: id))
                         }
                     )
 
