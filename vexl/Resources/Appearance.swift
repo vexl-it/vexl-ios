@@ -23,6 +23,7 @@ struct Appearance {
         static let purple3 = Color(R.color.purple3.name)
         static let purple4 = Color(R.color.purple4.name)
         static let purple5 = Color(R.color.purple5.name)
+        static let gray0 = Color(R.color.gray0.name)
         static let gray1 = Color(R.color.gray1.name)
         static let gray2 = Color(R.color.gray2.name)
         static let gray3 = Color(R.color.gray3.name)

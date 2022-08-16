@@ -74,31 +74,37 @@ struct UserProfileView: View {
     }
 
     @ViewBuilder private var profileItems: some View {
-        List {
-            Section {
+        ScrollView {
+            VStack {
                 profile
-                    .listRowBackground(Color.black)
-            }
-            ForEach(viewModel.options) { group in
-                Section {
-                    ForEach(group.options) { item in
-                        Item(title: item.title,
-                             subtitle: viewModel.subtitle(for: item),
-                             icon: item.iconName,
-                             isDestructive: item == .logout)
-                        .onTapGesture {
-                            viewModel.send(action: .itemTap(option: item))
+
+                ForEach(viewModel.options) { group in
+                    VStack(spacing: .zero) {
+                        ForEach(group.options) { item in
+                            Item(title: item.title,
+                                 subtitle: viewModel.subtitle(for: item),
+                                 icon: item.iconName,
+                                 isDestructive: item == .logout)
+                                .background(Appearance.Colors.gray0)
+                            .onTapGesture {
+                                viewModel.send(action: .itemTap(option: item))
+                            }
+
+                            if item != group.options.last {
+                                HLine(color: Appearance.Colors.gray1, height: 1)
+                                    .frame(maxWidth: .infinity)
+                            }
                         }
                     }
+                    .padding(.horizontal, Appearance.GridGuide.mediumPadding1)
+                    .padding(.vertical, Appearance.GridGuide.point)
+                    .background(Appearance.Colors.gray0)
+                    .cornerRadius(Appearance.GridGuide.buttonCorner)
+                    .padding(Appearance.GridGuide.point)
                 }
             }
+            .padding(.bottom, Appearance.GridGuide.scrollContentInset.bottom)
         }
-        .listStyle(.insetGrouped)
-        .onAppear {
-            UITableView.appearance().backgroundColor = UIColor.clear
-            UITableView.appearance().contentInset = Appearance.GridGuide.scrollContentInset
-        }
-        .padding(.horizontal, -Appearance.GridGuide.point)
     }
 }
 

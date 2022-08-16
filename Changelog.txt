@@ -20,6 +20,7 @@
 - VEX-601: Avatar picker now has correct size
 - VEX-570: Added labels to friends degree picker
 - VEX-638: Encrypt offer for groups dynamically
+- VEX-664: Profile rows are tappable now
 - VEX-562/VEX-655: Showing message in the inbox list when the its a reveal identity request, approval and decline.
 - VEX-547: Save name in Register name + avatar phase
 - VEX-697: App now receives contacts-ms notifications
