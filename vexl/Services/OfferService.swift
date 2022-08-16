@@ -19,13 +19,11 @@ protocol OfferServiceType {
     // MARK: Offer Creation
 
     func createOffer(offer: ManagedOffer, userPublicKey: String) -> AnyPublisher<OfferPayload, Error>
-
-    func createNewPrivateParts(for offer: ManagedOffer, userPublicKey: String, receiverPublicKeys: [String]) -> AnyPublisher<OfferPayload, Error>
+    func createNewPrivateParts(for offer: ManagedOffer, userPublicKey: String, receiverPublicKeys: [String]) -> AnyPublisher<Void, Error>
 
     // MARK: Offer Updating
 
     func updateOffers(offer: ManagedOffer, userPublicKey: String) -> AnyPublisher<OfferPayload, Error>
-
     func deleteOffers(offerIds: [String]) -> AnyPublisher<Void, Error>
 
     // MARK: Helper functions
@@ -89,8 +87,17 @@ final class OfferService: BaseService, OfferServiceType {
         return createOffer
     }
 
-    func createNewPrivateParts(for offer: ManagedOffer, userPublicKey: String, receiverPublicKeys: [String]) -> AnyPublisher<OfferPayload, Error> {
-        Fail(error: PersistenceError.insufficientData).eraseToAnyPublisher()
+    func createNewPrivateParts(for offer: ManagedOffer, userPublicKey: String, receiverPublicKeys: [String]) -> AnyPublisher<Void, Error> {
+        guard let offerID = offer.id else {
+            return Fail(error: PersistenceError.insufficientData)
+                .eraseToAnyPublisher()
+        }
+        return encryptOffer(offer: offer, publicKeys: receiverPublicKeys)
+            .withUnretained(self)
+            .flatMap { owner, payloads in
+                owner.request(endpoint: OffersRouter.createNewPrivateParts(offerID: offerID, offerPayloads: payloads))
+            }
+            .eraseToAnyPublisher()
     }
 
     // MARK: - Offer updating
@@ -167,7 +174,7 @@ final class OfferService: BaseService, OfferServiceType {
             .eraseToAnyPublisher()
     }
 
-    func encryptOffer(offer: ManagedOffer,publicKeys: [String]) -> AnyPublisher<[OfferPayload], Error> {
+    func encryptOffer(offer: ManagedOffer, publicKeys: [String]) -> AnyPublisher<[OfferPayload], Error> {
         let commonFriends = contactsService
             .getCommonFriends(publicKeys: publicKeys)
             .catch { _ in Just([:]) }
