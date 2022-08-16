@@ -306,17 +306,7 @@ final class RegisterPhoneViewModel: ViewModelType {
 
         let zip = Publishers.Zip(createUser, userRepository.userPublisher.filterNil().receive(on: RunLoop.main))
 
-        let createUserBE = zip
-            .flatMapLatest(with: self) { owner, _ in
-                owner.contactsService
-                    .createUser(forFacebook: false)
-                    .track(activity: owner.primaryActivity)
-                    .materialize()
-                    .compactMap(\.value)
-                    .eraseToAnyPublisher()
-            }
-
-        let notificationToken = createUserBE
+        let notificationToken = zip
             .flatMap { [notificationManager] _ in
                 notificationManager.isRegisteredForNotifications
                     .flatMap { isRegistered -> AnyPublisher<String, Never> in
@@ -328,7 +318,18 @@ final class RegisterPhoneViewModel: ViewModelType {
                     }
             }
 
-        let createInbox = notificationToken
+        let createUserBE = notificationToken
+            .flatMapLatest(with: self) { owner, token in
+                owner.contactsService
+                    .createUser(forFacebook: false, firebaseToken: token)
+                    .track(activity: owner.primaryActivity)
+                    .materialize()
+                    .compactMap(\.value)
+                    .map { _ in token }
+                    .eraseToAnyPublisher()
+            }
+
+        let createInbox = createUserBE
             .flatMapLatest(with: self) { owner, token in
                 owner.chatService
                     .createInbox(publicKey: owner.newKeys.publicKey, pushToken: token)

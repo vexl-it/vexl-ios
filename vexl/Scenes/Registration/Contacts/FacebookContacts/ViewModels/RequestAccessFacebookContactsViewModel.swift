@@ -11,6 +11,7 @@ import SwiftUI
 import Cleevio
 
 final class RequestAccessFacebookContactsViewModel: RequestAccessContactsViewModel {
+    @Inject private var notificationManager: NotificationManagerType
 
     override var title: String {
         L.registerFacebookContactsTitle()
@@ -77,10 +78,20 @@ final class RequestAccessFacebookContactsViewModel: RequestAccessContactsViewMod
                 }
             })
             .filter(\.1.challengeVerified)
+            .flatMap { [notificationManager] _ in
+                notificationManager.isRegisteredForNotifications
+                    .flatMap { isRegistered -> AnyPublisher<String, Never> in
+                        guard isRegistered else {
+                            return Just(Constants.fakePushNotificationToken)
+                                .eraseToAnyPublisher()
+                        }
+                        return notificationManager.notificationToken
+                    }
+            }
             .withUnretained(self)
-            .flatMap { owner, _ in
+            .flatMap { owner, token in
                 owner.contactsService
-                    .createUser(forFacebook: true)
+                    .createUser(forFacebook: true, firebaseToken: token)
                     .track(activity: owner.primaryActivity)
                     .materialize()
                     .compactMap(\.value)

@@ -13,7 +13,7 @@ enum ContactsRouter: ApiRouter {
     case getAvailableContacts(contacts: [String])
     case getFacebookContacts(id: String, accessToken: String)
     case getAvailableFacebookContacts(id: String, accessToken: String)
-    case createUser(useFacebookHeader: Bool)
+    case createUser(token: String, useFacebookHeader: Bool)
     case deleteUser
     case getContacts(useFacebookHeader: Bool, friendLevel: ContactFriendLevel, pageLimit: Int?)
     case countPhoneContacts
@@ -36,7 +36,7 @@ enum ContactsRouter: ApiRouter {
             return facebookSecurityHeader
         case .importContacts, .getAvailableContacts, .deleteUser, .countPhoneContacts, .getCommonFriends:
             return securityHeader
-        case let .createUser(useFacebookHeader):
+        case let .createUser(_, useFacebookHeader):
             return useFacebookHeader ? facebookSecurityHeader : securityHeader
         case let .getContacts(useFacebookHeader, _, _):
             return useFacebookHeader ? facebookSecurityHeader : securityHeader
@@ -70,8 +70,8 @@ enum ContactsRouter: ApiRouter {
         switch self {
         case .getFacebookContacts, .getAvailableFacebookContacts, .deleteUser, .countPhoneContacts:
             return [:]
-        case .createUser:
-            return [:]
+        case let .createUser(token, _):
+            return ["firebaseToken": token]
         case let .getAvailableContacts(contacts):
             return ["contacts": contacts]
         case let .importContacts(contacts):

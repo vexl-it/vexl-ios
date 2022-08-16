@@ -11,7 +11,7 @@ import Combine
 typealias UserContacts = (phone: [ContactKey], facebook: [ContactKey])
 
 protocol ContactsServiceType {
-    func createUser(forFacebook isFacebook: Bool) -> AnyPublisher<Void, Error>
+    func createUser(forFacebook isFacebook: Bool, firebaseToken: String) -> AnyPublisher<Void, Error>
     func importContacts(_ contacts: [String]) -> AnyPublisher<ContactsImported, Error>
     func getActivePhoneContacts(_ contacts: [String]) -> AnyPublisher<ContactsAvailable, Error>
     func getActiveFacebookContacts(id: String, accessToken: String) -> AnyPublisher<FacebookUserData, Error>
@@ -28,8 +28,8 @@ protocol ContactsServiceType {
 
 final class ContactsService: BaseService, ContactsServiceType {
 
-    func createUser(forFacebook isFacebook: Bool) -> AnyPublisher<Void, Error> {
-        request(endpoint: ContactsRouter.createUser(useFacebookHeader: isFacebook))
+    func createUser(forFacebook isFacebook: Bool, firebaseToken: String) -> AnyPublisher<Void, Error> {
+        request(endpoint: ContactsRouter.createUser(token: firebaseToken, useFacebookHeader: isFacebook))
             .eraseToAnyPublisher()
     }
 
