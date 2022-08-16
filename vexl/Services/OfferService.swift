@@ -18,14 +18,20 @@ protocol OfferServiceType {
 
     // MARK: Offer Creation
 
-    func createOffer(
-        offer: ManagedOffer, userPublicKey: String, fiendLevel: ContactFriendLevel, expiration: TimeInterval
-    ) -> AnyPublisher<OfferPayload, Error>
+    func createOffer(offer: ManagedOffer, userPublicKey: String) -> AnyPublisher<OfferPayload, Error>
+
+    func createNewPrivateParts(for offer: ManagedOffer, userPublicKey: String, receiverPublicKeys: [String]) -> AnyPublisher<OfferPayload, Error>
 
     // MARK: Offer Updating
 
+    func updateOffers(offer: ManagedOffer, userPublicKey: String) -> AnyPublisher<OfferPayload, Error>
+
     func deleteOffers(offerIds: [String]) -> AnyPublisher<Void, Error>
-    func updateOffers(encryptedOffers: [OfferPayload], offerId: String) -> AnyPublisher<OfferPayload, Error>
+
+    // MARK: Helper functions
+
+    func getReceiverPublicKeys(offer: ManagedOffer, includeUserPublicKey: String?) -> AnyPublisher<[String], Error>
+    func encryptOffer(offer: ManagedOffer,publicKeys: [String]) -> AnyPublisher<[OfferPayload], Error>
 }
 
 final class OfferService: BaseService, OfferServiceType {
@@ -53,21 +59,21 @@ final class OfferService: BaseService, OfferServiceType {
 
     // MARK: - Offer Creation
 
-    func createOffer(
-        offer: ManagedOffer,
-        userPublicKey: String,
-        fiendLevel: ContactFriendLevel,
-        expiration: TimeInterval
-    ) -> AnyPublisher<OfferPayload, Error> {
+    func createOffer(offer: ManagedOffer, userPublicKey: String) -> AnyPublisher<OfferPayload, Error> {
+        guard let expiration = offer.expirationDate?.timeIntervalSince1970 else {
+            return Fail(error: PersistenceError.insufficientData)
+                .eraseToAnyPublisher()
+        }
 
-        let encryptOffer = encryptOffer(
-            offer: offer,
-            userPublicKey: userPublicKey,
-            fiendLevel: fiendLevel,
-            expiration: expiration
-        )
+        let publicKeys = getReceiverPublicKeys(offer: offer, includeUserPublicKey: userPublicKey)
+            .withUnretained(self)
 
-        let createOffer = encryptOffer
+        let encryptedOffer = publicKeys
+            .flatMap { owner, publicKeys in
+                owner.encryptOffer(offer: offer, publicKeys: publicKeys)
+            }
+
+        let createOffer = encryptedOffer
             .withUnretained(self)
             .flatMap { owner, offerPayloads -> AnyPublisher<OfferPayload, Error> in
                 owner.request(
@@ -84,27 +90,27 @@ final class OfferService: BaseService, OfferServiceType {
         return createOffer
     }
 
-    // MARK: - Offer updating
-
-    func updateOffers(encryptedOffers: [OfferPayload], offerId: String) -> AnyPublisher<OfferPayload, Error> {
-        request(type: OfferPayload.self, endpoint: OffersRouter.updateOffer(offer: encryptedOffers, offerId: offerId))
+    func createNewPrivateParts(for offer: ManagedOffer, userPublicKey: String, receiverPublicKeys: [String]) -> AnyPublisher<OfferPayload, Error> {
+        Fail(error: PersistenceError.insufficientData).eraseToAnyPublisher()
     }
 
-    func updateOffers(
-        offer: ManagedOffer,
-        offerID: String,
-        userPublicKey: String,
-        fiendLevel: ContactFriendLevel,
-        expiration: TimeInterval
-    ) -> AnyPublisher<OfferPayload, Error> {
-        let encryptOffer = encryptOffer(
-            offer: offer,
-            userPublicKey: userPublicKey,
-            fiendLevel: fiendLevel,
-            expiration: expiration
-        )
+    // MARK: - Offer updating
 
-        let createOffer = encryptOffer
+    func updateOffers(offer: ManagedOffer, userPublicKey: String) -> AnyPublisher<OfferPayload, Error> {
+        guard let offerID = offer.id else {
+            return Fail(error: PersistenceError.insufficientData)
+                .eraseToAnyPublisher()
+        }
+
+        let publicKeys = getReceiverPublicKeys(offer: offer, includeUserPublicKey: userPublicKey)
+            .withUnretained(self)
+
+        let encryptedOffer = publicKeys
+            .flatMap { owner, publicKeys in
+                owner.encryptOffer(offer: offer, publicKeys: publicKeys)
+            }
+
+        let createOffer = encryptedOffer
             .withUnretained(self)
             .flatMap { owner, offerPayloads -> AnyPublisher<OfferPayload, Error> in
                 owner.request(
@@ -129,48 +135,46 @@ final class OfferService: BaseService, OfferServiceType {
             .eraseToAnyPublisher()
         }
     }
-}
 
-extension OfferService {
-    func encryptOffer(
-        offer: ManagedOffer,
-        userPublicKey: String,
-        fiendLevel: ContactFriendLevel,
-        expiration: TimeInterval
-    ) -> AnyPublisher<[OfferPayload], Error> {
-        let contacts = contactsService
+    // MARK: Helper functions
+
+    func getReceiverPublicKeys(offer: ManagedOffer, includeUserPublicKey userPublicKey: String?) -> AnyPublisher<[String], Error> {
+
+        guard let friendLevel = offer.friendLevel?.convertToContactFriendLevel else {
+            return Fail(error: PersistenceError.insufficientData)
+                .eraseToAnyPublisher()
+        }
+        return contactsService
             .getAllContacts(
-                friendLevel: fiendLevel,
+                friendLevel: friendLevel,
                 hasFacebookAccount: authenticationManager.facebookSecurityHeader != nil,
                 pageLimit: Constants.pageMaxLimit
             )
-
-        let groupMembersAndContacts = contacts
-            .flatMap { [groupManager] contacts -> AnyPublisher<[ContactKey], Never> in
+            .flatMap { [groupManager] contacts -> AnyPublisher<[String], Never> in
                 groupManager
                     .getAllGroupMembers(group: offer.group)
                     .catch { _ in Just([]) }
-                    .map { $0.map(ContactKey.init) }
-                    .map { $0 + contacts.phone + contacts.facebook }
+                    .map { groupMembers -> [String] in
+                        let publicKeys = groupMembers
+                            + contacts.phone.map(\.publicKey)
+                            + contacts.facebook.map(\.publicKey)
+                            + [userPublicKey].compactMap { $0 }
+                        return Array(Set(publicKeys))
+                    }
                     .eraseToAnyPublisher()
             }
-            .map { contacts -> [ContactKey] in
-                let contacts = contacts
-                    + [ContactKey(publicKey: userPublicKey)]
-                return Array(Set(contacts))
-            }
+            .eraseToAnyPublisher()
+    }
 
-        let commonFriends = groupMembersAndContacts
-            .flatMap { [contactsService] contacts in
-                contactsService
-                    .getCommonFriends(publicKeys: contacts.map(\.publicKey))
-                    .catch { _ in Just([:]) }
-                    .map { (contacts, $0) }
-            }
-            .map { contacts, hashes in
-                contacts.map { contact -> (ContactKey, [String]) in
-                    let commonFriends = hashes[contact.publicKey] ?? []
-                    return (contact, commonFriends)
+    func encryptOffer(offer: ManagedOffer,publicKeys: [String]) -> AnyPublisher<[OfferPayload], Error> {
+        let commonFriends = contactsService
+            .getCommonFriends(publicKeys: publicKeys)
+            .catch { _ in Just([:]) }
+            .map { (publicKeys, $0) }
+            .map { publicKeys, hashes -> [OfferEncprytionInput] in
+                publicKeys.map { publicKey in
+                    let commonFriends = hashes[publicKey] ?? []
+                    return OfferEncprytionInput(receiverPublicKey: publicKey, commonFriends: commonFriends)
                 }
             }
 
