@@ -13,7 +13,7 @@ enum OffersRouter: ApiRouter {
     case getOffers(pageLimit: Int?)
     case getUserOffers(offerIds: [String])
     case getNewOffers(pageLimit: Int?, lastSyncDate: Date)
-    case createNewPrivateParts(offerPayloads: [OfferPayload])
+    case createNewPrivateParts(offerID: String, offerPayloads: [OfferPayload])
 
     case deleteOffers(offerIds: [String])
     case updateOffer(offer: [OfferPayload], offerId: String)
@@ -73,9 +73,12 @@ enum OffersRouter: ApiRouter {
             let offers = offer.map { $0.asJson }
             return ["offerId": offerId,
                     "offerPrivateCreateList": offers]
-        case let .createNewPrivateParts(offers):
+        case let .createNewPrivateParts(offerID, offers):
             let offers = offers.map { $0.asJson }
-            return ["privateParts": offers]
+            return [
+                "offerId": offerID,
+                "privateParts": offers
+            ]
         }
     }
 
