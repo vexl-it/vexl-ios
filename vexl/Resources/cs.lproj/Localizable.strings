@@ -246,9 +246,11 @@
 "offer.update.action.title" = "Aktualizovat nabídku prodeje";
 "offer.create.buy.action.title" = "Vytvořit poptávku nákupu";
 "offer.update.buy.action.title" = "Aktualizovat poptávku nákupu";
+"offer.location.placeholder" = "Město";
 "offer.currency.usd.title" = "USD";
 "offer.currency.eur.title" = "EUR";
 "offer.currency.czk.title" = "CZK";
+"offer.location.suggestions.empty" = "No suggestions";
 "request.title.normal" = "Nabídka";
 "request.title.requesting" = "Odesílám";
 "request.placeholder" = "např. pojď zavexlit, kámo!";

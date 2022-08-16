@@ -29,6 +29,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         #if DEBUG || DEVEL
         NetworkActivityLogger.shared.startLogging()
         NetworkActivityLogger.shared.level = .debug
+        whereIsMySQLite()
         #endif
 
         // Firebase messaging
