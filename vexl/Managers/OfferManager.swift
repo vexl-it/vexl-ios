@@ -11,7 +11,9 @@ import CoreData
 
 protocol OfferManagerType {
     var didFinishSyncing: AnyPublisher<Void, Never> { get }
+
     func sync()
+    func sync(offers: [ManagedOffer], withPublicKeys: [String]) -> AnyPublisher<Void, Error>
 }
 
 final class OfferManager: OfferManagerType {
@@ -45,5 +47,9 @@ final class OfferManager: OfferManagerType {
                 self?._didFinishSyncing.send(())
                 self?.cancellable = nil
             })
+    }
+
+    func sync(offers unsafeOffers: [ManagedOffer], withPublicKeys publicKeys: [String]) -> AnyPublisher<Void, Error> {
+        offerRepository.sync(offers: unsafeOffers, withPublicKeys: publicKeys)
     }
 }

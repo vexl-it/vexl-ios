@@ -33,6 +33,7 @@ protocol NotificationManagerType {
 
 final class NotificationManager: NSObject, NotificationManagerType {
 
+    @Inject var groupManager: GroupManagerType
     @Inject var inboxManager: InboxManagerType
 
     private var fcmTokenValue: CurrentValueSubject<String?, Never> = .init(nil)
@@ -115,6 +116,9 @@ extension NotificationManager: UNUserNotificationCenterDelegate {
                 inboxManager.syncInbox(with: inboxPK)
             }
         case .groupNewMember:
+            if let groupUUID = notification.request.content.userInfo["group_uuid"] as? String {
+                groupManager.updateOffersForNewMembers(groupUUID: groupUUID)
+            }
         case .newAppUser:
         }
 
