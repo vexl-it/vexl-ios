@@ -14,6 +14,7 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
 
     @Inject var offerRepository: OfferRepositoryType
     @Inject var offerService: OfferServiceType
+    @Inject var mapyService: MapyServiceType
 
     @Fetched(sortDescriptors: [ NSSortDescriptor(key: "name", ascending: true) ])
     var fetchedGroups: [ManagedGroup]
@@ -22,7 +23,7 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
         case activate
         case delete
         case addLocation
-        case deleteLocation(id: Int)
+        case deleteLocation(id: String)
         case dismissTap
         case createOffer
     }
@@ -55,8 +56,6 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
     @Published var selectedFeeOption: OfferFeeOption = .withoutFee
     @Published var feeAmount: Double = Constants.OfferInitialData.minFee
 
-    @Published var locations: [OfferLocationItemData] = []
-
     @Published var selectedTradeStyleOption: OfferTradeLocationOption = .online
 
     @Published var selectedPaymentMethodOptions: [OfferPaymentMethodOption] = []
@@ -79,6 +78,8 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
     @Published var error: Error?
 
     @Published var currency: Currency? = Constants.OfferInitialData.currency
+
+    @Published var locationViewModels: [OfferLocationViewModel] = []
 
     // MARK: - Coordinator Bindings
 
@@ -214,6 +215,11 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
             selectedFriendDegreeOption = offer.friendLevel ?? .firstDegree
             selectedPriceTrigger = offer.activePriceState ?? .none
             selectedPriceTriggerAmount = "\(Int(offer.activePriceValue))"
+
+            let managedLocations = offer.locations?.allObjects as? [ManagedOfferLocation] ?? []
+            locationViewModels = managedLocations.map {
+                OfferLocationViewModel(location: $0.offerLocation)
+            }
         }
 
         $fetchedGroups
@@ -282,33 +288,24 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
             .filter { $0 == .addLocation }
             .withUnretained(self)
             .sink { owner, _ in
-                var newLocations = owner.locations
-                let count = newLocations.count + 1
-
-                // TODO: - Manage Locations when implementing maps + coordinates
-
-                let stubLocation = OfferLocationItemData(id: count,
-                                                         name: "Prague \(count)",
-                                                         distance: "\(count)km")
-                newLocations.append(stubLocation)
-                owner.locations = newLocations
+                owner.locationViewModels.append(.init())
             }
             .store(in: cancelBag)
 
         sharedAction
-            .compactMap { action -> Int? in
+            .compactMap { action -> String? in
                 if case let .deleteLocation(id) = action { return id }
                 return nil
             }
             .withUnretained(self)
             .sink { owner, id in
-                guard let index = owner.locations.firstIndex(where: { $0.id == id }) else {
+                guard let index = owner.locationViewModels.firstIndex(where: { $0.id == id }) else {
                     return
                 }
 
-                var newLocations = owner.locations
+                var newLocations = owner.locationViewModels
                 newLocations.remove(at: index)
-                owner.locations = newLocations
+                owner.locationViewModels = newLocations
             }
             .store(in: cancelBag)
 
@@ -343,13 +340,21 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
                 }
                 if let offer = owner.offer {
                     return owner.offerRepository
-                        .update(offer: offer, provider: provider)
+                        .update(
+                            offer: offer,
+                            locations: owner.locationViewModels.compactMap(\.location),
+                            provider: provider
+                        )
                         .materialize()
                         .compactMap(\.value)
                         .eraseToAnyPublisher()
                 } else {
                     return owner.offerRepository
-                        .createOffer(keys: owner.offerKey, provider: provider)
+                        .createOffer(
+                            keys: owner.offerKey,
+                            locations: owner.locationViewModels.compactMap(\.location),
+                            provider: provider
+                        )
                         .materialize()
                         .compactMap(\.value)
                         .eraseToAnyPublisher()

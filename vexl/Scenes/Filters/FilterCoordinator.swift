@@ -21,7 +21,7 @@ final class FilterCoordinator: BaseCoordinator<RouterResult<OfferFilter>> {
 
     override func start() -> CoordinatingResult<RouterResult<OfferFilter>> {
         let viewModel = FilterViewModel(offerFilter: offerFilter)
-        let viewController = BaseViewController(rootView: FilterView(viewModel: viewModel))
+        let viewController = ToggleKeyboardHostingController(rootView: FilterView(viewModel: viewModel))
 
         router.present(viewController, animated: true)
 
