@@ -20,6 +20,8 @@
 - VEX-601: Avatar picker now has correct size
 - VEX-570: Added labels to friends degree picker
 - VEX-638: Encrypt offer for groups dynamically
+- VEX-697: App now receives contacts-ms notifications
+- VEX-691: App updates offer for new group users
 
 ### Fixes
 - VEX-525: Fixed common friends on chat request screen

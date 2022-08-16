@@ -120,6 +120,7 @@ extension NotificationManager: UNUserNotificationCenterDelegate {
                 groupManager.updateOffersForNewMembers(groupUUID: groupUUID)
             }
         case .newAppUser:
+            break
         }
 
         var presentationOptions: UNNotificationPresentationOptions = []
