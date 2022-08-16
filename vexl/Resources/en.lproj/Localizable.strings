@@ -246,9 +246,11 @@
 "offer.update.action.title" = "Update sell offer";
 "offer.create.buy.action.title" = "Create buy offer";
 "offer.update.buy.action.title" = "Update buy offer";
+"offer.location.placeholder" = "City";
 "offer.currency.usd.title" = "USD";
 "offer.currency.eur.title" = "EUR";
 "offer.currency.czk.title" = "CZK";
+"offer.location.suggestions.empty" = "No suggestions";
 "request.title.normal" = "Offer";
 "request.title.requesting" = "Sending";
 "request.placeholder" = "e.g. let's trade my friend...";
@@ -260,7 +262,10 @@
 "chat.filter.buy" = "Buyers";
 "chat.filter.sell" = "Sellers";
 "chat.messageMe" = "me:";
-"chat.request.name" = "%@ requested your identity.";
+"chat.request.identity.sent" = "Identity reveal request sent!";
+"chat.request.identity.receive" = "Identity reveal request received!";
+"chat.request.identity.decline" = "Declined to reveal identity";
+"chat.request.identity.approve" = "Identity revealed!";
 "chat.request.main.title" = "%@ Requests";
 "chat.request.accept" = "Accept";
 "chat.request.decline" = "Decline";

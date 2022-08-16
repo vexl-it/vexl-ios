@@ -175,7 +175,6 @@ final class RegisterNameAvatarViewModel: ViewModelType {
     }
 
     private func clearState() {
-        username = ""
         avatar = nil
     }
 }

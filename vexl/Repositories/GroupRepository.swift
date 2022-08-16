@@ -7,10 +7,12 @@
 
 import Foundation
 import Combine
+import CoreData
 
 protocol GroupRepositoryType {
     func createOrUpdateGroup(payloads: [(GroupPayload, [String])]) -> AnyPublisher<Void, Error>
     func update(group unsafeGroup: ManagedGroup, members: [String]) -> AnyPublisher<[String], Error>
+    func fetchGroup(uuid: String) -> ManagedGroup?
     func delete(group: ManagedGroup) -> AnyPublisher<Void, Error>
 }
 
@@ -54,6 +56,14 @@ final class GroupRepository: GroupRepositoryType {
         }
         .asVoid()
         .eraseToAnyPublisher()
+    }
+
+    func fetchGroup(uuid: String) -> ManagedGroup? {
+        persistence.loadSyncroniously(
+            type: ManagedGroup.self,
+            context: persistence.viewContext,
+            predicate: NSPredicate(format: "uuid == '\(uuid)'")
+        ).first
     }
 
     func update(group unsafeGroup: ManagedGroup, members: [String]) -> AnyPublisher<[String], Error> {

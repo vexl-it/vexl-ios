@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="20086" systemVersion="21E258" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="20086" systemVersion="21F79" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="ManagedAnonymisedProfile" representedClassName="ManagedAnonymisedProfile" syncable="YES" codeGenerationType="class">
         <attribute name="publicKey" optional="YES" attributeType="String"/>
         <relationship name="group" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ManagedGroup" inverseName="members" inverseEntity="ManagedGroup"/>
@@ -92,10 +92,17 @@
         <attribute name="offerTypeRawType" optional="YES" attributeType="String"/>
         <relationship name="group" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ManagedGroup" inverseName="offers" inverseEntity="ManagedGroup"/>
         <relationship name="inbox" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ManagedInbox" inverseName="offers" inverseEntity="ManagedInbox"/>
+        <relationship name="locations" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ManagedOfferLocation" inverseName="offer" inverseEntity="ManagedOfferLocation"/>
         <relationship name="receiversPublicKey" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ManagedKeyPair" inverseName="receiversOffer" inverseEntity="ManagedKeyPair"/>
         <relationship name="requesterPublicKeys" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ManagedKeyPair" inverseName="userOffer" inverseEntity="ManagedKeyPair"/>
-        <relationship name="syncItem" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ManagedSyncItem" inverseName="offer" inverseEntity="ManagedSyncItem"/>
+        <relationship name="syncItems" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ManagedSyncItem" inverseName="offer" inverseEntity="ManagedSyncItem"/>
         <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ManagedUser" inverseName="offers" inverseEntity="ManagedUser"/>
+    </entity>
+    <entity name="ManagedOfferLocation" representedClassName="ManagedOfferLocation" syncable="YES" codeGenerationType="class">
+        <attribute name="city" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="lat" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="lon" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <relationship name="offer" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ManagedOffer" inverseName="locations" inverseEntity="ManagedOffer"/>
     </entity>
     <entity name="ManagedProfile" representedClassName="ManagedProfile" syncable="YES" codeGenerationType="class">
         <attribute name="anonymizedUsername" optional="YES" attributeType="String"/>
@@ -110,9 +117,10 @@
         <relationship name="keyPair" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ManagedKeyPair" inverseName="profile" inverseEntity="ManagedKeyPair"/>
     </entity>
     <entity name="ManagedSyncItem" representedClassName="ManagedSyncItem" syncable="YES" codeGenerationType="class">
+        <attribute name="publicKeys" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromDataTransformer" customClassName="[String]"/>
         <attribute name="typeRawType" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <relationship name="inbox" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ManagedInbox" inverseName="syncItem" inverseEntity="ManagedInbox"/>
-        <relationship name="offer" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ManagedOffer" inverseName="syncItem" inverseEntity="ManagedOffer"/>
+        <relationship name="offer" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ManagedOffer" inverseName="syncItems" inverseEntity="ManagedOffer"/>
     </entity>
     <entity name="ManagedUser" representedClassName="ManagedUser" syncable="YES" codeGenerationType="class">
         <attribute name="encryptedSignature" optional="YES" attributeType="String"/>
@@ -130,9 +138,10 @@
         <element name="ManagedInbox" positionX="-545.4609375" positionY="-382.8515625" width="128" height="118"/>
         <element name="ManagedKeyPair" positionX="-312.15625" positionY="-289.875" width="128" height="148"/>
         <element name="ManagedMessage" positionX="-95.99609375" positionY="-524.015625" width="128" height="178"/>
-        <element name="ManagedOffer" positionX="-892.38671875" positionY="-589.39453125" width="128" height="478"/>
+        <element name="ManagedOffer" positionX="-892.38671875" positionY="-589.39453125" width="128" height="493"/>
+        <element name="ManagedOfferLocation" positionX="-731.2578125" positionY="-711.6640625" width="128" height="89"/>
         <element name="ManagedProfile" positionX="-633.3203125" positionY="-96.95703125" width="128" height="193"/>
-        <element name="ManagedSyncItem" positionX="-591.86328125" positionY="-567.52734375" width="128" height="88"/>
+        <element name="ManagedSyncItem" positionX="-591.86328125" positionY="-567.52734375" width="128" height="89"/>
         <element name="ManagedUser" positionX="-1185.640625" positionY="-51.8984375" width="165.6171875" height="133"/>
     </elements>
 </model>
