@@ -174,7 +174,6 @@ class OfferRepository: OfferRepositoryType {
                 item.type = .offerEncryptionUpdate
                 item.offer = offer
             }
-
         }
     }
 

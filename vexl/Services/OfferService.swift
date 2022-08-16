@@ -31,7 +31,7 @@ protocol OfferServiceType {
     // MARK: Helper functions
 
     func getReceiverPublicKeys(offer: ManagedOffer, includeUserPublicKey: String?) -> AnyPublisher<[String], Error>
-    func encryptOffer(offer: ManagedOffer,publicKeys: [String]) -> AnyPublisher<[OfferPayload], Error>
+    func encryptOffer(offer: ManagedOffer, publicKeys: [String]) -> AnyPublisher<[OfferPayload], Error>
 }
 
 final class OfferService: BaseService, OfferServiceType {
@@ -39,7 +39,6 @@ final class OfferService: BaseService, OfferServiceType {
     @Inject private var contactsService: ContactsServiceType
     @Inject private var encryptionService: EncryptionServiceType
     @Inject private var authenticationManager: AuthenticationManagerType
-    @Inject private var groupManager: GroupManagerType
 
     // MARK: - Offer Endpoints
 
@@ -150,8 +149,10 @@ final class OfferService: BaseService, OfferServiceType {
                 hasFacebookAccount: authenticationManager.facebookSecurityHeader != nil,
                 pageLimit: Constants.pageMaxLimit
             )
-            .flatMap { [groupManager] contacts -> AnyPublisher<[String], Never> in
-                groupManager
+            .flatMap { contacts -> AnyPublisher<[String], Never> in
+                // If this dependency is defined in header, it would cause circular dependency
+                @Inject var groupManager: GroupManagerType
+                return groupManager
                     .getAllGroupMembers(group: offer.group)
                     .catch { _ in Just([]) }
                     .map { groupMembers -> [String] in
