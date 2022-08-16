@@ -41,6 +41,7 @@
 - VEX-612: Fixed missing translation for months in bitcoin graph
 - VEX-363: fixed fee amount calculation
 - VEX-582: added fee label to offer card
+- VEX-433: Chat is dismissed after the content is deleted
 - VEX-657: Common friends scrolling is now horizontal
 - VEX-576: filter inactive offers
 - VEX-643: Fixed issue with avatar not appear after identity has been revealed
