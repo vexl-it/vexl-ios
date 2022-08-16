@@ -115,7 +115,9 @@ extension NotificationManager: UNUserNotificationCenterDelegate {
                 inboxManager.syncInbox(with: inboxPK)
             }
         case .groupNewMember:
+            break
         case .newAppUser:
+            break
         }
 
         var presentationOptions: UNNotificationPresentationOptions = []
