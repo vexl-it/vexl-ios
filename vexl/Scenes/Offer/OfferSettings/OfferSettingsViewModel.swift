@@ -395,6 +395,8 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
             .store(in: cancelBag)
     }
 
+    // TODO: this is a hotfix so BE doesn't return error when creating the offer.
+    // A better solution would be to have an alert o message in the form to tell the user what is missing
     private func setupLocationBindings(for locationViewModel: OfferLocationViewModel) {
         locationViewModel.$name
             .withUnretained(self)
