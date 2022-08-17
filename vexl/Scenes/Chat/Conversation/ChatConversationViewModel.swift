@@ -65,13 +65,12 @@ final class ChatConversationViewModel: ObservableObject {
 
         $fetchedMessages.load(predicate: NSPredicate(format: """
             chat == %@
-            AND typeRawType != '\(MessageType.revealRejected.rawValue)'
-            AND typeRawType != '\(MessageType.revealApproval.rawValue)'
         """, chat
         ))
 
         $fetchedMessages.publisher
             .map(\.objects)
+            .map { $0.filter { $0.type != .revealRejected && $0.type != .revealApproval } }
             .map { $0.map(ChatConversationItem.init) }
             .map { [ ChatConversationSection(date: Date(), messages: $0) ] }
             .assign(to: &$messages)
