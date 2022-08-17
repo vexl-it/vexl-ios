@@ -74,18 +74,14 @@ struct LargeSolidButton: View {
                     action: action)
     }
 
-    @ViewBuilder
     private var label: some View {
-        if let iconImage = iconImage {
-            HStack {
+        HStack {
+            if let iconImage = iconImage {
                 iconImage
-
-                Text(title)
             }
-            .padding(.horizontal, padding)
-        } else {
+
             Text(title)
-                .padding(.horizontal, padding)
         }
+        .padding(.horizontal, padding)
     }
 }
