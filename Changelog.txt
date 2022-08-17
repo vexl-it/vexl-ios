@@ -43,5 +43,6 @@
 - VEX-582: added fee label to offer card
 - VEX-657: Common friends scrolling is now horizontal
 - VEX-576: filter inactive offers
+- VEX-695: Declined identity reveal now appears instantly
 
 ### Known Issues
