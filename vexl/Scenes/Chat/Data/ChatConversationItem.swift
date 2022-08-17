@@ -54,15 +54,25 @@ final class ChatConversationItem: Identifiable, Hashable, ObservableObject {
         self.imageView = Image(data: previewImage, placeholder: "")
 
         if type == .receiveIdentityReveal || type == .requestIdentityReveal,
-           let gotResponse = message.chat?.publisher(for: \.gotRevealedResponse),
-           let isRevealed = message.chat?.publisher(for: \.isRevealed) {
-            Publishers.CombineLatest(gotResponse, isRevealed)
-                .filter(\.0)
-                .map(\.1)
-                .map { isRevealed -> ItemType in
-                    isRevealed ? .approveIdentityReveal : .rejectIdentityReveal
-                }
+           let gotResponse = message.chat?.publisher(for: \.gotRevealedResponse) {
+
+            let isRevealed = message.isRevealed
+            let hasResponse = message.hasRevealResponse
+
+            type = Self.updateMessageType(isRevealed: isRevealed, hasResponse: hasResponse, type: type)
+
+            gotResponse
+                .filter { $0 }
+                .map { [type] _ in Self.updateMessageType(isRevealed: isRevealed, hasResponse: hasResponse, type: type) }
                 .assign(to: &$type)
+        }
+    }
+
+    private static func updateMessageType(isRevealed: Bool, hasResponse: Bool, type: ItemType) -> ItemType {
+        if hasResponse {
+            return isRevealed ? .approveIdentityReveal : .rejectIdentityReveal
+        } else {
+            return type
         }
     }
 
