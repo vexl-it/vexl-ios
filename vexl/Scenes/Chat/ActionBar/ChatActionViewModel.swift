@@ -33,7 +33,11 @@ final class ChatActionViewModel: ObservableObject {
         """, chat))
 
         $fetchedMessages.publisher
-            .map(\.objects.isEmpty.not)
+            .map(\.objects.first?.chat)
+            .map { chat -> Bool in
+                guard let isRevealed = chat?.isRevealed else { return false }
+                return isRevealed
+            }
             .assign(to: &$userIsRevealed)
 
         self.offer = chat.receiverKeyPair?.offer

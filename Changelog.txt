@@ -48,5 +48,6 @@
 - VEX-576: filter inactive offers
 - VEX-695: Declined identity reveal now appears instantly
 - VEX-643: Fixed issue with avatar not appear after identity has been revealed
+- VEX-689: Reveal identity button disappearing after reveal is declined
 
 ### Known Issues
