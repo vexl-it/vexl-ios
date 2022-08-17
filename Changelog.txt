@@ -49,5 +49,7 @@
 - VEX-695: Declined identity reveal now appears instantly
 - VEX-643: Fixed issue with avatar not appear after identity has been revealed
 - VEX-689: Reveal identity button disappearing after reveal is declined
+- VEX-739: Fix group member count
+- VEX-749: Silence group notifications
 
 ### Known Issues
