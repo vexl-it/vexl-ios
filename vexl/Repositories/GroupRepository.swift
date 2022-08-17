@@ -14,6 +14,7 @@ protocol GroupRepositoryType {
     func update(group unsafeGroup: ManagedGroup, members: [String]) -> AnyPublisher<[String], Error>
     func fetchGroup(uuid: String) -> ManagedGroup?
     func delete(group: ManagedGroup) -> AnyPublisher<Void, Error>
+    func delete(groups: [ManagedGroup]) -> AnyPublisher<Void, Error>
 }
 
 final class GroupRepository: GroupRepositoryType {
@@ -96,5 +97,16 @@ final class GroupRepository: GroupRepositoryType {
                 .eraseToAnyPublisher()
         }
         return persistence.delete(context: context) { _ in [group] }
+    }
+
+    func delete(groups unsafeGroups: [ManagedGroup]) -> AnyPublisher<Void, Error> {
+        let context = persistence.viewContext
+        let groups: [ManagedGroup] = unsafeGroups.compactMap { unsafeGroup in
+            guard let group = persistence.loadSyncroniously(type: ManagedGroup.self, context: context, objectID: unsafeGroup.objectID) else {
+                return nil
+            }
+            return group
+        }
+        return persistence.delete(context: context) { _ in groups }
     }
 }

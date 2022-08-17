@@ -23,6 +23,10 @@ final class GroupManager: GroupManagerType {
     @Inject var groupRepository: GroupRepositoryType
     @Inject var groupService: GroupServiceType
     @Inject var offerManager: OfferManagerType
+    @Inject var offerService: OfferServiceType
+    @Inject var offerRepository: OfferRepositoryType
+    @Inject var contactService: ContactsServiceType
+    @Inject var authenticationManager: AuthenticationManagerType
 
     private let cancelBag: CancelBag = .init()
 
@@ -78,11 +82,35 @@ final class GroupManager: GroupManagerType {
     }
 
     func leave(group: ManagedGroup) -> AnyPublisher<Void, Error> {
-        groupService
-            .leave(group: group)
-            .flatMap { [groupRepository] in
-                groupRepository
-                    .delete(group: group)
+        contactService
+            .getAllContacts(friendLevel: .second, hasFacebookAccount: false, pageLimit: Constants.pageMaxLimit)
+            .flatMap { [offerService] phoneContacts, facebookContacts -> AnyPublisher<Void, Error> in
+                let allContacts = phoneContacts + facebookContacts
+                let myContactSet = Set(allContacts.map(\.publicKey))
+                let groupMembers = group.members?.allObjects as? [ManagedAnonymisedProfile] ?? []
+                var memberSet = Set(groupMembers.compactMap(\.publicKey))
+                memberSet.subtract(myContactSet)
+                let members = Array(memberSet)
+
+                let offerSet = group.offers?.filtered(using: NSPredicate(format: "user != nil")) as? Set<ManagedOffer> ?? .init()
+                let offers = Array(offerSet).compactMap(\.id)
+
+                guard !offerSet.isEmpty && !memberSet.isEmpty else {
+                    return Just(())
+                        .setFailureType(to: Error.self)
+                        .eraseToAnyPublisher()
+                }
+                return offerService
+                    .deleteOfferPrivateParts(offerIds: offers, publicKeys: members)
+            }
+            .flatMap { [offerRepository] () -> AnyPublisher<Void, Error> in
+                let groupOfferSet = group.offers?.filtered(using: NSPredicate(format: "user == nil")) as? Set<ManagedOffer> ?? .init()
+                let groupOfferIds = Array(groupOfferSet).compactMap(\.id)
+                return offerRepository.deleteOffers(with: groupOfferIds)
+            }
+            .flatMap { [groupService] _ -> AnyPublisher<Void, Error> in
+                groupService
+                    .leave(group: group)
             }
             .eraseToAnyPublisher()
     }
