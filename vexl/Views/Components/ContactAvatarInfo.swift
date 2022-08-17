@@ -82,7 +82,6 @@ struct ContactAvatarInfo: View {
     }
 }
 
-#if DEBUG || DEVEL
 struct ContactAvatarInfoViewPreview: PreviewProvider {
     static var previews: some View {
         VStack(spacing: 16) {
@@ -102,4 +101,3 @@ struct ContactAvatarInfoViewPreview: PreviewProvider {
         .background(Color.black)
     }
 }
-#endif
