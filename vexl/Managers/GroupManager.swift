@@ -58,17 +58,19 @@ final class GroupManager: GroupManagerType {
             return
         }
         let userGroupOffers = groupOfferSet.filter { $0.user != nil }
-        guard !userGroupOffers.isEmpty else {
-            return
-        }
         groupService.getNewMembers(groups: [group])
             .compactMap(\.first?.publicKeys)
             .flatMap { [groupRepository] newMemberPublicKeys in
                 groupRepository
                     .update(group: group, members: newMemberPublicKeys)
             }
-            .flatMap { [offerManager] newMemeberPublicKeys in
-                offerManager
+            .flatMap { [offerManager] newMemeberPublicKeys -> AnyPublisher<Void, Error> in
+                guard !userGroupOffers.isEmpty else {
+                    return Just(())
+                        .setFailureType(to: Error.self)
+                        .eraseToAnyPublisher()
+                }
+                return offerManager
                     .sync(offers: Array(userGroupOffers), withPublicKeys: newMemeberPublicKeys)
             }
             .sink()
