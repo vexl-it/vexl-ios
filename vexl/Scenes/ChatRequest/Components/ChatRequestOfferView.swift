@@ -20,7 +20,7 @@ struct ChatRequestOfferView: View {
         VStack(alignment: .center, spacing: .zero) {
             ScrollView(showsIndicators: false) {
                 ContactAvatarInfo(isAvatarWithOpacity: false,
-                                  title: data.contactName,
+                                  titleType: .normal(data.contactName),
                                   subtitle: data.contactFriendLevel,
                                   style: .large)
                     .padding(.horizontal, Appearance.GridGuide.padding)
