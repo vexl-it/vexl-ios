@@ -286,7 +286,7 @@ extension OfferInformationDetailView {
             Publishers.CombineLatest($offerLocations, onlineTitle)
                 .map { (cities: [OfferLocation], onlineTitle: String?) -> [String?] in
                     if onlineTitle == nil {
-                        return Array(cities.map(\.city).prefix(upTo: 2))
+                        return Array(cities.map(\.city).prefix(upTo: min(2, cities.count)))
                     } else {
                         let firstCity = cities.first?.city
                         return [firstCity, onlineTitle]
