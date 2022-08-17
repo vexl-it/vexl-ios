@@ -84,6 +84,7 @@ class InboxRepository: InboxRepositoryType {
         case .revealRequest:
             chat.gotRevealedResponse = false
             chat.isRevealed = false
+            chat.showIdentityRequest = false
             if payload.isFromContact {
                 if let imageURL = payload.user?.image, let avatarURL = URL(string: imageURL), let avatar = try? Data(contentsOf: avatarURL) {
                     chat.receiverKeyPair?.profile?.realAvatarBeforeReveal = avatar
@@ -93,6 +94,7 @@ class InboxRepository: InboxRepositoryType {
         case .revealApproval:
             chat.gotRevealedResponse = true
             chat.isRevealed = true
+            chat.showIdentityRequest = false
             let requestMessage = getLastIdentityRequestMessage(chat: chat)
             requestMessage?.isRevealed = true
             requestMessage?.hasRevealResponse = true
@@ -109,6 +111,7 @@ class InboxRepository: InboxRepositoryType {
                 chat.receiverKeyPair?.profile?.name = chat.receiverKeyPair?.profile?.realNameBeforeReveal
             }
         case .revealRejected:
+            chat.showIdentityRequest = true
             chat.gotRevealedResponse = true
             chat.isRevealed = false
 

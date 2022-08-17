@@ -16,7 +16,7 @@ struct ChatActionView: View {
     private var availableActions: [ChatActionOption] {
         var actions = ChatActionOption.allCases
 
-        if viewModel.userIsRevealed {
+        if viewModel.showIdentityRequest {
             actions = actions.filter { $0 != .revealIdentity }
         }
 

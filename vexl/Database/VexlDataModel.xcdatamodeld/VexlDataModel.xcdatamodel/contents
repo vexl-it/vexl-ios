@@ -12,6 +12,7 @@
         <attribute name="isRequesting" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="isRevealed" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="lastMessageDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="showIdentityRequest" optional="YES" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES"/>
         <relationship name="inbox" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ManagedInbox" inverseName="chats" inverseEntity="ManagedInbox"/>
         <relationship name="messages" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ManagedMessage" inverseName="chat" inverseEntity="ManagedMessage"/>
         <relationship name="receiverKeyPair" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ManagedKeyPair" inverseName="chat" inverseEntity="ManagedKeyPair"/>
@@ -134,7 +135,7 @@
     </entity>
     <elements>
         <element name="ManagedAnonymisedProfile" positionX="-1077.6640625" positionY="-369.7421875" width="170.62890625" height="73"/>
-        <element name="ManagedChat" positionX="-314.09765625" positionY="-523.9609375" width="162.57421875" height="179"/>
+        <element name="ManagedChat" positionX="-314.09765625" positionY="-523.9609375" width="162.57421875" height="194"/>
         <element name="ManagedContact" positionX="-889.3515625" positionY="-86.04296875" width="128" height="134"/>
         <element name="ManagedGroup" positionX="-1261.953125" positionY="-339.99609375" width="128" height="209"/>
         <element name="ManagedInbox" positionX="-545.4609375" positionY="-382.8515625" width="128" height="118"/>
