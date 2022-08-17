@@ -137,6 +137,10 @@ extension NotificationManager: UNUserNotificationCenterDelegate {
             presentationOptions = [.alert, .badge, .sound]
         }
 
+        if type == .groupNewMember {
+            presentationOptions = []
+        }
+
         completionHandler(presentationOptions)
     }
 }
