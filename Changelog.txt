@@ -51,5 +51,6 @@
 - VEX-689: Reveal identity button disappearing after reveal is declined
 - VEX-739: Fix group member count
 - VEX-749: Silence group notifications
+- VEX-671: Request offer button UI
 
 ### Known Issues
