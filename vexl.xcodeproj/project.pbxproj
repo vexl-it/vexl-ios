@@ -136,10 +136,6 @@
 		B08F399E27AE7D92008B344F /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B08F399D27AE7D92008B344F /* OnboardingView.swift */; };
 		B0B0A059288EDDAE00E81776 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B0A058288EDDAE00E81776 /* NotificationManager.swift */; };
 		B0B0A05B2891AC3E00E81776 /* Bool+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B0A05A2891AC3E00E81776 /* Bool+.swift */; };
-		B0BB493628ACFA040068BCB8 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B0BB493528ACFA040068BCB8 /* GoogleService-Info.plist */; };
-		B0BB493828ACFAF60068BCB8 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B0BB493728ACFAF60068BCB8 /* GoogleService-Info.plist */; };
-		B0BB493A28ACFB0D0068BCB8 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B0BB493928ACFB0D0068BCB8 /* GoogleService-Info.plist */; };
-		B0BB493C28ACFB3C0068BCB8 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B0BB493B28ACFB3C0068BCB8 /* GoogleService-Info.plist */; };
 		B0E9BB272815C5750012BF1D /* String+Encryptable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E9BB262815C5750012BF1D /* String+Encryptable.swift */; };
 		B0E9BB2A2815C7190012BF1D /* AES.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E9BB292815C7190012BF1D /* AES.swift */; };
 		B0E9BB2C2815C71E0012BF1D /* ECC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E9BB2B2815C71E0012BF1D /* ECC.swift */; };
@@ -2421,17 +2417,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B0BB493C28ACFB3C0068BCB8 /* GoogleService-Info.plist in Resources */,
 				F1B5FCC527C6C0720018729B /* Generic.strings in Resources */,
 				B08F390327AE7110008B344F /* LaunchScreen.storyboard in Resources */,
 				F1BBC70F283BE5570067F81B /* TT Satoshi Medium.otf in Resources */,
 				F1BBC710283BE5570067F81B /* TT Satoshi Regular.otf in Resources */,
 				F1BBC713283BE55F0067F81B /* PPMonumentExtended-Bold.otf in Resources */,
-				B0BB493A28ACFB0D0068BCB8 /* GoogleService-Info.plist in Resources */,
 				F1B5FCC327C6BC330018729B /* Localizable.strings in Resources */,
 				B08F390F27AE7112008B344F /* Assets.xcassets in Resources */,
-				B0BB493628ACFA040068BCB8 /* GoogleService-Info.plist in Resources */,
-				B0BB493828ACFAF60068BCB8 /* GoogleService-Info.plist in Resources */,
 				F1BBC711283BE5570067F81B /* TT Satoshi Bold.otf in Resources */,
 				F1BBC70E283BE5570067F81B /* TT Satoshi SemiBold.otf in Resources */,
 			);
