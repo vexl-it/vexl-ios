@@ -82,6 +82,8 @@ class InboxRepository: InboxRepositoryType {
 
         switch message.type {
         case .revealRequest:
+            chat.gotRevealedResponse = false
+            chat.isRevealed = false
             if payload.isFromContact {
                 if let imageURL = payload.user?.image, let avatarURL = URL(string: imageURL), let avatar = try? Data(contentsOf: avatarURL) {
                     chat.receiverKeyPair?.profile?.realAvatarBeforeReveal = avatar
@@ -91,6 +93,10 @@ class InboxRepository: InboxRepositoryType {
         case .revealApproval:
             chat.gotRevealedResponse = true
             chat.isRevealed = true
+            let requestMessage = getLastIdentityRequestMessage(chat: chat)
+            requestMessage?.isRevealed = true
+            requestMessage?.hasRevealResponse = true
+
             if payload.isFromContact {
                 if let name = payload.user?.name {
                     chat.receiverKeyPair?.profile?.name = name
@@ -105,6 +111,11 @@ class InboxRepository: InboxRepositoryType {
         case .revealRejected:
             chat.gotRevealedResponse = true
             chat.isRevealed = false
+
+            let requestMessage = getLastIdentityRequestMessage(chat: chat)
+            requestMessage?.isRevealed = false
+            requestMessage?.hasRevealResponse = true
+
             chat.receiverKeyPair?.profile?.realNameBeforeReveal = nil
             chat.receiverKeyPair?.profile?.realAvatarBeforeReveal = nil
         case .messagingRequest:
@@ -116,6 +127,11 @@ class InboxRepository: InboxRepositoryType {
         case .invalid, .deleteChat, .messagingRejection, .message:
             break
         }
+    }
+
+    private func getLastIdentityRequestMessage(chat: ManagedChat) -> ManagedMessage? {
+        let messages = chat.messages?.filtered(using: NSPredicate(format: "typeRawType == '\(MessageType.revealRequest.rawValue)'")) as? Set<ManagedMessage>
+        return messages?.sorted(by: { $0.time > $1.time }).first
     }
 
     func getInbox(with publicKey: String) -> AnyPublisher<ManagedInbox?, Error> {
