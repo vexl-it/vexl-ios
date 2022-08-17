@@ -35,7 +35,9 @@ struct ChatRevealIdentityResponseView: View {
         VStack {
             displayImage
                 .resizable()
+                .scaledToFill()
                 .frame(size: Appearance.GridGuide.chatRequestAvatarSize)
+                .clipped()
                 .cornerRadius(Appearance.GridGuide.buttonCorner)
                 .padding(.bottom, Appearance.GridGuide.smallPadding)
 

@@ -72,8 +72,9 @@ struct EditProfileAvatarView: View {
         ZStack(alignment: .topTrailing) {
             Image(data: viewModel.avatar, placeholder: R.image.onboarding.addAvatar.name)
                 .resizable()
-                .aspectRatio(contentMode: .fit)
+                .scaledToFill()
                 .frame(size: Appearance.GridGuide.largeIconSize)
+                .clipped()
                 .cornerRadius(Appearance.GridGuide.padding)
                 .padding(Appearance.GridGuide.point)
 

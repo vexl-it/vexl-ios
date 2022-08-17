@@ -23,7 +23,9 @@ struct ContactAvatarView: View {
 
         return avatarImage
             .resizable()
+            .scaledToFill()
             .frame(size: size)
+            .clipped()
             .cornerRadius(Appearance.GridGuide.buttonCorner)
     }
 }
