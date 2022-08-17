@@ -13,7 +13,7 @@ protocol InboxRepositoryType {
 
     func createOrUpdateChats(receivedPayloads: [MessagePayload], inbox: ManagedInbox) -> AnyPublisher<Void, Error>
 
-    func deleteChats(recevedPayloads: [MessagePayload], inbox: ManagedInbox) -> AnyPublisher<Void, Error>
+    func deleteChats(recevedPayloads: [MessagePayload], inbox: ManagedInbox) -> AnyPublisher<Bool, Error>
 
     func getInbox(with publicKey: String) -> AnyPublisher<ManagedInbox?, Error>
 }
@@ -125,10 +125,10 @@ class InboxRepository: InboxRepositoryType {
             .eraseToAnyPublisher()
     }
 
-    func deleteChats(recevedPayloads payloads: [MessagePayload], inbox unsafeContextInbox: ManagedInbox) -> AnyPublisher<Void, Error> {
+    func deleteChats(recevedPayloads payloads: [MessagePayload], inbox unsafeContextInbox: ManagedInbox) -> AnyPublisher<Bool, Error> {
         let payloads = payloads.filter { $0.messageType == .deleteChat || $0.messageType == .messagingRejection }
         guard !payloads.isEmpty else {
-            return Just(()).setFailureType(to: Error.self).eraseToAnyPublisher()
+            return Just(false).setFailureType(to: Error.self).eraseToAnyPublisher()
         }
         return persistence.delete(context: persistence.viewContext) { [persistence] context -> [ManagedChat] in
             guard let inbox = persistence.loadSyncroniously(type: ManagedInbox.self, context: context, objectID: unsafeContextInbox.objectID) else {
@@ -139,7 +139,7 @@ class InboxRepository: InboxRepositoryType {
                 return inbox.chats?.filtered(using: predicate).first as? ManagedChat
             }
         }
-        .asVoid()
+        .map { true }
         .eraseToAnyPublisher()
     }
 }

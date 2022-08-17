@@ -20,11 +20,13 @@
 - VEX-601: Avatar picker now has correct size
 - VEX-570: Added labels to friends degree picker
 - VEX-638: Encrypt offer for groups dynamically
+- VEX-664: Profile rows are tappable now
 - VEX-562/VEX-655: Showing message in the inbox list when the its a reveal identity request, approval and decline.
 - VEX-547: Save name in Register name + avatar phase
 - VEX-697: App now receives contacts-ms notifications
 - VEX-691: App updates offer for new group users
 - VEX-693: App updates offer for new contact users
+- Registered new testing devices
 
 ### Fixes
 - VEX-525: Fixed common friends on chat request screen
@@ -41,8 +43,10 @@
 - VEX-612: Fixed missing translation for months in bitcoin graph
 - VEX-363: fixed fee amount calculation
 - VEX-582: added fee label to offer card
+- VEX-433: Chat is dismissed after the content is deleted
 - VEX-657: Common friends scrolling is now horizontal
 - VEX-576: filter inactive offers
 - VEX-695: Declined identity reveal now appears instantly
+- VEX-643: Fixed issue with avatar not appear after identity has been revealed
 
 ### Known Issues

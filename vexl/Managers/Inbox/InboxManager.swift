@@ -11,7 +11,8 @@ import Cleevio
 
 protocol InboxManagerType {
     var didFinishSyncing: AnyPublisher<Void, Never> { get }
-    
+    var didDeleteChat: AnyPublisher<String?, Never> { get }
+
     func syncInboxes()
     func userRequestedSync()
 
@@ -28,6 +29,11 @@ final class InboxManager: InboxManagerType {
         _didFinishSyncing.eraseToAnyPublisher()
     }
 
+    var didDeleteChat: AnyPublisher<String?, Never> {
+        _didDeleteChat.eraseToAnyPublisher()
+    }
+
+    private var _didDeleteChat: PassthroughSubject<String?, Never> = .init()
     private var _didFinishSyncing: PassthroughSubject<Void, Never> = .init()
     private var isRefreshingInboxes = false
     private var activity: Activity = .init()
@@ -122,7 +128,11 @@ final class InboxManager: InboxManagerType {
             .flatMap { [inboxRepository] payloads -> AnyPublisher<[MessagePayload], Error> in
                 inboxRepository
                     .deleteChats(recevedPayloads: payloads, inbox: inbox)
-                    .map { payloads }
+                    .withUnretained(self)
+                    .handleEvents(receiveOutput: { owner, delete in
+                        if delete { owner._didDeleteChat.send(payloads.first?.contactInboxKey) }
+                    })
+                    .map { _ -> [MessagePayload] in payloads }
                     .eraseToAnyPublisher()
             }
             .eraseToAnyPublisher()
