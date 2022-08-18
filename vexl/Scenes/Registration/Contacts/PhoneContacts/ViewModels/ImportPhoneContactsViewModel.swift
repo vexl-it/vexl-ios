@@ -43,6 +43,7 @@ final class ImportPhoneContactsViewModel: ImportContactsViewModel {
             .sink { owner, availableContacts in
                 owner.currentState = availableContacts.isEmpty ? .empty : .content
                 owner.items = availableContacts
+                owner.selectAllItems(true)
             }
             .store(in: cancelBag)
     }
