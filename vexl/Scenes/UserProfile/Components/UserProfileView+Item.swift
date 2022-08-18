@@ -38,8 +38,9 @@ extension UserProfileView {
                     }
                 }
             }
-            .listRowBackground(Appearance.Colors.black1)
+            .background(Appearance.Colors.black1)
             .frame(height: Appearance.GridGuide.largeButtonHeight)
+            .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.vertical, 0)
         }
 

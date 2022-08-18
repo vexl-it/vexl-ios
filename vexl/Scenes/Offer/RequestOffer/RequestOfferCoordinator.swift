@@ -21,7 +21,7 @@ final class RequestOfferCoordinator: BaseCoordinator<RouterResult<Void>> {
 
     override func start() -> CoordinatingResult<RouterResult<Void>> {
         let viewModel = RequestOfferViewModel(offer: offer)
-        let viewController = ToggleKeyboardBaseViewController(rootView: RequestOfferView(viewModel: viewModel))
+        let viewController = ToggleKeyboardHostingController(rootView: RequestOfferView(viewModel: viewModel))
 
         router.present(viewController, animated: true)
 

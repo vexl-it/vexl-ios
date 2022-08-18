@@ -10,7 +10,11 @@ import Combine
 import Cleevio
 
 protocol InboxManagerType {
+    var didFinishSyncing: AnyPublisher<Void, Never> { get }
+    var didDeleteChat: AnyPublisher<String?, Never> { get }
+
     func syncInboxes()
+    func userRequestedSync()
 
     func syncInbox(with publicKey: String)
 }
@@ -21,7 +25,38 @@ final class InboxManager: InboxManagerType {
     @Inject var chatService: ChatServiceType
     @Inject var userRepository: UserRepositoryType
 
+    var didFinishSyncing: AnyPublisher<Void, Never> {
+        _didFinishSyncing.eraseToAnyPublisher()
+    }
+
+    var didDeleteChat: AnyPublisher<String?, Never> {
+        _didDeleteChat.eraseToAnyPublisher()
+    }
+
+    private var _didDeleteChat: PassthroughSubject<String?, Never> = .init()
+    private var _didFinishSyncing: PassthroughSubject<Void, Never> = .init()
+    private var isRefreshingInboxes = false
+    private var activity: Activity = .init()
     private var cancelBag = CancelBag()
+
+    init() {
+        activity.indicator
+            .loading
+            .withUnretained(self)
+            .filter { !$0.1 && $0.0.isRefreshingInboxes }
+            .sink { owner, _ in
+                owner.isRefreshingInboxes = false
+                owner._didFinishSyncing.send(())
+            }
+            .store(in: cancelBag)
+    }
+
+    func userRequestedSync() {
+        if !isRefreshingInboxes {
+            isRefreshingInboxes = true
+            syncInboxes()
+        }
+    }
 
     func syncInboxes() {
         let userOffers = userRepository.user?.offers?.allObjects as? [ManagedOffer] ?? []
@@ -33,6 +68,7 @@ final class InboxManager: InboxManagerType {
 
         let inboxPublishers = inboxes.map { inbox in
             self.syncInbox(inbox)
+                .track(activity: activity)
                 .materialize()
                 .compactMap(\.value)
         }
@@ -80,6 +116,7 @@ final class InboxManager: InboxManagerType {
             .eraseToAnyPublisher()
 
         let messagePayloads = encryptedMessages
+            .filter { !$0.isEmpty }
             .flatMap { messages in
                 messages.publisher
                     .compactMap { MessagePayload(chatMessage: $0, key: inboxKeys, inboxPublicKey: inboxKeys.publicKey) }
@@ -91,7 +128,11 @@ final class InboxManager: InboxManagerType {
             .flatMap { [inboxRepository] payloads -> AnyPublisher<[MessagePayload], Error> in
                 inboxRepository
                     .deleteChats(recevedPayloads: payloads, inbox: inbox)
-                    .map { payloads }
+                    .withUnretained(self)
+                    .handleEvents(receiveOutput: { owner, delete in
+                        if delete { owner._didDeleteChat.send(payloads.first?.contactInboxKey) }
+                    })
+                    .map { _ -> [MessagePayload] in payloads }
                     .eraseToAnyPublisher()
             }
             .eraseToAnyPublisher()

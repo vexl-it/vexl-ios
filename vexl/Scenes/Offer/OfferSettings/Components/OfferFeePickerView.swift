@@ -12,6 +12,8 @@ typealias OfferFeeOption = OfferFeePickerView.Option
 struct OfferFeePickerView: View {
 
     let feeLabel: String
+    let minValue: Double
+    let maxValue: Double
     @Binding var selectedOption: Option
     @Binding var feeValue: Double
     private let options = [Option.withoutFee, .withFee]
@@ -38,6 +40,8 @@ struct OfferFeePickerView: View {
                     thumbColor: UIColor(Appearance.Colors.whiteText),
                     minTrackColor: UIColor(Appearance.Colors.whiteText),
                     maxTrackColor: UIColor(Appearance.Colors.gray2),
+                    minValue: minValue,
+                    maxValue: maxValue,
                     value: $feeValue
                 )
                 .padding(.horizontal, Appearance.GridGuide.point)
@@ -50,9 +54,9 @@ struct OfferFeePickerView: View {
 }
 
 extension OfferFeePickerView {
-    enum Option: String {
-        case withFee = "WITH_FEE"
+    enum Option: String, CaseIterable {
         case withoutFee = "WITHOUT_FEE"
+        case withFee = "WITH_FEE"
 
         var title: String {
             switch self {
@@ -69,6 +73,8 @@ extension OfferFeePickerView {
 struct OfferFeePickerViewPreview: PreviewProvider {
     static var previews: some View {
         OfferFeePickerView(feeLabel: "10%",
+                           minValue: 1,
+                           maxValue: 10,
                            selectedOption: .constant(.withoutFee),
                            feeValue: .constant(5))
             .previewDevice("iPhone 11")

@@ -27,6 +27,8 @@ extension UserProfileViewModel {
         case currency
         case allowScreenshots
 
+        case groups
+
         case termsAndPrivacy
         case faq
         case reportIssue
@@ -55,9 +57,11 @@ extension UserProfileViewModel {
             case .logout:
                 return L.userProfileLogout()
             case .currency:
-                return L.userProfileCurrencyTitle()
+                return L.userProfileCurrency()
             case .allowScreenshots:
                 return L.userProfileAllowScreenshots()
+            case .groups:
+                return L.groupsTitle()
             case .termsAndPrivacy:
                 return L.userProfileTermsAndPrivacy()
             case .faq:
@@ -96,6 +100,8 @@ extension UserProfileViewModel {
                 return R.image.profile.coins.name
             case .allowScreenshots:
                 return R.image.profile.allowScreenshot.name
+            case .groups:
+                return R.image.profile.groups.name
             case .termsAndPrivacy:
                 return R.image.profile.termsAndPrivacy.name
             case .faq:
@@ -109,9 +115,9 @@ extension UserProfileViewModel {
             [
                 OptionGroup(id: 1, options: [.editAvatar, .editName]),
                 OptionGroup(id: 2, options: [.contacts, .facebook]),
-                OptionGroup(id: 3, options: [.pinFaceId, .currency, .allowScreenshots]),
-                OptionGroup(id: 4, options: [.termsAndPrivacy, .faq, .reportIssue]),
-                OptionGroup(id: 5, options: [.requestData]),
+                OptionGroup(id: 3, options: [.groups]),
+                OptionGroup(id: 4, options: [.currency]),
+                OptionGroup(id: 5, options: [.termsAndPrivacy, .faq, .reportIssue]),
                 OptionGroup(id: 6, options: [.logout])
             ]
         }

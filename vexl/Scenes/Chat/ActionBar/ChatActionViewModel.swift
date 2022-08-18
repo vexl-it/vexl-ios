@@ -8,12 +8,13 @@
 import Foundation
 import Cleevio
 
-final class ChatActionViewModel {
+final class ChatActionViewModel: ObservableObject {
 
     @Fetched(fetchImmediately: false)
     var fetchedMessages: [ManagedMessage]
 
-    @Published var userIsRevealed = false
+    @Published var showIdentityRequest = true
+    @Published var isChatBlocked = false
 
     var action: ActionSubject<ChatActionView.ChatActionOption> = .init()
     var route: CoordinatingSubject<ChatViewModel.Route> = .init()
@@ -32,16 +33,27 @@ final class ChatActionViewModel {
         """, chat))
 
         $fetchedMessages.publisher
-            .map(\.objects.isEmpty.not)
-            .assign(to: &$userIsRevealed)
+            .map(\.objects.first?.chat)
+            .map { chat -> Bool in
+                guard let showIdentityRequest = chat?.showIdentityRequest else { return true }
+                return showIdentityRequest
+            }
+            .assign(to: &$showIdentityRequest)
 
         self.offer = chat.receiverKeyPair?.offer
+        self.isChatBlocked = chat.isBlocked
         setupActionBindings()
     }
 
     private func setupActionBindings() {
         let sharedAction = action
             .share()
+
+        sharedAction
+            .filter { $0 == .commonFriends }
+            .map { _ -> ChatViewModel.Route in .showCommonFriendsTapped }
+            .subscribe(route)
+            .store(in: cancelBag)
 
         sharedAction
             .filter { $0 == .revealIdentity }
@@ -60,6 +72,15 @@ final class ChatActionViewModel {
             .withUnretained(self)
             .compactMap { owner, _ in owner.offer }
             .map(ChatViewModel.Route.showOfferTapped(offer: ))
+            .subscribe(route)
+            .store(in: cancelBag)
+
+        sharedAction
+            .withUnretained(self)
+            .filter { owner, action -> Bool in
+                action == .blockUser && !owner.isChatBlocked
+            }
+            .map { _ -> ChatViewModel.Route in .showBlockTapped }
             .subscribe(route)
             .store(in: cancelBag)
     }

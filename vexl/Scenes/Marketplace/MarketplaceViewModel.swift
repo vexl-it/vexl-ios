@@ -24,10 +24,20 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
     @Fetched(fetchImmediately: false)
     var fetchedSellOffers: [ManagedOffer]
 
+    @Fetched(fetchImmediately: false)
+    var userBuyOffers: [ManagedOffer]
+
+    @Fetched(fetchImmediately: false)
+    var userSellOffers: [ManagedOffer]
+
     // MARK: - View Bindings
 
     @Published var primaryActivity: Activity = .init()
     @Published var selectedOption: OfferType = .buy
+    @Published var isRefreshing = false
+    @Published var isGraphExpanded = false
+    @Published var createdBuyOffers = false
+    @Published var createdSellOffers = false
     @Published private var buyFeed: [OfferDetailViewData] = []
     @Published private var sellFeed: [OfferDetailViewData] = []
 
@@ -41,6 +51,7 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
         case offerDetailTapped(offer: ManagedOffer)
         case requestOfferTapped(offer: ManagedOffer)
         case fetchNewOffers
+        case graphExpanded(isExpanded: Bool)
     }
 
     let action: ActionSubject<UserAction> = .init()
@@ -89,6 +100,15 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
         }
     }
 
+    var userSelectedFilters: Bool {
+        switch selectedOption {
+        case .sell:
+            return !sellOfferFilter.isFilterEmpty
+        case .buy:
+            return !buyOfferFilter.isFilterEmpty
+        }
+    }
+
     let refresh = PassthroughSubject<Void, Never>()
     let bitcoinViewModel: BitcoinViewModel
     private var buyOfferFilter = OfferFilter(type: .buy)
@@ -102,6 +122,7 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
         setupDataBindings()
         setupActionBindings()
         setupInbox()
+        setupRefreshBindings()
     }
 
     func applyFilter(_ filter: OfferFilter) {
@@ -109,13 +130,13 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
         case .buy:
             buyOfferFilter = filter
             $fetchedBuyOffers.load(
-                sortDescriptors: [ NSSortDescriptor(key: "createdAt", ascending: false) ],
+                sortDescriptors: [ NSSortDescriptor(key: "isRequested", ascending: true), NSSortDescriptor(key: "createdAt", ascending: false) ],
                 predicate: filter.predicate
             )
         case .sell:
             sellOfferFilter = filter
             $fetchedSellOffers.load(
-                sortDescriptors: [ NSSortDescriptor(key: "createdAt", ascending: false) ],
+                sortDescriptors: [ NSSortDescriptor(key: "isRequested", ascending: true), NSSortDescriptor(key: "createdAt", ascending: false) ],
                 predicate: filter.predicate
             )
         }
@@ -136,15 +157,35 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
             .map { $0.map(OfferDetailViewData.init) }
             .assign(to: &$sellFeed)
 
+        $userBuyOffers.publisher
+            .map(\.objects)
+            .map { !$0.isEmpty }
+            .assign(to: &$createdBuyOffers)
+
+        $userSellOffers.publisher
+            .map(\.objects)
+            .map { !$0.isEmpty }
+            .assign(to: &$createdSellOffers)
+
         $fetchedBuyOffers.load(
-            sortDescriptors: [ NSSortDescriptor(key: "createdAt", ascending: false) ],
+            sortDescriptors: [ NSSortDescriptor(key: "isRequested", ascending: true), NSSortDescriptor(key: "createdAt", ascending: false) ],
             predicate: buyOfferFilter.predicate
         )
 
         $fetchedSellOffers.load(
-            sortDescriptors: [ NSSortDescriptor(key: "createdAt", ascending: false) ],
+            sortDescriptors: [ NSSortDescriptor(key: "isRequested", ascending: true), NSSortDescriptor(key: "createdAt", ascending: false) ],
             predicate: sellOfferFilter.predicate
         )
+
+        $userBuyOffers
+            .load(
+                predicate: .init(format: "offerTypeRawType == '\(OfferType.buy.rawValue)' AND user != nil")
+            )
+
+        $userSellOffers
+            .load(
+                predicate: .init(format: "offerTypeRawType == '\(OfferType.sell.rawValue)' AND user != nil")
+            )
     }
 
     private func setupActionBindings() {
@@ -201,5 +242,32 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
             .map { offer in Route.showRequestOffer(offer) }
             .subscribe(route)
             .store(in: cancelBag)
+
+        userAction
+            .compactMap { action -> Bool? in
+                guard case let .graphExpanded(isExpanded) = action else {
+                    return nil
+                }
+                return isExpanded
+            }
+            .withUnretained(self)
+            .sink { owner, isExpanded in
+                owner.isGraphExpanded = isExpanded
+            }
+            .store(in: cancelBag)
+    }
+
+    private func setupRefreshBindings() {
+        $isRefreshing
+            .filter { $0 }
+            .withUnretained(self)
+            .sink { owner, _ in
+                owner.offerManager.sync()
+            }
+            .store(in: cancelBag)
+
+        offerManager.didFinishSyncing
+            .map { false }
+            .assign(to: &$isRefreshing)
     }
 }

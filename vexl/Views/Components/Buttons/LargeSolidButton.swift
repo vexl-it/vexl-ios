@@ -34,6 +34,7 @@ struct LargeSolidButton: View {
     }
 
     let title: String
+    let iconImage: Image?
     let padding: CGFloat
     let font: Font
     let style: Style
@@ -43,6 +44,7 @@ struct LargeSolidButton: View {
 
     // swiftlint:disable:next function_default_parameter_at_end
     init(title: String,
+         iconImage: Image? = nil,
          padding: CGFloat = .zero,
          font: Font,
          style: Style,
@@ -50,6 +52,7 @@ struct LargeSolidButton: View {
          isEnabled: Binding<Bool>,
          action: @escaping () -> Void) {
         self.title = title
+        self.iconImage = iconImage
         self.padding = padding
         self.font = font
         self.style = style
@@ -59,7 +62,7 @@ struct LargeSolidButton: View {
     }
 
     var body: some View {
-        SolidButton(Text(title).padding(.horizontal, padding),
+        SolidButton(label,
                     iconImage: nil,
                     isEnabled: $isEnabled,
                     isLoading: .constant(false),
@@ -69,5 +72,16 @@ struct LargeSolidButton: View {
                     colors: style.color,
                     dimensions: .largeButton,
                     action: action)
+    }
+
+    private var label: some View {
+        HStack {
+            if let iconImage = iconImage {
+                iconImage
+            }
+
+            Text(title)
+        }
+        .padding(.horizontal, padding)
     }
 }

@@ -11,14 +11,20 @@ typealias ChatActionOption = ChatActionView.ChatActionOption
 
 struct ChatActionView: View {
 
-    let viewModel: ChatActionViewModel
+    @ObservedObject var viewModel: ChatActionViewModel
 
     private var availableActions: [ChatActionOption] {
-        if viewModel.userIsRevealed {
-            return ChatActionOption.allCases.filter { $0 != .revealIdentity }
-        } else {
-            return ChatActionOption.allCases
+        var actions = ChatActionOption.allCases
+
+        if !viewModel.showIdentityRequest {
+            actions = actions.filter { $0 != .revealIdentity }
         }
+
+        if viewModel.isChatBlocked {
+            actions = actions.filter { $0 != .blockUser }
+        }
+
+        return actions
     }
 
     var body: some View {

@@ -25,14 +25,33 @@ struct OfferAdvanceFilterFriendDegreeView: View {
 
             SingleOptionPickerView(selectedOption: $selectedOption,
                                    options: options,
+                                   useBackground: false,
                                    content: { option in
-                Image(option.imageName)
-                    .frame(maxWidth: .infinity)
-                    .overlay(
-                        Image(systemName: "checkmark.circle.fill")
-                            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-                            .offset(x: -10, y: -10)
-                    )
+                if let option = option {
+                    VStack {
+                        Group {
+                            Image(option.imageName)
+                                .resizable()
+                                .scaledToFit()
+                                .frame(maxWidth: .infinity)
+                                .overlay(
+                                    Image(systemName: "checkmark.circle.fill")
+                                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+                                        .offset(x: -10, y: -10)
+                                        .opacity(selectedOption == option ? 1 : 0)
+                                )
+                                .padding(Appearance.GridGuide.padding)
+                        }
+                        .background(selectedOption == option ?
+                                    Appearance.Colors.gray2 : Appearance.Colors.gray1)
+                        .cornerRadius(Appearance.GridGuide.buttonCorner)
+
+                        Text(option.offerLabel)
+                            .textStyle(.paragraphSemibold)
+                            .foregroundColor(selectedOption == option ?
+                                             Appearance.Colors.whiteText : Appearance.Colors.gray3)
+                    }
+                }
             }, action: nil)
         }
     }
@@ -45,7 +64,14 @@ struct OfferAdvanceFilterFriendDegreeViewPreview: PreviewProvider {
         OfferAdvanceFilterFriendDegreeView(
             selectedOption: .constant(.firstDegree)
         )
+        .background(Color.black)
         .previewDevice("iPhone 11")
+
+        OfferAdvanceFilterFriendDegreeView(
+            selectedOption: .constant(.firstDegree)
+        )
+            .background(Color.black)
+        .previewDevice("iPhone SE")
     }
 }
 #endif

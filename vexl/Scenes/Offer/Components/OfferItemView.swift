@@ -36,12 +36,13 @@ struct OfferItemView: View {
         HStack {
             ContactAvatarInfo(
                 isAvatarWithOpacity: false,
-                title: L.offerMine(),
+                titleType: .normal(L.offerMine()),
                 subtitle: L.offerAdded(Formatters.userOfferDateFormatter.string(from: data.createdDate))
             )
 
             Button(action: editOfferAction, label: {
                 Text(L.offerEdit())
+                    .textStyle(.descriptionSemiBold)
                     .foregroundColor(Appearance.Colors.yellow100)
             })
             .padding()

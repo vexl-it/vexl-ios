@@ -43,5 +43,13 @@ class ServiceAssembly: Assembly {
         container.register(ChatServiceType.self) { _ in
             ChatService()
         }
+
+        container.register(GroupServiceType.self) { _ in
+            GroupService()
+        }
+
+        container.register(MapyServiceType.self) { _ in
+            MapyService()
+        }
     }
 }

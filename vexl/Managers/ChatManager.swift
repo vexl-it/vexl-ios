@@ -16,6 +16,7 @@ protocol ChatManagerType {
     func requestIdentity(chat: ManagedChat) -> AnyPublisher<Void, Error>
     func identityResponse(allow: Bool, chat: ManagedChat) -> AnyPublisher<Void, Error>
     func communicationResponse(chat: ManagedChat, confirmation: Bool) -> AnyPublisher<Void, Error>
+    func setBlockMessaging(isBlocked: Bool, chat: ManagedChat) -> AnyPublisher<Void, Error>
 }
 
 final class ChatManager: ChatManagerType {
@@ -74,6 +75,7 @@ final class ChatManager: ChatManagerType {
             .flatMap { [inboxRepository] in
                 inboxRepository.deleteChats(recevedPayloads: [payload], inbox: inbox)
             }
+            .asVoid()
             .eraseToAnyPublisher()
     }
 
@@ -128,6 +130,8 @@ final class ChatManager: ChatManagerType {
                 confirmation
                     ? inboxRepository.createOrUpdateChats(receivedPayloads: [payload], inbox: inbox)
                     : inboxRepository.deleteChats(recevedPayloads: [payload], inbox: inbox)
+                        .asVoid()
+                        .eraseToAnyPublisher()
             }
             .eraseToAnyPublisher()
     }
@@ -152,6 +156,38 @@ final class ChatManager: ChatManagerType {
             .flatMap { [inboxRepository] in
                 inboxRepository.createOrUpdateChats(receivedPayloads: [payload], inbox: inbox)
             }
+            .eraseToAnyPublisher()
+    }
+
+    func setBlockMessaging(isBlocked: Bool, chat: ManagedChat) -> AnyPublisher<Void, Error> {
+        guard let inbox = chat.inbox,
+              let inboxKeys = inbox.keyPair?.keys,
+              let receiverPublicKey = chat.receiverKeyPair?.publicKey else {
+                  return Fail(error: PersistenceError.insufficientData)
+                      .eraseToAnyPublisher()
+              }
+
+        return chatService
+            .requestChallenge(publicKey: inboxKeys.publicKey)
+            .withUnretained(self)
+            .flatMap { owner, challenge in
+                owner.cryptoService
+                    .signECDSA(keys: inboxKeys, message: challenge.challenge)
+            }
+            .withUnretained(self)
+            .flatMap { owner, signature in
+                owner.chatService
+                    .setInboxBlock(inboxPublicKey: inboxKeys.publicKey,
+                                   publicKeyToBlock: receiverPublicKey,
+                                   signature: signature,
+                                   isBlocked: isBlocked)
+            }
+            .withUnretained(self)
+            .flatMap { owner in
+                owner.chatRepository
+                    .setBlockChat(chat: chat, isBlocked: isBlocked)
+            }
+            .asVoid()
             .eraseToAnyPublisher()
     }
 }

@@ -15,9 +15,9 @@ protocol UserRepositoryType {
     var userPublisher: AnyPublisher<ManagedUser?, Never> { get }
     var user: ManagedUser? { get }
 
-    func createNewUser(newKeys: ECCKeys, signature: String?, hash: String?) -> AnyPublisher<ManagedUser, Error>
+    func createNewUser(newKeys: ECCKeys, signature: String?, hash: String?, phoneNumber: String) -> AnyPublisher<ManagedUser, Error>
     func getUser(for context: NSManagedObjectContext) -> ManagedUser?
-    func update(with userResponse: User, avatar: Data?) -> AnyPublisher<ManagedUser, Error>
+    func update(with userResponse: User, avatar: Data?, anonymizedUsername: String) -> AnyPublisher<ManagedUser, Error>
     func update(username: String, avatarURL: String?, avatar: Data?) -> AnyPublisher<Void, Error>
 }
 
@@ -45,7 +45,7 @@ final class UserRepository: UserRepositoryType {
     private var cancelBag: CancelBag = .init()
     private lazy var context: NSManagedObjectContext = persistenceManager.viewContext
 
-    func createNewUser(newKeys: ECCKeys, signature: String?, hash: String?) -> AnyPublisher<ManagedUser, Error> {
+    func createNewUser(newKeys: ECCKeys, signature: String?, hash: String?, phoneNumber: String) -> AnyPublisher<ManagedUser, Error> {
         persistenceManager.insert(context: persistenceManager.newEditContext()) { context in
 
             let keyPair = ManagedKeyPair(context: context)
@@ -58,6 +58,8 @@ final class UserRepository: UserRepositoryType {
             keyPair.privateKey = newKeys.privateKey
             keyPair.inbox = inbox
             profile.keyPair = keyPair
+            profile.phoneNumber = phoneNumber
+            profile.phoneNumberHmac = try? phoneNumber.removeWhitespaces().hmac.hash(password: Constants.contactsHashingPassword)
             user.profile = profile
             user.userHash = hash
             user.signature = signature
@@ -74,7 +76,7 @@ final class UserRepository: UserRepositoryType {
         return persistenceManager.loadSyncroniously(type: ManagedUser.self, context: context, objectID: objId)
     }
 
-    func update(with userResponse: User, avatar: Data?) -> AnyPublisher<ManagedUser, Error> {
+    func update(with userResponse: User, avatar: Data?, anonymizedUsername: String) -> AnyPublisher<ManagedUser, Error> {
         guard let user = user else {
             return Fail(error: PersistenceError.insufficientData)
                 .eraseToAnyPublisher()
@@ -82,8 +84,9 @@ final class UserRepository: UserRepositoryType {
         return persistenceManager.update(context: context) { [user] _ in
             user.userId = Int64(userResponse.userId ?? 0)
             user.profile?.name = userResponse.username
-            user.profile?.avatarURL = userResponse.avatarURL
+            user.profile?.avatarURL = userResponse.avatar
             user.profile?.avatar = avatar
+            user.profile?.anonymizedUsername = anonymizedUsername
             return user
         }
     }
@@ -99,9 +102,7 @@ final class UserRepository: UserRepositoryType {
                 user.profile?.avatarURL = avatarURL
                 user.profile?.avatar = avatar
             }
-            return user
         }
-        .asVoid()
         .eraseToAnyPublisher()
     }
 }

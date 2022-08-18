@@ -25,11 +25,21 @@ final class ChatCoordinator: BaseCoordinator<RouterResult<Void>> {
 
     override func start() -> CoordinatingResult<RouterResult<Void>> {
         let viewModel = ChatViewModel(chat: chat)
-        let viewController = BaseViewController(rootView: ChatView(viewModel: viewModel))
+        let viewController = ToggleKeyboardHostingController(rootView: ChatView(viewModel: viewModel))
 
         router.present(viewController, animated: animated)
 
+        viewModel
+            .$error
+            .assign(to: &viewController.$error)
+
+        viewModel
+            .$isLoading
+            .assign(to: &viewController.$isLoading)
+
         bindDeleteRoute(viewModel: viewModel, viewController: viewController)
+        bindBlockRoute(viewModel: viewModel, viewController: viewController)
+        bindRevealIdentity(viewModel: viewModel, viewController: viewController)
 
         viewModel
             .route
@@ -61,6 +71,97 @@ final class ChatCoordinator: BaseCoordinator<RouterResult<Void>> {
             .sink()
             .store(in: cancelBag)
 
+        viewModel
+            .route
+            .compactMap { action -> [ManagedContact]? in
+                if case let .showCommonFriendsModal(contacts) = action { return contacts }
+                return nil
+            }
+            .withUnretained(self)
+            .flatMap { owner, contacts -> CoordinatingResult<RouterResult<BottomActionSheetActionType>> in
+                owner.presentActionSheet(
+                    router: ModalRouter(
+                        parentViewController: viewController,
+                        presentationStyle: .overFullScreen,
+                        transitionStyle: .crossDissolve
+                    ),
+                    viewModel: ChatCommonFriendsSheetViewModel(
+                        chat: owner.chat,
+                        contacts: contacts
+                    )
+                )
+            }
+            .sink()
+            .store(in: cancelBag)
+
+        let dismiss = viewModel
+            .route
+            .filter { $0 == .dismissTapped }
+            .map { _ -> RouterResult<Void> in .dismiss }
+
+        return dismiss
+            .eraseToAnyPublisher()
+    }
+
+    private func bindDeleteRoute(viewModel: ChatViewModel, viewController: UIViewController) {
+        viewModel
+            .route
+            .filter { $0 == .showDeleteTapped }
+            .withUnretained(self)
+            .flatMap { owner, _ -> CoordinatingResult<RouterResult<BottomActionSheetActionType>> in
+                let router = ModalRouter(parentViewController: viewController,
+                                         presentationStyle: .overFullScreen,
+                                         transitionStyle: .crossDissolve)
+                return owner.presentActionSheet(router: router, viewModel: ChatDeleteSheetViewModel(isConfirmation: false))
+            }
+            .filter(Self.filterPrimaryAction)
+            .withUnretained(self)
+            .flatMap { owner, _ -> CoordinatingResult<RouterResult<BottomActionSheetActionType>> in
+                let router = ModalRouter(parentViewController: viewController,
+                                         presentationStyle: .overFullScreen,
+                                         transitionStyle: .crossDissolve)
+                return owner.presentActionSheet(router: router, viewModel: ChatDeleteSheetViewModel(isConfirmation: true))
+            }
+            .filter(Self.filterPrimaryAction)
+            .sink { _ in
+                viewModel.deleteMessages()
+            }
+            .store(in: cancelBag)
+    }
+
+    private func bindBlockRoute(viewModel: ChatViewModel, viewController: UIViewController) {
+        viewModel
+            .route
+            .filter { $0 == .showBlockTapped }
+            .withUnretained(self)
+            .flatMap { owner, _ -> CoordinatingResult<RouterResult<BottomActionSheetActionType>> in
+                let router = ModalRouter(parentViewController: viewController,
+                                         presentationStyle: .overFullScreen,
+                                         transitionStyle: .crossDissolve)
+                return owner.presentActionSheet(router: router, viewModel: ChatBlockSheetViewModel(isConfirmation: false))
+            }
+            .filter { result in
+                if case let .finished(actionType) = result { return actionType == .primary }
+                return false
+            }
+            .withUnretained(self)
+            .flatMap { owner, _ -> CoordinatingResult<RouterResult<BottomActionSheetActionType>> in
+                let router = ModalRouter(parentViewController: viewController,
+                                         presentationStyle: .overFullScreen,
+                                         transitionStyle: .crossDissolve)
+                return owner.presentActionSheet(router: router, viewModel: ChatBlockSheetViewModel(isConfirmation: true))
+            }
+            .filter { result in
+                if case let .finished(actionType) = result { return actionType == .primary }
+                return false
+            }
+            .sink { _ in
+                viewModel.blockMessages()
+            }
+            .store(in: cancelBag)
+    }
+
+    private func bindRevealIdentity(viewModel: ChatViewModel, viewController: UIViewController) {
         viewModel
             .route
             .filter { $0 == .showRevealIdentityTapped }
@@ -115,40 +216,6 @@ final class ChatCoordinator: BaseCoordinator<RouterResult<Void>> {
                                                 avatar: response.avatar)
             }
             .sink()
-            .store(in: cancelBag)
-
-        let dismiss = viewModel
-            .route
-            .filter { $0 == .dismissTapped }
-            .map { _ -> RouterResult<Void> in .dismiss }
-
-        return dismiss
-            .eraseToAnyPublisher()
-    }
-
-    private func bindDeleteRoute(viewModel: ChatViewModel, viewController: UIViewController) {
-        viewModel
-            .route
-            .filter { $0 == .showDeleteTapped }
-            .withUnretained(self)
-            .flatMap { owner, _ -> CoordinatingResult<RouterResult<BottomActionSheetActionType>> in
-                let router = ModalRouter(parentViewController: viewController,
-                                         presentationStyle: .overFullScreen,
-                                         transitionStyle: .crossDissolve)
-                return owner.presentActionSheet(router: router, viewModel: ChatDeleteSheetViewModel(isConfirmation: false))
-            }
-            .filter(Self.filterPrimaryAction)
-            .withUnretained(self)
-            .flatMap { owner, _ -> CoordinatingResult<RouterResult<BottomActionSheetActionType>> in
-                let router = ModalRouter(parentViewController: viewController,
-                                         presentationStyle: .overFullScreen,
-                                         transitionStyle: .crossDissolve)
-                return owner.presentActionSheet(router: router, viewModel: ChatDeleteSheetViewModel(isConfirmation: true))
-            }
-            .filter(Self.filterPrimaryAction)
-            .sink { _ in
-                viewModel.deleteMessages()
-            }
             .store(in: cancelBag)
     }
 

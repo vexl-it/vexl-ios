@@ -41,7 +41,7 @@ protocol PersistenceStoreManagerType {
         objectID: NSManagedObjectID
     ) -> T?
 
-    func update<T: NSManagedObject>(context: NSManagedObjectContext, editor: @escaping (NSManagedObjectContext) -> T) -> AnyPublisher<T, Error>
+    func update<T>(context: NSManagedObjectContext, editor: @escaping (NSManagedObjectContext) -> T) -> AnyPublisher<T, Error>
 
     func delete<T: NSManagedObject>(context: NSManagedObjectContext, object: T) -> AnyPublisher<Void, Error>
     func delete<T: NSManagedObject>(context: NSManagedObjectContext, editor: @escaping (NSManagedObjectContext) -> [T]) -> AnyPublisher<Void, Error>
@@ -175,6 +175,8 @@ final class PersistenceStoreManager: PersistenceStoreManagerType {
             contacts.forEach(context.delete)
             let syncItems = owner.loadSyncroniously(type: ManagedSyncItem.self, context: context)
             syncItems.forEach(context.delete)
+            let groups = owner.loadSyncroniously(type: ManagedGroup.self, context: context)
+            groups.forEach(context.delete)
             // The rest of entities will be removedy by cascading rule
             promise(.success(()))
         }
@@ -260,7 +262,7 @@ final class PersistenceStoreManager: PersistenceStoreManagerType {
         return object
     }
 
-    func update<T: NSManagedObject>(context: NSManagedObjectContext, editor: @escaping (NSManagedObjectContext) -> T) -> AnyPublisher<T, Error> {
+    func update<T>(context: NSManagedObjectContext, editor: @escaping (NSManagedObjectContext) -> T) -> AnyPublisher<T, Error> {
         Future { promise in
             context.perform {
                 promise(.success(editor(context)))

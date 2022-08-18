@@ -14,7 +14,6 @@ protocol UserServiceType {
     func requestVerificationCode(phoneNumber: String) -> AnyPublisher<PhoneVerification, Error>
     func confirmValidationCode(id: Int, code: String, key: String) -> AnyPublisher<CodeValidation, Error>
     func validateChallenge(key: String, signature: String) -> AnyPublisher<ChallengeValidation, Error>
-    func validateUsername(username: String) -> AnyPublisher<UserAvailable, Error>
     func createUser(username: String, avatar: String?) -> AnyPublisher<User, Error>
     func updateUser(username: String, avatar: String?) -> AnyPublisher<EditUser, Error>
     func deleteUser() -> AnyPublisher<Void, Error>
@@ -42,11 +41,6 @@ final class UserService: BaseService, UserServiceType {
 
     func validateChallenge(key: String, signature: String) -> AnyPublisher<ChallengeValidation, Error> {
         request(type: ChallengeValidation.self, endpoint: UserRouter.validateChallenge(signature: signature, key: key))
-            .eraseToAnyPublisher()
-    }
-
-    func validateUsername(username: String) -> AnyPublisher<UserAvailable, Error> {
-        request(type: UserAvailable.self, endpoint: UserRouter.validateUsername(username: username))
             .eraseToAnyPublisher()
     }
 

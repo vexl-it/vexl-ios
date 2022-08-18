@@ -40,6 +40,12 @@ extension View {
     }
 }
 
+extension Text {
+    func textStyle(_ textStyle: Appearance.TextStyle) -> Text {
+        self.font(textStyle.font.asFont)
+    }
+}
+
 extension UILabel {
     func textStyle(_ textStyle: Appearance.TextStyle) {
         font = textStyle.font

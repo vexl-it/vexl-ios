@@ -35,6 +35,8 @@ final class UserProfileCoordinator: BaseCoordinator<Void> {
             .$isLoading
             .assign(to: &viewController.$isLoading)
 
+        bindDeleteAccount(viewModel: viewModel, viewController: viewController)
+
         viewModel
             .route
             .receive(on: RunLoop.main)
@@ -126,13 +128,64 @@ final class UserProfileCoordinator: BaseCoordinator<Void> {
                                          transitionStyle: .crossDissolve)
                 return owner.presentActionSheet(router: router, viewModel: ReportIssueSheetViewModel())
             }
+            .filter { result in
+                if case let .finished(actionType) = result { return actionType == .contentAction }
+                return false
+            }
             .sink { _ in
                 viewController.presentEmailComposer()
             }
             .store(in: cancelBag)
 
+        viewModel
+            .route
+            .receive(on: RunLoop.main)
+            .filter { $0 == .showGroups }
+            .flatMapLatest(with: self) { owner, _ -> CoordinatingResult<RouterResult<Void>> in
+                let router = ModalNavigationRouter(
+                    parentViewController: viewController,
+                    presentationStyle: .fullScreen,
+                    transitionStyle: .coverVertical
+                )
+                let coordinator = GroupsCoordinator(router: router, animated: true)
+                return owner.present(coordinator: coordinator, router: router)
+            }
+            .sink()
+            .store(in: cancelBag)
+
         return Empty(completeImmediately: false)
             .eraseToAnyPublisher()
+    }
+
+    private func bindDeleteAccount(viewModel: UserProfileViewModel, viewController: UIViewController) {
+        viewModel
+            .route
+            .receive(on: RunLoop.main)
+            .filter { $0 == .deleteAccount }
+            .flatMapLatest(with: self) { owner, _ -> ActionSheetResult in
+                let router = ModalRouter(parentViewController: viewController,
+                                         presentationStyle: .overFullScreen,
+                                         transitionStyle: .crossDissolve)
+                return owner.presentActionSheet(router: router, viewModel: DeleteAccountSheetViewModel(isConfirmation: false))
+            }
+            .filter { result in
+                if case let .finished(actionType) = result { return actionType == .primary }
+                return false
+            }
+            .flatMapLatest(with: self) { owner, _ -> ActionSheetResult in
+                let router = ModalRouter(parentViewController: viewController,
+                                         presentationStyle: .overFullScreen,
+                                         transitionStyle: .crossDissolve)
+                return owner.presentActionSheet(router: router, viewModel: DeleteAccountSheetViewModel(isConfirmation: true))
+            }
+            .filter { result in
+                if case let .finished(actionType) = result { return actionType == .primary }
+                return false
+            }
+            .sink { _ in
+                viewModel.logoutUser()
+            }
+            .store(in: cancelBag)
     }
 }
 
@@ -188,6 +241,18 @@ extension UserProfileCoordinator {
     }
 
     private func presentJoinVexl(router: Router) -> ActionSheetResult {
+        coordinate(to: BottomActionSheetCoordinator(router: router, viewModel: JoinVexlViewModel()))
+        .flatMap { result -> CoordinatingResult<RouterResult<BottomActionSheetActionType>> in
+            guard result != .dismissedByRouter else {
+                return Just(result).eraseToAnyPublisher()
+            }
+            return router.dismiss(animated: true, returning: result)
+        }
+        .prefix(1)
+        .eraseToAnyPublisher()
+    }
+
+    private func presentGroups(router: Router) -> ActionSheetResult {
         coordinate(to: BottomActionSheetCoordinator(router: router, viewModel: JoinVexlViewModel()))
         .flatMap { result -> CoordinatingResult<RouterResult<BottomActionSheetActionType>> in
             guard result != .dismissedByRouter else {

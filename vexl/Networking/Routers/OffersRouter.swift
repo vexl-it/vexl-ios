@@ -13,17 +13,19 @@ enum OffersRouter: ApiRouter {
     case getOffers(pageLimit: Int?)
     case getUserOffers(offerIds: [String])
     case getNewOffers(pageLimit: Int?, lastSyncDate: Date)
+    case createNewPrivateParts(offerID: String, offerPayloads: [OfferPayload])
 
     case deleteOffers(offerIds: [String])
+    case deleteOfferPrivateParts(offerIds: [String], publicKeys: [String])
     case updateOffer(offer: [OfferPayload], offerId: String)
 
     var method: HTTPMethod {
         switch self {
         case .getOffers, .getUserOffers, .getNewOffers:
             return .get
-        case .createOffer:
+        case .createOffer, .createNewPrivateParts:
             return .post
-        case .deleteOffers:
+        case .deleteOffers, .deleteOfferPrivateParts:
             return .delete
         case .updateOffer:
             return .put
@@ -42,6 +44,8 @@ enum OffersRouter: ApiRouter {
             return "offers/me"
         case .createOffer, .getUserOffers, .deleteOffers, .updateOffer:
             return "offers"
+        case .createNewPrivateParts, .deleteOfferPrivateParts:
+            return "offers/private-part"
         }
     }
 
@@ -70,6 +74,17 @@ enum OffersRouter: ApiRouter {
             let offers = offer.map { $0.asJson }
             return ["offerId": offerId,
                     "offerPrivateCreateList": offers]
+        case let .createNewPrivateParts(offerID, offers):
+            let offers = offers.map { $0.asJson }
+            return [
+                "offerId": offerID,
+                "privateParts": offers
+            ]
+        case let .deleteOfferPrivateParts(offerIds, publicKeys):
+            return [
+                "offerIds": offerIds,
+                "publicKeys": publicKeys
+            ]
         }
     }
 
