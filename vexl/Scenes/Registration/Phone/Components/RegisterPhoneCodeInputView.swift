@@ -35,15 +35,19 @@ struct RegisterPhoneCodeInputView: View {
 
     private var codeInputView: some View {
         VStack {
-            PlaceholderTextField(placeholder: "", text: $code)
-                .textStyle(.paragraphMedium)
-                .multilineTextAlignment(.leading)
-                .foregroundColor(Appearance.Colors.primaryText)
-                .keyboardType(.numberPad)
-                .padding()
-                .background(Appearance.Colors.gray6)
-                .cornerRadius(Appearance.GridGuide.buttonCorner)
-                .disabled(!isEnabled)
+            IsFocusTextField(
+                placeholder: "",
+                keyboardType: .numberPad,
+                text: $code,
+                isFocused: .constant(true)
+            )
+            .multilineTextAlignment(.leading)
+            .foregroundColor(Appearance.Colors.primaryText)
+            .keyboardType(.numberPad)
+            .padding()
+            .background(Appearance.Colors.gray6)
+            .cornerRadius(Appearance.GridGuide.buttonCorner)
+            .disabled(!isEnabled)
 
             if displayRetry {
                 Button {

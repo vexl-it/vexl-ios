@@ -88,6 +88,7 @@ extension OfferLocationPickerView {
             HStack {
                 IsFocusTextField(
                     placeholder: L.offerLocationPlaceholder(),
+                    textColor: R.color.yellow100(),
                     text: $viewModel.name,
                     isFocused: $viewModel.isTextFieldFocused
                 )

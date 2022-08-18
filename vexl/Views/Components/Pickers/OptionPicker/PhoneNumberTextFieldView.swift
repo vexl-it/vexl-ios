@@ -16,8 +16,14 @@ struct PhoneNumberTextFieldView: UIViewRepresentable {
     let regionCode: String
     let phoneNumber: String
     @Binding var text: String
+    @Binding var isFocus: Bool
 
     func updateUIView(_ uiView: PhoneNumberTextField, context: Context) {
+        if isFocus && !uiView.isFirstResponder {
+            uiView.becomeFirstResponder()
+        } else if !isFocus && uiView.isFirstResponder {
+            uiView.resignFirstResponder()
+        }
     }
 
     func makeUIView(context: Context) -> PhoneNumberTextField {
