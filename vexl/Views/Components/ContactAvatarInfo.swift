@@ -9,6 +9,11 @@ import SwiftUI
 
 struct ContactAvatarInfo: View {
 
+    enum TitleType {
+        case normal(String)
+        case attributed(NSAttributedString)
+    }
+
     enum Style {
         case regular
         case large
@@ -16,8 +21,7 @@ struct ContactAvatarInfo: View {
 
     let avatar: Data?
     let isAvatarWithOpacity: Bool
-    let title: String
-    let attributedTitle: NSAttributedString?
+    let titleType: TitleType
     let subtitle: String
     let style: Style
 
@@ -34,14 +38,12 @@ struct ContactAvatarInfo: View {
     }
 
     init(isAvatarWithOpacity: Bool,
-         title: String,
-         attributedTitle: NSAttributedString? = nil,
+         titleType: TitleType,
          subtitle: String,
          style: Style = .regular,
          avatar: Data? = nil) {
         self.isAvatarWithOpacity = isAvatarWithOpacity
-        self.title = title
-        self.attributedTitle = attributedTitle
+        self.titleType = titleType
         self.subtitle = subtitle
         self.style = style
         self.avatar = avatar
@@ -62,12 +64,13 @@ struct ContactAvatarInfo: View {
             }
 
             VStack(alignment: .leading) {
-                if let attributedTitle = attributedTitle {
-                    AttributedText(attributedText: attributedTitle)
-                } else {
+                switch titleType {
+                case .normal(let title):
                     Text(title)
                         .textStyle(titleStyle)
                         .foregroundColor(Appearance.Colors.whiteText)
+                case .attributed(let attributedTitle):
+                    AttributedText(attributedText: attributedTitle)
                 }
 
                 Text(subtitle)
@@ -79,19 +82,18 @@ struct ContactAvatarInfo: View {
     }
 }
 
-#if DEBUG || DEVEL
 struct ContactAvatarInfoViewPreview: PreviewProvider {
     static var previews: some View {
         VStack(spacing: 16) {
             ContactAvatarInfo(
                 isAvatarWithOpacity: false,
-                title: "My offer",
+                titleType: .normal("My offer"),
                 subtitle: "Added 12. 7. 2022"
             )
 
             ContactAvatarInfo(
                 isAvatarWithOpacity: true,
-                title: "Sully is selling",
+                titleType: .normal("Sully is selling"),
                 subtitle: "Friend of friend"
             )
         }
@@ -99,4 +101,3 @@ struct ContactAvatarInfoViewPreview: PreviewProvider {
         .background(Color.black)
     }
 }
-#endif

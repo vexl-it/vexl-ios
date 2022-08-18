@@ -36,7 +36,7 @@ struct OfferItemView: View {
         HStack {
             ContactAvatarInfo(
                 isAvatarWithOpacity: false,
-                title: L.offerMine(),
+                titleType: .normal(L.offerMine()),
                 subtitle: L.offerAdded(Formatters.userOfferDateFormatter.string(from: data.createdDate))
             )
 
