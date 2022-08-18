@@ -226,7 +226,7 @@ class ImportContactsViewModel: ObservableObject {
         hasSelectedItem = items.contains(where: { $0.isSelected })
     }
 
-    private func selectAllItems(_ isSelected: Bool) {
+    func selectAllItems(_ isSelected: Bool) {
         var items = self.items
         for index in items.indices {
             items[index].isSelected = isSelected
