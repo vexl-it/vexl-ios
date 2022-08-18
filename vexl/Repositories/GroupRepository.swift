@@ -11,7 +11,7 @@ import CoreData
 
 protocol GroupRepositoryType {
     func createOrUpdateGroup(payloads: [(GroupPayload, [String])]) -> AnyPublisher<Void, Error>
-    func update(group unsafeGroup: ManagedGroup, members: [String]) -> AnyPublisher<[String], Error>
+    func update(group unsafeGroup: ManagedGroup, members: [String], returnOnlyNewMembers: Bool) -> AnyPublisher<[String], Error>
     func fetchGroup(uuid: String) -> ManagedGroup?
     func delete(group: ManagedGroup) -> AnyPublisher<Void, Error>
     func delete(groups: [ManagedGroup]) -> AnyPublisher<Void, Error>
@@ -67,7 +67,7 @@ final class GroupRepository: GroupRepositoryType {
         ).first
     }
 
-    func update(group unsafeGroup: ManagedGroup, members: [String]) -> AnyPublisher<[String], Error> {
+    func update(group unsafeGroup: ManagedGroup, members: [String], returnOnlyNewMembers: Bool) -> AnyPublisher<[String], Error> {
         persistence.update(context: persistence.newEditContext()) { [persistence] context in
             guard let group = persistence.loadSyncroniously(type: ManagedGroup.self, context: context, objectID: unsafeGroup.objectID) else {
                 return []
@@ -82,6 +82,10 @@ final class GroupRepository: GroupRepositoryType {
                 let newMember = ManagedAnonymisedProfile(context: context)
                 newMember.publicKey = publicKey
                 newMember.group = group
+            }
+
+            if returnOnlyNewMembers {
+                return Array(newMemberSet)
             }
 
             let allMembers = group.members?.allObjects as? [ManagedAnonymisedProfile] ?? []

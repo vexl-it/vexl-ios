@@ -51,7 +51,7 @@ final class GroupManager: GroupManagerType {
             .getAllMembers(uuid: group.uuid)
             .flatMap { [groupRepository] membersPayload in
                 groupRepository
-                    .update(group: group, members: membersPayload.publicKeys)
+                    .update(group: group, members: membersPayload.publicKeys, returnOnlyNewMembers: false)
             }
             .eraseToAnyPublisher()
     }
@@ -66,7 +66,7 @@ final class GroupManager: GroupManagerType {
             .compactMap(\.first?.publicKeys)
             .flatMap { [groupRepository] newMemberPublicKeys in
                 groupRepository
-                    .update(group: group, members: newMemberPublicKeys)
+                    .update(group: group, members: newMemberPublicKeys, returnOnlyNewMembers: true)
             }
             .flatMap { [offerManager] newMemeberPublicKeys -> AnyPublisher<Void, Error> in
                 guard !userGroupOffers.isEmpty else {
@@ -81,38 +81,72 @@ final class GroupManager: GroupManagerType {
             .store(in: cancelBag)
     }
 
-    func leave(group: ManagedGroup) -> AnyPublisher<Void, Error> {
-        contactService
-            .getAllContacts(friendLevel: .second, hasFacebookAccount: false, pageLimit: Constants.pageMaxLimit)
-            .flatMap { [offerService] phoneContacts, facebookContacts -> AnyPublisher<Void, Error> in
-                let allContacts = phoneContacts + facebookContacts
-                let myContactSet = Set(allContacts.map(\.publicKey))
-                let groupMembers = group.members?.allObjects as? [ManagedAnonymisedProfile] ?? []
-                var memberSet = Set(groupMembers.compactMap(\.publicKey))
-                memberSet.subtract(myContactSet)
-                let members = Array(memberSet)
+    func leave(group: ManagedGroup) -> AnyPublisher<Void, Error> { // swiftlint:disable:this function_body_length
+        let allPublicKeys: AnyPublisher<UserContacts, Never> = Just(())
+            .flatMap { [contactService] () -> AnyPublisher<UserContacts, Never> in
+                contactService
+                    .getAllContacts(friendLevel: .second, hasFacebookAccount: false, pageLimit: Constants.pageMaxLimit)
+                    .nilOnError()
+                    .map { $0 ?? UserContacts(phone: [], facebook: []) }
+                    .eraseToAnyPublisher()
+            }
+            .eraseToAnyPublisher()
 
+        let deleteMemberPublicKeys = allPublicKeys
+            .map { (contacts: UserContacts) -> [String] in
+                let allContacts: [ContactKey] = contacts.phone + contacts.facebook
+                let myContactSet: Set<String> = Set(allContacts.map(\.publicKey))
+                let groupMembers: [ManagedAnonymisedProfile] = group.members?.allObjects as? [ManagedAnonymisedProfile] ?? []
+                var memberSet: Set<String> = Set(groupMembers.compactMap(\.publicKey))
+                memberSet.subtract(myContactSet)
+                let members: [String] = Array(memberSet)
+                return members
+            }
+
+        let deleteOffers = deleteMemberPublicKeys
+            .flatMap { [offerService] (members: [String]) -> AnyPublisher<Void, Never> in
                 let offerSet = group.offers?.filtered(using: NSPredicate(format: "user != nil")) as? Set<ManagedOffer> ?? .init()
                 let offers = Array(offerSet).compactMap(\.id)
-
-                guard !offerSet.isEmpty && !memberSet.isEmpty else {
+                guard !offerSet.isEmpty && !members.isEmpty else {
                     return Just(())
-                        .setFailureType(to: Error.self)
                         .eraseToAnyPublisher()
                 }
                 return offerService
                     .deleteOfferPrivateParts(offerIds: offers, publicKeys: members)
+                    .nilOnError()
+                    .asVoid()
+                    .eraseToAnyPublisher()
             }
-            .flatMap { [offerRepository] () -> AnyPublisher<Void, Error> in
+            .flatMap { [offerRepository] () -> AnyPublisher<Void, Never> in
                 let groupOfferSet = group.offers?.filtered(using: NSPredicate(format: "user == nil")) as? Set<ManagedOffer> ?? .init()
                 let groupOfferIds = Array(groupOfferSet).compactMap(\.id)
-                return offerRepository.deleteOffers(with: groupOfferIds)
+                guard !groupOfferIds.isEmpty else {
+                    return Just(())
+                        .eraseToAnyPublisher()
+                }
+                return offerRepository
+                    .deleteOffers(with: groupOfferIds)
+                    .nilOnError()
+                    .asVoid()
+                    .eraseToAnyPublisher()
             }
-            .flatMap { [groupService] _ -> AnyPublisher<Void, Error> in
+
+        let deleteGroup = deleteOffers
+            .flatMap { [groupService] () -> AnyPublisher<Void, Never> in
                 groupService
                     .leave(group: group)
+                    .nilOnError()
+                    .asVoid()
+                    .eraseToAnyPublisher()
+            }
+            .flatMap { [groupRepository] () -> AnyPublisher<Void, Error> in
+                groupRepository
+                    .delete(group: group)
+                    .eraseToAnyPublisher()
             }
             .eraseToAnyPublisher()
+
+        return deleteGroup
     }
 
     func joinGroup(code: Int) -> AnyPublisher<Void, Error> {
