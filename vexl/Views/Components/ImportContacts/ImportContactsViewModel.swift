@@ -179,55 +179,30 @@ class ImportContactsViewModel: ObservableObject {
     }
 
     private func setupImportAction() {
-        let hashContacts = action
+        let sharedAction = action.share()
+
+        let addNewContacts = sharedAction
             .withUnretained(self)
             .filter { $0.0.currentState == .content && $0.0.hasSelectedItem && $0.1 == .importContacts }
             .map(\.0.newContacts)
-            .flatMap { [encryptionService] contacts -> AnyPublisher<[(ContactInformation, String)], Error> in
-                if contacts.isEmpty {
-                    return Just([])
-                        .setFailureType(to: Error.self)
-                        .eraseToAnyPublisher()
-                } else {
-                    return encryptionService
-                        .hashContacts(contacts: contacts)
-                }
-            }
-            .share()
-            .eraseToAnyPublisher()
-
-        let importContact = hashContacts
             .withUnretained(self)
-            .flatMap { owner, contacts -> AnyPublisher<ContactsImported, Never> in
-                if contacts.isEmpty {
-                    return Just(ContactsImported.none)
-                        .eraseToAnyPublisher()
-                } else {
-                    return owner.contactsService
-                        .importContacts(contacts.map(\.1))
-                        .track(activity: owner.primaryActivity)
-                        .materialize()
-                        .compactMap { $0.value }
-                        .eraseToAnyPublisher()
-                }
-            }
-            .eraseToAnyPublisher()
-
-        let saveContacts = hashContacts
-            .withUnretained(self)
-            .flatMap { owner, contacts -> AnyPublisher<[ManagedContact], Error> in
-                if contacts.isEmpty {
-                    return Just([]).setFailureType(to: Error.self)
-                        .eraseToAnyPublisher()
-                } else {
-                    return owner.contactsRepository.save(contacts: contacts)
-                }
+            .flatMap { owner, contacts -> AnyPublisher<Bool, Error> in
+                owner.addNewContacts(contacts)
             }
 
-        Publishers.Zip(importContact, saveContacts)
+        let removeContacts = sharedAction
             .withUnretained(self)
-            .handleEvents(receiveOutput: { owner, response in
-                if response.0.imported {
+            .filter { $0.0.currentState == .content && $0.0.hasSelectedItem && $0.1 == .importContacts }
+            .map(\.0.removedContacts)
+            .withUnretained(self)
+            .flatMap { owner, contacts -> AnyPublisher<Bool, Error> in
+                owner.removeContacts(contacts: contacts)
+            }
+
+        Publishers.Zip(addNewContacts, removeContacts)
+            .withUnretained(self)
+            .handleEvents(receiveOutput: { owner, imported in
+                if imported.0 && imported.1 {
                     owner.currentState = .success
                 }
             })
@@ -237,6 +212,52 @@ class ImportContactsViewModel: ObservableObject {
                 owner.completed.send(())
             })
             .store(in: cancelBag)
+    }
+
+    private func addNewContacts(_ contacts: [ContactInformation]) -> AnyPublisher<Bool, Error> {
+        if contacts.isEmpty {
+            return Just(true).setFailureType(to: Error.self)
+                .eraseToAnyPublisher()
+        } else {
+            let hashContacts = Just(contacts)
+                .flatMap { [encryptionService] contacts -> AnyPublisher<[(ContactInformation, String)], Error> in
+                    encryptionService
+                        .hashContacts(contacts: contacts)
+                }
+                .share()
+                .eraseToAnyPublisher()
+
+            let importContact = hashContacts
+                .withUnretained(self)
+                .flatMap { owner, contacts -> AnyPublisher<ContactsImported, Never> in
+                    owner.contactsService
+                        .importContacts(contacts.map(\.1))
+                        .track(activity: owner.primaryActivity)
+                        .materialize()
+                        .compactMap { $0.value }
+                        .eraseToAnyPublisher()
+                }
+                .eraseToAnyPublisher()
+
+            let saveContacts = hashContacts
+                .withUnretained(self)
+                .flatMap { owner, contacts -> AnyPublisher<[ManagedContact], Error> in
+                    owner.contactsRepository.save(contacts: contacts)
+                }
+
+            return Publishers.Zip(importContact, saveContacts)
+                .map(\.0.imported)
+                .eraseToAnyPublisher()
+        }
+    }
+
+    private func removeContacts(contacts: [ContactInformation]) -> AnyPublisher<Bool, Error> {
+        Future { prom in
+            after(3) {
+                prom(.success(true))
+            }
+        }
+        .eraseToAnyPublisher()
     }
 
     func select(_ isSelected: Bool, item: ContactInformation) {
