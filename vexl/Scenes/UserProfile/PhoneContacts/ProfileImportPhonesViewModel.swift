@@ -19,6 +19,12 @@ final class ProfileImportPhonesViewModel: ImportContactsViewModel {
         true
     }
 
+    override var previousSelectedContacts: [ContactInformation] {
+        alreadySelectedContacts
+    }
+
+    private var alreadySelectedContacts: [ContactInformation] = []
+
     override init() {
         super.init()
         showActionButton = false
@@ -55,15 +61,21 @@ final class ProfileImportPhonesViewModel: ImportContactsViewModel {
             .withUnretained(self)
             .flatMap { owner, hashedPhones in
                 owner.contactsManager
-                    .getActivePhoneContacts(hashedPhones.map(\.1))
+                    .getUserPhoneContacts(hashedPhones.map(\.1))
                     .track(activity: owner.primaryActivity)
                     .materialize()
                     .compactMap(\.value)
             }
             .withUnretained(self)
-            .sink { owner, availableContacts in
-                owner.currentState = availableContacts.isEmpty ? .empty : .content
-                owner.items = availableContacts
+            .sink { owner, contacts in
+                owner.currentState = contacts.isEmpty ? .empty : .content
+                owner.items = contacts
+                owner.alreadySelectedContacts = contacts
+                    .filter { $0.isSelected }
+
+                for contact in contacts {
+                    owner.select(contact.isSelected, item: contact)
+                }
             }
             .store(in: cancelBag)
     }

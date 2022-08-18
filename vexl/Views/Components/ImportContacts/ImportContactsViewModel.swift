@@ -87,14 +87,6 @@ class ImportContactsViewModel: ObservableObject {
         return items.filter { $0.name.contains(searchText) }
     }
 
-    private var selectedItems: [ContactInformation] {
-        items.filter { $0.isSelected }
-    }
-
-    private var canBeCompletedWithoutSelection: Bool {
-        (currentState == .content && !hasSelectedItem) || currentState == .loading || currentState == .empty
-    }
-
     var shouldSelectAll: Bool {
         false
     }
@@ -111,7 +103,32 @@ class ImportContactsViewModel: ObservableObject {
         hasSelectedItem ? L.registerContactsImportDeselect() : L.registerContactsImportSelect()
     }
 
+    var previousSelectedContacts: [ContactInformation] {
+        []
+    }
+
     let cancelBag: CancelBag = .init()
+
+    private var selectedItems: [ContactInformation] {
+        items.filter { $0.isSelected }
+    }
+
+    private var newContacts: [ContactInformation] {
+        selectedItems.filter { item in
+            !previousSelectedContacts.contains(where: { $0.id == item.id })
+        }
+    }
+
+    private var removedContacts: [ContactInformation] {
+        items
+            .filter { item in
+                !item.isSelected && previousSelectedContacts.contains(where: { $0.id == item.id })
+            }
+    }
+
+    private var canBeCompletedWithoutSelection: Bool {
+        (currentState == .content && !hasSelectedItem) || currentState == .loading || currentState == .empty
+    }
 
     // MARK: - Init
 
@@ -178,7 +195,7 @@ class ImportContactsViewModel: ObservableObject {
         let hashContacts = action
             .withUnretained(self)
             .filter { $0.0.currentState == .content && $0.0.hasSelectedItem && $0.1 == .importContacts }
-            .map(\.0.selectedItems)
+            .map(\.0.newContacts)
             .flatMap { [encryptionService] contacts in
                 encryptionService
                     .hashContacts(contacts: contacts)
@@ -220,7 +237,7 @@ class ImportContactsViewModel: ObservableObject {
             .store(in: cancelBag)
     }
 
-    private func select(_ isSelected: Bool, item: ContactInformation) {
+    func select(_ isSelected: Bool, item: ContactInformation) {
         guard let selectedIndex = items.firstIndex(where: { $0.id == item.id }) else { return }
         items[selectedIndex].isSelected = isSelected
         hasSelectedItem = items.contains(where: { $0.isSelected })
