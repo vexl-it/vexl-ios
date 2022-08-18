@@ -31,7 +31,8 @@ struct RegisterPhoneNumberInputView: View {
                                  font: Appearance.TextStyle.paragraphMedium.font,
                                  regionCode: regionCode,
                                  phoneNumber: phoneNumber,
-                                 text: $text)
+                                 text: $text,
+                                 isFocus: .constant(true))
             .foregroundColor(Appearance.Colors.primaryText)
             .keyboardType(.phonePad)
             .padding(Appearance.GridGuide.padding)

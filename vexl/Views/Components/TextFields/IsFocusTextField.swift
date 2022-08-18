@@ -30,13 +30,23 @@ struct IsFocusTextField: UIViewRepresentable {
     @State private var isFocusedInternal: Bool = false
     @Binding private var isFocusedExternal: Bool
     private let hasExternalEditing: Bool
+    private let keyboardType: UIKeyboardType
+    private let textColor: UIColor?
+    private let textStyle: Appearance.TextStyle
 
+    // swiftlint:disable function_default_parameter_at_end
     init(
         placeholder: String,
+        keyboardType: UIKeyboardType = .default,
+        textColor: UIColor? = R.color.black1(),
+        textStyle: Appearance.TextStyle = .paragraphMedium,
         text: Binding<String>,
         isFocused: Binding<Bool>? = nil
     ) {
         self.placeholder = placeholder
+        self.keyboardType = keyboardType
+        self.textColor = textColor
+        self.textStyle = textStyle
         self._text = text
         if let isFocused = isFocused {
             _isFocusedExternal = isFocused
@@ -89,7 +99,9 @@ struct IsFocusTextField: UIViewRepresentable {
         textField.attributedPlaceholder = .init(
             string: placeholder
         )
-        textField.textColor = R.color.yellow100()
+        textField.textColor = textColor
+        textField.keyboardType = keyboardType
+        textField.font = textStyle.font
         textField.autocorrectionType = .no
         textField.attributedPlaceholder = NSAttributedString(
             string: placeholder,
