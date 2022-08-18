@@ -45,7 +45,7 @@ struct OfferInformationDetailView: View {
             VStack(alignment: .leading, spacing: Appearance.GridGuide.smallPadding) {
 
                 if data.isGroupOffer, let name = data.groupName {
-                    Text(name)
+                    Text(L.offerWidgetGroupsInfo(name))
                         .textStyle(.descriptionSemiBold)
                         .foregroundColor(data.groupColor)
                         .padding(.vertical, Appearance.GridGuide.tinyPadding)
