@@ -142,9 +142,9 @@ class FetchedResultsControllerDelegate<Entity: NSManagedObject>: NSObject, NSFet
         case .delete:
             publishHandler((.delete, fetchedObjects))
         case .move:
-            publishHandler((.change, fetchedObjects))
+            publishHandler((.move, fetchedObjects))
         case .update:
-            publishHandler((.insert, fetchedObjects))
+            publishHandler((.change, fetchedObjects))
         @unknown default:
             break
         }

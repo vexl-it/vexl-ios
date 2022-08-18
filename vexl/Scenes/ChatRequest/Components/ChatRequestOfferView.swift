@@ -20,7 +20,7 @@ struct ChatRequestOfferView: View {
         VStack(alignment: .center, spacing: .zero) {
             ScrollView(showsIndicators: false) {
                 ContactAvatarInfo(isAvatarWithOpacity: false,
-                                  title: data.contactName,
+                                  titleType: .normal(data.contactName),
                                   subtitle: data.contactFriendLevel,
                                   style: .large)
                     .padding(.horizontal, Appearance.GridGuide.padding)
@@ -50,7 +50,7 @@ struct ChatRequestOfferView: View {
                 .padding(Appearance.GridGuide.point)
         }
         .background(Appearance.Colors.whiteText)
-        .cornerRadius(Appearance.GridGuide.requestCorner)
+        .cornerRadius(Appearance.GridGuide.requestAvatarCorner)
         .padding(.top, Appearance.GridGuide.mediumPadding1)
     }
 
@@ -87,7 +87,8 @@ struct ChatRequestOfferView: View {
 
 extension ChatRequestOfferView {
 
-    class ViewModel: Identifiable, Hashable, ObservableObject {
+    final class ViewModel: Identifiable, Hashable, ObservableObject {
+        @Inject var contactService: ContactsServiceType
         @Inject var contactRepository: ContactsRepositoryType
 
         @Published var friends: [ChatRequestFriendViewData] = []
@@ -103,7 +104,7 @@ extension ChatRequestOfferView {
         private let cancelBag: CancelBag = .init()
 
         init?(chat: ManagedChat) {
-            guard let offer = chat.receiverKeyPair?.offer else {
+            guard let keyPair = chat.receiverKeyPair, let pubKey = keyPair.publicKey, let offer = keyPair.offer else {
                 return nil
             }
             self.chat = chat
@@ -114,14 +115,30 @@ extension ChatRequestOfferView {
             requestText = messages?.first(where: { $0.type == .messagingRequest })?.text ?? ""
             self.offer = .init(offer: offer)
 
-            self.contactRepository
-                .getContacts(hashes: offer.commonFriends ?? [])
+            contactService
+                .getCommonFriends(publicKeys: [pubKey])
+                .compactMap { $0[pubKey] }
+                .filter(\.isEmpty.not)
+                .flatMap { [contactRepository] hashes in
+                    contactRepository
+                        .getCommonFriends(hashes: hashes)
+                }
                 .map { contacts in
                     contacts.map { contact in
-                        ChatRequestFriendViewData(name: contact.name ?? "", image: contact.avatar)
+                        ChatRequestFriendViewData(
+                            name: contact.name ?? "",
+                            image: contact.avatar
+                        )
                     }
                 }
-                .sink()
+                .nilOnError()
+                .filterNil()
+                .withUnretained(self)
+                .sink(receiveValue: { owner, contacts in
+                    withAnimation {
+                        owner.friends = contacts
+                    }
+                })
                 .store(in: cancelBag)
         }
 

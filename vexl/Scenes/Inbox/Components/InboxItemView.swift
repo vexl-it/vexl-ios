@@ -31,30 +31,30 @@ struct InboxItemView: View {
             ContactAvatarView(image: data.avatar,
                               size: Appearance.GridGuide.mediumIconSize)
 
-            VStack(alignment: .leading) {
-                HStack(spacing: .zero) {
-                    Text(data.username)
-                        .foregroundColor(Appearance.Colors.whiteText)
-                        .textStyle(.paragraphSmallBold)
+            VStack(alignment: .leading, spacing: .zero) {
+                HStack {
+                    UserOfferTypeAttributedText(username: data.username, offerType: data.offerType)
 
-                    if let offerType = data.offerType {
-                        Text(offerLabel)
-                            .textStyle(.paragraphSmallBold)
-                            .foregroundColor(offerType == .sell ? Appearance.Colors.pink100 : Appearance.Colors.green100)
-                    }
+                    Text(data.time)
+                        .foregroundColor(Appearance.Colors.gray3)
+                        .textStyle(.micro)
                 }
 
-                Text(data.detail)
-                    .foregroundColor(Appearance.Colors.gray4)
-                    .textStyle(.paragraphSmall)
+                if !data.detail.isEmpty {
+                    HStack(spacing: Appearance.GridGuide.tinyPadding) {
+                        if let icon = data.detailIcon {
+                            Image(icon)
+                        }
+                        Text(data.detail)
+                            .minimumScaleFactor(0.5)
+                            .foregroundColor(data.detailColor)
+                            .textStyle(data.detailTextStyle)
+                    }
+                }
             }
             .frame(maxWidth: .infinity,
                    maxHeight: .infinity,
                    alignment: .leading)
-
-            Text(data.time)
-                .foregroundColor(Appearance.Colors.gray3)
-                .textStyle(.micro)
         }
         .padding(.horizontal, Appearance.GridGuide.padding)
     }
@@ -70,9 +70,55 @@ extension InboxItemView {
         var id: String { chat.id ?? UUID().uuidString }
         var avatar: Data? { chat.receiverKeyPair?.profile?.avatar }
         var username: String { chat.receiverKeyPair?.profile?.name ?? L.generalAnonymous() }
-        var detail: String { lastMessage?.text ?? "" }
         var time: String { lastMessage?.formatedDate ?? "" }
         var offerType: OfferType? { chat.receiverKeyPair?.offer?.type }
+
+        var detail: String {
+            guard let message = lastMessage else { return "" }
+            switch message.type {
+            case .message:
+                return "\(message.isContact ? "" : "\(L.chatMessageMe()) ")\(message.text ?? "")"
+            case .revealRequest:
+                return message.isContact ? L.chatRequestIdentityReceive() : L.chatRequestIdentitySent()
+            case .revealApproval:
+                return L.chatRequestIdentityApprove()
+            case .revealRejected:
+                return L.chatRequestIdentityDecline()
+            default:
+                return ""
+            }
+        }
+        var detailIcon: String? {
+            guard let message = lastMessage else { return nil }
+            switch message.type {
+            case .revealRequest:
+                return R.image.chat.revealRequestIcon.name
+            case .revealApproval:
+                return R.image.chat.revealApprovedIcon.name
+            case .revealRejected:
+                return R.image.chat.revealDeclineIcon.name
+            default:
+                return nil
+            }
+        }
+        var detailColor: Color {
+            guard let message = lastMessage else { return Appearance.Colors.gray4 }
+            switch message.type {
+            case .revealRequest, .revealRejected, .revealApproval:
+                return Appearance.Colors.whiteText
+            default:
+                return Appearance.Colors.gray4
+            }
+        }
+        var detailTextStyle: Appearance.TextStyle {
+            guard let message = lastMessage else { return .paragraphSmall }
+            switch message.type {
+            case .revealRequest, .revealRejected, .revealApproval:
+                return .paragraphSmallBold
+            default:
+                return .paragraphSmall
+            }
+        }
 
         init(chat: ManagedChat) {
             self.chat = chat

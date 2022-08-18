@@ -14,6 +14,7 @@ typealias BottonActionSheetRouterResult = RouterResult<BottomActionSheetActionTy
 enum BottomActionSheetActionType {
     case primary
     case secondary
+    case contentAction
 }
 
 final class BottomActionSheetCoordinator<ViewModel: BottomActionSheetViewModelProtocol>: BaseCoordinator<RouterResult<BottomActionSheetActionType>> {
@@ -21,9 +22,6 @@ final class BottomActionSheetCoordinator<ViewModel: BottomActionSheetViewModelPr
     private let router: Router
 
     private let viewModel: ViewModel
-
-    private var primaryAction = ActionSubject<Void>()
-    private var secondaryAction = ActionSubject<Void>()
 
     init(router: Router, viewModel: ViewModel) {
         self.router = router

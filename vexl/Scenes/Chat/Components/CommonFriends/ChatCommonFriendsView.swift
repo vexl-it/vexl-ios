@@ -14,37 +14,16 @@ struct ChatCommonFriendsView: View {
     let dismiss: () -> Void
 
     var body: some View {
-        GeometryReader { reader in
-            VStack {
-                VStack(alignment: .leading) {
-                    Text(L.chatMessageCommonFriend())
-                        .textStyle(.h2)
-                        .padding(.top, Appearance.GridGuide.mediumPadding1)
-
-                    ScrollView {
-                        LazyVStack {
-                            ForEach(friends) { friend in
-                                ChatCommonFriendItemView(data: friend)
-                            }
-                        }
-                    }
-                    .frame(height: reader.size.height * 0.5)
+        ScrollView {
+            LazyVStack {
+                ForEach(friends) { friend in
+                    ChatCommonFriendItemView(data: friend)
                 }
-                .padding(.horizontal, Appearance.GridGuide.padding)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .background(Appearance.Colors.whiteText)
-                .cornerRadius(Appearance.GridGuide.buttonCorner)
-
-                LargeSolidButton(title: L.buttonGotIt(),
-                                 font: Appearance.TextStyle.titleSmallSemiBold.font.asFont,
-                                 style: .main,
-                                 isFullWidth: true,
-                                 isEnabled: .constant(true),
-                                 action: dismiss)
             }
-            .padding(Appearance.GridGuide.point)
-            .frame(maxHeight: .infinity, alignment: .bottom)
         }
+        .frame(height: UIScreen.main.bounds.height * 0.35)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(Appearance.Colors.whiteText)
     }
 }
 

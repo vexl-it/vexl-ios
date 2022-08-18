@@ -2,7 +2,9 @@
     "destinationDir": "vexl/Resources",
     "keyColumnName": "key_ios",
     "languageMapping": {
-        "en": "en"
+        "en": "en",
+        "cs": "cs",
+        "sk": "sk"
     },
     "serviceAccount": "ServiceAccount.json",
     "spreadsheetID": "1xFeCPwewGahK3ESqdOK0SWcarAabhLExURCiS1jn0GI",

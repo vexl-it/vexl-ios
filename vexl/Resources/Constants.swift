@@ -16,10 +16,10 @@ struct Constants {
 
     struct API {
         #if APPSTORE
-        private static let userApiHostname = "https://user.vexl.staging.cleevio.io"
-        private static let contactsApiHostname = "https://contact.vexl.staging.cleevio.io"
-        private static let offersApiHostname = "https://offer.vexl.staging.cleevio.io"
-        private static let chatApiHostname = "https://chat.vexl.staging.cleevio.io"
+        private static let userApiHostname = "https://user.vexl.it"
+        private static let contactsApiHostname = "https://contact.vexl.it"
+        private static let offersApiHostname = "https://offer.vexl.it"
+        private static let chatApiHostname = "https://chat.vexl.it"
         #elseif STAGING
         private static let userApiHostname = "https://user.vexl.staging.cleevio.io"
         private static let contactsApiHostname = "https://contact.vexl.staging.cleevio.io"
@@ -39,6 +39,7 @@ struct Constants {
         static let contactsBaseURLString = "\(contactsApiHostname)/api/\(apiVersion)"
         static let offersBaseURLString = "\(offersApiHostname)/api/\(apiVersion)"
         static let chatBaseURLString = "\(chatApiHostname)/api/\(apiVersion)"
+        static let mapyBaseURLString = "https://api.mapy.cz/"
     }
 
     // MARK: - Keychain keys
@@ -78,7 +79,7 @@ struct Constants {
         static let maxOffer: Int = 10_000
         static let maxOfferCZK: Int = 250_000
         static let minFee: Double = 1
-        static let maxFee: Double = 25
+        static let maxFee: Double = 10
         static let currency: Currency = .usd
     }
 
@@ -119,7 +120,7 @@ struct Constants {
     static let weeksToSecondsMultiplier: TimeInterval = 604_800
     static let monthsToSecondsMultiplier: TimeInterval = 2_592_000
 
-    static let defaultDeleteTime = "7" // days will be selected as default too
+    static let defaultOfferDeleteTime = "14" // days will be selected as default too
 
     static let contactsHashingPassword = "VexlVexl"
     static let supportEmail = "support@vexl.it"

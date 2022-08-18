@@ -17,7 +17,7 @@ struct ChatRequestView: View {
                             showsSeparator: false) {
                 viewModel.action.send(.dismissTap)
             }
-            .padding(.horizontal, Appearance.GridGuide.mediumPadding1)
+            .padding(.horizontal, Appearance.GridGuide.padding)
             .padding(.top, Appearance.GridGuide.largePadding1)
 
             TabView {

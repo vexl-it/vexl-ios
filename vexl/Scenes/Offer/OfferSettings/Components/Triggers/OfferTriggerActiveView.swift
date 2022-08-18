@@ -9,6 +9,7 @@ import SwiftUI
 
 struct OfferTriggerActiveView: View {
 
+    let currencySymbol: String
     @Binding var selectedOption: OfferTrigger
     @Binding var activeAmount: String
 
@@ -35,8 +36,8 @@ struct OfferTriggerActiveView: View {
                     .padding(.all, Appearance.GridGuide.point)
 
                 HStack(spacing: .zero) {
-                    Text(Constants.currencySymbol)
-                        .textStyle(.h3)
+                    Text(currencySymbol)
+                        .textStyle(.titleSmallBold)
                         .foregroundColor(Appearance.Colors.yellow100)
 
                     TextField("", text: $activeAmount)
@@ -58,10 +59,12 @@ struct OfferTriggerActiveView: View {
 struct OfferTriggerActiveViewPreview: PreviewProvider {
     static var previews: some View {
         VStack {
-            OfferTriggerActiveView(selectedOption: .constant(.none),
+            OfferTriggerActiveView(currencySymbol: "$",
+                                   selectedOption: .constant(.none),
                                    activeAmount: .constant("10000"))
 
-            OfferTriggerActiveView(selectedOption: .constant(.above),
+            OfferTriggerActiveView(currencySymbol: "$",
+                                   selectedOption: .constant(.above),
                                    activeAmount: .constant("10000"))
         }
         .background(Color.black)

@@ -31,11 +31,17 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
 
     // MARK: - View Bindings
 
+    @Fetched(fetchImmediately: false)
+    private var contacts: [ManagedContact]
+
     @Published var numberOfContacts: Int = 0
 
     @Published var primaryActivity: Activity = .init()
     @Published var isLoading = false
     @Published var error: Error?
+
+    @Published var username: String = ""
+    @Published var avatar: Data?
 
     var errorIndicator: ErrorIndicator {
         primaryActivity.error
@@ -43,9 +49,6 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
     var activityIndicator: ActivityIndicator {
         primaryActivity.indicator
     }
-
-    @Published var username: String = ""
-    @Published var avatar: Data?
 
     // MARK: - Coordinator Bindings
 
@@ -59,6 +62,8 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
         case importContacts
         case importFacebook
         case reportIssue
+        case showGroups
+        case deleteAccount
     }
 
     var route: CoordinatingSubject<Route> = .init()
@@ -75,11 +80,8 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
     init(bitcoinViewModel: BitcoinViewModel) {
         self.bitcoinViewModel = bitcoinViewModel
         setupActivity()
-        setupDataBindings()
         setupBindings()
         setupUpdateUser()
-        self.username = userRepository.user?.profile?.name ?? ""
-        self.avatar = userRepository.user?.profile?.avatar
     }
 
     func subtitle(for item: UserProfileViewModel.Option) -> String? {
@@ -105,15 +107,6 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
             .assign(to: &$error)
     }
 
-    private func setupDataBindings() {
-        contactService
-            .countPhoneContacts()
-            .track(activity: primaryActivity)
-            .materialize()
-            .compactMap(\.value)
-            .assign(to: &$numberOfContacts)
-    }
-
     private func setupUpdateUser() {
         let profile = userRepository.user?.profile
 
@@ -126,23 +119,29 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
             .publisher(for: \.avatarData)
             .compactMap { _ in profile?.avatar }
             .assign(to: &$avatar)
+
+        $contacts
+            .publisher
+            .map(\.objects)
+            .map { $0.count }
+            .assign(to: &$numberOfContacts)
+
+        $contacts
+            .load(sortDescriptors: nil,
+                  predicate: NSPredicate(format: "sourceRawType == %@", "phone"))
     }
 
     private func setupBindings() {
         action
             .filter { $0 == .joinVexl }
-            .withUnretained(self)
-            .sink { owner, _ in
-                owner.route.send(.joinVexl)
-            }
+            .map { _ in .joinVexl }
+            .subscribe(route)
             .store(in: cancelBag)
 
         action
             .filter { $0 == .donate }
-            .withUnretained(self)
-            .sink { owner, _ in
-                owner.route.send(.donate)
-            }
+            .map { _ in .donate }
+            .subscribe(route)
             .store(in: cancelBag)
 
         let option = action
@@ -172,8 +171,7 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
 
         option
             .filter { $0 == .contacts }
-            .withUnretained(self)
-            .map { _ -> Route in .importContacts }
+            .map { _ in .importContacts }
             .subscribe(route)
             .store(in: cancelBag)
 
@@ -191,11 +189,20 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
             .store(in: cancelBag)
 
         option
+            .filter { $0 == .groups }
+            .map { _ -> Route in .showGroups }
+            .subscribe(route)
+            .store(in: cancelBag)
+
+        option
             .filter { $0 == .logout }
-            .withUnretained(self)
-            .flatMap { owner, _ in
-                owner.authenticationManager.logoutUserPublisher(force: false)
-            }
+            .map { _ -> Route in .deleteAccount }
+            .subscribe(route)
+            .store(in: cancelBag)
+    }
+
+    func logoutUser() {
+        authenticationManager.logoutUserPublisher(force: false)
             .sink()
             .store(in: cancelBag)
     }

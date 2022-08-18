@@ -11,13 +11,8 @@ import SwiftUI
 struct ImportContactSearchBar: View {
 
     @Binding var searchText: String
-    var hasSelectedItem: Bool
-    var shouldSelectAll: Bool
+    let searchActionTitle: String
     var onAction: () -> Void
-
-    var isButtonDisabled: Bool {
-        shouldSelectAll ? false : !hasSelectedItem
-    }
 
     var body: some View {
         HStack(spacing: Appearance.GridGuide.point) {
@@ -46,7 +41,7 @@ struct ImportContactSearchBar: View {
             .frame(height: Appearance.GridGuide.baseHeight)
             .cornerRadius(Appearance.GridGuide.buttonCorner)
 
-            Button(shouldSelectAll ? L.registerContactsImportSelect() : L.registerContactsImportDeselect()) {
+            Button(searchActionTitle) {
                 onAction()
             }
             .textStyle(.paragraph)
@@ -55,7 +50,6 @@ struct ImportContactSearchBar: View {
             .padding(.horizontal, Appearance.GridGuide.padding)
             .background(Appearance.Colors.black1)
             .cornerRadius(Appearance.GridGuide.buttonCorner)
-            .disabled(isButtonDisabled)
         }
         .frame(height: Appearance.GridGuide.baseHeight)
     }
@@ -64,16 +58,13 @@ struct ImportContactSearchBar: View {
 struct RegisterContacts_ContactSearchBarPreview: PreviewProvider {
     static var previews: some View {
         ImportContactSearchBar(searchText: .constant(""),
-                               hasSelectedItem: true,
-                               shouldSelectAll: true,
+                               searchActionTitle: "Select",
                                onAction: {})
         ImportContactSearchBar(searchText: .constant(""),
-                               hasSelectedItem: false,
-                               shouldSelectAll: true,
+                               searchActionTitle: "Select",
                                onAction: {})
         ImportContactSearchBar(searchText: .constant("Hello"),
-                               hasSelectedItem: false,
-                               shouldSelectAll: false,
+                               searchActionTitle: "Select",
                                onAction: {})
     }
 }

@@ -26,16 +26,17 @@ struct ImportContactListView: View {
             switch viewModel.currentState {
             case .empty:
                 Text(L.registerContactsImportEmpty())
+                    .multilineTextAlignment(.center)
                     .foregroundColor(Appearance.Colors.primaryText)
                     .textStyle(.h3)
+                    .padding()
             case .loading:
                 EmptyView()
             case .content, .success:
                 ImportContactSearchBar(searchText: $viewModel.searchText,
-                                       hasSelectedItem: viewModel.hasSelectedItem,
-                                       shouldSelectAll: viewModel.shouldSelectAll,
+                                       searchActionTitle: viewModel.searchActionTitle,
                                        onAction: {
-                    viewModel.action.send(viewModel.shouldSelectAll ? .selectAll : .unselectAll)
+                    viewModel.action.send(.searchActionTapped)
                 })
                 .padding(Appearance.GridGuide.padding)
 

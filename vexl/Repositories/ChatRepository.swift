@@ -10,6 +10,7 @@ import Combine
 
 protocol ChatRepositoryType {
     func createChat(requestedOffer: ManagedOffer, receiverPublicKey: String, requestMessage: String) -> AnyPublisher<ManagedChat, Error>
+    func setBlockChat(chat: ManagedChat, isBlocked: Bool) -> AnyPublisher<ManagedChat, Error>
 }
 
 class ChatRepository: ChatRepositoryType {
@@ -32,11 +33,19 @@ class ChatRepository: ChatRepositoryType {
             message.time = Date().timeIntervalSince1970
 
             chat.id = UUID().uuidString
-            chat.receiverKeyPair = offer.receiverPublicKey
+            chat.receiverKeyPair = offer.receiversPublicKey
             chat.inbox = offer.inbox
 
             chat.lastMessageDate = message.date
 
+            return chat
+        }
+    }
+
+    func setBlockChat(chat: ManagedChat, isBlocked: Bool) -> AnyPublisher<ManagedChat, Error> {
+        let context = persistence.newEditContext()
+        return persistence.update(context: context) { [chat] _ in
+            chat.isBlocked = isBlocked
             return chat
         }
     }

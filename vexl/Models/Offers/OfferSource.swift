@@ -61,7 +61,7 @@ enum GroupUUID: RawRepresentable {
     }
 }
 
-enum OfferFriendDegree: String {
+enum OfferFriendDegree: String, CaseIterable {
     case firstDegree = "FIRST_DEGREE"
     case secondDegree = "SECOND_DEGREE"
 
@@ -89,6 +89,15 @@ enum OfferFriendDegree: String {
             return L.marketplaceDetailFriendFirst()
         case .secondDegree:
             return L.marketplaceDetailFriendSecond()
+        }
+    }
+
+    var offerLabel: String {
+        switch self {
+        case .firstDegree:
+            return L.offerCreateAdvancedFriendLevelFirst()
+        case .secondDegree:
+            return L.offerCreateAdvancedFriendLevelSecond()
         }
     }
 

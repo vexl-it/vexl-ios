@@ -30,7 +30,7 @@ final class OfferSettingsCoordinator: BaseCoordinator<RouterResult<Void>> {
             viewModel = OfferSettingsViewModel(offerType: offerType, offerKey: ECCKeys())
         }
 
-        let viewController = BaseViewController(rootView: OfferSettingsView(viewModel: viewModel))
+        let viewController = ToggleKeyboardHostingController(rootView: OfferSettingsView(viewModel: viewModel))
 
         viewModel
             .$error
@@ -59,7 +59,7 @@ final class OfferSettingsCoordinator: BaseCoordinator<RouterResult<Void>> {
             .dismissedByRouter(type: Void.self)
 
         return Publishers.Merge3(dismiss, dismissByRouter, finished)
-            .receive(on: RunLoop.main)
+            .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()
     }
 }

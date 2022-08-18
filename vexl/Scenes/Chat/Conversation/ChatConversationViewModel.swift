@@ -23,12 +23,13 @@ final class ChatConversationViewModel: ObservableObject {
     var fetchedMessages: [ManagedMessage]
 
     @Published var messages: [ChatConversationSection] = []
+    @Published var lastMessageID: String?
     @Published var username: String = L.generalAnonymous()
     @Published var avatar: Data?
 
     var updateContactInformation: ActionSubject<MessagePayload.ChatUser> = .init()
     var displayExpandedImage: ActionSubject<Data> = .init()
-    var identityRevealResponse: ActionSubject<Void> = .init()
+    var identityRevealResponseTap: ActionSubject<Void> = .init()
 
     var action: ActionSubject<UserAction> = .init()
 
@@ -49,26 +50,34 @@ final class ChatConversationViewModel: ObservableObject {
         let profile = chat.receiverKeyPair?.profile
         let avatarPublisher = profile?.publisher(for: \.avatarData).map { _ in profile?.avatar }.share()
 
+        avatar = profile?.avatar
+        avatarImage = Image(data: profile?.avatar, placeholder: R.image.marketplace.defaultAvatar.name)
+
         avatarPublisher?
             .assign(to: &$avatar)
         avatarPublisher?
             .map { Image(data: $0, placeholder: R.image.marketplace.defaultAvatar.name) }
             .assign(to: &$avatarImage)
         profile?
-            .publisher(for: \.name).filterNil().assign(to: &$username)
+            .publisher(for: \.name)
+            .filterNil()
+            .assign(to: &$username)
 
         $fetchedMessages.load(predicate: NSPredicate(format: """
             chat == %@
-            AND typeRawType != '\(MessageType.revealRejected.rawValue)'
-            AND typeRawType != '\(MessageType.revealApproval.rawValue)'
         """, chat
         ))
 
         $fetchedMessages.publisher
             .map(\.objects)
+            .map { $0.filter { $0.type != .revealRejected && $0.type != .revealApproval } }
             .map { $0.map(ChatConversationItem.init) }
             .map { [ ChatConversationSection(date: Date(), messages: $0) ] }
             .assign(to: &$messages)
+
+        $messages
+            .map(\.last?.messages.last?.id)
+            .assign(to: &$lastMessageID)
     }
 
     private func setupActionBindings() {
@@ -83,7 +92,7 @@ final class ChatConversationViewModel: ObservableObject {
         action
             .filter { $0 == .revealTapped }
             .asVoid()
-            .subscribe(identityRevealResponse)
+            .subscribe(identityRevealResponseTap)
             .store(in: cancelBag)
     }
 

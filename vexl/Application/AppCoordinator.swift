@@ -36,8 +36,12 @@ final class AppCoordinator: BaseCoordinator<Void> {
             switch initialScreenManager.getCurrentScreenState() {
             case .splashScreen:
                 return showSplashCoordinator()
-            case .onboarding:
+            case .welcome:
                 return showOnboardingCoordinator()
+            case .registerName:
+                return showRegisterNameAvatarCoordinator()
+            case .registerContacts:
+                return showImportPhonesCoordinator()
             case .home:
                 return showHomeCoordinator()
             }
@@ -64,8 +68,30 @@ extension AppCoordinator {
 
     private func showOnboardingCoordinator() -> CoordinatingResult<Void> {
         coordinate(to:
-            WindowNavigationCoordinator(window: window) { router, animated -> OnboardingCoordinator in
-                OnboardingCoordinator(router: router, animated: animated)
+            WindowNavigationCoordinator(window: window) { router, animated -> WelcomeCoordinator in
+                WelcomeCoordinator(router: router, animated: animated)
+            }
+        )
+            .asVoid()
+            .prefix(1)
+            .eraseToAnyPublisher()
+    }
+
+    private func showRegisterNameAvatarCoordinator() -> CoordinatingResult<Void> {
+        coordinate(to:
+            WindowNavigationCoordinator(window: window) { router, animated -> RegisterNameAvatarCoordinator in
+                RegisterNameAvatarCoordinator(router: router, animated: animated)
+            }
+        )
+            .asVoid()
+            .prefix(1)
+            .eraseToAnyPublisher()
+    }
+
+    private func showImportPhonesCoordinator() -> CoordinatingResult<Void> {
+        coordinate(to:
+            WindowNavigationCoordinator(window: window) { router, animated -> RegisterPhoneContactsCoordinator in
+                RegisterPhoneContactsCoordinator(router: router, animated: animated)
             }
         )
             .asVoid()

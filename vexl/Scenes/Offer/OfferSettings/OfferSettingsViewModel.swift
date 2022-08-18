@@ -14,12 +14,16 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
 
     @Inject var offerRepository: OfferRepositoryType
     @Inject var offerService: OfferServiceType
+    @Inject var mapyService: MapyServiceType
+
+    @Fetched(sortDescriptors: [ NSSortDescriptor(key: "name", ascending: true) ])
+    var fetchedGroups: [ManagedGroup]
 
     enum UserAction: Equatable {
         case activate
         case delete
         case addLocation
-        case deleteLocation(id: Int)
+        case deleteLocation(id: String)
         case dismissTap
         case createOffer
     }
@@ -50,9 +54,7 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
     @Published var currentAmountRange: ClosedRange<Int> = Constants.OfferInitialData.minOffer...Constants.OfferInitialData.maxOffer
 
     @Published var selectedFeeOption: OfferFeeOption = .withoutFee
-    @Published var feeAmount: Double = 0
-
-    @Published var locations: [OfferLocationItemData] = []
+    @Published var feeAmount: Double = Constants.OfferInitialData.minFee
 
     @Published var selectedTradeStyleOption: OfferTradeLocationOption = .online
 
@@ -65,14 +67,19 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
     @Published var selectedPriceTriggerAmount: String = "0"
 
     @Published var deleteTimeUnit: OfferTriggerDeleteTimeUnit = .days
-    @Published var deleteTime: String = Constants.defaultDeleteTime
+    @Published var deleteTime: String = Constants.defaultOfferDeleteTime
 
     @Published var isActive = true
+
+    @Published var groupRows: [[ManagedGroup]] = []
+    @Published var selectedGroup: ManagedGroup?
 
     @Published var state: State = .loaded
     @Published var error: Error?
 
-    @Published var currency: Currency = Constants.OfferInitialData.currency
+    @Published var currency: Currency? = Constants.OfferInitialData.currency
+
+    @Published var locationViewModels: [OfferLocationViewModel] = []
 
     // MARK: - Coordinator Bindings
 
@@ -88,26 +95,17 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
 
     var expiration: TimeInterval {
         let time = Double(deleteTime) ?? 0
-        let currentTimestamp = Date().timeIntervalSince1970
-        var additionalSeconds: TimeInterval
-
-        switch deleteTimeUnit {
-        case .days:
-            additionalSeconds = time * Constants.daysToSecondsMultiplier
-        case .weeks:
-            additionalSeconds = time * Constants.weeksToSecondsMultiplier
-        case .months:
-            additionalSeconds = time * Constants.monthsToSecondsMultiplier
-        }
-
-        return currentTimestamp + additionalSeconds
-    }
-
-    var feeValue: Int {
-        guard selectedFeeOption == .withFee else {
-            return 0
-        }
-        return Int(((maxFee - minFee) * feeAmount) + minFee)
+        let additionalSeconds: TimeInterval = {
+            switch deleteTimeUnit {
+            case .days:
+                return time * Constants.daysToSecondsMultiplier
+            case .weeks:
+                return time * Constants.weeksToSecondsMultiplier
+            case .months:
+                return time * Constants.monthsToSecondsMultiplier
+            }
+        }()
+        return Date().timeIntervalSince1970 + additionalSeconds
     }
 
     var priceTriggerAmount: Double {
@@ -135,7 +133,7 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
             return false
         }
 
-        return !description.isEmpty
+        return !description.isEmpty && !locationViewModels.compactMap(\.location).isEmpty
     }
 
     var headerTitle: String {
@@ -205,6 +203,7 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
 
     private func setupDataBindings() {
         if let offer = offer {
+            isActive = offer.active
             description = offer.offerDescription ?? ""
             currency = offer.currency ?? .usd
             currentAmountRange = Int(offer.minAmount)...Int(offer.maxAmount)
@@ -216,7 +215,18 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
             selectedFriendDegreeOption = offer.friendLevel ?? .firstDegree
             selectedPriceTrigger = offer.activePriceState ?? .none
             selectedPriceTriggerAmount = "\(Int(offer.activePriceValue))"
+
+            let managedLocations = offer.locations?.allObjects as? [ManagedOfferLocation] ?? []
+            locationViewModels = managedLocations.map {
+                OfferLocationViewModel(location: $0.offerLocation)
+            }
         }
+
+        $fetchedGroups
+            .publisher
+            .map(\.objects)
+            .map { $0.splitIntoChunks(by: 2) }
+            .assign(to: &$groupRows)
     }
 
     private func setupCurrencyBindings() {
@@ -230,6 +240,8 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
                 case .czk:
                     owner.amountRange = Constants.OfferInitialData.minOffer...Constants.OfferInitialData.maxOfferCZK
                     owner.currentAmountRange = Constants.OfferInitialData.minOffer...Constants.OfferInitialData.maxOfferCZK
+                case .none:
+                    break
                 }
             }
             .store(in: cancelBag)
@@ -276,33 +288,26 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
             .filter { $0 == .addLocation }
             .withUnretained(self)
             .sink { owner, _ in
-                var newLocations = owner.locations
-                let count = newLocations.count + 1
-
-                // TODO: - Manage Locations when implementing maps + coordinates
-
-                let stubLocation = OfferLocationItemData(id: count,
-                                                         name: "Prague \(count)",
-                                                         distance: "\(count)km")
-                newLocations.append(stubLocation)
-                owner.locations = newLocations
+                let locationViewModel = OfferLocationViewModel()
+                owner.setupLocationBindings(for: locationViewModel)
+                owner.locationViewModels.append(locationViewModel)
             }
             .store(in: cancelBag)
 
         sharedAction
-            .compactMap { action -> Int? in
+            .compactMap { action -> String? in
                 if case let .deleteLocation(id) = action { return id }
                 return nil
             }
             .withUnretained(self)
             .sink { owner, id in
-                guard let index = owner.locations.firstIndex(where: { $0.id == id }) else {
+                guard let index = owner.locationViewModels.firstIndex(where: { $0.id == id }) else {
                     return
                 }
 
-                var newLocations = owner.locations
+                var newLocations = owner.locationViewModels
                 newLocations.remove(at: index)
-                owner.locations = newLocations
+                owner.locationViewModels = newLocations
             }
             .store(in: cancelBag)
 
@@ -315,35 +320,43 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
             .asVoid()
             .withUnretained(self)
             .flatMap { owner -> AnyPublisher<ManagedOffer, Never> in
-                let provider: (ManagedOffer) -> Void = { offer in
-                    offer.id = nil
-                    offer.groupUuid = GroupUUID.none
+                let provider: (ManagedOffer) -> Void = { [weak owner] offer in
+                    guard let owner = owner else { return }
+                    offer.group = owner.selectedGroup
                     offer.currency = owner.currency
                     offer.minAmount = Double(owner.currentAmountRange.lowerBound)
                     offer.maxAmount = Double(owner.currentAmountRange.upperBound)
                     offer.offerDescription = owner.description
                     offer.feeState = owner.selectedFeeOption
-                    offer.feeAmount = Double(owner.feeValue)
+                    offer.feeAmount = owner.feeAmount
                     offer.locationState = owner.selectedTradeStyleOption
                     offer.paymentMethods = owner.selectedPaymentMethodOptions
                     offer.btcNetworks = owner.selectedBTCOption
                     offer.friendLevel = owner.selectedFriendDegreeOption
                     offer.type = owner.offerType
-                    offer.activePriceState = OfferTrigger.none
-                    offer.activePriceValue = 0.0
-                    offer.active = true
+                    offer.activePriceState = owner.selectedPriceTrigger
+                    offer.activePriceValue = owner.priceTriggerAmount
+                    offer.active = owner.isActive
                     offer.expirationDate = Date(timeIntervalSince1970: owner.expiration)
                     offer.createdAt = Date()
                 }
                 if let offer = owner.offer {
                     return owner.offerRepository
-                        .update(offer: offer, provider: provider)
+                        .update(
+                            offer: offer,
+                            locations: owner.locationViewModels.compactMap(\.location),
+                            provider: provider
+                        )
                         .materialize()
                         .compactMap(\.value)
                         .eraseToAnyPublisher()
                 } else {
                     return owner.offerRepository
-                        .createOffer(keys: owner.offerKey, provider: provider)
+                        .createOffer(
+                            keys: owner.offerKey,
+                            locations: owner.locationViewModels.compactMap(\.location),
+                            provider: provider
+                        )
                         .materialize()
                         .compactMap(\.value)
                         .eraseToAnyPublisher()
@@ -378,6 +391,17 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
             .withUnretained(self)
             .sink { owner, _ in
                 owner.route.send(.offerDeleted)
+            }
+            .store(in: cancelBag)
+    }
+
+    // TODO: this is a hotfix so BE doesn't return error when creating the offer.
+    // A better solution would be to have an alert o message in the form to tell the user what is missing
+    private func setupLocationBindings(for locationViewModel: OfferLocationViewModel) {
+        locationViewModel.$name
+            .withUnretained(self)
+            .sink { owner, _ in
+                owner.objectWillChange.send()
             }
             .store(in: cancelBag)
     }

@@ -25,16 +25,19 @@ struct ChatInputView: View {
 
     var body: some View {
         HStack {
-            Button {
-                cameraAction()
-            } label: {
-                Image(R.image.chat.camera.name)
-                    .resizable()
-                    .frame(size: Appearance.GridGuide.iconSize)
-                    .padding(Appearance.GridGuide.point)
-                    .background(Appearance.Colors.gray1)
-                    .clipShape(Circle())
-            }
+
+            // TODO: - Activate back when images are supported crossplatform
+
+//            Button {
+//                cameraAction()
+//            } label: {
+//                Image(R.image.chat.camera.name)
+//                    .resizable()
+//                    .frame(size: Appearance.GridGuide.iconSize)
+//                    .padding(Appearance.GridGuide.point)
+//                    .background(Appearance.Colors.gray1)
+//                    .clipShape(Circle())
+//            }
 
             HStack {
                 VStack(alignment: .leading) {

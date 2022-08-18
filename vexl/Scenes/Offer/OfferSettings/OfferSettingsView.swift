@@ -37,30 +37,37 @@ struct OfferSettingsView: View {
                         OfferCurrencyPickerView(selectedOption: $viewModel.currency)
                             .padding(.bottom, Appearance.GridGuide.padding)
 
-                        OfferAmountRangeView(currencySymbol: viewModel.currency.sign,
-                                             currentValue: $viewModel.currentAmountRange,
-                                             sliderBounds: viewModel.amountRange)
+                        if let currency = viewModel.currency {
+                            OfferAmountRangeView(currency: currency,
+                                                 currentValue: $viewModel.currentAmountRange,
+                                                 sliderBounds: viewModel.amountRange)
+                        }
                     }
 
-                    OfferFeePickerView(feeLabel: "\(viewModel.feeValue)%",
+                    OfferFeePickerView(feeLabel: "\(Int(viewModel.feeAmount))%",
+                                       minValue: viewModel.minFee,
+                                       maxValue: viewModel.maxFee,
                                        selectedOption: $viewModel.selectedFeeOption,
                                        feeValue: $viewModel.feeAmount)
 
-                    OfferLocationPickerView(items: viewModel.locations,
-                                            addLocation: {
-                        viewModel.action.send(.addLocation)
-                    },
-                                            deleteLocation: { id in
+                    OfferLocationPickerView(
+                        items: $viewModel.locationViewModels,
+                        addLocation: {
+                            viewModel.action.send(.addLocation)
+                        },
+                        deleteLocation: { id in
                         viewModel.action.send(.deleteLocation(id: id))
-                    })
-                        .padding(.top, Appearance.GridGuide.largePadding1)
+                        }
+                    )
+                    .padding(.top, Appearance.GridGuide.largePadding1)
 
                     OfferTradeLocationPickerView(selectedOption: $viewModel.selectedTradeStyleOption)
 
                     OfferPaymentMethodView(selectedOptions: $viewModel.selectedPaymentMethodOptions)
                         .padding(.top, Appearance.GridGuide.largePadding1)
 
-                    OfferTriggersView(showDeleteTrigger: viewModel.showDeleteTrigger,
+                    OfferTriggersView(currencySymbol: viewModel.currency?.sign ?? "",
+                                      showDeleteTrigger: viewModel.showDeleteTrigger,
                                       selectedActivateOption: $viewModel.selectedPriceTrigger,
                                       selectedActivateAmount: $viewModel.selectedPriceTriggerAmount,
                                       deleteTime: $viewModel.deleteTime,
@@ -69,7 +76,9 @@ struct OfferSettingsView: View {
 
                     OfferAdvancedFilterView(
                         selectedTypeOptions: $viewModel.selectedBTCOption,
-                        selectedFriendDegreeOption: $viewModel.selectedFriendDegreeOption
+                        selectedFriendDegreeOption: $viewModel.selectedFriendDegreeOption,
+                        groupRows: $viewModel.groupRows,
+                        selectedGroup: $viewModel.selectedGroup
                     )
                     .padding(.top, Appearance.GridGuide.largePadding1)
 
@@ -78,9 +87,7 @@ struct OfferSettingsView: View {
                                      style: .main,
                                      isFullWidth: true,
                                      isEnabled: .constant(viewModel.isCreateEnabled),
-                                     action: {
-                        viewModel.action.send(.createOffer)
-                    })
+                                     action: { viewModel.action.send(.createOffer) })
                         .padding(.vertical, Appearance.GridGuide.largePadding1)
                 }
             }
@@ -98,6 +105,12 @@ struct CreateOfferViewPreview: PreviewProvider {
 
         OfferSettingsView(viewModel: .init(offerType: .buy, offerKey: ECCKeys()))
             .previewDevice("iPhone 11")
+
+        OfferSettingsView(viewModel: .init(offerType: .sell, offerKey: ECCKeys()))
+            .previewDevice("iPod touch (7th generation)")
+
+        OfferSettingsView(viewModel: .init(offerType: .buy, offerKey: ECCKeys()))
+            .previewDevice("iPhone SE")
     }
 }
 #endif

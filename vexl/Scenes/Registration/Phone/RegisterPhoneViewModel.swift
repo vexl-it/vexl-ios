@@ -9,6 +9,7 @@ import Foundation
 import Combine
 import Cleevio
 import SwiftUI
+import PhoneNumberKit
 
 final class RegisterPhoneViewModel: ViewModelType {
 
@@ -104,6 +105,23 @@ final class RegisterPhoneViewModel: ViewModelType {
         case .codeInputSuccess:
             return SolidButtonColor.success
         }
+    }
+
+    private var parsedPhoneNumber: PhoneNumber? {
+        try? Formatters.phoneNumberFormatter.parse(phoneNumber)
+    }
+
+    var currentRegionCode: String {
+        guard let region = parsedPhoneNumber?.regionID else {
+            return Locale.current.regionCode ?? ""
+        }
+        return "\(region)"
+    }
+    var currentPhoneNumber: String {
+        guard let number = parsedPhoneNumber?.nationalNumber else {
+            return ""
+        }
+        return "\(number)"
     }
 
     private var phoneVerificationId: Int?
@@ -278,7 +296,7 @@ final class RegisterPhoneViewModel: ViewModelType {
             .withUnretained(self)
             .flatMap { owner, response in
                 owner.userRepository
-                    .createNewUser(newKeys: owner.newKeys, signature: response.signature, hash: response.hash)
+                    .createNewUser(newKeys: owner.newKeys, signature: response.signature, hash: response.hash, phoneNumber: owner.phoneNumber)
                     .asVoid()
                     .materialize()
                     .track(activity: owner.primaryActivity)
@@ -288,29 +306,32 @@ final class RegisterPhoneViewModel: ViewModelType {
 
         let zip = Publishers.Zip(createUser, userRepository.userPublisher.filterNil().receive(on: RunLoop.main))
 
-        let createUserBE = zip
-            .flatMapLatest(with: self) { owner, _ in
-                owner.contactsService
-                    .createUser(forFacebook: false)
-                    .track(activity: owner.primaryActivity)
-                    .materialize()
-                    .compactMap(\.value)
-                    .eraseToAnyPublisher()
-            }
-
-        let notificationToken = createUserBE
+        let notificationToken = zip
             .flatMap { [notificationManager] _ in
                 notificationManager.isRegisteredForNotifications
-                    .flatMap { isRegistered -> AnyPublisher<String, Never> in
+                    .flatMap { isRegistered -> AnyPublisher<String?, Never> in
                         guard isRegistered else {
-                            return Just(Constants.fakePushNotificationToken)
+                            return Just(nil)
                                 .eraseToAnyPublisher()
                         }
                         return notificationManager.notificationToken
+                            .asOptional()
+                            .eraseToAnyPublisher()
                     }
             }
 
-        let createInbox = notificationToken
+        let createUserBE = notificationToken
+            .flatMapLatest(with: self) { owner, token in
+                owner.contactsService
+                    .createUser(forFacebook: false, firebaseToken: token)
+                    .track(activity: owner.primaryActivity)
+                    .materialize()
+                    .compactMap(\.value)
+                    .map { _ in token }
+                    .eraseToAnyPublisher()
+            }
+
+        let createInbox = createUserBE
             .flatMapLatest(with: self) { owner, token in
                 owner.chatService
                     .createInbox(publicKey: owner.newKeys.publicKey, pushToken: token)
@@ -403,7 +424,6 @@ final class RegisterPhoneViewModel: ViewModelType {
     }
 
     private func clearState() {
-        phoneNumber = ""
         validationCode = ""
         currentState = .phoneInput
         phoneVerificationId = nil

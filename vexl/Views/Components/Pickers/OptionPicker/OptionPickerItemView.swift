@@ -10,8 +10,29 @@ import SwiftUI
 struct OptionPickerItemView<Content: View>: View {
 
     let isSelected: Bool
+    var useBackground = true
+    var backgroundTint: Color?
     let content: () -> Content
     let action: () -> Void
+
+    var foregroundColor: Color {
+        isSelected
+            ? Appearance.Colors.whiteText
+            : Appearance.Colors.gray4
+    }
+
+    var backgroundColor: Color {
+        if useBackground {
+            if let color = backgroundTint {
+                return color
+            }
+            return isSelected
+                ? Appearance.Colors.gray2
+                : Appearance.Colors.gray1
+        } else {
+            return Color.clear
+        }
+    }
 
     var body: some View {
         Button {
@@ -19,9 +40,9 @@ struct OptionPickerItemView<Content: View>: View {
         } label: {
             content()
         }
-        .padding()
-        .foregroundColor(isSelected ? Appearance.Colors.whiteText: Appearance.Colors.gray4)
-        .background(isSelected ? Appearance.Colors.gray2 : Appearance.Colors.gray1)
+        .padding(useBackground ? Appearance.GridGuide.padding : .zero)
+        .foregroundColor(foregroundColor)
+        .background(backgroundColor)
         .cornerRadius(Appearance.GridGuide.buttonCorner)
     }
 }

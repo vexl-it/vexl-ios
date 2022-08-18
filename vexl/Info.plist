@@ -24,7 +24,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>117</string>
+	<string>200</string>
 	<key>FacebookAppID</key>
 	<string>364593362214966</string>
 	<key>FacebookClientToken</key>
@@ -82,8 +82,6 @@
 	<string>UIStatusBarStyleLightContent</string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
-		<string>UIInterfaceOrientationLandscapeLeft</string>
-		<string>UIInterfaceOrientationLandscapeRight</string>
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
 	<key>UISupportedInterfaceOrientations~ipad</key>

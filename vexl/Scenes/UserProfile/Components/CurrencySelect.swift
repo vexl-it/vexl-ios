@@ -12,7 +12,7 @@ class CurrencySelectViewModel: BottomActionSheetViewModelProtocol {
     @Inject var cryptocurrencyValueManager: CryptocurrencyValueManagerType
 
     var title: String = L.userProfileCurrencyTitle()
-    var primaryAction: BottomActionSheet<CurrencySelectContent>.Action = .init(title: L.userProfileCurrencyDismissButton(), isDismissAction: true)
+    var primaryAction: BottomActionSheet<CurrencySelectContent>.Action
     var secondaryAction: BottomActionSheet<CurrencySelectContent>.Action?
     var actionPublisher: PassthroughSubject<BottomActionSheetActionType, Never> = .init()
     var dismissPublisher: PassthroughSubject<Void, Never> = .init()
@@ -24,7 +24,9 @@ class CurrencySelectViewModel: BottomActionSheetViewModelProtocol {
     @Published var selectedCurrency: Currency!
     lazy var allCurrencies: [Currency] = Currency.allCases
 
-    init() {
+    init(isOnboarding: Bool = false) {
+        primaryAction =  .init(title: isOnboarding ? L.generalSave() : L.userProfileCurrencyDismissButton(),
+                               isDismissAction: true)
         selectedCurrency = cryptocurrencyValueManager.selectedCurrency.value
     }
 

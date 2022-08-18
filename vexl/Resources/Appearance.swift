@@ -20,8 +20,10 @@ struct Appearance {
 
         static let black1 = Color(R.color.black1.name)
         static let purple1 = Color(R.color.purple1.name)
+        static let purple3 = Color(R.color.purple3.name)
         static let purple4 = Color(R.color.purple4.name)
         static let purple5 = Color(R.color.purple5.name)
+        static let gray0 = Color(R.color.gray0.name)
         static let gray1 = Color(R.color.gray1.name)
         static let gray2 = Color(R.color.gray2.name)
         static let gray3 = Color(R.color.gray3.name)
@@ -67,10 +69,11 @@ struct Appearance {
 
         // MARK: Corner Radius
 
+        static let groupLabelCorner: CGFloat = 8
         static let containerCorner: CGFloat = 10
         static let buttonCorner: CGFloat = 12
         static let tabBarCorner: CGFloat = 16
-        static let requestCorner: CGFloat = 20
+        static let requestAvatarCorner: CGFloat = 20
 
         // MARK: Margins
 
@@ -92,7 +95,7 @@ struct Appearance {
         // MARK: Avatar
 
         static let tinyIconSize = CGSize(width: 6, height: 6)
-        static let avatarSize = CGSize(width: 190, height: 190)
+        static let avatarPickerSize = CGSize(width: 128, height: 128)
         static let smallIconSize = CGSize(width: 12, height: 12)
         static let iconSize = CGSize(width: 24, height: 24)
         static let mediumIconSize = CGSize(width: 48, height: 48)
@@ -116,6 +119,7 @@ struct Appearance {
         static let chatRequestAvatarSize = CGSize(width: 80, height: 80)
         static let chatImageBubbleWidth: CGFloat = 200
         static let chatInputImageSize = CGSize(width: 75, height: 75)
+        static let refreshContainerPadding: CGFloat = 40
     }
 
     // MARK: - Global
@@ -130,6 +134,10 @@ struct Appearance {
             $0.backgroundImage = UIImage()
             $0.shadowColor = .clear
             $0.backgroundColor = color
+            $0.titleTextAttributes = [
+                NSAttributedString.Key.foregroundColor: UIColor(Appearance.Colors.whiteText),
+                NSAttributedString.Key.font: Appearance.TextStyle.paragraphSmallSemiBold.font
+            ]
         }
 
         return appearance
@@ -146,12 +154,15 @@ struct Appearance {
             $0.isTranslucent = true
             $0.shadowImage = UIImage()
             $0.setBackgroundImage(UIImage(), for: .default)
+            $0.tintColor = .white
         }
     }
 
     // MARK: - Fonts
 
     enum TextStyle {
+        case ultraLargeTitle
+        case largeTitle
         case h1
         case h2
         case h3
@@ -164,6 +175,7 @@ struct Appearance {
         case titleSmallBold
         case paragraph
         case paragraphBold
+        case paragraphSemibold
         case paragraphMedium
         case paragraphSmall
         case paragraphSmallSemiBold
@@ -176,6 +188,10 @@ struct Appearance {
 
         var font: UIFont {
             switch self {
+            case .ultraLargeTitle:
+                return R.font.ppMonumentExtendedBold(size: 80) ?? UIFont.systemFont(ofSize: 80, weight: .bold)
+            case .largeTitle:
+                return R.font.ppMonumentExtendedBold(size: 64) ?? UIFont.systemFont(ofSize: 64, weight: .bold)
             case .h1:
                 return R.font.ppMonumentExtendedBold(size: 40) ?? UIFont.systemFont(ofSize: 40, weight: .bold)
             case .h2:
@@ -198,12 +214,14 @@ struct Appearance {
                 return R.font.ttSatoshiBold(size: 20) ?? UIFont.systemFont(ofSize: 20, weight: .bold)
             case .paragraph:
                 return R.font.ttSatoshiRegular(size: 18) ?? UIFont.systemFont(ofSize: 18, weight: .regular)
+            case .paragraphSemibold:
+                return R.font.ttSatoshiDemiBold(size: 18) ?? UIFont.systemFont(ofSize: 18, weight: .semibold)
             case .paragraphBold:
                 return R.font.ttSatoshiBold(size: 18) ?? UIFont.systemFont(ofSize: 18, weight: .bold)
             case .paragraphMedium:
                 return R.font.ttSatoshiMedium(size: 18) ?? UIFont.systemFont(ofSize: 18, weight: .medium)
             case .paragraphSmall:
-                return R.font.ttSatoshiMedium(size: 16) ?? UIFont.systemFont(ofSize: 16, weight: .medium)
+                return R.font.ttSatoshiRegular(size: 16) ?? UIFont.systemFont(ofSize: 16, weight: .medium)
             case .paragraphSmallSemiBold:
                 return R.font.ttSatoshiDemiBold(size: 16) ?? UIFont.systemFont(ofSize: 16, weight: .semibold)
             case .paragraphSmallMedium:

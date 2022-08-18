@@ -14,30 +14,18 @@ struct RequestAccessContactsView: View {
 
     var body: some View {
         VStack {
-
-            Spacer()
-
-            portraitView
-
-            Text(viewModel.title)
-                .multilineTextAlignment(.center)
-                .textStyle(.h3)
-                .foregroundColor(.white)
-
-            Spacer()
-
-            contactsView
-                .padding(.bottom, Appearance.GridGuide.mediumPadding1)
+            card
+                .padding(.horizontal, Appearance.GridGuide.point)
 
             LargeSolidButton(title: viewModel.importButton,
                              font: Appearance.TextStyle.titleSmallBold.font.asFont,
-                             style: .custom(color: .welcome),
+                             style: .main,
                              isFullWidth: true,
                              isEnabled: .constant(true),
                              action: {
                 viewModel.action.send(.next)
             })
-                .padding(.horizontal, Appearance.GridGuide.mediumPadding1)
+                .padding(.horizontal, Appearance.GridGuide.point)
 
             if viewModel.displaySkipButton {
                 LargeSolidButton(title: L.registerContactsSkip(),
@@ -48,7 +36,7 @@ struct RequestAccessContactsView: View {
                                  action: {
                     viewModel.action.send(.skip)
                 })
-                    .padding(.horizontal, Appearance.GridGuide.mediumPadding1)
+                    .padding(.horizontal, Appearance.GridGuide.point)
             }
         }
         .alert(item: $viewModel.alert) { alert in
@@ -63,28 +51,39 @@ struct RequestAccessContactsView: View {
         }
     }
 
-    private var portraitView: some View {
-        RequestAccessPortraitView(name: viewModel.username,
-                                  avatar: viewModel.avatar,
-                                  color: viewModel.portraitColor,
-                                  textColor: viewModel.portraitTextColor)
-    }
+    private var card: some View {
+        VStack {
+            Image(data: viewModel.image, placeholder: "")
+                .resizable()
+                .scaledToFit()
+                .padding(Appearance.GridGuide.mediumPadding1)
 
-    private var contactsView: some View {
-        HStack {
-            Image(R.image.onboarding.eye.name)
+            Text(viewModel.title)
+                .multilineTextAlignment(.center)
+                .textStyle(.h3)
+                .foregroundColor(Appearance.Colors.primaryText)
+                .padding(.horizontal, Appearance.GridGuide.point)
 
-            Text(viewModel.subtitle)
-                .textStyle(.paragraph)
-                .foregroundColor(Appearance.Colors.gray2)
+            HStack {
+                Image(R.image.onboarding.eye.name)
+
+                Text(viewModel.subtitle)
+                    .textStyle(.paragraphSmallMedium)
+                    .foregroundColor(Appearance.Colors.gray2)
+            }
+            .padding(.bottom, Appearance.GridGuide.padding)
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+        .background(Appearance.Colors.whiteText)
+        .cornerRadius(Appearance.GridGuide.buttonCorner)
     }
 }
 
-struct RegisterContactsPhoneViewPreview: PreviewProvider {
+struct RequestAccessContactsViewPreview: PreviewProvider {
     static var previews: some View {
-        RequestAccessContactsView(viewModel: .init(username: "Diego", avatar: nil, activity: .init(indicator: nil, error: nil)))
+        RequestAccessContactsView(viewModel: RequestAccessFacebookContactsViewModel(activity: .init(indicator: nil, error: nil)))
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color.black.edgesIgnoringSafeArea(.all))
+            .previewDevice("iPhone 11")
     }
 }

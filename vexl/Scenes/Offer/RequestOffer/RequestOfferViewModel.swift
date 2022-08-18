@@ -75,7 +75,7 @@ final class RequestOfferViewModel: ViewModelType, ObservableObject {
         if let commonFriends = offer.commonFriends, !commonFriends.isEmpty {
             let array = NSArray(array: offer.commonFriends ?? [])
             $fetchedCommonFriends
-                .load(predicate: NSPredicate(format: "hmacHash contains[cd] %@", array))
+                .load(predicate: NSPredicate(format: "hmacHash IN %@", array))
 
             $fetchedCommonFriends.publisher
                 .map(\.objects)
@@ -119,7 +119,7 @@ final class RequestOfferViewModel: ViewModelType, ObservableObject {
             }
             .flatMapLatest(with: self) { owner, payload -> AnyPublisher<Void, Never> in
                 owner.state = .requesting
-                guard let publicKey = owner.offer.receiverPublicKey?.publicKey else {
+                guard let publicKey = owner.offer.receiversPublicKey?.publicKey else {
                     return Just(()).eraseToAnyPublisher()
                 }
                 return owner.chatManager
@@ -129,9 +129,7 @@ final class RequestOfferViewModel: ViewModelType, ObservableObject {
             .flatMap { [persistence, offer] _ in
                 persistence.update(context: persistence.viewContext) { _ in
                     offer.isRequested = true
-                    return offer
                 }
-                .asVoid()
                 .justOnError()
             }
             .map { Route.requestSent }

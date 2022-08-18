@@ -12,75 +12,48 @@ struct RegistrationCardView<Content>: View where Content: View {
 
     let title: String
     let subtitle: String
+    let subtitlePositionIsBottom: Bool
     let iconName: String?
-    let content: Content
+    let bottomPadding: CGFloat
+    let content: () -> Content
 
     var body: some View {
-        VStack(alignment: .leading, spacing: Appearance.GridGuide.point) {
+        VStack(alignment: .leading) {
 
-            RegistrationCardTitleView(title: title,
-                                      subtitle: subtitle,
-                                      iconName: iconName)
-
-            content
-        }
-        .padding(.all, Appearance.GridGuide.padding)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .modifier(CardViewModifier())
-    }
-}
-
-struct RegistrationHeaderCardView<Header, Content>: View where Header: View, Content: View {
-
-    let title: String
-    let subtitle: String
-    let iconName: String?
-    let header: Header
-    let content: Content
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: Appearance.GridGuide.point) {
-
-            header
-
-            RegistrationCardTitleView(title: title,
-                                      subtitle: subtitle,
-                                      iconName: iconName)
-
-            content
-        }
-        .padding(.all, Appearance.GridGuide.padding)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .modifier(CardViewModifier())
-    }
-}
-
-private struct RegistrationCardTitleView: View {
-
-    let title: String
-    let subtitle: String
-    let iconName: String?
-
-    var body: some View {
-        VStack(alignment: .leading,
-               spacing: Appearance.GridGuide.point) {
             Text(title)
                 .textStyle(.h3)
                 .foregroundColor(Appearance.Colors.primaryText)
+                .padding([.top, .horizontal], Appearance.GridGuide.point)
 
-            HStack {
-                if let iconName = iconName {
-                    Image(iconName)
-                }
-
-                Text(subtitle)
-                    .foregroundColor(Appearance.Colors.gray2)
-                    .textStyle(.paragraph)
-                    .lineLimit(2)
-                    .minimumScaleFactor(0.5)
+            if !subtitlePositionIsBottom {
+                subtitleView
             }
-            .padding(.top, Appearance.GridGuide.mediumPadding1)
+
+            content()
+
+            if subtitlePositionIsBottom {
+                subtitleView
+            }
         }
+        .padding(.all, Appearance.GridGuide.padding)
+        .padding(.bottom, bottomPadding)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .modifier(CardViewModifier())
+    }
+
+    private var subtitleView: some View {
+        HStack {
+            if let iconName = iconName {
+                Image(iconName)
+            }
+
+            Text(subtitle)
+                .foregroundColor(Appearance.Colors.gray2)
+                .textStyle(.description)
+                .lineLimit(2)
+                .minimumScaleFactor(0.5)
+        }
+        .padding(.top, Appearance.GridGuide.point)
     }
 }
 
@@ -90,17 +63,25 @@ struct RegistrationCardViewPreview: PreviewProvider {
         let title = "Hello World"
         let subtitle = "This is a subtitle"
         let text = Text("Text goes here")
-        let header = Text("Header goes here")
-
-        RegistrationHeaderCardView(title: title,
-                                   subtitle: subtitle,
-                                   iconName: R.image.onboarding.eye.name,
-                                   header: header,
-                                   content: text)
 
         RegistrationCardView(title: title,
                              subtitle: subtitle,
+                             subtitlePositionIsBottom: true,
+                             iconName: R.image.onboarding.eye.name,
+                             bottomPadding: Appearance.GridGuide.padding,
+                             content: {
+            text
+        })
+            .background(Color.black)
+
+        RegistrationCardView(title: title,
+                             subtitle: subtitle,
+                             subtitlePositionIsBottom: false,
                              iconName: nil,
-                             content: text)
+                             bottomPadding: Appearance.GridGuide.padding,
+                             content: {
+            text
+        })
+            .background(Color.black)
     }
 }
