@@ -3,21 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>386907112085-oqkosd5a8iudn93oiea8a423bbpoufug.apps.googleusercontent.com</string>
+	<string>183980003892-vacrq24feue221bqsgi6cm2t7c8tn7hu.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.386907112085-oqkosd5a8iudn93oiea8a423bbpoufug</string>
+	<string>com.googleusercontent.apps.183980003892-vacrq24feue221bqsgi6cm2t7c8tn7hu</string>
 	<key>API_KEY</key>
-	<string>AIzaSyBm7L74xcwF7wEqfqhIbP_S8bgb4wFgkPE</string>
+	<string>AIzaSyBrLmGZI0iZbt4Uxli2xStcyQaabPn0AXE</string>
 	<key>GCM_SENDER_ID</key>
-	<string>386907112085</string>
+	<string>183980003892</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.cleevio.vexl.staging</string>
+	<string>it.vexl.staging</string>
 	<key>PROJECT_ID</key>
-	<string>vexl-devel</string>
+	<string>tidal-horizon-358313</string>
 	<key>STORAGE_BUCKET</key>
-	<string>vexl-devel.appspot.com</string>
+	<string>tidal-horizon-358313.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,6 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:386907112085:ios:d5e19c7680bc362050d19c</string>
+	<string>1:183980003892:ios:df1ccdc4ab9cc79ae53061</string>
 </dict>
 </plist>
