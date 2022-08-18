@@ -19,12 +19,6 @@ final class ProfileImportPhonesViewModel: ImportContactsViewModel {
         true
     }
 
-    override var previousSelectedContacts: [ContactInformation] {
-        alreadySelectedContacts
-    }
-
-    private var alreadySelectedContacts: [ContactInformation] = []
-
     override init() {
         super.init()
         showActionButton = false
@@ -70,9 +64,6 @@ final class ProfileImportPhonesViewModel: ImportContactsViewModel {
             .sink { owner, contacts in
                 owner.currentState = contacts.isEmpty ? .empty : .content
                 owner.items = contacts
-                owner.alreadySelectedContacts = contacts
-                    .filter { $0.isSelected }
-
                 for contact in contacts {
                     owner.select(contact.isSelected, item: contact)
                 }

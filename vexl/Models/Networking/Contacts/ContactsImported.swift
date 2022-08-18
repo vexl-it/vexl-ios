@@ -10,4 +10,6 @@ import Foundation
 struct ContactsImported: Decodable {
     var imported: Bool
     var message: String
+
+    static var none = ContactsImported(imported: true, message: "")
 }
