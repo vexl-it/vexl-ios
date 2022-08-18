@@ -22,6 +22,23 @@ enum NotificationType: String {
     case deleteChat = "DELETE_CHAT"
     case groupNewMember = "GROUP_NEW_MEMBER"
     case newAppUser = "NEW_APP_USER"
+
+    var deeplinkType: DeeplinkType {
+        switch self {
+        case .message, .requestReveal, .approveReveal, .disapproveReveal, .approveMessaging:
+            return .openChat
+        case .requestMessaging:
+            return .openRequest
+        case .disaproveMessaging:
+            return .openInbox // what should happen?
+        case .deleteChat:
+            return .openInbox
+        case .groupNewMember:
+            return .openInbox // which screen should open?
+        case .newAppUser:
+            return .openInbox // which screen should open?
+        }
+    }
 }
 
 protocol NotificationManagerType {
@@ -36,6 +53,7 @@ final class NotificationManager: NSObject, NotificationManagerType {
     @Inject var groupManager: GroupManagerType
     @Inject var inboxManager: InboxManagerType
     @Inject var offerManager: OfferManagerType
+    @Inject var deeplinkManager: DeeplinkManagerType
 
     private var fcmTokenValue: CurrentValueSubject<String?, Never> = .init(nil)
     private var authorisationStatus: CurrentValueSubject<UNAuthorizationStatus?, Never> = .init(nil)
@@ -105,17 +123,17 @@ extension NotificationManager: UNUserNotificationCenterDelegate {
                                 withCompletionHandler completionHandler: @escaping () -> Void) {
         defer { notificationHandled = nil }
         let userInfo = response.notification.request.content.userInfo
+        let typeRawValue: String? = userInfo["type"] as? String
+        guard let type: NotificationType = typeRawValue.flatMap(NotificationType.init) else { return }
 
         log.debug("Notification received with following data \(userInfo)")
 
         if notificationHandled == nil {
             log.debug("Notification wasn't handled in foreground")
-            let typeRawValue: String? = userInfo["type"] as? String
-            let type: NotificationType? = typeRawValue.flatMap(NotificationType.init)
-
             handleNotification(of: type, with: userInfo)
         }
 
+        deeplinkManager.handleDeeplink(with: type.deeplinkType)
         completionHandler()
     }
 

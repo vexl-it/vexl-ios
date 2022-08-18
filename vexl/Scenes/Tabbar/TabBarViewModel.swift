@@ -7,11 +7,13 @@
 
 import Foundation
 import Cleevio
+import Combine
 
 final class TabBarViewModel: ViewModelType {
 
     @Inject var cryptocurrencyManager: CryptocurrencyValueManagerType
     @Inject var syncInboxManager: SyncInboxManagerType
+    @Inject var deeplinkManager: DeeplinkManagerType
 
     // MARK: - Actions Bindings
 
@@ -19,6 +21,13 @@ final class TabBarViewModel: ViewModelType {
     }
 
     let action: ActionSubject<UserAction> = .init()
+
+    var deeplinkIndex: AnyPublisher<Int, Never> {
+        deeplinkManager
+            .openDeeplink
+            .map(\.tab.rawValue)
+            .eraseToAnyPublisher()
+    }
 
     @Published var primaryActivity: Activity = .init()
 
@@ -31,6 +40,7 @@ final class TabBarViewModel: ViewModelType {
 
     // MARK: - Variables
 
+//    private let deeplinkIndexSubject = PassthroughSubject<
     private let cancelBag: CancelBag = .init()
 
     init() {

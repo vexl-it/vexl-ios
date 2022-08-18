@@ -61,6 +61,12 @@ final class TabBarView: UIView {
         tabBarButtons[selectedIndex].isSelected = true
     }
 
+    func updateSelectedItem(to index: Int) {
+        guard index < tabBarButtons.count else { return }
+        selectedButton?.isSelected = false
+        tabBarButtons[index].isSelected = true
+    }
+
     @objc
     private func itemTap(sender: TabBarButton) {
         guard let index = tabBarButtons.firstIndex(of: sender) else { return }

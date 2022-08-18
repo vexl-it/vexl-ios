@@ -11,6 +11,8 @@ import Combine
 
 final class InboxCoordinator: BaseCoordinator<Void> {
 
+    @Inject private var deeplinkManager: DeeplinkManagerType
+
     private let router: Router
     private let animated: Bool
 

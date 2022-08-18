@@ -7,9 +7,10 @@
 
 import UIKit
 import Cleevio
+import Combine
 
-enum Tab {
-    case marketplace
+enum Tab: Int {
+    case marketplace = 0
     case chat
     case profile
 
@@ -90,6 +91,15 @@ final class TabBarController: UITabBarController {
             .withUnretained(self)
             .sink { owner, index in
                 owner.selectedIndex = index
+            }
+            .store(in: cancelBag)
+
+        viewModel
+            .deeplinkIndex
+            .withUnretained(self)
+            .sink { owner, index in
+                owner.selectedIndex = index
+                owner.tabBarView.updateSelectedItem(to: index)
             }
             .store(in: cancelBag)
     }
