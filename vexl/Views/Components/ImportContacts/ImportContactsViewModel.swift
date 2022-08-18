@@ -252,12 +252,40 @@ class ImportContactsViewModel: ObservableObject {
     }
 
     private func removeContacts(contacts: [ContactInformation]) -> AnyPublisher<Bool, Error> {
-        Future { prom in
-            after(3) {
-                prom(.success(true))
-            }
+        if contacts.isEmpty {
+            return Just(true).setFailureType(to: Error.self)
+                .eraseToAnyPublisher()
+        } else {
+            let hashContacts = Just(contacts)
+                .flatMap { [encryptionService] contacts -> AnyPublisher<[(ContactInformation, String)], Error> in
+                    encryptionService
+                        .hashContacts(contacts: contacts)
+                }
+                .share()
+                .eraseToAnyPublisher()
+
+            let removeContacts = hashContacts
+                .withUnretained(self)
+                .flatMap { owner, contacts -> AnyPublisher<Void, Never> in
+                    owner.contactsService
+                        .removeContacts(contacts.map(\.1), fromFacebook: false)
+                        .track(activity: owner.primaryActivity)
+                        .materialize()
+                        .compactMap { $0.value }
+                        .eraseToAnyPublisher()
+                }
+                .eraseToAnyPublisher()
+
+            let deleteContacts = hashContacts
+                .withUnretained(self)
+                .flatMap { owner, contacts -> AnyPublisher<Void, Error> in
+                    owner.contactsRepository.delete(contacts: contacts)
+                }
+
+            return Publishers.Zip(removeContacts, deleteContacts)
+                .map { _ in true }
+                .eraseToAnyPublisher()
         }
-        .eraseToAnyPublisher()
     }
 
     func select(_ isSelected: Bool, item: ContactInformation) {
