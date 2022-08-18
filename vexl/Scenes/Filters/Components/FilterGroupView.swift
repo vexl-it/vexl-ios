@@ -52,11 +52,14 @@ struct FilterGroupView: View {
             MultipleOptionPickerView(
                 selectedOptions: $selectedGroups,
                 options: options ,
+                backgroundTintColor: { $0.color },
                 content: { group in
                     if let group = group {
                         if let logo = group.logo, let dataImage = UIImage(data: logo) {
                             Image(uiImage: dataImage)
-                                .frame(maxWidth: .infinity)
+                                .frame(maxWidth: cellSize, maxHeight: cellSize)
+                                .aspectRatio(1, contentMode: .fill)
+                                .fixedSize(horizontal: false, vertical: true)
                                 .overlay(
                                     Image(systemName: "checkmark.circle.fill")
                                         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)

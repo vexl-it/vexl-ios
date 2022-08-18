@@ -51,12 +51,15 @@ struct OfferAdvanceFilterGroupView: View {
         VStack(alignment: .leading, spacing: 0) {
             SingleOptionPickerView(
                 selectedOption: $selectedGroup,
-                options: options ,
+                options: options,
+                backgroundTintColor: { option in option?.color },
                 content: { group in
                     if let group = group {
                         if let logo = group.logo, let dataImage = UIImage(data: logo) {
                             Image(uiImage: dataImage)
-                                .frame(maxWidth: .infinity)
+                                .frame(maxWidth: cellSize, maxHeight: cellSize)
+                                .aspectRatio(1, contentMode: .fill)
+                                .fixedSize(horizontal: false, vertical: true)
                                 .overlay(
                                     Image(systemName: "checkmark.circle.fill")
                                         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
@@ -64,25 +67,21 @@ struct OfferAdvanceFilterGroupView: View {
                                         .opacity(selectedGroup == group ? 1 : 0)
                                 )
                         } else {
-                            ZStack {
-                                Rectangle()
-                                    .foregroundColor(.clear)
-                                if let char = group.name?.first {
-                                    Text(String(char))
-                                        .textStyle(Appearance.TextStyle.ultraLargeTitle)
-                                        .foregroundColor(Appearance.Colors.whiteText)
-                                }
+                            if let char = group.name?.first {
+                                Text(String(char))
+                                    .textStyle(Appearance.TextStyle.ultraLargeTitle)
+                                    .foregroundColor(Appearance.Colors.whiteText)
+                                    .frame(maxWidth: cellSize, maxHeight: cellSize)
+                                    .aspectRatio(1, contentMode: .fill)
+                                    .fixedSize(horizontal: false, vertical: true)
+                                    .cornerRadius(Appearance.GridGuide.buttonCorner)
+                                    .overlay(
+                                        Image(systemName: "checkmark.circle.fill")
+                                            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+                                            .offset(x: -10, y: -10)
+                                            .opacity(selectedGroup == group ? 1 : 0)
+                                    )
                             }
-                            .frame(maxWidth: cellSize, maxHeight: cellSize)
-                            .aspectRatio(1, contentMode: .fill)
-                            .fixedSize(horizontal: false, vertical: true)
-                            .cornerRadius(Appearance.GridGuide.buttonCorner)
-                            .overlay(
-                                Image(systemName: "checkmark.circle.fill")
-                                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-                                    .offset(x: -10, y: -10)
-                                    .opacity(selectedGroup == group ? 1 : 0)
-                            )
                         }
                     }
                 },
