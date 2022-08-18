@@ -11,25 +11,29 @@ struct MultipleOptionPickerView<Option: Hashable, Content: View>: View {
 
     @Binding var selectedOptions: [Option]
     let options: [Option]
+    var backgroundTintColor: ((Option) -> Color?)?
     @ViewBuilder let content: (Option) -> Content
     let action: ((Option, Bool) -> Void)?
 
     var body: some View {
         HStack {
             ForEach(options, id: \.self) { option in
-                OptionPickerItemView(isSelected: selectedOptions.contains(option),
-                                     content: {
-                    content(option)
-                },
-                                     action: {
-                    let index = selectedOptions.firstIndex(of: option)
-                    if let index = index {
-                        selectedOptions.remove(at: index)
-                    } else {
-                        selectedOptions.append(option)
+                OptionPickerItemView(
+                    isSelected: selectedOptions.contains(option),
+                    backgroundTint: backgroundTintColor?(option),
+                    content: {
+                        content(option)
+                    },
+                    action: {
+                        let index = selectedOptions.firstIndex(of: option)
+                        if let index = index {
+                            selectedOptions.remove(at: index)
+                        } else {
+                            selectedOptions.append(option)
+                        }
+                        action?(option, index != nil)
                     }
-                    action?(option, index != nil)
-                })
+                )
             }
         }
     }

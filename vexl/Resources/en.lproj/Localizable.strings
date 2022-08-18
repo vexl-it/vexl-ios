@@ -165,8 +165,8 @@
 "marketplace.currency.3month" = "3 mth";
 "marketplace.currency.6month" = "6 mth";
 "marketplace.currency.1year" = "1 year";
-"marketplace.buy" = "Buy";
-"marketplace.sell" = "Sell";
+"marketplace.buy" = "To Buy";
+"marketplace.sell" = "To Sell";
 "marketplace.facebook.friend" = "Facebook friend";
 "marketplace.phone.contact" = "Phone contact";
 "marketplace.sell.offer" = "My offers";
@@ -302,6 +302,7 @@
 "chat.message.identity.reveal.request" = "Identity reveal request";
 "chat.message.identity.reveal.pending" = "Pending...";
 "chat.message.identity.reveal.pending.ok" = "Got it!";
+"chat.message.identity.reveal.pending.button" = "Got it";
 "chat.message.identity.reveal.pending.tap" = "Tap to reveal or decline";
 "chat.message.identity.confirmation.title" = "Are you sure you want to reveal your identity?";
 "chat.message.identity.confirmation.subtitle" = "If you reveal identity you will see the identity of your counterparty too.";

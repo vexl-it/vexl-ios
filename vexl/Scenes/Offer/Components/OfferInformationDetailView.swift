@@ -20,6 +20,7 @@ struct OfferInformationDetailView: View {
 
     private let groupLogoSize: Double = 53
     private let groupLogoRotationAngle: Angle = .degrees(-20)
+    private let groupLogoImagePadding = Appearance.GridGuide.smallPadding
 
     private var paymentLayoutStyle: OfferPaymentIconView.LayoutStyle {
         OfferPaymentIconView.LayoutStyle(icons: data.paymentIcons)
@@ -93,6 +94,14 @@ struct OfferInformationDetailView: View {
             if data.isGroupOffer {
                 if let logoImage = data.groupImage {
                     logoImage
+                        .resizable()
+                        .scaledToFill()
+                        .frame(
+                            width: groupLogoSize - (2 * groupLogoImagePadding),
+                            height: groupLogoSize - (2 * groupLogoImagePadding)
+                        )
+                        .padding(groupLogoImagePadding)
+                        .background(data.groupColor)
                 } else if let name = data.groupName {
                     EmptyGroupLogoSmall(name: .constant(name))
                 }

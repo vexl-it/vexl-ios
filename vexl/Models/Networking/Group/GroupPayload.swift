@@ -76,8 +76,11 @@ struct GroupPayload: Codable {
         group.name = name
         if let url = URL(string: logoUrl) {
             group.logoURL = url
-            group.logo = try? Data(contentsOf: url)
+            // TODO: load logo from url
+//            group.logo = try? Data(contentsOf: url)
+            group.logo = R.image.chainCamp()?.pngData()
         }
+        group.hexColor = "#530B6E"
         group.createdAt = Date(timeIntervalSince1970: TimeInterval(createdAt))
         group.expiration = Date(timeIntervalSince1970: TimeInterval(expirationAt))
         group.closureAt = Date(timeIntervalSince1970: TimeInterval(closureAt))
