@@ -113,10 +113,6 @@ class ImportContactsViewModel: ObservableObject {
         items.filter { !$0.isSelected && $0.isStored }
     }
 
-    private var canBeCompletedWithoutSelection: Bool {
-        (currentState == .content && !hasSelectedItem) || currentState == .loading || currentState == .empty
-    }
-
     // MARK: - Init
 
     init() {
@@ -161,15 +157,6 @@ class ImportContactsViewModel: ObservableObject {
             .store(in: cancelBag)
 
         action
-            .filter { $0 == .importContacts }
-            .withUnretained(self)
-            .filter { $0.0.canBeCompletedWithoutSelection }
-            .sink { owner, _ in
-                owner.completed.send(())
-            }
-            .store(in: cancelBag)
-
-        action
             .filter { $0 == .dismiss }
             .withUnretained(self)
             .sink { owner, _ in
@@ -179,11 +166,12 @@ class ImportContactsViewModel: ObservableObject {
     }
 
     private func setupImportAction() {
-        let sharedAction = action.share()
+        let sharedAction = action
+            .withUnretained(self)
+            .filter { $0.0.currentState == .content && $0.0.loading.not && $0.1 == .importContacts }
+            .share()
 
         let addNewContacts = sharedAction
-            .withUnretained(self)
-            .filter { $0.0.currentState == .content && $0.0.hasSelectedItem && $0.1 == .importContacts }
             .map(\.0.newContacts)
             .withUnretained(self)
             .flatMap { owner, contacts -> AnyPublisher<Bool, Error> in
@@ -191,8 +179,6 @@ class ImportContactsViewModel: ObservableObject {
             }
 
         let removeContacts = sharedAction
-            .withUnretained(self)
-            .filter { $0.0.currentState == .content && $0.0.hasSelectedItem && $0.1 == .importContacts }
             .map(\.0.removedContacts)
             .withUnretained(self)
             .flatMap { owner, contacts -> AnyPublisher<Bool, Error> in
@@ -201,8 +187,9 @@ class ImportContactsViewModel: ObservableObject {
 
         Publishers.Zip(addNewContacts, removeContacts)
             .withUnretained(self)
-            .handleEvents(receiveOutput: { owner, imported in
-                if imported.0 && imported.1 {
+            .handleEvents(receiveOutput: { owner, response in
+                let (didImportContacts, didRemoveContacts) = response
+                if didImportContacts && didRemoveContacts {
                     owner.currentState = .success
                 }
             })
@@ -219,11 +206,8 @@ class ImportContactsViewModel: ObservableObject {
             return Just(true).setFailureType(to: Error.self)
                 .eraseToAnyPublisher()
         } else {
-            let hashContacts = Just(contacts)
-                .flatMap { [encryptionService] contacts -> AnyPublisher<[(ContactInformation, String)], Error> in
-                    encryptionService
-                        .hashContacts(contacts: contacts)
-                }
+            let hashContacts = encryptionService
+                .hashContacts(contacts: contacts)
                 .share()
                 .eraseToAnyPublisher()
 
@@ -256,11 +240,8 @@ class ImportContactsViewModel: ObservableObject {
             return Just(true).setFailureType(to: Error.self)
                 .eraseToAnyPublisher()
         } else {
-            let hashContacts = Just(contacts)
-                .flatMap { [encryptionService] contacts -> AnyPublisher<[(ContactInformation, String)], Error> in
-                    encryptionService
-                        .hashContacts(contacts: contacts)
-                }
+            let hashContacts = encryptionService
+                .hashContacts(contacts: contacts)
                 .share()
                 .eraseToAnyPublisher()
 

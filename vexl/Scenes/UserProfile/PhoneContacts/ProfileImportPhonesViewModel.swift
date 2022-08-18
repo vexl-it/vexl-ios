@@ -21,19 +21,8 @@ final class ProfileImportPhonesViewModel: ImportContactsViewModel {
 
     override init() {
         super.init()
-        showActionButton = false
         showBackButton = true
         currentState = .loading
-        setupActionBindings()
-    }
-
-    private func setupActionBindings() {
-        $hasSelectedItem
-            .withUnretained(self)
-            .sink { owner, hasSelection in
-                owner.showActionButton = hasSelection
-            }
-            .store(in: cancelBag)
     }
 
     override func fetchContacts() throws {

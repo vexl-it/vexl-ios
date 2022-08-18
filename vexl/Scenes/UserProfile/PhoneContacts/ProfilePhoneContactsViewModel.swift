@@ -51,8 +51,6 @@ final class ProfilePhoneContactsViewModel: ViewModelType, ObservableObject {
     }
 
     private func setupImportContact() {
-        importContactViewModel.primaryActivity = primaryActivity
-
         importContactViewModel
             .dismiss
             .map { _ -> Route in .dismissTapped }
@@ -76,6 +74,14 @@ final class ProfilePhoneContactsViewModel: ViewModelType, ObservableObject {
         errorIndicator
             .errors
             .asOptional()
+            .assign(to: &$error)
+
+        importContactViewModel
+            .$loading
+            .assign(to: &$isLoading)
+
+        importContactViewModel
+            .$error
             .assign(to: &$error)
     }
 }
