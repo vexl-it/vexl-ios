@@ -19,9 +19,9 @@ struct PhoneNumberTextFieldView: UIViewRepresentable {
     @Binding var isFocus: Bool
 
     func updateUIView(_ uiView: PhoneNumberTextField, context: Context) {
-        if isFocus {
+        if isFocus && !uiView.isFirstResponder {
             uiView.becomeFirstResponder()
-        } else {
+        } else if !isFocus && uiView.isFirstResponder {
             uiView.resignFirstResponder()
         }
     }
