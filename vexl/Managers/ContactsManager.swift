@@ -134,11 +134,14 @@ final class ContactsManager: ContactsManagerType {
                             newContact.isStored = isSelected
                             return newContact
                         }
+                        .sorted(by: { $0.name < $1.name })
                     }
                     .eraseToAnyPublisher()
             }
             .eraseToAnyPublisher()
     }
+
+    // TODO: - Update how facebook contacts work once the contacts can be fetched.
 
     func getActiveFacebookContacts(_ contacts: [String], withId id: String, token: String) -> AnyPublisher<[ContactInformation], Error> {
         contactsService
