@@ -21,6 +21,7 @@ platform :ios do
 	firebase_app_id_staging = "1:183980003892:ios:df1ccdc4ab9cc79ae53061"
 	firebase_app_id_appstore = "1:183980003892:ios:4a64a7c7a348dfbce53061"
 	firebase_tester_group_id = "Cleevio"
+	firebase_client_group_id = "SatoshiLabs"
 	firebase_cli_path = "/usr/local/bin/firebase"
 	slackUrl = "https://hooks.slack.com/services/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"
 
@@ -253,7 +254,7 @@ platform :ios do
 
 		firebase_app_distribution(
 			app: firebase_app_id_staging,
-			groups: firebase_tester_group_id,
+			groups: firebase_tester_group_id + ", " firebase_client_group_id,
 			release_notes: changelog,
 			firebase_cli_path: firebase_cli_path,
 			ipa_path: ipa_path
