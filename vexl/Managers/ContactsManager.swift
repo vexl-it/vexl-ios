@@ -15,7 +15,6 @@ protocol ContactsManagerType {
     var availableFacebookContacts: [ContactInformation] { get }
 
     func fetchPhoneContacts() -> AnyPublisher<[ContactInformation], Never>
-    func getActivePhoneContacts(_ contacts: [String]) -> AnyPublisher<[ContactInformation], Error>
     func getUserPhoneContacts(_ contacts: [String]) -> AnyPublisher<[ContactInformation], Error>
 
     func fetchFacebookContacts(id: String, accessToken: String) -> AnyPublisher<[ContactInformation], Error>
@@ -99,23 +98,6 @@ final class ContactsManager: ContactsManagerType {
                 owner.userFacebookContacts = contacts
             })
             .map(\.1)
-            .eraseToAnyPublisher()
-    }
-
-    func getActivePhoneContacts(_ contacts: [String]) -> AnyPublisher<[ContactInformation], Error> {
-        contactsService
-            .getActivePhoneContacts(contacts)
-            .map(\.newContacts)
-            .withUnretained(self)
-            .flatMap { owner, hashedAvailableContacts -> AnyPublisher<[ContactInformation], Error> in
-                owner.encryptionService.hashContacts(contacts: owner.userPhoneContacts)
-                    .map { hashedContacts in
-                        hashedContacts
-                            .filter { hashedAvailableContacts.contains($0.1) }
-                            .map { $0.0 }
-                    }
-                    .eraseToAnyPublisher()
-            }
             .eraseToAnyPublisher()
     }
 
