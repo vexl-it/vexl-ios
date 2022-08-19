@@ -18,6 +18,10 @@ struct OfferPayloadList: Codable {
     }
 }
 
+struct OfferIdList: Codable {
+    var offerIds: [String]
+}
+
 struct OfferPayload: Codable {
     let userPublicKey: String
     var groupUuid: String

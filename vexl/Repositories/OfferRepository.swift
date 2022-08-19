@@ -19,10 +19,11 @@ protocol OfferRepositoryType {
 
     func getOffer(with publicKey: String) -> AnyPublisher<ManagedOffer, Error>
     func getOffers(fromType type: OfferType?, fromSource source: OfferSource?) -> AnyPublisher<[ManagedOffer], Error>
+    func getKnownOffers() -> AnyPublisher<[ManagedOffer], Error>
 
     func sync(offers: [ManagedOffer], withPublicKeys: [String]) -> AnyPublisher<Void, Error>
 
-    func deleteOffers(with ids: [String]) -> AnyPublisher<Void, Error>
+    func deleteOffers(withIDs ids: [String]) -> AnyPublisher<Void, Error>
 }
 
 class OfferRepository: OfferRepositoryType {
@@ -192,6 +193,10 @@ class OfferRepository: OfferRepositoryType {
         )
     }
 
+    func getKnownOffers() -> AnyPublisher<[ManagedOffer], Error> {
+        persistence.load(type: ManagedOffer.self, context: persistence.viewContext, predicate: NSPredicate(format: "user == nil AND id != nil"))
+    }
+
     func sync(offers unsafeOffers: [ManagedOffer], withPublicKeys publicKeys: [String]) -> AnyPublisher<Void, Error> {
         persistence.update(context: persistence.newEditContext()) { context in
             let offers = unsafeOffers
@@ -208,7 +213,7 @@ class OfferRepository: OfferRepositoryType {
         }
     }
 
-    func deleteOffers(with ids: [String]) -> AnyPublisher<Void, Error> {
+    func deleteOffers(withIDs ids: [String]) -> AnyPublisher<Void, Error> {
         let context = persistence.viewContext
         return persistence
             .load(
