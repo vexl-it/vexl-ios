@@ -22,7 +22,7 @@ struct ImportContactsView: View {
                     font: Appearance.TextStyle.titleSmallBold.font.asFont,
                     style: .secondary,
                     isFullWidth: true,
-                    isEnabled: .constant(true),
+                    isEnabled: .constant(!viewModel.loading),
                     action: {
                         viewModel.action.send(.dismiss)
                     }
@@ -35,7 +35,7 @@ struct ImportContactsView: View {
                     font: Appearance.TextStyle.titleSmallBold.font.asFont,
                     style: .main,
                     isFullWidth: true,
-                    isEnabled: .constant(true),
+                    isEnabled: .constant(!viewModel.loading),
                     action: {
                         viewModel.action.send(.importContacts)
                     }

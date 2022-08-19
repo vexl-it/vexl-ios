@@ -117,19 +117,6 @@ final class GroupManager: GroupManagerType {
                     .asVoid()
                     .eraseToAnyPublisher()
             }
-            .flatMap { [offerRepository] () -> AnyPublisher<Void, Never> in
-                let groupOfferSet = group.offers?.filtered(using: NSPredicate(format: "user == nil")) as? Set<ManagedOffer> ?? .init()
-                let groupOfferIds = Array(groupOfferSet).compactMap(\.id)
-                guard !groupOfferIds.isEmpty else {
-                    return Just(())
-                        .eraseToAnyPublisher()
-                }
-                return offerRepository
-                    .deleteOffers(with: groupOfferIds)
-                    .nilOnError()
-                    .asVoid()
-                    .eraseToAnyPublisher()
-            }
 
         let deleteGroup = deleteOffers
             .flatMap { [groupService] () -> AnyPublisher<Void, Never> in

@@ -384,7 +384,7 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
             .withUnretained(self)
             .flatMap { owner, _ in
                 owner.offerRepository
-                    .deleteOffers(with: [id])
+                    .deleteOffers(withIDs: [id])
                     .materialize()
                     .compactMap(\.value)
             }
