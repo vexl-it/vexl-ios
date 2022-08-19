@@ -124,6 +124,7 @@ extension NotificationManager: UNUserNotificationCenterDelegate {
         defer { notificationHandled = nil }
         let userInfo = response.notification.request.content.userInfo
         let typeRawValue: String? = userInfo["type"] as? String
+        deeplinkManager.handleDeeplink(with: .openRequest)
         guard let type: NotificationType = typeRawValue.flatMap(NotificationType.init) else { return }
 
         log.debug("Notification received with following data \(userInfo)")
@@ -133,7 +134,7 @@ extension NotificationManager: UNUserNotificationCenterDelegate {
             handleNotification(of: type, with: userInfo)
         }
 
-        deeplinkManager.handleDeeplink(with: type.deeplinkType)
+//        deeplinkManager.handleDeeplink(with: type.deeplinkType)
         completionHandler()
     }
 
@@ -184,6 +185,7 @@ extension NotificationManager: UNUserNotificationCenterDelegate {
 
 extension NotificationManager: MessagingDelegate {
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
+        log.debug("Receiving firebase token \(fcmToken)")
         fcmTokenValue.send(fcmToken)
     }
 }

@@ -93,14 +93,5 @@ final class TabBarController: UITabBarController {
                 owner.selectedIndex = index
             }
             .store(in: cancelBag)
-
-        viewModel
-            .deeplinkIndex
-            .withUnretained(self)
-            .sink { owner, index in
-                owner.selectedIndex = index
-                owner.tabBarView.updateSelectedItem(to: index)
-            }
-            .store(in: cancelBag)
     }
 }
