@@ -46,8 +46,18 @@ final class OfferManager: OfferManagerType {
             .flatMap { [offerRepository] payloads -> AnyPublisher<[ManagedOffer], Error> in
                 offerRepository.createOrUpdateOffer(offerPayloads: payloads)
             }
-            .catch { _ in Just([]) }
-            .sink(receiveValue: { [weak self] _ in
+            .asVoid()
+            .flatMap { [offerRepository] in
+                offerRepository.getKnownOffers()
+            }
+            .flatMap { [offerService] knownOfferIDs in
+                offerService.getDeletedOffers(knownOffers: knownOfferIDs)
+            }
+            .flatMap { [offerRepository] offerIDsToDelete in
+                offerRepository.deleteOffers(withIDs: offerIDsToDelete)
+            }
+            .catch { _ in Just(()) }
+            .sink(receiveValue: { [weak self] in
                 self?.lastSyncDate = startDate
                 self?._didFinishSyncing.send(())
                 self?.cancellable = nil
