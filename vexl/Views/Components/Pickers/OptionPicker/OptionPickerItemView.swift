@@ -11,6 +11,7 @@ struct OptionPickerItemView<Content: View>: View {
 
     let isSelected: Bool
     var useBackground = true
+    var backgroundTint: Color?
     let content: () -> Content
     let action: () -> Void
 
@@ -22,6 +23,9 @@ struct OptionPickerItemView<Content: View>: View {
 
     var backgroundColor: Color {
         if useBackground {
+            if let color = backgroundTint {
+                return color
+            }
             return isSelected
                 ? Appearance.Colors.gray2
                 : Appearance.Colors.gray1

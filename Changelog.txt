@@ -26,6 +26,8 @@
 - VEX-697: App now receives contacts-ms notifications
 - VEX-691: App updates offer for new group users
 - VEX-693: App updates offer for new contact users
+- VEX-717: Preselect contacts on onboarding
+- VEX-632: Its possible to remove previously added contacts 
 - Registered new testing devices
 - VEX-781: Offers are now beeing deleted from market place
 

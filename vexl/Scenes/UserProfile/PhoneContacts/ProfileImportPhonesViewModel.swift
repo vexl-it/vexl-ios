@@ -21,19 +21,8 @@ final class ProfileImportPhonesViewModel: ImportContactsViewModel {
 
     override init() {
         super.init()
-        showActionButton = false
         showBackButton = true
         currentState = .loading
-        setupActionBindings()
-    }
-
-    private func setupActionBindings() {
-        $hasSelectedItem
-            .withUnretained(self)
-            .sink { owner, hasSelection in
-                owner.showActionButton = hasSelection
-            }
-            .store(in: cancelBag)
     }
 
     override func fetchContacts() throws {
@@ -55,15 +44,18 @@ final class ProfileImportPhonesViewModel: ImportContactsViewModel {
             .withUnretained(self)
             .flatMap { owner, hashedPhones in
                 owner.contactsManager
-                    .getActivePhoneContacts(hashedPhones.map(\.1))
+                    .getUserPhoneContacts(hashedPhones.map(\.1))
                     .track(activity: owner.primaryActivity)
                     .materialize()
                     .compactMap(\.value)
             }
             .withUnretained(self)
-            .sink { owner, availableContacts in
-                owner.currentState = availableContacts.isEmpty ? .empty : .content
-                owner.items = availableContacts
+            .sink { owner, contacts in
+                owner.currentState = contacts.isEmpty ? .empty : .content
+                owner.items = contacts
+                for contact in contacts {
+                    owner.select(contact.isSelected, item: contact)
+                }
             }
             .store(in: cancelBag)
     }

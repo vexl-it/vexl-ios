@@ -25,7 +25,7 @@ final class ChatCoordinator: BaseCoordinator<RouterResult<Void>> {
 
     override func start() -> CoordinatingResult<RouterResult<Void>> {
         let viewModel = ChatViewModel(chat: chat)
-        let viewController = BaseViewController(rootView: ChatView(viewModel: viewModel))
+        let viewController = ToggleKeyboardHostingController(rootView: ChatView(viewModel: viewModel))
 
         router.present(viewController, animated: animated)
 

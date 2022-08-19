@@ -70,6 +70,7 @@ struct UserProfileView: View {
             .resizable()
             .aspectRatio(contentMode: .fill)
             .frame(size: Appearance.GridGuide.largeIconSize)
+            .clipped()
             .cornerRadius(Appearance.GridGuide.baseHeight * 0.5, corners: .allCorners)
     }
 

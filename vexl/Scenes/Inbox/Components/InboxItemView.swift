@@ -77,7 +77,7 @@ extension InboxItemView {
             guard let message = lastMessage else { return "" }
             switch message.type {
             case .message:
-                return "\(message.isContact ? "\(L.chatMessageMe()) " : "")\(message.text ?? "")"
+                return "\(message.isContact ? "" : "\(L.chatMessageMe()) ")\(message.text ?? "")"
             case .revealRequest:
                 return message.isContact ? L.chatRequestIdentityReceive() : L.chatRequestIdentitySent()
             case .revealApproval:
