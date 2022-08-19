@@ -22,23 +22,6 @@ enum NotificationType: String {
     case deleteChat = "DELETE_CHAT"
     case groupNewMember = "GROUP_NEW_MEMBER"
     case newAppUser = "NEW_APP_USER"
-
-    var deeplinkType: DeeplinkType {
-        switch self {
-        case .message, .requestReveal, .approveReveal, .disapproveReveal, .approveMessaging:
-            return .openChat
-        case .requestMessaging:
-            return .openRequest
-        case .disaproveMessaging:
-            return .openInbox // what should happen?
-        case .deleteChat:
-            return .openInbox
-        case .groupNewMember:
-            return .openInbox // which screen should open?
-        case .newAppUser:
-            return .openInbox // which screen should open?
-        }
-    }
 }
 
 protocol NotificationManagerType {
@@ -57,6 +40,7 @@ final class NotificationManager: NSObject, NotificationManagerType {
 
     private var fcmTokenValue: CurrentValueSubject<String?, Never> = .init(nil)
     private var authorisationStatus: CurrentValueSubject<UNAuthorizationStatus?, Never> = .init(nil)
+    // swiftlint:disable discouraged_optional_boolean
     private var notificationHandled: Bool?
 
     var isRegisteredForNotifications: AnyPublisher<Bool, Never> {
@@ -124,7 +108,7 @@ extension NotificationManager: UNUserNotificationCenterDelegate {
         defer { notificationHandled = nil }
         let userInfo = response.notification.request.content.userInfo
         let typeRawValue: String? = userInfo["type"] as? String
-        deeplinkManager.handleDeeplink(with: .openRequest)
+
         guard let type: NotificationType = typeRawValue.flatMap(NotificationType.init) else { return }
 
         log.debug("Notification received with following data \(userInfo)")
@@ -134,7 +118,8 @@ extension NotificationManager: UNUserNotificationCenterDelegate {
             handleNotification(of: type, with: userInfo)
         }
 
-//        deeplinkManager.handleDeeplink(with: type.deeplinkType)
+        handleDeeplink(of: type, with: userInfo)
+
         completionHandler()
     }
 
@@ -181,11 +166,24 @@ extension NotificationManager: UNUserNotificationCenterDelegate {
             break
         }
     }
+
+    private func handleDeeplink(of type: NotificationType?, with userInfo: [AnyHashable: Any]) {
+        switch type {
+        case .message, .requestReveal, .approveReveal, .disapproveReveal, .approveMessaging:
+            if let inboxPK = userInfo["inbox"] as? String, let senderPK = userInfo["sender"] as? String {
+                deeplinkManager.handleDeeplink(with: .openChat(inboxPK: inboxPK, senderPK: senderPK))
+            }
+        case .requestMessaging, .disaproveMessaging:
+            deeplinkManager.handleDeeplink(with: .openRequest)
+        default:
+            break
+        }
+    }
 }
 
 extension NotificationManager: MessagingDelegate {
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
-        log.debug("Receiving firebase token \(fcmToken)")
+        log.debug("Receiving firebase token: \(fcmToken ?? "nil")")
         fcmTokenValue.send(fcmToken)
     }
 }

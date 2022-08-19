@@ -66,17 +66,19 @@ final class AppCoordinator: BaseCoordinator<Void> {
 
     private func setupDeeplink() {
         deeplinkManager
-            .openDeeplink // filter if it's logged in?
-            .flatMapLatest(with: self) { owner, type -> CoordinatingResult<RouterResult<Void>> in
-                switch type {
-                case .openChat:
-                    let modalRouter = ModalRouter(parentViewController: owner.window.visibleViewController!, presentationStyle: .fullScreen)
-                    return owner.showChatRequests(router: modalRouter)
-                case .openRequest:
-                    let modalRouter = ModalRouter(parentViewController: owner.window.visibleViewController!, presentationStyle: .fullScreen)
-                    return owner.showChatRequests(router: modalRouter)
-                case .openInbox:
+            .openDeeplink
+            .flatMapLatest(with: self) { owner, screen -> CoordinatingResult<RouterResult<Void>> in
+                guard let visibleViewController = owner.window.visibleViewController else {
                     return Empty(completeImmediately: false).eraseToAnyPublisher()
+                }
+
+                let modalRouter = ModalRouter(parentViewController: visibleViewController, presentationStyle: .fullScreen)
+
+                switch screen {
+                case .chat(let managedChat):
+                    return owner.showChat(chat: managedChat, router: modalRouter)
+                case .request:
+                    return owner.showChatRequests(router: modalRouter)
                 }
             }
             .sink()
@@ -85,18 +87,6 @@ final class AppCoordinator: BaseCoordinator<Void> {
 }
 
 extension AppCoordinator {
-    private func showChatRequests(router: Router) -> CoordinatingResult<RouterResult<Void>> {
-        coordinate(to: ChatRequestCoordinator(router: router, animated: true))
-            .flatMap { result -> CoordinatingResult<RouterResult<Void>> in
-                guard result != .dismissedByRouter else {
-                    return Just(result).eraseToAnyPublisher()
-                }
-                return router.dismiss(animated: true, returning: result)
-            }
-            .prefix(1)
-            .eraseToAnyPublisher()
-    }
-
     private func showSplashCoordinator() -> CoordinatingResult<Void> {
         coordinate(to: SplashScreenCoordinator(window: window))
     }
@@ -141,22 +131,30 @@ extension AppCoordinator {
     }
 }
 
-extension UIWindow {
-    var visibleViewController: UIViewController? {
-        UIWindow.getVisibleViewControllerFrom(self.rootViewController)
+// MARK: - Deeplink
+
+extension AppCoordinator {
+    private func showChatRequests(router: Router) -> CoordinatingResult<RouterResult<Void>> {
+        coordinate(to: ChatRequestCoordinator(router: router, animated: true))
+            .flatMap { result -> CoordinatingResult<RouterResult<Void>> in
+                guard result != .dismissedByRouter else {
+                    return Just(result).eraseToAnyPublisher()
+                }
+                return router.dismiss(animated: true, returning: result)
+            }
+            .prefix(1)
+            .eraseToAnyPublisher()
     }
 
-    static func getVisibleViewControllerFrom(_ vc: UIViewController?) -> UIViewController? {
-        if let nc = vc as? UINavigationController {
-            return UIWindow.getVisibleViewControllerFrom(nc.visibleViewController)
-        } else if let tc = vc as? UITabBarController {
-            return UIWindow.getVisibleViewControllerFrom(tc.selectedViewController)
-        } else {
-            if let pvc = vc?.presentedViewController {
-                return UIWindow.getVisibleViewControllerFrom(pvc)
-            } else {
-                return vc
+    private func showChat(chat: ManagedChat, router: Router) -> CoordinatingResult<RouterResult<Void>> {
+        coordinate(to: ChatCoordinator(chat: chat, router: router, animated: true))
+            .flatMap { result -> CoordinatingResult<RouterResult<Void>> in
+                guard result != .dismissedByRouter else {
+                    return Just(result).eraseToAnyPublisher()
+                }
+                return router.dismiss(animated: true, returning: result)
             }
-        }
+            .prefix(1)
+            .eraseToAnyPublisher()
     }
 }

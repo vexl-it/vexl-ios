@@ -7,32 +7,44 @@
 
 import Foundation
 import Combine
+import Cleevio
 
-enum DeeplinkType {
-    case openChat
-    case openInbox
+enum DeeplinkScreen {
+    case chat(ManagedChat)
+    case request
+}
+
+enum DeeplinkRequest {
+    case openChat(inboxPK: String, senderPK: String)
     case openRequest
-
-    var tab: Tab {
-        switch self {
-        default:
-            return .chat
-        }
-    }
 }
 
 protocol DeeplinkManagerType {
-    var openDeeplink: AnyPublisher<DeeplinkType, Never> { get }
+    var openDeeplink: AnyPublisher<DeeplinkScreen, Never> { get }
 
-    func handleDeeplink(with type: DeeplinkType)
+    func handleDeeplink(with request: DeeplinkRequest)
 }
 
 final class DeeplinkManager: DeeplinkManagerType {
-    var openDeeplink: AnyPublisher<DeeplinkType, Never> { openDeeplinkSubject.eraseToAnyPublisher() }
+    var openDeeplink: AnyPublisher<DeeplinkScreen, Never> { openDeeplinkSubject.eraseToAnyPublisher() }
 
-    private let openDeeplinkSubject = PassthroughSubject<DeeplinkType, Never>()
+    @Inject private var chatRepository: ChatRepositoryType
 
-    func handleDeeplink(with type: DeeplinkType) {
-        openDeeplinkSubject.send(type)
+    private let openDeeplinkSubject = PassthroughSubject<DeeplinkScreen, Never>()
+    private let cancelBag = CancelBag()
+
+    func handleDeeplink(with request: DeeplinkRequest) {
+        switch request {
+        case let .openChat(inbox, sender):
+            chatRepository
+                .getChat(inboxPK: inbox, senderPK: sender)
+                .replaceError(with: nil)
+                .filterNil()
+                .map { DeeplinkScreen.chat($0) }
+                .subscribe(openDeeplinkSubject)
+                .store(in: cancelBag)
+        case .openRequest:
+            openDeeplinkSubject.send(.request)
+        }
     }
 }

@@ -133,7 +133,9 @@ class InboxRepository: InboxRepositoryType {
     }
 
     private func getLastIdentityRequestMessage(chat: ManagedChat) -> ManagedMessage? {
-        let messages = chat.messages?.filtered(using: NSPredicate(format: "typeRawType == '\(MessageType.revealRequest.rawValue)'")) as? Set<ManagedMessage>
+        let messages = chat.messages?.filtered(
+            using: NSPredicate(format: "typeRawType == '\(MessageType.revealRequest.rawValue)'")
+        ) as? Set<ManagedMessage>
         return messages?.sorted(by: { $0.time > $1.time }).first
     }
 
