@@ -11,7 +11,9 @@ import Combine
 import Network
 import Cleevio
 
-protocol SyncQueueManagerType {}
+protocol SyncQueueManagerType {
+    func add<T: NSManagedObject>(type: SyncQueueItemType, object: T, publicKeys: [String]?) -> AnyPublisher<Void, Error>
+}
 
 enum SyncQueueItemStatus {
     case dispatched
@@ -36,6 +38,24 @@ final class SyncQueueManager: SyncQueueManagerType {
 
     init() {
         setupMonitoring()
+    }
+
+    func add<T: NSManagedObject>(type: SyncQueueItemType, object: T, publicKeys: [String]?) -> AnyPublisher<Void, Error> {
+        persistence.insert(context: $queue.context) { context -> ManagedSyncItem in
+            let item = ManagedSyncItem(context: context)
+            item.type = type
+            switch object {
+            case let offer as ManagedOffer:
+                item.offer = offer
+            case let inbox as ManagedInbox:
+                item.inbox = inbox
+            default:
+                item.type = nil
+            }
+            return item
+        }
+        .asVoid()
+        .eraseToAnyPublisher()
     }
 
     private func setupMonitoring() {
@@ -105,9 +125,9 @@ final class SyncQueueManager: SyncQueueManagerType {
     private func dispatch(item: ManagedSyncItem) -> AnyPublisher<Void, Error> {
         if let offer = item.offer {
             switch item.type {
-            case .insert:
+            case .offerCreate:
                 return createOffer(offer: offer, item: item)
-            case .update:
+            case .offerUpdate:
                 return updateOffer(offer: offer, item: item)
             case .offerEncryptionUpdate:
                 return encryptOfferForPublicKeys(offer: offer, item: item)
@@ -123,20 +143,25 @@ final class SyncQueueManager: SyncQueueManagerType {
     }
 
     private func createOffer(offer: ManagedOffer, item: ManagedSyncItem) -> AnyPublisher<Void, Error> {
-        guard let userPublicKey = userRepository.user?.profile?.keyPair?.publicKey
-        else {
+        guard let receiverPublicKeys = item.publicKeys, let expiration = offer.expirationDate else {
             return Fail(error: PersistenceError.insufficientData).eraseToAnyPublisher()
         }
 
         let context = $queue.context
 
-        let createOffer = offerService
-            .createOffer(offer: offer, userPublicKey: userPublicKey)
+        let encryptedOffer = offerService
+            .encryptOffer(offer: offer, publicKeys: receiverPublicKeys)
+
+        let createOffer = encryptedOffer
+            .flatMap { [offerService] payloads in
+                offerService
+                    .createOffer(expiration: expiration, offerPayloads: payloads)
+            }
 
         let updatePersistence = createOffer
             .flatMapLatest(with: self) { owner, offerPayload -> AnyPublisher<Void, Error> in
                 owner.persistence
-                    .update(context: owner.$queue.context) { _ in
+                    .update(context: context) { _ in
                         if let id = offerPayload.offerId {
                             offer.id = id
                         }
@@ -155,15 +180,17 @@ final class SyncQueueManager: SyncQueueManagerType {
     }
 
     private func updateOffer(offer: ManagedOffer, item: ManagedSyncItem) -> AnyPublisher<Void, Error> {
-        guard let userPublicKey = userRepository.user?.profile?.keyPair?.publicKey else {
+        guard let id = offer.id, let receiverPublicKeys = item.publicKeys else {
             return Fail(error: PersistenceError.insufficientData).eraseToAnyPublisher()
         }
 
         let context = $queue.context
 
-        return offerService
-            .updateOffers(offer: offer, userPublicKey: userPublicKey)
-            .flatMapLatest { [persistence] _ -> AnyPublisher<Void, Error> in
+        return offerService.encryptOffer(offer: offer, publicKeys: receiverPublicKeys)
+            .flatMap { [offerService] payloads in
+                offerService.updateOffers(offerID: id, offerPayloads: payloads)
+            }
+            .flatMap { [persistence] _ -> AnyPublisher<Void, Error> in
                 persistence.delete(context: context, object: item)
             }
             .eraseToAnyPublisher()
