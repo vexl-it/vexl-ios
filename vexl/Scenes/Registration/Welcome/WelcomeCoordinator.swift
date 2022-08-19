@@ -44,11 +44,6 @@ final class WelcomeCoordinator: BaseCoordinator<RouterResult<Void>> {
             .filter { $0 == .continueTapped }
             .withUnretained(self)
             .flatMap { owner, _ -> CoordinatingResult<RouterResult<Void>> in
-                let router = ModalRouter(parentViewController: viewController, presentationStyle: .overFullScreen)
-                return owner.showFAQ(router: router)
-            }
-            .withUnretained(self)
-            .flatMap { owner, _ -> CoordinatingResult<RouterResult<Void>> in
                 owner.showRegisterPhone(router: owner.router)
             }
             .filter { if case .finished = $0 { return true } else { return false } }
@@ -64,20 +59,6 @@ final class WelcomeCoordinator: BaseCoordinator<RouterResult<Void>> {
 private extension WelcomeCoordinator {
     func showTermsAndConditions(router: Router) -> CoordinatingResult<RouterResult<Void>> {
         coordinate(to: TermsAndConditionsCoordinator(router: router, animated: true))
-            .flatMap { result -> CoordinatingResult<RouterResult<Void>> in
-                switch result {
-                case .dismiss:
-                    return router.dismiss(animated: true, returning: result)
-                case .finished, .dismissedByRouter:
-                    return Just(result).eraseToAnyPublisher()
-                }
-            }
-            .prefix(1)
-            .eraseToAnyPublisher()
-    }
-
-    func showFAQ(router: Router) -> CoordinatingResult<RouterResult<Void>> {
-        coordinate(to: FAQCoordinator(router: router, animated: true))
             .flatMap { result -> CoordinatingResult<RouterResult<Void>> in
                 switch result {
                 case .dismiss:
