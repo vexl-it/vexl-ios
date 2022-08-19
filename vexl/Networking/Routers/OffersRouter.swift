@@ -14,6 +14,7 @@ enum OffersRouter: ApiRouter {
     case getUserOffers(offerIds: [String])
     case getNewOffers(pageLimit: Int?, lastSyncDate: Date)
     case createNewPrivateParts(offerID: String, offerPayloads: [OfferPayload])
+    case getDeletedOffers(knownOfferIds: [String])
 
     case deleteOffers(offerIds: [String])
     case deleteOfferPrivateParts(offerIds: [String], publicKeys: [String])
@@ -23,7 +24,7 @@ enum OffersRouter: ApiRouter {
         switch self {
         case .getOffers, .getUserOffers, .getNewOffers:
             return .get
-        case .createOffer, .createNewPrivateParts:
+        case .createOffer, .createNewPrivateParts, .getDeletedOffers:
             return .post
         case .deleteOffers, .deleteOfferPrivateParts:
             return .delete
@@ -46,6 +47,8 @@ enum OffersRouter: ApiRouter {
             return "offers"
         case .createNewPrivateParts, .deleteOfferPrivateParts:
             return "offers/private-part"
+        case .getDeletedOffers:
+            return "offers/not-exist"
         }
     }
 
@@ -85,6 +88,8 @@ enum OffersRouter: ApiRouter {
                 "offerIds": offerIds,
                 "publicKeys": publicKeys
             ]
+        case let .getDeletedOffers(knownOfferIds):
+            return ["offerIds": knownOfferIds]
         }
     }
 

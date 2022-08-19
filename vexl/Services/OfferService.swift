@@ -15,6 +15,7 @@ protocol OfferServiceType {
     func getUserOffers(offerIds: [String]) -> AnyPublisher<[OfferPayload], Error>
     func getMyOffers(pageLimit: Int?) -> AnyPublisher<Paged<OfferPayload>, Error>
     func getNewOffers(pageLimit: Int?, lastSyncDate: Date) -> AnyPublisher<Paged<OfferPayload>, Error>
+    func getDeletedOffers(knownOffers: [ManagedOffer]) -> AnyPublisher<[String], Error>
 
     // MARK: Offer Creation
 
@@ -53,6 +54,18 @@ final class OfferService: BaseService, OfferServiceType {
 
     func getNewOffers(pageLimit: Int?, lastSyncDate: Date) -> AnyPublisher<Paged<OfferPayload>, Error> {
         request(type: Paged<OfferPayload>.self, endpoint: OffersRouter.getNewOffers(pageLimit: pageLimit, lastSyncDate: lastSyncDate))
+    }
+
+    func getDeletedOffers(knownOffers: [ManagedOffer]) -> AnyPublisher<[String], Error> {
+        let offerIds = knownOffers.compactMap(\.id)
+        guard !offerIds.isEmpty else {
+            return Just([])
+                .setFailureType(to: Error.self)
+                .eraseToAnyPublisher()
+        }
+        return request(type: OfferIdList.self, endpoint: OffersRouter.getDeletedOffers(knownOfferIds: offerIds))
+            .map(\.offerIds)
+            .eraseToAnyPublisher()
     }
 
     // MARK: - Offer Creation
