@@ -51,19 +51,16 @@ struct Constants {
         case facebookToken
         case facebookHash
         case facebookSignature
-        case userSignature
-        case privateKey(publicKey: String)
+        case localEncryptionKey
 
         var rawValue: String {
             switch self {
-            case .privateKey(let publicKey):
-                return "publickey-\(publicKey)"
+            case .localEncryptionKey:
+                return "aesKey"
             case .facebookID:
                 return "facebookID"
             case .facebookToken:
                 return "facebookToken"
-            case .userSignature:
-                return "userSignature"
             case .facebookHash:
                 return "facebookHash"
             case .facebookSignature:
