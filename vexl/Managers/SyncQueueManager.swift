@@ -162,8 +162,11 @@ final class SyncQueueManager: SyncQueueManagerType {
             .flatMapLatest(with: self) { owner, offerPayload -> AnyPublisher<Void, Error> in
                 owner.persistence
                     .update(context: context) { _ in
-                        if let id = offerPayload.offerId {
-                            offer.id = id
+                        if let offerID = offerPayload.offerId  {
+                            offer.offerID = offerID
+                        }
+                        if let adminID = offerPayload.adminId  {
+                            offer.adminID = adminID
                         }
                     }
                     .eraseToAnyPublisher()
@@ -180,7 +183,7 @@ final class SyncQueueManager: SyncQueueManagerType {
     }
 
     private func updateOffer(offer: ManagedOffer, item: ManagedSyncItem) -> AnyPublisher<Void, Error> {
-        guard let id = offer.id, let receiverPublicKeys = item.publicKeys else {
+        guard let adminID = offer.adminID, let receiverPublicKeys = item.publicKeys else {
             return Fail(error: PersistenceError.insufficientData).eraseToAnyPublisher()
         }
 
@@ -188,7 +191,7 @@ final class SyncQueueManager: SyncQueueManagerType {
 
         return offerService.encryptOffer(offer: offer, publicKeys: receiverPublicKeys)
             .flatMap { [offerService] payloads in
-                offerService.updateOffers(offerID: id, offerPayloads: payloads)
+                offerService.updateOffers(adminID: adminID, offerPayloads: payloads)
             }
             .flatMap { [persistence] _ -> AnyPublisher<Void, Error> in
                 persistence.delete(context: context, object: item)

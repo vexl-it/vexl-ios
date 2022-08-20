@@ -23,7 +23,7 @@ protocol OfferRepositoryType {
 
     func sync(offers: [ManagedOffer], withPublicKeys: [String]) -> AnyPublisher<Void, Error>
 
-    func deleteOffers(withIDs ids: [String]) -> AnyPublisher<Void, Error>
+    func deleteOffers(offerIDs ids: [String]) -> AnyPublisher<Void, Error>
 }
 
 class OfferRepository: OfferRepositoryType {
@@ -188,7 +188,7 @@ class OfferRepository: OfferRepositoryType {
     }
 
     func getKnownOffers() -> AnyPublisher<[ManagedOffer], Error> {
-        persistence.load(type: ManagedOffer.self, context: persistence.viewContext, predicate: NSPredicate(format: "user == nil AND id != nil"))
+        persistence.load(type: ManagedOffer.self, context: persistence.viewContext, predicate: NSPredicate(format: "user == nil AND offerID != nil"))
     }
 
     func sync(offers unsafeOffers: [ManagedOffer], withPublicKeys publicKeys: [String]) -> AnyPublisher<Void, Error> {
@@ -207,13 +207,13 @@ class OfferRepository: OfferRepositoryType {
         }
     }
 
-    func deleteOffers(withIDs ids: [String]) -> AnyPublisher<Void, Error> {
+    func deleteOffers(offerIDs ids: [String]) -> AnyPublisher<Void, Error> {
         let context = persistence.viewContext
         return persistence
             .load(
                 type: ManagedOffer.self,
                 context: context,
-                predicate: NSPredicate(format: "%@ contains[cd] id", NSArray(array: ids))
+                predicate: NSPredicate(format: "%@ contains[cd] offerID", NSArray(array: ids))
             )
             .flatMap { [persistence] offers -> AnyPublisher<Void, Error> in
                 persistence.delete(context: context, editor: { _ in offers })

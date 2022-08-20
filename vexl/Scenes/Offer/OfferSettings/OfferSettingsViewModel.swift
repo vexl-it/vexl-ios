@@ -423,7 +423,7 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
 
         let beRequest = encryption
             .flatMap { [offerService, expiration, primaryActivity] isCreating, payloads, offer -> AnyPublisher<(OfferPayload, ManagedOffer), Never> in
-                guard !isCreating, let id = offer.id else {
+                guard !isCreating, let adminID = offer.adminID else {
                     return offerService
                         .createOffer(
                             expiration: Date(timeIntervalSince1970: expiration),
@@ -436,7 +436,7 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
                         .eraseToAnyPublisher()
                 }
                 return offerService
-                    .updateOffers(offerID: id, offerPayloads: payloads)
+                    .updateOffers(adminID: adminID, offerPayloads: payloads)
                     .track(activity: primaryActivity)
                     .materialize()
                     .compactMap(\.value)
@@ -446,13 +446,15 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
 
         let updateOfferId = beRequest
             .flatMap { [offerRepository, primaryActivity] responsePayload, offer -> AnyPublisher<Void, Never> in
-                guard let id = responsePayload.offerId, offer.id != id else {
+                guard let offerID = responsePayload.offerId, offer.offerID != offerID,
+                      let adminID = responsePayload.adminId, offer.adminID != adminID else {
                     return Just(())
                         .eraseToAnyPublisher()
                 }
                 return offerRepository
                     .update(offer: offer, locations: nil) { offer in
-                        offer.id = id
+                        offer.offerID = offerID
+                        offer.adminID = adminID
                     }
                     .asVoid()
                     .track(activity: primaryActivity)
@@ -468,7 +470,7 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
     }
 
     private func setupDeleteBinding() {
-        guard let id = offer?.id else {
+        guard let adminID = offer?.adminID, let offerID = offer?.offerID else {
             return
         }
         action
@@ -476,7 +478,7 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
             .withUnretained(self)
             .flatMap { owner, _ in
                 owner.offerService
-                    .deleteOffers(offerIds: [id])
+                    .deleteOffers(adminIDs: [adminID])
                     .track(activity: owner.primaryActivity)
                     .materialize()
                     .compactMap(\.value)
@@ -484,7 +486,7 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
             .withUnretained(self)
             .flatMap { owner, _ in
                 owner.offerRepository
-                    .deleteOffers(withIDs: [id])
+                    .deleteOffers(offerIDs: [offerID])
                     .materialize()
                     .compactMap(\.value)
             }

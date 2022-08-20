@@ -24,9 +24,9 @@ protocol OfferServiceType {
 
     // MARK: Offer Updating
 
-    func updateOffers(offerID: String, offerPayloads: [OfferPayload]) -> AnyPublisher<OfferPayload, Error>
-    func deleteOffers(offerIds: [String]) -> AnyPublisher<Void, Error>
-    func deleteOfferPrivateParts(offerIds: [String], publicKeys: [String]) -> AnyPublisher<Void, Error>
+    func updateOffers(adminID: String, offerPayloads: [OfferPayload]) -> AnyPublisher<OfferPayload, Error>
+    func deleteOffers(adminIDs: [String]) -> AnyPublisher<Void, Error>
+    func deleteOfferPrivateParts(adminIDs: [String], publicKeys: [String]) -> AnyPublisher<Void, Error>
 
     // MARK: Helper functions
 
@@ -57,7 +57,7 @@ final class OfferService: BaseService, OfferServiceType {
     }
 
     func getDeletedOffers(knownOffers: [ManagedOffer]) -> AnyPublisher<[String], Error> {
-        let offerIds = knownOffers.compactMap(\.id)
+        let offerIds = knownOffers.compactMap(\.offerID)
         guard !offerIds.isEmpty else {
             return Just([])
                 .setFailureType(to: Error.self)
@@ -82,43 +82,43 @@ final class OfferService: BaseService, OfferServiceType {
     }
 
     func createNewPrivateParts(for offer: ManagedOffer, userPublicKey: String, receiverPublicKeys: [String]) -> AnyPublisher<Void, Error> {
-        guard let offerID = offer.id else {
+        guard let adminID = offer.adminID else {
             return Fail(error: PersistenceError.insufficientData)
                 .eraseToAnyPublisher()
         }
         return encryptOffer(offer: offer, publicKeys: receiverPublicKeys)
             .withUnretained(self)
             .flatMap { owner, payloads in
-                owner.request(endpoint: OffersRouter.createNewPrivateParts(offerID: offerID, offerPayloads: payloads))
+                owner.request(endpoint: OffersRouter.createNewPrivateParts(adminID: adminID, offerPayloads: payloads))
             }
             .eraseToAnyPublisher()
     }
 
     // MARK: - Offer updating
 
-    func updateOffers(offerID: String, offerPayloads: [OfferPayload]) -> AnyPublisher<OfferPayload, Error> {
+    func updateOffers(adminID: String, offerPayloads: [OfferPayload]) -> AnyPublisher<OfferPayload, Error> {
         request(
             type: OfferPayload.self,
             endpoint: OffersRouter.updateOffer(
                 offer: offerPayloads,
-                offerId: offerID
+                adminID: adminID
             )
         )
         .eraseToAnyPublisher()
     }
 
-    func deleteOffers(offerIds: [String]) -> AnyPublisher<Void, Error> {
-        if !offerIds.isEmpty {
-            return request(endpoint: OffersRouter.deleteOffers(offerIds: offerIds))
+    func deleteOffers(adminIDs: [String]) -> AnyPublisher<Void, Error> {
+        if !adminIDs.isEmpty {
+            return request(endpoint: OffersRouter.deleteOffers(adminIDs: adminIDs))
         } else {
             return Just(()).setFailureType(to: Error.self)
             .eraseToAnyPublisher()
         }
     }
 
-    func deleteOfferPrivateParts(offerIds: [String], publicKeys: [String]) -> AnyPublisher<Void, Error> {
-        if !offerIds.isEmpty {
-            return request(endpoint: OffersRouter.deleteOfferPrivateParts(offerIds: offerIds, publicKeys: publicKeys))
+    func deleteOfferPrivateParts(adminIDs: [String], publicKeys: [String]) -> AnyPublisher<Void, Error> {
+        if !adminIDs.isEmpty {
+            return request(endpoint: OffersRouter.deleteOfferPrivateParts(adminIDs: adminIDs, publicKeys: publicKeys))
         } else {
             return Just(()).setFailureType(to: Error.self)
             .eraseToAnyPublisher()
