@@ -328,7 +328,7 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
                     offer.maxAmount = Double(owner.currentAmountRange.upperBound)
                     offer.offerDescription = owner.description
                     offer.feeState = owner.selectedFeeOption
-                    offer.feeAmount = owner.feeAmount
+                    offer.feeAmount = round(owner.feeAmount)
                     offer.locationState = owner.selectedTradeStyleOption
                     offer.paymentMethods = owner.selectedPaymentMethodOptions
                     offer.btcNetworks = owner.selectedBTCOption
