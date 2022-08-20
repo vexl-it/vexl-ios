@@ -115,13 +115,14 @@ struct OfferInformationDetailView: View {
     private var detail: some View {
         HStack {
             DetailItem(label: data.offerType == .buy ? L.marketplaceDetailBuy() : L.marketplaceDetailSell(), content: {
-                HStack(alignment: .bottom, spacing: Appearance.GridGuide.tinyPadding) {
+                HStack(alignment: .center, spacing: Appearance.GridGuide.tinyPadding) {
                     Text(L.marketplaceDetailUpTo())
                         .textStyle(.descriptionSemiBold)
                         .foregroundColor(Appearance.Colors.gray3)
-                        .padding(.bottom, Appearance.GridGuide.tinyPadding)
 
                     Text(data.amount)
+                        .minimumScaleFactor(0.5)
+                        .multilineTextAlignment(.center)
                         .textStyle(.titleSemiBold)
                         .foregroundColor(Appearance.Colors.gray3)
                 }
