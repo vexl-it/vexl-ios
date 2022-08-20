@@ -446,7 +446,7 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
 
         let updateOfferId = beRequest
             .flatMap { [offerRepository, primaryActivity] responsePayload, offer -> AnyPublisher<Void, Never> in
-                guard let id = responsePayload.offerId else {
+                guard let id = responsePayload.offerId, offer.id != id else {
                     return Just(())
                         .eraseToAnyPublisher()
                 }
