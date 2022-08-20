@@ -31,7 +31,7 @@ struct ImportContactItemView: View {
                     .foregroundColor(Appearance.Colors.primaryText)
 
                 if !item.phone.isEmpty {
-                    Text(item.phone)
+                    Text(item.formattedPhone)
                         .textStyle(.descriptionBold)
                         .foregroundColor(Appearance.Colors.gray3)
                 }
