@@ -14,6 +14,7 @@ import FirebaseMessaging
 #if DEBUG || DEVEL
 import AlamofireNetworkActivityLogger
 #endif
+import KeychainAccess
 
 let log = SwiftyBeaver.self
 
@@ -31,6 +32,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         NetworkActivityLogger.shared.level = .debug
         whereIsMySQLite()
         #endif
+
+        if Keychain.standard[.localEncryptionKey] == nil {
+            let newKey = (0..<24)
+                .compactMap { _ in Constants.alphabet.randomElement() }
+                .map(String.init)
+                .joined()
+            Keychain.standard[.localEncryptionKey] = newKey
+        }
 
         // Firebase messaging
         FirebaseApp.configure()
