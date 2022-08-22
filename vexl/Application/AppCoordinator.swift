@@ -15,8 +15,10 @@ final class AppCoordinator: BaseCoordinator<Void> {
     @Inject var initialScreenManager: InitialScreenManager
     @Inject var syncQueue: SyncQueueManagerType
     @Inject var notificationManager: NotificationManagerType
+    @Inject var deeplinkManager: DeeplinkManagerType
 
     private let window: UIWindow
+    private var deeplinkCancellable: AnyCancellable?
 
     init(window: UIWindow) {
         self.window = window
@@ -24,6 +26,8 @@ final class AppCoordinator: BaseCoordinator<Void> {
 
     override func start() -> CoordinatingResult<Void> {
         coordinateToRoot()
+        setupDeeplink()
+
         return Empty()
             .eraseToAnyPublisher()
     }
@@ -56,8 +60,36 @@ final class AppCoordinator: BaseCoordinator<Void> {
 
     private func resetFlow() {
         cancellable?.cancel()
+        deeplinkCancellable?.cancel()
         window.rootViewController = nil
         coordinateToRoot()
+        setupDeeplink()
+    }
+
+    private func setupDeeplink() {
+        deeplinkCancellable = deeplinkManager
+            .openDeeplink
+            .withUnretained(self)
+            .filter { owner, _ in
+                owner.initialScreenManager.getCurrentScreenState() == .home && owner.deeplinkManager.canOpenDeepLink
+            }
+            .flatMapLatest { owner, screen -> CoordinatingResult<RouterResult<Void>> in
+                guard let visibleViewController = owner.window.visibleViewController else {
+                    return Empty(completeImmediately: false).eraseToAnyPublisher()
+                }
+
+                let modalRouter = ModalRouter(parentViewController: visibleViewController, presentationStyle: .fullScreen)
+
+                switch screen {
+                case .chat(let managedChat):
+                    return owner.showChat(chat: managedChat, router: modalRouter)
+                case .request:
+                    return owner.showChatRequests(router: modalRouter)
+                }
+            }
+            .sink(receiveValue: { [deeplinkManager] _ in
+                deeplinkManager.cleanState()
+            })
     }
 }
 
@@ -101,6 +133,34 @@ extension AppCoordinator {
 
     private func showHomeCoordinator() -> CoordinatingResult<Void> {
         coordinate(to: TabBarCoordinator(window: window))
+            .prefix(1)
+            .eraseToAnyPublisher()
+    }
+}
+
+// MARK: - Deeplink
+
+extension AppCoordinator {
+    private func showChatRequests(router: Router) -> CoordinatingResult<RouterResult<Void>> {
+        coordinate(to: ChatRequestCoordinator(router: router, animated: true))
+            .flatMap { result -> CoordinatingResult<RouterResult<Void>> in
+                guard result != .dismissedByRouter else {
+                    return Just(result).eraseToAnyPublisher()
+                }
+                return router.dismiss(animated: true, returning: result)
+            }
+            .prefix(1)
+            .eraseToAnyPublisher()
+    }
+
+    private func showChat(chat: ManagedChat, router: Router) -> CoordinatingResult<RouterResult<Void>> {
+        coordinate(to: ChatCoordinator(chat: chat, router: router, animated: true))
+            .flatMap { result -> CoordinatingResult<RouterResult<Void>> in
+                guard result != .dismissedByRouter else {
+                    return Just(result).eraseToAnyPublisher()
+                }
+                return router.dismiss(animated: true, returning: result)
+            }
             .prefix(1)
             .eraseToAnyPublisher()
     }

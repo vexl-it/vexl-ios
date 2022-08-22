@@ -70,8 +70,6 @@ final class SplashScreenViewModel: ViewModelType {
     }
 
     private func setupDataUpdates() {
-        initialScreenManager.finishInitialLoading()
-
         let userSignedOut: AnyPublisher<InitialScreenManager.State, Never> = authenticationManager
             .isUserLoggedInPublisher
             .filter { !$0 }
@@ -94,6 +92,7 @@ final class SplashScreenViewModel: ViewModelType {
             .delay(for: 2, scheduler: RunLoop.main) // wait for lottie animation to complete
             .withUnretained(self)
             .sink(receiveValue: { owner, initialScreen -> Void in
+                owner.initialScreenManager.finishInitialLoading()
                 owner.initialScreenManager.update(state: initialScreen)
                 owner.route.send(.loadingFinished)
             })

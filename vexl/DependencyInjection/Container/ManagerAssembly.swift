@@ -83,5 +83,10 @@ class ManagerAssembly: Assembly {
             GroupManager()
         }
         .inObjectScope(.container)
+
+        container.register(DeeplinkManagerType.self) { _ in
+            DeeplinkManager()
+        }
+        .inObjectScope(.container)
     }
 }
