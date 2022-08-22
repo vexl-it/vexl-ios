@@ -21,6 +21,10 @@ let log = SwiftyBeaver.self
 class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 
+        if let notification = launchOptions?[.remoteNotification] as? [AnyHashable:  Any] {
+            print(notification)
+        }
+
         ApplicationDelegate.shared.application(
             application,
             didFinishLaunchingWithOptions: launchOptions

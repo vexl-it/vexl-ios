@@ -27,7 +27,8 @@ final class AppCoordinator: BaseCoordinator<Void> {
 
     override func start() -> CoordinatingResult<Void> {
         coordinateToRoot()
-        setupDeeplink()
+//        setupDeeplink() HANDLE DIFFERENT FROM APPDELEGATE
+
         return Empty()
             .eraseToAnyPublisher()
     }
