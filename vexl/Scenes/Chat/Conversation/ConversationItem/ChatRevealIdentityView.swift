@@ -50,29 +50,29 @@ struct ChatRevealIdentityView: View {
                 .foregroundColor(Appearance.Colors.whiteText)
                 .textStyle(.titleSmallSemiBold)
                 .padding(.bottom, Appearance.GridGuide.mediumPadding1)
-
-            HStack {
-                Image(R.image.marketplace.defaultAvatar.name)
-
-                VStack(alignment: .leading) {
-                    Text(title)
-                        .textStyle(.paragraphSmallSemiBold)
-
-                    Text(subtitle)
-                        .textStyle(.description)
-                        .foregroundColor(Appearance.Colors.gray3)
-                }
-                .frame(maxWidth: .infinity, alignment: .leading)
-
-                if isRequest {
-                    requestActionButton
-                } else {
-                    responseActionButton
-                }
-            }
-            .padding()
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .background(Appearance.Colors.whiteText)
+//
+//            HStack {
+//                Image(R.image.marketplace.defaultAvatar.name)
+//
+//                VStack(alignment: .leading) {
+//                    Text(title)
+//                        .textStyle(.paragraphSmallSemiBold)
+//
+//                    Text(subtitle)
+//                        .textStyle(.description)
+//                        .foregroundColor(Appearance.Colors.gray3)
+//                }
+//                .frame(maxWidth: .infinity, alignment: .leading)
+//
+//                if isRequest {
+//                    requestActionButton
+//                } else {
+//                    responseActionButton
+//                }
+//            }
+//            .padding()
+//            .frame(maxWidth: .infinity, alignment: .leading)
+//            .background(Appearance.Colors.whiteText)
         }
     }
 
