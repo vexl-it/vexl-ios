@@ -16,24 +16,24 @@ struct RegisterPhoneView: View {
 
     var body: some View {
         VStack {
-            if viewModel.showCodeInput {
-                RegisterPhoneCodeInputView(phoneNumber: viewModel.phoneNumber,
-                                           isEnabled: viewModel.codeInputEnabled,
-                                           remainingTime: viewModel.countdown,
-                                           displayRetry: viewModel.currentState != .codeInputSuccess,
-                                           code: $viewModel.validationCode,
-                                           retryAction: {
-                    viewModel.send(action: .sendCode)
-                })
-                    .padding(.all, Appearance.GridGuide.point)
-                    .transition(transition)
-            } else {
-                RegisterPhoneNumberInputView(text: $viewModel.phoneNumber,
-                                             regionCode: viewModel.currentRegionCode,
-                                             phoneNumber: viewModel.currentPhoneNumber)
-                    .padding(.all, Appearance.GridGuide.point)
-                    .transition(transition)
+            Group {
+                if viewModel.showCodeInput {
+                    RegisterPhoneCodeInputView(phoneNumber: viewModel.phoneNumber,
+                                               isEnabled: viewModel.codeInputEnabled,
+                                               remainingTime: viewModel.countdown,
+                                               displayRetry: viewModel.currentState != .codeInputSuccess,
+                                               code: $viewModel.validationCode,
+                                               retryAction: {
+                        viewModel.send(action: .sendCode)
+                    })
+                } else {
+                    RegisterPhoneNumberInputView(text: $viewModel.phoneNumber,
+                                                 regionCode: viewModel.currentRegionCode,
+                                                 phoneNumber: viewModel.currentPhoneNumber)
+                }
             }
+            .padding(.all, Appearance.GridGuide.point)
+            .transition(transition)
 
             Spacer()
 
