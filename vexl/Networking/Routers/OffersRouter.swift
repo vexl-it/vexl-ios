@@ -91,7 +91,7 @@ enum OffersRouter: ApiRouter {
                 "publicKeys": publicKeys
             ]
         case let .getDeletedOffers(knownOfferIds):
-            return ["adminIds": knownOfferIds]
+            return ["offerIds": knownOfferIds]
         }
     }
 
