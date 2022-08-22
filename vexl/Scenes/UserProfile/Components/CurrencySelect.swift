@@ -25,8 +25,8 @@ class CurrencySelectViewModel: BottomActionSheetViewModelProtocol {
     lazy var allCurrencies: [Currency] = Currency.allCases
 
     init(isOnboarding: Bool = false) {
-        primaryAction =  .init(title: isOnboarding ? L.generalSave() : L.userProfileCurrencyDismissButton(),
-                               isDismissAction: true)
+        primaryAction = .init(title: isOnboarding ? L.generalSave() : L.userProfileCurrencyDismissButton(),
+                              isDismissAction: true)
         selectedCurrency = cryptocurrencyValueManager.selectedCurrency.value
     }
 
@@ -53,6 +53,7 @@ struct CurrencySelectContent: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .frame(height: Appearance.GridGuide.baseHeight)
                 .padding(.horizontal, Appearance.GridGuide.tinyPadding)
+                .contentShape(Rectangle())
                 .onTapGesture {
                     viewModel.select(currency: currency)
                 }

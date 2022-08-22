@@ -17,15 +17,18 @@ struct RegisterNameAvatarView: View {
 
     var body: some View {
         VStack {
-            switch viewModel.currentState {
-            case .startRegistration:
-                RegisterNameAvatarStartView()
-                    .transition(transition)
-            case .usernameInput:
-                nameInputView
-            case .avatarInput:
-                avatarInputView
+            Group {
+                switch viewModel.currentState {
+                case .startRegistration:
+                    RegisterNameAvatarStartView()
+                        .transition(transition)
+                case .usernameInput:
+                    nameInputView
+                case .avatarInput:
+                    avatarInputView
+                }
             }
+            .padding(.all, Appearance.GridGuide.point)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color.black.edgesIgnoringSafeArea(.all))

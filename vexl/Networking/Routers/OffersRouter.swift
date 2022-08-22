@@ -13,12 +13,12 @@ enum OffersRouter: ApiRouter {
     case getOffers(pageLimit: Int?)
     case getUserOffers(offerIds: [String])
     case getNewOffers(pageLimit: Int?, lastSyncDate: Date)
-    case createNewPrivateParts(offerID: String, offerPayloads: [OfferPayload])
+    case createNewPrivateParts(adminID: String, offerPayloads: [OfferPayload])
     case getDeletedOffers(knownOfferIds: [String])
 
-    case deleteOffers(offerIds: [String])
-    case deleteOfferPrivateParts(offerIds: [String], publicKeys: [String])
-    case updateOffer(offer: [OfferPayload], offerId: String)
+    case deleteOffers(adminIDs: [String])
+    case deleteOfferPrivateParts(adminIDs: [String], publicKeys: [String])
+    case updateOffer(offer: [OfferPayload], adminID: String)
 
     var method: HTTPMethod {
         switch self {
@@ -67,29 +67,31 @@ enum OffersRouter: ApiRouter {
                 return [:]
             }
             return ["limit": pageLimit]
-        case let .getUserOffers(offerIds), let .deleteOffers(offerIds):
+        case let .getUserOffers(offerIds):
             return ["offerIds": offerIds.joined(separator: ",")]
+        case let .deleteOffers(adminIDs):
+            return ["adminIds": adminIDs.joined(separator: ",")]
         case let .createOffer(offer, expiration):
             let offers = offer.map { $0.asJson }
             return ["offerPrivateList": offers,
                     "expiration": expiration]
-        case let .updateOffer(offer, offerId):
+        case let .updateOffer(offer, adminId):
             let offers = offer.map { $0.asJson }
-            return ["offerId": offerId,
+            return ["adminId": adminId,
                     "offerPrivateCreateList": offers]
-        case let .createNewPrivateParts(offerID, offers):
+        case let .createNewPrivateParts(adminId, offers):
             let offers = offers.map { $0.asJson }
             return [
-                "offerId": offerID,
+                "adminId": adminId,
                 "privateParts": offers
             ]
-        case let .deleteOfferPrivateParts(offerIds, publicKeys):
+        case let .deleteOfferPrivateParts(adminIds, publicKeys):
             return [
-                "offerIds": offerIds,
+                "adminIds": adminIds,
                 "publicKeys": publicKeys
             ]
         case let .getDeletedOffers(knownOfferIds):
-            return ["offerIds": knownOfferIds]
+            return ["adminIds": knownOfferIds]
         }
     }
 

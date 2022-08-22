@@ -126,7 +126,7 @@ extension AuthenticationManager {
                                 predicate: NSPredicate(format: "user != nil")
                             )
                             return offerService
-                                .deleteOffers(offerIds: offers.compactMap(\.id))
+                                .deleteOffers(adminIDs: offers.compactMap(\.adminID))
                                 .justOnError()
                                 .eraseToAnyPublisher()
                         }
