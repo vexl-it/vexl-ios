@@ -4,5 +4,5 @@
 
 ### Fixes
 - VEX-786 - iOS [Profile] Cancel button doesn't work
-
+- VEX-759 - The name of the application should be Vexl with a capital V
 ### Known Issues
