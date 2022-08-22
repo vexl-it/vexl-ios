@@ -34,7 +34,7 @@ final class ImportPhoneContactsViewModel: ImportContactsViewModel {
             .withUnretained(self)
             .flatMap { owner, hashedPhones in
                 owner.contactsManager
-                    .getActivePhoneContacts(hashedPhones.map(\.1))
+                    .getUserPhoneContacts(hashedPhones.map(\.1))
                     .track(activity: owner.primaryActivity)
                     .materialize()
                     .compactMap(\.value)

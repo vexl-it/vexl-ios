@@ -87,7 +87,7 @@ final class EditProfileAvatarViewModel: ViewModelType, ObservableObject {
             .store(in: cancelBag)
 
         action
-            .filter { $0 == .dismissTap }
+            .filter { $0 == .dismissTap || $0 == .cancel }
             .map { _ -> Route in .dismissTapped }
             .subscribe(route)
             .store(in: cancelBag)

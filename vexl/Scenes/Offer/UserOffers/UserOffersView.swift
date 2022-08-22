@@ -20,7 +20,7 @@ struct UserOffersView: View {
             OfferSortView(numberOfOffers: viewModel.offerItems.count,
                           sortingOption: $viewModel.offerSortingOption)
 
-            LargeLabelButton(
+            LabelButton(
                 isEnabled: .constant(true),
                 backgroundColor: Appearance.Colors.pink20,
                 content: {
@@ -48,15 +48,13 @@ struct UserOffersView: View {
     }
 
     private var offerLabel: some View {
-        HStack {
+        HStack(alignment: .center) {
             Image(systemName: "plus")
 
             Text(viewModel.createOfferTitle)
                 .textStyle(.descriptionBold)
         }
         .foregroundColor(Appearance.Colors.pink100)
-        .padding(Appearance.GridGuide.padding)
-        .frame(maxWidth: .infinity)
     }
 }
 
