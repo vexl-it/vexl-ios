@@ -40,6 +40,7 @@ struct OfferPayload: Codable {
     let currency: String
 
     var offerId: String?
+    var adminId: String?
     var createdAt: String = ""
     var modifiedAt: String = ""
 
@@ -181,7 +182,8 @@ struct OfferPayload: Codable {
                 return nil
             }
 
-            offer.id = offerId
+            offer.offerID = offerId
+            offer.adminID = adminId
             offer.createdAt = Formatters.dateApiFormatter.date(from: createdAt)
             offer.modifiedAt = modifiedAt
             offer.currency = currency

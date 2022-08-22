@@ -15,7 +15,6 @@ protocol ContactsManagerType {
     var availableFacebookContacts: [ContactInformation] { get }
 
     func fetchPhoneContacts() -> AnyPublisher<[ContactInformation], Never>
-    func getActivePhoneContacts(_ contacts: [String]) -> AnyPublisher<[ContactInformation], Error>
     func getUserPhoneContacts(_ contacts: [String]) -> AnyPublisher<[ContactInformation], Error>
 
     func fetchFacebookContacts(id: String, accessToken: String) -> AnyPublisher<[ContactInformation], Error>
@@ -102,23 +101,6 @@ final class ContactsManager: ContactsManagerType {
             .eraseToAnyPublisher()
     }
 
-    func getActivePhoneContacts(_ contacts: [String]) -> AnyPublisher<[ContactInformation], Error> {
-        contactsService
-            .getActivePhoneContacts(contacts)
-            .map(\.newContacts)
-            .withUnretained(self)
-            .flatMap { owner, hashedAvailableContacts -> AnyPublisher<[ContactInformation], Error> in
-                owner.encryptionService.hashContacts(contacts: owner.userPhoneContacts)
-                    .map { hashedContacts in
-                        hashedContacts
-                            .filter { hashedAvailableContacts.contains($0.1) }
-                            .map { $0.0 }
-                    }
-                    .eraseToAnyPublisher()
-            }
-            .eraseToAnyPublisher()
-    }
-
     func getUserPhoneContacts(_ contacts: [String]) -> AnyPublisher<[ContactInformation], Error> {
         contactsService
             .getActivePhoneContacts(contacts)
@@ -134,11 +116,14 @@ final class ContactsManager: ContactsManagerType {
                             newContact.isStored = isSelected
                             return newContact
                         }
+                        .sorted(by: { $0.name < $1.name })
                     }
                     .eraseToAnyPublisher()
             }
             .eraseToAnyPublisher()
     }
+
+    // TODO: - Update how facebook contacts work once the contacts can be fetched.
 
     func getActiveFacebookContacts(_ contacts: [String], withId id: String, token: String) -> AnyPublisher<[ContactInformation], Error> {
         contactsService

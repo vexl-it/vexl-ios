@@ -106,13 +106,13 @@ final class GroupManager: GroupManagerType {
         let deleteOffers = deleteMemberPublicKeys
             .flatMap { [offerService] (members: [String]) -> AnyPublisher<Void, Never> in
                 let offerSet = group.offers?.filtered(using: NSPredicate(format: "user != nil")) as? Set<ManagedOffer> ?? .init()
-                let offers = Array(offerSet).compactMap(\.id)
+                let offers = Array(offerSet).compactMap(\.adminID)
                 guard !offerSet.isEmpty && !members.isEmpty else {
                     return Just(())
                         .eraseToAnyPublisher()
                 }
                 return offerService
-                    .deleteOfferPrivateParts(offerIds: offers, publicKeys: members)
+                    .deleteOfferPrivateParts(adminIDs: offers, publicKeys: members)
                     .nilOnError()
                     .asVoid()
                     .eraseToAnyPublisher()

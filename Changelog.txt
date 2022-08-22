@@ -27,10 +27,13 @@
 - VEX-691: App updates offer for new group users
 - VEX-693: App updates offer for new contact users
 - VEX-717: Preselect contacts on onboarding
-- VEX-632: Its possible to remove previously added contacts 
+- VEX-632: Its possible to remove previously added contacts
 - Registered new testing devices
 - VEX-781: Offers are now beeing deleted from market place
 - VEX-389: Added limit to phone number
+- VEX-637: Updated how offer amount is presented in the card
+- VEX-730: Removed FAQ from onboarding
+- VEX-718: Sorted phone contacts
 
 ### Fixes
 - VEX-525: Fixed common friends on chat request screen
@@ -56,5 +59,9 @@
 - VEX-739: Fix group member count
 - VEX-749: Silence group notifications
 - VEX-671: Request offer button UI
+- VEX-786 - iOS [Profile] Cancel button doesn't work
+- VEX-759 - The name of the application should be Vexl with a capital V
+- VEX-686 - Incorrect height of the button for creating an offer
+- VEX-672 - iOS: [Onboarding] - the back arrow has an incorrect design
 
 ### Known Issues
