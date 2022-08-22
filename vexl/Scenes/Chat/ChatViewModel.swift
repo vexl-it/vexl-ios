@@ -152,20 +152,16 @@ final class ChatViewModel: ViewModelType, ObservableObject {
         chatConversationViewModel
             .$messages
             .withUnretained(self)
-            .sink { owner, _ in
-                let type: IdentityRevealBannerType = {
-                    let messages = owner.chat.messages?.filtered(using: NSPredicate(format: "typeRawType == '\(MessageType.revealRequest.rawValue)'")) as? Set<ManagedMessage>
-                    guard let lastMessage = messages?.sorted(by: { $0.time > $1.time }).first else { return .none }
-                    if lastMessage.hasRevealResponse {
-                        return .none
-                    } else {
-                        return lastMessage.isContact ? .response : .request
-                    }
-                }()
-
-                owner.showIdentityRevealBanner = type
+            .map { owner, _ -> IdentityRevealBannerType in
+                let messages = owner.chat.messages?.filtered(using: NSPredicate(format: "typeRawType == '\(MessageType.revealRequest.rawValue)'")) as? Set<ManagedMessage>
+                guard let lastMessage = messages?.sorted(by: { $0.time > $1.time }).first else { return .none }
+                if lastMessage.hasRevealResponse {
+                    return .none
+                } else {
+                    return lastMessage.isContact ? .response : .request
+                }
             }
-            .store(in: cancelBag)
+            .assign(to: &$showIdentityRevealBanner)
     }
 
     private func setupUpdateUIBindings() {
