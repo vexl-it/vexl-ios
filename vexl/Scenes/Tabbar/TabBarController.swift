@@ -7,10 +7,9 @@
 
 import UIKit
 import Cleevio
-import Combine
 
-enum Tab: Int {
-    case marketplace = 0
+enum Tab {
+    case marketplace
     case chat
     case profile
 

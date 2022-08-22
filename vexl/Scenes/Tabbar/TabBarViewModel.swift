@@ -7,7 +7,6 @@
 
 import Foundation
 import Cleevio
-import Combine
 
 final class TabBarViewModel: ViewModelType {
 
@@ -32,7 +31,6 @@ final class TabBarViewModel: ViewModelType {
 
     // MARK: - Variables
 
-//    private let deeplinkIndexSubject = PassthroughSubject<
     private let cancelBag: CancelBag = .init()
 
     init() {
