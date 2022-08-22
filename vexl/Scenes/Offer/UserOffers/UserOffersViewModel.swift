@@ -74,9 +74,9 @@ final class UserOffersViewModel: ViewModelType, ObservableObject {
     var createOfferTitle: String {
         switch offerType {
         case .sell:
-            return L.offerSellTitle()
+            return L.offerSellNewOffer()
         case .buy:
-            return L.offerBuyTitle()
+            return L.offerBuyNewOffer()
         }
     }
 

@@ -60,5 +60,5 @@
 - VEX-759 - The name of the application should be Vexl with a capital V
 - VEX-686 - Incorrect height of the button for creating an offer
 - VEX-672 - iOS: [Onboarding] - the back arrow has an incorrect design
-
+- VEX-670 - Wrong text on the button for new offers
 ### Known Issues
