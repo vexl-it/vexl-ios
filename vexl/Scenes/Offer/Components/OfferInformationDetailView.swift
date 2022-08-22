@@ -258,7 +258,7 @@ extension OfferInformationDetailView {
             groupColor = group?.color ?? Appearance.Colors.purple3
 
             offer.publisher(for: \.isRequested).assign(to: &$isRequested)
-            offer.publisher(for: \.id).filterNil().assign(to: &$id)
+            offer.publisher(for: \.offerID).filterNil().assign(to: &$id)
             profile?.publisher(for: \.avatarData).compactMap { _ in profile?.avatar }.assign(to: &$avatar)
             profile?.publisher(for: \.name).filterNil().assign(to: &$username)
             offer.publisher(for: \.offerDescription).filterNil().assign(to: &$title)
