@@ -18,16 +18,15 @@ final class AppCoordinator: BaseCoordinator<Void> {
     @Inject var deeplinkManager: DeeplinkManagerType
 
     private let window: UIWindow
-    private let deeplinkWindow: UIWindow
+    private var deeplinkCancellable: AnyCancellable?
 
     init(window: UIWindow) {
         self.window = window
-        self.deeplinkWindow = window
     }
 
     override func start() -> CoordinatingResult<Void> {
         coordinateToRoot()
-//        setupDeeplink() HANDLE DIFFERENT FROM APPDELEGATE
+        setupDeeplink()
 
         return Empty()
             .eraseToAnyPublisher()
@@ -61,14 +60,20 @@ final class AppCoordinator: BaseCoordinator<Void> {
 
     private func resetFlow() {
         cancellable?.cancel()
+        deeplinkCancellable?.cancel()
         window.rootViewController = nil
         coordinateToRoot()
+        setupDeeplink()
     }
 
     private func setupDeeplink() {
-        deeplinkManager
+        deeplinkCancellable = deeplinkManager
             .openDeeplink
-            .flatMapLatest(with: self) { owner, screen -> CoordinatingResult<RouterResult<Void>> in
+            .withUnretained(self)
+            .filter { owner, _ in
+                owner.initialScreenManager.getCurrentScreenState() == .home
+            }
+            .flatMapLatest { owner, screen -> CoordinatingResult<RouterResult<Void>> in
                 guard let visibleViewController = owner.window.visibleViewController else {
                     return Empty(completeImmediately: false).eraseToAnyPublisher()
                 }
@@ -82,8 +87,9 @@ final class AppCoordinator: BaseCoordinator<Void> {
                     return owner.showChatRequests(router: modalRouter)
                 }
             }
-            .sink()
-            .store(in: cancelBag)
+            .sink(receiveValue: { [deeplinkManager] _ in
+                deeplinkManager.cleanState()
+            })
     }
 }
 

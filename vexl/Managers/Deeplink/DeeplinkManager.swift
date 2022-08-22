@@ -23,14 +23,15 @@ protocol DeeplinkManagerType {
     var openDeeplink: AnyPublisher<DeeplinkScreen, Never> { get }
 
     func handleDeeplink(with request: DeeplinkRequest)
+    func cleanState()
 }
 
 final class DeeplinkManager: DeeplinkManagerType {
-    var openDeeplink: AnyPublisher<DeeplinkScreen, Never> { openDeeplinkSubject.eraseToAnyPublisher() }
+    var openDeeplink: AnyPublisher<DeeplinkScreen, Never> { openDeeplinkSubject.filterNil().eraseToAnyPublisher() }
 
     @Inject private var chatRepository: ChatRepositoryType
 
-    private let openDeeplinkSubject = PassthroughSubject<DeeplinkScreen, Never>()
+    private let openDeeplinkSubject = CurrentValueSubject<DeeplinkScreen?, Never>(nil)
     private let cancelBag = CancelBag()
 
     func handleDeeplink(with request: DeeplinkRequest) {
@@ -41,10 +42,16 @@ final class DeeplinkManager: DeeplinkManagerType {
                 .replaceError(with: nil)
                 .filterNil()
                 .map { DeeplinkScreen.chat($0) }
-                .subscribe(openDeeplinkSubject)
+                .sink(receiveValue: { [openDeeplinkSubject] deeplink in
+                    openDeeplinkSubject.send(deeplink)
+                })
                 .store(in: cancelBag)
         case .openRequest:
             openDeeplinkSubject.send(.request)
         }
+    }
+
+    func cleanState() {
+        openDeeplinkSubject.send(nil)
     }
 }
