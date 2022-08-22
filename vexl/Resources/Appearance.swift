@@ -185,6 +185,7 @@ struct Appearance {
         case descriptionSemiBold
         case descriptionBold
         case micro
+        case microSemiBold
 
         var font: UIFont {
             switch self {
@@ -236,6 +237,8 @@ struct Appearance {
                 return R.font.ttSatoshiBold(size: 14) ?? UIFont.systemFont(ofSize: 14, weight: .bold)
             case .micro:
                 return R.font.ttSatoshiRegular(size: 12) ?? UIFont.systemFont(ofSize: 12, weight: .regular)
+            case .microSemiBold:
+                return R.font.ttSatoshiDemiBold(size: 12) ?? UIFont.systemFont(ofSize: 12, weight: .semibold)
             }
         }
     }
