@@ -21,13 +21,16 @@ enum DeeplinkRequest {
 
 protocol DeeplinkManagerType {
     var openDeeplink: AnyPublisher<DeeplinkScreen, Never> { get }
+    var canOpenDeepLink: Bool { get }
 
     func handleDeeplink(with request: DeeplinkRequest)
     func cleanState()
+    func setCanOpenDeeplink(to value: Bool)
 }
 
 final class DeeplinkManager: DeeplinkManagerType {
     var openDeeplink: AnyPublisher<DeeplinkScreen, Never> { openDeeplinkSubject.filterNil().eraseToAnyPublisher() }
+    var canOpenDeepLink = true
 
     @Inject private var chatRepository: ChatRepositoryType
 
@@ -53,5 +56,9 @@ final class DeeplinkManager: DeeplinkManagerType {
 
     func cleanState() {
         openDeeplinkSubject.send(nil)
+    }
+
+    func setCanOpenDeeplink(to value: Bool) {
+        canOpenDeepLink = value
     }
 }

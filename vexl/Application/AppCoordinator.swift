@@ -71,7 +71,7 @@ final class AppCoordinator: BaseCoordinator<Void> {
             .openDeeplink
             .withUnretained(self)
             .filter { owner, _ in
-                owner.initialScreenManager.getCurrentScreenState() == .home
+                owner.initialScreenManager.getCurrentScreenState() == .home && owner.deeplinkManager.canOpenDeepLink
             }
             .flatMapLatest { owner, screen -> CoordinatingResult<RouterResult<Void>> in
                 guard let visibleViewController = owner.window.visibleViewController else {
