@@ -24,7 +24,7 @@ final class RegisterPhoneContactsCoordinator: BaseCoordinator<RouterResult<Void>
     override func start() -> CoordinatingResult<RouterResult<Void>> {
         let viewModel = RegisterPhoneContactsViewModel()
         let viewController = RegisterViewController(currentPage: 2,
-                                                    numberOfPages: 4,
+                                                    numberOfPages: Constants.registrationSteps,
                                                     rootView: RegisterPhoneContactsView(viewModel: viewModel),
                                                     showBackButton: false)
 

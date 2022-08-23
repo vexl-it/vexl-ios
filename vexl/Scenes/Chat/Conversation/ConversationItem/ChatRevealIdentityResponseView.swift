@@ -42,7 +42,6 @@ struct ChatRevealIdentityResponseView: View {
                 .padding(.bottom, Appearance.GridGuide.smallPadding)
 
             HStack {
-
                 HLine(color: Appearance.Colors.whiteOpaque,
                       height: 1)
                     .frame(maxWidth: .infinity)

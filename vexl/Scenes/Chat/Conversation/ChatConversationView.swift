@@ -37,14 +37,10 @@ struct ChatConversationView: View {
                                         }
                                 case .requestIdentityReveal:
                                     ChatRevealIdentityView(image: viewModel.avatar,
-                                                           isRequest: true,
-                                                           revealAction: nil)
+                                                           isRequest: true)
                                 case .receiveIdentityReveal:
                                     ChatRevealIdentityView(image: nil,
-                                                           isRequest: false,
-                                                           revealAction: {
-                                        viewModel.action.send(.revealTapped)
-                                    })
+                                                           isRequest: false)
                                 case .rejectIdentityReveal:
                                     ChatRevealIdentityResponseView(username: viewModel.username,
                                                                    avatarImage: viewModel.avatarImage,
