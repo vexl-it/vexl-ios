@@ -59,6 +59,13 @@ struct ChatView: View {
                 .frame(maxHeight: .infinity)
                 .padding(.bottom, Appearance.GridGuide.point)
 
+            if viewModel.showIdentityRevealBanner != .none {
+                ChatRevealIdentityBannerView(isRequest: viewModel.showIdentityRevealBanner == .request) {
+                    viewModel.action.send(.revealTap)
+                }
+                .padding(.vertical, Appearance.GridGuide.padding)
+            }
+
             if viewModel.allowsInput {
                 ChatInputView(text: $viewModel.currentMessage,
                               image: viewModel.selectedImageData,

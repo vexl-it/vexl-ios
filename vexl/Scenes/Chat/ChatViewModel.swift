@@ -20,6 +20,10 @@ final class ChatViewModel: ViewModelType, ObservableObject {
         case photoAlbum, camera
     }
 
+    enum IdentityRevealBannerType {
+        case none, request, response
+    }
+
     // MARK: - Action Binding
 
     enum UserAction: Equatable {
@@ -28,6 +32,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
         case cameraTap
         case dismissModal
         case deleteImageTap
+        case revealTap
     }
 
     let action: ActionSubject<UserAction> = .init()
@@ -73,6 +78,8 @@ final class ChatViewModel: ViewModelType, ObservableObject {
     var offerLabel: String { offer?.type == .buy ? L.marketplaceDetailUserBuy("") : L.marketplaceDetailUserSell("") }
     var offerViewData: OfferDetailViewData? { offer.flatMap(OfferDetailViewData.init) }
     var selectedImageData: Data? { selectedImage }
+
+    @Published var showIdentityRevealBanner: IdentityRevealBannerType = .none
 
     private let cancelBag: CancelBag = .init()
     private lazy var sharedAction: AnyPublisher<UserAction, Never> = action.share().eraseToAnyPublisher()
@@ -141,6 +148,20 @@ final class ChatViewModel: ViewModelType, ObservableObject {
             .map { _ -> Route in .showRevealIdentityResponseTapped }
             .subscribe(route)
             .store(in: cancelBag)
+
+        chatConversationViewModel
+            .$messages
+            .withUnretained(self)
+            .map { owner, _ -> IdentityRevealBannerType in
+                let messages = owner.chat.messages?.filtered(using: NSPredicate(format: "typeRawType == '\(MessageType.revealRequest.rawValue)'")) as? Set<ManagedMessage>
+                guard let lastMessage = messages?.sorted(by: { $0.time > $1.time }).first else { return .none }
+                if lastMessage.hasRevealResponse {
+                    return .none
+                } else {
+                    return lastMessage.isContact ? .response : .request
+                }
+            }
+            .assign(to: &$showIdentityRevealBanner)
     }
 
     private func setupUpdateUIBindings() {
@@ -166,6 +187,12 @@ final class ChatViewModel: ViewModelType, ObservableObject {
             .sink { owner, _ in
                 owner.selectedImage = nil
             }
+            .store(in: cancelBag)
+
+        sharedAction
+            .filter { $0 == .revealTap }
+            .map { _ -> Route in .showRevealIdentityResponseTapped }
+            .subscribe(route)
             .store(in: cancelBag)
     }
 
