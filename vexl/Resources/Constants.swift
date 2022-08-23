@@ -134,4 +134,5 @@ struct Constants {
     ]
 
     static let maxPhoneNumberDigits = 9
+    static let registrationSteps = 3
 }
