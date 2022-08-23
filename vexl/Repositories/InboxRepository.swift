@@ -85,6 +85,7 @@ class InboxRepository: InboxRepositoryType {
             chat.gotRevealedResponse = false
             chat.isRevealed = false
             chat.showIdentityRequest = false
+            chat.shouldDisplayRevealBanner = true
             if payload.isFromContact {
                 if let imageURL = payload.user?.image, let avatarURL = URL(string: imageURL), let avatar = try? Data(contentsOf: avatarURL) {
                     chat.receiverKeyPair?.profile?.realAvatarBeforeReveal = avatar

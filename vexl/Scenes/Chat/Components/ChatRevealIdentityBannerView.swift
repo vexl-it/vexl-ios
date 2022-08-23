@@ -10,6 +10,7 @@ import SwiftUI
 struct ChatRevealIdentityBannerView: View {
 
     let isRequest: Bool
+    let hideAction: (() -> Void)?
     let revealAction: (() -> Void)?
 
     private var title: String {
@@ -46,12 +47,16 @@ struct ChatRevealIdentityBannerView: View {
     }
 
     private var requestActionButton: some View {
-        Text(L.chatMessageIdentityRevealPendingOk())
-            .textStyle(.paragraphSmall)
-            .foregroundColor(Appearance.Colors.gray2)
-            .padding(Appearance.GridGuide.point)
-            .background(Appearance.Colors.gray6)
-            .cornerRadius(Appearance.GridGuide.point)
+        Button {
+            hideAction?()
+        } label: {
+            Text(L.chatMessageIdentityRevealPendingOk())
+                .textStyle(.paragraphSmall)
+                .foregroundColor(Appearance.Colors.gray2)
+                .padding(Appearance.GridGuide.point)
+                .background(Appearance.Colors.gray6)
+                .cornerRadius(Appearance.GridGuide.point)
+        }
     }
 
     private var responseActionButton: some View {

@@ -11,6 +11,7 @@ import Combine
 protocol ChatRepositoryType {
     func createChat(requestedOffer: ManagedOffer, receiverPublicKey: String, requestMessage: String) -> AnyPublisher<ManagedChat, Error>
     func setBlockChat(chat: ManagedChat, isBlocked: Bool) -> AnyPublisher<ManagedChat, Error>
+    func setDisplayRevealBanner(chat: ManagedChat, shouldDisplay: Bool) -> AnyPublisher<ManagedChat, Error>
 }
 
 class ChatRepository: ChatRepositoryType {
@@ -46,6 +47,14 @@ class ChatRepository: ChatRepositoryType {
         let context = persistence.newEditContext()
         return persistence.update(context: context) { [chat] _ in
             chat.isBlocked = isBlocked
+            return chat
+        }
+    }
+
+    func setDisplayRevealBanner(chat: ManagedChat, shouldDisplay: Bool) -> AnyPublisher<ManagedChat, Error> {
+        let context = persistence.newEditContext()
+        return persistence.update(context: context) { [chat] _ in
+            chat.shouldDisplayRevealBanner = shouldDisplay
             return chat
         }
     }
