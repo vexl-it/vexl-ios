@@ -62,15 +62,15 @@ struct ChatView: View {
             if viewModel.showIdentityRevealBanner != .none {
                 ChatRevealIdentityBannerView(isRequest: viewModel.showIdentityRevealBanner == .request,
                                              hideAction: {
-                    withAnimation {
-                        viewModel.action.send(.hideTap)
-                    }
+                    viewModel.action.send(.hideTap)
                 },
                                              revealAction: {
                     viewModel.action.send(.revealTap)
                 })
-                    .transition(.opacity.combined(with: .move(edge: .trailing)))
-                    .padding(.vertical, Appearance.GridGuide.padding)
+                    .onAppear(perform: {
+                        viewModel.action.send(.forceScrollToBottom)
+                    })
+                    .padding(.bottom, Appearance.GridGuide.padding)
             }
 
             if viewModel.allowsInput {
@@ -88,7 +88,6 @@ struct ChatView: View {
                     .padding([.horizontal, .bottom], Appearance.GridGuide.padding)
             }
         }
-        .animation(.easeInOut, value: viewModel.showIdentityRevealBanner)
     }
 }
 

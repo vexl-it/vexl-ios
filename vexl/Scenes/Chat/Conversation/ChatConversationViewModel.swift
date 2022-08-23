@@ -23,6 +23,7 @@ final class ChatConversationViewModel: ObservableObject {
 
     @Published var messages: [ChatConversationSection] = []
     @Published var lastMessageID: String?
+    @Published var forceScrollToBottom = false
     @Published var username: String = L.generalAnonymous()
     @Published var avatar: Data?
 

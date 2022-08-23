@@ -34,6 +34,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
         case deleteImageTap
         case revealTap
         case hideTap
+        case forceScrollToBottom
     }
 
     let action: ActionSubject<UserAction> = .init()
@@ -245,6 +246,14 @@ final class ChatViewModel: ViewModelType, ObservableObject {
             .withUnretained(self)
             .sink { owner, _ in
                 owner.hideRevealBanner()
+            }
+            .store(in: cancelBag)
+        
+        action
+            .filter { $0 == .forceScrollToBottom }
+            .withUnretained(self)
+            .sink { owner, _ in
+                owner.chatConversationViewModel.forceScrollToBottom = true
             }
             .store(in: cancelBag)
 

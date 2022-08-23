@@ -72,6 +72,11 @@ struct ChatConversationView: View {
                     }
                 }
             }
+            .onReceive(viewModel.$forceScrollToBottom) { forceScroll in
+                if forceScroll {
+                    proxy.scrollTo(viewModel.lastMessageID)
+                }
+            }
         }
         .padding([.horizontal, .top], Appearance.GridGuide.point)
         .background(Color.red)
