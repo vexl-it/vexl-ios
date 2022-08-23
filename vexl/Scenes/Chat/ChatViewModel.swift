@@ -248,14 +248,11 @@ final class ChatViewModel: ViewModelType, ObservableObject {
                 owner.hideRevealBanner()
             }
             .store(in: cancelBag)
-        
+
         action
             .filter { $0 == .forceScrollToBottom }
-            .withUnretained(self)
-            .sink { owner, _ in
-                owner.chatConversationViewModel.forceScrollToBottom = true
-            }
-            .store(in: cancelBag)
+            .map { _ -> Bool in true }
+            .assign(to: &chatConversationViewModel.$forceScrollToBottom)
 
         sharedAction
             .filter { $0 == .dismissTap }
