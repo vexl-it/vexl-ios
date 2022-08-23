@@ -66,7 +66,6 @@ struct ChatConversationView: View {
             .onReceive(viewModel.$lastMessageID) { newMessageID in
                 withAnimation(firstScrollFinished ? .default : .none) {
                     proxy.scrollTo(newMessageID)
-                    print("firstScrollFinished: \(firstScrollFinished) messageId: \(newMessageID)")
                     if !firstScrollFinished {
                         firstScrollFinished = true
                     }
@@ -79,7 +78,6 @@ struct ChatConversationView: View {
             }
         }
         .padding([.horizontal, .top], Appearance.GridGuide.point)
-        .background(Color.red)
     }
 }
 
