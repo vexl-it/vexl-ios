@@ -48,7 +48,7 @@
 	<key>NSCameraUsageDescription</key>
 	<string>Vexl wants to access your camera in order to select a photo for your avatar.</string>
 	<key>NSContactsUsageDescription</key>
-	<string>Vexl wants to access your contacts in order to work.</string>
+	<string>Vexl needs access to your contacts to make your offers visible for them in a secure way.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>PPMonumentExtended-Bold.otf</string>
