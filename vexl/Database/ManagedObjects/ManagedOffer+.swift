@@ -15,7 +15,7 @@ extension ManagedOffer {
     }
 
     var groupUuid: GroupUUID? {
-        get { group?.uuid.flatMap(GroupUUID.id) ?? GroupUUID.none }
+        group?.uuid.flatMap(GroupUUID.id) ?? GroupUUID.none 
     }
 
     var feeState: OfferFeeOption? {
