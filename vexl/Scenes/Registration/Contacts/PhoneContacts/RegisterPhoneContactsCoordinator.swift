@@ -43,7 +43,6 @@ final class RegisterPhoneContactsCoordinator: BaseCoordinator<RouterResult<Void>
         let skipTap = viewModel
             .route
             .filter { $0 == .skipTapped }
-            .print("will skip")
             .map { _ in RouterResult<Void>.finished(()) }
 
         let continueTap = viewModel
@@ -57,7 +56,6 @@ final class RegisterPhoneContactsCoordinator: BaseCoordinator<RouterResult<Void>
             .filter { if case .finished = $0 { return true } else { return false } }
 
         return Publishers.Merge(skipTap, continueTap)
-            .print("will skip 2")
             .receive(on: RunLoop.main)
             .eraseToAnyPublisher()
     }
