@@ -35,6 +35,7 @@
 - VEX-730: Removed FAQ from onboarding
 - VEX-718: Sorted phone contacts
 - VEX-818: Reveal identity now is anchored to the bottom of the chat
+- VEX-806: Added dismiss to the identity banner
 
 ### Fixes
 - VEX-525: Fixed common friends on chat request screen
