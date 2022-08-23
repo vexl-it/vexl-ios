@@ -68,7 +68,7 @@ final class GroupRepository: GroupRepositoryType {
     }
 
     func update(group unsafeGroup: ManagedGroup, members: [String], returnOnlyNewMembers: Bool) -> AnyPublisher<[String], Error> {
-        persistence.update(context: persistence.newEditContext()) { [persistence] context in
+        persistence.update(context: persistence.viewContext) { [persistence] context in
             guard let group = persistence.loadSyncroniously(type: ManagedGroup.self, context: context, objectID: unsafeGroup.objectID) else {
                 return []
             }

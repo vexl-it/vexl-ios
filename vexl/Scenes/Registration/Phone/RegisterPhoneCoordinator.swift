@@ -21,7 +21,9 @@ class RegisterPhoneCoordinator: BaseCoordinator<RouterResult<Void>> {
 
     override func start() -> CoordinatingResult<CoordinationResult> {
         let viewModel = RegisterPhoneViewModel()
-        let viewController = RegisterViewController(currentPage: 0, numberOfPages: 4, rootView: RegisterPhoneView(viewModel: viewModel))
+        let viewController = RegisterViewController(currentPage: 0,
+                                                    numberOfPages: Constants.registrationSteps,
+                                                    rootView: RegisterPhoneView(viewModel: viewModel))
         router.present(viewController, animated: animated)
 
         viewController

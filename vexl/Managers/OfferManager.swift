@@ -54,7 +54,7 @@ final class OfferManager: OfferManagerType {
                 offerService.getDeletedOffers(knownOffers: knownOfferIDs)
             }
             .flatMap { [offerRepository] offerIDsToDelete in
-                offerRepository.deleteOffers(withIDs: offerIDsToDelete)
+                offerRepository.deleteOffers(offerIDs: offerIDsToDelete)
             }
             .catch { _ in Just(()) }
             .sink(receiveValue: { [weak self] in

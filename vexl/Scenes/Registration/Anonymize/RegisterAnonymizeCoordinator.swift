@@ -24,7 +24,7 @@ class RegisterAnonymizeCoordinator: BaseCoordinator<RouterResult<Void>> {
     override func start() -> CoordinatingResult<CoordinationResult> {
         let viewModel = RegisterAnonymizeViewModel(input: input)
         let viewController = RegisterViewController(currentPage: 1,
-                                                    numberOfPages: 4,
+                                                    numberOfPages: Constants.registrationSteps,
                                                     rootView: RegisterAnonymizeView(viewModel: viewModel),
                                                     showBackButton: true)
         router.present(viewController, animated: animated)

@@ -108,7 +108,9 @@ final class RegisterPhoneContactsViewModel: ViewModelType {
         importPhoneContactsViewModel.completed
             .withUnretained(self)
             .sink { owner, _ in
-                owner.route.send(.continueTapped)
+                owner.initialScreenManager.update(onboardingState: .finished)
+                // TODO: - Change it to `.continue` when facebook is active
+                owner.route.send(.skipTapped)
             }
             .store(in: cancelBag)
     }

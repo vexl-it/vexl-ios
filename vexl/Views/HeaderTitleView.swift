@@ -15,7 +15,7 @@ struct HeaderTitleView: View {
 
     var body: some View {
         VStack {
-            HStack(alignment: .center) {
+            HStack(alignment: .firstTextBaseline) {
                 Text(title)
                     .textStyle(.h2)
                     .foregroundColor(Appearance.Colors.whiteText)
