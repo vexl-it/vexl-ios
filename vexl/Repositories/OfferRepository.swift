@@ -13,7 +13,7 @@ import UIKit
 protocol OfferRepositoryType {
     func createOffer(keys: ECCKeys, locations: [OfferLocation], provider: @escaping (ManagedOffer) -> Void) -> AnyPublisher<ManagedOffer, Error>
 
-    func update(offer: ManagedOffer, locations: [OfferLocation], provider: @escaping (ManagedOffer) -> Void) -> AnyPublisher<ManagedOffer, Error>
+    func update(offer: ManagedOffer, locations: [OfferLocation]?, provider: @escaping (ManagedOffer) -> Void) -> AnyPublisher<ManagedOffer, Error>
 
     func createOrUpdateOffer(offerPayloads: [OfferPayload]) -> AnyPublisher<[ManagedOffer], Error>
 
@@ -23,7 +23,7 @@ protocol OfferRepositoryType {
 
     func sync(offers: [ManagedOffer], withPublicKeys: [String]) -> AnyPublisher<Void, Error>
 
-    func deleteOffers(withIDs ids: [String]) -> AnyPublisher<Void, Error>
+    func deleteOffers(offerIDs ids: [String]) -> AnyPublisher<Void, Error>
 }
 
 class OfferRepository: OfferRepositoryType {
@@ -63,39 +63,33 @@ class OfferRepository: OfferRepositoryType {
             offer.user = userRepository.getUser(for: context)
             offer.locations = NSSet(array: managedLocations)
 
-            let item = ManagedSyncItem(context: context)
-            item.type = .insert
-            item.offer = offer
-
             return offer
         }
     }
 
     func update(
         offer: ManagedOffer,
-        locations: [OfferLocation],
+        locations: [OfferLocation]?,
         provider: @escaping (ManagedOffer) -> Void
     ) -> AnyPublisher<ManagedOffer, Error> {
         persistence.update(context: persistence.viewContext) { context in
-            let managedLocations = locations.map { location -> ManagedOfferLocation in
-                let managedLocation = ManagedOfferLocation(context: context)
-                managedLocation.lat = location.latitude
-                managedLocation.lon = location.longitude
-                managedLocation.city = location.city
-                return managedLocation
-            }
+            if let locations = locations {
+                let managedLocations = locations.map { location -> ManagedOfferLocation in
+                    let managedLocation = ManagedOfferLocation(context: context)
+                    managedLocation.lat = location.latitude
+                    managedLocation.lon = location.longitude
+                    managedLocation.city = location.city
+                    return managedLocation
+                }
 
-            (offer.locations as? Set<ManagedOfferLocation>)?.forEach { location in
-                context.delete(location)
-            }
+                (offer.locations as? Set<ManagedOfferLocation>)?.forEach { location in
+                    context.delete(location)
+                }
 
-            offer.locations = NSSet(array: managedLocations)
+                offer.locations = NSSet(array: managedLocations)
+            }
 
             provider(offer)
-
-            let item = ManagedSyncItem(context: context)
-            item.type = .update
-            item.offer = offer
 
             return offer
         }
@@ -194,7 +188,7 @@ class OfferRepository: OfferRepositoryType {
     }
 
     func getKnownOffers() -> AnyPublisher<[ManagedOffer], Error> {
-        persistence.load(type: ManagedOffer.self, context: persistence.viewContext, predicate: NSPredicate(format: "user == nil AND id != nil"))
+        persistence.load(type: ManagedOffer.self, context: persistence.viewContext, predicate: NSPredicate(format: "user == nil AND offerID != nil"))
     }
 
     func sync(offers unsafeOffers: [ManagedOffer], withPublicKeys publicKeys: [String]) -> AnyPublisher<Void, Error> {
@@ -213,13 +207,13 @@ class OfferRepository: OfferRepositoryType {
         }
     }
 
-    func deleteOffers(withIDs ids: [String]) -> AnyPublisher<Void, Error> {
+    func deleteOffers(offerIDs ids: [String]) -> AnyPublisher<Void, Error> {
         let context = persistence.viewContext
         return persistence
             .load(
                 type: ManagedOffer.self,
                 context: context,
-                predicate: NSPredicate(format: "%@ contains[cd] id", NSArray(array: ids))
+                predicate: NSPredicate(format: "%@ contains[cd] offerID", NSArray(array: ids))
             )
             .flatMap { [persistence] offers -> AnyPublisher<Void, Error> in
                 persistence.delete(context: context, editor: { _ in offers })

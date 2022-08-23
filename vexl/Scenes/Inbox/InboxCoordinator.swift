@@ -10,7 +10,6 @@ import Cleevio
 import Combine
 
 final class InboxCoordinator: BaseCoordinator<Void> {
-
     private let router: Router
     private let animated: Bool
 

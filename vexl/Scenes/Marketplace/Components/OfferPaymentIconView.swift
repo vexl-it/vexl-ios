@@ -19,6 +19,7 @@ struct OfferPaymentIconView: View {
                 .foregroundColor(Appearance.Colors.gray3)
         case let .single(icon):
             Image(icon)
+                .resizable()
                 .frame(size: Appearance.GridGuide.feedIconSize)
         case let .double(first, second):
             HStack(spacing: Appearance.GridGuide.tinyPadding) {

@@ -132,4 +132,6 @@ struct Constants {
         "sa", "se", "su", "shi", "she", "sha", "sho",
         "ta", "te", "to", "yu", "za", "zo"
     ]
+
+    static let maxPhoneNumberDigits = 9
 }
