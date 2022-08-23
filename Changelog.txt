@@ -30,6 +30,7 @@
 - VEX-632: Its possible to remove previously added contacts
 - Registered new testing devices
 - VEX-781: Offers are now beeing deleted from market place
+- VEX-787: Added FAQ and terms-conditions to the profile
 - VEX-389: Added limit to phone number
 - VEX-637: Updated how offer amount is presented in the card
 - VEX-730: Removed FAQ from onboarding
