@@ -20,7 +20,7 @@ final class RegisterViewController<T: View>: BaseViewController<T> {
     }()
 
     private lazy var backButton: UIBarButtonItem = {
-        UIBarButtonItem(image: UIImage(systemName: "chevron.backward"),
+        UIBarButtonItem(image: R.image.backButtonWithBackground(),
                         style: .done,
                         target: self,
                         action: #selector(onBackAction))

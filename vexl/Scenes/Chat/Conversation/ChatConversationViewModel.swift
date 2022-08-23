@@ -13,7 +13,6 @@ final class ChatConversationViewModel: ObservableObject {
 
     enum UserAction: Equatable {
         case imageTapped(image: Data?)
-        case revealTapped
     }
 
     @Inject var inboxManager: InboxManagerType
@@ -87,12 +86,6 @@ final class ChatConversationViewModel: ObservableObject {
                 return image
             }
             .subscribe(displayExpandedImage)
-            .store(in: cancelBag)
-
-        action
-            .filter { $0 == .revealTapped }
-            .asVoid()
-            .subscribe(identityRevealResponseTap)
             .store(in: cancelBag)
     }
 

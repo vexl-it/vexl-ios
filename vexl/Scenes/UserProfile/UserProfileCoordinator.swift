@@ -40,6 +40,28 @@ final class UserProfileCoordinator: BaseCoordinator<Void> {
         viewModel
             .route
             .receive(on: RunLoop.main)
+            .filter { $0 == .faq }
+            .flatMapLatest(with: self) { owner, _ -> CoordinatingResult<RouterResult<Void>> in
+                let router = ModalRouter(parentViewController: viewController, presentationStyle: .overFullScreen, transitionStyle: .coverVertical)
+                return owner.showFAQ(router: router)
+            }
+            .sink()
+            .store(in: cancelBag)
+
+        viewModel
+            .route
+            .receive(on: RunLoop.main)
+            .filter { $0 == .termsAndPrivacy }
+            .flatMapLatest(with: self) { owner, _ -> CoordinatingResult<RouterResult<Void>> in
+                let router = ModalRouter(parentViewController: viewController, presentationStyle: .overFullScreen, transitionStyle: .coverVertical)
+                return owner.showTermsAndConditions(router: router)
+            }
+            .sink()
+            .store(in: cancelBag)
+
+        viewModel
+            .route
+            .receive(on: RunLoop.main)
             .filter { $0 == .selectCurrency }
             .flatMapLatest(with: self) { owner, _ -> CoordinatingResult<RouterResult<BottomActionSheetActionType>> in
                 let router = ModalRouter(parentViewController: viewController, presentationStyle: .overFullScreen, transitionStyle: .crossDissolve)
@@ -262,5 +284,33 @@ extension UserProfileCoordinator {
         }
         .prefix(1)
         .eraseToAnyPublisher()
+    }
+
+    func showTermsAndConditions(router: Router) -> CoordinatingResult<RouterResult<Void>> {
+        coordinate(to: TermsAndConditionsCoordinator(router: router, animated: true))
+            .flatMap { result -> CoordinatingResult<RouterResult<Void>> in
+                switch result {
+                case .dismiss:
+                    return router.dismiss(animated: true, returning: result)
+                case .finished, .dismissedByRouter:
+                    return Just(result).eraseToAnyPublisher()
+                }
+            }
+            .prefix(1)
+            .eraseToAnyPublisher()
+    }
+
+    func showFAQ(router: Router) -> CoordinatingResult<RouterResult<Void>> {
+        coordinate(to: FAQCoordinator(router: router, animated: true))
+            .flatMap { result -> CoordinatingResult<RouterResult<Void>> in
+                switch result {
+                case .dismiss:
+                    return router.dismiss(animated: true, returning: result)
+                case .finished, .dismissedByRouter:
+                    return Just(result).eraseToAnyPublisher()
+                }
+            }
+            .prefix(1)
+            .eraseToAnyPublisher()
     }
 }

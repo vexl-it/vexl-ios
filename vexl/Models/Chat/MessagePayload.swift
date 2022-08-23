@@ -94,7 +94,9 @@ extension MessagePayload {
 
         let text = json["text"] as? String
         let image = json["image"] as? String
-        let jsonUser = json["deanonymizedUser"] as? [String: String]
+        let jsonUser = json["deanonymizedUser"] as? [String: Any]
+        let userName = jsonUser?["name"] as? String
+        let userImage = jsonUser?["image"] as? String
 
         self.contactInboxKey = chatMessage.senderPublicKey
         self.inboxKey = inboxPublicKey
@@ -103,7 +105,7 @@ extension MessagePayload {
         self.image = image
         self.messageTypeValue = chatMessage.messageType
         self.time = TimeInterval(time) / 1_000
-        self.user = ChatUser(name: jsonUser?["name"], image: jsonUser?["image"])
+        self.user = ChatUser(name: userName, image: userImage)
     }
 
     /// Use this initializer to manually create a message,

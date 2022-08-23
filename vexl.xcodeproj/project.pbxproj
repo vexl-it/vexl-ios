@@ -23,6 +23,8 @@
 		4F700CBE2844C4C20085139F /* StickyBitcoinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F700CBD2844C4C20085139F /* StickyBitcoinView.swift */; };
 		4F700CC02844C54E0085139F /* BitcoinViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F700CBF2844C54E0085139F /* BitcoinViewModel.swift */; };
 		4F9ECFF728AE93350074EA47 /* KeyboardReadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F9ECFF628AE93350074EA47 /* KeyboardReadable.swift */; };
+		4FA3BF6A28AEE8F3000BE679 /* DeeplinkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA3BF6928AEE8F3000BE679 /* DeeplinkManager.swift */; };
+		4FA3BF6C28AFDB7A000BE679 /* UIWindow+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA3BF6B28AFDB7A000BE679 /* UIWindow+.swift */; };
 		4FBF61DE283BD11C00DDBE71 /* FilterCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FBF61DD283BD11C00DDBE71 /* FilterCoordinator.swift */; };
 		4FBF61E0283BD12700DDBE71 /* FilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FBF61DF283BD12700DDBE71 /* FilterView.swift */; };
 		4FBF61E2283BD12D00DDBE71 /* FilterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FBF61E1283BD12D00DDBE71 /* FilterViewModel.swift */; };
@@ -161,12 +163,13 @@
 		C1A0B48D6D54EB5D7D8929FB /* Pods_vexl_vexlTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D776C4D0B95B9F6E229AF7E4 /* Pods_vexl_vexlTests.framework */; };
 		F1042BA227BEADB70048C2F0 /* WelcomeAgreementSwitch.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1042BA127BEADB70048C2F0 /* WelcomeAgreementSwitch.swift */; };
 		F1042BA527BEF0360048C2F0 /* OnboardingView+PageControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1042BA427BEF0360048C2F0 /* OnboardingView+PageControl.swift */; };
+		F1071D4328B439F5002BE9EF /* ChatRevealIdentityBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1071D4228B439F5002BE9EF /* ChatRevealIdentityBannerView.swift */; };
 		F11441C7284681EC00307D39 /* RegistrationCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11441A3284681EC00307D39 /* RegistrationCardView.swift */; };
 		F11441C8284681EC00307D39 /* RegistrationCounterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11441A4284681EC00307D39 /* RegistrationCounterView.swift */; };
 		F11441C9284681EC00307D39 /* CardModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11441A6284681EC00307D39 /* CardModifier.swift */; };
 		F11441CA284681EC00307D39 /* HeaderTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11441A7284681EC00307D39 /* HeaderTitleView.swift */; };
 		F11441CC284681EC00307D39 /* DottedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11441AB284681EC00307D39 /* DottedButton.swift */; };
-		F11441CD284681EC00307D39 /* LargeLabelButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11441AC284681EC00307D39 /* LargeLabelButton.swift */; };
+		F11441CD284681EC00307D39 /* LabelButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11441AC284681EC00307D39 /* LabelButton.swift */; };
 		F11441CE284681EC00307D39 /* OffsetScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11441AE284681EC00307D39 /* OffsetScrollView.swift */; };
 		F11441CF284681EC00307D39 /* ExpandingTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11441B0284681EC00307D39 /* ExpandingTextView.swift */; };
 		F11441D0284681EC00307D39 /* BorderedTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11441B1284681EC00307D39 /* BorderedTextField.swift */; };
@@ -439,6 +442,8 @@
 		4F700CBF2844C54E0085139F /* BitcoinViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BitcoinViewModel.swift; sourceTree = "<group>"; };
 		4F700CC22844DA250085139F /* OffsetScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OffsetScrollView.swift; sourceTree = "<group>"; };
 		4F9ECFF628AE93350074EA47 /* KeyboardReadable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardReadable.swift; sourceTree = "<group>"; };
+		4FA3BF6928AEE8F3000BE679 /* DeeplinkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeeplinkManager.swift; sourceTree = "<group>"; };
+		4FA3BF6B28AFDB7A000BE679 /* UIWindow+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIWindow+.swift"; sourceTree = "<group>"; };
 		4FBF61DD283BD11C00DDBE71 /* FilterCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterCoordinator.swift; sourceTree = "<group>"; };
 		4FBF61DF283BD12700DDBE71 /* FilterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterView.swift; sourceTree = "<group>"; };
 		4FBF61E1283BD12D00DDBE71 /* FilterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterViewModel.swift; sourceTree = "<group>"; };
@@ -599,12 +604,13 @@
 		DF8AC1A170DAA6A83E1E979B /* Pods-vexl.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-vexl.debug.xcconfig"; path = "Target Support Files/Pods-vexl/Pods-vexl.debug.xcconfig"; sourceTree = "<group>"; };
 		F1042BA127BEADB70048C2F0 /* WelcomeAgreementSwitch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeAgreementSwitch.swift; sourceTree = "<group>"; };
 		F1042BA427BEF0360048C2F0 /* OnboardingView+PageControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OnboardingView+PageControl.swift"; sourceTree = "<group>"; };
+		F1071D4228B439F5002BE9EF /* ChatRevealIdentityBannerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatRevealIdentityBannerView.swift; sourceTree = "<group>"; };
 		F11441A3284681EC00307D39 /* RegistrationCardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegistrationCardView.swift; sourceTree = "<group>"; };
 		F11441A4284681EC00307D39 /* RegistrationCounterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegistrationCounterView.swift; sourceTree = "<group>"; };
 		F11441A6284681EC00307D39 /* CardModifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardModifier.swift; sourceTree = "<group>"; };
 		F11441A7284681EC00307D39 /* HeaderTitleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeaderTitleView.swift; sourceTree = "<group>"; };
 		F11441AB284681EC00307D39 /* DottedButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DottedButton.swift; sourceTree = "<group>"; };
-		F11441AC284681EC00307D39 /* LargeLabelButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LargeLabelButton.swift; sourceTree = "<group>"; };
+		F11441AC284681EC00307D39 /* LabelButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelButton.swift; sourceTree = "<group>"; };
 		F11441AE284681EC00307D39 /* OffsetScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OffsetScrollView.swift; sourceTree = "<group>"; };
 		F11441B0284681EC00307D39 /* ExpandingTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExpandingTextView.swift; sourceTree = "<group>"; };
 		F11441B1284681EC00307D39 /* BorderedTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BorderedTextField.swift; sourceTree = "<group>"; };
@@ -926,6 +932,14 @@
 			path = BitcoinView;
 			sourceTree = "<group>";
 		};
+		4FA3BF6828AEE8E7000BE679 /* Deeplink */ = {
+			isa = PBXGroup;
+			children = (
+				4FA3BF6928AEE8F3000BE679 /* DeeplinkManager.swift */,
+			);
+			path = Deeplink;
+			sourceTree = "<group>";
+		};
 		4FBF61DC283BCE3500DDBE71 /* Filters */ = {
 			isa = PBXGroup;
 			children = (
@@ -1179,6 +1193,7 @@
 				F1BFA97228043D6300F4E745 /* Image+.swift */,
 				B0501BA92887419F00A44E18 /* Array+.swift */,
 				B042C94F28A8457800860F91 /* Color+.swift */,
+				4FA3BF6B28AFDB7A000BE679 /* UIWindow+.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1224,6 +1239,7 @@
 		B08F38F227AE7110008B344F /* Managers */ = {
 			isa = PBXGroup;
 			children = (
+				4FA3BF6828AEE8E7000BE679 /* Deeplink */,
 				F1D204F52864FABB006A5671 /* Inbox */,
 				B08F391627AE7112008B344F /* AuthenticationManager.swift */,
 				B007A78F28762EE200CFA5C9 /* FacebookManager.swift */,
@@ -1557,7 +1573,7 @@
 			children = (
 				F11441F228468B5600307D39 /* CloseButton.swift */,
 				F11441AB284681EC00307D39 /* DottedButton.swift */,
-				F11441AC284681EC00307D39 /* LargeLabelButton.swift */,
+				F11441AC284681EC00307D39 /* LabelButton.swift */,
 				F114420028495E1900307D39 /* LargeSolidButton.swift */,
 			);
 			path = Buttons;
@@ -1830,6 +1846,7 @@
 				F1485632284FD451003213D7 /* CommonFriends */,
 				F1485636284FD451003213D7 /* ChatHeaderView.swift */,
 				F1485638284FD451003213D7 /* ChatDateView.swift */,
+				F1071D4228B439F5002BE9EF /* ChatRevealIdentityBannerView.swift */,
 				F1485639284FD451003213D7 /* ChatInputView.swift */,
 			);
 			path = Components;
@@ -2664,6 +2681,7 @@
 				B08F399727AE7D33008B344F /* SplashScreenView.swift in Sources */,
 				F175ABAA27F4FC3F000DAB15 /* ImportPhoneContactsViewModel.swift in Sources */,
 				F1B365D5288609A10069788D /* ProfilePhoneContactsView.swift in Sources */,
+				4FA3BF6C28AFDB7A000BE679 /* UIWindow+.swift in Sources */,
 				4FEFE328289F21D6006AB8DA /* RegisterAnonymizeView.swift in Sources */,
 				F188624B2811551E00659786 /* OfferSettingsView.swift in Sources */,
 				F12A14F327D96FD40096543E /* ImportContactsView.swift in Sources */,
@@ -2763,6 +2781,7 @@
 				F1485647284FD451003213D7 /* ChatHeaderView.swift in Sources */,
 				F1483CBF2856CEBE0054B7A2 /* OfferTriggerDeleteView.swift in Sources */,
 				F12A150427E1A4520096543E /* RequestAccessPhoneContactsViewModel.swift in Sources */,
+				4FA3BF6A28AEE8F3000BE679 /* DeeplinkManager.swift in Sources */,
 				F175AB8927E4F493000DAB15 /* Materialize.swift in Sources */,
 				F1B3010A287A464600C86F83 /* ChatActionViewModel.swift in Sources */,
 				F1485627284FD0FB003213D7 /* InboxCoordinator.swift in Sources */,
@@ -2815,6 +2834,7 @@
 				B007A73528659AD900CFA5C9 /* BottomActionSheetCoordinator.swift in Sources */,
 				F1B5FCD627C703BF0018729B /* View+.swift in Sources */,
 				F114420128495E1900307D39 /* LargeSolidButton.swift in Sources */,
+				F1071D4328B439F5002BE9EF /* ChatRevealIdentityBannerView.swift in Sources */,
 				B08F396627AE7112008B344F /* Constants.swift in Sources */,
 				B0FF5F6D289EFB210026E4C4 /* GroupMemberPayload.swift in Sources */,
 				F13B265E281899250011F2FB /* OfferAdvancedFilterBTCNetworkView.swift in Sources */,
@@ -2984,7 +3004,7 @@
 				F1485656284FD60D003213D7 /* InboxError.swift in Sources */,
 				4F700CBA2844B08B0085139F /* BitcoinView.swift in Sources */,
 				B08F394327AE7112008B344F /* Keychain+.swift in Sources */,
-				F11441CD284681EC00307D39 /* LargeLabelButton.swift in Sources */,
+				F11441CD284681EC00307D39 /* LabelButton.swift in Sources */,
 				F175AB8727E4D5C8000DAB15 /* UIScreen+.swift in Sources */,
 				B08D2ABB28A6A34800A1C901 /* FilterGroupView.swift in Sources */,
 				F18862472811550C00659786 /* OfferSettingsCoordinator.swift in Sources */,
@@ -3117,9 +3137,10 @@
 				CODE_SIGN_ENTITLEMENTS = vexl/vexl.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 205;
+				CURRENT_PROJECT_VERSION = 217;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = KQNTW88PVA;
+				ENABLE_BITCODE = NO;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = vexl/Info.plist;
@@ -3149,7 +3170,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 205;
+				CURRENT_PROJECT_VERSION = 217;
 				DEVELOPMENT_TEAM = SHD6TUKSPH;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
@@ -3234,9 +3255,10 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = vexl/vexlDebug.entitlements;
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 205;
+				CURRENT_PROJECT_VERSION = 217;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = KQNTW88PVA;
+				ENABLE_BITCODE = NO;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = vexl/Info.plist;
@@ -3266,7 +3288,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 205;
+				CURRENT_PROJECT_VERSION = 217;
 				DEVELOPMENT_TEAM = SHD6TUKSPH;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
@@ -3411,10 +3433,10 @@
 				CODE_SIGN_ENTITLEMENTS = vexl/vexl.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 205;
+				CURRENT_PROJECT_VERSION = 217;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = KQNTW88PVA;
-				ENABLE_BITCODE = YES;
+				ENABLE_BITCODE = NO;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = vexl/Info.plist;
@@ -3446,9 +3468,10 @@
 				CODE_SIGN_ENTITLEMENTS = vexl/vexl.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 205;
+				CURRENT_PROJECT_VERSION = 217;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = KQNTW88PVA;
+				ENABLE_BITCODE = NO;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = vexl/Info.plist;
@@ -3478,7 +3501,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 205;
+				CURRENT_PROJECT_VERSION = 217;
 				DEVELOPMENT_TEAM = SHD6TUKSPH;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
@@ -3497,7 +3520,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 205;
+				CURRENT_PROJECT_VERSION = 217;
 				DEVELOPMENT_TEAM = SHD6TUKSPH;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;

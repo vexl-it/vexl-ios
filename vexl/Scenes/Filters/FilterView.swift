@@ -30,7 +30,7 @@ struct FilterView: View {
 
     private var scrollableContent: some View {
         ScrollView(showsIndicators: false) {
-            VStack(spacing: Appearance.GridGuide.padding) {
+            LazyVStack(spacing: Appearance.GridGuide.padding) {
                 Group {
                     amount
 
