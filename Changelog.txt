@@ -30,6 +30,8 @@
 - VEX-632: Its possible to remove previously added contacts
 - Registered new testing devices
 - VEX-781: Offers are now beeing deleted from market place
+- VEX-669: Correct colors for welcome screen
+- VEX-787: Added FAQ and terms-conditions to the profile
 - VEX-389: Added limit to phone number
 - VEX-637: Updated how offer amount is presented in the card
 - VEX-730: Removed FAQ from onboarding
@@ -65,5 +67,8 @@
 - VEX-759 - The name of the application should be Vexl with a capital V
 - VEX-686 - Incorrect height of the button for creating an offer
 - VEX-672 - iOS: [Onboarding] - the back arrow has an incorrect design
+- VEX-670 - Wrong text on the button for new offers
+- VEX-649 - The cross button should be aligned to the first line of text
+- VEX-715 - The layout of the buttons on the contact page does not match the design
 
 ### Known Issues

@@ -22,7 +22,7 @@ struct WelcomeAgreementSwitch: View {
                 .toggleStyle(SwitchToggleStyle(tint: Appearance.Colors.yellow100))
         }
         .padding()
-        .background(Appearance.Colors.gray1)
+        .background(Appearance.Colors.black1)
         .cornerRadius(Appearance.GridGuide.buttonCorner)
     }
 
@@ -30,7 +30,7 @@ struct WelcomeAgreementSwitch: View {
         HStack(spacing: Appearance.GridGuide.tinyPadding) {
             Text(L.welcomeTermsAgreementsOne())
                 .textStyle(.paragraphMedium)
-                .foregroundColor(Appearance.Colors.gray3)
+                .foregroundColor(Appearance.Colors.gray4)
             +
             Text(" ")
             +

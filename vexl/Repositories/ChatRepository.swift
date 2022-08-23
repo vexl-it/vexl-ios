@@ -12,6 +12,7 @@ protocol ChatRepositoryType {
     func createChat(requestedOffer: ManagedOffer, receiverPublicKey: String, requestMessage: String) -> AnyPublisher<ManagedChat, Error>
     func setBlockChat(chat: ManagedChat, isBlocked: Bool) -> AnyPublisher<ManagedChat, Error>
     func setDisplayRevealBanner(chat: ManagedChat, shouldDisplay: Bool) -> AnyPublisher<ManagedChat, Error>
+    func getChat(inboxPK: String, senderPK: String) -> AnyPublisher<ManagedChat?, Error>
 }
 
 class ChatRepository: ChatRepositoryType {
@@ -57,5 +58,17 @@ class ChatRepository: ChatRepositoryType {
             chat.shouldDisplayRevealBanner = shouldDisplay
             return chat
         }
+    }
+
+    func getChat(inboxPK: String, senderPK: String) -> AnyPublisher<ManagedChat?, Error> {
+        persistence
+            .load(
+                type: ManagedChat.self,
+                context: persistence.viewContext,
+                predicate: NSPredicate(
+                    format: "inbox.keyPair.publicKey == '\(inboxPK)' AND receiverKeyPair.publicKey == '\(senderPK)'")
+            )
+            .map(\.first)
+            .eraseToAnyPublisher()
     }
 }

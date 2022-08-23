@@ -22,7 +22,7 @@ class RegisterNameAvatarCoordinator: BaseCoordinator<RouterResult<Void>> {
     override func start() -> CoordinatingResult<CoordinationResult> {
         let viewModel = RegisterNameAvatarViewModel()
         let viewController = RegisterViewController(currentPage: 1,
-                                                    numberOfPages: 4,
+                                                    numberOfPages: Constants.registrationSteps,
                                                     rootView: RegisterNameAvatarView(viewModel: viewModel),
                                                     showBackButton: false)
         router.present(viewController, animated: animated)
