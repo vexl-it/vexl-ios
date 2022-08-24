@@ -13,7 +13,7 @@ enum ChatRouter: ApiRouter {
     case createInbox(publicKey: String, pushToken: String?, signedChallenge: SignedChallenge)
     case request(inboxPublicKey: String, message: String)
     case requestConfirmation(confirmed: Bool, message: String, inboxPublicKey: String,
-                             requesterPublicKey: String, signature: String)
+                             requesterPublicKey: String, signedChallenge: SignedChallenge)
     case requestChallenge(publicKey: String)
     case pullChat(publicKey: String, signature: String)
     case deleteChat(publicKey: String)
@@ -83,14 +83,13 @@ enum ChatRouter: ApiRouter {
                 "publicKey": publicKey,
                 "signature": signature
             ]
-        case let .requestConfirmation(confirmed, message, inboxPublicKey, requesterPublicKey, signature):
+        case let .requestConfirmation(confirmed, message, inboxPublicKey, requesterPublicKey, signedChallenge):
             return [
                 "publicKey": inboxPublicKey,
                 "publicKeyToConfirm": requesterPublicKey,
-                "signature": signature,
                 "message": message,
                 "approve": confirmed
-            ]
+            ].addSignedChallenge(signedChallenge: signedChallenge)
         case let .deleteChat(publicKey):
             return ["publicKey": publicKey]
         case let .deleteChatMessages(publicKey):

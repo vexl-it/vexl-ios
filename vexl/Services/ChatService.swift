@@ -19,8 +19,7 @@ protocol ChatServiceType {
     func communicationConfirmation(confirmation: Bool,
                                    message: MessagePayload?,
                                    inboxKeys: ECCKeys,
-                                   requesterPublicKey: String,
-                                   signature: String) -> AnyPublisher<Void, Error>
+                                   requesterPublicKey: String) -> AnyPublisher<Void, Error>
 
     // MARK: - Sync up inboxes
 
@@ -69,19 +68,27 @@ final class ChatService: BaseService, ChatServiceType {
     func communicationConfirmation(confirmation: Bool,
                                    message: MessagePayload?,
                                    inboxKeys: ECCKeys,
-                                   requesterPublicKey: String,
-                                   signature: String) -> AnyPublisher<Void, Error> {
+                                   requesterPublicKey: String) -> AnyPublisher<Void, Error> {
         if let parsedMessage = message, let messageAsString = parsedMessage.asString {
-            return cryptoService
-                .encryptECIES(publicKey: requesterPublicKey, secret: messageAsString)
-                .flatMapLatest(with: self) { owner, encryptedMessage in
-                    owner.request(endpoint: ChatRouter.requestConfirmation(confirmed: confirmation,
-                                                                           message: encryptedMessage,
-                                                                           inboxPublicKey: inboxKeys.publicKey,
-                                                                           requesterPublicKey: requesterPublicKey,
-                                                                           signature: signature))
-                }
-                .eraseToAnyPublisher()
+            return Publishers.CombineLatest(
+                getSignedChallenge(eccKeys: inboxKeys),
+                cryptoService
+                    .encryptECIES(publicKey: requesterPublicKey, secret: messageAsString)
+            )
+            .withUnretained(self)
+            .flatMapLatest { owner, data -> AnyPublisher<Void, Error> in
+                let (signedChallenge, encryptedMessage) = data
+                return owner.request(
+                    endpoint: ChatRouter.requestConfirmation(
+                        confirmed: confirmation,
+                        message: encryptedMessage,
+                        inboxPublicKey: inboxKeys.publicKey,
+                        requesterPublicKey: requesterPublicKey,
+                        signedChallenge: signedChallenge
+                    )
+                )
+            }
+            .eraseToAnyPublisher()
         } else {
             return Just(()).setFailureType(to: Error.self)
                 .eraseToAnyPublisher()

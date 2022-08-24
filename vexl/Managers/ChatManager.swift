@@ -114,18 +114,11 @@ final class ChatManager: ChatManagerType {
                 .eraseToAnyPublisher()
         }
 
-        return chatService.requestChallenge(publicKey: inboxKeys.publicKey)
-            .flatMap { [cryptoService] challenge in
-                cryptoService.signECDSA(keys: inboxKeys, message: challenge.challenge)
-            }
-            .flatMap { [chatService] signature in
-                chatService
-                    .communicationConfirmation(confirmation: confirmation,
-                                               message: payload,
-                                               inboxKeys: inboxKeys,
-                                               requesterPublicKey: receiverPublicKey,
-                                               signature: signature)
-            }
+        return chatService
+            .communicationConfirmation(confirmation: confirmation,
+                                       message: payload,
+                                       inboxKeys: inboxKeys,
+                                       requesterPublicKey: receiverPublicKey)
             .flatMap { [inboxRepository] in
                 confirmation
                     ? inboxRepository.createOrUpdateChats(receivedPayloads: [payload], inbox: inbox)
