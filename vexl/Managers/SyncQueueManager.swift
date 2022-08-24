@@ -217,7 +217,7 @@ final class SyncQueueManager: SyncQueueManagerType {
     }
 
     private func uploadInbox(inbox: ManagedInbox, item: ManagedSyncItem) -> AnyPublisher<Void, Error> {
-        guard let publicKey = inbox.keyPair?.publicKey else {
+        guard let inboxKeys = inbox.keyPair?.keys else {
             return Fail(error: PersistenceError.insufficientData).eraseToAnyPublisher()
         }
 
@@ -237,7 +237,7 @@ final class SyncQueueManager: SyncQueueManagerType {
             .flatMap { [chatService, persistence] token in
                 chatService
                     .createInbox(
-                        publicKey: publicKey,
+                        eccKeys: inboxKeys,
                         pushToken: token
                     )
                     .flatMap { _ -> AnyPublisher<Void, Error> in

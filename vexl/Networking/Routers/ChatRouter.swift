@@ -10,16 +10,17 @@ import Alamofire
 
 // swiftlint: disable enum_case_associated_values_count
 enum ChatRouter: ApiRouter {
-    case createInbox(publicKey: String, pushToken: String?)
+    case createInbox(publicKey: String, pushToken: String?, signedChallenge: SignedChallenge)
     case request(inboxPublicKey: String, message: String)
     case requestConfirmation(confirmed: Bool, message: String, inboxPublicKey: String,
-                             requesterPublicKey: String, signature: String)
+                             requesterPublicKey: String, signedChallenge: SignedChallenge)
     case requestChallenge(publicKey: String)
-    case pullChat(publicKey: String, signature: String)
-    case deleteChat(publicKey: String)
-    case blockInbox(publicKey: String, publicKeyToBlock: String, signature: String, isBlocked: Bool)
-    case sendMessage(senderPublicKey: String, receiverPublicKey: String, message: String, messageType: MessageType)
-    case deleteChatMessages(publicKey: String)
+    case pullChat(publicKey: String, signedChallenge: SignedChallenge)
+    case deleteChat(publicKey: String, signedChallenge: SignedChallenge)
+    case blockInbox(publicKey: String, publicKeyToBlock: String, signedChallenge: SignedChallenge, isBlocked: Bool)
+    case sendMessage(senderPublicKey: String, receiverPublicKey: String,
+                     message: String, messageType: MessageType, signedChallenge: SignedChallenge)
+    case deleteChatMessages(publicKey: String, signedChallenge: SignedChallenge)
 
     var method: HTTPMethod {
         switch self {
@@ -61,14 +62,14 @@ enum ChatRouter: ApiRouter {
 
     var parameters: Parameters {
         switch self {
-        case let .createInbox(publicKey, pushToken):
+        case let .createInbox(publicKey, pushToken, signedChallenge):
             guard let pushToken = pushToken else {
-                return ["publicKey": publicKey]
+                return ["publicKey": publicKey].addSignedChallenge(signedChallenge: signedChallenge)
             }
             return [
                 "publicKey": publicKey,
                 "token": pushToken
-            ]
+            ].addSignedChallenge(signedChallenge: signedChallenge)
         case let .request(inboxPublicKey, message):
             return [
                 "publicKey": inboxPublicKey,
@@ -78,37 +79,35 @@ enum ChatRouter: ApiRouter {
             return [
                 "publicKey": publicKey
             ]
-        case let .pullChat(publicKey, signature):
+        case let .pullChat(publicKey, signedChallenged):
             return [
-                "publicKey": publicKey,
-                "signature": signature
-            ]
-        case let .requestConfirmation(confirmed, message, inboxPublicKey, requesterPublicKey, signature):
+                "publicKey": publicKey
+            ].addSignedChallenge(signedChallenge: signedChallenged)
+        case let .requestConfirmation(confirmed, message, inboxPublicKey, requesterPublicKey, signedChallenge):
             return [
                 "publicKey": inboxPublicKey,
                 "publicKeyToConfirm": requesterPublicKey,
-                "signature": signature,
                 "message": message,
                 "approve": confirmed
-            ]
-        case let .deleteChat(publicKey):
-            return ["publicKey": publicKey]
-        case let .deleteChatMessages(publicKey):
-            return ["publicKey": publicKey]
-        case let .blockInbox(publicKey, publicKeyToBlock, signature, isBlocked):
+            ].addSignedChallenge(signedChallenge: signedChallenge)
+        case let .deleteChat(publicKey, signedChallenge):
+            return ["publicKey": publicKey].addSignedChallenge(signedChallenge: signedChallenge)
+        case let .deleteChatMessages(publicKey, signedChallenge):
+            return ["publicKey": publicKey].addSignedChallenge(signedChallenge: signedChallenge)
+        case let .blockInbox(publicKey, publicKeyToBlock, signedChallenge, isBlocked):
             return [
                 "publicKey": publicKey,
                 "publicKeyToBlock": publicKeyToBlock,
-                "signature": signature,
                 "block": isBlocked
-            ]
-        case let .sendMessage(senderPublicKey, receiverPublicKey, message, messageType):
+            ].addSignedChallenge(signedChallenge: signedChallenge)
+        case let .sendMessage(senderPublicKey, receiverPublicKey, message, messageType, signedChallenge):
             return [
                 "senderPublicKey": senderPublicKey,
                 "receiverPublicKey": receiverPublicKey,
                 "messageType": messageType.rawValue,
                 "message": message
             ]
+            .addSignedChallenge(signedChallenge: signedChallenge)
         }
     }
 
@@ -118,5 +117,16 @@ enum ChatRouter: ApiRouter {
 
     var url: String {
         Constants.API.chatBaseURLString
+    }
+}
+
+fileprivate extension Parameters {
+    func addSignedChallenge(signedChallenge: SignedChallenge) -> Parameters {
+        var updatedParams = self
+        updatedParams["signedChallenge"] = [
+            "challenge": signedChallenge.challenge,
+            "signature": signedChallenge.signature
+        ]
+        return updatedParams
     }
 }

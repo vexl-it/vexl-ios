@@ -97,22 +97,8 @@ final class InboxManager: InboxManagerType {
                 .eraseToAnyPublisher()
         }
 
-        let challenge = chatService.requestChallenge(publicKey: inboxKeys.publicKey)
-            .map { $0.challenge }
-            .eraseToAnyPublisher()
-
-        let signature = challenge
-            .flatMapLatest { [cryptoService] challenge in
-                cryptoService.signECDSA(keys: inboxKeys, message: challenge)
-            }
-            .eraseToAnyPublisher()
-
-        let encryptedMessages = signature
-            .flatMapLatest { [chatService] signature -> AnyPublisher<[EncryptedChatMessage], Error> in
-                chatService.pullInboxMessages(publicKey: inboxKeys.publicKey, signature: signature)
-                    .map(\.messages)
-                    .eraseToAnyPublisher()
-            }
+        let encryptedMessages = chatService.pullInboxMessages(publicKey: inboxKeys.publicKey, eccKeys: inboxKeys)
+            .map(\.messages)
             .eraseToAnyPublisher()
 
         let messagePayloads = encryptedMessages
@@ -148,7 +134,7 @@ final class InboxManager: InboxManagerType {
 
         let deleteChat = saveMessages
             .flatMap { [chatService] payloads in
-                chatService.deleteInboxMessages(publicKey: inboxKeys.publicKey)
+                chatService.deleteInboxMessages(publicKey: inboxKeys.publicKey, eccKeys: inboxKeys)
                     .map { payloads }
             }
             .eraseToAnyPublisher()
@@ -160,11 +146,6 @@ final class InboxManager: InboxManagerType {
                     .setFailureType(to: Error.self)
                     .eraseToAnyPublisher()
             }
-            .eraseToAnyPublisher()
-    }
-
-    private func deleteMessages(inboxPublicKey: String) -> AnyPublisher<Void, Error> {
-        chatService.deleteInboxMessages(publicKey: inboxPublicKey)
             .eraseToAnyPublisher()
     }
 }
