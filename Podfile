@@ -38,6 +38,7 @@ target 'vexl' do
     # Firebase
     pod 'Firebase/Core'
     pod 'Firebase/Crashlytics'
+    pod 'Firebase/DynamicLinks'
 
     # Logging
     pod 'SwiftyBeaver'

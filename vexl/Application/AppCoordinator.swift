@@ -85,6 +85,8 @@ final class AppCoordinator: BaseCoordinator<Void> {
                     return owner.showChat(chat: managedChat, router: modalRouter)
                 case .request:
                     return owner.showChatRequests(router: modalRouter)
+                case .groupInput(let code):
+                    return owner.showGroupsInput(router: modalRouter, code: code)
                 }
             }
             .sink(receiveValue: { [deeplinkManager] _ in
@@ -155,6 +157,18 @@ extension AppCoordinator {
 
     private func showChat(chat: ManagedChat, router: Router) -> CoordinatingResult<RouterResult<Void>> {
         coordinate(to: ChatCoordinator(chat: chat, router: router, animated: true))
+            .flatMap { result -> CoordinatingResult<RouterResult<Void>> in
+                guard result != .dismissedByRouter else {
+                    return Just(result).eraseToAnyPublisher()
+                }
+                return router.dismiss(animated: true, returning: result)
+            }
+            .prefix(1)
+            .eraseToAnyPublisher()
+    }
+
+    private func showGroupsInput(router: Router, code: String) -> CoordinatingResult<RouterResult<Void>> {
+        coordinate(to: GroupsInputCoordinator(router: router, animated: true, code: code))
             .flatMap { result -> CoordinatingResult<RouterResult<Void>> in
                 guard result != .dismissedByRouter else {
                     return Just(result).eraseToAnyPublisher()

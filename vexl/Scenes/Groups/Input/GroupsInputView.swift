@@ -53,7 +53,7 @@ struct GroupsInputView: View {
 
 struct GroupsInputViewPreview: PreviewProvider {
     static var previews: some View {
-        GroupsInputView(viewModel: .init())
+        GroupsInputView(viewModel: .init(code: "123456"))
             .previewDevice("iPhone 11")
     }
 }
