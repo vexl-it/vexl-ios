@@ -334,7 +334,7 @@ final class RegisterPhoneViewModel: ViewModelType {
         let createInbox = createUserBE
             .flatMapLatest(with: self) { owner, token in
                 owner.chatService
-                    .createInbox(publicKey: owner.newKeys.publicKey, pushToken: token)
+                    .createInbox(eccKeys: owner.newKeys, pushToken: token)
                     .track(activity: owner.primaryActivity)
                     .materialize()
                     .compactMap(\.value)

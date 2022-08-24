@@ -102,7 +102,12 @@ final class ContactsManager: ContactsManagerType {
     }
 
     func getUserPhoneContacts(_ contacts: [String]) -> AnyPublisher<[ContactInformation], Error> {
-        contactsService
+        guard !contacts.isEmpty else {
+            return Just([])
+                .setFailureType(to: Error.self)
+                .eraseToAnyPublisher()
+        }
+        return contactsService
             .getActivePhoneContacts(contacts)
             .map(\.newContacts)
             .withUnretained(self)
