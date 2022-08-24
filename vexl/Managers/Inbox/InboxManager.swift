@@ -134,7 +134,7 @@ final class InboxManager: InboxManagerType {
 
         let deleteChat = saveMessages
             .flatMap { [chatService] payloads in
-                chatService.deleteInboxMessages(publicKey: inboxKeys.publicKey)
+                chatService.deleteInboxMessages(publicKey: inboxKeys.publicKey, eccKeys: inboxKeys)
                     .map { payloads }
             }
             .eraseToAnyPublisher()
@@ -146,11 +146,6 @@ final class InboxManager: InboxManagerType {
                     .setFailureType(to: Error.self)
                     .eraseToAnyPublisher()
             }
-            .eraseToAnyPublisher()
-    }
-
-    private func deleteMessages(inboxPublicKey: String) -> AnyPublisher<Void, Error> {
-        chatService.deleteInboxMessages(publicKey: inboxPublicKey)
             .eraseToAnyPublisher()
     }
 }

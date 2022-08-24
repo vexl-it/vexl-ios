@@ -22,7 +22,7 @@ protocol ChatServiceType {
     // MARK: - Sync up inboxes
 
     func pullInboxMessages(publicKey: String, eccKeys: ECCKeys) -> AnyPublisher<EncryptedChatMessageList, Error>
-    func deleteInboxMessages(publicKey: String) -> AnyPublisher<Void, Error>
+    func deleteInboxMessages(publicKey: String, eccKeys: ECCKeys) -> AnyPublisher<Void, Error>
 
     // MARK: - Chat functionalities
 
@@ -111,8 +111,17 @@ final class ChatService: BaseService, ChatServiceType {
             .eraseToAnyPublisher()
     }
 
-    func deleteInboxMessages(publicKey: String) -> AnyPublisher<Void, Error> {
-        request(endpoint: ChatRouter.deleteChatMessages(publicKey: publicKey))
+    func deleteInboxMessages(publicKey: String, eccKeys: ECCKeys) -> AnyPublisher<Void, Error> {
+        getSignedChallenge(eccKeys: eccKeys)
+            .withUnretained(self)
+            .flatMapLatest { owner, signedChallenge in
+                owner.request(
+                    endpoint: ChatRouter.deleteChatMessages(
+                        publicKey: publicKey,
+                        signedChallenge: signedChallenge
+                    )
+                )
+            }
             .eraseToAnyPublisher()
     }
 

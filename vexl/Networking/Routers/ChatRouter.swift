@@ -20,7 +20,7 @@ enum ChatRouter: ApiRouter {
     case blockInbox(publicKey: String, publicKeyToBlock: String, signedChallenge: SignedChallenge, isBlocked: Bool)
     case sendMessage(senderPublicKey: String, receiverPublicKey: String,
                      message: String, messageType: MessageType, signedChallenge: SignedChallenge)
-    case deleteChatMessages(publicKey: String)
+    case deleteChatMessages(publicKey: String, signedChallenge: SignedChallenge)
 
     var method: HTTPMethod {
         switch self {
@@ -92,8 +92,8 @@ enum ChatRouter: ApiRouter {
             ].addSignedChallenge(signedChallenge: signedChallenge)
         case let .deleteChat(publicKey, signedChallenge):
             return ["publicKey": publicKey].addSignedChallenge(signedChallenge: signedChallenge)
-        case let .deleteChatMessages(publicKey):
-            return ["publicKey": publicKey]
+        case let .deleteChatMessages(publicKey, signedChallenge):
+            return ["publicKey": publicKey].addSignedChallenge(signedChallenge: signedChallenge)
         case let .blockInbox(publicKey, publicKeyToBlock, signedChallenge, isBlocked):
             return [
                 "publicKey": publicKey,
