@@ -17,6 +17,7 @@ protocol ChatManagerType {
     func identityResponse(allow: Bool, chat: ManagedChat) -> AnyPublisher<Void, Error>
     func communicationResponse(chat: ManagedChat, confirmation: Bool) -> AnyPublisher<Void, Error>
     func setBlockMessaging(isBlocked: Bool, chat: ManagedChat) -> AnyPublisher<Void, Error>
+    func setDisplayRevealBanner(shouldDisplay: Bool, chat: ManagedChat) -> AnyPublisher<Void, Error>
 }
 
 final class ChatManager: ChatManagerType {
@@ -189,6 +190,13 @@ final class ChatManager: ChatManagerType {
                 owner.chatRepository
                     .setBlockChat(chat: chat, isBlocked: isBlocked)
             }
+            .asVoid()
+            .eraseToAnyPublisher()
+    }
+
+    func setDisplayRevealBanner(shouldDisplay: Bool, chat: ManagedChat) -> AnyPublisher<Void, Error> {
+        chatRepository
+            .setDisplayRevealBanner(chat: chat, shouldDisplay: shouldDisplay)
             .asVoid()
             .eraseToAnyPublisher()
     }
