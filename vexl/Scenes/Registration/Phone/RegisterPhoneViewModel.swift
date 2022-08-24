@@ -334,7 +334,7 @@ final class RegisterPhoneViewModel: ViewModelType {
         let createInbox = createUserBE
             .flatMapLatest(with: self) { owner, token in
                 owner.chatService
-                    .createInbox(eccKeys: owner.newKeys, pushToken: token) // TODO: test this with BE, does it make sense to send this without connection to an inbox?
+                    .createInbox(eccKeys: owner.newKeys, pushToken: token)
                     .track(activity: owner.primaryActivity)
                     .materialize()
                     .compactMap(\.value)
