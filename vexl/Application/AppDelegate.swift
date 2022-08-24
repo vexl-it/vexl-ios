@@ -34,11 +34,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         #endif
 
         if Keychain.standard[.localEncryptionKey] == nil {
-            let newKey = (0..<24)
-                .compactMap { _ in Constants.alphabet.randomElement() }
-                .map(String.init)
-                .joined()
-            Keychain.standard[.localEncryptionKey] = newKey
+            let keyCount = 64
+            var key = Data(count: keyCount)
+            key.withUnsafeMutableBytes { (pointer: UnsafeMutableRawBufferPointer) in
+                let result = SecRandomCopyBytes(kSecRandomDefault, keyCount, pointer.baseAddress!)
+                assert(result == 0, "Failed to get random bytes")
+            }
+            let stringKey = String(data: key, encoding: .macOSRoman)
+            Keychain.standard[.localEncryptionKey] = stringKey
         }
 
         // Firebase messaging
