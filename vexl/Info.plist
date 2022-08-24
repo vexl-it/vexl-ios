@@ -3,7 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>FirebaseDynamicLinksCustomDomains</key>
-	<string>https://link.vexl.it</string>
+	<array>
+		<string>https://link.vexl.it</string>
+	</array>
 	<key>CFBundleDisplayName</key>
 	<string>Vexl</string>
 	<key>CFBundleExecutable</key>

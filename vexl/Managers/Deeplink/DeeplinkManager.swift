@@ -60,7 +60,7 @@ final class DeeplinkManager: DeeplinkManagerType {
     }
 
     func handleDeeplink(withURL url: URL) {
-        let code = "123456"
+        guard let code = url.valueOf("code") else { return }
         handleDeeplink(with: .openGroup(id: code))
     }
 

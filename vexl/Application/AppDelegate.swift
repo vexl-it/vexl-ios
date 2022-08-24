@@ -11,6 +11,7 @@ import SwiftyBeaver
 import FBSDKCoreKit
 import Firebase
 import FirebaseMessaging
+import FirebaseDynamicLinks
 #if DEBUG || DEVEL
 import AlamofireNetworkActivityLogger
 #endif
@@ -71,39 +72,43 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // application:didFinishLaunchingWithOptions.
         // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
     }
-//
-//    func application(_ application: UIApplication,
-//                     continue userActivity: NSUserActivity,
-//                     restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
-//        let handled = DynamicLinks.dynamicLinks().handleUniversalLink(userActivity.webpageURL!) { dynamiclink, error in
-//            guard error == nil else {
-//                log.error("⛔️ problem handling Firebase DynamicLink: \(String(describing: error))")
-//                return
-//            }
-//
-//            guard let url = dynamiclink?.url else { return }
-//            log.info("Opening dynamiclink URL: \(url)")
-//            @Inject var deeplinkManager: DeeplinkManagerType
-//            deeplinkManager.handleDeeplink(withURL: url)
-//        }
-//
-//        return handled
-//    }
-//
-//    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
-//        application(app,
-//                    open: url,
-//                    sourceApplication: options[UIApplication.OpenURLOptionsKey.sourceApplication] as? String,
-//                    annotation: "")
-//    }
-//
-//    func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
-//        guard let dynamicLink = DynamicLinks.dynamicLinks().dynamicLink(fromCustomSchemeURL: url)?.url else {
-//            return false
-//        }
-//
-//        @Inject var deeplinkManager: DeeplinkManagerType
-//        deeplinkManager.handleDeeplink(withURL: dynamicLink)
-//        return true
-//    }
+
+    // MARK: - Dynamic link
+
+    func application(_ application: UIApplication,
+                     continue userActivity: NSUserActivity,
+                     restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
+        guard let webpageURL = userActivity.webpageURL else { return true }
+
+        let handled = DynamicLinks.dynamicLinks().handleUniversalLink(webpageURL) { dynamiclink, error in
+            guard error == nil else {
+                log.error("⛔️ problem handling Firebase DynamicLink: \(String(describing: error))")
+                return
+            }
+
+            guard let url = dynamiclink?.url else { return }
+            log.info("Opening dynamiclink URL: \(url)")
+            @Inject var deeplinkManager: DeeplinkManagerType
+            deeplinkManager.handleDeeplink(withURL: url)
+        }
+
+        return handled
+    }
+
+    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
+        application(app,
+                    open: url,
+                    sourceApplication: options[UIApplication.OpenURLOptionsKey.sourceApplication] as? String,
+                    annotation: "")
+    }
+
+    func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
+        guard let dynamicLink = DynamicLinks.dynamicLinks().dynamicLink(fromCustomSchemeURL: url)?.url else {
+            return false
+        }
+
+        @Inject var deeplinkManager: DeeplinkManagerType
+        deeplinkManager.handleDeeplink(withURL: dynamicLink)
+        return true
+    }
 }
