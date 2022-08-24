@@ -8,89 +8,79 @@
 import SwiftUI
 
 struct ChatInputView: View {
-
+    
     @Binding var text: String
     let image: Data?
     let sendAction: () -> Void
     let cameraAction: () -> Void
     let deleteImageAction: () -> Void
-
-    private var inputHeight: CGFloat {
-        if image == nil {
-            return Appearance.GridGuide.chatTextFieldHeight
-        } else {
-            return Appearance.GridGuide.chatTextFieldHeight + Appearance.GridGuide.chatInputImageSize.height + Appearance.GridGuide.mediumPadding1
-        }
-    }
-
+    
     var body: some View {
         HStack {
-
+            
             // TODO: - Activate back when images are supported crossplatform
-
-//            Button {
-//                cameraAction()
-//            } label: {
-//                Image(R.image.chat.camera.name)
-//                    .resizable()
-//                    .frame(size: Appearance.GridGuide.iconSize)
-//                    .padding(Appearance.GridGuide.point)
-//                    .background(Appearance.Colors.gray1)
-//                    .clipShape(Circle())
-//            }
-
-            HStack {
-                VStack(alignment: .leading) {
-                    if let image = image {
-                        SelectedImageView(image: image,
-                                          deleteAction: {
-                            deleteImageAction()
-                        })
-                            .padding(.top, Appearance.GridGuide.point)
-                    }
-
-                    ExpandingTextView(
-                        placeholder: L.chatMessageInputPlaceholder(),
-                        text: $text,
-                        height: Appearance.GridGuide.chatTextFieldHeight,
-                        textColor: Appearance.Colors.whiteText
-                    )
-                        .padding(.top, Appearance.GridGuide.tinyPadding)
+            
+            //            Button {
+            //                cameraAction()
+            //            } label: {
+            //                Image(R.image.chat.camera.name)
+            //                    .resizable()
+            //                    .frame(size: Appearance.GridGuide.iconSize)
+            //                    .padding(Appearance.GridGuide.point)
+            //                    .background(Appearance.Colors.gray1)
+            //                    .clipShape(Circle())
+            //            }
+            
+            VStack(alignment: .leading) {
+                if let image = image {
+                    SelectedImageView(image: image,
+                                      deleteAction: {
+                        deleteImageAction()
+                    })
+                    .padding(.top, Appearance.GridGuide.point)
                 }
-
-                Button {
-                    sendAction()
-                } label: {
-                    Image(R.image.chat.sendMessage.name)
-                        .resizable()
-                        .frame(size: Appearance.GridGuide.iconSize)
-                        .padding(Appearance.GridGuide.tinyPadding)
-                        .background(Appearance.Colors.yellow100)
-                        .clipShape(Circle())
-                }
+                
+                ExpandingTextView(
+                    placeholder: L.chatMessageInputPlaceholder(),
+                    text: $text,
+                    isFirstResponder: true,
+                    minHeight: Appearance.GridGuide.chatTextFieldHeight,
+                    textColor: Appearance.Colors.whiteText
+                )
             }
-            .padding()
-            .frame(height: inputHeight)
-            .background(Appearance.Colors.gray1)
-            .cornerRadius(Appearance.GridGuide.chatTextFieldHeight * 0.5)
+            
+            Button {
+                sendAction()
+            } label: {
+                Image(R.image.chat.sendMessage.name)
+                    .resizable()
+                    .frame(size: Appearance.GridGuide.iconSize)
+                    .padding(Appearance.GridGuide.tinyPadding)
+                    .background(Appearance.Colors.yellow100)
+                    .clipShape(Circle())
+            }
         }
+        .padding(.vertical, Appearance.GridGuide.tinyPadding)
+        .padding(.horizontal, Appearance.GridGuide.padding)
+        .background(Appearance.Colors.gray1)
+        .cornerRadius(Appearance.GridGuide.chatTextFieldHeight * 0.5)
     }
 }
 
 extension ChatInputView {
-
+    
     struct SelectedImageView: View {
-
+        
         let image: Data
         let deleteAction: () -> Void
-
+        
         var body: some View {
             ZStack(alignment: .topTrailing) {
                 Image(data: image, placeholder: "")
                     .resizable()
                     .frame(size: Appearance.GridGuide.chatInputImageSize)
                     .cornerRadius(Appearance.GridGuide.containerCorner)
-
+                
                 Button {
                     deleteAction()
                 } label: {
@@ -112,24 +102,24 @@ struct ChatMessageInputViewPreview: PreviewProvider {
                           sendAction: {},
                           cameraAction: {},
                           deleteImageAction: {})
-                .background(Color.black)
-                .previewDevice("iPhone 11")
-
+            .background(Color.black)
+            .previewDevice("iPhone 11")
+            
             ChatInputView(text: .constant(""),
                           image: nil,
                           sendAction: {},
                           cameraAction: {},
                           deleteImageAction: {})
-                .background(Color.black)
-                .previewDevice("iPhone 11")
-
+            .background(Color.black)
+            .previewDevice("iPhone 11")
+            
             ChatInputView(text: .constant("Hello there"),
                           image: R.image.onboarding.testAvatar()!.jpegData(compressionQuality: 0.25)!,
                           sendAction: {},
                           cameraAction: {},
                           deleteImageAction: {})
-                .background(Color.black)
-                .previewDevice("iPhone 11")
+            .background(Color.black)
+            .previewDevice("iPhone 11")
         }
     }
 }

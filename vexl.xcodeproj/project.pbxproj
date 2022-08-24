@@ -41,6 +41,8 @@
 		4FEFE324289F2105006AB8DA /* RegisterAnonymizeCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FEFE323289F2105006AB8DA /* RegisterAnonymizeCoordinator.swift */; };
 		4FEFE326289F21CD006AB8DA /* RegisterAnonymizeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FEFE325289F21CD006AB8DA /* RegisterAnonymizeViewModel.swift */; };
 		4FEFE328289F21D6006AB8DA /* RegisterAnonymizeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FEFE327289F21D6006AB8DA /* RegisterAnonymizeView.swift */; };
+		6FF08EB128B67EE500B2CF65 /* TextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FF08EB028B67EE500B2CF65 /* TextView.swift */; };
+		6FF08EB328B6846000B2CF65 /* DiffableState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FF08EB228B6846000B2CF65 /* DiffableState.swift */; };
 		B007A72A2864FE4A00CFA5C9 /* CurrencySelect.swift in Sources */ = {isa = PBXBuildFile; fileRef = B007A7292864FE4A00CFA5C9 /* CurrencySelect.swift */; };
 		B007A72C2864FEBA00CFA5C9 /* BottomActionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = B007A72B2864FEBA00CFA5C9 /* BottomActionSheet.swift */; };
 		B007A72E2865072900CFA5C9 /* RadioButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B007A72D2865072900CFA5C9 /* RadioButton.swift */; };
@@ -468,6 +470,8 @@
 		57B3CAA27CF4369A28B748A7 /* Pods_vexl.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_vexl.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		625779B2774E3C48F23BBA21 /* Pods-vexl.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-vexl.release.xcconfig"; path = "Target Support Files/Pods-vexl/Pods-vexl.release.xcconfig"; sourceTree = "<group>"; };
 		62F22E6F56C7BEA94D7B5F5D /* Pods-vexl.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-vexl.staging.xcconfig"; path = "Target Support Files/Pods-vexl/Pods-vexl.staging.xcconfig"; sourceTree = "<group>"; };
+		6FF08EB028B67EE500B2CF65 /* TextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextView.swift; sourceTree = "<group>"; };
+		6FF08EB228B6846000B2CF65 /* DiffableState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiffableState.swift; sourceTree = "<group>"; };
 		7F8C3B1F22E20D7D5005290C /* Pods-vexl-vexlTests.devel.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-vexl-vexlTests.devel.xcconfig"; path = "Target Support Files/Pods-vexl-vexlTests/Pods-vexl-vexlTests.devel.xcconfig"; sourceTree = "<group>"; };
 		937D63D507F1C9FE14E50FA2 /* Pods-vexl.appstore.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-vexl.appstore.xcconfig"; path = "Target Support Files/Pods-vexl/Pods-vexl.appstore.xcconfig"; sourceTree = "<group>"; };
 		B007A7292864FE4A00CFA5C9 /* CurrencySelect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencySelect.swift; sourceTree = "<group>"; };
@@ -1169,6 +1173,7 @@
 				F1886210280EC49B00659786 /* Image+Base64.swift */,
 				4FBF624B2840D31B00DDBE71 /* ToggleKeyboardHostingController.swift */,
 				F13721EE287F29830013BB7B /* TimeInterval+.swift */,
+				6FF08EB228B6846000B2CF65 /* DiffableState.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -1523,6 +1528,7 @@
 				F11441A7284681EC00307D39 /* HeaderTitleView.swift */,
 				F11441C6284681EC00307D39 /* InfoBarView.swift */,
 				B007A72B2864FEBA00CFA5C9 /* BottomActionSheet.swift */,
+				6FF08EB028B67EE500B2CF65 /* TextView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -2962,6 +2968,7 @@
 				B0EEE11627B14D320097031E /* WelcomeCoordinator.swift in Sources */,
 				F1485641284FD451003213D7 /* ChatConfirmationView.swift in Sources */,
 				F1485626284FD0FB003213D7 /* InboxItemView.swift in Sources */,
+				6FF08EB128B67EE500B2CF65 /* TextView.swift in Sources */,
 				B08F393227AE7112008B344F /* SceneDelegate.swift in Sources */,
 				B007A72E2865072900CFA5C9 /* RadioButton.swift in Sources */,
 				B007A78A2874C25500CFA5C9 /* PersistenceStoreManager.swift in Sources */,
@@ -3020,6 +3027,7 @@
 				F11441E7284682B200307D39 /* ChatRequestOfferInformationView.swift in Sources */,
 				F1A43DC4288E38200032A11F /* UserProfileViewController.swift in Sources */,
 				B08F399527AE7D29008B344F /* SplashScreenViewModel.swift in Sources */,
+				6FF08EB328B6846000B2CF65 /* DiffableState.swift in Sources */,
 				F11441CE284681EC00307D39 /* OffsetScrollView.swift in Sources */,
 				B007A76128722A1F00CFA5C9 /* NSManagedObject+.swift in Sources */,
 				F151A29027C80708000D7242 /* RegisterPhoneNumberInputView.swift in Sources */,
@@ -3141,7 +3149,7 @@
 				CODE_SIGN_ENTITLEMENTS = vexl/vexl.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 222;
+				CURRENT_PROJECT_VERSION = 223;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = KQNTW88PVA;
 				ENABLE_BITCODE = NO;
@@ -3174,7 +3182,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 222;
+				CURRENT_PROJECT_VERSION = 223;
 				DEVELOPMENT_TEAM = SHD6TUKSPH;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
@@ -3259,7 +3267,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = vexl/vexlDebug.entitlements;
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 222;
+				CURRENT_PROJECT_VERSION = 223;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = KQNTW88PVA;
 				ENABLE_BITCODE = NO;
@@ -3292,7 +3300,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 222;
+				CURRENT_PROJECT_VERSION = 223;
 				DEVELOPMENT_TEAM = SHD6TUKSPH;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
@@ -3437,7 +3445,7 @@
 				CODE_SIGN_ENTITLEMENTS = vexl/vexl.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 222;
+				CURRENT_PROJECT_VERSION = 223;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = KQNTW88PVA;
 				ENABLE_BITCODE = NO;
@@ -3472,7 +3480,7 @@
 				CODE_SIGN_ENTITLEMENTS = vexl/vexl.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 222;
+				CURRENT_PROJECT_VERSION = 223;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = KQNTW88PVA;
 				ENABLE_BITCODE = NO;
@@ -3505,7 +3513,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 222;
+				CURRENT_PROJECT_VERSION = 223;
 				DEVELOPMENT_TEAM = SHD6TUKSPH;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
@@ -3524,7 +3532,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 222;
+				CURRENT_PROJECT_VERSION = 223;
 				DEVELOPMENT_TEAM = SHD6TUKSPH;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
