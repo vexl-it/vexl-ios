@@ -15,10 +15,11 @@ enum ChatRouter: ApiRouter {
     case requestConfirmation(confirmed: Bool, message: String, inboxPublicKey: String,
                              requesterPublicKey: String, signedChallenge: SignedChallenge)
     case requestChallenge(publicKey: String)
-    case pullChat(publicKey: String, signature: String)
-    case deleteChat(publicKey: String)
-    case blockInbox(publicKey: String, publicKeyToBlock: String, signature: String, isBlocked: Bool)
-    case sendMessage(senderPublicKey: String, receiverPublicKey: String, message: String, messageType: MessageType)
+    case pullChat(publicKey: String, signedChallenge: SignedChallenge)
+    case deleteChat(publicKey: String, signedChallenge: SignedChallenge)
+    case blockInbox(publicKey: String, publicKeyToBlock: String, signedChallenge: SignedChallenge, isBlocked: Bool)
+    case sendMessage(senderPublicKey: String, receiverPublicKey: String,
+                     message: String, messageType: MessageType, signedChallenge: SignedChallenge)
     case deleteChatMessages(publicKey: String)
 
     var method: HTTPMethod {
@@ -78,11 +79,10 @@ enum ChatRouter: ApiRouter {
             return [
                 "publicKey": publicKey
             ]
-        case let .pullChat(publicKey, signature):
+        case let .pullChat(publicKey, signedChallenged):
             return [
-                "publicKey": publicKey,
-                "signature": signature
-            ]
+                "publicKey": publicKey
+            ].addSignedChallenge(signedChallenge: signedChallenged)
         case let .requestConfirmation(confirmed, message, inboxPublicKey, requesterPublicKey, signedChallenge):
             return [
                 "publicKey": inboxPublicKey,
@@ -90,24 +90,24 @@ enum ChatRouter: ApiRouter {
                 "message": message,
                 "approve": confirmed
             ].addSignedChallenge(signedChallenge: signedChallenge)
-        case let .deleteChat(publicKey):
-            return ["publicKey": publicKey]
+        case let .deleteChat(publicKey, signedChallenge):
+            return ["publicKey": publicKey].addSignedChallenge(signedChallenge: signedChallenge)
         case let .deleteChatMessages(publicKey):
             return ["publicKey": publicKey]
-        case let .blockInbox(publicKey, publicKeyToBlock, signature, isBlocked):
+        case let .blockInbox(publicKey, publicKeyToBlock, signedChallenge, isBlocked):
             return [
                 "publicKey": publicKey,
                 "publicKeyToBlock": publicKeyToBlock,
-                "signature": signature,
                 "block": isBlocked
-            ]
-        case let .sendMessage(senderPublicKey, receiverPublicKey, message, messageType):
+            ].addSignedChallenge(signedChallenge: signedChallenge)
+        case let .sendMessage(senderPublicKey, receiverPublicKey, message, messageType, signedChallenge):
             return [
                 "senderPublicKey": senderPublicKey,
                 "receiverPublicKey": receiverPublicKey,
                 "messageType": messageType.rawValue,
                 "message": message
             ]
+            .addSignedChallenge(signedChallenge: signedChallenge)
         }
     }
 

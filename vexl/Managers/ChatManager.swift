@@ -53,7 +53,8 @@ final class ChatManager: ChatManagerType {
             inboxKeys: inboxKeys,
             receiverPublicKey: receiverPublicKey,
             message: message,
-            messageType: payload.messageType
+            messageType: payload.messageType,
+            eccKeys: inboxKeys
         )
         .flatMap { [inboxRepository] in
             inboxRepository.createOrUpdateChats(receivedPayloads: [payload], inbox: inbox)
@@ -71,7 +72,13 @@ final class ChatManager: ChatManagerType {
                 .eraseToAnyPublisher()
         }
         return chatService
-            .sendMessage(inboxKeys: inboxKeys, receiverPublicKey: receiverPublicKey, message: message, messageType: payload.messageType)
+            .sendMessage(
+                inboxKeys: inboxKeys,
+                receiverPublicKey: receiverPublicKey,
+                message: message,
+                messageType: payload.messageType,
+                eccKeys: inboxKeys
+            )
             .flatMap { [inboxRepository] in
                 inboxRepository.deleteChats(recevedPayloads: [payload], inbox: inbox)
             }
@@ -94,7 +101,13 @@ final class ChatManager: ChatManagerType {
                 .eraseToAnyPublisher()
         }
         return chatService
-            .sendMessage(inboxKeys: inboxKeys, receiverPublicKey: receiverPublicKey, message: message, messageType: payload.messageType)
+            .sendMessage(
+                inboxKeys: inboxKeys,
+                receiverPublicKey: receiverPublicKey,
+                message: message,
+                messageType: payload.messageType,
+                eccKeys: inboxKeys
+            )
             .flatMap { [inboxRepository] in
                 inboxRepository.createOrUpdateChats(receivedPayloads: [payload], inbox: inbox)
             }
@@ -145,7 +158,13 @@ final class ChatManager: ChatManagerType {
                 .eraseToAnyPublisher()
         }
         return chatService
-            .sendMessage(inboxKeys: inboxKeys, receiverPublicKey: receiverPublicKey, message: message, messageType: payload.messageType)
+            .sendMessage(
+                inboxKeys: inboxKeys,
+                receiverPublicKey: receiverPublicKey,
+                message: message,
+                messageType: payload.messageType,
+                eccKeys: inboxKeys
+            )
             .flatMap { [inboxRepository] in
                 inboxRepository.createOrUpdateChats(receivedPayloads: [payload], inbox: inbox)
             }
@@ -161,20 +180,10 @@ final class ChatManager: ChatManagerType {
               }
 
         return chatService
-            .requestChallenge(publicKey: inboxKeys.publicKey)
-            .withUnretained(self)
-            .flatMap { owner, challenge in
-                owner.cryptoService
-                    .signECDSA(keys: inboxKeys, message: challenge.challenge)
-            }
-            .withUnretained(self)
-            .flatMap { owner, signature in
-                owner.chatService
-                    .setInboxBlock(inboxPublicKey: inboxKeys.publicKey,
-                                   publicKeyToBlock: receiverPublicKey,
-                                   signature: signature,
-                                   isBlocked: isBlocked)
-            }
+            .setInboxBlock(inboxPublicKey: inboxKeys.publicKey,
+                           publicKeyToBlock: receiverPublicKey,
+                           eccKeys: inboxKeys,
+                           isBlocked: isBlocked)
             .withUnretained(self)
             .flatMap { owner in
                 owner.chatRepository
