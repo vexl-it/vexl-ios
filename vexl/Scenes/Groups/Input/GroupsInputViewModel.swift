@@ -34,6 +34,7 @@ final class GroupsInputViewModel: ViewModelType, ObservableObject {
         case continueTapped
     }
 
+    let fromDeeplink: Bool
     var route: CoordinatingSubject<Route> = .init()
 
     // MARK: - Variables
@@ -45,8 +46,9 @@ final class GroupsInputViewModel: ViewModelType, ObservableObject {
 
     // MARK: - Initialization
 
-    init(code: String?) {
+    init(code: String?, fromDeeplink: Bool) {
         self.groupCode = code ?? ""
+        self.fromDeeplink = fromDeeplink
         setupActions()
     }
 

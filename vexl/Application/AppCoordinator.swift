@@ -78,15 +78,16 @@ final class AppCoordinator: BaseCoordinator<Void> {
                     return Empty(completeImmediately: false).eraseToAnyPublisher()
                 }
 
-                let modalRouter = ModalRouter(parentViewController: visibleViewController, presentationStyle: .fullScreen)
-
                 switch screen {
                 case .chat(let managedChat):
+                    let modalRouter = ModalRouter(parentViewController: visibleViewController, presentationStyle: .fullScreen)
                     return owner.showChat(chat: managedChat, router: modalRouter)
                 case .request:
+                    let modalRouter = ModalRouter(parentViewController: visibleViewController, presentationStyle: .fullScreen)
                     return owner.showChatRequests(router: modalRouter)
                 case .groupInput(let code):
-                    return owner.showGroupsInput(router: modalRouter, code: code)
+                    let modalNavigationRouter = ModalNavigationRouter(parentViewController: visibleViewController, presentationStyle: .fullScreen)
+                    return owner.showGroupsInput(router: modalNavigationRouter, code: code)
                 }
             }
             .sink(receiveValue: { [deeplinkManager] _ in
@@ -168,7 +169,7 @@ extension AppCoordinator {
     }
 
     private func showGroupsInput(router: Router, code: String) -> CoordinatingResult<RouterResult<Void>> {
-        coordinate(to: GroupsInputCoordinator(router: router, animated: true, code: code))
+        coordinate(to: GroupsInputCoordinator(router: router, animated: true, code: code, fromDeeplink: true))
             .flatMap { result -> CoordinatingResult<RouterResult<Void>> in
                 guard result != .dismissedByRouter else {
                     return Just(result).eraseToAnyPublisher()

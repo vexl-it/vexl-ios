@@ -103,7 +103,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             guard let url = dynamiclink?.url else { return }
             log.info("Opening dynamiclink URL: \(url)")
             @Inject var deeplinkManager: DeeplinkManagerType
-            deeplinkManager.handleDeeplink(withURL: webpageURL)
+            deeplinkManager.handleDeeplink(withURL: url)
         }
     }
 }
