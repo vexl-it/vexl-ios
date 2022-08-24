@@ -14,6 +14,7 @@ final class InboxViewModel: ViewModelType, ObservableObject {
     // MARK: - Dependency Bindings
 
     @Inject var inboxManager: InboxManagerType
+    @Inject var remoteConfigManager: RemoteConfigManagerType
 
     // MARK: - Persistence Bindings
 
@@ -57,6 +58,9 @@ final class InboxViewModel: ViewModelType, ObservableObject {
     var route: CoordinatingSubject<Route> = .init()
     var requestImageName: String {
         hasPendingRequests ? R.image.chat.request.name : R.image.chat.requestEmpty.name
+    }
+    var isMarketplaceLocked: Bool {
+        remoteConfigManager.getBoolValue(for: .isMarketplaceLocked)
     }
     // MARK: - Variables
 

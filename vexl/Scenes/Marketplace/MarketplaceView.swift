@@ -39,19 +39,31 @@ struct MarketplaceView: View {
             VStack(spacing: Appearance.GridGuide.mediumPadding1) {
                 marketPlaceHeader
 
-                ForEach(viewModel.marketplaceFeedItems) { item in
-                    MarketplaceFeedView(data: item,
-                                        displayFooter: false,
-                                        detailAction: { _ in
-                        viewModel.action.send(.offerDetailTapped(offer: item.offer))
-                    },
-                                        requestAction: { _ in
-                        viewModel.action.send(.requestOfferTapped(offer: item.offer))
-                    })
-                    .padding(.horizontal, Appearance.GridGuide.point)
+                if viewModel.isMarketplaceLocked {
+                    Text("Marketplace is not available at the moment")
+                        .multilineTextAlignment(.center)
+                        .textStyle(.paragraphBold)
+                        .foregroundColor(Appearance.Colors.gray5)
+                        .padding(Appearance.GridGuide.mediumPadding2)
+                } else {
+                    marketplaceOfferList
                 }
             }
             .animation(.easeInOut, value: viewModel.marketplaceFeedItems)
+        }
+    }
+
+    private var marketplaceOfferList: some View {
+        ForEach(viewModel.marketplaceFeedItems) { item in
+            MarketplaceFeedView(data: item,
+                                displayFooter: false,
+                                detailAction: { _ in
+                viewModel.action.send(.offerDetailTapped(offer: item.offer))
+            },
+                                requestAction: { _ in
+                viewModel.action.send(.requestOfferTapped(offer: item.offer))
+            })
+            .padding(.horizontal, Appearance.GridGuide.point)
         }
     }
 
