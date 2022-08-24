@@ -33,6 +33,8 @@ final class ChatViewModel: ViewModelType, ObservableObject {
         case dismissModal
         case deleteImageTap
         case revealTap
+        case hideTap
+        case forceScrollToBottom
     }
 
     let action: ActionSubject<UserAction> = .init()
@@ -153,7 +155,10 @@ final class ChatViewModel: ViewModelType, ObservableObject {
             .$messages
             .withUnretained(self)
             .map { owner, _ -> IdentityRevealBannerType in
-                let messages = owner.chat.messages?.filtered(using: NSPredicate(format: "typeRawType == '\(MessageType.revealRequest.rawValue)'")) as? Set<ManagedMessage>
+                guard owner.chat.shouldDisplayRevealBanner else { return .none }
+
+                let messages = owner.chat.messages?
+                    .filtered(using: NSPredicate(format: "typeRawType == '\(MessageType.revealRequest.rawValue)'")) as? Set<ManagedMessage>
                 guard let lastMessage = messages?.sorted(by: { $0.time > $1.time }).first else { return .none }
                 if lastMessage.hasRevealResponse {
                     return .none
@@ -236,6 +241,19 @@ final class ChatViewModel: ViewModelType, ObservableObject {
     }
 
     private func setupActionBindings() {
+        action
+            .filter { $0 == .hideTap }
+            .withUnretained(self)
+            .sink { owner, _ in
+                owner.hideRevealBanner()
+            }
+            .store(in: cancelBag)
+
+        action
+            .filter { $0 == .forceScrollToBottom }
+            .map { _ -> Bool in true }
+            .assign(to: &chatConversationViewModel.$forceScrollToBottom)
+
         sharedAction
             .filter { $0 == .dismissTap }
             .map { _ -> Route in .dismissTapped }
@@ -252,6 +270,15 @@ final class ChatViewModel: ViewModelType, ObservableObject {
             .subscribe(route)
             .store(in: cancelBag)
         // TODO: dismiss on delete ManagedObject
+    }
+
+    private func hideRevealBanner() {
+        chatManager
+            .setDisplayRevealBanner(shouldDisplay: false, chat: chat)
+            .materialize()
+            .compactMap(\.value)
+            .map { _ -> IdentityRevealBannerType in .none }
+            .assign(to: &$showIdentityRevealBanner)
     }
 
     func deleteMessages() {

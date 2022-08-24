@@ -12,27 +12,26 @@ protocol ChatServiceType {
 
     // MARK: - Create inbox and request messaging permission
 
-    func createInbox(publicKey: String, pushToken: String?) -> AnyPublisher<Void, Error>
+    func createInbox(eccKeys: ECCKeys, pushToken: String?) -> AnyPublisher<Void, Error>
     func requestCommunication(inboxPublicKey: String, message: String) -> AnyPublisher<Void, Error>
     func communicationConfirmation(confirmation: Bool,
                                    message: MessagePayload?,
                                    inboxKeys: ECCKeys,
-                                   requesterPublicKey: String,
-                                   signature: String) -> AnyPublisher<Void, Error>
+                                   requesterPublicKey: String) -> AnyPublisher<Void, Error>
 
     // MARK: - Sync up inboxes
 
-    func requestChallenge(publicKey: String) -> AnyPublisher<ChatChallenge, Error>
-    func pullInboxMessages(publicKey: String, signature: String) -> AnyPublisher<EncryptedChatMessageList, Error>
-    func deleteInboxMessages(publicKey: String) -> AnyPublisher<Void, Error>
+    func pullInboxMessages(publicKey: String, eccKeys: ECCKeys) -> AnyPublisher<EncryptedChatMessageList, Error>
+    func deleteInboxMessages(publicKey: String, eccKeys: ECCKeys) -> AnyPublisher<Void, Error>
 
     // MARK: - Chat functionalities
 
     func sendMessage(inboxKeys: ECCKeys,
                      receiverPublicKey: String,
                      message: String,
-                     messageType: MessageType) -> AnyPublisher<Void, Error>
-    func setInboxBlock(inboxPublicKey: String, publicKeyToBlock: String, signature: String, isBlocked: Bool) -> AnyPublisher<Void, Error>
+                     messageType: MessageType,
+                     eccKeys: ECCKeys) -> AnyPublisher<Void, Error>
+    func setInboxBlock(inboxPublicKey: String, publicKeyToBlock: String, eccKeys: ECCKeys, isBlocked: Bool) -> AnyPublisher<Void, Error>
 }
 
 final class ChatService: BaseService, ChatServiceType {
@@ -41,8 +40,18 @@ final class ChatService: BaseService, ChatServiceType {
 
     // MARK: - Create inbox and request messaging permission
 
-    func createInbox(publicKey: String, pushToken: String?) -> AnyPublisher<Void, Error> {
-        request(endpoint: ChatRouter.createInbox(publicKey: publicKey, pushToken: pushToken))
+    func createInbox(eccKeys: ECCKeys, pushToken: String?) -> AnyPublisher<Void, Error> {
+        getSignedChallenge(eccKeys: eccKeys)
+            .withUnretained(self)
+            .flatMapLatest { owner, signedChallenge in
+                owner.request(
+                    endpoint: ChatRouter.createInbox(
+                        publicKey: eccKeys.publicKey,
+                        pushToken: pushToken,
+                        signedChallenge: signedChallenge
+                    )
+                )
+            }
             .eraseToAnyPublisher()
     }
 
@@ -58,19 +67,27 @@ final class ChatService: BaseService, ChatServiceType {
     func communicationConfirmation(confirmation: Bool,
                                    message: MessagePayload?,
                                    inboxKeys: ECCKeys,
-                                   requesterPublicKey: String,
-                                   signature: String) -> AnyPublisher<Void, Error> {
+                                   requesterPublicKey: String) -> AnyPublisher<Void, Error> {
         if let parsedMessage = message, let messageAsString = parsedMessage.asString {
-            return cryptoService
-                .encryptECIES(publicKey: requesterPublicKey, secret: messageAsString)
-                .flatMapLatest(with: self) { owner, encryptedMessage in
-                    owner.request(endpoint: ChatRouter.requestConfirmation(confirmed: confirmation,
-                                                                           message: encryptedMessage,
-                                                                           inboxPublicKey: inboxKeys.publicKey,
-                                                                           requesterPublicKey: requesterPublicKey,
-                                                                           signature: signature))
-                }
-                .eraseToAnyPublisher()
+            return Publishers.CombineLatest(
+                getSignedChallenge(eccKeys: inboxKeys),
+                cryptoService
+                    .encryptECIES(publicKey: requesterPublicKey, secret: messageAsString)
+            )
+            .withUnretained(self)
+            .flatMapLatest { owner, data -> AnyPublisher<Void, Error> in
+                let (signedChallenge, encryptedMessage) = data
+                return owner.request(
+                    endpoint: ChatRouter.requestConfirmation(
+                        confirmed: confirmation,
+                        message: encryptedMessage,
+                        inboxPublicKey: inboxKeys.publicKey,
+                        requesterPublicKey: requesterPublicKey,
+                        signedChallenge: signedChallenge
+                    )
+                )
+            }
+            .eraseToAnyPublisher()
         } else {
             return Just(()).setFailureType(to: Error.self)
                 .eraseToAnyPublisher()
@@ -79,19 +96,32 @@ final class ChatService: BaseService, ChatServiceType {
 
     // MARK: - Sync up inboxes
 
-    func requestChallenge(publicKey: String) -> AnyPublisher<ChatChallenge, Error> {
-        // TODO: - add expiration handling so that it is not requested everytime, find a way to cache the challenge for 30m
-        request(type: ChatChallenge.self, endpoint: ChatRouter.requestChallenge(publicKey: publicKey))
+    func pullInboxMessages(publicKey: String, eccKeys: ECCKeys) -> AnyPublisher<EncryptedChatMessageList, Error> {
+        getSignedChallenge(eccKeys: eccKeys)
+            .withUnretained(self)
+            .flatMapLatest { owner, signedChallenge in
+                owner.request(
+                    type: EncryptedChatMessageList.self,
+                    endpoint: ChatRouter.pullChat(
+                        publicKey: eccKeys.publicKey,
+                        signedChallenge: signedChallenge
+                    )
+                )
+            }
             .eraseToAnyPublisher()
     }
 
-    func pullInboxMessages(publicKey: String, signature: String) -> AnyPublisher<EncryptedChatMessageList, Error> {
-        request(type: EncryptedChatMessageList.self, endpoint: ChatRouter.pullChat(publicKey: publicKey, signature: signature))
-            .eraseToAnyPublisher()
-    }
-
-    func deleteInboxMessages(publicKey: String) -> AnyPublisher<Void, Error> {
-        request(endpoint: ChatRouter.deleteChatMessages(publicKey: publicKey))
+    func deleteInboxMessages(publicKey: String, eccKeys: ECCKeys) -> AnyPublisher<Void, Error> {
+        getSignedChallenge(eccKeys: eccKeys)
+            .withUnretained(self)
+            .flatMapLatest { owner, signedChallenge in
+                owner.request(
+                    endpoint: ChatRouter.deleteChatMessages(
+                        publicKey: publicKey,
+                        signedChallenge: signedChallenge
+                    )
+                )
+            }
             .eraseToAnyPublisher()
     }
 
@@ -100,22 +130,61 @@ final class ChatService: BaseService, ChatServiceType {
     func sendMessage(inboxKeys: ECCKeys,
                      receiverPublicKey: String,
                      message: String,
-                     messageType: MessageType) -> AnyPublisher<Void, Error> {
-        cryptoService
-            .encryptECIES(publicKey: receiverPublicKey, secret: message)
-            .flatMapLatest(with: self) { owner, encryptedMessage in
-                owner.request(endpoint: ChatRouter.sendMessage(senderPublicKey: inboxKeys.publicKey,
-                                                               receiverPublicKey: receiverPublicKey,
-                                                               message: encryptedMessage,
-                                                               messageType: messageType))
+                     messageType: MessageType,
+                     eccKeys: ECCKeys) -> AnyPublisher<Void, Error> {
+        Publishers.CombineLatest(
+            getSignedChallenge(eccKeys: eccKeys),
+            cryptoService
+                .encryptECIES(publicKey: receiverPublicKey, secret: message)
+        )
+        .withUnretained(self)
+        .flatMapLatest { owner, data -> AnyPublisher<Void, Error> in
+            let (signedChallenge, encryptedMessage) = data
+            return owner.request(
+                endpoint: ChatRouter.sendMessage(
+                    senderPublicKey: inboxKeys.publicKey,
+                    receiverPublicKey: receiverPublicKey,
+                    message: encryptedMessage,
+                    messageType: messageType,
+                    signedChallenge: signedChallenge
+                )
+            )
+        }
+        .eraseToAnyPublisher()
+    }
+
+    func setInboxBlock(inboxPublicKey: String, publicKeyToBlock: String, eccKeys: ECCKeys, isBlocked: Bool) -> AnyPublisher<Void, Error> {
+        getSignedChallenge(eccKeys: eccKeys)
+            .withUnretained(self)
+            .flatMapLatest { owner, signedChallenge in
+                owner.request(endpoint: ChatRouter.blockInbox(publicKey: inboxPublicKey,
+                                                              publicKeyToBlock: publicKeyToBlock,
+                                                              signedChallenge: signedChallenge,
+                                                              isBlocked: isBlocked))
             }
             .eraseToAnyPublisher()
     }
 
-    func setInboxBlock(inboxPublicKey: String, publicKeyToBlock: String, signature: String, isBlocked: Bool) -> AnyPublisher<Void, Error> {
-        request(endpoint: ChatRouter.blockInbox(publicKey: inboxPublicKey,
-                                                publicKeyToBlock: publicKeyToBlock,
-                                                signature: signature,
-                                                isBlocked: isBlocked))
+    // MARK: - Private methods
+
+    private func requestChallenge(publicKey: String) -> AnyPublisher<ChatChallenge, Error> {
+        request(type: ChatChallenge.self, endpoint: ChatRouter.requestChallenge(publicKey: publicKey))
+            .eraseToAnyPublisher()
+    }
+
+    private func getSignedChallenge(eccKeys: ECCKeys) -> AnyPublisher<SignedChallenge, Error> {
+        requestChallenge(publicKey: eccKeys.publicKey)
+            .withUnretained(self)
+            .flatMapLatest { owner, challenge in
+                owner.cryptoService
+                    .signECDSA(
+                        keys: eccKeys,
+                        message: challenge.challenge
+                    )
+                    .map { signature in
+                        SignedChallenge(challenge: challenge.challenge, signature: signature)
+                    }
+            }
+            .eraseToAnyPublisher()
     }
 }

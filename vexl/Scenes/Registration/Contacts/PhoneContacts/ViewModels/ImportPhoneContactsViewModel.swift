@@ -20,24 +20,21 @@ final class ImportPhoneContactsViewModel: ImportContactsViewModel {
                 owner.contactsManager
                     .fetchPhoneContacts()
                     .track(activity: owner.primaryActivity)
-                    .materialize()
-                    .compactMap(\.value)
+                    .catch { _ in Just([]) }
             }
             .withUnretained(self)
             .flatMap { owner, contacts in
                 encryptionService
                     .hashContacts(contacts: contacts)
                     .track(activity: owner.primaryActivity)
-                    .materialize()
-                    .compactMap(\.value)
+                    .catch { _ in Just([]) }
             }
             .withUnretained(self)
             .flatMap { owner, hashedPhones in
                 owner.contactsManager
                     .getUserPhoneContacts(hashedPhones.map(\.1))
                     .track(activity: owner.primaryActivity)
-                    .materialize()
-                    .compactMap(\.value)
+                    .catch { _ in Just([]) }
             }
             .withUnretained(self)
             .sink { owner, availableContacts in

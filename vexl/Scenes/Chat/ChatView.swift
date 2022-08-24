@@ -60,10 +60,17 @@ struct ChatView: View {
                 .padding(.bottom, Appearance.GridGuide.point)
 
             if viewModel.showIdentityRevealBanner != .none {
-                ChatRevealIdentityBannerView(isRequest: viewModel.showIdentityRevealBanner == .request) {
+                ChatRevealIdentityBannerView(isRequest: viewModel.showIdentityRevealBanner == .request,
+                                             hideAction: {
+                    viewModel.action.send(.hideTap)
+                },
+                                             revealAction: {
                     viewModel.action.send(.revealTap)
-                }
-                .padding(.vertical, Appearance.GridGuide.padding)
+                })
+                    .onAppear(perform: {
+                        viewModel.action.send(.forceScrollToBottom)
+                    })
+                    .padding(.bottom, Appearance.GridGuide.padding)
             }
 
             if viewModel.allowsInput {
