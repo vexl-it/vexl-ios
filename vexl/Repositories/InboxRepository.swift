@@ -127,7 +127,7 @@ class InboxRepository: InboxRepositoryType {
         case .messagingApproval:
             chat.isApproved = true
             chat.isRequesting = false
-        case .invalid, .deleteChat, .messagingRejection, .message:
+        case .invalid, .deleteChat, .messagingRejection, .message, .blockChat:
             break
         }
     }

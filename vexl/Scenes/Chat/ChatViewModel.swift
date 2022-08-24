@@ -81,6 +81,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
 
     @Published var showIdentityRevealBanner: IdentityRevealBannerType = .none
 
+    private let receiverPublicKey: String?
     private let cancelBag: CancelBag = .init()
     private lazy var sharedAction: AnyPublisher<UserAction, Never> = action.share().eraseToAnyPublisher()
     private var isInputValid: Bool { !currentMessage.isEmpty || selectedImage != nil }
@@ -95,6 +96,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
         self.chatActionViewModel = ChatActionViewModel(chat: chat)
         self.chatConversationViewModel = ChatConversationViewModel(chat: chat)
         self.allowsInput = !chat.isBlocked
+        self.receiverPublicKey = chat.receiverKeyPair?.publicKey
 
         setupActivityBindings()
         setupChildViewModelBindings()
@@ -116,6 +118,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
     }
 
     private func setupChildViewModelBindings() {
+
         chatActionViewModel
             .route
             .filter { $0 != .showCommonFriendsTapped }
@@ -153,7 +156,10 @@ final class ChatViewModel: ViewModelType, ObservableObject {
             .$messages
             .withUnretained(self)
             .map { owner, _ -> IdentityRevealBannerType in
-                let messages = owner.chat.messages?.filtered(using: NSPredicate(format: "typeRawType == '\(MessageType.revealRequest.rawValue)'")) as? Set<ManagedMessage>
+                let messages = owner.chat
+                    .messages?
+                    .filtered(using: NSPredicate(format: "typeRawType == '\(MessageType.revealRequest.rawValue)'")) as? Set<ManagedMessage>
+
                 guard let lastMessage = messages?.sorted(by: { $0.time > $1.time }).first else { return .none }
                 if lastMessage.hasRevealResponse {
                     return .none
@@ -162,6 +168,17 @@ final class ChatViewModel: ViewModelType, ObservableObject {
                 }
             }
             .assign(to: &$showIdentityRevealBanner)
+
+        chatConversationViewModel
+            .$messages
+            .withUnretained(self)
+            .map { owner, _ -> Bool in
+                let messages = owner.chat
+                    .messages?
+                    .filtered(using: NSPredicate(format: "typeRawType == '\(MessageType.blockChat.rawValue)'")) as? Set<ManagedMessage>
+                return messages?.isEmpty ?? true
+            }
+            .assign(to: &$allowsInput)
     }
 
     private func setupUpdateUIBindings() {
@@ -170,6 +187,10 @@ final class ChatViewModel: ViewModelType, ObservableObject {
         profile?.publisher(for: \.avatarData).map { _ in profile?.avatar }.assign(to: &$avatar)
         profile?.publisher(for: \.name).filterNil().assign(to: &$username)
         chat.publisher(for: \.isRevealed).assign(to: &$userIsRevealed)
+
+        $allowsInput
+            .map(\.not)
+            .assign(to: &chatActionViewModel.$isChatBlocked)
     }
 
     private func setupChatImageInputBindings() {
@@ -246,7 +267,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
             .didDeleteChat
             .withUnretained(self)
             .filter { owner, contactPublicKey -> Bool in
-                owner.chat.receiverKeyPair?.publicKey == contactPublicKey
+                owner.receiverPublicKey == contactPublicKey
             }
             .map { _ -> Route in .dismissTapped }
             .subscribe(route)
@@ -293,10 +314,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
             .setBlockMessaging(isBlocked: !chatActionViewModel.isChatBlocked, chat: chat)
             .track(activity: primaryActivity)
             .withUnretained(self)
-            .sink(receiveValue: { owner in
-                owner.chatActionViewModel.isChatBlocked.toggle()
-                owner.allowsInput.toggle()
-            })
+            .sink()
             .store(in: cancelBag)
     }
 }
