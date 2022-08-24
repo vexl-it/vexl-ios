@@ -21,9 +21,8 @@ struct ExpandingTextView: View {
     private let textColor: Color
     private let minHeight: CGFloat
     @DiffableState private var textEditorHeight: CGFloat = .zero
-    
+
     private var height: CGFloat { max(minHeight, textEditorHeight) }
-    
 
     init(placeholder: String,
          text: Binding<String>,
@@ -51,10 +50,10 @@ struct ExpandingTextView: View {
                 .readSize { size in
                     textEditorHeight = size.height
                 }
-            
+
             TextView(text: $text,
                      textStyle: .paragraph,
-                     textColor: UIColor(cgColor: textColor.cgColor!),
+                     textColor: UIColor(textColor),
                      isFirstResponder: isFirstResponder)
             .frame(height: height, alignment: .bottom)
         }
