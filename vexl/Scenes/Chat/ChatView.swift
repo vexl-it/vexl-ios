@@ -54,10 +54,14 @@ struct ChatView: View {
                 .padding(.top, Appearance.GridGuide.smallPadding)
 
             ChatActionView(viewModel: viewModel.chatActionViewModel)
-
-            ChatConversationView(viewModel: viewModel.chatConversationViewModel)
-                .frame(maxHeight: .infinity)
-                .padding(.bottom, Appearance.GridGuide.point)
+            ScrollViewReader { proxy in
+                ChatConversationView(viewModel: viewModel.chatConversationViewModel)
+                    .frame(maxHeight: .infinity)
+                    .padding(.bottom, Appearance.GridGuide.point)
+                    .onAppear {
+                        proxy.scrollTo(viewModel.chatConversationViewModel.lastMessageID, anchor: .bottom)
+                    }
+            }
 
             if viewModel.showIdentityRevealBanner != .none {
                 ChatRevealIdentityBannerView(isRequest: viewModel.showIdentityRevealBanner == .request) {
