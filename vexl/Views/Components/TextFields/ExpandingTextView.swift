@@ -15,21 +15,26 @@ struct ExpandingTextView: View {
         static let minHeight: CGFloat = 150
     }
 
-    let placeholder: String
-    @Binding var text: String
-    @State private var textEditorHeight: CGFloat = .zero
-    private let minHeight: CGFloat
+    @Binding private var text: String
+    private let placeholder: String
+    private let isFirstResponder: Bool
     private let textColor: Color
+    private let minHeight: CGFloat
+    @DiffableState private var textEditorHeight: CGFloat = .zero
+    
+    private var height: CGFloat { max(minHeight, textEditorHeight) }
+    
 
     init(placeholder: String,
          text: Binding<String>,
-         height: CGFloat? = nil,
-         textColor: Color? = nil) {
+         isFirstResponder: Bool,
+         minHeight: CGFloat = UIProperties.minHeight,
+         textColor: Color = Appearance.Colors.gray3) {
         self.placeholder = placeholder
         self._text = text
-        self.minHeight = height ?? UIProperties.minHeight
-        self.textColor = textColor ?? Appearance.Colors.gray3
-        UITextView.appearance().backgroundColor = .clear
+        self.isFirstResponder = isFirstResponder
+        self.minHeight = minHeight
+        self.textColor = textColor
     }
 
     var body: some View {
@@ -46,12 +51,14 @@ struct ExpandingTextView: View {
                 .readSize { size in
                     textEditorHeight = size.height
                 }
-
-            TextEditor(text: $text)
-                .textStyle(.paragraph)
-                .foregroundColor(textColor)
-                .frame(height: max(minHeight, textEditorHeight))
+            
+            TextView(text: $text,
+                     textStyle: .paragraph,
+                     textColor: UIColor(cgColor: textColor.cgColor!),
+                     isFirstResponder: isFirstResponder)
+            .frame(height: height, alignment: .bottom)
         }
+        .offset(y: Appearance.GridGuide.tinyPadding)
         .background(Appearance.Colors.gray1)
         .cornerRadius(UIProperties.cornerRadius)
     }
@@ -70,38 +77,44 @@ struct MainTextView_Previews: PreviewProvider {
            ExpandingTextView(
                placeholder: "Email",
                text: .constant(""),
-               height: 40
+               isFirstResponder: true,
+               minHeight: Appearance.GridGuide.chatTextFieldHeight
            )
            .previewDisplayName("Small, Empty")
 
            ExpandingTextView(
                placeholder: "Email",
                text: .constant("Qwerty"),
-               height: 40
+               isFirstResponder: true,
+               minHeight: 40
            )
            .previewDisplayName("Small, with text")
 
            ExpandingTextView(
                placeholder: "Email",
-               text: .constant("")
+               text: .constant(""),
+               isFirstResponder: true
            )
            .previewDisplayName("Empty, inactive")
 
            ExpandingTextView(
                placeholder: "Email",
-               text: .constant("ios@cleevio.com")
+               text: .constant("ios@cleevio.com"),
+               isFirstResponder: true
            )
            .previewDisplayName("Filled, inactive")
 
            ExpandingTextView(
                placeholder: "Email",
-               text: .constant("ios@cleeviocleeviocleeviocleeviocleevio.com")
+               text: .constant("ios@cleeviocleeviocleeviocleeviocleevio.com"),
+               isFirstResponder: true
            )
            .previewDisplayName("Filled, long text, inactive")
 
            ExpandingTextView(
                placeholder: "Email",
-               text: .constant("")
+               text: .constant(""),
+               isFirstResponder: true
            )
            .previewDisplayName("Empty, inactive")
        }
