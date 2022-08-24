@@ -18,6 +18,10 @@ struct OfferPayloadList: Codable {
     }
 }
 
+struct OfferIdList: Codable {
+    var offerIds: [String]
+}
+
 struct OfferPayload: Codable {
     let userPublicKey: String
     var groupUuid: String
@@ -36,6 +40,7 @@ struct OfferPayload: Codable {
     let currency: String
 
     var offerId: String?
+    var adminId: String?
     var createdAt: String = ""
     var modifiedAt: String = ""
 
@@ -92,17 +97,19 @@ struct OfferPayload: Codable {
             throw EncryptionError.dataEncryption
         }
 
-        // TODO: - convert locations to JSON and then to string and set real Location
-
-        let fakeLocation = OfferLocation(latitude: 14.418_540,
-                                         longitude: 50.073_658,
-                                         radius: 1)
-        let locationString = fakeLocation.asString ?? ""
-        let encryptedString = try? locationString.ecc.encrypt(publicKey: encryptionPublicKey)
+        if let managedLocations = offer.locations?.allObjects as? [ManagedOfferLocation] {
+            let locations = managedLocations.compactMap(OfferLocation.init)
+            let locationStrings = locations.compactMap { $0.asString }
+            let encryptedLocationStrings = locationStrings.compactMap {
+                try? $0.ecc.encrypt(publicKey: encryptionPublicKey)
+            }
+            self.location = encryptedLocationStrings
+        } else {
+            self.location = []
+        }
 
         self.userPublicKey = encryptionPublicKey
         self.groupUuid = groupUuid
-        self.location = [encryptedString ?? ""]
         self.offerPublicKey = offerPublicKey
         self.offerDescription = description
         self.amountTopLimit = maxAmount
@@ -122,9 +129,10 @@ struct OfferPayload: Codable {
     }
 
     // swiftlint:disable:next function_body_length
-    
     @discardableResult
-    func decrypt(context: NSManagedObjectContext, userInbox: ManagedInbox, into offer: ManagedOffer) -> ManagedOffer? {
+    func decrypt(context: NSManagedObjectContext,
+                 userInbox: ManagedInbox,
+                 into offer: ManagedOffer) -> ManagedOffer? {
         guard let keys = userInbox.keyPair?.keys else {
             return nil
         }
@@ -153,6 +161,8 @@ struct OfferPayload: Codable {
                 return nil
             }
 
+            let groupUuid = try self.groupUuid.ecc.decrypt(keys: keys)
+
             guard let minAmount = Double(minAmountString),
                   let maxAmount = Double(maxAmountString),
                   let feeAmount = Double(feeAmountString),
@@ -172,7 +182,8 @@ struct OfferPayload: Codable {
                 return nil
             }
 
-            offer.id = offerId
+            offer.offerID = offerId
+            offer.adminID = adminId
             offer.createdAt = Formatters.dateApiFormatter.date(from: createdAt)
             offer.modifiedAt = modifiedAt
             offer.currency = currency
@@ -190,6 +201,18 @@ struct OfferPayload: Codable {
             offer.paymentMethods = paymentMethods
             offer.btcNetworks = btcNetworks
             offer.commonFriends = commonFirends
+
+            let locationStrings = try location.map { try $0.ecc.decrypt(keys: keys) }
+            let offerLocations = locationStrings.compactMap(OfferLocation.init)
+            let managedLocations = offerLocations.map { offerLocation -> ManagedOfferLocation in
+                let managedLocation = ManagedOfferLocation(context: context)
+                managedLocation.lat = offerLocation.latitude
+                managedLocation.lon = offerLocation.longitude
+                managedLocation.city = offerLocation.city
+                return managedLocation
+            }
+
+            offer.locations = NSSet(array: managedLocations)
 
             if offer.receiversPublicKey == nil {
                 let offerKeyPair = ManagedKeyPair(context: context)

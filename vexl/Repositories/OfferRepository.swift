@@ -11,16 +11,19 @@ import Combine
 import UIKit
 
 protocol OfferRepositoryType {
-    func createOffer(keys: ECCKeys, provider: @escaping (ManagedOffer) -> Void) -> AnyPublisher<ManagedOffer, Error>
+    func createOffer(keys: ECCKeys, locations: [OfferLocation], provider: @escaping (ManagedOffer) -> Void) -> AnyPublisher<ManagedOffer, Error>
 
-    func update(offer: ManagedOffer, provider: @escaping (ManagedOffer) -> Void) -> AnyPublisher<ManagedOffer, Error>
+    func update(offer: ManagedOffer, locations: [OfferLocation]?, provider: @escaping (ManagedOffer) -> Void) -> AnyPublisher<ManagedOffer, Error>
 
     func createOrUpdateOffer(offerPayloads: [OfferPayload]) -> AnyPublisher<[ManagedOffer], Error>
 
     func getOffer(with publicKey: String) -> AnyPublisher<ManagedOffer, Error>
     func getOffers(fromType type: OfferType?, fromSource source: OfferSource?) -> AnyPublisher<[ManagedOffer], Error>
+    func getKnownOffers() -> AnyPublisher<[ManagedOffer], Error>
 
-    func deleteOffers(with ids: [String]) -> AnyPublisher<Void, Error>
+    func sync(offers: [ManagedOffer], withPublicKeys: [String]) -> AnyPublisher<Void, Error>
+
+    func deleteOffers(offerIDs ids: [String]) -> AnyPublisher<Void, Error>
 }
 
 class OfferRepository: OfferRepositoryType {
@@ -28,11 +31,23 @@ class OfferRepository: OfferRepositoryType {
     @Inject private var persistence: PersistenceStoreManagerType
     @Inject private var userRepository: UserRepositoryType
 
-    func createOffer(keys: ECCKeys, provider: @escaping (ManagedOffer) -> Void) -> AnyPublisher<ManagedOffer, Error> {
+    func createOffer(
+        keys: ECCKeys,
+        locations: [OfferLocation],
+        provider: @escaping (ManagedOffer) -> Void
+    ) -> AnyPublisher<ManagedOffer, Error> {
         persistence.insert(context: persistence.viewContext) { [userRepository] context in
+            let managedLocations = locations.map { location -> ManagedOfferLocation in
+                let managedLocation = ManagedOfferLocation(context: context)
+                managedLocation.lat = location.latitude
+                managedLocation.lon = location.longitude
+                managedLocation.city = location.city
+                return managedLocation
+            }
 
             let offer = ManagedOffer(context: context)
             let inbox = ManagedInbox(context: context)
+
             let keyPair = ManagedKeyPair(context: context)
 
             keyPair.publicKey = keys.publicKey
@@ -45,22 +60,36 @@ class OfferRepository: OfferRepositoryType {
 
             provider(offer)
 
-            offer.syncItem = ManagedSyncItem(context: context)
-            offer.syncItem?.type = .insert
             offer.user = userRepository.getUser(for: context)
+            offer.locations = NSSet(array: managedLocations)
 
             return offer
         }
     }
 
-    func update(offer: ManagedOffer, provider: @escaping (ManagedOffer) -> Void) -> AnyPublisher<ManagedOffer, Error> {
+    func update(
+        offer: ManagedOffer,
+        locations: [OfferLocation]?,
+        provider: @escaping (ManagedOffer) -> Void
+    ) -> AnyPublisher<ManagedOffer, Error> {
         persistence.update(context: persistence.viewContext) { context in
-            provider(offer)
+            if let locations = locations {
+                let managedLocations = locations.map { location -> ManagedOfferLocation in
+                    let managedLocation = ManagedOfferLocation(context: context)
+                    managedLocation.lat = location.latitude
+                    managedLocation.lon = location.longitude
+                    managedLocation.city = location.city
+                    return managedLocation
+                }
 
-            if offer.syncItem != nil {
-                offer.syncItem = ManagedSyncItem(context: context)
-                offer.syncItem?.type = .update
+                (offer.locations as? Set<ManagedOfferLocation>)?.forEach { location in
+                    context.delete(location)
+                }
+
+                offer.locations = NSSet(array: managedLocations)
             }
+
+            provider(offer)
 
             return offer
         }
@@ -158,13 +187,33 @@ class OfferRepository: OfferRepositoryType {
         )
     }
 
-    func deleteOffers(with ids: [String]) -> AnyPublisher<Void, Error> {
+    func getKnownOffers() -> AnyPublisher<[ManagedOffer], Error> {
+        persistence.load(type: ManagedOffer.self, context: persistence.viewContext, predicate: NSPredicate(format: "user == nil AND offerID != nil"))
+    }
+
+    func sync(offers unsafeOffers: [ManagedOffer], withPublicKeys publicKeys: [String]) -> AnyPublisher<Void, Error> {
+        persistence.update(context: persistence.newEditContext()) { context in
+            let offers = unsafeOffers
+                .map(\.objectID)
+                .map(context.object(with: ))
+                .compactMap { $0 as? ManagedOffer }
+
+            offers.forEach { offer in
+                let item = ManagedSyncItem(context: context)
+                item.publicKeys = publicKeys
+                item.type = .offerEncryptionUpdate
+                item.offer = offer
+            }
+        }
+    }
+
+    func deleteOffers(offerIDs ids: [String]) -> AnyPublisher<Void, Error> {
         let context = persistence.viewContext
         return persistence
             .load(
                 type: ManagedOffer.self,
                 context: context,
-                predicate: NSPredicate(format: "%@ contains[cd] id", NSArray(array: ids))
+                predicate: NSPredicate(format: "%@ contains[cd] offerID", NSArray(array: ids))
             )
             .flatMap { [persistence] offers -> AnyPublisher<Void, Error> in
                 persistence.delete(context: context, editor: { _ in offers })

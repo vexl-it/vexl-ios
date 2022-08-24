@@ -10,6 +10,7 @@ import SwiftUI
 struct ChatConversationView: View {
 
     @ObservedObject var viewModel: ChatConversationViewModel
+    @State private var firstScrollFinished = false
 
     var body: some View {
         ScrollViewReader { proxy in
@@ -36,14 +37,10 @@ struct ChatConversationView: View {
                                         }
                                 case .requestIdentityReveal:
                                     ChatRevealIdentityView(image: viewModel.avatar,
-                                                           isRequest: true,
-                                                           revealAction: nil)
+                                                           isRequest: true)
                                 case .receiveIdentityReveal:
                                     ChatRevealIdentityView(image: nil,
-                                                           isRequest: false,
-                                                           revealAction: {
-                                        viewModel.action.send(.revealTapped)
-                                    })
+                                                           isRequest: false)
                                 case .rejectIdentityReveal:
                                     ChatRevealIdentityResponseView(username: viewModel.username,
                                                                    avatarImage: viewModel.avatarImage,
@@ -66,10 +63,12 @@ struct ChatConversationView: View {
                 }
             }
             .padding(.top, Appearance.GridGuide.padding)
-            .onChange(of: viewModel.lastMessageID) { newMessageID in
-                guard let newMessageID = newMessageID else { return }
-                withAnimation {
+            .onReceive(viewModel.$lastMessageID) { newMessageID in
+                withAnimation(firstScrollFinished ? .default : .none) {
                     proxy.scrollTo(newMessageID)
+                    if !firstScrollFinished {
+                        firstScrollFinished = true
+                    }
                 }
             }
         }

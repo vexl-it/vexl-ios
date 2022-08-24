@@ -13,6 +13,8 @@ private typealias ActionSheetResult = CoordinatingResult<RouterResult<BottomActi
 
 final class ChatCoordinator: BaseCoordinator<RouterResult<Void>> {
 
+    @Inject private var deeplinkManager: DeeplinkManagerType
+
     private let router: Router
     private let animated: Bool
     private let chat: ManagedChat
@@ -23,9 +25,14 @@ final class ChatCoordinator: BaseCoordinator<RouterResult<Void>> {
         self.animated = animated
     }
 
+    deinit {
+        deeplinkManager.setCanOpenDeeplink(to: true)
+    }
+
     override func start() -> CoordinatingResult<RouterResult<Void>> {
+        deeplinkManager.setCanOpenDeeplink(to: false)
         let viewModel = ChatViewModel(chat: chat)
-        let viewController = BaseViewController(rootView: ChatView(viewModel: viewModel))
+        let viewController = ToggleKeyboardHostingController(rootView: ChatView(viewModel: viewModel))
 
         router.present(viewController, animated: animated)
 

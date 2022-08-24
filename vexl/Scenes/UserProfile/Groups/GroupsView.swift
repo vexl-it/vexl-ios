@@ -62,11 +62,21 @@ struct GroupsView: View {
 struct GroupCell: View {
     @ObservedObject var viewModel: GroupCellViewModel
 
+    private let imagePadding = Appearance.GridGuide.point
+
     var body: some View {
         HStack(alignment: .center) {
             Group {
                 if let image = viewModel.logoImage {
                     image
+                        .resizable()
+                        .scaledToFill()
+                        .frame(
+                            width: Appearance.GridGuide.mediumIconSize.width - (2 * imagePadding),
+                            height: Appearance.GridGuide.mediumIconSize.height - (2 * imagePadding)
+                        )
+                        .padding(imagePadding)
+                        .background(viewModel.groupColor)
                 } else {
                     EmptyGroupLogoSmall(name: $viewModel.name)
                 }
@@ -127,6 +137,7 @@ final class GroupCellViewModel: ObservableObject, Identifiable {
 
     @Published var logoImage: Image?
     @Published var name: String
+    @Published var groupColor: Color
     @Published var memberCount: Int
 
     var action: ActionSubject<GroupsViewModel.ActionType>
@@ -137,6 +148,7 @@ final class GroupCellViewModel: ObservableObject, Identifiable {
         self.id = group.uuid ?? UUID().uuidString
         self.name = group.name ?? ""
         self.memberCount = group.members?.count ?? 0
+        self.groupColor = group.color
 
         group
             .publisher(for: \.logo)

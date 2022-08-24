@@ -24,7 +24,7 @@ final class RegisterFacebookContactsCoordinator: BaseCoordinator<RouterResult<Vo
     override func start() -> CoordinatingResult<RouterResult<Void>> {
         let viewModel = RegisterFacebookContactsViewModel()
         let viewController = RegisterViewController(currentPage: 3,
-                                                    numberOfPages: 4,
+                                                    numberOfPages: Constants.registrationSteps,
                                                     rootView: RegisterFacebookContactsView(viewModel: viewModel),
                                                     showBackButton: false)
 

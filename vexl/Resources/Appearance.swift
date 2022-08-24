@@ -23,6 +23,7 @@ struct Appearance {
         static let purple3 = Color(R.color.purple3.name)
         static let purple4 = Color(R.color.purple4.name)
         static let purple5 = Color(R.color.purple5.name)
+        static let gray0 = Color(R.color.gray0.name)
         static let gray1 = Color(R.color.gray1.name)
         static let gray2 = Color(R.color.gray2.name)
         static let gray3 = Color(R.color.gray3.name)
@@ -184,6 +185,7 @@ struct Appearance {
         case descriptionSemiBold
         case descriptionBold
         case micro
+        case microSemiBold
 
         var font: UIFont {
             switch self {
@@ -235,6 +237,8 @@ struct Appearance {
                 return R.font.ttSatoshiBold(size: 14) ?? UIFont.systemFont(ofSize: 14, weight: .bold)
             case .micro:
                 return R.font.ttSatoshiRegular(size: 12) ?? UIFont.systemFont(ofSize: 12, weight: .regular)
+            case .microSemiBold:
+                return R.font.ttSatoshiDemiBold(size: 12) ?? UIFont.systemFont(ofSize: 12, weight: .semibold)
             }
         }
     }

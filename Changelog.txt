@@ -20,6 +20,23 @@
 - VEX-601: Avatar picker now has correct size
 - VEX-570: Added labels to friends degree picker
 - VEX-638: Encrypt offer for groups dynamically
+- VEX-664: Profile rows are tappable now
+- VEX-562/VEX-655: Showing message in the inbox list when the its a reveal identity request, approval and decline.
+- VEX-547: Save name in Register name + avatar phase
+- VEX-697: App now receives contacts-ms notifications
+- VEX-691: App updates offer for new group users
+- VEX-693: App updates offer for new contact users
+- VEX-717: Preselect contacts on onboarding
+- VEX-632: Its possible to remove previously added contacts
+- Registered new testing devices
+- VEX-781: Offers are now beeing deleted from market place
+- VEX-669: Correct colors for welcome screen
+- VEX-787: Added FAQ and terms-conditions to the profile
+- VEX-389: Added limit to phone number
+- VEX-637: Updated how offer amount is presented in the card
+- VEX-730: Removed FAQ from onboarding
+- VEX-718: Sorted phone contacts
+- VEX-818: Reveal identity now is anchored to the bottom of the chat
 
 ### Fixes
 - VEX-525: Fixed common friends on chat request screen
@@ -36,5 +53,21 @@
 - VEX-612: Fixed missing translation for months in bitcoin graph
 - VEX-363: fixed fee amount calculation
 - VEX-582: added fee label to offer card
+- VEX-433: Chat is dismissed after the content is deleted
+- VEX-657: Common friends scrolling is now horizontal
+- VEX-576: filter inactive offers
+- VEX-695: Declined identity reveal now appears instantly
+- VEX-643: Fixed issue with avatar not appear after identity has been revealed
+- VEX-689: Reveal identity button disappearing after reveal is declined
+- VEX-739: Fix group member count
+- VEX-749: Silence group notifications
+- VEX-671: Request offer button UI
+- VEX-786 - iOS [Profile] Cancel button doesn't work
+- VEX-759 - The name of the application should be Vexl with a capital V
+- VEX-686 - Incorrect height of the button for creating an offer
+- VEX-672 - iOS: [Onboarding] - the back arrow has an incorrect design
+- VEX-670 - Wrong text on the button for new offers
+- VEX-649 - The cross button should be aligned to the first line of text
+- VEX-715 - The layout of the buttons on the contact page does not match the design
 
 ### Known Issues

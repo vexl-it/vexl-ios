@@ -20,6 +20,7 @@ struct ContactInformation: Identifiable {
     var avatar: Data?
     var avatarURL: String?
     var isSelected = false
+    var isStored = false
     var source: Source
 
     var sourceIdentifier: String {

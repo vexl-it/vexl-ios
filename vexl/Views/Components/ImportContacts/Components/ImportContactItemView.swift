@@ -21,7 +21,7 @@ struct ImportContactItemView: View {
         HStack {
             avatarImage
                 .frame(size: imageSize)
-                .cornerRadius(imageSize.height * 0.5, corners: .allCorners)
+                .cornerRadius(Appearance.GridGuide.buttonCorner, corners: .allCorners)
 
             Spacer()
 
@@ -48,10 +48,11 @@ struct ImportContactItemView: View {
     }
 
     @ViewBuilder private var avatarImage: some View {
+        let placeholder: String = R.image.avatars.defaultAvatar1.name
         if let avatarURL = item.avatarURL, let url = URL(string: avatarURL) {
-            FetchImage(url: url, placeholder: R.image.onboarding.emptyAvatar.name)
+            FetchImage(url: url, placeholder: placeholder)
         } else {
-            Image(data: item.avatar, placeholder: R.image.onboarding.emptyAvatar.name)
+            Image(data: item.avatar, placeholder: placeholder)
                 .resizable()
         }
     }
@@ -78,7 +79,8 @@ private struct ImportContactSelectionView: View {
                 ZStack {
                     Appearance.Colors.yellow100
                         .cornerRadius(Appearance.GridGuide.buttonCorner)
-                    Image(systemName: "checkmark")
+                    Text(Image(systemName: "checkmark"))
+                        .fontWeight(.bold)
                         .foregroundColor(Appearance.Colors.black1)
                 }
             } else {

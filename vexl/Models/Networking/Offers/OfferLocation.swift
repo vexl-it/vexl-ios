@@ -7,21 +7,64 @@
 
 import Foundation
 
-struct OfferLocation: Codable {
-    let latitude: Float
-    let longitude: Float
-    let radius: Float
+struct OfferLocation: Codable, Hashable {
+    var latitude: Float
+    var longitude: Float
+    var city: String
 
     var asString: String? {
-        let json = [
+        let json: [String: Any] = [
             "latitude": latitude,
             "longitude": longitude,
-            "radius": radius
+            "city": city
         ]
 
         guard let data = try? JSONSerialization.data(withJSONObject: json, options: .prettyPrinted) else {
             return nil
         }
         return String(data: data, encoding: .utf8)
+    }
+
+    ///
+    /// Use this init when creating from local storage
+    ///
+    init?(managedLocation: ManagedOfferLocation) {
+        guard let city = managedLocation.city,
+              managedLocation.lat > 0,
+              managedLocation.lon > 0 else { return nil }
+
+        self.latitude = managedLocation.lat
+        self.longitude = managedLocation.lon
+        self.city = city
+    }
+
+    ///
+    /// Use this init when initializing from Networking
+    ///
+    init?(string: String) {
+        guard let data = string.data(using: .utf8) else { return nil }
+        do {
+            self = try JSONDecoder().decode(OfferLocation.self, from: data)
+        } catch {
+            return nil
+        }
+    }
+
+    ///
+    /// Use this init when creating from autocomplete on offer creation, update or filter
+    ///
+    init(locationSuggestion: LocationSuggestion) {
+        self.latitude = locationSuggestion.lat
+        self.longitude = locationSuggestion.lon
+        self.city = locationSuggestion.city
+    }
+
+    ///
+    /// This init is meant to use when user is typing on OfferLocationPickerView but haven't pick any suggesiton yet
+    ///
+    init(city: String = "", latitude: Float = 0, longitude: Float = 0) {
+        self.latitude = latitude
+        self.longitude = longitude
+        self.city = city
     }
 }

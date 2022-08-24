@@ -7,11 +7,14 @@
 
 import Foundation
 import Combine
+import CoreData
 
 protocol GroupRepositoryType {
     func createOrUpdateGroup(payloads: [(GroupPayload, [String])]) -> AnyPublisher<Void, Error>
-    func update(group unsafeGroup: ManagedGroup, members: [String]) -> AnyPublisher<[String], Error>
+    func update(group unsafeGroup: ManagedGroup, members: [String], returnOnlyNewMembers: Bool) -> AnyPublisher<[String], Error>
+    func fetchGroup(uuid: String) -> ManagedGroup?
     func delete(group: ManagedGroup) -> AnyPublisher<Void, Error>
+    func delete(groups: [ManagedGroup]) -> AnyPublisher<Void, Error>
 }
 
 final class GroupRepository: GroupRepositoryType {
@@ -56,8 +59,16 @@ final class GroupRepository: GroupRepositoryType {
         .eraseToAnyPublisher()
     }
 
-    func update(group unsafeGroup: ManagedGroup, members: [String]) -> AnyPublisher<[String], Error> {
-        persistence.update(context: persistence.newEditContext()) { [persistence] context in
+    func fetchGroup(uuid: String) -> ManagedGroup? {
+        persistence.loadSyncroniously(
+            type: ManagedGroup.self,
+            context: persistence.viewContext,
+            predicate: NSPredicate(format: "uuid == '\(uuid)'")
+        ).first
+    }
+
+    func update(group unsafeGroup: ManagedGroup, members: [String], returnOnlyNewMembers: Bool) -> AnyPublisher<[String], Error> {
+        persistence.update(context: persistence.viewContext) { [persistence] context in
             guard let group = persistence.loadSyncroniously(type: ManagedGroup.self, context: context, objectID: unsafeGroup.objectID) else {
                 return []
             }
@@ -73,6 +84,10 @@ final class GroupRepository: GroupRepositoryType {
                 newMember.group = group
             }
 
+            if returnOnlyNewMembers {
+                return Array(newMemberSet)
+            }
+
             let allMembers = group.members?.allObjects as? [ManagedAnonymisedProfile] ?? []
 
             return allMembers.compactMap(\.publicKey)
@@ -86,5 +101,16 @@ final class GroupRepository: GroupRepositoryType {
                 .eraseToAnyPublisher()
         }
         return persistence.delete(context: context) { _ in [group] }
+    }
+
+    func delete(groups unsafeGroups: [ManagedGroup]) -> AnyPublisher<Void, Error> {
+        let context = persistence.viewContext
+        let groups: [ManagedGroup] = unsafeGroups.compactMap { unsafeGroup in
+            guard let group = persistence.loadSyncroniously(type: ManagedGroup.self, context: context, objectID: unsafeGroup.objectID) else {
+                return nil
+            }
+            return group
+        }
+        return persistence.delete(context: context) { _ in groups }
     }
 }

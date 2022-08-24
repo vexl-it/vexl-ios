@@ -21,8 +21,7 @@ struct MarketplaceFeedFooterView: View {
         HStack {
             ContactAvatarInfo(
                 isAvatarWithOpacity: isRequested,
-                title: "",
-                attributedTitle: attributedTitle,
+                titleType: .attributed(attributedTitle),
                 subtitle: friendLevel,
                 avatar: avatar
             )

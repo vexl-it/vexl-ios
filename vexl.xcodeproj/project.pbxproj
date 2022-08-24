@@ -9,6 +9,12 @@
 /* Begin PBXBuildFile section */
 		0AA456AF4C162D9C8AF6AB30 /* Pods_vexl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57B3CAA27CF4369A28B748A7 /* Pods_vexl.framework */; };
 		4F2416A328490B3C00B4A437 /* ChatInbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2416A228490B3C00B4A437 /* ChatInbox.swift */; };
+		4F26F44528A51C49005558E8 /* MapyService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F26F44428A51C49005558E8 /* MapyService.swift */; };
+		4F26F44728A51D05005558E8 /* MapyRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F26F44628A51D05005558E8 /* MapyRouter.swift */; };
+		4F26F44A28A52C50005558E8 /* LocationSuggestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F26F44928A52C50005558E8 /* LocationSuggestion.swift */; };
+		4F26F44D28A52E65005558E8 /* OfferLocationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F26F44C28A52E65005558E8 /* OfferLocationViewModel.swift */; };
+		4F26F44F28A54D6F005558E8 /* IsFocusTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F26F44E28A54D6F005558E8 /* IsFocusTextField.swift */; };
+		4F26F45928A93D3A005558E8 /* ManagedOfferLocation+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F26F45828A93D3A005558E8 /* ManagedOfferLocation+.swift */; };
 		4F481E7228466B320051D3B9 /* TimelineOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F481E7128466B320051D3B9 /* TimelineOption.swift */; };
 		4F481E76284767480051D3B9 /* ChatRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F481E75284767480051D3B9 /* ChatRouter.swift */; };
 		4F481E78284768840051D3B9 /* ChatService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F481E77284768840051D3B9 /* ChatService.swift */; };
@@ -16,6 +22,9 @@
 		4F700CBC2844C3260085139F /* TabBarNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F700CBB2844C3260085139F /* TabBarNavigationController.swift */; };
 		4F700CBE2844C4C20085139F /* StickyBitcoinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F700CBD2844C4C20085139F /* StickyBitcoinView.swift */; };
 		4F700CC02844C54E0085139F /* BitcoinViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F700CBF2844C54E0085139F /* BitcoinViewModel.swift */; };
+		4F9ECFF728AE93350074EA47 /* KeyboardReadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F9ECFF628AE93350074EA47 /* KeyboardReadable.swift */; };
+		4FA3BF6A28AEE8F3000BE679 /* DeeplinkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA3BF6928AEE8F3000BE679 /* DeeplinkManager.swift */; };
+		4FA3BF6C28AFDB7A000BE679 /* UIWindow+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA3BF6B28AFDB7A000BE679 /* UIWindow+.swift */; };
 		4FBF61DE283BD11C00DDBE71 /* FilterCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FBF61DD283BD11C00DDBE71 /* FilterCoordinator.swift */; };
 		4FBF61E0283BD12700DDBE71 /* FilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FBF61DF283BD12700DDBE71 /* FilterView.swift */; };
 		4FBF61E2283BD12D00DDBE71 /* FilterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FBF61E1283BD12D00DDBE71 /* FilterViewModel.swift */; };
@@ -55,7 +64,6 @@
 		B007A7922877629A00CFA5C9 /* Bool+Encryptable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B007A7912877629A00CFA5C9 /* Bool+Encryptable.swift */; };
 		B007A7942878285800CFA5C9 /* ManagedInbox+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B007A7932878285800CFA5C9 /* ManagedInbox+.swift */; };
 		B007A7962878DFC600CFA5C9 /* ContactsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = B007A7952878DFC600CFA5C9 /* ContactsRepository.swift */; };
-		B00BAC262893E2E3008E3CA2 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B00BAC252893E2E3008E3CA2 /* GoogleService-Info.plist */; };
 		B00BAC2B2897D1EF008E3CA2 /* GroupsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00BAC2A2897D1EF008E3CA2 /* GroupsCoordinator.swift */; };
 		B00BAC2D2897D1F7008E3CA2 /* GroupsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00BAC2C2897D1F7008E3CA2 /* GroupsViewModel.swift */; };
 		B00BAC2F2897D1FF008E3CA2 /* GroupsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00BAC2E2897D1FF008E3CA2 /* GroupsView.swift */; };
@@ -78,7 +86,6 @@
 		B05A22132812BF2700BF8D58 /* Publisher+Crypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = B05A22122812BF2700BF8D58 /* Publisher+Crypto.swift */; };
 		B06A3B4F287C967F00911795 /* Encryptable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B06A3B4E287C967F00911795 /* Encryptable.swift */; };
 		B06A3B51287C976300911795 /* Number+Encryptable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B06A3B50287C976300911795 /* Number+Encryptable.swift */; };
-		B06A3B55287D64DC00911795 /* vexl-crypto.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = B06A3B54287D64DC00911795 /* vexl-crypto.xcframework */; };
 		B08D2AB5289FF31500A1C901 /* GroupRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = B08D2AB4289FF31500A1C901 /* GroupRepository.swift */; };
 		B08D2AB7289FFDD100A1C901 /* GroupManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B08D2AB6289FFDD100A1C901 /* GroupManager.swift */; };
 		B08D2AB928A41E3E00A1C901 /* OfferAdvanceFilterGroupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B08D2AB828A41E3E00A1C901 /* OfferAdvanceFilterGroupView.swift */; };
@@ -131,6 +138,7 @@
 		B08F399E27AE7D92008B344F /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B08F399D27AE7D92008B344F /* OnboardingView.swift */; };
 		B0B0A059288EDDAE00E81776 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B0A058288EDDAE00E81776 /* NotificationManager.swift */; };
 		B0B0A05B2891AC3E00E81776 /* Bool+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B0A05A2891AC3E00E81776 /* Bool+.swift */; };
+		B0BB493E28AFA1410068BCB8 /* vexl-crypto.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = B0BB493D28AFA1410068BCB8 /* vexl-crypto.xcframework */; };
 		B0E9BB272815C5750012BF1D /* String+Encryptable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E9BB262815C5750012BF1D /* String+Encryptable.swift */; };
 		B0E9BB2A2815C7190012BF1D /* AES.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E9BB292815C7190012BF1D /* AES.swift */; };
 		B0E9BB2C2815C71E0012BF1D /* ECC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E9BB2B2815C71E0012BF1D /* ECC.swift */; };
@@ -155,12 +163,13 @@
 		C1A0B48D6D54EB5D7D8929FB /* Pods_vexl_vexlTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D776C4D0B95B9F6E229AF7E4 /* Pods_vexl_vexlTests.framework */; };
 		F1042BA227BEADB70048C2F0 /* WelcomeAgreementSwitch.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1042BA127BEADB70048C2F0 /* WelcomeAgreementSwitch.swift */; };
 		F1042BA527BEF0360048C2F0 /* OnboardingView+PageControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1042BA427BEF0360048C2F0 /* OnboardingView+PageControl.swift */; };
+		F1071D4328B439F5002BE9EF /* ChatRevealIdentityBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1071D4228B439F5002BE9EF /* ChatRevealIdentityBannerView.swift */; };
 		F11441C7284681EC00307D39 /* RegistrationCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11441A3284681EC00307D39 /* RegistrationCardView.swift */; };
 		F11441C8284681EC00307D39 /* RegistrationCounterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11441A4284681EC00307D39 /* RegistrationCounterView.swift */; };
 		F11441C9284681EC00307D39 /* CardModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11441A6284681EC00307D39 /* CardModifier.swift */; };
 		F11441CA284681EC00307D39 /* HeaderTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11441A7284681EC00307D39 /* HeaderTitleView.swift */; };
 		F11441CC284681EC00307D39 /* DottedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11441AB284681EC00307D39 /* DottedButton.swift */; };
-		F11441CD284681EC00307D39 /* LargeLabelButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11441AC284681EC00307D39 /* LargeLabelButton.swift */; };
+		F11441CD284681EC00307D39 /* LabelButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11441AC284681EC00307D39 /* LabelButton.swift */; };
 		F11441CE284681EC00307D39 /* OffsetScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11441AE284681EC00307D39 /* OffsetScrollView.swift */; };
 		F11441CF284681EC00307D39 /* ExpandingTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11441B0284681EC00307D39 /* ExpandingTextView.swift */; };
 		F11441D0284681EC00307D39 /* BorderedTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11441B1284681EC00307D39 /* BorderedTextField.swift */; };
@@ -387,6 +396,7 @@
 		F1DF4A4F289C9F16008E5C87 /* FAQView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1DF4A4E289C9F16008E5C87 /* FAQView.swift */; };
 		F1DF4A51289D59BA008E5C87 /* AttributedText.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1DF4A50289D59BA008E5C87 /* AttributedText.swift */; };
 		F1DF4A53289D6BE4008E5C87 /* FAQContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1DF4A52289D6BE4008E5C87 /* FAQContent.swift */; };
+		F1EE5EFC28AAF36200E4EF76 /* UserOfferAttributedText.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1EE5EFB28AAF36200E4EF76 /* UserOfferAttributedText.swift */; };
 		F1F0FBD128A2FB3000C783D3 /* GroupsLeaveActionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1F0FBD028A2FB3000C783D3 /* GroupsLeaveActionSheet.swift */; };
 		F1F5F194283E9FC500968366 /* OfferPaymentIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1F5F193283E9FC500968366 /* OfferPaymentIconView.swift */; };
 		F1F5F199283FE52D00968366 /* ChatRequestCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1F5F198283FE52D00968366 /* ChatRequestCoordinator.swift */; };
@@ -409,6 +419,12 @@
 		2037AA1BF15F43490962C3E2 /* Pods-vexl-vexlTests.appstore.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-vexl-vexlTests.appstore.xcconfig"; path = "Target Support Files/Pods-vexl-vexlTests/Pods-vexl-vexlTests.appstore.xcconfig"; sourceTree = "<group>"; };
 		41AF8987CFFD44F9E45C3897 /* Pods-vexl-vexlTests.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-vexl-vexlTests.staging.xcconfig"; path = "Target Support Files/Pods-vexl-vexlTests/Pods-vexl-vexlTests.staging.xcconfig"; sourceTree = "<group>"; };
 		4F2416A228490B3C00B4A437 /* ChatInbox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatInbox.swift; sourceTree = "<group>"; };
+		4F26F44428A51C49005558E8 /* MapyService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapyService.swift; sourceTree = "<group>"; };
+		4F26F44628A51D05005558E8 /* MapyRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapyRouter.swift; sourceTree = "<group>"; };
+		4F26F44928A52C50005558E8 /* LocationSuggestion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSuggestion.swift; sourceTree = "<group>"; };
+		4F26F44C28A52E65005558E8 /* OfferLocationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferLocationViewModel.swift; sourceTree = "<group>"; };
+		4F26F44E28A54D6F005558E8 /* IsFocusTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IsFocusTextField.swift; sourceTree = "<group>"; };
+		4F26F45828A93D3A005558E8 /* ManagedOfferLocation+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ManagedOfferLocation+.swift"; sourceTree = "<group>"; };
 		4F481E61284504050051D3B9 /* RangePickerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RangePickerView.swift; sourceTree = "<group>"; };
 		4F481E63284504050051D3B9 /* OptionPickerItemView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OptionPickerItemView.swift; sourceTree = "<group>"; };
 		4F481E64284504050051D3B9 /* SingleOptionPickerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SingleOptionPickerView.swift; sourceTree = "<group>"; };
@@ -425,6 +441,9 @@
 		4F700CBD2844C4C20085139F /* StickyBitcoinView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickyBitcoinView.swift; sourceTree = "<group>"; };
 		4F700CBF2844C54E0085139F /* BitcoinViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BitcoinViewModel.swift; sourceTree = "<group>"; };
 		4F700CC22844DA250085139F /* OffsetScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OffsetScrollView.swift; sourceTree = "<group>"; };
+		4F9ECFF628AE93350074EA47 /* KeyboardReadable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardReadable.swift; sourceTree = "<group>"; };
+		4FA3BF6928AEE8F3000BE679 /* DeeplinkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeeplinkManager.swift; sourceTree = "<group>"; };
+		4FA3BF6B28AFDB7A000BE679 /* UIWindow+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIWindow+.swift"; sourceTree = "<group>"; };
 		4FBF61DD283BD11C00DDBE71 /* FilterCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterCoordinator.swift; sourceTree = "<group>"; };
 		4FBF61DF283BD12700DDBE71 /* FilterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterView.swift; sourceTree = "<group>"; };
 		4FBF61E1283BD12D00DDBE71 /* FilterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterViewModel.swift; sourceTree = "<group>"; };
@@ -475,10 +494,6 @@
 		B007A7952878DFC600CFA5C9 /* ContactsRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsRepository.swift; sourceTree = "<group>"; };
 		B00BAC1D2892968B008E3CA2 /* vexlDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = vexlDebug.entitlements; sourceTree = "<group>"; };
 		B00BAC1E2892BA93008E3CA2 /* vexl.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = vexl.entitlements; sourceTree = "<group>"; };
-		B00BAC1F2892C45B008E3CA2 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		B00BAC212892C497008E3CA2 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		B00BAC242892CA8D008E3CA2 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		B00BAC252893E2E3008E3CA2 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		B00BAC2A2897D1EF008E3CA2 /* GroupsCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupsCoordinator.swift; sourceTree = "<group>"; };
 		B00BAC2C2897D1F7008E3CA2 /* GroupsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupsViewModel.swift; sourceTree = "<group>"; };
 		B00BAC2E2897D1FF008E3CA2 /* GroupsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupsView.swift; sourceTree = "<group>"; };
@@ -501,7 +516,6 @@
 		B05A22122812BF2700BF8D58 /* Publisher+Crypto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Publisher+Crypto.swift"; sourceTree = "<group>"; };
 		B06A3B4E287C967F00911795 /* Encryptable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Encryptable.swift; sourceTree = "<group>"; };
 		B06A3B50287C976300911795 /* Number+Encryptable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Number+Encryptable.swift"; sourceTree = "<group>"; };
-		B06A3B54287D64DC00911795 /* vexl-crypto.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = "vexl-crypto.xcframework"; sourceTree = "<group>"; };
 		B08D2AB4289FF31500A1C901 /* GroupRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupRepository.swift; sourceTree = "<group>"; };
 		B08D2AB6289FFDD100A1C901 /* GroupManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupManager.swift; sourceTree = "<group>"; };
 		B08D2AB828A41E3E00A1C901 /* OfferAdvanceFilterGroupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferAdvanceFilterGroupView.swift; sourceTree = "<group>"; };
@@ -558,6 +572,11 @@
 		B08F399D27AE7D92008B344F /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		B0B0A058288EDDAE00E81776 /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
 		B0B0A05A2891AC3E00E81776 /* Bool+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bool+.swift"; sourceTree = "<group>"; };
+		B0BB493528ACFA040068BCB8 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		B0BB493728ACFAF60068BCB8 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		B0BB493928ACFB0D0068BCB8 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		B0BB493B28ACFB3C0068BCB8 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		B0BB493D28AFA1410068BCB8 /* vexl-crypto.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = "vexl-crypto.xcframework"; sourceTree = "<group>"; };
 		B0E9BB262815C5750012BF1D /* String+Encryptable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Encryptable.swift"; sourceTree = "<group>"; };
 		B0E9BB292815C7190012BF1D /* AES.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AES.swift; sourceTree = "<group>"; };
 		B0E9BB2B2815C71E0012BF1D /* ECC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ECC.swift; sourceTree = "<group>"; };
@@ -585,12 +604,13 @@
 		DF8AC1A170DAA6A83E1E979B /* Pods-vexl.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-vexl.debug.xcconfig"; path = "Target Support Files/Pods-vexl/Pods-vexl.debug.xcconfig"; sourceTree = "<group>"; };
 		F1042BA127BEADB70048C2F0 /* WelcomeAgreementSwitch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeAgreementSwitch.swift; sourceTree = "<group>"; };
 		F1042BA427BEF0360048C2F0 /* OnboardingView+PageControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OnboardingView+PageControl.swift"; sourceTree = "<group>"; };
+		F1071D4228B439F5002BE9EF /* ChatRevealIdentityBannerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatRevealIdentityBannerView.swift; sourceTree = "<group>"; };
 		F11441A3284681EC00307D39 /* RegistrationCardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegistrationCardView.swift; sourceTree = "<group>"; };
 		F11441A4284681EC00307D39 /* RegistrationCounterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegistrationCounterView.swift; sourceTree = "<group>"; };
 		F11441A6284681EC00307D39 /* CardModifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardModifier.swift; sourceTree = "<group>"; };
 		F11441A7284681EC00307D39 /* HeaderTitleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeaderTitleView.swift; sourceTree = "<group>"; };
 		F11441AB284681EC00307D39 /* DottedButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DottedButton.swift; sourceTree = "<group>"; };
-		F11441AC284681EC00307D39 /* LargeLabelButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LargeLabelButton.swift; sourceTree = "<group>"; };
+		F11441AC284681EC00307D39 /* LabelButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelButton.swift; sourceTree = "<group>"; };
 		F11441AE284681EC00307D39 /* OffsetScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OffsetScrollView.swift; sourceTree = "<group>"; };
 		F11441B0284681EC00307D39 /* ExpandingTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExpandingTextView.swift; sourceTree = "<group>"; };
 		F11441B1284681EC00307D39 /* BorderedTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BorderedTextField.swift; sourceTree = "<group>"; };
@@ -826,6 +846,7 @@
 		F1E7029A2889C2D100EBB087 /* EditProfileNameView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfileNameView.swift; sourceTree = "<group>"; };
 		F1E7029B2889C2D100EBB087 /* EditProfileNameCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfileNameCoordinator.swift; sourceTree = "<group>"; };
 		F1E7029C2889C2D100EBB087 /* EditProfileNameViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfileNameViewModel.swift; sourceTree = "<group>"; };
+		F1EE5EFB28AAF36200E4EF76 /* UserOfferAttributedText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserOfferAttributedText.swift; sourceTree = "<group>"; };
 		F1F0FBD028A2FB3000C783D3 /* GroupsLeaveActionSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupsLeaveActionSheet.swift; sourceTree = "<group>"; };
 		F1F5F193283E9FC500968366 /* OfferPaymentIconView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferPaymentIconView.swift; sourceTree = "<group>"; };
 		F1F5F198283FE52D00968366 /* ChatRequestCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRequestCoordinator.swift; sourceTree = "<group>"; };
@@ -840,7 +861,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0AA456AF4C162D9C8AF6AB30 /* Pods_vexl.framework in Frameworks */,
-				B06A3B55287D64DC00911795 /* vexl-crypto.xcframework in Frameworks */,
+				B0BB493E28AFA1410068BCB8 /* vexl-crypto.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -884,6 +905,22 @@
 			path = Database;
 			sourceTree = "<group>";
 		};
+		4F26F44828A52C41005558E8 /* Location */ = {
+			isa = PBXGroup;
+			children = (
+				4F26F44928A52C50005558E8 /* LocationSuggestion.swift */,
+			);
+			path = Location;
+			sourceTree = "<group>";
+		};
+		4F26F44B28A52E57005558E8 /* Locations */ = {
+			isa = PBXGroup;
+			children = (
+				4F26F44C28A52E65005558E8 /* OfferLocationViewModel.swift */,
+			);
+			path = Locations;
+			sourceTree = "<group>";
+		};
 		4F700CB82844B0750085139F /* BitcoinView */ = {
 			isa = PBXGroup;
 			children = (
@@ -893,6 +930,14 @@
 				4F481E7128466B320051D3B9 /* TimelineOption.swift */,
 			);
 			path = BitcoinView;
+			sourceTree = "<group>";
+		};
+		4FA3BF6828AEE8E7000BE679 /* Deeplink */ = {
+			isa = PBXGroup;
+			children = (
+				4FA3BF6928AEE8F3000BE679 /* DeeplinkManager.swift */,
+			);
+			path = Deeplink;
 			sourceTree = "<group>";
 		};
 		4FBF61DC283BCE3500DDBE71 /* Filters */ = {
@@ -985,6 +1030,7 @@
 				B007A755287226AA00CFA5C9 /* ManagedProfile+.swift */,
 				B007A757287226B500CFA5C9 /* ManagedKeyPair+.swift */,
 				B007A74F2872267400CFA5C9 /* ManagedOffer+.swift */,
+				4F26F45828A93D3A005558E8 /* ManagedOfferLocation+.swift */,
 				B007A759287226D000CFA5C9 /* ManagedChat+.swift */,
 				B007A75B287226DC00CFA5C9 /* ManagedMessage+.swift */,
 				B007A7932878285800CFA5C9 /* ManagedInbox+.swift */,
@@ -1024,7 +1070,7 @@
 		B021E2F027FF59F600D186EC /* Staging */ = {
 			isa = PBXGroup;
 			children = (
-				B00BAC212892C497008E3CA2 /* GoogleService-Info.plist */,
+				B0BB493728ACFAF60068BCB8 /* GoogleService-Info.plist */,
 			);
 			path = Staging;
 			sourceTree = "<group>";
@@ -1147,6 +1193,7 @@
 				F1BFA97228043D6300F4E745 /* Image+.swift */,
 				B0501BA92887419F00A44E18 /* Array+.swift */,
 				B042C94F28A8457800860F91 /* Color+.swift */,
+				4FA3BF6B28AFDB7A000BE679 /* UIWindow+.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1156,6 +1203,7 @@
 			children = (
 				B08F394427AE7112008B344F /* ReusableView.swift */,
 				B08F395627AE7112008B344F /* ApiRouter.swift */,
+				4F9ECFF628AE93350074EA47 /* KeyboardReadable.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -1191,6 +1239,7 @@
 		B08F38F227AE7110008B344F /* Managers */ = {
 			isa = PBXGroup;
 			children = (
+				4FA3BF6828AEE8E7000BE679 /* Deeplink */,
 				F1D204F52864FABB006A5671 /* Inbox */,
 				B08F391627AE7112008B344F /* AuthenticationManager.swift */,
 				B007A78F28762EE200CFA5C9 /* FacebookManager.swift */,
@@ -1246,7 +1295,7 @@
 		B08F38FE27AE7110008B344F /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				B06A3B54287D64DC00911795 /* vexl-crypto.xcframework */,
+				B0BB493D28AFA1410068BCB8 /* vexl-crypto.xcframework */,
 				F1BBC709283BE5430067F81B /* Fonts */,
 				F1B5FCC427C6C0720018729B /* Generic.strings */,
 				F1B5FCC127C6BC330018729B /* Localizable.strings */,
@@ -1289,6 +1338,7 @@
 				B08F392D27AE7112008B344F /* UserService.swift */,
 				F175AB9827F0D2D8000DAB15 /* ContactsService.swift */,
 				B0FF5F67289EACBA0026E4C4 /* GroupService.swift */,
+				4F26F44428A51C49005558E8 /* MapyService.swift */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -1321,7 +1371,7 @@
 		B08F395327AE7112008B344F /* AppStore */ = {
 			isa = PBXGroup;
 			children = (
-				B00BAC252893E2E3008E3CA2 /* GoogleService-Info.plist */,
+				B0BB493528ACFA040068BCB8 /* GoogleService-Info.plist */,
 			);
 			path = AppStore;
 			sourceTree = "<group>";
@@ -1329,7 +1379,7 @@
 		B08F396027AE7112008B344F /* Debug */ = {
 			isa = PBXGroup;
 			children = (
-				B00BAC242892CA8D008E3CA2 /* GoogleService-Info.plist */,
+				B0BB493B28ACFB3C0068BCB8 /* GoogleService-Info.plist */,
 			);
 			path = Debug;
 			sourceTree = "<group>";
@@ -1337,7 +1387,7 @@
 		B08F396B27AE7112008B344F /* Devel */ = {
 			isa = PBXGroup;
 			children = (
-				B00BAC1F2892C45B008E3CA2 /* GoogleService-Info.plist */,
+				B0BB493928ACFB0D0068BCB8 /* GoogleService-Info.plist */,
 			);
 			path = Devel;
 			sourceTree = "<group>";
@@ -1351,6 +1401,7 @@
 				F13B266828194A060011F2FB /* OffersRouter.swift */,
 				4F481E75284767480051D3B9 /* ChatRouter.swift */,
 				B0FF5F6E289EFB430026E4C4 /* GroupRouter.swift */,
+				4F26F44628A51D05005558E8 /* MapyRouter.swift */,
 			);
 			path = Routers;
 			sourceTree = "<group>";
@@ -1494,6 +1545,7 @@
 		F11441A9284681EC00307D39 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				F1EE5EFA28AAF35100E4EF76 /* AttributedText */,
 				F1156AF228A1CAC200B9A5B9 /* CameraScannerView */,
 				F12A14F127D96FB00096543E /* ImportContacts */,
 				F11441AA284681EC00307D39 /* Buttons */,
@@ -1511,7 +1563,6 @@
 				F11441C0284681EC00307D39 /* LoadingIndicatorView.swift */,
 				F11441C1284681EC00307D39 /* SegmentedPickerView.swift */,
 				F11441C5284681EC00307D39 /* LinkTextView.swift */,
-				F1DF4A50289D59BA008E5C87 /* AttributedText.swift */,
 				F1A33E16289D71A500351997 /* PageControl.swift */,
 			);
 			path = Components;
@@ -1522,7 +1573,7 @@
 			children = (
 				F11441F228468B5600307D39 /* CloseButton.swift */,
 				F11441AB284681EC00307D39 /* DottedButton.swift */,
-				F11441AC284681EC00307D39 /* LargeLabelButton.swift */,
+				F11441AC284681EC00307D39 /* LabelButton.swift */,
 				F114420028495E1900307D39 /* LargeSolidButton.swift */,
 			);
 			path = Buttons;
@@ -1542,6 +1593,7 @@
 				F11441B0284681EC00307D39 /* ExpandingTextView.swift */,
 				F11441B1284681EC00307D39 /* BorderedTextField.swift */,
 				F11441B2284681EC00307D39 /* PlaceholderTextField.swift */,
+				4F26F44E28A54D6F005558E8 /* IsFocusTextField.swift */,
 			);
 			path = TextFields;
 			sourceTree = "<group>";
@@ -1723,6 +1775,7 @@
 		F13B266328192BAC0011F2FB /* Offers */ = {
 			isa = PBXGroup;
 			children = (
+				4F26F44828A52C41005558E8 /* Location */,
 				F13B2672281D81060011F2FB /* OfferPayload.swift */,
 				F13B2678281FC5A90011F2FB /* OfferLocation.swift */,
 			);
@@ -1793,6 +1846,7 @@
 				F1485632284FD451003213D7 /* CommonFriends */,
 				F1485636284FD451003213D7 /* ChatHeaderView.swift */,
 				F1485638284FD451003213D7 /* ChatDateView.swift */,
+				F1071D4228B439F5002BE9EF /* ChatRevealIdentityBannerView.swift */,
 				F1485639284FD451003213D7 /* ChatInputView.swift */,
 			);
 			path = Components;
@@ -1900,6 +1954,7 @@
 		F1886245281154FF00659786 /* OfferSettings */ = {
 			isa = PBXGroup;
 			children = (
+				4F26F44B28A52E57005558E8 /* Locations */,
 				F188624F281170F200659786 /* Components */,
 				F18862482811551700659786 /* OfferSettingsViewModel.swift */,
 				F18862462811550C00659786 /* OfferSettingsCoordinator.swift */,
@@ -1927,8 +1982,8 @@
 				4FBF620A283CE08800DDBE71 /* OfferAmountRangeView.swift */,
 				F1886254281185E900659786 /* OfferFeePickerView.swift */,
 				F188625C2811E3E700659786 /* OfferTradeLocationPickerView.swift */,
-				F1886256281193CA00659786 /* OfferLocationPickerView.swift */,
 				F188625E2811E53400659786 /* OfferPaymentMethodView.swift */,
+				F1886256281193CA00659786 /* OfferLocationPickerView.swift */,
 				F188626028129ED600659786 /* OfferTriggersView.swift */,
 				F13B26612818A7EC0011F2FB /* OfferDescriptionView.swift */,
 				F17ACAAE289210EE00E05408 /* OfferCurrencyPickerView.swift */,
@@ -2257,6 +2312,15 @@
 			path = FAQ;
 			sourceTree = "<group>";
 		};
+		F1EE5EFA28AAF35100E4EF76 /* AttributedText */ = {
+			isa = PBXGroup;
+			children = (
+				F1DF4A50289D59BA008E5C87 /* AttributedText.swift */,
+				F1EE5EFB28AAF36200E4EF76 /* UserOfferAttributedText.swift */,
+			);
+			path = AttributedText;
+			sourceTree = "<group>";
+		};
 		F1F0FBCF28A2F9E000C783D3 /* Leave */ = {
 			isa = PBXGroup;
 			children = (
@@ -2373,7 +2437,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B00BAC262893E2E3008E3CA2 /* GoogleService-Info.plist in Resources */,
 				F1B5FCC527C6C0720018729B /* Generic.strings in Resources */,
 				B08F390327AE7110008B344F /* LaunchScreen.storyboard in Resources */,
 				F1BBC70F283BE5570067F81B /* TT Satoshi Medium.otf in Resources */,
@@ -2618,6 +2681,7 @@
 				B08F399727AE7D33008B344F /* SplashScreenView.swift in Sources */,
 				F175ABAA27F4FC3F000DAB15 /* ImportPhoneContactsViewModel.swift in Sources */,
 				F1B365D5288609A10069788D /* ProfilePhoneContactsView.swift in Sources */,
+				4FA3BF6C28AFDB7A000BE679 /* UIWindow+.swift in Sources */,
 				4FEFE328289F21D6006AB8DA /* RegisterAnonymizeView.swift in Sources */,
 				F188624B2811551E00659786 /* OfferSettingsView.swift in Sources */,
 				F12A14F327D96FD40096543E /* ImportContactsView.swift in Sources */,
@@ -2642,15 +2706,18 @@
 				4FBF6213283CF54400DDBE71 /* FilterHeaderView.swift in Sources */,
 				F1B365DC288883000069788D /* ProfileFacebookContactsView.swift in Sources */,
 				F11441D7284681EC00307D39 /* RangePickerView.swift in Sources */,
+				4F26F44528A51C49005558E8 /* MapyService.swift in Sources */,
 				B00BAC2F2897D1FF008E3CA2 /* GroupsView.swift in Sources */,
 				B08F391727AE7112008B344F /* AuthenticationManager.swift in Sources */,
 				F1886257281193CA00659786 /* OfferLocationPickerView.swift in Sources */,
 				B08F394B27AE7112008B344F /* ServerError.swift in Sources */,
 				F1DF4A48289B2941008E5C87 /* RefreshContainer.swift in Sources */,
 				F14D29C927BFEA1400D1CD85 /* OnboardingView+Presentation.swift in Sources */,
+				F1EE5EFC28AAF36200E4EF76 /* UserOfferAttributedText.swift in Sources */,
 				F1A9454427F81211009B5AE3 /* ContactsAvailable.swift in Sources */,
 				B0EEE11A27B14D3D0097031E /* WelcomeView.swift in Sources */,
 				F1BFA959280223BD00F4E745 /* UserProfileCoordinator.swift in Sources */,
+				4F9ECFF728AE93350074EA47 /* KeyboardReadable.swift in Sources */,
 				F1BDC97A285BF9D600F86581 /* ChatExpandedImageCoordinator.swift in Sources */,
 				B007A75C287226DC00CFA5C9 /* ManagedMessage+.swift in Sources */,
 				F1F5F19D283FE53A00968366 /* ChatRequestViewModel.swift in Sources */,
@@ -2661,6 +2728,7 @@
 				B00BAC2B2897D1EF008E3CA2 /* GroupsCoordinator.swift in Sources */,
 				F1BFA957280223BD00F4E745 /* UserProfileViewModel.swift in Sources */,
 				F1BFA97328043D6300F4E745 /* Image+.swift in Sources */,
+				4F26F44A28A52C50005558E8 /* LocationSuggestion.swift in Sources */,
 				F19B37E9288E0D6400412D78 /* EditProfileNameViewModel.swift in Sources */,
 				B0F206F727AEB2C000A44E72 /* UIViewStyle.swift in Sources */,
 				F11441EB284682F700307D39 /* TabItem.swift in Sources */,
@@ -2696,6 +2764,7 @@
 				B01C01ED2862F06D00A29F85 /* Currency.swift in Sources */,
 				B007A74B2871EB2900CFA5C9 /* UserRepository.swift in Sources */,
 				B042C95028A8457800860F91 /* Color+.swift in Sources */,
+				4F26F44F28A54D6F005558E8 /* IsFocusTextField.swift in Sources */,
 				B0F206F127AE94C400A44E72 /* InitialScreenManager.swift in Sources */,
 				4F481E76284767480051D3B9 /* ChatRouter.swift in Sources */,
 				F1B3010F287A53C900C86F83 /* ChatConversationViewModel.swift in Sources */,
@@ -2712,6 +2781,7 @@
 				F1485647284FD451003213D7 /* ChatHeaderView.swift in Sources */,
 				F1483CBF2856CEBE0054B7A2 /* OfferTriggerDeleteView.swift in Sources */,
 				F12A150427E1A4520096543E /* RequestAccessPhoneContactsViewModel.swift in Sources */,
+				4FA3BF6A28AEE8F3000BE679 /* DeeplinkManager.swift in Sources */,
 				F175AB8927E4F493000DAB15 /* Materialize.swift in Sources */,
 				F1B3010A287A464600C86F83 /* ChatActionViewModel.swift in Sources */,
 				F1485627284FD0FB003213D7 /* InboxCoordinator.swift in Sources */,
@@ -2764,6 +2834,7 @@
 				B007A73528659AD900CFA5C9 /* BottomActionSheetCoordinator.swift in Sources */,
 				F1B5FCD627C703BF0018729B /* View+.swift in Sources */,
 				F114420128495E1900307D39 /* LargeSolidButton.swift in Sources */,
+				F1071D4328B439F5002BE9EF /* ChatRevealIdentityBannerView.swift in Sources */,
 				B08F396627AE7112008B344F /* Constants.swift in Sources */,
 				B0FF5F6D289EFB210026E4C4 /* GroupMemberPayload.swift in Sources */,
 				F13B265E281899250011F2FB /* OfferAdvancedFilterBTCNetworkView.swift in Sources */,
@@ -2777,6 +2848,7 @@
 				F148564F284FD5E2003213D7 /* InboxManager.swift in Sources */,
 				F1D200A628252C44006DF4AB /* TabBarController.swift in Sources */,
 				F1156AE2289F25E500B9A5B9 /* TermsAndConditionsCoordinator.swift in Sources */,
+				4F26F45928A93D3A005558E8 /* ManagedOfferLocation+.swift in Sources */,
 				F175AB9927F0D2D8000DAB15 /* ContactsService.swift in Sources */,
 				B007A76328730BDF00CFA5C9 /* Fetched.swift in Sources */,
 				B0FF5F6B289EFAF30026E4C4 /* GroupPayload.swift in Sources */,
@@ -2892,6 +2964,7 @@
 				F13B266D281C8FC80011F2FB /* EncryptionError.swift in Sources */,
 				B0EEE11827B14D360097031E /* WelcomeViewModel.swift in Sources */,
 				F151A2AB27CE818C000D7242 /* RegisterNameAvatarStartView.swift in Sources */,
+				4F26F44D28A52E65005558E8 /* OfferLocationViewModel.swift in Sources */,
 				B007A73C2868B69E00CFA5C9 /* Donate.swift in Sources */,
 				F1BFA956280223BD00F4E745 /* UserProfileView.swift in Sources */,
 				F1B5FCBE27C68EA70018729B /* OnboardingView+BottomButtons.swift in Sources */,
@@ -2924,13 +2997,14 @@
 				F175ABA027F4A7EC000DAB15 /* RegistryError.swift in Sources */,
 				B0B0A05B2891AC3E00E81776 /* Bool+.swift in Sources */,
 				B0FF5F6F289EFB430026E4C4 /* GroupRouter.swift in Sources */,
+				4F26F44728A51D05005558E8 /* MapyRouter.swift in Sources */,
 				B08F397027AE7112008B344F /* UserRouter.swift in Sources */,
 				F1886211280EC49B00659786 /* Image+Base64.swift in Sources */,
 				F188622128105A1200659786 /* UserOffersViewModel.swift in Sources */,
 				F1485656284FD60D003213D7 /* InboxError.swift in Sources */,
 				4F700CBA2844B08B0085139F /* BitcoinView.swift in Sources */,
 				B08F394327AE7112008B344F /* Keychain+.swift in Sources */,
-				F11441CD284681EC00307D39 /* LargeLabelButton.swift in Sources */,
+				F11441CD284681EC00307D39 /* LabelButton.swift in Sources */,
 				F175AB8727E4D5C8000DAB15 /* UIScreen+.swift in Sources */,
 				B08D2ABB28A6A34800A1C901 /* FilterGroupView.swift in Sources */,
 				F18862472811550C00659786 /* OfferSettingsCoordinator.swift in Sources */,
@@ -3063,9 +3137,10 @@
 				CODE_SIGN_ENTITLEMENTS = vexl/vexl.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 180;
+				CURRENT_PROJECT_VERSION = 218;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = C6T557DX87;
+				DEVELOPMENT_TEAM = KQNTW88PVA;
+				ENABLE_BITCODE = NO;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = vexl/Info.plist;
@@ -3074,16 +3149,16 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.2;
-				PRODUCT_BUNDLE_IDENTIFIER = com.cleevio.vexl.staging;
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = it.vexl.staging;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "match AdHoc com.cleevio.vexl.staging";
+				PROVISIONING_PROFILE_SPECIFIER = "match AdHoc it.vexl.staging";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = STAGING;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "vexl/Resources/vexl-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Staging;
@@ -3095,7 +3170,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 180;
+				CURRENT_PROJECT_VERSION = 218;
 				DEVELOPMENT_TEAM = SHD6TUKSPH;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
@@ -3180,9 +3255,10 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = vexl/vexlDebug.entitlements;
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 180;
+				CURRENT_PROJECT_VERSION = 218;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = C6T557DX87;
+				DEVELOPMENT_TEAM = KQNTW88PVA;
+				ENABLE_BITCODE = NO;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = vexl/Info.plist;
@@ -3191,16 +3267,16 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.2;
-				PRODUCT_BUNDLE_IDENTIFIER = com.cleevio.vexl.debug;
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = it.vexl.debug;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "match Development com.cleevio.vexl.debug";
+				PROVISIONING_PROFILE_SPECIFIER = "match Development it.vexl.debug";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG DEVEL";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "vexl/Resources/vexl-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -3212,7 +3288,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 180;
+				CURRENT_PROJECT_VERSION = 218;
 				DEVELOPMENT_TEAM = SHD6TUKSPH;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
@@ -3357,10 +3433,10 @@
 				CODE_SIGN_ENTITLEMENTS = vexl/vexl.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 180;
+				CURRENT_PROJECT_VERSION = 218;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = C6T557DX87;
-				ENABLE_BITCODE = YES;
+				DEVELOPMENT_TEAM = KQNTW88PVA;
+				ENABLE_BITCODE = NO;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = vexl/Info.plist;
@@ -3369,16 +3445,16 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.2;
-				PRODUCT_BUNDLE_IDENTIFIER = com.cleevio.vexl.devel;
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = it.vexl.devel;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "match AdHoc com.cleevio.vexl.devel";
+				PROVISIONING_PROFILE_SPECIFIER = "match AdHoc it.vexl.devel";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEVEL;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "vexl/Resources/vexl-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Devel;
@@ -3392,9 +3468,10 @@
 				CODE_SIGN_ENTITLEMENTS = vexl/vexl.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 180;
+				CURRENT_PROJECT_VERSION = 218;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = C6T557DX87;
+				DEVELOPMENT_TEAM = KQNTW88PVA;
+				ENABLE_BITCODE = NO;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = vexl/Info.plist;
@@ -3403,16 +3480,16 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.2;
-				PRODUCT_BUNDLE_IDENTIFIER = com.cleevio.vexl.appstore;
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = it.vexl.appstore;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "match AppStore com.cleevio.vexl.appstore";
+				PROVISIONING_PROFILE_SPECIFIER = "match AppStore it.vexl.appstore";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = APPSTORE;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "vexl/Resources/vexl-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = AppStore;
@@ -3424,7 +3501,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 180;
+				CURRENT_PROJECT_VERSION = 218;
 				DEVELOPMENT_TEAM = SHD6TUKSPH;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
@@ -3443,7 +3520,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 180;
+				CURRENT_PROJECT_VERSION = 218;
 				DEVELOPMENT_TEAM = SHD6TUKSPH;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;

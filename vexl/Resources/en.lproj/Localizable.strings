@@ -165,8 +165,8 @@
 "marketplace.currency.3month" = "3 mth";
 "marketplace.currency.6month" = "6 mth";
 "marketplace.currency.1year" = "1 year";
-"marketplace.buy" = "Buy";
-"marketplace.sell" = "Sell";
+"marketplace.buy" = "To Buy";
+"marketplace.sell" = "To Sell";
 "marketplace.facebook.friend" = "Facebook friend";
 "marketplace.phone.contact" = "Phone contact";
 "marketplace.sell.offer" = "My offers";
@@ -246,9 +246,11 @@
 "offer.update.action.title" = "Update sell offer";
 "offer.create.buy.action.title" = "Create buy offer";
 "offer.update.buy.action.title" = "Update buy offer";
+"offer.location.placeholder" = "City";
 "offer.currency.usd.title" = "USD";
 "offer.currency.eur.title" = "EUR";
 "offer.currency.czk.title" = "CZK";
+"offer.location.suggestions.empty" = "No suggestions";
 "request.title.normal" = "Offer";
 "request.title.requesting" = "Sending";
 "request.placeholder" = "e.g. let's trade my friend...";
@@ -260,7 +262,10 @@
 "chat.filter.buy" = "Buyers";
 "chat.filter.sell" = "Sellers";
 "chat.messageMe" = "me:";
-"chat.request.name" = "%@ requested your identity.";
+"chat.request.identity.sent" = "Identity reveal request sent!";
+"chat.request.identity.receive" = "Identity reveal request received!";
+"chat.request.identity.decline" = "Declined to reveal identity";
+"chat.request.identity.approve" = "Identity revealed!";
 "chat.request.main.title" = "%@ Requests";
 "chat.request.accept" = "Accept";
 "chat.request.decline" = "Decline";
@@ -297,6 +302,7 @@
 "chat.message.identity.reveal.request" = "Identity reveal request";
 "chat.message.identity.reveal.pending" = "Pending...";
 "chat.message.identity.reveal.pending.ok" = "Got it!";
+"chat.message.identity.reveal.pending.button" = "Got it";
 "chat.message.identity.reveal.pending.tap" = "Tap to reveal or decline";
 "chat.message.identity.confirmation.title" = "Are you sure you want to reveal your identity?";
 "chat.message.identity.confirmation.subtitle" = "If you reveal identity you will see the identity of your counterparty too.";

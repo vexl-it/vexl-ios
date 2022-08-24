@@ -15,7 +15,7 @@ extension ManagedOffer {
     }
 
     var groupUuid: GroupUUID? {
-        get { group?.uuid.flatMap(GroupUUID.id) ?? GroupUUID.none }
+        group?.uuid.flatMap(GroupUUID.id) ?? GroupUUID.none 
     }
 
     var feeState: OfferFeeOption? {
@@ -102,7 +102,8 @@ extension ManagedOffer {
         let offer = ManagedOffer()
         offer.isRequested = false
 
-        offer.id = "21"
+        offer.offerID = UUID().uuidString
+        offer.adminID = UUID().uuidString
         offer.createdAt = Date()
         offer.modifiedAt = ""
         offer.currency = .usd

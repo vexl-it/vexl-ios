@@ -8,15 +8,16 @@
 import Foundation
 import CoreData
 
-enum SyncType: Int {
-    case update
-    case insert
+enum SyncQueueItemType: Int {
+    case offerUpdate
+    case offerCreate
+    case offerEncryptionUpdate
 }
 
 extension ManagedSyncItem {
 
-    var type: SyncType? {
-        get { SyncType(rawValue: Int(typeRawType)) }
+    var type: SyncQueueItemType? {
+        get { SyncQueueItemType(rawValue: Int(typeRawType)) }
         set {
             guard let intValue = newValue?.rawValue else {
                 return

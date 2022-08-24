@@ -74,14 +74,17 @@ struct GroupPayload: Codable {
         }
         group.uuid = uuid
         group.name = name
-        if let url = URL(string: logoUrl) {
-            group.logoURL = url
-            group.logo = try? Data(contentsOf: url)
-        }
         group.createdAt = Date(timeIntervalSince1970: TimeInterval(createdAt))
         group.expiration = Date(timeIntervalSince1970: TimeInterval(expirationAt))
         group.closureAt = Date(timeIntervalSince1970: TimeInterval(closureAt))
         group.code = Int64(code)
+        group.hexColor = "#530B6E"
+        if let url = URL(string: logoUrl) {
+            group.logoURL = url
+            // TODO: load logo from url
+//            group.logo = try? Data(contentsOf: url)
+            group.logo = R.image.chainCamp()?.pngData()
+        }
         return group
     }
 }

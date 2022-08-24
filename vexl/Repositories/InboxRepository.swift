@@ -13,7 +13,7 @@ protocol InboxRepositoryType {
 
     func createOrUpdateChats(receivedPayloads: [MessagePayload], inbox: ManagedInbox) -> AnyPublisher<Void, Error>
 
-    func deleteChats(recevedPayloads: [MessagePayload], inbox: ManagedInbox) -> AnyPublisher<Void, Error>
+    func deleteChats(recevedPayloads: [MessagePayload], inbox: ManagedInbox) -> AnyPublisher<Bool, Error>
 
     func getInbox(with publicKey: String) -> AnyPublisher<ManagedInbox?, Error>
 }
@@ -82,6 +82,9 @@ class InboxRepository: InboxRepositoryType {
 
         switch message.type {
         case .revealRequest:
+            chat.gotRevealedResponse = false
+            chat.isRevealed = false
+            chat.showIdentityRequest = false
             if payload.isFromContact {
                 if let imageURL = payload.user?.image, let avatarURL = URL(string: imageURL), let avatar = try? Data(contentsOf: avatarURL) {
                     chat.receiverKeyPair?.profile?.realAvatarBeforeReveal = avatar
@@ -91,6 +94,11 @@ class InboxRepository: InboxRepositoryType {
         case .revealApproval:
             chat.gotRevealedResponse = true
             chat.isRevealed = true
+            chat.showIdentityRequest = false
+            let requestMessage = getLastIdentityRequestMessage(chat: chat)
+            requestMessage?.isRevealed = true
+            requestMessage?.hasRevealResponse = true
+
             if payload.isFromContact {
                 if let name = payload.user?.name {
                     chat.receiverKeyPair?.profile?.name = name
@@ -103,8 +111,14 @@ class InboxRepository: InboxRepositoryType {
                 chat.receiverKeyPair?.profile?.name = chat.receiverKeyPair?.profile?.realNameBeforeReveal
             }
         case .revealRejected:
+            chat.showIdentityRequest = true
             chat.gotRevealedResponse = true
             chat.isRevealed = false
+
+            let requestMessage = getLastIdentityRequestMessage(chat: chat)
+            requestMessage?.isRevealed = false
+            requestMessage?.hasRevealResponse = true
+
             chat.receiverKeyPair?.profile?.realNameBeforeReveal = nil
             chat.receiverKeyPair?.profile?.realAvatarBeforeReveal = nil
         case .messagingRequest:
@@ -118,6 +132,13 @@ class InboxRepository: InboxRepositoryType {
         }
     }
 
+    private func getLastIdentityRequestMessage(chat: ManagedChat) -> ManagedMessage? {
+        let messages = chat.messages?.filtered(
+            using: NSPredicate(format: "typeRawType == '\(MessageType.revealRequest.rawValue)'")
+        ) as? Set<ManagedMessage>
+        return messages?.sorted(by: { $0.time > $1.time }).first
+    }
+
     func getInbox(with publicKey: String) -> AnyPublisher<ManagedInbox?, Error> {
         persistence
             .load(type: ManagedInbox.self, context: persistence.viewContext, predicate: NSPredicate(format: "keyPair.publicKey == '\(publicKey)'"))
@@ -125,10 +146,10 @@ class InboxRepository: InboxRepositoryType {
             .eraseToAnyPublisher()
     }
 
-    func deleteChats(recevedPayloads payloads: [MessagePayload], inbox unsafeContextInbox: ManagedInbox) -> AnyPublisher<Void, Error> {
+    func deleteChats(recevedPayloads payloads: [MessagePayload], inbox unsafeContextInbox: ManagedInbox) -> AnyPublisher<Bool, Error> {
         let payloads = payloads.filter { $0.messageType == .deleteChat || $0.messageType == .messagingRejection }
         guard !payloads.isEmpty else {
-            return Just(()).setFailureType(to: Error.self).eraseToAnyPublisher()
+            return Just(false).setFailureType(to: Error.self).eraseToAnyPublisher()
         }
         return persistence.delete(context: persistence.viewContext) { [persistence] context -> [ManagedChat] in
             guard let inbox = persistence.loadSyncroniously(type: ManagedInbox.self, context: context, objectID: unsafeContextInbox.objectID) else {
@@ -139,7 +160,7 @@ class InboxRepository: InboxRepositoryType {
                 return inbox.chats?.filtered(using: predicate).first as? ManagedChat
             }
         }
-        .asVoid()
+        .map { true }
         .eraseToAnyPublisher()
     }
 }

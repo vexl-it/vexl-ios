@@ -6,21 +6,22 @@ platform :ios do
 	# ******************** DEFINITIONS ******************** #
 	# ***************************************************** #
 
-	debug_identifier = "com.cleevio.vexl.debug"
-	devel_identifier = "com.cleevio.vexl.devel"
-	staging_identifier = "com.cleevio.vexl.staging"
-    appstore_identifier = "com.cleevio.vexl.appstore"
+	debug_identifier = "it.vexl.debug"
+	devel_identifier = "it.vexl.devel"
+	staging_identifier = "it.vexl.staging"
+    appstore_identifier = "it.vexl.appstore"
     xcodeproj_identifier = "vexl.xcodeproj"
-    match_repository = "vexl-cleevio"
+    match_repository = "vexl"
 
 	main_scheme = "vexl"
 	gsp_path_devel = "vexl/Resources/GoogleServices/Devel/GoogleService-Info.plist"
 	gsp_path_staging = "vexl/Resources/GoogleServices/Staging/GoogleService-Info.plist"
 	gsp_path_appstore = "vexl/Resources/GoogleServices/AppStore/GoogleService-Info.plist"
-	firebase_app_id_devel = "1:386907112085:ios:a11ad194b15d1e3a50d19c"
-	firebase_app_id_staging = "1:386907112085:ios:d5e19c7680bc362050d19c"
-	firebase_app_id_appstore = "1:386907112085:ios:388bfa4f7b872e4650d19c"
+	firebase_app_id_devel = "1:183980003892:ios:74409f1d0e271af7e53061"
+	firebase_app_id_staging = "1:183980003892:ios:df1ccdc4ab9cc79ae53061"
+	firebase_app_id_appstore = "1:183980003892:ios:4a64a7c7a348dfbce53061"
 	firebase_tester_group_id = "Cleevio"
+	firebase_client_group_id = "SatoshiLabs"
 	firebase_cli_path = "/usr/local/bin/firebase"
 	slackUrl = "https://hooks.slack.com/services/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"
 
@@ -88,6 +89,13 @@ platform :ios do
 			type: "development",
 			app_identifier: debug_identifier
 		)
+
+		match(
+			git_branch: match_repository,
+			type: "development",
+			app_identifier: devel_identifier
+		)
+
 
 		match(
 			git_branch: match_repository,
@@ -246,7 +254,7 @@ platform :ios do
 
 		firebase_app_distribution(
 			app: firebase_app_id_staging,
-			groups: firebase_tester_group_id,
+			groups: firebase_tester_group_id + ", " + firebase_client_group_id,
 			release_notes: changelog,
 			firebase_cli_path: firebase_cli_path,
 			ipa_path: ipa_path

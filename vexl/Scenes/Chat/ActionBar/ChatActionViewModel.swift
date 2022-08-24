@@ -13,7 +13,7 @@ final class ChatActionViewModel: ObservableObject {
     @Fetched(fetchImmediately: false)
     var fetchedMessages: [ManagedMessage]
 
-    @Published var userIsRevealed = false
+    @Published var showIdentityRequest = true
     @Published var isChatBlocked = false
 
     var action: ActionSubject<ChatActionView.ChatActionOption> = .init()
@@ -33,8 +33,12 @@ final class ChatActionViewModel: ObservableObject {
         """, chat))
 
         $fetchedMessages.publisher
-            .map(\.objects.isEmpty.not)
-            .assign(to: &$userIsRevealed)
+            .map(\.objects.first?.chat)
+            .map { chat -> Bool in
+                guard let showIdentityRequest = chat?.showIdentityRequest else { return true }
+                return showIdentityRequest
+            }
+            .assign(to: &$showIdentityRequest)
 
         self.offer = chat.receiverKeyPair?.offer
         self.isChatBlocked = chat.isBlocked

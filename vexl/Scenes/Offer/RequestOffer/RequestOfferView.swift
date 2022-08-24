@@ -15,13 +15,29 @@ struct RequestOfferView: View {
         Appearance.GridGuide.baseHeight + Appearance.GridGuide.padding * 2
     }
 
-    private var avatarTitle: String {
-        switch viewModel.offerViewData.offerType {
-        case .sell:
-            return L.marketplaceDetailUserSell(viewModel.username)
-        case .buy:
-            return L.marketplaceDetailUserBuy(viewModel.username)
-        }
+    private var userActionTitle: String {
+        viewModel.offerViewData.offerType == .buy ? L.marketplaceDetailUserBuy("") : L.marketplaceDetailUserSell("")
+    }
+
+    private var userActionTitleColor: UIColor {
+        viewModel.offerViewData.offerType == .buy ? UIColor(Appearance.Colors.green100) : UIColor(Appearance.Colors.pink100)
+    }
+
+    private var avatarTitle: NSAttributedString {
+        let userTitle = NSMutableAttributedString(
+            string: viewModel.username,
+            attributes: [.font: Appearance.TextStyle.paragraphSmallSemiBold.font,
+                         .foregroundColor: UIColor(Appearance.Colors.whiteText)]
+        )
+        let actionTitle = NSAttributedString(
+            string: userActionTitle,
+            attributes: [.font: Appearance.TextStyle.paragraphSmallSemiBold.font,
+                         .foregroundColor: userActionTitleColor]
+        )
+
+        userTitle.append(actionTitle)
+
+        return userTitle
     }
 
     var body: some View {
@@ -100,6 +116,7 @@ struct RequestOfferView: View {
                         Spacer()
 
                         LargeSolidButton(title: L.requestButton(),
+                                         iconImage: Image(R.image.marketplace.eyeBlack.name),
                                          font: Appearance.TextStyle.titleSmallBold.font.asFont,
                                          style: .main,
                                          isFullWidth: true,
@@ -126,7 +143,7 @@ struct RequestOfferView: View {
 
             ContactAvatarInfo(
                 isAvatarWithOpacity: false,
-                title: avatarTitle,
+                titleType: .attributed(avatarTitle),
                 subtitle: viewModel.offerViewData.friendLevel,
                 avatar: viewModel.offerViewData.avatar
             )
@@ -150,11 +167,10 @@ struct RequestOfferView: View {
 
     @ViewBuilder
     private var commonFriends: some View {
-        let chunks = viewModel.commonFriends.splitIntoChunks(by: 2)
-        ForEach(Array(chunks.enumerated()), id: \.offset) { chunk in
-            VStack {
-                HStack {
-                    ForEach(chunk.element) { contact in
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(spacing: Appearance.GridGuide.padding) {
+                ForEach(viewModel.commonFriends) { contact in
+                    HStack {
                         Image(data: contact.avatar, placeholder: R.image.marketplace.defaultAvatar.name)
                             .resizable()
                             .aspectRatio(contentMode: .fill)

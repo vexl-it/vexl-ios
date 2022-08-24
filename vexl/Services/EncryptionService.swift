@@ -8,9 +8,11 @@
 import Foundation
 import Combine
 
+typealias OfferEncprytionInput = (receiverPublicKey: String, commonFriends: [String])
+
 protocol EncryptionServiceType {
     func hashContacts(contacts: [ContactInformation]) -> AnyPublisher<[(ContactInformation, String)], Error>
-    func encryptOffer(withContactKey publicKeys: [(ContactKey, [String])], offer: ManagedOffer) -> AnyPublisher<[OfferPayload], Error>
+    func encryptOffer(withContactKey publicKeys: [OfferEncprytionInput], offer: ManagedOffer) -> AnyPublisher<[OfferPayload], Error>
 }
 
 final class EncryptionService: EncryptionServiceType {
@@ -58,15 +60,15 @@ final class EncryptionService: EncryptionServiceType {
         .eraseToAnyPublisher()
     }
 
-    func encryptOffer(withContactKey publicKeys: [(ContactKey, [String])], offer: ManagedOffer) -> AnyPublisher<[OfferPayload], Error> {
+    func encryptOffer(withContactKey publicKeys: [OfferEncprytionInput], offer: ManagedOffer) -> AnyPublisher<[OfferPayload], Error> {
         publicKeys
             .publisher
-            .flatMap { [weak self] contact, commonFriends -> AnyPublisher<OfferPayload, Error> in
+            .flatMap { [weak self] receiverPublicKey, commonFriends -> AnyPublisher<OfferPayload, Error> in
                 guard let owner = self else {
                     return Fail(error: EncryptionError.dataEncryption)
                         .eraseToAnyPublisher()
                 }
-                return owner.encrypt(offer: offer, publicKey: contact.publicKey, commonFriends: commonFriends)
+                return owner.encrypt(offer: offer, publicKey: receiverPublicKey, commonFriends: commonFriends)
             }
             .collect()
             .eraseToAnyPublisher()

@@ -64,6 +64,8 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
         case reportIssue
         case showGroups
         case deleteAccount
+        case faq
+        case termsAndPrivacy
     }
 
     var route: CoordinatingSubject<Route> = .init()
@@ -150,6 +152,18 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
                 return nil
             }
             .share()
+
+        option
+            .filter { $0 == .faq }
+            .map { _ in .faq }
+            .subscribe(route)
+            .store(in: cancelBag)
+
+        option
+            .filter { $0 == .termsAndPrivacy }
+            .map { _ in .termsAndPrivacy }
+            .subscribe(route)
+            .store(in: cancelBag)
 
         option
             .filter { $0 == .currency }

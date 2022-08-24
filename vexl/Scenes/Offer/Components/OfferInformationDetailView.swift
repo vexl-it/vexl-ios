@@ -20,6 +20,7 @@ struct OfferInformationDetailView: View {
 
     private let groupLogoSize: Double = 53
     private let groupLogoRotationAngle: Angle = .degrees(-20)
+    private let groupLogoImagePadding = Appearance.GridGuide.smallPadding
 
     private var paymentLayoutStyle: OfferPaymentIconView.LayoutStyle {
         OfferPaymentIconView.LayoutStyle(icons: data.paymentIcons)
@@ -44,7 +45,7 @@ struct OfferInformationDetailView: View {
             VStack(alignment: .leading, spacing: Appearance.GridGuide.smallPadding) {
 
                 if data.isGroupOffer, let name = data.groupName {
-                    Text(name)
+                    Text(L.offerWidgetGroupsInfo(name))
                         .textStyle(.descriptionSemiBold)
                         .foregroundColor(data.groupColor)
                         .padding(.vertical, Appearance.GridGuide.tinyPadding)
@@ -93,6 +94,14 @@ struct OfferInformationDetailView: View {
             if data.isGroupOffer {
                 if let logoImage = data.groupImage {
                     logoImage
+                        .resizable()
+                        .scaledToFill()
+                        .frame(
+                            width: groupLogoSize - (2 * groupLogoImagePadding),
+                            height: groupLogoSize - (2 * groupLogoImagePadding)
+                        )
+                        .padding(groupLogoImagePadding)
+                        .background(data.groupColor)
                 } else if let name = data.groupName {
                     EmptyGroupLogoSmall(name: .constant(name))
                 }
@@ -106,13 +115,15 @@ struct OfferInformationDetailView: View {
     private var detail: some View {
         HStack {
             DetailItem(label: data.offerType == .buy ? L.marketplaceDetailBuy() : L.marketplaceDetailSell(), content: {
-                HStack(alignment: .bottom, spacing: Appearance.GridGuide.tinyPadding) {
-                    Text(L.marketplaceDetailUpTo())
-                        .textStyle(.descriptionSemiBold)
+                HStack(alignment: .center, spacing: Appearance.GridGuide.tinyPadding) {
+                    Text(L.marketplaceDetailUpTo().lowercased())
+                        .textStyle(.microSemiBold)
                         .foregroundColor(Appearance.Colors.gray3)
-                        .padding(.bottom, Appearance.GridGuide.tinyPadding)
 
                     Text(data.amount)
+                        .minimumScaleFactor(0.5)
+                        .lineLimit(1)
+                        .multilineTextAlignment(.center)
                         .textStyle(.titleSemiBold)
                         .foregroundColor(Appearance.Colors.gray3)
                 }
@@ -205,6 +216,7 @@ extension OfferInformationDetailView {
         @Published var groupName: String?
         @Published var groupImage: Image?
         @Published var groupColor: Color
+        @Published var offerLocations: [OfferLocation] = []
 
         var amount: String {
             guard let currency = offer.currency else { return "" }
@@ -248,7 +260,7 @@ extension OfferInformationDetailView {
             groupColor = group?.color ?? Appearance.Colors.purple3
 
             offer.publisher(for: \.isRequested).assign(to: &$isRequested)
-            offer.publisher(for: \.id).filterNil().assign(to: &$id)
+            offer.publisher(for: \.offerID).filterNil().assign(to: &$id)
             profile?.publisher(for: \.avatarData).compactMap { _ in profile?.avatar }.assign(to: &$avatar)
             profile?.publisher(for: \.name).filterNil().assign(to: &$username)
             offer.publisher(for: \.offerDescription).filterNil().assign(to: &$title)
@@ -260,14 +272,18 @@ extension OfferInformationDetailView {
             offer.publisher(for: \.createdAt).filterNil().assign(to: &$createdDate)
             offer.publisher(for: \.group).map { $0 != nil }.assign(to: &$isGroupOffer)
             offer.publisher(for: \.locationStateRawType).map { _ in offer.locationState }.assign(to: &$locationState)
+            offer
+                .publisher(for: \.locations)
+                .compactMap { locationsSet -> [OfferLocation]? in
+                    guard let locations = locationsSet as? Set<ManagedOfferLocation> else { return nil }
+                    return locations.compactMap(OfferLocation.init)
+                }
+                .assign(to: &$offerLocations)
+
             group?.publisher(for: \.name).assign(to: &$groupName)
             group?.publisher(for: \.logo).map { $0.flatMap(UIImage.init).flatMap(Image.init) }.assign(to: &$groupImage)
 
-            // TODO: connect locations to offer model when available
-            let cities: AnyPublisher<[String?], Never> = Just(["Prague", "Lima"])
-                .eraseToAnyPublisher()
-
-            cities
+            $offerLocations
                 .map(\.isEmpty.not)
                 .assign(to: &$containsLocation)
 
@@ -278,14 +294,13 @@ extension OfferInformationDetailView {
                     $0 == .online ? L.offerCreateTradeStyleOnline() : nil
                 }
 
-            Publishers.CombineLatest(cities, onlineTitle)
-                .map { (cities: [String?], onlineTitle: String?) -> [String?] in
+            Publishers.CombineLatest($offerLocations, onlineTitle)
+                .map { (cities: [OfferLocation], onlineTitle: String?) -> [String?] in
                     if onlineTitle == nil {
-                        return Array(cities.prefix(upTo: 2))
+                        return Array(cities.map(\.city).prefix(upTo: min(2, cities.count)))
                     } else {
-                        // swiftlint:disable:next redundant_nil_coalescing
-                        let firstCity = cities.first ?? nil
-                        return [ firstCity, onlineTitle ]
+                        let firstCity = cities.first?.city
+                        return [firstCity, onlineTitle]
                     }
                 }
                 .map { titles in

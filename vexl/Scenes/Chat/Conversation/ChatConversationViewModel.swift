@@ -13,7 +13,6 @@ final class ChatConversationViewModel: ObservableObject {
 
     enum UserAction: Equatable {
         case imageTapped(image: Data?)
-        case revealTapped
     }
 
     @Inject var inboxManager: InboxManagerType
@@ -65,13 +64,12 @@ final class ChatConversationViewModel: ObservableObject {
 
         $fetchedMessages.load(predicate: NSPredicate(format: """
             chat == %@
-            AND typeRawType != '\(MessageType.revealRejected.rawValue)'
-            AND typeRawType != '\(MessageType.revealApproval.rawValue)'
         """, chat
         ))
 
         $fetchedMessages.publisher
             .map(\.objects)
+            .map { $0.filter { $0.type != .revealRejected && $0.type != .revealApproval } }
             .map { $0.map(ChatConversationItem.init) }
             .map { [ ChatConversationSection(date: Date(), messages: $0) ] }
             .assign(to: &$messages)
@@ -88,12 +86,6 @@ final class ChatConversationViewModel: ObservableObject {
                 return image
             }
             .subscribe(displayExpandedImage)
-            .store(in: cancelBag)
-
-        action
-            .filter { $0 == .revealTapped }
-            .asVoid()
-            .subscribe(identityRevealResponseTap)
             .store(in: cancelBag)
     }
 

@@ -125,9 +125,12 @@ final class GroupsViewModel: ViewModelType, ObservableObject {
     }
 
     func leave(group: ManagedGroup) {
-        groupManager
-            .leave(group: group)
-            .track(activity: primaryActivity)
+        Just(())
+            .flatMap { [groupManager, primaryActivity] in
+                groupManager
+                    .leave(group: group)
+                    .track(activity: primaryActivity)
+            }
             .sink()
             .store(in: cancelBag)
     }

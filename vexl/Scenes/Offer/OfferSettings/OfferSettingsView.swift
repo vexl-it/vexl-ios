@@ -50,10 +50,16 @@ struct OfferSettingsView: View {
                                        selectedOption: $viewModel.selectedFeeOption,
                                        feeValue: $viewModel.feeAmount)
 
-                    OfferLocationPickerView(items: viewModel.locations,
-                                            addLocation: { viewModel.action.send(.addLocation) },
-                                            deleteLocation: { id in viewModel.action.send(.deleteLocation(id: id)) })
-                        .padding(.top, Appearance.GridGuide.largePadding1)
+                    OfferLocationPickerView(
+                        items: $viewModel.locationViewModels,
+                        addLocation: {
+                            viewModel.action.send(.addLocation)
+                        },
+                        deleteLocation: { id in
+                        viewModel.action.send(.deleteLocation(id: id))
+                        }
+                    )
+                    .padding(.top, Appearance.GridGuide.largePadding1)
 
                     OfferTradeLocationPickerView(selectedOption: $viewModel.selectedTradeStyleOption)
 
