@@ -8,6 +8,10 @@
 import SwiftUI
 
 struct LockedScreenView: View {
+
+    let sellingAction: () -> Void
+    let buyingAction: () -> Void
+
     var body: some View {
         ZStack {
             Image(R.image.marketplace.lockedMarketplace.name)
@@ -39,6 +43,7 @@ struct LockedScreenView: View {
                         height: .regularButton,
                         isEnabled: .constant(true),
                         action: {
+                            sellingAction()
                         }
                     )
 
@@ -50,6 +55,7 @@ struct LockedScreenView: View {
                         height: .regularButton,
                         isEnabled: .constant(true),
                         action: {
+                            buyingAction()
                         }
                     )
                 }
@@ -92,7 +98,8 @@ struct LockedScreenView: View {
 struct LockedScreenViewPreview: PreviewProvider {
 
     static var previews: some View {
-        LockedScreenView()
+        LockedScreenView(sellingAction: {},
+                         buyingAction: {})
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color.black.edgesIgnoringSafeArea(.all))
     }

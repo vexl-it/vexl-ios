@@ -24,6 +24,12 @@ struct MarketplaceView: View {
             },
             expandedBitcoinGraph: { isExpanded in
                 viewModel.action.send(.graphExpanded(isExpanded: isExpanded))
+            },
+            lockedSellAction: {
+                viewModel.action.send(.showSellOffer)
+            },
+            lockedBuyAction: {
+                viewModel.action.send(.showBuyOffer)
             }
         )
         .coordinateSpace(name: RefreshControlView.coordinateSpace)

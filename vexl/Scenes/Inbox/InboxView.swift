@@ -24,6 +24,12 @@ struct InboxView: View {
             },
             expandedBitcoinGraph: { isExpanded in
                 viewModel.isGraphExpanded = isExpanded
+            },
+            lockedSellAction: {
+                
+            },
+            lockedBuyAction: {
+                
             }
         )
         .coordinateSpace(name: RefreshControlView.coordinateSpace)

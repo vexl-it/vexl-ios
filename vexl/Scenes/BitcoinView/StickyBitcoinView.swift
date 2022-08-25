@@ -13,6 +13,8 @@ struct StickyBitcoinView<Content: View, Header: View>: View {
     let content: () -> Content
     let stickyHeader: () -> Header
     let expandedBitcoinGraph: (Bool) -> Void
+    let lockedSellAction: () -> Void
+    let lockedBuyAction: () -> Void
 
     @State private var bitcoinSize: CGSize = .zero
     @State private var stickHeaderIsVisible = false
@@ -20,7 +22,12 @@ struct StickyBitcoinView<Content: View, Header: View>: View {
     var body: some View {
         ZStack(alignment: .top) {
             if isMarketplaceLocked {
-                LockedScreenView()
+                LockedScreenView(sellingAction: {
+                    lockedSellAction()
+                },
+                                 buyingAction: {
+                    lockedBuyAction()
+                })
                     .frame(maxHeight: .infinity)
                     .edgesIgnoringSafeArea(.all)
                     .padding(.top, Appearance.GridGuide.largePadding2)
@@ -85,7 +92,9 @@ struct StickyBitcoinViewViewPreview: PreviewProvider {
                 }
             },
             stickyHeader: { EmptyView() },
-            expandedBitcoinGraph: { _ in }
+            expandedBitcoinGraph: { _ in },
+            lockedSellAction: { },
+            lockedBuyAction: { }
         )
         .background(Color.black.ignoresSafeArea())
         .previewDevice("iPhone 11")
