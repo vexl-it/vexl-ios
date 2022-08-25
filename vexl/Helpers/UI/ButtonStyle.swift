@@ -14,6 +14,11 @@ extension SolidButtonDimension {
                                                   cornerRadius: Appearance.GridGuide.buttonCorner,
                                                   iconSize: .zero,
                                                   iconPadding: 0)
+    
+    static let regularButton = SolidButtonDimension(height: Appearance.GridGuide.baseHeight,
+                                                  cornerRadius: Appearance.GridGuide.buttonCorner,
+                                                  iconSize: .zero,
+                                                  iconPadding: 0)
 }
 
 extension SolidButtonColor {

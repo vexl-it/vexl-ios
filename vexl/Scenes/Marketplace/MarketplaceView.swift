@@ -17,6 +17,7 @@ struct MarketplaceView: View {
     var body: some View {
         StickyBitcoinView(
             bitcoinViewModel: viewModel.bitcoinViewModel,
+            isMarketplaceLocked: viewModel.isMarketplaceLocked,
             content: { marketPlaceContent },
             stickyHeader: {
                 marketPlaceHeader.padding(.bottom, Appearance.GridGuide.point)
@@ -39,15 +40,7 @@ struct MarketplaceView: View {
             VStack(spacing: Appearance.GridGuide.mediumPadding1) {
                 marketPlaceHeader
 
-                if viewModel.isMarketplaceLocked {
-                    Text("Marketplace is not available at the moment")
-                        .multilineTextAlignment(.center)
-                        .textStyle(.paragraphBold)
-                        .foregroundColor(Appearance.Colors.gray5)
-                        .padding(Appearance.GridGuide.mediumPadding2)
-                } else {
-                    marketplaceOfferList
-                }
+                marketplaceOfferList
             }
             .animation(.easeInOut, value: viewModel.marketplaceFeedItems)
         }
@@ -72,7 +65,9 @@ struct MarketplaceView: View {
             MarketplaceSegmentView(selectedOption: $viewModel.selectedOption)
                 .padding(.top, Appearance.GridGuide.mediumPadding2)
 
-            filter
+            if !viewModel.isMarketplaceLocked {
+                filter
+            }
         }
     }
 

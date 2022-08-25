@@ -9,6 +9,7 @@ import SwiftUI
 
 struct StickyBitcoinView<Content: View, Header: View>: View {
     let bitcoinViewModel: BitcoinViewModel
+    let isMarketplaceLocked: Bool
     let content: () -> Content
     let stickyHeader: () -> Header
     let expandedBitcoinGraph: (Bool) -> Void
@@ -18,6 +19,13 @@ struct StickyBitcoinView<Content: View, Header: View>: View {
 
     var body: some View {
         ZStack(alignment: .top) {
+            if isMarketplaceLocked {
+                LockedScreenView()
+                    .frame(maxHeight: .infinity)
+                    .edgesIgnoringSafeArea(.all)
+                    .padding(.top, Appearance.GridGuide.largePadding2)
+            }
+
             OffsetScrollView(
                 showsIndicators: false,
                 offsetChanged: offsetChanged(to:),
@@ -67,6 +75,7 @@ struct StickyBitcoinViewViewPreview: PreviewProvider {
         let bvm = BitcoinViewModel()
         return StickyBitcoinView(
             bitcoinViewModel: bvm,
+            isMarketplaceLocked: true,
             content: {
                 VStack {
                     Text("Some content")

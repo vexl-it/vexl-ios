@@ -17,6 +17,7 @@ struct InboxView: View {
     var body: some View {
         StickyBitcoinView(
             bitcoinViewModel: viewModel.bitcoinViewModel,
+            isMarketplaceLocked: viewModel.isMarketplaceLocked,
             content: { inboxContent },
             stickyHeader: {
                 inboxHeader.padding(.bottom, Appearance.GridGuide.point)
@@ -36,14 +37,7 @@ struct InboxView: View {
                          isRefreshing: $viewModel.isRefreshing) {
             VStack(alignment: .leading) {
                 inboxHeader
-
-                if viewModel.isMarketplaceLocked {
-                    Text("Chat is not available at the moment")
-                        .multilineTextAlignment(.center)
-                        .textStyle(.paragraphBold)
-                        .foregroundColor(Appearance.Colors.gray5)
-                        .padding(Appearance.GridGuide.largePadding1)
-                } else {
+                if !viewModel.isMarketplaceLocked {
                     inboxList
                 }
             }
@@ -85,14 +79,17 @@ struct InboxView: View {
                 .padding(Appearance.GridGuide.point)
                 .background(Appearance.Colors.gray1)
                 .cornerRadius(Appearance.GridGuide.buttonCorner)
+                .hidden()
             }
             .padding(.top, Appearance.GridGuide.mediumPadding2)
             .padding(.horizontal, Appearance.GridGuide.padding)
 
-            InboxFilterView(selectedOption: $viewModel.filter,
-                            action: { option in
-                viewModel.action.send(.selectFilter(option: option))
-            })
+            if !viewModel.isMarketplaceLocked {
+                InboxFilterView(selectedOption: $viewModel.filter,
+                                action: { option in
+                    viewModel.action.send(.selectFilter(option: option))
+                })
+            }
         }
     }
 }
