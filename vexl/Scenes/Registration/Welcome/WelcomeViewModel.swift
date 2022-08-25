@@ -8,6 +8,7 @@
 import UIKit
 import Combine
 import Cleevio
+import KeychainAccess
 
 final class WelcomeViewModel: ViewModelType {
 
@@ -47,6 +48,7 @@ final class WelcomeViewModel: ViewModelType {
 
     init() {
         setupActions()
+        generateLocalEncryptionKeyIfNeeded()
         initialScreenManager.update(onboardingState: .initial)
     }
 
@@ -69,5 +71,18 @@ final class WelcomeViewModel: ViewModelType {
             .map { _ -> Route in .termsAndConditionsTapped }
             .subscribe(route)
             .store(in: cancelBag)
+    }
+
+    private func generateLocalEncryptionKeyIfNeeded() {
+        if Keychain.standard[.localEncryptionKey] == nil {
+            let keyCount = 64
+            var key = Data(count: keyCount)
+            key.withUnsafeMutableBytes { (pointer: UnsafeMutableRawBufferPointer) in
+                let result = SecRandomCopyBytes(kSecRandomDefault, keyCount, pointer.baseAddress!)
+                assert(result == 0, "Failed to get random bytes")
+            }
+            let stringKey = String(data: key, encoding: .macOSRoman)
+            Keychain.standard[.localEncryptionKey] = stringKey
+        }
     }
 }
