@@ -32,6 +32,18 @@ struct ContactInformation: Identifiable {
         }
     }
 
+    var formattedPhone: String {
+        let phoneNumber = Formatters.phoneNumberFormatter
+        let countryCode = phoneNumber.countryCode(for: Locale.current.regionCode ?? "")
+        let formattedIdentifier: String = {
+            if let countryCode = countryCode, !sourceIdentifier.contains("+") {
+                return "+\(countryCode) \(sourceIdentifier)"
+            }
+            return sourceIdentifier
+        }()
+        return formattedIdentifier
+    }
+
     #if DEBUG || DEVEL
     static func stub() -> [ContactInformation] {
         [
