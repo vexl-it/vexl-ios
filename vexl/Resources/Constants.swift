@@ -119,7 +119,8 @@ struct Constants {
 
     static let defaultOfferDeleteTime = "14" // days will be selected as default too
 
-    static let contactsHashingPassword = "VexlVexl"
+    static let contactsHashingPassword = "7432f607637373f4c121b49da7c51b3e02da70e32b767d9c6a23bcc6040d67f7"
+
     static let supportEmail = "support@vexl.it"
 
     static let randomNameSyllables = [
