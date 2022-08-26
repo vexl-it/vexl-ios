@@ -13,56 +13,54 @@ struct LockedScreenView: View {
     let buyingAction: () -> Void
 
     var body: some View {
-        ZStack {
-            Image(R.image.marketplace.lockedMarketplace.name)
-                .blur(radius: 20)
+        countdown
+    }
 
-            VStack(spacing: Appearance.GridGuide.padding) {
+    private var countdown: some View {
+        VStack(spacing: Appearance.GridGuide.padding) {
 
-                countdownCircle
+            countdownCircle
 
-                Text("Marketplace is just warming up.\nWait for the full experience.")
-                    .foregroundColor(Appearance.Colors.whiteText)
-                    .multilineTextAlignment(.center)
-                    .textStyle(.paragraphSemibold)
+            Text("Marketplace is just warming up.\nWait for the full experience.")
+                .foregroundColor(Appearance.Colors.whiteText)
+                .multilineTextAlignment(.center)
+                .textStyle(.paragraphSemibold)
 
-                HLine(color: Appearance.Colors.gray3, height: 1)
-                    .padding(.vertical, Appearance.GridGuide.point)
+            HLine(color: Appearance.Colors.gray3, height: 1)
+                .padding(.vertical, Appearance.GridGuide.point)
 
-                Text("Create your offer today")
-                    .foregroundColor(Appearance.Colors.whiteText)
-                    .multilineTextAlignment(.center)
-                    .textStyle(.paragraphSmall)
+            Text("Create your offer today")
+                .foregroundColor(Appearance.Colors.whiteText)
+                .multilineTextAlignment(.center)
+                .textStyle(.paragraphSmall)
 
-                HStack {
-                    LargeSolidButton(
-                        title: "I'm selling",
-                        font: Appearance.TextStyle.descriptionBold.font.asFont,
-                        style: .main,
-                        isFullWidth: true,
-                        height: .regularButton,
-                        isEnabled: .constant(true),
-                        action: {
-                            sellingAction()
-                        }
-                    )
+            HStack {
+                LargeSolidButton(
+                    title: "I'm selling",
+                    font: Appearance.TextStyle.descriptionBold.font.asFont,
+                    style: .main,
+                    isFullWidth: true,
+                    height: .regularButton,
+                    isEnabled: .constant(true),
+                    action: {
+                        sellingAction()
+                    }
+                )
 
-                    LargeSolidButton(
-                        title: "I'm buying",
-                        font: Appearance.TextStyle.descriptionBold.font.asFont,
-                        style: .main,
-                        isFullWidth: true,
-                        height: .regularButton,
-                        isEnabled: .constant(true),
-                        action: {
-                            buyingAction()
-                        }
-                    )
-                }
+                LargeSolidButton(
+                    title: "I'm buying",
+                    font: Appearance.TextStyle.descriptionBold.font.asFont,
+                    style: .main,
+                    isFullWidth: true,
+                    height: .regularButton,
+                    isEnabled: .constant(true),
+                    action: {
+                        buyingAction()
+                    }
+                )
             }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .padding(.horizontal, Appearance.GridGuide.mediumPadding2)
         }
+        .padding(.horizontal, Appearance.GridGuide.mediumPadding2)
     }
 
     private var countdownCircle: some View {
