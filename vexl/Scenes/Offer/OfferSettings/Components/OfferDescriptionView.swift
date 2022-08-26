@@ -19,7 +19,8 @@ struct OfferDescriptionView: View {
 
             ExpandingTextView(
                 placeholder: L.offerCreateDescriptionPlaceholder(),
-                text: $text
+                text: $text,
+                isFirstResponder: false
             )
         }
     }

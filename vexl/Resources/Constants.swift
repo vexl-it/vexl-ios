@@ -51,19 +51,16 @@ struct Constants {
         case facebookToken
         case facebookHash
         case facebookSignature
-        case userSignature
-        case privateKey(publicKey: String)
+        case localEncryptionKey
 
         var rawValue: String {
             switch self {
-            case .privateKey(let publicKey):
-                return "publickey-\(publicKey)"
+            case .localEncryptionKey:
+                return "aesKey"
             case .facebookID:
                 return "facebookID"
             case .facebookToken:
                 return "facebookToken"
-            case .userSignature:
-                return "userSignature"
             case .facebookHash:
                 return "facebookHash"
             case .facebookSignature:
@@ -122,9 +119,14 @@ struct Constants {
 
     static let defaultOfferDeleteTime = "14" // days will be selected as default too
 
+    #if APPSTORE
+    // TODO: would be better to obfuscate this
+    static let contactsHashingPassword = "9cf02ca3b233f17160e71b0db098f95396e73f27ef672dda482a6566d8e29484"
+    #else
     static let contactsHashingPassword = "VexlVexl"
+    #endif
+
     static let supportEmail = "support@vexl.it"
-    static let localEncryptionPassowrd = "tmpPassword"
 
     static let randomNameSyllables = [
         "bo", "da", "ga", "ge", "chi", "ka", "ko", "ku",
