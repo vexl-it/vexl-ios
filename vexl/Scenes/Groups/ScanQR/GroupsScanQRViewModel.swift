@@ -41,6 +41,8 @@ final class GroupsScanQRViewModel: ViewModelType, ObservableObject {
 
     @Published var primaryActivity: Activity = .init()
     @Published var showCamera = false
+    @Published var isLoading = false
+    @Published var error: Error?
 
     // MARK: - Coordinator Bindings
 
@@ -52,6 +54,13 @@ final class GroupsScanQRViewModel: ViewModelType, ObservableObject {
 
     var route: CoordinatingSubject<Route> = .init()
 
+    var errorIndicator: ErrorIndicator {
+        primaryActivity.error
+    }
+    var activityIndicator: ActivityIndicator {
+        primaryActivity.indicator
+    }
+
     // MARK: - Variables
 
     private let cancelBag: CancelBag = .init()
@@ -60,7 +69,19 @@ final class GroupsScanQRViewModel: ViewModelType, ObservableObject {
     // MARK: - Initialization
 
     init() {
+        setupActivityBindings()
         setupActions()
+    }
+
+    private func setupActivityBindings() {
+        activityIndicator
+            .loading
+            .assign(to: &$isLoading)
+
+        errorIndicator
+            .errors
+            .asOptional()
+            .assign(to: &$error)
     }
 
     private func setupActions() {
