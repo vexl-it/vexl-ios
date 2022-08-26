@@ -37,18 +37,20 @@ struct InboxView: View {
         .navigationBarHidden(true)
     }
 
-    private var inboxContent: some View {
-        RefreshContainer(topPadding: Appearance.GridGuide.refreshContainerPadding,
-                         hideRefresh: viewModel.isGraphExpanded,
-                         isRefreshing: $viewModel.isRefreshing) {
-            VStack(alignment: .leading) {
-                inboxHeader
-                if !viewModel.isMarketplaceLocked {
+    @ViewBuilder private var inboxContent: some View {
+        if viewModel.isMarketplaceLocked {
+            inboxHeader
+        } else {
+            RefreshContainer(topPadding: Appearance.GridGuide.refreshContainerPadding,
+                             hideRefresh: viewModel.isGraphExpanded,
+                             isRefreshing: $viewModel.isRefreshing) {
+                VStack(alignment: .leading) {
+                    inboxHeader
                     inboxList
                 }
+                .background(Color.black)
+                .cornerRadius(Appearance.GridGuide.buttonCorner)
             }
-            .background(Color.black)
-            .cornerRadius(Appearance.GridGuide.buttonCorner)
         }
     }
 

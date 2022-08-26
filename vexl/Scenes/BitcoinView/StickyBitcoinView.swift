@@ -18,21 +18,10 @@ struct StickyBitcoinView<Content: View, Header: View>: View {
 
     @State private var bitcoinSize: CGSize = .zero
     @State private var stickHeaderIsVisible = false
+    @State private var scrollableContentSize: CGSize = .zero
 
     var body: some View {
-        ZStack(alignment: .top) {
-            if isMarketplaceLocked {
-                LockedScreenView(sellingAction: {
-                    lockedSellAction()
-                },
-                                 buyingAction: {
-                    lockedBuyAction()
-                })
-                    .frame(maxHeight: .infinity)
-                    .edgesIgnoringSafeArea(.all)
-                    .padding(.top, Appearance.GridGuide.largePadding2)
-            }
-
+        ZStack {
             OffsetScrollView(
                 showsIndicators: false,
                 offsetChanged: offsetChanged(to:),
@@ -55,12 +44,40 @@ struct StickyBitcoinView<Content: View, Header: View>: View {
                     expandedBitcoinGraph(size.height > 100)
                 })
 
-            content()
-                .background(Color.black)
-                .cornerRadius(Appearance.GridGuide.buttonCorner,
-                              corners: [.topLeft, .topRight])
+            if isMarketplaceLocked {
+                ZStack {
+                    Image(R.image.marketplace.lockedMarketplace.name)
+                        .resizable()
+                        .blur(radius: 20)
+
+                    VStack {
+                        content()
+                            .background(Color.black)
+                            .cornerRadius(Appearance.GridGuide.buttonCorner,
+                                          corners: [.topLeft, .topRight])
+
+                        LockedScreenView(sellingAction: {
+                            lockedSellAction()
+                        },
+                                         buyingAction: {
+                            lockedBuyAction()
+                        })
+                            .frame(maxHeight: .infinity)
+                    }
+                }
+            } else {
+                content()
+                    .background(Color.black)
+                    .cornerRadius(Appearance.GridGuide.buttonCorner,
+                                  corners: [.topLeft, .topRight])
+            }
         }
-        .padding(.bottom, Appearance.GridGuide.homeTabBarHeight)
+        .padding(.bottom, isMarketplaceLocked ? 0 : Appearance.GridGuide.homeTabBarHeight)
+        .readSize { size in
+            if scrollableContentSize == .zero {
+                scrollableContentSize = size
+            }
+        }
     }
 
     private func offsetChanged(to offset: CGPoint) {

@@ -39,16 +39,20 @@ struct MarketplaceView: View {
         .onAppear(perform: { viewModel.action.send(.fetchNewOffers) })
     }
 
-    private var marketPlaceContent: some View {
-        RefreshContainer(topPadding: Appearance.GridGuide.refreshContainerPadding,
-                         hideRefresh: viewModel.isGraphExpanded,
-                         isRefreshing: $viewModel.isRefreshing) {
-            VStack(spacing: Appearance.GridGuide.mediumPadding1) {
-                marketPlaceHeader
+    @ViewBuilder private var marketPlaceContent: some View {
+        if viewModel.isMarketplaceLocked {
+            marketPlaceHeader
+        } else {
+            RefreshContainer(topPadding: Appearance.GridGuide.refreshContainerPadding,
+                             hideRefresh: viewModel.isGraphExpanded,
+                             isRefreshing: $viewModel.isRefreshing) {
+                VStack(spacing: Appearance.GridGuide.mediumPadding1) {
+                    marketPlaceHeader
 
-                marketplaceOfferList
+                    marketplaceOfferList
+                }
+                .animation(.easeInOut, value: viewModel.marketplaceFeedItems)
             }
-            .animation(.easeInOut, value: viewModel.marketplaceFeedItems)
         }
     }
 
