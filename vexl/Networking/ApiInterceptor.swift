@@ -16,7 +16,7 @@ final class ApiInterceptor: RequestInterceptor {
 
     static let authorizationHeaderKey = "Authorization"
     static let xPlatformHeaderKey = "X-Platform"
-    static let xPlatformHeaderValue = "ios"
+    static let xPlatformHeaderValue = "IOS"
     static let xInstallHeaderKey = "X-Install-UUID"
 
     private var cancellables: Cancellables = .init()

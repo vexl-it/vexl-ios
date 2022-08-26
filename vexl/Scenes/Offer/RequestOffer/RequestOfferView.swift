@@ -110,7 +110,8 @@ struct RequestOfferView: View {
 
                         ExpandingTextView(
                             placeholder: L.requestPlaceholder(),
-                            text: $viewModel.requestText
+                            text: $viewModel.requestText,
+                            isFirstResponder: false
                         )
 
                         Spacer()

@@ -24,6 +24,7 @@ struct RegistrationCardView<Content>: View where Content: View {
                 .textStyle(.h3)
                 .foregroundColor(Appearance.Colors.primaryText)
                 .padding([.top, .horizontal], Appearance.GridGuide.point)
+                .fixedSize(horizontal: false, vertical: true)
 
             if !subtitlePositionIsBottom {
                 subtitleView

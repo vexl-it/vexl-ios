@@ -10,8 +10,17 @@ import KeychainAccess
 
 extension ManagedKeyPair {
     var privateKey: String? {
-        get { try? encryptedPrivateKey?.aes.decrypt(password: Constants.localEncryptionPassowrd) }
-        set { encryptedPrivateKey = try? newValue?.aes.encrypt(password: Constants.localEncryptionPassowrd) }
+        get {
+            guard let localEncryptionKey = Keychain.standard[.localEncryptionKey] else {
+                return nil
+            }
+            return try? encryptedPrivateKey?.aes.decrypt(password: localEncryptionKey)
+        }
+        set {
+            guard let localEncryptionKey = Keychain.standard[.localEncryptionKey] else {
+                return
+            }
+            encryptedPrivateKey = try? newValue?.aes.encrypt(password: localEncryptionKey) }
     }
 
     var keys: ECCKeys? {

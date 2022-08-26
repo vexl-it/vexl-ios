@@ -39,7 +39,7 @@ test:
   except:
     - tags
   tags: [ios]
-  allow_failure: true # FIX build in testing on CI
+  allow_failure: false
 
 deploy_beta:
   stage: deploy
