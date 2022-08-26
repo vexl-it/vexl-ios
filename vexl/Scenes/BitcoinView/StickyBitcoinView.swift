@@ -21,7 +21,7 @@ struct StickyBitcoinView<Content: View, Header: View>: View {
     @State private var scrollableContentSize: CGSize = .zero
 
     var body: some View {
-        ZStack {
+        ZStack(alignment: .top) {
             OffsetScrollView(
                 showsIndicators: false,
                 offsetChanged: offsetChanged(to:),
