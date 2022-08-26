@@ -40,11 +40,6 @@
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
-	<key>NSAppTransportSecurity</key>
-	<dict>
-		<key>NSAllowsArbitraryLoadsInWebContent</key>
-		<true/>
-	</dict>
 	<key>NSCameraUsageDescription</key>
 	<string>Vexl wants to access your camera in order to select a photo for your avatar.</string>
 	<key>NSContactsUsageDescription</key>
