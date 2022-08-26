@@ -23,6 +23,7 @@ struct StickyBitcoinView<Content: View, Header: View>: View {
     var body: some View {
         ZStack(alignment: .top) {
             OffsetScrollView(
+                isMarketplaceLocked ? [] : .vertical,
                 showsIndicators: false,
                 offsetChanged: offsetChanged(to:),
                 content: { scrollableContent }

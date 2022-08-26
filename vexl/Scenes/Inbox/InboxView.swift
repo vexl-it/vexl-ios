@@ -26,10 +26,10 @@ struct InboxView: View {
                 viewModel.isGraphExpanded = isExpanded
             },
             lockedSellAction: {
-                
+                viewModel.action.send(.sellTap)
             },
             lockedBuyAction: {
-                
+                viewModel.action.send(.buyTap)
             }
         )
         .coordinateSpace(name: RefreshControlView.coordinateSpace)

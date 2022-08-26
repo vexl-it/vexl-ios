@@ -26,6 +26,26 @@ final class InboxCoordinator: BaseCoordinator<Void> {
 
         viewModel
             .route
+            .filter { $0 == .sellTapped }
+            .flatMapLatest(with: self) { owner, _ -> CoordinatingResult<RouterResult<Void>> in
+                let modalRouter = ModalRouter(parentViewController: viewController, presentationStyle: .fullScreen)
+                return owner.showSellOffers(router: modalRouter)
+            }
+            .sink()
+            .store(in: cancelBag)
+
+        viewModel
+            .route
+            .filter { $0 == .buyTapped }
+            .flatMapLatest(with: self) { owner, _ -> CoordinatingResult<RouterResult<Void>> in
+                let modalRouter = ModalRouter(parentViewController: viewController, presentationStyle: .fullScreen)
+                return owner.showBuyOffers(router: modalRouter)
+            }
+            .sink()
+            .store(in: cancelBag)
+
+        viewModel
+            .route
             .filter { $0 == .requestTapped }
             .flatMapLatest(with: self) { owner, _ -> CoordinatingResult<RouterResult<Void>> in
                 let modalRouter = ModalRouter(parentViewController: viewController, presentationStyle: .fullScreen)
@@ -81,6 +101,32 @@ extension InboxCoordinator {
                 animated: animated
             )
         )
+        .flatMap { result -> CoordinatingResult<RouterResult<Void>> in
+            guard result != .dismissedByRouter else {
+                return Just(result).eraseToAnyPublisher()
+            }
+            return router.dismiss(animated: true, returning: result)
+        }
+        .prefix(1)
+        .eraseToAnyPublisher()
+    }
+
+    // MARK: - Used for locked screen
+
+    private func showSellOffers(router: Router) -> CoordinatingResult<RouterResult<Void>> {
+        coordinate(to: UserOffersCoordinator(router: router, offerType: .sell))
+        .flatMap { result -> CoordinatingResult<RouterResult<Void>> in
+            guard result != .dismissedByRouter else {
+                return Just(result).eraseToAnyPublisher()
+            }
+            return router.dismiss(animated: true, returning: result)
+        }
+        .prefix(1)
+        .eraseToAnyPublisher()
+    }
+
+    private func showBuyOffers(router: Router) -> CoordinatingResult<RouterResult<Void>> {
+        coordinate(to: UserOffersCoordinator(router: router, offerType: .buy))
         .flatMap { result -> CoordinatingResult<RouterResult<Void>> in
             guard result != .dismissedByRouter else {
                 return Just(result).eraseToAnyPublisher()

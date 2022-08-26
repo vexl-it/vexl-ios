@@ -21,7 +21,7 @@ struct LockedScreenView: View {
 
             countdownCircle
 
-            Text("Marketplace is just warming up.\nWait for the full experience.")
+            Text(L.lockedScreenTitle())
                 .foregroundColor(Appearance.Colors.whiteText)
                 .multilineTextAlignment(.center)
                 .textStyle(.paragraphSemibold)
@@ -29,14 +29,14 @@ struct LockedScreenView: View {
             HLine(color: Appearance.Colors.gray3, height: 1)
                 .padding(.vertical, Appearance.GridGuide.point)
 
-            Text("Create your offer today")
+            Text(L.lockedScreenSubtitle())
                 .foregroundColor(Appearance.Colors.whiteText)
                 .multilineTextAlignment(.center)
                 .textStyle(.paragraphSmall)
 
             HStack {
                 LargeSolidButton(
-                    title: "I'm selling",
+                    title: L.lockedScreenSell(),
                     font: Appearance.TextStyle.descriptionBold.font.asFont,
                     style: .main,
                     isFullWidth: true,
@@ -48,7 +48,7 @@ struct LockedScreenView: View {
                 )
 
                 LargeSolidButton(
-                    title: "I'm buying",
+                    title: L.lockedScreenBuy(),
                     font: Appearance.TextStyle.descriptionBold.font.asFont,
                     style: .main,
                     isFullWidth: true,
@@ -75,10 +75,10 @@ struct LockedScreenView: View {
                 )
                 .overlay(
                     VStack {
-                        Text("123")
+                        Text("\(Constants.numberOfOffersForLockedScreen)")
                             .textStyle(.h3)
 
-                        Text("Offers")
+                        Text(L.lockedScreenOffers())
                             .textStyle(.paragraphSmall)
                             .foregroundColor(Appearance.Colors.gray3)
                     }
