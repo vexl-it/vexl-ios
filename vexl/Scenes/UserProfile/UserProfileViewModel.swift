@@ -78,7 +78,7 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
     }
 
     var isMarketplaceLocked: Bool {
-        true//remoteConfigManager.getBoolValue(for: .isMarketplaceLocked)
+        remoteConfigManager.getBoolValue(for: .isMarketplaceLocked)
     }
 
     let bitcoinViewModel: BitcoinViewModel

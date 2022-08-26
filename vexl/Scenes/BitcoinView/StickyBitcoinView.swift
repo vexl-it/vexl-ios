@@ -34,6 +34,7 @@ struct StickyBitcoinView<Content: View, Header: View>: View {
                     .background(Color.black)
             }
         }
+        .edgesIgnoringSafeArea(.top)
     }
 
     private var scrollableContent: some View {
@@ -72,6 +73,7 @@ struct StickyBitcoinView<Content: View, Header: View>: View {
                                   corners: [.topLeft, .topRight])
             }
         }
+        .padding(.top, UIScreen.topInset)
         .padding(.bottom, isMarketplaceLocked ? 0 : Appearance.GridGuide.homeTabBarHeight)
         .readSize { size in
             if scrollableContentSize == .zero {

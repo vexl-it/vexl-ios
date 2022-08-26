@@ -60,7 +60,7 @@ final class InboxViewModel: ViewModelType, ObservableObject {
         hasPendingRequests ? R.image.chat.request.name : R.image.chat.requestEmpty.name
     }
     var isMarketplaceLocked: Bool {
-        true//remoteConfigManager.getBoolValue(for: .isMarketplaceLocked)
+        remoteConfigManager.getBoolValue(for: .isMarketplaceLocked)
     }
     // MARK: - Variables
 
