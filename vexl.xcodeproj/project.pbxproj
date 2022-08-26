@@ -224,6 +224,7 @@
 		F12A150627E1A47D0096543E /* RequestAccessFacebookContactsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12A150527E1A47D0096543E /* RequestAccessFacebookContactsViewModel.swift */; };
 		F12A150827E1A4940096543E /* RequestAccessAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12A150727E1A4940096543E /* RequestAccessAlert.swift */; };
 		F13721EF287F29830013BB7B /* TimeInterval+.swift in Sources */ = {isa = PBXBuildFile; fileRef = F13721EE287F29830013BB7B /* TimeInterval+.swift */; };
+		F137A21428B93BCE0078A660 /* GroupError.swift in Sources */ = {isa = PBXBuildFile; fileRef = F137A21328B93BCE0078A660 /* GroupError.swift */; };
 		F13B265C281897DE0011F2FB /* OfferAdvanceFilterFriendDegreeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F13B265B281897DE0011F2FB /* OfferAdvanceFilterFriendDegreeView.swift */; };
 		F13B265E281899250011F2FB /* OfferAdvancedFilterBTCNetworkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F13B265D281899250011F2FB /* OfferAdvancedFilterBTCNetworkView.swift */; };
 		F13B266028189F580011F2FB /* OfferService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F13B265F28189F580011F2FB /* OfferService.swift */; };
@@ -666,6 +667,7 @@
 		F12A150527E1A47D0096543E /* RequestAccessFacebookContactsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestAccessFacebookContactsViewModel.swift; sourceTree = "<group>"; };
 		F12A150727E1A4940096543E /* RequestAccessAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestAccessAlert.swift; sourceTree = "<group>"; };
 		F13721EE287F29830013BB7B /* TimeInterval+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TimeInterval+.swift"; sourceTree = "<group>"; };
+		F137A21328B93BCE0078A660 /* GroupError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupError.swift; sourceTree = "<group>"; };
 		F13B265B281897DE0011F2FB /* OfferAdvanceFilterFriendDegreeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferAdvanceFilterFriendDegreeView.swift; sourceTree = "<group>"; };
 		F13B265D281899250011F2FB /* OfferAdvancedFilterBTCNetworkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferAdvancedFilterBTCNetworkView.swift; sourceTree = "<group>"; };
 		F13B265F28189F580011F2FB /* OfferService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferService.swift; sourceTree = "<group>"; };
@@ -1356,6 +1358,7 @@
 				B08F396327AE7112008B344F /* UserError.swift */,
 				F175AB9F27F4A7EC000DAB15 /* RegistryError.swift */,
 				F13B266C281C8FC80011F2FB /* EncryptionError.swift */,
+				F137A21328B93BCE0078A660 /* GroupError.swift */,
 			);
 			path = Errors;
 			sourceTree = "<group>";
@@ -2898,6 +2901,7 @@
 				B08F38E227AE7110008B344F /* Inject.swift in Sources */,
 				B08F395727AE7112008B344F /* ApiRouter.swift in Sources */,
 				F188627428169A3700659786 /* MarketplaceFeedFooterView.swift in Sources */,
+				F137A21428B93BCE0078A660 /* GroupError.swift in Sources */,
 				4FD8E3E02821B922003B165E /* CoinData.swift in Sources */,
 				F1042BA227BEADB70048C2F0 /* WelcomeAgreementSwitch.swift in Sources */,
 				B08F394D27AE7112008B344F /* AppCoordinator.swift in Sources */,

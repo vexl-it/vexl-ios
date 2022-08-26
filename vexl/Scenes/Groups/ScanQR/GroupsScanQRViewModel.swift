@@ -8,6 +8,8 @@
 import Foundation
 import Cleevio
 import AVFoundation
+import Combine
+import FirebaseDynamicLinks
 
 final class GroupsScanQRViewModel: ViewModelType, ObservableObject {
 
@@ -71,9 +73,15 @@ final class GroupsScanQRViewModel: ViewModelType, ObservableObject {
             .store(in: cancelBag)
 
         action
-            .compactMap { action -> Int? in
-                if case let .codeScan(code) = action { return Int(code) }
+            .compactMap { action -> URL? in
+                if case let .codeScan(code) = action { return URL(string: code) }
                 return nil
+            }
+            .withUnretained(self)
+            .flatMap { owner, url in
+                owner.handleUniversalLink(url: url)
+                    .materialize()
+                    .compactMap(\.value)
             }
             .flatMap { [groupManaged, primaryActivity] code in
                 groupManaged
@@ -104,5 +112,22 @@ final class GroupsScanQRViewModel: ViewModelType, ObservableObject {
                 }
             }
         }
+    }
+
+    private func handleUniversalLink(url: URL) -> AnyPublisher<Int, Error> {
+        Future { promise in
+            DynamicLinks.dynamicLinks().handleUniversalLink(url) { dynamiclink, error in
+                guard error == nil else {
+                    promise(.failure(GroupError.invalidQRCode))
+                    return
+                }
+
+                guard let url = dynamiclink?.url,
+                      let code = url.valueOf("code"),
+                      let intCode = Int(code) else { return }
+                promise(.success(intCode))
+            }
+        }
+        .eraseToAnyPublisher()
     }
 }
