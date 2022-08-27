@@ -16,6 +16,7 @@ enum UserDefaultKey: String {
     case selectedCurrency
     case lastOfferSyncDate
     case onboardingState
+    case userCountryCode
 }
 
 struct UserDefaultsConfig {

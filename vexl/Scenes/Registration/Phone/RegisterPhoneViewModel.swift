@@ -22,6 +22,9 @@ final class RegisterPhoneViewModel: ViewModelType {
     @Inject var contactsService: ContactsServiceType
     @Inject var notificationManager: NotificationManagerType
 
+    @UserDefault(UserDefaultKey.userCountryCode.rawValue, defaultValue: nil)
+    private var userCountryCode: String?
+
     // MARK: - View State
 
     enum ViewState {
@@ -345,6 +348,7 @@ final class RegisterPhoneViewModel: ViewModelType {
             .asVoid()
             .withUnretained(self)
             .sink { owner in
+                owner.userCountryCode = owner.getUserCountryCode()
                 owner.route.send(.continueTapped)
             }
             .store(in: cancelBag)
@@ -421,6 +425,15 @@ final class RegisterPhoneViewModel: ViewModelType {
         }
 
         countdown = Int(expirationDate.timeIntervalSinceNow)
+    }
+
+    private func getUserCountryCode() -> String? {
+        guard let phoneNumber = try? Formatters.phoneNumberFormatter.parse(currentPhoneNumber),
+                let region = phoneNumber.regionID,
+                let countryCode = Formatters.phoneNumberFormatter.countryCode(for: region) else {
+            return nil
+        }
+        return "+\(countryCode)"
     }
 
     private func clearState() {

@@ -9,6 +9,9 @@ import Foundation
 
 struct ContactInformation: Identifiable {
 
+    @UserDefault(UserDefaultKey.userCountryCode.rawValue, defaultValue: nil)
+    private var userCountryCode: String?
+
     enum Source: String {
         case phone
         case facebook
@@ -33,11 +36,10 @@ struct ContactInformation: Identifiable {
     }
 
     var formattedPhone: String {
-        let phoneNumber = Formatters.phoneNumberFormatter
-        let countryCode = phoneNumber.countryCode(for: Locale.current.regionCode ?? "")
+        let countryCode = userCountryCode
         let formattedIdentifier: String = {
             if let countryCode = countryCode, !sourceIdentifier.contains("+") {
-                return "+\(countryCode) \(sourceIdentifier)"
+                return "\(countryCode) \(sourceIdentifier)"
             }
             return sourceIdentifier
         }()

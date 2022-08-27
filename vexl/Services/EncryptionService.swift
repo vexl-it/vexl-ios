@@ -17,12 +17,14 @@ protocol EncryptionServiceType {
 
 final class EncryptionService: EncryptionServiceType {
     @Inject var cryptoService: CryptoServiceType
+    @UserDefault(UserDefaultKey.userCountryCode.rawValue, defaultValue: "")
+    private var userCountryCode: String?
+
     let hashingQueue: OperationQueue = .init()
     let encryptionQueue: OperationQueue = .init()
 
     func hashContacts(contacts: [ContactInformation]) -> AnyPublisher<[(ContactInformation, String)], Error> {
-        let phoneNumber = Formatters.phoneNumberFormatter
-        let countryCode = phoneNumber.countryCode(for: Locale.current.regionCode ?? "")
+        let countryCode = userCountryCode
         return contacts
             .publisher
             .withUnretained(self)
@@ -33,7 +35,7 @@ final class EncryptionService: EncryptionServiceType {
             .eraseToAnyPublisher()
     }
 
-    private func hashContact(contact: ContactInformation, countryCode: UInt64?) -> AnyPublisher<(ContactInformation, String), Error> {
+    private func hashContact(contact: ContactInformation, countryCode: String?) -> AnyPublisher<(ContactInformation, String), Error> {
         Future { [weak self] promise in
             guard let owner = self else {
                 promise(.failure(EncryptionError.dataEncryption))
