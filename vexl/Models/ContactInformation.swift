@@ -6,11 +6,14 @@
 //
 
 import Foundation
+import KeychainAccess
 
 struct ContactInformation: Identifiable {
 
-    @UserDefault(UserDefaultKey.userCountryCode.rawValue, defaultValue: nil)
-    private var userCountryCode: String?
+    private var userCountryCode: String? {
+        guard let countryCode = Keychain.standard[.userCountryCode] else { return nil }
+        return countryCode
+    }
 
     enum Source: String {
         case phone

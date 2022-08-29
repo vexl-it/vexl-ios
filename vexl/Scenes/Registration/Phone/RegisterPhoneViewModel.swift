@@ -10,6 +10,7 @@ import Combine
 import Cleevio
 import SwiftUI
 import PhoneNumberKit
+import KeychainAccess
 
 final class RegisterPhoneViewModel: ViewModelType {
 
@@ -22,8 +23,10 @@ final class RegisterPhoneViewModel: ViewModelType {
     @Inject var contactsService: ContactsServiceType
     @Inject var notificationManager: NotificationManagerType
 
-    @UserDefault(UserDefaultKey.userCountryCode.rawValue, defaultValue: nil)
-    private var userCountryCode: String?
+    private var userCountryCode: String? {
+        get { Keychain.standard[.userCountryCode] }
+        set { Keychain.standard[.userCountryCode] = newValue }
+    }
 
     // MARK: - View State
 

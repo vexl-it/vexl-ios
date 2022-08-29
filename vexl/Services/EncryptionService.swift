@@ -7,6 +7,7 @@
 
 import Foundation
 import Combine
+import KeychainAccess
 
 typealias OfferEncprytionInput = (receiverPublicKey: String, commonFriends: [String])
 
@@ -17,8 +18,10 @@ protocol EncryptionServiceType {
 
 final class EncryptionService: EncryptionServiceType {
     @Inject var cryptoService: CryptoServiceType
-    @UserDefault(UserDefaultKey.userCountryCode.rawValue, defaultValue: "")
-    private var userCountryCode: String?
+    private var userCountryCode: String? {
+        guard let countryCode = Keychain.standard[.userCountryCode] else { return nil }
+        return countryCode
+    }
 
     let hashingQueue: OperationQueue = .init()
     let encryptionQueue: OperationQueue = .init()
