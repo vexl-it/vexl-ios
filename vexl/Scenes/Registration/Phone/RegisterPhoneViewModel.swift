@@ -25,6 +25,10 @@ final class RegisterPhoneViewModel: ViewModelType {
 
     @KeychainStore(key: .userCountryCode)
     private var userCountryCode: String?
+    private var phoneRegistrationData: PhoneRegistrationData? {
+        get { Keychain.standard[codable: .phoneRegistration] }
+        set { Keychain.standard[codable: .phoneRegistration] = newValue }
+    }
 
     // MARK: - View State
 
@@ -127,8 +131,10 @@ final class RegisterPhoneViewModel: ViewModelType {
         }
         return "\(number)"
     }
-
-    private var phoneVerificationId: Int?
+    var shouldRequestVerificationCode: Bool {
+        guard let phoneRegistrationData = phoneRegistrationData else { return true }
+        return phoneRegistrationData.phone != phoneNumber || phoneRegistrationData.verification.expirationDate?.compare(Date()) == .orderedAscending
+    }
 
     // MARK: - Timer
 
@@ -180,21 +186,25 @@ final class RegisterPhoneViewModel: ViewModelType {
 
         Publishers.Merge(phoneInput, sendCode)
             .withUnretained(self)
-            .flatMap { owner, _ in
-                owner
-                    .userService
-                    .requestVerificationCode(phoneNumber: owner.phoneNumber)
-                    .track(activity: owner.primaryActivity)
-                    .materialize()
-                    .compactMap(\.value)
-                    .eraseToAnyPublisher()
+            .flatMap { owner, _ -> AnyPublisher<PhoneVerification, Never> in
+                if let phoneRegistrationData = owner.phoneRegistrationData, !owner.shouldRequestVerificationCode {
+                    return Just(phoneRegistrationData.verification)
+                        .eraseToAnyPublisher()
+                } else {
+                    return owner.userService
+                        .requestVerificationCode(phoneNumber: owner.phoneNumber)
+                        .track(activity: owner.primaryActivity)
+                        .materialize()
+                        .compactMap(\.value)
+                        .eraseToAnyPublisher()
+                }
             }
             .withUnretained(self)
             .handleEvents(receiveOutput: { owner, response in
                 owner.triggerCountdown.send(response.expirationDate)
             })
             .sink { owner, response in
-                owner.phoneVerificationId = response.verificationId
+                owner.phoneRegistrationData = PhoneRegistrationData(phone: owner.phoneNumber, verification: response)
                 owner.currentState = .codeInput
             }
             .store(in: cancelBag)
@@ -209,7 +219,7 @@ final class RegisterPhoneViewModel: ViewModelType {
                 owner.currentState = .codeInputValidation
             })
             .compactMap { owner, _ in
-                owner.phoneVerificationId
+                owner.phoneRegistrationData?.verification.verificationId
             }
             .eraseToAnyPublisher()
 
@@ -350,6 +360,7 @@ final class RegisterPhoneViewModel: ViewModelType {
             .withUnretained(self)
             .sink { owner in
                 owner.userCountryCode = owner.getUserCountryCode()
+                owner.phoneRegistrationData = nil
                 owner.route.send(.continueTapped)
             }
             .store(in: cancelBag)
@@ -440,7 +451,6 @@ final class RegisterPhoneViewModel: ViewModelType {
     private func clearState() {
         validationCode = ""
         currentState = .phoneInput
-        phoneVerificationId = nil
         timer?.connect().cancel()
     }
 }
