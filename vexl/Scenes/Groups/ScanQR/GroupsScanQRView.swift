@@ -14,12 +14,7 @@ struct GroupsScanQRView: View {
     var body: some View {
         ZStack {
             if viewModel.isCameraAvailable && viewModel.showCamera {
-                CameraScannerView()
-                    .interval(delay: viewModel.scanInterval)
-                    .onScan { code in
-                        viewModel.action.send(.codeScan(code: code))
-                    }
-                    .edgesIgnoringSafeArea(.all)
+                CameraQRScannerView(viewModel: viewModel.cameraViewModel)
 
                 Rectangle()
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -38,7 +33,7 @@ struct GroupsScanQRView: View {
                 }
             } else {
                 Button(L.continue()) {
-                    viewModel.action.send(.codeScan(code: viewModel.mockCode))
+                    viewModel.action.send(.mockCodeTap)
                 }
                 .textStyle(.paragraphSmallSemiBold)
                 .foregroundColor(Appearance.Colors.primaryText)
@@ -72,6 +67,9 @@ struct GroupsScanQRView: View {
         .background(Color.black.edgesIgnoringSafeArea(.all))
         .onAppear {
             viewModel.action.send(.cameraAccessRequest)
+        }
+        .onDisappear {
+            viewModel.action.send(.dismissCamera)
         }
     }
 

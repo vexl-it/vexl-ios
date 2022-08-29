@@ -17,7 +17,7 @@ final class GroupsScanQRViewModel: ViewModelType, ObservableObject {
 
     // MARK: - Properties for simulator/mock testing
 
-    var mockCode = "111111"
+    static private let mockCode = "111111"
     var isCameraAvailable: Bool {
         #if targetEnvironment(simulator)
         return false
@@ -30,8 +30,9 @@ final class GroupsScanQRViewModel: ViewModelType, ObservableObject {
 
     enum UserAction: Equatable {
         case dismissTap
+        case mockCodeTap
         case cameraAccessRequest
-        case codeScan(code: String)
+        case dismissCamera
         case manualInputTap
     }
 
@@ -64,13 +65,15 @@ final class GroupsScanQRViewModel: ViewModelType, ObservableObject {
     // MARK: - Variables
 
     private let cancelBag: CancelBag = .init()
-    let scanInterval = 1.0
+    var cameraViewModel = CameraPreviewViewModel()
 
     // MARK: - Initialization
 
     init() {
         setupActivityBindings()
         setupActions()
+        setupCameraAction()
+        cameraViewModel.createSession()
     }
 
     private func setupActivityBindings() {
@@ -94,10 +97,30 @@ final class GroupsScanQRViewModel: ViewModelType, ObservableObject {
             .store(in: cancelBag)
 
         action
-            .compactMap { action -> URL? in
-                if case let .codeScan(code) = action { return URL(string: code) }
-                return nil
+            .filter { $0 == .manualInputTap }
+            .map { _ in .manualInputTapped }
+            .subscribe(route)
+            .store(in: cancelBag)
+
+        action
+            .filter { $0 == .dismissCamera }
+            .withUnretained(self)
+            .sink { owner, _ in
+                owner.cameraViewModel.stopSession()
             }
+            .store(in: cancelBag)
+    }
+    
+    private func setupCameraAction() {
+        let mockTap = action
+            .filter { $0 == .mockCodeTap }
+            .map { _ in Self.mockCode }
+
+        let onResult = cameraViewModel
+            .onResult
+
+        Publishers.Merge(onResult, mockTap)
+            .compactMap { URL(string: $0) }
             .withUnretained(self)
             .flatMap { owner, url in
                 owner.handleUniversalLink(url: url)
@@ -115,10 +138,11 @@ final class GroupsScanQRViewModel: ViewModelType, ObservableObject {
             .subscribe(route)
             .store(in: cancelBag)
 
-        action
-            .filter { $0 == .manualInputTap }
-            .map { _ in .manualInputTapped }
-            .subscribe(route)
+        $showCamera
+            .withUnretained(self)
+            .sink { owner, showCamera in
+                if showCamera { owner.cameraViewModel.startSession() }
+            }
             .store(in: cancelBag)
     }
 
@@ -128,9 +152,7 @@ final class GroupsScanQRViewModel: ViewModelType, ObservableObject {
             showCamera = true
         } else {
             AVCaptureDevice.requestAccess(for: .video) { [weak self] granted in
-                DispatchQueue.main.sync {
-                    self?.showCamera = granted
-                }
+                self?.showCamera = granted
             }
         }
     }
