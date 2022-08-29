@@ -22,7 +22,7 @@ struct Offer: Equatable {
     var selectedPriceTrigger: OfferTrigger
     var selectedPriceTriggerAmount: String
     var selectedGroup: ManagedGroup?
-    
+
     init(isActive: Bool = true,
          description: String = "",
          currency: Currency = Constants.OfferInitialData.currency,
@@ -32,7 +32,7 @@ struct Offer: Equatable {
          feeAmount: Double = Constants.OfferInitialData.minFee,
          selectedTradeStyleOption: OfferTradeLocationOption = .online,
          selectedPaymentMethodOptions: [OfferPaymentMethodOption] = [],
-            
+
          selectedBTCOption: [OfferAdvancedBTCOption] = [],
          selectedFriendDegreeOption: OfferFriendDegree = .firstDegree,
          selectedPriceTrigger: OfferTrigger = .none,
@@ -51,7 +51,7 @@ struct Offer: Equatable {
         self.selectedPriceTrigger = selectedPriceTrigger
         self.selectedPriceTriggerAmount = selectedPriceTriggerAmount
     }
-    
+
     init?(managedOffer: ManagedOffer?) {
         guard let managedOffer = managedOffer else { return nil }
         isActive = managedOffer.active
@@ -69,7 +69,7 @@ struct Offer: Equatable {
         selectedPriceTriggerAmount = "\(Int(managedOffer.activePriceValue))"
         selectedGroup = managedOffer.group
     }
-    
+
     mutating func update(with managedOffer: ManagedOffer) {
         isActive = managedOffer.active
         description = managedOffer.offerDescription ?? ""
