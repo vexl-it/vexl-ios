@@ -51,7 +51,10 @@ final class GroupsScanQRCoordinator: BaseCoordinator<RouterResult<Void>> {
             .filter { $0 == .dismissTapped }
             .map { _ -> RouterResult<Void> in .dismiss }
 
-        return Publishers.Merge(dismiss, manualInput)
+        let dismissByRouter = dismissObservable(with: viewController, dismissHandler: router)
+            .dismissedByRouter(type: Void.self)
+
+        return Publishers.Merge3(dismiss, manualInput, dismissByRouter)
             .eraseToAnyPublisher()
     }
 }

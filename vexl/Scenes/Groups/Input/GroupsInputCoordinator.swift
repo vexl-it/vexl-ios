@@ -38,7 +38,10 @@ final class GroupsInputCoordinator: BaseCoordinator<RouterResult<Void>> {
             .filter { $0 == .dismissTapped }
             .map { _ -> RouterResult<Void> in .dismiss }
 
-        return Publishers.Merge(dismiss, continueTap)
+        let dismissByRouter = dismissObservable(with: viewController, dismissHandler: router)
+            .dismissedByRouter(type: Void.self)
+
+        return Publishers.Merge3(dismiss, continueTap, dismissByRouter)
             .eraseToAnyPublisher()
     }
 }
