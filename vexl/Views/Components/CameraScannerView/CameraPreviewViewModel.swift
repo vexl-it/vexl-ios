@@ -13,13 +13,15 @@ enum CameraPreviewError: LocalizedError {
     case failedSetup
 
     var errorDescription: String? {
-        L.registerPhoneNumberError()
+        L.groupsEnterCameraError()
     }
 }
 
 final class CameraPreviewViewModel: NSObject {
 
     var onResult: PassthroughSubject<String, Never> = .init()
+    var onError: PassthroughSubject<Void, CameraPreviewError> = .init()
+
     var cameraLayer: CALayer {
         guard let previewLayer = previewLayer else { return CALayer() }
         return previewLayer
@@ -56,30 +58,26 @@ final class CameraPreviewViewModel: NSObject {
 
     func createSession() {
         guard AVCaptureDevice.authorizationStatus(for: .video) == .authorized else {
-            //captureSessionErrors.onNext(.captureNotAuthorized)
-            //TODO: - add error handling
+            onError.send(completion: .failure(.failedSetup))
             return
         }
 
         let session = AVCaptureSession()
 
         guard let sessionInput = makeVideoDeviceInput(captureSession: session) else {
-            //captureSessionErrors.onNext(.videoInputUnavailable)
-            //TODO: - add error handling
+            onError.send(completion: .failure(.failedSetup))
             return
         }
         session.addInput(sessionInput)
 
         guard let sessionOutput = makeSessionMetadataOutput(captureSession: session) else {
-            //captureSessionErrors.onNext(.metadataOutputUnavailable)
-            //TODO: - add error handling
+            onError.send(completion: .failure(.failedSetup))
             return
         }
         session.addOutput(sessionOutput)
 
         guard sessionOutput.availableMetadataObjectTypes.contains(.qr) else {
-            //captureSessionErrors.onNext(.metadataOutputUnavailable)
-            //TODO: - add error handling
+            onError.send(completion: .failure(.failedSetup))
             return
         }
         sessionOutput.metadataObjectTypes = [.qr]

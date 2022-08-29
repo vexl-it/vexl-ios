@@ -110,7 +110,7 @@ final class GroupsScanQRViewModel: ViewModelType, ObservableObject {
             }
             .store(in: cancelBag)
     }
-    
+
     private func setupCameraAction() {
         let mockTap = action
             .filter { $0 == .mockCodeTap }
@@ -143,6 +143,12 @@ final class GroupsScanQRViewModel: ViewModelType, ObservableObject {
             .sink { owner, showCamera in
                 if showCamera { owner.cameraViewModel.startSession() }
             }
+            .store(in: cancelBag)
+
+        cameraViewModel
+            .onError
+            .trackError(primaryActivity.error)
+            .sink()
             .store(in: cancelBag)
     }
 
