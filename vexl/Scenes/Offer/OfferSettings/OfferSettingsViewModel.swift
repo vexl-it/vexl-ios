@@ -41,7 +41,7 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
 
     // MARK: - View Bindings
     
-    @Published var offer: Offer
+    @Published var offer: Offer = .init()
     @Published var primaryActivity: Activity = .init()
     var errorIndicator: ErrorIndicator {
         primaryActivity.error
@@ -166,14 +166,12 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
         self.offerKey = offer.inbox?.keyPair?.keys ?? ECCKeys()
         self.offerType = offer.type ?? .buy
         self.managedOffer = offer
-        self.offer = Offer()
         setup()
     }
 
     init(offerType: OfferType, offerKey: ECCKeys) {
         self.offerType = offerType
         self.offerKey = offerKey
-        self.offer = Offer()
         setup()
     }
 
