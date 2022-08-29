@@ -23,10 +23,8 @@ final class RegisterPhoneViewModel: ViewModelType {
     @Inject var contactsService: ContactsServiceType
     @Inject var notificationManager: NotificationManagerType
 
-    private var userCountryCode: String? {
-        get { Keychain.standard[.userCountryCode] }
-        set { Keychain.standard[.userCountryCode] = newValue }
-    }
+    @KeychainStore(key: .userCountryCode)
+    private var userCountryCode: String?
 
     // MARK: - View State
 

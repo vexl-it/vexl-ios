@@ -18,10 +18,8 @@ protocol EncryptionServiceType {
 
 final class EncryptionService: EncryptionServiceType {
     @Inject var cryptoService: CryptoServiceType
-    private var userCountryCode: String? {
-        guard let countryCode = Keychain.standard[.userCountryCode] else { return nil }
-        return countryCode
-    }
+    @KeychainStore(key: .userCountryCode)
+    private var userCountryCode: String?
 
     let hashingQueue: OperationQueue = .init()
     let encryptionQueue: OperationQueue = .init()

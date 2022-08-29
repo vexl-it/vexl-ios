@@ -10,10 +10,8 @@ import KeychainAccess
 
 struct ContactInformation: Identifiable {
 
-    private var userCountryCode: String? {
-        guard let countryCode = Keychain.standard[.userCountryCode] else { return nil }
-        return countryCode
-    }
+    @KeychainStore(key: .userCountryCode)
+    private var userCountryCode: String?
 
     enum Source: String {
         case phone
