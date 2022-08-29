@@ -41,6 +41,7 @@
 		4FEFE324289F2105006AB8DA /* RegisterAnonymizeCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FEFE323289F2105006AB8DA /* RegisterAnonymizeCoordinator.swift */; };
 		4FEFE326289F21CD006AB8DA /* RegisterAnonymizeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FEFE325289F21CD006AB8DA /* RegisterAnonymizeViewModel.swift */; };
 		4FEFE328289F21D6006AB8DA /* RegisterAnonymizeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FEFE327289F21D6006AB8DA /* RegisterAnonymizeView.swift */; };
+		6F2F14B328B8FBB90020271D /* Offer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F2F14B228B8FBB90020271D /* Offer.swift */; };
 		6FF08EB128B67EE500B2CF65 /* TextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FF08EB028B67EE500B2CF65 /* TextView.swift */; };
 		6FF08EB328B6846000B2CF65 /* DiffableState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FF08EB228B6846000B2CF65 /* DiffableState.swift */; };
 		B007A72A2864FE4A00CFA5C9 /* CurrencySelect.swift in Sources */ = {isa = PBXBuildFile; fileRef = B007A7292864FE4A00CFA5C9 /* CurrencySelect.swift */; };
@@ -472,6 +473,7 @@
 		57B3CAA27CF4369A28B748A7 /* Pods_vexl.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_vexl.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		625779B2774E3C48F23BBA21 /* Pods-vexl.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-vexl.release.xcconfig"; path = "Target Support Files/Pods-vexl/Pods-vexl.release.xcconfig"; sourceTree = "<group>"; };
 		62F22E6F56C7BEA94D7B5F5D /* Pods-vexl.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-vexl.staging.xcconfig"; path = "Target Support Files/Pods-vexl/Pods-vexl.staging.xcconfig"; sourceTree = "<group>"; };
+		6F2F14B228B8FBB90020271D /* Offer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Offer.swift; sourceTree = "<group>"; };
 		6FF08EB028B67EE500B2CF65 /* TextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextView.swift; sourceTree = "<group>"; };
 		6FF08EB228B6846000B2CF65 /* DiffableState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiffableState.swift; sourceTree = "<group>"; };
 		7F8C3B1F22E20D7D5005290C /* Pods-vexl-vexlTests.devel.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-vexl-vexlTests.devel.xcconfig"; path = "Target Support Files/Pods-vexl-vexlTests/Pods-vexl-vexlTests.devel.xcconfig"; sourceTree = "<group>"; };
@@ -977,6 +979,7 @@
 				F1B93ED2286D12C6008DAA90 /* OfferKeys.swift */,
 				F1B93ED4286D12D7008DAA90 /* OfferType.swift */,
 				F1B93ED6286D15D5008DAA90 /* OfferSource.swift */,
+				6F2F14B228B8FBB90020271D /* Offer.swift */,
 			);
 			path = Offers;
 			sourceTree = "<group>";
@@ -2764,6 +2767,7 @@
 				B08F38DF27AE7110008B344F /* DIContainer.swift in Sources */,
 				4F700CBC2844C3260085139F /* TabBarNavigationController.swift in Sources */,
 				B08F391E27AE7112008B344F /* AppDelegate.swift in Sources */,
+				6F2F14B328B8FBB90020271D /* Offer.swift in Sources */,
 				B042C94E28A8445F00860F91 /* ManagedGroup+.swift in Sources */,
 				B08F394F27AE7112008B344F /* Localization.swift in Sources */,
 				B0E9BB2C2815C71E0012BF1D /* ECC.swift in Sources */,
