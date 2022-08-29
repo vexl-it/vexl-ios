@@ -42,6 +42,7 @@
 		4FEFE326289F21CD006AB8DA /* RegisterAnonymizeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FEFE325289F21CD006AB8DA /* RegisterAnonymizeViewModel.swift */; };
 		4FEFE328289F21D6006AB8DA /* RegisterAnonymizeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FEFE327289F21D6006AB8DA /* RegisterAnonymizeView.swift */; };
 		6F2F14B328B8FBB90020271D /* Offer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F2F14B228B8FBB90020271D /* Offer.swift */; };
+		6FE2BE9C28BCD790004331F1 /* MacroFormatting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FE2BE9B28BCD790004331F1 /* MacroFormatting.swift */; };
 		6FF08EB128B67EE500B2CF65 /* TextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FF08EB028B67EE500B2CF65 /* TextView.swift */; };
 		6FF08EB328B6846000B2CF65 /* DiffableState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FF08EB228B6846000B2CF65 /* DiffableState.swift */; };
 		B007A72A2864FE4A00CFA5C9 /* CurrencySelect.swift in Sources */ = {isa = PBXBuildFile; fileRef = B007A7292864FE4A00CFA5C9 /* CurrencySelect.swift */; };
@@ -472,6 +473,7 @@
 		625779B2774E3C48F23BBA21 /* Pods-vexl.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-vexl.release.xcconfig"; path = "Target Support Files/Pods-vexl/Pods-vexl.release.xcconfig"; sourceTree = "<group>"; };
 		62F22E6F56C7BEA94D7B5F5D /* Pods-vexl.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-vexl.staging.xcconfig"; path = "Target Support Files/Pods-vexl/Pods-vexl.staging.xcconfig"; sourceTree = "<group>"; };
 		6F2F14B228B8FBB90020271D /* Offer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Offer.swift; sourceTree = "<group>"; };
+		6FE2BE9B28BCD790004331F1 /* MacroFormatting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacroFormatting.swift; sourceTree = "<group>"; };
 		6FF08EB028B67EE500B2CF65 /* TextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextView.swift; sourceTree = "<group>"; };
 		6FF08EB228B6846000B2CF65 /* DiffableState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiffableState.swift; sourceTree = "<group>"; };
 		7F8C3B1F22E20D7D5005290C /* Pods-vexl-vexlTests.devel.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-vexl-vexlTests.devel.xcconfig"; path = "Target Support Files/Pods-vexl-vexlTests/Pods-vexl-vexlTests.devel.xcconfig"; sourceTree = "<group>"; };
@@ -1177,6 +1179,7 @@
 				4FBF624B2840D31B00DDBE71 /* ToggleKeyboardHostingController.swift */,
 				F13721EE287F29830013BB7B /* TimeInterval+.swift */,
 				6FF08EB228B6846000B2CF65 /* DiffableState.swift */,
+				6FE2BE9B28BCD790004331F1 /* MacroFormatting.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -2705,6 +2708,7 @@
 				F1B93EDE286E372D008DAA90 /* ChatOfferActionSheet.swift in Sources */,
 				F1BDC979285BF9D600F86581 /* ChatExpandedImageViewModel.swift in Sources */,
 				F1A9453627F686D1009B5AE3 /* CodeValidation.swift in Sources */,
+				6FE2BE9C28BCD790004331F1 /* MacroFormatting.swift in Sources */,
 				F12A14E827D6A8690096543E /* RequestAccessContactsView.swift in Sources */,
 				B01C01E62860B2C400A29F85 /* CoinChartData.swift in Sources */,
 				F1B365D32886093D0069788D /* ProfilePhoneContactsViewModel.swift in Sources */,
