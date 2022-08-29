@@ -19,11 +19,12 @@ struct LabelButton<Content: View>: View {
             action()
         } label: {
             content()
+                .frame(maxWidth: .infinity)
                 .padding(.vertical, verticalPadding)
         }
-        .frame(maxWidth: .infinity)
         .background(isEnabled ? backgroundColor : Appearance.Colors.gray1)
         .cornerRadius(Appearance.GridGuide.point)
+        .contentShape(RoundedRectangle(cornerRadius: Appearance.GridGuide.point))
         .disabled(!isEnabled)
     }
 }
