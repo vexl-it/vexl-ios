@@ -37,22 +37,34 @@ struct InboxView: View {
             VStack(alignment: .leading) {
                 inboxHeader
 
-                ScrollView {
-                    Group {
-                        ForEach(viewModel.inboxItems) { chatItem in
-                            InboxItemView(data: chatItem)
-                                .padding(.bottom, Appearance.GridGuide.mediumPadding1)
-                                .onTapGesture {
-                                    viewModel.action.send(.selectMessage(chat: chatItem.chat))
-                                }
-                        }
-                    }
-                    .padding(.top, Appearance.GridGuide.mediumPadding1)
-                    .padding(.bottom, Appearance.GridGuide.homeTabBarHeight)
+                if viewModel.isMarketplaceLocked {
+                    Text("Chat is not available at the moment")
+                        .multilineTextAlignment(.center)
+                        .textStyle(.paragraphBold)
+                        .foregroundColor(Appearance.Colors.gray5)
+                        .padding(Appearance.GridGuide.largePadding1)
+                } else {
+                    inboxList
                 }
             }
             .background(Color.black)
             .cornerRadius(Appearance.GridGuide.buttonCorner)
+        }
+    }
+
+    private var inboxList: some View {
+        ScrollView {
+            Group {
+                ForEach(viewModel.inboxItems) { chatItem in
+                    InboxItemView(data: chatItem)
+                        .padding(.bottom, Appearance.GridGuide.mediumPadding1)
+                        .onTapGesture {
+                            viewModel.action.send(.selectMessage(chat: chatItem.chat))
+                        }
+                }
+            }
+            .padding(.top, Appearance.GridGuide.mediumPadding1)
+            .padding(.bottom, Appearance.GridGuide.homeTabBarHeight)
         }
     }
 
