@@ -11,6 +11,23 @@ import Combine
 
 struct UserProfileView: View {
 
+    enum OptionType {
+        case regular
+        case destructive
+        case disabled
+
+        var color: Color {
+            switch self {
+            case .regular:
+                return Appearance.Colors.whiteText
+            case .destructive:
+                return Appearance.Colors.red100
+            case .disabled:
+                return Appearance.Colors.gray3
+            }
+        }
+    }
+
     @ObservedObject var viewModel: UserProfileViewModel
 
     private let headerHeight: Double = 56
@@ -85,10 +102,12 @@ struct UserProfileView: View {
                             Item(title: item.title,
                                  subtitle: viewModel.subtitle(for: item),
                                  icon: item.iconName,
-                                 isDestructive: item == .logout)
+                                 type: getItemType(option: item))
                                 .background(Appearance.Colors.gray0)
                             .onTapGesture {
-                                viewModel.send(action: .itemTap(option: item))
+                                if getItemType(option: item) != .disabled {
+                                    viewModel.send(action: .itemTap(option: item))
+                                }
                             }
 
                             if item != group.options.last {
@@ -105,6 +124,16 @@ struct UserProfileView: View {
                 }
             }
             .padding(.bottom, Appearance.GridGuide.scrollContentInset.bottom)
+        }
+    }
+
+    private func getItemType(option: UserProfileViewModel.Option) -> OptionType {
+        if option == .logout {
+            return .destructive
+        } else if viewModel.isMarketplaceLocked && option == .groups {
+            return .disabled
+        } else {
+            return .regular
         }
     }
 }

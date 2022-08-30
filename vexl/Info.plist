@@ -2,6 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>FirebaseDynamicLinksCustomDomains</key>
+	<array>
+		<string>https://link.vexl.it</string>
+	</array>
 	<key>CFBundleDisplayName</key>
 	<string>Vexl</string>
 	<key>CFBundleExecutable</key>
@@ -26,7 +30,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>231</string>
+	<string>233</string>
 	<key>FacebookAppID</key>
 	<string>364593362214966</string>
 	<key>FacebookClientToken</key>

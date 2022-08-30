@@ -34,14 +34,27 @@ struct GroupsInputView: View {
             .padding([.horizontal], Appearance.GridGuide.point)
             .frame(maxHeight: .infinity, alignment: .top)
 
-            LargeSolidButton(title: L.continue(),
-                             font: Appearance.TextStyle.titleSmallBold.font.asFont,
-                             style: .main,
-                             isFullWidth: true,
-                             isEnabled: .constant(viewModel.isCodeValid),
-                             action: {
-                viewModel.action.send(.continueTap)
-            })
+            HStack {
+                if viewModel.fromDeeplink {
+                    LargeSolidButton(title: L.generalClose(),
+                                     font: Appearance.TextStyle.titleSmallBold.font.asFont,
+                                     style: .secondary,
+                                     isFullWidth: true,
+                                     isEnabled: .constant(true),
+                                     action: {
+                        viewModel.action.send(.dismissTap)
+                    })
+                }
+
+                LargeSolidButton(title: L.continue(),
+                                 font: Appearance.TextStyle.titleSmallBold.font.asFont,
+                                 style: .main,
+                                 isFullWidth: true,
+                                 isEnabled: .constant(viewModel.isCodeValid),
+                                 action: {
+                    viewModel.action.send(.continueTap)
+                })
+            }
                 .padding([.horizontal, .bottom], Appearance.GridGuide.point)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -53,7 +66,7 @@ struct GroupsInputView: View {
 
 struct GroupsInputViewPreview: PreviewProvider {
     static var previews: some View {
-        GroupsInputView(viewModel: .init())
+        GroupsInputView(viewModel: .init(code: "123456", fromDeeplink: false))
             .previewDevice("iPhone 11")
     }
 }

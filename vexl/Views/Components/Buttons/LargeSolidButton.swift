@@ -39,6 +39,7 @@ struct LargeSolidButton: View {
     let font: Font
     let style: Style
     let isFullWidth: Bool
+    let height: SolidButtonDimension
     @Binding var isEnabled: Bool
     let action: () -> Void
 
@@ -49,6 +50,7 @@ struct LargeSolidButton: View {
          font: Font,
          style: Style,
          isFullWidth: Bool,
+         height: SolidButtonDimension = .largeButton,
          isEnabled: Binding<Bool>,
          action: @escaping () -> Void) {
         self.title = title
@@ -57,6 +59,7 @@ struct LargeSolidButton: View {
         self.font = font
         self.style = style
         self.isFullWidth = isFullWidth
+        self.height = height
         self._isEnabled = isEnabled
         self.action = action
     }
@@ -70,7 +73,7 @@ struct LargeSolidButton: View {
                     loadingViewScale: 1,
                     font: font,
                     colors: style.color,
-                    dimensions: .largeButton,
+                    dimensions: height,
                     action: action)
     }
 
