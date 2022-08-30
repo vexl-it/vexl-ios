@@ -219,7 +219,6 @@
 		F1156AED28A19B3900B9A5B9 /* GroupsScanQRCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1156AEC28A19B3900B9A5B9 /* GroupsScanQRCoordinator.swift */; };
 		F1156AEF28A19B4200B9A5B9 /* GroupsScanQRViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1156AEE28A19B4200B9A5B9 /* GroupsScanQRViewModel.swift */; };
 		F1156AF128A19B4900B9A5B9 /* GroupsScanQRView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1156AF028A19B4900B9A5B9 /* GroupsScanQRView.swift */; };
-		F1156AF428A1CB0100B9A5B9 /* CameraPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1156AF328A1CB0100B9A5B9 /* CameraPreviewView.swift */; };
 		F12A14E427D692DB0096543E /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12A14E327D692DB0096543E /* RegisterViewController.swift */; };
 		F12A14E827D6A8690096543E /* RequestAccessContactsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12A14E727D6A8690096543E /* RequestAccessContactsView.swift */; };
 		F12A14F027D912410096543E /* RequestAccessContactsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12A14EF27D912410096543E /* RequestAccessContactsViewModel.swift */; };
@@ -274,6 +273,9 @@
 		F1485656284FD60D003213D7 /* InboxError.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1485655284FD60D003213D7 /* InboxError.swift */; };
 		F14D29C727BFD93C00D1CD85 /* ButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = F14D29C627BFD93C00D1CD85 /* ButtonStyle.swift */; };
 		F14D29C927BFEA1400D1CD85 /* OnboardingView+Presentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F14D29C827BFEA1400D1CD85 /* OnboardingView+Presentation.swift */; };
+		F14F890328BD247000DC7C4F /* CameraPreviewLayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F14F890228BD247000DC7C4F /* CameraPreviewLayerView.swift */; };
+		F14F890528BD24E200DC7C4F /* CameraPreviewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F14F890428BD24E200DC7C4F /* CameraPreviewViewModel.swift */; };
+		F14F890728BD29E200DC7C4F /* CameraQRScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F14F890628BD29E200DC7C4F /* CameraQRScannerView.swift */; };
 		F151A29027C80708000D7242 /* RegisterPhoneNumberInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F151A28F27C80708000D7242 /* RegisterPhoneNumberInputView.swift */; };
 		F151A29227C807DD000D7242 /* RegisterPhoneCodeInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F151A29127C807DD000D7242 /* RegisterPhoneCodeInputView.swift */; };
 		F151A29727C8667A000D7242 /* RegisterNameAvatarCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F151A29627C8667A000D7242 /* RegisterNameAvatarCoordinator.swift */; };
@@ -330,8 +332,6 @@
 		F1A9454227F81200009B5AE3 /* ContactsImported.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1A9454127F81200009B5AE3 /* ContactsImported.swift */; };
 		F1A9454427F81211009B5AE3 /* ContactsAvailable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1A9454327F81211009B5AE3 /* ContactsAvailable.swift */; };
 		F1A9454627F81278009B5AE3 /* ContactInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1A9454527F81278009B5AE3 /* ContactInformation.swift */; };
-		F1AC480828A1D92D00722F96 /* CameraPreviewViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1AC480728A1D92D00722F96 /* CameraPreviewViewDelegate.swift */; };
-		F1AC480A28A1D98F00722F96 /* CameraScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1AC480928A1D98F00722F96 /* CameraScannerView.swift */; };
 		F1AC480C28A1E48E00722F96 /* GroupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1AC480B28A1E48E00722F96 /* GroupViewController.swift */; };
 		F1B30107287A40DC00C86F83 /* ChatIdentityActionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B30106287A40DC00C86F83 /* ChatIdentityActionSheet.swift */; };
 		F1B3010A287A464600C86F83 /* ChatActionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B30109287A464600C86F83 /* ChatActionViewModel.swift */; };
@@ -671,7 +671,6 @@
 		F1156AEC28A19B3900B9A5B9 /* GroupsScanQRCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupsScanQRCoordinator.swift; sourceTree = "<group>"; };
 		F1156AEE28A19B4200B9A5B9 /* GroupsScanQRViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupsScanQRViewModel.swift; sourceTree = "<group>"; };
 		F1156AF028A19B4900B9A5B9 /* GroupsScanQRView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupsScanQRView.swift; sourceTree = "<group>"; };
-		F1156AF328A1CB0100B9A5B9 /* CameraPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraPreviewView.swift; sourceTree = "<group>"; };
 		F12A14E327D692DB0096543E /* RegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
 		F12A14E727D6A8690096543E /* RequestAccessContactsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestAccessContactsView.swift; sourceTree = "<group>"; };
 		F12A14EF27D912410096543E /* RequestAccessContactsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestAccessContactsViewModel.swift; sourceTree = "<group>"; };
@@ -726,6 +725,9 @@
 		F1485655284FD60D003213D7 /* InboxError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InboxError.swift; sourceTree = "<group>"; };
 		F14D29C627BFD93C00D1CD85 /* ButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonStyle.swift; sourceTree = "<group>"; };
 		F14D29C827BFEA1400D1CD85 /* OnboardingView+Presentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OnboardingView+Presentation.swift"; sourceTree = "<group>"; };
+		F14F890228BD247000DC7C4F /* CameraPreviewLayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraPreviewLayerView.swift; sourceTree = "<group>"; };
+		F14F890428BD24E200DC7C4F /* CameraPreviewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraPreviewViewModel.swift; sourceTree = "<group>"; };
+		F14F890628BD29E200DC7C4F /* CameraQRScannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraQRScannerView.swift; sourceTree = "<group>"; };
 		F151A28F27C80708000D7242 /* RegisterPhoneNumberInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterPhoneNumberInputView.swift; sourceTree = "<group>"; };
 		F151A29127C807DD000D7242 /* RegisterPhoneCodeInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterPhoneCodeInputView.swift; sourceTree = "<group>"; };
 		F151A29627C8667A000D7242 /* RegisterNameAvatarCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNameAvatarCoordinator.swift; sourceTree = "<group>"; };
@@ -783,8 +785,6 @@
 		F1A9454127F81200009B5AE3 /* ContactsImported.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsImported.swift; sourceTree = "<group>"; };
 		F1A9454327F81211009B5AE3 /* ContactsAvailable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsAvailable.swift; sourceTree = "<group>"; };
 		F1A9454527F81278009B5AE3 /* ContactInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactInformation.swift; sourceTree = "<group>"; };
-		F1AC480728A1D92D00722F96 /* CameraPreviewViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraPreviewViewDelegate.swift; sourceTree = "<group>"; };
-		F1AC480928A1D98F00722F96 /* CameraScannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraScannerView.swift; sourceTree = "<group>"; };
 		F1AC480B28A1E48E00722F96 /* GroupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupViewController.swift; sourceTree = "<group>"; };
 		F1B30106287A40DC00C86F83 /* ChatIdentityActionSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatIdentityActionSheet.swift; sourceTree = "<group>"; };
 		F1B30109287A464600C86F83 /* ChatActionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatActionViewModel.swift; sourceTree = "<group>"; };
@@ -1745,9 +1745,9 @@
 		F1156AF228A1CAC200B9A5B9 /* CameraScannerView */ = {
 			isa = PBXGroup;
 			children = (
-				F1156AF328A1CB0100B9A5B9 /* CameraPreviewView.swift */,
-				F1AC480928A1D98F00722F96 /* CameraScannerView.swift */,
-				F1AC480728A1D92D00722F96 /* CameraPreviewViewDelegate.swift */,
+				F14F890228BD247000DC7C4F /* CameraPreviewLayerView.swift */,
+				F14F890428BD24E200DC7C4F /* CameraPreviewViewModel.swift */,
+				F14F890628BD29E200DC7C4F /* CameraQRScannerView.swift */,
 			);
 			path = CameraScannerView;
 			sourceTree = "<group>";
@@ -2880,11 +2880,11 @@
 				F188627028169A3700659786 /* MarketplaceCoordinator.swift in Sources */,
 				B08F391927AE7112008B344F /* User.swift in Sources */,
 				F1B30107287A40DC00C86F83 /* ChatIdentityActionSheet.swift in Sources */,
-				F1AC480828A1D92D00722F96 /* CameraPreviewViewDelegate.swift in Sources */,
 				4F2416A328490B3C00B4A437 /* ChatInbox.swift in Sources */,
 				F1156AEF28A19B4200B9A5B9 /* GroupsScanQRViewModel.swift in Sources */,
 				F148564F284FD5E2003213D7 /* InboxManager.swift in Sources */,
 				F1D200A628252C44006DF4AB /* TabBarController.swift in Sources */,
+				F14F890728BD29E200DC7C4F /* CameraQRScannerView.swift in Sources */,
 				F1156AE2289F25E500B9A5B9 /* TermsAndConditionsCoordinator.swift in Sources */,
 				4F26F45928A93D3A005558E8 /* ManagedOfferLocation+.swift in Sources */,
 				F175AB9927F0D2D8000DAB15 /* ContactsService.swift in Sources */,
@@ -2920,7 +2920,6 @@
 				B03910652889D9E20034358C /* InboxRepository.swift in Sources */,
 				B08F397C27AE7112008B344F /* SwipeNavigationController.swift in Sources */,
 				F1A43DBF288E0F620032A11F /* ProfileImportFacebookViewModel.swift in Sources */,
-				F1AC480A28A1D98F00722F96 /* CameraScannerView.swift in Sources */,
 				4FBF620B283CE08800DDBE71 /* OfferAmountRangeView.swift in Sources */,
 				F13B265C281897DE0011F2FB /* OfferAdvanceFilterFriendDegreeView.swift in Sources */,
 				B06A3B4F287C967F00911795 /* Encryptable.swift in Sources */,
@@ -2958,9 +2957,9 @@
 				B08F393F27AE7112008B344F /* APIError.swift in Sources */,
 				B0501BA62887389000A44E18 /* CommonFriends.swift in Sources */,
 				F1F5F194283E9FC500968366 /* OfferPaymentIconView.swift in Sources */,
-				F1156AF428A1CB0100B9A5B9 /* CameraPreviewView.swift in Sources */,
 				F11441DA284681EC00307D39 /* MultipleOptionPickerView.swift in Sources */,
 				B0FE523F280E822400A77EC3 /* CryptoService.swift in Sources */,
+				F14F890328BD247000DC7C4F /* CameraPreviewLayerView.swift in Sources */,
 				F17ACAAF289210EE00E05408 /* OfferCurrencyPickerView.swift in Sources */,
 				F1485646284FD451003213D7 /* ChatConversationView.swift in Sources */,
 				F1A9452D27F67FD5009B5AE3 /* PhoneConfirmation.swift in Sources */,
@@ -3008,6 +3007,7 @@
 				4F26F44D28A52E65005558E8 /* OfferLocationViewModel.swift in Sources */,
 				B007A73C2868B69E00CFA5C9 /* Donate.swift in Sources */,
 				F1BFA956280223BD00F4E745 /* UserProfileView.swift in Sources */,
+				F14F890528BD24E200DC7C4F /* CameraPreviewViewModel.swift in Sources */,
 				F1B5FCBE27C68EA70018729B /* OnboardingView+BottomButtons.swift in Sources */,
 				F1886255281185E900659786 /* OfferFeePickerView.swift in Sources */,
 				4FEFE326289F21CD006AB8DA /* RegisterAnonymizeViewModel.swift in Sources */,

@@ -13,13 +13,11 @@ struct GroupsScanQRView: View {
 
     var body: some View {
         ZStack {
-            if viewModel.isCameraAvailable && viewModel.showCamera {
-                CameraScannerView()
-                    .interval(delay: viewModel.scanInterval)
-                    .onScan { code in
-                        viewModel.action.send(.codeScan(code: code))
-                    }
-                    .edgesIgnoringSafeArea(.all)
+            switch viewModel.scannerState {
+            case .initialized:
+                EmptyView()
+            case .cameraAvailable:
+                CameraQRScannerView(viewModel: viewModel.cameraViewModel)
 
                 Rectangle()
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -29,22 +27,13 @@ struct GroupsScanQRView: View {
                             .compositingGroup()
                             .luminanceToAlpha())
                     .edgesIgnoringSafeArea(.all)
-            } else if viewModel.isCameraAvailable && !viewModel.showCamera {
+            case .cameraDenied:
                 VStack {
                     Text(L.groupsEnterCameraDenied())
                         .foregroundColor(Appearance.Colors.whiteText)
                         .textStyle(.paragraphSemibold)
                         .padding(.bottom, Appearance.GridGuide.padding)
                 }
-            } else {
-                Button(L.continue()) {
-                    viewModel.action.send(.codeScan(code: viewModel.mockCode))
-                }
-                .textStyle(.paragraphSmallSemiBold)
-                .foregroundColor(Appearance.Colors.primaryText)
-                .padding(Appearance.GridGuide.smallPadding)
-                .background(Appearance.Colors.whiteText)
-                .cornerRadius(Appearance.GridGuide.buttonCorner)
             }
 
             VStack {
@@ -72,6 +61,9 @@ struct GroupsScanQRView: View {
         .background(Color.black.edgesIgnoringSafeArea(.all))
         .onAppear {
             viewModel.action.send(.cameraAccessRequest)
+        }
+        .onDisappear {
+            viewModel.action.send(.dismissCamera)
         }
     }
 

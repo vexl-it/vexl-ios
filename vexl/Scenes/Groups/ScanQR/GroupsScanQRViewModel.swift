@@ -15,23 +15,19 @@ final class GroupsScanQRViewModel: ViewModelType, ObservableObject {
 
     @Inject var groupManaged: GroupManagerType
 
-    // MARK: - Properties for simulator/mock testing
-
-    var mockCode = "111111"
-    var isCameraAvailable: Bool {
-        #if targetEnvironment(simulator)
-        return false
-        #else
-        return true
-        #endif
+    enum ScannerState {
+        case initialized
+        case cameraAvailable
+        case cameraDenied
     }
 
     // MARK: - Actions Bindings
 
     enum UserAction: Equatable {
         case dismissTap
+        case mockCodeTap
         case cameraAccessRequest
-        case codeScan(code: String)
+        case dismissCamera
         case manualInputTap
     }
 
@@ -40,7 +36,7 @@ final class GroupsScanQRViewModel: ViewModelType, ObservableObject {
     // MARK: - View Bindings
 
     @Published var primaryActivity: Activity = .init()
-    @Published var showCamera = false
+    @Published var scannerState: ScannerState = .initialized
     @Published var isLoading = false
     @Published var error: Error?
 
@@ -64,13 +60,15 @@ final class GroupsScanQRViewModel: ViewModelType, ObservableObject {
     // MARK: - Variables
 
     private let cancelBag: CancelBag = .init()
-    let scanInterval = 1.0
+    var cameraViewModel = CameraPreviewViewModel()
 
     // MARK: - Initialization
 
     init() {
         setupActivityBindings()
         setupActions()
+        setupCameraAction()
+        cameraViewModel.createSession()
     }
 
     private func setupActivityBindings() {
@@ -94,10 +92,24 @@ final class GroupsScanQRViewModel: ViewModelType, ObservableObject {
             .store(in: cancelBag)
 
         action
-            .compactMap { action -> URL? in
-                if case let .codeScan(code) = action { return URL(string: code) }
-                return nil
+            .filter { $0 == .manualInputTap }
+            .map { _ in .manualInputTapped }
+            .subscribe(route)
+            .store(in: cancelBag)
+
+        action
+            .filter { $0 == .dismissCamera }
+            .withUnretained(self)
+            .sink { owner, _ in
+                owner.cameraViewModel.stopSession()
             }
+            .store(in: cancelBag)
+    }
+
+    private func setupCameraAction() {
+        cameraViewModel
+            .onResult
+            .compactMap { URL(string: $0) }
             .withUnretained(self)
             .flatMap { owner, url in
                 owner.handleUniversalLink(url: url)
@@ -115,21 +127,29 @@ final class GroupsScanQRViewModel: ViewModelType, ObservableObject {
             .subscribe(route)
             .store(in: cancelBag)
 
-        action
-            .filter { $0 == .manualInputTap }
-            .map { _ in .manualInputTapped }
-            .subscribe(route)
+        $scannerState
+            .filter { $0 == .cameraAvailable }
+            .withUnretained(self)
+            .sink { owner, _ in
+                owner.cameraViewModel.startSession()
+            }
+            .store(in: cancelBag)
+
+        cameraViewModel
+            .onError
+            .trackError(primaryActivity.error)
+            .sink()
             .store(in: cancelBag)
     }
 
     private func requestCameraAccess() {
         let cameraAuthorizationStatus = AVCaptureDevice.authorizationStatus(for: .video)
         if cameraAuthorizationStatus == .authorized {
-            showCamera = true
+            scannerState = .cameraAvailable
         } else {
             AVCaptureDevice.requestAccess(for: .video) { [weak self] granted in
-                DispatchQueue.main.sync {
-                    self?.showCamera = granted
+                DispatchQueue.main.async {
+                    self?.scannerState = granted ? .cameraAvailable : .cameraDenied
                 }
             }
         }

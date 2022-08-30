@@ -256,12 +256,10 @@ extension UserProfileCoordinator {
             guard result != .dismissedByRouter else {
                 return Just(result).eraseToAnyPublisher()
             }
-            
             return router.dismiss(animated: true, returning: result)
         }
         .handleEvents(receiveOutput: { result in
             guard case .finished(let action) = result, action == .primary else { return }
-            
             if let url = URL(string: L.userProfileDonateButtonDonateUrl()) {
                 UIApplication.shared.open(url)
             }
