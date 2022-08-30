@@ -84,7 +84,7 @@ class ImportContactsViewModel: ObservableObject {
 
     var filteredItems: [ContactInformation] {
         guard !searchText.isEmpty else { return items }
-        return items.filter { $0.name.contains(searchText) }
+        return items.filter { $0.name.lowercased().contains(searchText.lowercased()) }
     }
 
     var shouldSelectAll: Bool {
@@ -92,6 +92,10 @@ class ImportContactsViewModel: ObservableObject {
     }
 
     var actionTitle: String {
+        guard currentState != .empty else {
+            return L.skip()
+        }
+
         if hasSelectedItem {
             return currentState == .success ? L.registerPhoneCodeInputSuccess() : L.registerContactsImportButton()
         } else {
@@ -168,7 +172,7 @@ class ImportContactsViewModel: ObservableObject {
     private func setupImportAction() {
         let sharedAction = action
             .withUnretained(self)
-            .filter { $0.0.currentState == .content && $0.0.loading.not && $0.1 == .importContacts }
+            .filter { [.content, .empty].contains($0.0.currentState) && $0.0.loading.not && $0.1 == .importContacts }
             .share()
 
         let addNewContacts = sharedAction

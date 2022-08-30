@@ -15,7 +15,6 @@ import FirebaseRemoteConfig
 #if DEBUG || DEVEL
 import AlamofireNetworkActivityLogger
 #endif
-import KeychainAccess
 
 let log = SwiftyBeaver.self
 
@@ -33,17 +32,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         NetworkActivityLogger.shared.level = .debug
         whereIsMySQLite()
         #endif
-
-        if Keychain.standard[.localEncryptionKey] == nil {
-            let keyCount = 64
-            var key = Data(count: keyCount)
-            key.withUnsafeMutableBytes { (pointer: UnsafeMutableRawBufferPointer) in
-                let result = SecRandomCopyBytes(kSecRandomDefault, keyCount, pointer.baseAddress!)
-                assert(result == 0, "Failed to get random bytes")
-            }
-            let stringKey = String(data: key, encoding: .macOSRoman)
-            Keychain.standard[.localEncryptionKey] = stringKey
-        }
 
         // Firebase messaging
         FirebaseApp.configure()

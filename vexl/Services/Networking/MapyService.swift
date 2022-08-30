@@ -19,7 +19,7 @@ final class MapyService: BaseService, MapyServiceType {
             .map { $0.map { $0.userData } }
             .map {
                 Set($0.filter {
-                    !$0.city.isEmpty && $0.city.contains(text)
+                    !$0.city.isEmpty && $0.city.lowercased().contains(text.lowercased())
                 })
             }
             .map(Array.init)
