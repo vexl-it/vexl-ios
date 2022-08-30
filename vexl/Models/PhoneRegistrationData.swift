@@ -7,7 +7,18 @@
 
 import Foundation
 
-struct PhoneRegistrationData: Codable {
-    var phone: String
-    var verification: PhoneVerification
+class PhoneRegistrationData: Codable {
+    private var content: [String: PhoneVerification] = [:]
+
+    func add(phone: String, verification: PhoneVerification) {
+        content[phone] = verification
+    }
+
+    func getVerification(forPhone phone: String) -> PhoneVerification? {
+        content[phone]
+    }
+
+    func removeAll() {
+        content = [:]
+    }
 }
