@@ -211,6 +211,17 @@ extension MessagePayload {
         )
         return parsedMessage
     }
+
+    static func createBlock(inboxPublicKey: String, contactInboxKey: String) -> MessagePayload? {
+        let parsedMessage = MessagePayload(
+            inboxPublicKey: inboxPublicKey,
+            messageType: .blockChat,
+            text: "",
+            image: nil,
+            contactInboxKey: contactInboxKey
+        )
+        return parsedMessage
+    }
 }
 // MARK: - Enum and Structs
 
