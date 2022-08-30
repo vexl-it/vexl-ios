@@ -19,10 +19,10 @@ struct SplashScreenView: View {
                 .resizable()
                 .scaledToFit()
                 .frame(height: viewModel.animationState.height)
+                .animation(
+                    .spring(response: 0.6, dampingFraction: 0.4, blendDuration: 0), value: viewModel.animationState
+                )
         }
-        .animation(
-            .spring(response: 0.6, dampingFraction: 0.4, blendDuration: 0), value: viewModel.animationState
-        )
     }
 }
 

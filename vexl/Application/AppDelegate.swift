@@ -12,6 +12,7 @@ import FBSDKCoreKit
 import Firebase
 import FirebaseMessaging
 import FirebaseDynamicLinks
+import FirebaseRemoteConfig
 #if DEBUG || DEVEL
 import AlamofireNetworkActivityLogger
 #endif
@@ -35,6 +36,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         // Firebase messaging
         FirebaseApp.configure()
+        RemoteConfigManager.setup()
 
         // Global appearance
         Appearance.setGlobalAppearance()

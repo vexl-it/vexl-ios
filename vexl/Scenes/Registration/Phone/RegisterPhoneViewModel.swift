@@ -10,6 +10,7 @@ import Combine
 import Cleevio
 import SwiftUI
 import PhoneNumberKit
+import KeychainAccess
 
 final class RegisterPhoneViewModel: ViewModelType {
 
@@ -21,6 +22,10 @@ final class RegisterPhoneViewModel: ViewModelType {
     @Inject var chatService: ChatServiceType
     @Inject var contactsService: ContactsServiceType
     @Inject var notificationManager: NotificationManagerType
+
+    @KeychainStore(key: .userCountryCode)
+    private var userCountryCode: String?
+    private var phoneRegistrationData: PhoneRegistrationData?
 
     // MARK: - View State
 
@@ -123,8 +128,13 @@ final class RegisterPhoneViewModel: ViewModelType {
         }
         return "\(number)"
     }
-
-    private var phoneVerificationId: Int?
+    var shouldRequestVerificationCode: Bool {
+        guard let verification = currentPhoneVerification else { return true }
+        return verification.expirationDate?.compare(Date()) == .orderedAscending
+    }
+    var currentPhoneVerification: PhoneVerification? {
+        phoneRegistrationData?.getVerification(forPhone: phoneNumber)
+    }
 
     // MARK: - Timer
 
@@ -133,6 +143,7 @@ final class RegisterPhoneViewModel: ViewModelType {
     private let newKeys: ECCKeys = .init() // Generates new pair of keys
 
     init() {
+        setupKeychain()
         setupActivity()
         setupPhoneInputActionBindings()
         setupValidationActionBindings()
@@ -150,6 +161,14 @@ final class RegisterPhoneViewModel: ViewModelType {
         case .codeInputValidation, .codeInputSuccess:
             break
         }
+    }
+
+    private func setupKeychain() {
+        let keychainContent: PhoneRegistrationData? = Keychain.standard[codable: .phoneRegistration]
+        if keychainContent == nil {
+            Keychain.standard[codable: .phoneRegistration] = PhoneRegistrationData()
+        }
+        phoneRegistrationData = Keychain.standard[codable: .phoneRegistration]
     }
 
     private func setupActivity() {
@@ -176,21 +195,25 @@ final class RegisterPhoneViewModel: ViewModelType {
 
         Publishers.Merge(phoneInput, sendCode)
             .withUnretained(self)
-            .flatMap { owner, _ in
-                owner
-                    .userService
-                    .requestVerificationCode(phoneNumber: owner.phoneNumber)
-                    .track(activity: owner.primaryActivity)
-                    .materialize()
-                    .compactMap(\.value)
-                    .eraseToAnyPublisher()
+            .flatMap { owner, _ -> AnyPublisher<PhoneVerification, Never> in
+                if let verification = owner.currentPhoneVerification, !owner.shouldRequestVerificationCode {
+                    return Just(verification)
+                        .eraseToAnyPublisher()
+                } else {
+                    return owner.userService
+                        .requestVerificationCode(phoneNumber: owner.phoneNumber)
+                        .track(activity: owner.primaryActivity)
+                        .materialize()
+                        .compactMap(\.value)
+                        .eraseToAnyPublisher()
+                }
             }
             .withUnretained(self)
             .handleEvents(receiveOutput: { owner, response in
                 owner.triggerCountdown.send(response.expirationDate)
             })
             .sink { owner, response in
-                owner.phoneVerificationId = response.verificationId
+                owner.phoneRegistrationData?.add(phone: owner.phoneNumber, verification: response)
                 owner.currentState = .codeInput
             }
             .store(in: cancelBag)
@@ -205,7 +228,7 @@ final class RegisterPhoneViewModel: ViewModelType {
                 owner.currentState = .codeInputValidation
             })
             .compactMap { owner, _ in
-                owner.phoneVerificationId
+                owner.currentPhoneVerification?.verificationId
             }
             .eraseToAnyPublisher()
 
@@ -345,6 +368,8 @@ final class RegisterPhoneViewModel: ViewModelType {
             .asVoid()
             .withUnretained(self)
             .sink { owner in
+                owner.userCountryCode = owner.getUserCountryCode()
+                owner.phoneRegistrationData?.removeAll()
                 owner.route.send(.continueTapped)
             }
             .store(in: cancelBag)
@@ -423,10 +448,18 @@ final class RegisterPhoneViewModel: ViewModelType {
         countdown = Int(expirationDate.timeIntervalSinceNow)
     }
 
+    private func getUserCountryCode() -> String? {
+        guard let phoneNumber = try? Formatters.phoneNumberFormatter.parse(currentPhoneNumber),
+                let region = phoneNumber.regionID,
+                let countryCode = Formatters.phoneNumberFormatter.countryCode(for: region) else {
+            return nil
+        }
+        return "+\(countryCode)"
+    }
+
     private func clearState() {
         validationCode = ""
         currentState = .phoneInput
-        phoneVerificationId = nil
         timer?.connect().cancel()
     }
 }

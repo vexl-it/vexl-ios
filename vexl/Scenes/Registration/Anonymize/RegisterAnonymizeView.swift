@@ -38,6 +38,7 @@ struct RegisterAnonymizeView: View {
                     .animation(.easeInOut(duration: RegisterAnonymizeViewModel.animationDuration), value: animationOffset)
             }
         }
+        .navigationBarBackButtonHidden(true)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .readSize(onChange: { size = $0 })
         .background(Color.black.edgesIgnoringSafeArea(.all))
