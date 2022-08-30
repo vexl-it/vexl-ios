@@ -74,9 +74,11 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
     // MARK: - Variables
 
     var options: [OptionGroup] {
-        let isMarketplaceLocked = remoteConfigManager.getBoolValue(for: .isMarketplaceLocked)
-        guard isMarketplaceLocked else { return Option.groupedOptions }
-        return Option.lockedMarketplaceGroupedOptions
+        Option.groupedOptions
+    }
+
+    var isMarketplaceLocked: Bool {
+        remoteConfigManager.getBoolValue(for: .isMarketplaceLocked)
     }
 
     let bitcoinViewModel: BitcoinViewModel

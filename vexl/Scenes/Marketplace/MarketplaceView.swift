@@ -17,12 +17,19 @@ struct MarketplaceView: View {
     var body: some View {
         StickyBitcoinView(
             bitcoinViewModel: viewModel.bitcoinViewModel,
+            isMarketplaceLocked: viewModel.isMarketplaceLocked,
             content: { marketPlaceContent },
             stickyHeader: {
                 marketPlaceHeader.padding(.bottom, Appearance.GridGuide.point)
             },
             expandedBitcoinGraph: { isExpanded in
                 viewModel.action.send(.graphExpanded(isExpanded: isExpanded))
+            },
+            lockedSellAction: {
+                viewModel.action.send(.showSellOffer)
+            },
+            lockedBuyAction: {
+                viewModel.action.send(.showBuyOffer)
             }
         )
         .coordinateSpace(name: RefreshControlView.coordinateSpace)
@@ -32,24 +39,20 @@ struct MarketplaceView: View {
         .onAppear(perform: { viewModel.action.send(.fetchNewOffers) })
     }
 
-    private var marketPlaceContent: some View {
-        RefreshContainer(topPadding: Appearance.GridGuide.refreshContainerPadding,
-                         hideRefresh: viewModel.isGraphExpanded,
-                         isRefreshing: $viewModel.isRefreshing) {
-            VStack(spacing: Appearance.GridGuide.mediumPadding1) {
-                marketPlaceHeader
+    @ViewBuilder private var marketPlaceContent: some View {
+        if viewModel.isMarketplaceLocked {
+            marketPlaceHeader
+        } else {
+            RefreshContainer(topPadding: Appearance.GridGuide.refreshContainerPadding,
+                             hideRefresh: viewModel.isGraphExpanded,
+                             isRefreshing: $viewModel.isRefreshing) {
+                VStack(spacing: Appearance.GridGuide.mediumPadding1) {
+                    marketPlaceHeader
 
-                if viewModel.isMarketplaceLocked {
-                    Text("Marketplace is not available at the moment")
-                        .multilineTextAlignment(.center)
-                        .textStyle(.paragraphBold)
-                        .foregroundColor(Appearance.Colors.gray5)
-                        .padding(Appearance.GridGuide.mediumPadding2)
-                } else {
                     marketplaceOfferList
                 }
+                .animation(.easeInOut, value: viewModel.marketplaceFeedItems)
             }
-            .animation(.easeInOut, value: viewModel.marketplaceFeedItems)
         }
     }
 
@@ -72,7 +75,9 @@ struct MarketplaceView: View {
             MarketplaceSegmentView(selectedOption: $viewModel.selectedOption)
                 .padding(.top, Appearance.GridGuide.mediumPadding2)
 
-            filter
+            if !viewModel.isMarketplaceLocked {
+                filter
+            }
         }
     }
 

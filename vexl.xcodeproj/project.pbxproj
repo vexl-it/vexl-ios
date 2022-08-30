@@ -170,6 +170,8 @@
 		F1042BA527BEF0360048C2F0 /* OnboardingView+PageControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1042BA427BEF0360048C2F0 /* OnboardingView+PageControl.swift */; };
 		F1071D4328B439F5002BE9EF /* ChatRevealIdentityBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1071D4228B439F5002BE9EF /* ChatRevealIdentityBannerView.swift */; };
 		F1071D4928B6E2B6002BE9EF /* RemoteConfigManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1071D4828B6E2B6002BE9EF /* RemoteConfigManager.swift */; };
+		F1071D4B28B81318002BE9EF /* LockedScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1071D4A28B81318002BE9EF /* LockedScreenView.swift */; };
+		F1071D4D28B81515002BE9EF /* Blur.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1071D4C28B81515002BE9EF /* Blur.swift */; };
 		F11441C7284681EC00307D39 /* RegistrationCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11441A3284681EC00307D39 /* RegistrationCardView.swift */; };
 		F11441C8284681EC00307D39 /* RegistrationCounterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11441A4284681EC00307D39 /* RegistrationCounterView.swift */; };
 		F11441C9284681EC00307D39 /* CardModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11441A6284681EC00307D39 /* CardModifier.swift */; };
@@ -617,6 +619,8 @@
 		F1042BA427BEF0360048C2F0 /* OnboardingView+PageControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OnboardingView+PageControl.swift"; sourceTree = "<group>"; };
 		F1071D4228B439F5002BE9EF /* ChatRevealIdentityBannerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatRevealIdentityBannerView.swift; sourceTree = "<group>"; };
 		F1071D4828B6E2B6002BE9EF /* RemoteConfigManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteConfigManager.swift; sourceTree = "<group>"; };
+		F1071D4A28B81318002BE9EF /* LockedScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockedScreenView.swift; sourceTree = "<group>"; };
+		F1071D4C28B81515002BE9EF /* Blur.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Blur.swift; sourceTree = "<group>"; };
 		F11441A3284681EC00307D39 /* RegistrationCardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegistrationCardView.swift; sourceTree = "<group>"; };
 		F11441A4284681EC00307D39 /* RegistrationCounterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegistrationCounterView.swift; sourceTree = "<group>"; };
 		F11441A6284681EC00307D39 /* CardModifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardModifier.swift; sourceTree = "<group>"; };
@@ -1581,6 +1585,8 @@
 				F11441C1284681EC00307D39 /* SegmentedPickerView.swift */,
 				F11441C5284681EC00307D39 /* LinkTextView.swift */,
 				F1A33E16289D71A500351997 /* PageControl.swift */,
+				F1071D4A28B81318002BE9EF /* LockedScreenView.swift */,
+				F1071D4C28B81515002BE9EF /* Blur.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -2742,6 +2748,7 @@
 				F1F5F19D283FE53A00968366 /* ChatRequestViewModel.swift in Sources */,
 				4FEFE324289F2105006AB8DA /* RegisterAnonymizeCoordinator.swift in Sources */,
 				F148563E284FD451003213D7 /* ChatViewModel.swift in Sources */,
+				F1071D4D28B81515002BE9EF /* Blur.swift in Sources */,
 				B0B0A059288EDDAE00E81776 /* NotificationManager.swift in Sources */,
 				F1485642284FD451003213D7 /* ChatBlockConfirmationView.swift in Sources */,
 				B00BAC2B2897D1EF008E3CA2 /* GroupsCoordinator.swift in Sources */,
@@ -3020,6 +3027,7 @@
 				B0B0A05B2891AC3E00E81776 /* Bool+.swift in Sources */,
 				B0FF5F6F289EFB430026E4C4 /* GroupRouter.swift in Sources */,
 				4F26F44728A51D05005558E8 /* MapyRouter.swift in Sources */,
+				F1071D4B28B81318002BE9EF /* LockedScreenView.swift in Sources */,
 				B08F397027AE7112008B344F /* UserRouter.swift in Sources */,
 				F1886211280EC49B00659786 /* Image+Base64.swift in Sources */,
 				F188622128105A1200659786 /* UserOffersViewModel.swift in Sources */,

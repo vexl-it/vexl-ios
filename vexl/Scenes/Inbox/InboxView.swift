@@ -17,12 +17,19 @@ struct InboxView: View {
     var body: some View {
         StickyBitcoinView(
             bitcoinViewModel: viewModel.bitcoinViewModel,
+            isMarketplaceLocked: viewModel.isMarketplaceLocked,
             content: { inboxContent },
             stickyHeader: {
                 inboxHeader.padding(.bottom, Appearance.GridGuide.point)
             },
             expandedBitcoinGraph: { isExpanded in
                 viewModel.isGraphExpanded = isExpanded
+            },
+            lockedSellAction: {
+                viewModel.action.send(.sellTap)
+            },
+            lockedBuyAction: {
+                viewModel.action.send(.buyTap)
             }
         )
         .coordinateSpace(name: RefreshControlView.coordinateSpace)
@@ -30,25 +37,20 @@ struct InboxView: View {
         .navigationBarHidden(true)
     }
 
-    private var inboxContent: some View {
-        RefreshContainer(topPadding: Appearance.GridGuide.refreshContainerPadding,
-                         hideRefresh: viewModel.isGraphExpanded,
-                         isRefreshing: $viewModel.isRefreshing) {
-            VStack(alignment: .leading) {
-                inboxHeader
-
-                if viewModel.isMarketplaceLocked {
-                    Text("Chat is not available at the moment")
-                        .multilineTextAlignment(.center)
-                        .textStyle(.paragraphBold)
-                        .foregroundColor(Appearance.Colors.gray5)
-                        .padding(Appearance.GridGuide.largePadding1)
-                } else {
+    @ViewBuilder private var inboxContent: some View {
+        if viewModel.isMarketplaceLocked {
+            inboxHeader
+        } else {
+            RefreshContainer(topPadding: Appearance.GridGuide.refreshContainerPadding,
+                             hideRefresh: viewModel.isGraphExpanded,
+                             isRefreshing: $viewModel.isRefreshing) {
+                VStack(alignment: .leading) {
+                    inboxHeader
                     inboxList
                 }
+                .background(Color.black)
+                .cornerRadius(Appearance.GridGuide.buttonCorner)
             }
-            .background(Color.black)
-            .cornerRadius(Appearance.GridGuide.buttonCorner)
         }
     }
 
@@ -85,14 +87,17 @@ struct InboxView: View {
                 .padding(Appearance.GridGuide.point)
                 .background(Appearance.Colors.gray1)
                 .cornerRadius(Appearance.GridGuide.buttonCorner)
+                .hidden()
             }
             .padding(.top, Appearance.GridGuide.mediumPadding2)
             .padding(.horizontal, Appearance.GridGuide.padding)
 
-            InboxFilterView(selectedOption: $viewModel.filter,
-                            action: { option in
-                viewModel.action.send(.selectFilter(option: option))
-            })
+            if !viewModel.isMarketplaceLocked {
+                InboxFilterView(selectedOption: $viewModel.filter,
+                                action: { option in
+                    viewModel.action.send(.selectFilter(option: option))
+                })
+            }
         }
     }
 }

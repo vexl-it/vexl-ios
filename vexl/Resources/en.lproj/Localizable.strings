@@ -316,6 +316,7 @@
 "groups.leave.button" = "Leave";
 "groups.item.members" = "%@ members";
 "groups.enter.camera.denied" = "Vexl has no access to the camera";
+"groups.enter.camera.error" = "Vexl could not initialize the QR Scanner";
 "groups.enter.code" = "Enter code manually";
 "groups.scan.code" = "Scan QR code to join a group";
 "groups.enter.code.description" = "Fill the activation code below";
