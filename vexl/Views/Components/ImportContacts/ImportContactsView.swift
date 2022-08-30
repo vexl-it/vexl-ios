@@ -42,6 +42,7 @@ struct ImportContactsView: View {
                 )
             }
         }
+        .navigationBarBackButtonHidden(true)
         .padding([.horizontal, .bottom], Appearance.GridGuide.point)
         .padding(.top, Appearance.GridGuide.padding)
     }
