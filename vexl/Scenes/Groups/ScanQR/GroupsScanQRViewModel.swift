@@ -15,15 +15,10 @@ final class GroupsScanQRViewModel: ViewModelType, ObservableObject {
 
     @Inject var groupManaged: GroupManagerType
 
-    // MARK: - Properties for simulator/mock testing
-
-    static private let mockCode = "111111"
-    var isCameraAvailable: Bool {
-        #if targetEnvironment(simulator)
-        return false
-        #else
-        return true
-        #endif
+    enum ScannerState {
+        case initialized
+        case cameraAvailable
+        case cameraDenied
     }
 
     // MARK: - Actions Bindings
@@ -41,7 +36,7 @@ final class GroupsScanQRViewModel: ViewModelType, ObservableObject {
     // MARK: - View Bindings
 
     @Published var primaryActivity: Activity = .init()
-    @Published var showCamera = false
+    @Published var scannerState: ScannerState = .initialized
     @Published var isLoading = false
     @Published var error: Error?
 
@@ -112,14 +107,8 @@ final class GroupsScanQRViewModel: ViewModelType, ObservableObject {
     }
 
     private func setupCameraAction() {
-        let mockTap = action
-            .filter { $0 == .mockCodeTap }
-            .map { _ in Self.mockCode }
-
-        let onResult = cameraViewModel
+        cameraViewModel
             .onResult
-
-        Publishers.Merge(onResult, mockTap)
             .compactMap { URL(string: $0) }
             .withUnretained(self)
             .flatMap { owner, url in
@@ -138,10 +127,11 @@ final class GroupsScanQRViewModel: ViewModelType, ObservableObject {
             .subscribe(route)
             .store(in: cancelBag)
 
-        $showCamera
+        $scannerState
+            .filter { $0 == .cameraAvailable }
             .withUnretained(self)
-            .sink { owner, showCamera in
-                if showCamera { owner.cameraViewModel.startSession() }
+            .sink { owner, _ in
+                owner.cameraViewModel.startSession()
             }
             .store(in: cancelBag)
 
@@ -155,10 +145,12 @@ final class GroupsScanQRViewModel: ViewModelType, ObservableObject {
     private func requestCameraAccess() {
         let cameraAuthorizationStatus = AVCaptureDevice.authorizationStatus(for: .video)
         if cameraAuthorizationStatus == .authorized {
-            showCamera = true
+            scannerState = .cameraAvailable
         } else {
             AVCaptureDevice.requestAccess(for: .video) { [weak self] granted in
-                self?.showCamera = granted
+                DispatchQueue.main.async {
+                    self?.scannerState = granted ? .cameraAvailable : .cameraDenied
+                }
             }
         }
     }

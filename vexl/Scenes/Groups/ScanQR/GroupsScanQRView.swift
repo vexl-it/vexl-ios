@@ -13,7 +13,10 @@ struct GroupsScanQRView: View {
 
     var body: some View {
         ZStack {
-            if viewModel.isCameraAvailable && viewModel.showCamera {
+            switch viewModel.scannerState {
+            case .initialized:
+                EmptyView()
+            case .cameraAvailable:
                 CameraQRScannerView(viewModel: viewModel.cameraViewModel)
 
                 Rectangle()
@@ -24,22 +27,13 @@ struct GroupsScanQRView: View {
                             .compositingGroup()
                             .luminanceToAlpha())
                     .edgesIgnoringSafeArea(.all)
-            } else if viewModel.isCameraAvailable && !viewModel.showCamera {
+            case .cameraDenied:
                 VStack {
                     Text(L.groupsEnterCameraDenied())
                         .foregroundColor(Appearance.Colors.whiteText)
                         .textStyle(.paragraphSemibold)
                         .padding(.bottom, Appearance.GridGuide.padding)
                 }
-            } else {
-                Button(L.continue()) {
-                    viewModel.action.send(.mockCodeTap)
-                }
-                .textStyle(.paragraphSmallSemiBold)
-                .foregroundColor(Appearance.Colors.primaryText)
-                .padding(Appearance.GridGuide.smallPadding)
-                .background(Appearance.Colors.whiteText)
-                .cornerRadius(Appearance.GridGuide.buttonCorner)
             }
 
             VStack {
