@@ -24,6 +24,7 @@ struct RegisterPhoneContactsView: View {
                     .transition(transition)
             }
         }
+        .navigationBarBackButtonHidden(true)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color.black.edgesIgnoringSafeArea(.all))
         .animation(.easeInOut(duration: 0.5), value: viewModel.currentState)
