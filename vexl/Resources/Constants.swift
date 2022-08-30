@@ -52,6 +52,8 @@ struct Constants {
         case facebookHash
         case facebookSignature
         case localEncryptionKey
+        case userCountryCode
+        case phoneRegistration
 
         var rawValue: String {
             switch self {
@@ -65,6 +67,10 @@ struct Constants {
                 return "facebookHash"
             case .facebookSignature:
                 return "facebookSignature"
+            case .userCountryCode:
+                return "userCountryCode"
+            case .phoneRegistration:
+                return "phoneRegistration"
             }
         }
     }

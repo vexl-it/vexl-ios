@@ -233,6 +233,7 @@
 		F12A150827E1A4940096543E /* RequestAccessAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12A150727E1A4940096543E /* RequestAccessAlert.swift */; };
 		F13721EF287F29830013BB7B /* TimeInterval+.swift in Sources */ = {isa = PBXBuildFile; fileRef = F13721EE287F29830013BB7B /* TimeInterval+.swift */; };
 		F137A21428B93BCE0078A660 /* GroupError.swift in Sources */ = {isa = PBXBuildFile; fileRef = F137A21328B93BCE0078A660 /* GroupError.swift */; };
+		F137A21628BD7E7B0078A660 /* PhoneRegistrationData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F137A21528BD7E7B0078A660 /* PhoneRegistrationData.swift */; };
 		F13B265C281897DE0011F2FB /* OfferAdvanceFilterFriendDegreeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F13B265B281897DE0011F2FB /* OfferAdvanceFilterFriendDegreeView.swift */; };
 		F13B265E281899250011F2FB /* OfferAdvancedFilterBTCNetworkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F13B265D281899250011F2FB /* OfferAdvancedFilterBTCNetworkView.swift */; };
 		F13B266028189F580011F2FB /* OfferService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F13B265F28189F580011F2FB /* OfferService.swift */; };
@@ -684,6 +685,7 @@
 		F12A150727E1A4940096543E /* RequestAccessAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestAccessAlert.swift; sourceTree = "<group>"; };
 		F13721EE287F29830013BB7B /* TimeInterval+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TimeInterval+.swift"; sourceTree = "<group>"; };
 		F137A21328B93BCE0078A660 /* GroupError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupError.swift; sourceTree = "<group>"; };
+		F137A21528BD7E7B0078A660 /* PhoneRegistrationData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneRegistrationData.swift; sourceTree = "<group>"; };
 		F13B265B281897DE0011F2FB /* OfferAdvanceFilterFriendDegreeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferAdvanceFilterFriendDegreeView.swift; sourceTree = "<group>"; };
 		F13B265D281899250011F2FB /* OfferAdvancedFilterBTCNetworkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferAdvancedFilterBTCNetworkView.swift; sourceTree = "<group>"; };
 		F13B265F28189F580011F2FB /* OfferService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferService.swift; sourceTree = "<group>"; };
@@ -1256,6 +1258,7 @@
 				B0FE5248280E93D200A77EC3 /* ECCKeys.swift */,
 				B01C01E82860D2CD00A29F85 /* ContentState.swift */,
 				B01C01EC2862F06D00A29F85 /* Currency.swift */,
+				F137A21528BD7E7B0078A660 /* PhoneRegistrationData.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -2787,6 +2790,7 @@
 				B0E9BB2C2815C71E0012BF1D /* ECC.swift in Sources */,
 				F1485654284FD5FD003213D7 /* ChatChallenge.swift in Sources */,
 				4FBF620E283CE3FB00DDBE71 /* OfferFilter.swift in Sources */,
+				F137A21628BD7E7B0078A660 /* PhoneRegistrationData.swift in Sources */,
 				F1485649284FD451003213D7 /* ChatDateView.swift in Sources */,
 				F1A61A3D28A1F98300904F3F /* GroupsInputCoordinator.swift in Sources */,
 				F1B93ED7286D15D5008DAA90 /* OfferSource.swift in Sources */,
