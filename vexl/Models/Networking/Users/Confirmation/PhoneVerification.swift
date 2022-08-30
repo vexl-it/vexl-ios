@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct PhoneVerification: Decodable {
+struct PhoneVerification: Codable {
     var verificationId: Int
     var expirationAt: String
 
