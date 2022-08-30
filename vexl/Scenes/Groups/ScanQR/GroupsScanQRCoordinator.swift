@@ -26,6 +26,14 @@ final class GroupsScanQRCoordinator: BaseCoordinator<RouterResult<Void>> {
         viewController.title = L.groupsScanCode()
         router.present(viewController, animated: animated)
 
+        viewModel
+            .$error
+            .assign(to: &viewController.$error)
+
+        viewModel
+            .$isLoading
+            .assign(to: &viewController.$isLoading)
+
         let manualInput = viewModel
             .route
             .filter { $0 == .manualInputTapped }

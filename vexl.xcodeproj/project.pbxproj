@@ -169,6 +169,7 @@
 		F1042BA227BEADB70048C2F0 /* WelcomeAgreementSwitch.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1042BA127BEADB70048C2F0 /* WelcomeAgreementSwitch.swift */; };
 		F1042BA527BEF0360048C2F0 /* OnboardingView+PageControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1042BA427BEF0360048C2F0 /* OnboardingView+PageControl.swift */; };
 		F1071D4328B439F5002BE9EF /* ChatRevealIdentityBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1071D4228B439F5002BE9EF /* ChatRevealIdentityBannerView.swift */; };
+		F1071D4728B698ED002BE9EF /* URL+.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1071D4628B698ED002BE9EF /* URL+.swift */; };
 		F1071D4928B6E2B6002BE9EF /* RemoteConfigManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1071D4828B6E2B6002BE9EF /* RemoteConfigManager.swift */; };
 		F1071D4B28B81318002BE9EF /* LockedScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1071D4A28B81318002BE9EF /* LockedScreenView.swift */; };
 		F1071D4D28B81515002BE9EF /* Blur.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1071D4C28B81515002BE9EF /* Blur.swift */; };
@@ -231,6 +232,7 @@
 		F12A150627E1A47D0096543E /* RequestAccessFacebookContactsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12A150527E1A47D0096543E /* RequestAccessFacebookContactsViewModel.swift */; };
 		F12A150827E1A4940096543E /* RequestAccessAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12A150727E1A4940096543E /* RequestAccessAlert.swift */; };
 		F13721EF287F29830013BB7B /* TimeInterval+.swift in Sources */ = {isa = PBXBuildFile; fileRef = F13721EE287F29830013BB7B /* TimeInterval+.swift */; };
+		F137A21428B93BCE0078A660 /* GroupError.swift in Sources */ = {isa = PBXBuildFile; fileRef = F137A21328B93BCE0078A660 /* GroupError.swift */; };
 		F13B265C281897DE0011F2FB /* OfferAdvanceFilterFriendDegreeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F13B265B281897DE0011F2FB /* OfferAdvanceFilterFriendDegreeView.swift */; };
 		F13B265E281899250011F2FB /* OfferAdvancedFilterBTCNetworkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F13B265D281899250011F2FB /* OfferAdvancedFilterBTCNetworkView.swift */; };
 		F13B266028189F580011F2FB /* OfferService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F13B265F28189F580011F2FB /* OfferService.swift */; };
@@ -618,6 +620,7 @@
 		F1042BA127BEADB70048C2F0 /* WelcomeAgreementSwitch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeAgreementSwitch.swift; sourceTree = "<group>"; };
 		F1042BA427BEF0360048C2F0 /* OnboardingView+PageControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OnboardingView+PageControl.swift"; sourceTree = "<group>"; };
 		F1071D4228B439F5002BE9EF /* ChatRevealIdentityBannerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatRevealIdentityBannerView.swift; sourceTree = "<group>"; };
+		F1071D4628B698ED002BE9EF /* URL+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+.swift"; sourceTree = "<group>"; };
 		F1071D4828B6E2B6002BE9EF /* RemoteConfigManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteConfigManager.swift; sourceTree = "<group>"; };
 		F1071D4A28B81318002BE9EF /* LockedScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockedScreenView.swift; sourceTree = "<group>"; };
 		F1071D4C28B81515002BE9EF /* Blur.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Blur.swift; sourceTree = "<group>"; };
@@ -680,6 +683,7 @@
 		F12A150527E1A47D0096543E /* RequestAccessFacebookContactsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestAccessFacebookContactsViewModel.swift; sourceTree = "<group>"; };
 		F12A150727E1A4940096543E /* RequestAccessAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestAccessAlert.swift; sourceTree = "<group>"; };
 		F13721EE287F29830013BB7B /* TimeInterval+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TimeInterval+.swift"; sourceTree = "<group>"; };
+		F137A21328B93BCE0078A660 /* GroupError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupError.swift; sourceTree = "<group>"; };
 		F13B265B281897DE0011F2FB /* OfferAdvanceFilterFriendDegreeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferAdvanceFilterFriendDegreeView.swift; sourceTree = "<group>"; };
 		F13B265D281899250011F2FB /* OfferAdvancedFilterBTCNetworkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferAdvancedFilterBTCNetworkView.swift; sourceTree = "<group>"; };
 		F13B265F28189F580011F2FB /* OfferService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferService.swift; sourceTree = "<group>"; };
@@ -1213,6 +1217,7 @@
 				B0501BA92887419F00A44E18 /* Array+.swift */,
 				B042C94F28A8457800860F91 /* Color+.swift */,
 				4FA3BF6B28AFDB7A000BE679 /* UIWindow+.swift */,
+				F1071D4628B698ED002BE9EF /* URL+.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1373,6 +1378,7 @@
 				B08F396327AE7112008B344F /* UserError.swift */,
 				F175AB9F27F4A7EC000DAB15 /* RegistryError.swift */,
 				F13B266C281C8FC80011F2FB /* EncryptionError.swift */,
+				F137A21328B93BCE0078A660 /* GroupError.swift */,
 			);
 			path = Errors;
 			sourceTree = "<group>";
@@ -2845,6 +2851,7 @@
 				F188627528169A3700659786 /* MarketplaceSegmentView.swift in Sources */,
 				B08D2AB928A41E3E00A1C901 /* OfferAdvanceFilterGroupView.swift in Sources */,
 				4F700CC02844C54E0085139F /* BitcoinViewModel.swift in Sources */,
+				F1071D4728B698ED002BE9EF /* URL+.swift in Sources */,
 				F1D2012E283401D7006DF4AB /* OfferSortView.swift in Sources */,
 				B0501BAA2887419F00A44E18 /* Array+.swift in Sources */,
 				F1A61A4128A1F9A200904F3F /* GroupsInputView.swift in Sources */,
@@ -2921,6 +2928,7 @@
 				B08F38E227AE7110008B344F /* Inject.swift in Sources */,
 				B08F395727AE7112008B344F /* ApiRouter.swift in Sources */,
 				F188627428169A3700659786 /* MarketplaceFeedFooterView.swift in Sources */,
+				F137A21428B93BCE0078A660 /* GroupError.swift in Sources */,
 				4FD8E3E02821B922003B165E /* CoinData.swift in Sources */,
 				F1042BA227BEADB70048C2F0 /* WelcomeAgreementSwitch.swift in Sources */,
 				B08F394D27AE7112008B344F /* AppCoordinator.swift in Sources */,

@@ -8,6 +8,8 @@
 import Foundation
 import Cleevio
 import AVFoundation
+import Combine
+import FirebaseDynamicLinks
 
 final class GroupsScanQRViewModel: ViewModelType, ObservableObject {
 
@@ -39,6 +41,8 @@ final class GroupsScanQRViewModel: ViewModelType, ObservableObject {
 
     @Published var primaryActivity: Activity = .init()
     @Published var showCamera = false
+    @Published var isLoading = false
+    @Published var error: Error?
 
     // MARK: - Coordinator Bindings
 
@@ -50,6 +54,13 @@ final class GroupsScanQRViewModel: ViewModelType, ObservableObject {
 
     var route: CoordinatingSubject<Route> = .init()
 
+    var errorIndicator: ErrorIndicator {
+        primaryActivity.error
+    }
+    var activityIndicator: ActivityIndicator {
+        primaryActivity.indicator
+    }
+
     // MARK: - Variables
 
     private let cancelBag: CancelBag = .init()
@@ -58,7 +69,19 @@ final class GroupsScanQRViewModel: ViewModelType, ObservableObject {
     // MARK: - Initialization
 
     init() {
+        setupActivityBindings()
         setupActions()
+    }
+
+    private func setupActivityBindings() {
+        activityIndicator
+            .loading
+            .assign(to: &$isLoading)
+
+        errorIndicator
+            .errors
+            .asOptional()
+            .assign(to: &$error)
     }
 
     private func setupActions() {
@@ -71,9 +94,15 @@ final class GroupsScanQRViewModel: ViewModelType, ObservableObject {
             .store(in: cancelBag)
 
         action
-            .compactMap { action -> Int? in
-                if case let .codeScan(code) = action { return Int(code) }
+            .compactMap { action -> URL? in
+                if case let .codeScan(code) = action { return URL(string: code) }
                 return nil
+            }
+            .withUnretained(self)
+            .flatMap { owner, url in
+                owner.handleUniversalLink(url: url)
+                    .materialize()
+                    .compactMap(\.value)
             }
             .flatMap { [groupManaged, primaryActivity] code in
                 groupManaged
@@ -104,5 +133,22 @@ final class GroupsScanQRViewModel: ViewModelType, ObservableObject {
                 }
             }
         }
+    }
+
+    private func handleUniversalLink(url: URL) -> AnyPublisher<Int, Error> {
+        Future { promise in
+            DynamicLinks.dynamicLinks().handleUniversalLink(url) { dynamiclink, error in
+                guard error == nil else {
+                    promise(.failure(GroupError.invalidQRCode))
+                    return
+                }
+
+                guard let url = dynamiclink?.url,
+                      let code = url.valueOf("code"),
+                      let intCode = Int(code) else { return }
+                promise(.success(intCode))
+            }
+        }
+        .eraseToAnyPublisher()
     }
 }

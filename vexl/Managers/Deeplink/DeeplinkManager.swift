@@ -12,11 +12,13 @@ import Cleevio
 enum DeeplinkScreen {
     case chat(ManagedChat)
     case request
+    case groupInput(String)
 }
 
 enum DeeplinkRequest {
     case openChat(inboxPK: String, senderPK: String)
     case openRequest
+    case openGroup(id: String)
 }
 
 protocol DeeplinkManagerType {
@@ -24,6 +26,7 @@ protocol DeeplinkManagerType {
     var canOpenDeepLink: Bool { get }
 
     func handleDeeplink(with request: DeeplinkRequest)
+    func handleDeeplink(withURL url: URL)
     func cleanState()
     func setCanOpenDeeplink(to value: Bool)
 }
@@ -51,7 +54,14 @@ final class DeeplinkManager: DeeplinkManagerType {
                 .store(in: cancelBag)
         case .openRequest:
             openDeeplinkSubject.send(.request)
+        case let .openGroup(id):
+            openDeeplinkSubject.send(.groupInput(id))
         }
+    }
+
+    func handleDeeplink(withURL url: URL) {
+        guard let code = url.valueOf("code") else { return }
+        handleDeeplink(with: .openGroup(id: code))
     }
 
     func cleanState() {
