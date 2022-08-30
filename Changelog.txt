@@ -71,5 +71,8 @@
 - VEX-670 - Wrong text on the button for new offers
 - VEX-649 - The cross button should be aligned to the first line of text
 - VEX-715 - The layout of the buttons on the contact page does not match the design
+- VEX-898 - Fix double back buttons in navigation bar on iOS 16
+- VEX-902 - Fix multiple UI bugs related to iOS 16
+- VEX-903 - Fix BE error when creating offer without location suggestion
 
 ### Known Issues

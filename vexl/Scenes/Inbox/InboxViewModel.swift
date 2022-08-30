@@ -14,6 +14,7 @@ final class InboxViewModel: ViewModelType, ObservableObject {
     // MARK: - Dependency Bindings
 
     @Inject var inboxManager: InboxManagerType
+    @Inject var remoteConfigManager: RemoteConfigManagerType
 
     // MARK: - Persistence Bindings
 
@@ -33,6 +34,8 @@ final class InboxViewModel: ViewModelType, ObservableObject {
         case continueTap
         case requestTap
         case selectMessage(chat: ManagedChat)
+        case buyTap
+        case sellTap
     }
 
     let action: ActionSubject<UserAction> = .init()
@@ -52,11 +55,16 @@ final class InboxViewModel: ViewModelType, ObservableObject {
         case dismissTapped
         case requestTapped
         case conversationTapped(chat: ManagedChat)
+        case buyTapped
+        case sellTapped
     }
 
     var route: CoordinatingSubject<Route> = .init()
     var requestImageName: String {
         hasPendingRequests ? R.image.chat.request.name : R.image.chat.requestEmpty.name
+    }
+    var isMarketplaceLocked: Bool {
+        remoteConfigManager.getBoolValue(for: .isMarketplaceLocked)
     }
     // MARK: - Variables
 
@@ -101,7 +109,6 @@ final class InboxViewModel: ViewModelType, ObservableObject {
     }
 
     private func setupActionBindings() {
-
         let action = action
             .share()
 
@@ -135,6 +142,18 @@ final class InboxViewModel: ViewModelType, ObservableObject {
                 owner.route.send(route)
             })
             .sink()
+            .store(in: cancelBag)
+
+        action
+            .filter { $0 == .buyTap }
+            .map { _ -> Route in .buyTapped }
+            .subscribe(route)
+            .store(in: cancelBag)
+
+        action
+            .filter { $0 == .sellTap }
+            .map { _ -> Route in .sellTapped }
+            .subscribe(route)
             .store(in: cancelBag)
     }
 }

@@ -16,6 +16,7 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
     @Inject var userRepository: UserRepositoryType
     @Inject var contactService: ContactsServiceType
     @Inject var userService: UserServiceType
+    @Inject var remoteConfigManager: RemoteConfigManagerType
 
     // MARK: - Action Binding
 
@@ -74,6 +75,10 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
 
     var options: [OptionGroup] {
         Option.groupedOptions
+    }
+
+    var isMarketplaceLocked: Bool {
+        remoteConfigManager.getBoolValue(for: .isMarketplaceLocked)
     }
 
     let bitcoinViewModel: BitcoinViewModel

@@ -88,5 +88,10 @@ class ManagerAssembly: Assembly {
             DeeplinkManager()
         }
         .inObjectScope(.container)
+
+        container.register(RemoteConfigManagerType.self) { _ in
+            RemoteConfigManager()
+        }
+        .inObjectScope(.container)
     }
 }

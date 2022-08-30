@@ -78,13 +78,16 @@ final class AppCoordinator: BaseCoordinator<Void> {
                     return Empty(completeImmediately: false).eraseToAnyPublisher()
                 }
 
-                let modalRouter = ModalRouter(parentViewController: visibleViewController, presentationStyle: .fullScreen)
-
                 switch screen {
                 case .chat(let managedChat):
+                    let modalRouter = ModalRouter(parentViewController: visibleViewController, presentationStyle: .fullScreen)
                     return owner.showChat(chat: managedChat, router: modalRouter)
                 case .request:
+                    let modalRouter = ModalRouter(parentViewController: visibleViewController, presentationStyle: .fullScreen)
                     return owner.showChatRequests(router: modalRouter)
+                case .groupInput(let code):
+                    let modalNavigationRouter = ModalNavigationRouter(parentViewController: visibleViewController, presentationStyle: .fullScreen)
+                    return owner.showGroupsInput(router: modalNavigationRouter, code: code)
                 }
             }
             .sink(receiveValue: { [deeplinkManager] _ in
@@ -155,6 +158,18 @@ extension AppCoordinator {
 
     private func showChat(chat: ManagedChat, router: Router) -> CoordinatingResult<RouterResult<Void>> {
         coordinate(to: ChatCoordinator(chat: chat, router: router, animated: true))
+            .flatMap { result -> CoordinatingResult<RouterResult<Void>> in
+                guard result != .dismissedByRouter else {
+                    return Just(result).eraseToAnyPublisher()
+                }
+                return router.dismiss(animated: true, returning: result)
+            }
+            .prefix(1)
+            .eraseToAnyPublisher()
+    }
+
+    private func showGroupsInput(router: Router, code: String) -> CoordinatingResult<RouterResult<Void>> {
+        coordinate(to: GroupsInputCoordinator(router: router, animated: true, code: code, fromDeeplink: true))
             .flatMap { result -> CoordinatingResult<RouterResult<Void>> in
                 guard result != .dismissedByRouter else {
                     return Just(result).eraseToAnyPublisher()

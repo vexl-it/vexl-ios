@@ -15,6 +15,7 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
 
     @Inject private var offerManager: OfferManagerType
     @Inject private var inboxManager: InboxManagerType
+    @Inject private var remoteConfigManager: RemoteConfigManagerType
 
     // MARK: - Fetched Bindings
 
@@ -107,6 +108,10 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
         case .buy:
             return !buyOfferFilter.isFilterEmpty
         }
+    }
+
+    var isMarketplaceLocked: Bool {
+        remoteConfigManager.getBoolValue(for: .isMarketplaceLocked)
     }
 
     let refresh = PassthroughSubject<Void, Never>()
