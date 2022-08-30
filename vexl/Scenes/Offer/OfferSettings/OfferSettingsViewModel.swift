@@ -49,7 +49,7 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
     var activityIndicator: ActivityIndicator {
         primaryActivity.indicator
     }
-    
+
     @Published var deleteTimeUnit: OfferTriggerDeleteTimeUnit = .days
     @Published var deleteTime: String = Constants.defaultOfferDeleteTime
     @Published var groupRows: [[ManagedGroup]] = []
@@ -151,7 +151,9 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
     }
 
     var showDeleteTrigger: Bool {
-        managedOffer == nil
+        //TODO: - Add it back when the BE is ready to use expiration times. (VEX-848)
+        //managedOffer == nil
+        false
     }
 
     var minFee: Double = Constants.OfferInitialData.minFee
