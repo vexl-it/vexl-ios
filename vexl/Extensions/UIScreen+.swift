@@ -25,6 +25,8 @@ extension UIScreen {
         let useWidth = (screenWidth / referenceWidth) < (screenHeigth / referenceHeigth)
         return useWidth ? (screenWidth / referenceWidth) : (screenHeigth / referenceHeigth)
     }
+    
+    static let topInset: CGFloat = UIApplication.shared.windows.filter { $0.isKeyWindow }.first?.safeAreaInsets.top ?? 0
 }
 
 extension CGFloat {

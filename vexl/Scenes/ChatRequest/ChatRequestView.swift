@@ -20,19 +20,23 @@ struct ChatRequestView: View {
             .padding(.horizontal, Appearance.GridGuide.padding)
             .padding(.top, Appearance.GridGuide.largePadding1)
 
-            TabView {
-                ForEach(viewModel.offerRequests) { request in
-                    ChatRequestOfferView(data: request,
-                                         accept: { chat in
-                        viewModel.action.send(.acceptTap(chat: chat))
-                    },
-                                         decline: { chat in
-                        viewModel.action.send(.rejectTap(chat: chat))
-                    })
+            if viewModel.offerRequests.isEmpty {
+                Spacer()
+            } else {
+                TabView {
+                    ForEach(viewModel.offerRequests) { request in
+                        ChatRequestOfferView(data: request,
+                                             accept: { chat in
+                            viewModel.action.send(.acceptTap(chat: chat))
+                        },
+                                             decline: { chat in
+                            viewModel.action.send(.rejectTap(chat: chat))
+                        })
                         .padding(.horizontal, Appearance.GridGuide.padding)
+                    }
                 }
+                .tabViewStyle(.page(indexDisplayMode: .never))
             }
-            .tabViewStyle(.page(indexDisplayMode: .never))
         }
         .background(Color.black.ignoresSafeArea())
     }

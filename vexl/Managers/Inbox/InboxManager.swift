@@ -16,7 +16,13 @@ protocol InboxManagerType {
     func syncInboxes()
     func userRequestedSync()
 
-    func syncInbox(with publicKey: String)
+    func syncInbox(with publicKey: String, completionHandler: ((Error?) -> Void)?)
+}
+
+extension InboxManagerType {
+    func syncInbox(with publicKey: String) {
+        syncInbox(with: publicKey, completionHandler: nil)
+    }
 }
 
 final class InboxManager: InboxManagerType {
@@ -79,14 +85,33 @@ final class InboxManager: InboxManagerType {
             .store(in: cancelBag)
     }
 
-    func syncInbox(with publicKey: String) {
+    func syncInbox(with publicKey: String, completionHandler: ((Error?) -> Void)?) {
         inboxRepository
             .getInbox(with: publicKey)
-            .filterNil()
+            .compactMap {
+                if $0 == nil {
+                    completionHandler?(nil)
+                }
+                return $0
+            }
             .withUnretained(self)
             .flatMap { owner, inbox in
                 owner.syncInbox(inbox)
             }
+            .asVoid()
+            .handleEvents(
+                receiveOutput: {
+                    completionHandler?(nil)
+                },
+                receiveCompletion: { completion in
+                    switch completion {
+                    case let .failure(error):
+                        completionHandler?(error)
+                    case .finished:
+                        break
+                    }
+                }
+            )
             .sink()
             .store(in: cancelBag)
     }

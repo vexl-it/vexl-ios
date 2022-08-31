@@ -72,8 +72,8 @@ struct GroupCell: View {
                         .resizable()
                         .scaledToFill()
                         .frame(
-                            width: Appearance.GridGuide.mediumIconSize.width - (2 * imagePadding),
-                            height: Appearance.GridGuide.mediumIconSize.height - (2 * imagePadding)
+                            width: Appearance.GridGuide.mediumIconSize.width,
+                            height: Appearance.GridGuide.mediumIconSize.height
                         )
                         .padding(imagePadding)
                         .background(viewModel.groupColor)
@@ -81,6 +81,7 @@ struct GroupCell: View {
                     EmptyGroupLogoSmall(name: $viewModel.name)
                 }
             }
+            .clipped()
             .frame(width: Appearance.GridGuide.mediumIconSize.width, height: Appearance.GridGuide.mediumIconSize.height)
             .cornerRadius(Appearance.GridGuide.buttonCorner)
 
@@ -151,8 +152,11 @@ final class GroupCellViewModel: ObservableObject, Identifiable {
         self.groupColor = group.color
 
         group
-            .publisher(for: \.logo)
+            .publisher(for: \.logoURL)
             .filterNil()
+            .subscribe(on: DispatchQueue.global(qos: .userInitiated))
+            .compactMap { try? Data(contentsOf: $0) }
+            .subscribe(on: DispatchQueue.main)
             .compactMap(UIImage.init)
             .map(Image.init)
             .assign(to: &$logoImage)

@@ -52,6 +52,8 @@ struct Constants {
         case facebookHash
         case facebookSignature
         case localEncryptionKey
+        case userCountryCode
+        case phoneRegistration
 
         var rawValue: String {
             switch self {
@@ -65,6 +67,10 @@ struct Constants {
                 return "facebookHash"
             case .facebookSignature:
                 return "facebookSignature"
+            case .userCountryCode:
+                return "userCountryCode"
+            case .phoneRegistration:
+                return "phoneRegistration"
             }
         }
     }
@@ -117,11 +123,18 @@ struct Constants {
     static let weeksToSecondsMultiplier: TimeInterval = 604_800
     static let monthsToSecondsMultiplier: TimeInterval = 2_592_000
 
-    static let defaultOfferDeleteTime = "14" // days will be selected as default too
+    static let defaultOfferDeleteTime = "30" // days will be selected as default too
 
+    #if APPSTORE
+    // TODO: would be better to obfuscate this
+    static let contactsHashingPassword = "9cf02ca3b233f17160e71b0db098f95396e73f27ef672dda482a6566d8e29484"
+    #else
     static let contactsHashingPassword = "VexlVexl"
+    #endif
+
     static let supportEmail = "support@vexl.it"
 
+    static let numberOfSyllablesForName = 4
     static let randomNameSyllables = [
         "bo", "da", "ga", "ge", "chi", "ka", "ko", "ku",
         "ma", "mi", "mo", "na", "no", "ro", "ri", "ru",
@@ -131,4 +144,5 @@ struct Constants {
 
     static let maxPhoneNumberDigits = 9
     static let registrationSteps = 3
+    static let numberOfOffersForLockedScreen = 133
 }

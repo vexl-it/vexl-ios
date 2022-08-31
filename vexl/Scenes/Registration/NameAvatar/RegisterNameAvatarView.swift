@@ -30,6 +30,7 @@ struct RegisterNameAvatarView: View {
             }
             .padding(.all, Appearance.GridGuide.point)
         }
+        .navigationBarBackButtonHidden(true)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color.black.edgesIgnoringSafeArea(.all))
         .actionSheet(isPresented: $viewModel.showImagePickerActionSheet, content: {

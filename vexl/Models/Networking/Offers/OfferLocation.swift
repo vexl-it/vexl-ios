@@ -30,8 +30,8 @@ struct OfferLocation: Codable, Hashable {
     ///
     init?(managedLocation: ManagedOfferLocation) {
         guard let city = managedLocation.city,
-              managedLocation.lat > 0,
-              managedLocation.lon > 0 else { return nil }
+              managedLocation.lat >= 0,
+              managedLocation.lon >= 0 else { return nil }
 
         self.latitude = managedLocation.lat
         self.longitude = managedLocation.lon

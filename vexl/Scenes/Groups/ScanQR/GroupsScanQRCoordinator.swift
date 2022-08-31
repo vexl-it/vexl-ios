@@ -26,6 +26,14 @@ final class GroupsScanQRCoordinator: BaseCoordinator<RouterResult<Void>> {
         viewController.title = L.groupsScanCode()
         router.present(viewController, animated: animated)
 
+        viewModel
+            .$error
+            .assign(to: &viewController.$error)
+
+        viewModel
+            .$isLoading
+            .assign(to: &viewController.$isLoading)
+
         let manualInput = viewModel
             .route
             .filter { $0 == .manualInputTapped }
@@ -43,7 +51,10 @@ final class GroupsScanQRCoordinator: BaseCoordinator<RouterResult<Void>> {
             .filter { $0 == .dismissTapped }
             .map { _ -> RouterResult<Void> in .dismiss }
 
-        return Publishers.Merge(dismiss, manualInput)
+        let dismissByRouter = dismissObservable(with: viewController, dismissHandler: router)
+            .dismissedByRouter(type: Void.self)
+
+        return Publishers.Merge3(dismiss, manualInput, dismissByRouter)
             .eraseToAnyPublisher()
     }
 }
