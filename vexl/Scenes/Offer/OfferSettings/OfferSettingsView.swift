@@ -46,7 +46,7 @@ struct OfferSettingsView: View {
                         }
                     }
                     .onChange(of: viewModel.offer.currency) { currency in
-                        viewModel.offer.update(newCurrency: currency)
+                        viewModel.offer.update(newCurrency: currency, resetAmount: true)
                     }
 
                     OfferFeePickerView(feeLabel: "\(Int(viewModel.offer.feeAmount))%",

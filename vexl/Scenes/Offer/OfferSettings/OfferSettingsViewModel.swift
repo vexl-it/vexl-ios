@@ -40,7 +40,7 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
     let action: ActionSubject<UserAction> = .init()
 
     // MARK: - View Bindings
-    
+
     @Published var offer: Offer = .init()
     @Published var primaryActivity: Activity = .init()
     var errorIndicator: ErrorIndicator {

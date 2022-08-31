@@ -11,7 +11,7 @@ struct Offer: Equatable {
     var isActive: Bool
     var description: String
     var currency: Currency?
-    var amountRange: ClosedRange<Int>
+    var amountRange: ClosedRange<Int> = Constants.OfferInitialData.minOffer...Constants.OfferInitialData.maxOffer
     var currentAmountRange: ClosedRange<Int>
     var selectedFeeOption: OfferFeeOption
     var feeAmount: Double
@@ -26,7 +26,6 @@ struct Offer: Equatable {
     init(isActive: Bool = true,
          description: String = "",
          currency: Currency = Constants.OfferInitialData.currency,
-         amountRange: ClosedRange<Int> = Constants.OfferInitialData.minOffer...Constants.OfferInitialData.maxOffer,
          currentAmountRange: ClosedRange<Int> = Constants.OfferInitialData.minOffer...Constants.OfferInitialData.maxOffer,
          selectedFeeOption: OfferFeeOption = .withoutFee,
          feeAmount: Double = Constants.OfferInitialData.minFee,
@@ -40,7 +39,6 @@ struct Offer: Equatable {
         self.isActive = isActive
         self.description = description
         self.currency = currency
-        self.amountRange = amountRange
         self.currentAmountRange = currentAmountRange
         self.selectedFeeOption = selectedFeeOption
         self.feeAmount = feeAmount
@@ -50,6 +48,7 @@ struct Offer: Equatable {
         self.selectedFriendDegreeOption = selectedFriendDegreeOption
         self.selectedPriceTrigger = selectedPriceTrigger
         self.selectedPriceTriggerAmount = selectedPriceTriggerAmount
+        self.update(newCurrency: currency, resetAmount: true)
     }
 
     init?(managedOffer: ManagedOffer?) {
@@ -57,7 +56,6 @@ struct Offer: Equatable {
         isActive = managedOffer.active
         description = managedOffer.offerDescription ?? ""
         currency = managedOffer.currency ?? Constants.OfferInitialData.currency
-        amountRange = Int(managedOffer.minAmount)...Int(managedOffer.maxAmount)
         currentAmountRange = Int(managedOffer.minAmount)...Int(managedOffer.maxAmount)
         selectedFeeOption = managedOffer.feeState ?? .withoutFee
         feeAmount = managedOffer.feeAmount
@@ -68,13 +66,13 @@ struct Offer: Equatable {
         selectedPriceTrigger = managedOffer.activePriceState ?? .none
         selectedPriceTriggerAmount = "\(Int(managedOffer.activePriceValue))"
         selectedGroup = managedOffer.group
+        self.update(newCurrency: currency, resetAmount: false)
     }
 
     mutating func update(with managedOffer: ManagedOffer) {
         isActive = managedOffer.active
         description = managedOffer.offerDescription ?? ""
         currency = managedOffer.currency ?? .usd
-        amountRange = Int(managedOffer.minAmount)...Int(managedOffer.maxAmount)
         currentAmountRange = Int(managedOffer.minAmount)...Int(managedOffer.maxAmount)
         selectedFeeOption = managedOffer.feeState ?? .withoutFee
         feeAmount = managedOffer.feeAmount
@@ -85,16 +83,17 @@ struct Offer: Equatable {
         selectedPriceTrigger = managedOffer.activePriceState ?? .none
         selectedPriceTriggerAmount = "\(Int(managedOffer.activePriceValue))"
         selectedGroup = managedOffer.group
+        self.update(newCurrency: currency, resetAmount: false)
     }
-    
-    mutating func update(newCurrency: Currency?) {
+
+    mutating func update(newCurrency: Currency?, resetAmount: Bool) {
         switch currency {
         case .eur, .usd:
             amountRange = Constants.OfferInitialData.minOffer...Constants.OfferInitialData.maxOffer
-            currentAmountRange = Constants.OfferInitialData.minOffer...Constants.OfferInitialData.maxOffer
+            if resetAmount { currentAmountRange = Constants.OfferInitialData.minOffer...Constants.OfferInitialData.maxOffer }
         case .czk:
             amountRange = Constants.OfferInitialData.minOffer...Constants.OfferInitialData.maxOfferCZK
-            currentAmountRange = Constants.OfferInitialData.minOffer...Constants.OfferInitialData.maxOfferCZK
+            if resetAmount { currentAmountRange = Constants.OfferInitialData.minOffer...Constants.OfferInitialData.maxOfferCZK }
         case .none:
             break
         }
