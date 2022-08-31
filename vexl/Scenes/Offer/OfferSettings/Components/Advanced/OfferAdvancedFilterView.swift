@@ -14,6 +14,7 @@ struct OfferAdvancedFilterView: View {
 
     @Binding var groupRows: [[ManagedGroup]]
     @Binding var selectedGroup: ManagedGroup?
+    var showContactsAndGroups: Bool
 
     @State private var isExpanded = true
 
@@ -41,11 +42,14 @@ struct OfferAdvancedFilterView: View {
                 OfferAdvancedFilterBTCNetworkView(selectedOptions: $selectedTypeOptions)
                     .padding(.top, Appearance.GridGuide.padding)
 
-                OfferAdvanceFilterFriendDegreeView(selectedOption: $selectedFriendDegreeOption)
-                    .padding(.top, Appearance.GridGuide.mediumPadding1)
-                if !groupRows.isEmpty {
-                    OfferAdvanceFilterGroupView(groupRows: $groupRows, selectedGroup: $selectedGroup)
+                if showContactsAndGroups {
+                    OfferAdvanceFilterFriendDegreeView(selectedOption: $selectedFriendDegreeOption)
                         .padding(.top, Appearance.GridGuide.mediumPadding1)
+
+                    if !groupRows.isEmpty {
+                        OfferAdvanceFilterGroupView(groupRows: $groupRows, selectedGroup: $selectedGroup)
+                            .padding(.top, Appearance.GridGuide.mediumPadding1)
+                    }
                 }
             }
         }
@@ -60,7 +64,8 @@ struct OfferAdvancedFilterViewPreview: PreviewProvider {
                 selectedTypeOptions: .constant([]),
                 selectedFriendDegreeOption: .constant(.firstDegree),
                 groupRows: .constant([]),
-                selectedGroup: .constant(nil)
+                selectedGroup: .constant(nil),
+                showContactsAndGroups: true
             )
             .previewDevice("iPhone 11")
             .background(Color.black)
@@ -69,7 +74,8 @@ struct OfferAdvancedFilterViewPreview: PreviewProvider {
                 selectedTypeOptions: .constant([]),
                 selectedFriendDegreeOption: .constant(.firstDegree),
                 groupRows: .constant([]),
-                selectedGroup: .constant(nil)
+                selectedGroup: .constant(nil),
+                showContactsAndGroups: true
             )
             .previewDevice("iPhone SE")
             .background(Color.black)
