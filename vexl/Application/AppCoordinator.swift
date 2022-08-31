@@ -103,8 +103,8 @@ extension AppCoordinator {
 
     private func showOnboardingCoordinator() -> CoordinatingResult<Void> {
         coordinate(to:
-            WindowNavigationCoordinator(window: window) { router, animated -> WelcomeCoordinator in
-                WelcomeCoordinator(router: router, animated: animated)
+            WindowNavigationCoordinator(window: window) { router, animated -> OnboardingCoordinator in
+                OnboardingCoordinator(router: router, animated: animated)
             }
         )
             .asVoid()
