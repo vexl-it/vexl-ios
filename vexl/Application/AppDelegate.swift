@@ -120,7 +120,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void
     ) {
         @Inject var notificationManager: NotificationManagerType
-        let typeRawValue: String? = userInfo["type"] as? String
+        let typeRawValue: String? = userInfo[NotificationKey.notificationType.rawValue] as? String
         let type: NotificationType? = typeRawValue.flatMap(NotificationType.init)
         notificationManager.handleNotification(of: type, with: userInfo) { error in
             if error != nil {
