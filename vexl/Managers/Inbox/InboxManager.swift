@@ -19,6 +19,12 @@ protocol InboxManagerType {
     func syncInbox(with publicKey: String, completionHandler: ((Error?) -> Void)?)
 }
 
+extension InboxManagerType {
+    func syncInbox(with publicKey: String) {
+        syncInbox(with: publicKey, completionHandler: nil)
+    }
+}
+
 final class InboxManager: InboxManagerType {
     @Inject var inboxRepository: InboxRepositoryType
     @Inject var cryptoService: CryptoServiceType

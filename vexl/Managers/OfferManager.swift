@@ -18,6 +18,12 @@ protocol OfferManagerType {
     func sync(offers: [ManagedOffer], withPublicKeys: [String]) -> AnyPublisher<Void, Error>
 }
 
+extension OfferManagerType {
+    func syncUserOffers(withPublicKeys: [String]) {
+        syncUserOffers(withPublicKeys: withPublicKeys, completionHandler: nil)
+    }
+}
+
 final class OfferManager: OfferManagerType {
 
     @Inject private var userRepository: UserRepositoryType

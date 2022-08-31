@@ -18,6 +18,12 @@ protocol GroupManagerType {
     func joinGroup(code: Int) -> AnyPublisher<Void, Error>
 }
 
+extension GroupManagerType {
+    func updateOffersForNewMembers(groupUUID: String) {
+        updateOffersForNewMembers(groupUUID: groupUUID, completionHandler: nil)
+    }
+}
+
 final class GroupManager: GroupManagerType {
 
     @Inject var groupRepository: GroupRepositoryType

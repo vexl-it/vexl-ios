@@ -124,7 +124,7 @@ extension NotificationManager: UNUserNotificationCenterDelegate {
 
         if notificationHandled == nil {
             log.debug("Notification wasn't handled in foreground")
-            handleNotification(of: type, with: userInfo, completionHandler: nil)
+            handleNotification(of: type, with: userInfo)
         }
 
         handleDeeplink(of: type, with: userInfo)
@@ -140,7 +140,7 @@ extension NotificationManager: UNUserNotificationCenterDelegate {
         let typeRawValue: String? = notification.request.content.userInfo[NotificationKey.notificationType.rawValue] as? String
         let type: NotificationType? = typeRawValue.flatMap(NotificationType.init)
 
-        handleNotification(of: type, with: notification.request.content.userInfo, completionHandler: nil)
+        handleNotification(of: type, with: notification.request.content.userInfo)
 
         var presentationOptions: UNNotificationPresentationOptions = []
 
@@ -157,7 +157,7 @@ extension NotificationManager: UNUserNotificationCenterDelegate {
         completionHandler(presentationOptions)
     }
 
-    func handleNotification(of type: NotificationType?, with userInfo: [AnyHashable: Any], completionHandler: ((Error?) -> Void)?) {
+    func handleNotification(of type: NotificationType?, with userInfo: [AnyHashable: Any], completionHandler: ((Error?) -> Void)? = nil) {
         switch type {
         case .message, .requestReveal, .approveReveal, .disapproveReveal, .requestMessaging, .approveMessaging, .disaproveMessaging, .deleteChat:
             if let inboxPK = userInfo[NotificationKey.inboxPublicKey.rawValue] as? String {
