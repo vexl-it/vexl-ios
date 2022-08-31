@@ -67,14 +67,20 @@ final class OfferManager: OfferManagerType {
     func syncUserOffers(withPublicKeys publicKeys: [String], completionHandler: ((Error?) -> Void)?) {
         let offers = userRepository.user?.offers?.allObjects as? [ManagedOffer] ?? []
         sync(offers: offers, withPublicKeys: publicKeys)
-            .asVoid()
-            .catch { error -> AnyPublisher<Void, Never> in
-                completionHandler?(error)
-                return Just(()).eraseToAnyPublisher()
-            }
-            .sink(receiveValue: {
-                completionHandler?(nil)
-            })
+            .handleEvents(
+                receiveOutput: {
+                    completionHandler?(nil)
+                },
+                receiveCompletion: { completion in
+                    switch completion {
+                    case let .failure(error):
+                        completionHandler?(error)
+                    case .finished:
+                        break
+                    }
+                }
+            )
+            .sink()
             .store(in: cancelBag)
     }
 
