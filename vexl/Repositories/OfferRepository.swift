@@ -218,6 +218,19 @@ class OfferRepository: OfferRepositoryType {
             )
             .share()
 
+        let deleteKeys = getOffers
+            .map { $0.compactMap(\.receiversPublicKey?.publicKey) }
+            .flatMap { [persistence] pKeys in
+                persistence
+                    .load(type: ManagedKeyPair.self,
+                          context: context,
+                          predicate: NSPredicate(format: "%@ contains[cd] publicKey", NSArray(array: pKeys)))
+            }
+            .flatMap { [persistence] keyPairs in
+                persistence.delete(context: context, editor: { _ in keyPairs })
+            }
+            .eraseToAnyPublisher()
+
         let deleteInboxes = getOffers
             .map { $0.compactMap(\.inbox?.keyPair?.publicKey) }
             .flatMap { [persistence] inboxesPublicKeys in
@@ -238,7 +251,7 @@ class OfferRepository: OfferRepositoryType {
             }
             .eraseToAnyPublisher()
 
-        return Publishers.Zip(deleteInboxes, deleteOffers)
+        return Publishers.Zip3(deleteInboxes, deleteOffers, deleteKeys)
             .asVoid()
             .eraseToAnyPublisher()
     }
