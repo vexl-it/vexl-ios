@@ -14,8 +14,14 @@ protocol OfferManagerType {
     var didFinishSyncing: AnyPublisher<Void, Never> { get }
 
     func sync()
-    func syncUserOffers(withPublicKeys: [String])
+    func syncUserOffers(withPublicKeys: [String], completionHandler: ((Error?) -> Void)?)
     func sync(offers: [ManagedOffer], withPublicKeys: [String]) -> AnyPublisher<Void, Error>
+}
+
+extension OfferManagerType {
+    func syncUserOffers(withPublicKeys: [String]) {
+        syncUserOffers(withPublicKeys: withPublicKeys, completionHandler: nil)
+    }
 }
 
 final class OfferManager: OfferManagerType {
@@ -64,9 +70,22 @@ final class OfferManager: OfferManagerType {
             })
     }
 
-    func syncUserOffers(withPublicKeys publicKeys: [String]) {
+    func syncUserOffers(withPublicKeys publicKeys: [String], completionHandler: ((Error?) -> Void)?) {
         let offers = userRepository.user?.offers?.allObjects as? [ManagedOffer] ?? []
         sync(offers: offers, withPublicKeys: publicKeys)
+            .handleEvents(
+                receiveOutput: {
+                    completionHandler?(nil)
+                },
+                receiveCompletion: { completion in
+                    switch completion {
+                    case let .failure(error):
+                        completionHandler?(error)
+                    case .finished:
+                        break
+                    }
+                }
+            )
             .sink()
             .store(in: cancelBag)
     }
