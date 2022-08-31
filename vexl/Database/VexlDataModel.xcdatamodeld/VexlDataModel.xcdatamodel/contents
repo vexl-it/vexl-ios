@@ -96,7 +96,7 @@
         <attribute name="offerID" optional="YES" attributeType="String"/>
         <attribute name="offerTypeRawType" optional="YES" attributeType="String"/>
         <relationship name="group" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ManagedGroup" inverseName="offers" inverseEntity="ManagedGroup"/>
-        <relationship name="inbox" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ManagedInbox" inverseName="offers" inverseEntity="ManagedInbox"/>
+        <relationship name="inbox" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ManagedInbox" inverseName="offers" inverseEntity="ManagedInbox"/>
         <relationship name="locations" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ManagedOfferLocation" inverseName="offer" inverseEntity="ManagedOfferLocation"/>
         <relationship name="receiversPublicKey" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ManagedKeyPair" inverseName="receiversOffer" inverseEntity="ManagedKeyPair"/>
         <relationship name="requesterPublicKeys" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ManagedKeyPair" inverseName="userOffer" inverseEntity="ManagedKeyPair"/>
@@ -143,7 +143,7 @@
         <element name="ManagedInbox" positionX="-545.4609375" positionY="-382.8515625" width="128" height="118"/>
         <element name="ManagedKeyPair" positionX="-312.15625" positionY="-289.875" width="128" height="148"/>
         <element name="ManagedMessage" positionX="-95.99609375" positionY="-524.015625" width="128" height="194"/>
-        <element name="ManagedOffer" positionX="-892.38671875" positionY="-589.39453125" width="128" height="494"/>
+        <element name="ManagedOffer" positionX="-892.38671875" positionY="-589.39453125" width="128" height="508"/>
         <element name="ManagedOfferLocation" positionX="-731.2578125" positionY="-711.6640625" width="128" height="89"/>
         <element name="ManagedProfile" positionX="-633.3203125" positionY="-96.95703125" width="128" height="193"/>
         <element name="ManagedSyncItem" positionX="-591.86328125" positionY="-567.52734375" width="128" height="89"/>

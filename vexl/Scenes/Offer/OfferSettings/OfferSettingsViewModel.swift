@@ -57,7 +57,7 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
     @Published var error: Error?
 
     @Published var locationViewModels: [OfferLocationViewModel] = []
-    
+
     var isOfferNew: Bool { managedOffer == nil }
     var isButtonActive: Bool { isCreateEnabled && offer != Offer(managedOffer: managedOffer) }
 

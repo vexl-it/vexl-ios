@@ -209,15 +209,37 @@ class OfferRepository: OfferRepositoryType {
 
     func deleteOffers(offerIDs ids: [String]) -> AnyPublisher<Void, Error> {
         let context = persistence.viewContext
-        return persistence
+
+        let getOffers = persistence
             .load(
                 type: ManagedOffer.self,
                 context: context,
                 predicate: NSPredicate(format: "%@ contains[cd] offerID", NSArray(array: ids))
             )
+            .share()
+
+        let deleteInboxes = getOffers
+            .map { $0.compactMap(\.inbox?.keyPair?.publicKey) }
+            .flatMap { [persistence] inboxesPublicKeys in
+                persistence
+                    .load(type: ManagedInbox.self,
+                          context: context,
+                          predicate: NSPredicate(format: "%@ contains[cd] keyPair.publicKey AND typeRawValue == nil",
+                                                 NSArray(array: inboxesPublicKeys)))
+            }
+            .flatMap { [persistence] inboxes -> AnyPublisher<Void, Error> in
+                persistence.delete(context: context, editor: { _ in inboxes })
+            }
+            .eraseToAnyPublisher()
+
+        let deleteOffers = getOffers
             .flatMap { [persistence] offers -> AnyPublisher<Void, Error> in
                 persistence.delete(context: context, editor: { _ in offers })
             }
+            .eraseToAnyPublisher()
+
+        return Publishers.Zip(deleteInboxes, deleteOffers)
+            .asVoid()
             .eraseToAnyPublisher()
     }
 }
