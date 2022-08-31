@@ -98,7 +98,7 @@
         <relationship name="group" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ManagedGroup" inverseName="offers" inverseEntity="ManagedGroup"/>
         <relationship name="inbox" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ManagedInbox" inverseName="offers" inverseEntity="ManagedInbox"/>
         <relationship name="locations" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ManagedOfferLocation" inverseName="offer" inverseEntity="ManagedOfferLocation"/>
-        <relationship name="receiversPublicKey" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ManagedKeyPair" inverseName="receiversOffer" inverseEntity="ManagedKeyPair"/>
+        <relationship name="receiversPublicKey" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ManagedKeyPair" inverseName="receiversOffer" inverseEntity="ManagedKeyPair"/>
         <relationship name="requesterPublicKeys" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ManagedKeyPair" inverseName="userOffer" inverseEntity="ManagedKeyPair"/>
         <relationship name="syncItems" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ManagedSyncItem" inverseName="offer" inverseEntity="ManagedSyncItem"/>
         <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ManagedUser" inverseName="offers" inverseEntity="ManagedUser"/>
