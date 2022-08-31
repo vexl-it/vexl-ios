@@ -114,7 +114,8 @@ extension UserProfileViewModel {
         static var groupedOptions: [OptionGroup] {
             [
                 OptionGroup(id: 1, options: [.editAvatar, .editName]),
-                OptionGroup(id: 2, options: [.contacts, .facebook]),
+                // TODO: add facebook back to user profile when facebook works again
+                OptionGroup(id: 2, options: [.contacts]), // , .facebook]),
                 OptionGroup(id: 3, options: [.groups]),
                 OptionGroup(id: 4, options: [.currency]),
                 OptionGroup(id: 5, options: [.termsAndPrivacy, .faq, .reportIssue]),
