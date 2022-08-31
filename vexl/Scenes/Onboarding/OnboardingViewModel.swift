@@ -70,11 +70,11 @@ final class OnboardingViewModel: ViewModelType {
     var title: String {
         switch onboardingState {
         case .friends:
-            return L.onboardingIntroMessageFriend()
+            return L.introFirstTitle()
         case .buyAndSell:
-            return L.onboardingIntroMessageBuySell()
+            return L.introSecondTitle()
         case .requestIdentity:
-            return L.onboardingIntroMessageRequest()
+            return L.introThirdTitle()
         }
     }
 
