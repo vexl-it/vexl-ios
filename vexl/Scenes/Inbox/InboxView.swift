@@ -87,7 +87,6 @@ struct InboxView: View {
                 .padding(Appearance.GridGuide.point)
                 .background(Appearance.Colors.gray1)
                 .cornerRadius(Appearance.GridGuide.buttonCorner)
-                .hidden()
             }
             .padding(.top, Appearance.GridGuide.mediumPadding2)
             .padding(.horizontal, Appearance.GridGuide.padding)
