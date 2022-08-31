@@ -46,6 +46,7 @@ struct OfferPayload: Codable {
 
     var activePriceState: String
     var activePriceValue: String
+    var activePriceCurrency: String
     var active: String
 
     var commonFriends: [String]
@@ -69,6 +70,7 @@ struct OfferPayload: Codable {
             "currency": currency,
             "activePriceState": activePriceState,
             "activePriceValue": activePriceValue,
+            "activePriceCurrency": activePriceCurrency,
             "active": active,
             "commonFriends": commonFriends
         ]
@@ -79,6 +81,7 @@ struct OfferPayload: Codable {
         let maxAmount = try offer.maxAmount.ecc.encrypt(publicKey: encryptionPublicKey)
         let feeAmount = try offer.feeAmount.ecc.encrypt(publicKey: encryptionPublicKey)
         let activePriceValue = try offer.activePriceValue.ecc.encrypt(publicKey: encryptionPublicKey)
+        let activePriceCurrency = try Currency.usd.rawValue.ecc.encrypt(publicKey: encryptionPublicKey)
         let active = try offer.active.ecc.encrypt(publicKey: encryptionPublicKey)
         let commonFriends = try commonFriends.map({ try $0.ecc.encrypt(publicKey: encryptionPublicKey) })
         let paymentMethods = try offer.paymentMethods.map(\.rawValue).map({ try $0.ecc.encrypt(publicKey: encryptionPublicKey) })
@@ -124,6 +127,7 @@ struct OfferPayload: Codable {
         self.currency = currency
         self.activePriceState = activePriceState
         self.activePriceValue = activePriceValue
+        self.activePriceCurrency = activePriceCurrency
         self.active = active
         self.commonFriends = commonFriends
     }
