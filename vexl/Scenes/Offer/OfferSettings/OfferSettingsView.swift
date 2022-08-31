@@ -83,7 +83,8 @@ struct OfferSettingsView: View {
                         selectedTypeOptions: $viewModel.offer.selectedBTCOption,
                         selectedFriendDegreeOption: $viewModel.offer.selectedFriendDegreeOption,
                         groupRows: $viewModel.groupRows,
-                        selectedGroup: $viewModel.offer.selectedGroup
+                        selectedGroup: $viewModel.offer.selectedGroup,
+                        showContactsAndGroups: viewModel.isOfferNew
                     )
                     .padding(.top, Appearance.GridGuide.largePadding1)
 

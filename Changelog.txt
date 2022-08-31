@@ -74,5 +74,8 @@
 - VEX-898 - Fix double back buttons in navigation bar on iOS 16
 - VEX-902 - Fix multiple UI bugs related to iOS 16
 - VEX-903 - Fix BE error when creating offer without location suggestion
+- VEX-930 - Hide receiver connections when editing offer
+- VEX-927 - Fix loading offers on first launch
+- VEX-916 - Remove facebook section from user profile
 
 ### Known Issues
