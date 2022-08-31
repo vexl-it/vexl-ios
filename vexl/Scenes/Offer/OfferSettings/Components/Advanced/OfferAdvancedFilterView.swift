@@ -14,7 +14,7 @@ struct OfferAdvancedFilterView: View {
 
     @Binding var groupRows: [[ManagedGroup]]
     @Binding var selectedGroup: ManagedGroup?
-    var showContactsAndGroups: Bool
+    let showContactsAndGroups: Bool
 
     @State private var isExpanded = true
 
