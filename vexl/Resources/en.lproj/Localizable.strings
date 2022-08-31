@@ -351,7 +351,7 @@
 "faq.scene7.description1" = "You can always reach out to us via email: ";
 "faq.scene7.description2" = "support@vexl.it.";
 "faq.scene7.description3" = " For a private comms, you can also send us an e2ee mail.\n\nOr you can meet us during your next P2P trade! 😻";
-"permission.camera.denied" = "Přístup ke kameře byl zakázán";
+"permission.camera.denied" = "Camera permission denied";
 "locked.screen.title" = "Marketplace is just warming up.\nWait for the full experience.";
 "locked.screen.subtitle" = "Create your offer today";
 "locked.screen.sell" = "I'm selling";
