@@ -113,4 +113,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         deeplinkManager.handleDeeplink(withURL: dynamicLink)
         return true
     }
+
+    func application(
+        _ application: UIApplication,
+        didReceiveRemoteNotification userInfo: [AnyHashable: Any],
+        fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void
+    ) {
+        @Inject var notificationManager: NotificationManagerType
+        let typeRawValue: String? = userInfo["type"] as? String
+        let type: NotificationType? = typeRawValue.flatMap(NotificationType.init)
+        notificationManager.handleNotification(of: type, with: userInfo) { error in
+            if error != nil {
+                completionHandler(.failed)
+            } else {
+                completionHandler(.newData)
+            }
+        }
+    }
 }

@@ -27,6 +27,7 @@ enum NotificationType: String {
 protocol NotificationManagerType {
     var notificationToken: AnyPublisher<String, Never> { get }
     var isRegisteredForNotifications: AnyPublisher<Bool, Never> { get }
+    func handleNotification(of type: NotificationType?, with userInfo: [AnyHashable: Any], completionHandler: ((Error?) -> Void)?)
 
     func requestToken()
 }
@@ -115,7 +116,7 @@ extension NotificationManager: UNUserNotificationCenterDelegate {
 
         if notificationHandled == nil {
             log.debug("Notification wasn't handled in foreground")
-            handleNotification(of: type, with: userInfo)
+            handleNotification(of: type, with: userInfo, completionHandler: nil)
         }
 
         handleDeeplink(of: type, with: userInfo)
@@ -131,7 +132,7 @@ extension NotificationManager: UNUserNotificationCenterDelegate {
         let typeRawValue: String? = notification.request.content.userInfo["type"] as? String
         let type: NotificationType? = typeRawValue.flatMap(NotificationType.init)
 
-        handleNotification(of: type, with: notification.request.content.userInfo)
+        handleNotification(of: type, with: notification.request.content.userInfo, completionHandler: nil)
 
         var presentationOptions: UNNotificationPresentationOptions = []
 
@@ -148,19 +149,19 @@ extension NotificationManager: UNUserNotificationCenterDelegate {
         completionHandler(presentationOptions)
     }
 
-    private func handleNotification(of type: NotificationType?, with userInfo: [AnyHashable: Any]) {
+    func handleNotification(of type: NotificationType?, with userInfo: [AnyHashable: Any], completionHandler: ((Error?) -> Void)?) {
         switch type {
         case .message, .requestReveal, .approveReveal, .disapproveReveal, .requestMessaging, .approveMessaging, .disaproveMessaging, .deleteChat:
             if let inboxPK = userInfo["inbox"] as? String {
-                inboxManager.syncInbox(with: inboxPK)
+                inboxManager.syncInbox(with: inboxPK, completionHandler: completionHandler)
             }
         case .groupNewMember:
             if let groupUUID = userInfo["group_uuid"] as? String {
-                groupManager.updateOffersForNewMembers(groupUUID: groupUUID)
+                groupManager.updateOffersForNewMembers(groupUUID: groupUUID, completionHandler: completionHandler)
             }
         case .newAppUser:
             if let publicKey = userInfo["public_key"] as? String {
-                offerManager.syncUserOffers(withPublicKeys: [publicKey])
+                offerManager.syncUserOffers(withPublicKeys: [publicKey], completionHandler: completionHandler)
             }
         case .none:
             break
