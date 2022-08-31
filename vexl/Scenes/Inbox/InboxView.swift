@@ -78,15 +78,17 @@ struct InboxView: View {
                     .foregroundColor(.white)
                     .frame(maxWidth: .infinity, alignment: .leading)
 
-                Button {
-                    viewModel.action.send(.requestTap)
-                } label: {
-                    Image(viewModel.requestImageName)
-                        .frame(size: Appearance.GridGuide.iconSize)
+                if !viewModel.isMarketplaceLocked {
+                    Button {
+                        viewModel.action.send(.requestTap)
+                    } label: {
+                        Image(viewModel.requestImageName)
+                            .frame(size: Appearance.GridGuide.iconSize)
+                    }
+                    .padding(Appearance.GridGuide.point)
+                    .background(Appearance.Colors.gray1)
+                    .cornerRadius(Appearance.GridGuide.buttonCorner)
                 }
-                .padding(Appearance.GridGuide.point)
-                .background(Appearance.Colors.gray1)
-                .cornerRadius(Appearance.GridGuide.buttonCorner)
             }
             .padding(.top, Appearance.GridGuide.mediumPadding2)
             .padding(.horizontal, Appearance.GridGuide.padding)
