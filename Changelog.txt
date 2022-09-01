@@ -39,6 +39,7 @@
 - VEX-818: Reveal identity now is anchored to the bottom of the chat
 - VEX-806: Added dismiss to the identity banner
 - VEX-535: Using prefix from phone number
+- VEX-855: Added support for active price triger
 
 ### Fixes
 - VEX-525: Fixed common friends on chat request screen
