@@ -39,16 +39,6 @@ struct RequestAccessContactsView: View {
                     .padding(.horizontal, Appearance.GridGuide.point)
             }
         }
-        .alert(item: $viewModel.alert) { alert in
-            Alert(title: Text(alert.title),
-                  message: Text(alert.message),
-                  primaryButton: Alert.Button.cancel(Text(L.generalCancel()), action: {
-                viewModel.action.send(.cancel)
-            }),
-                  secondaryButton: Alert.Button.default(Text(L.generalOk()), action: {
-                viewModel.action.send(.next)
-            }))
-        }
     }
 
     private var card: some View {
@@ -64,12 +54,13 @@ struct RequestAccessContactsView: View {
                 .foregroundColor(Appearance.Colors.primaryText)
                 .padding(.horizontal, Appearance.GridGuide.point)
 
-            HStack {
+            HStack(alignment: .top) {
                 Image(R.image.onboarding.eye.name)
 
                 Text(viewModel.subtitle)
                     .textStyle(.paragraphSmallMedium)
                     .foregroundColor(Appearance.Colors.gray2)
+                    .multilineTextAlignment(.center)
             }
             .padding(.bottom, Appearance.GridGuide.padding)
         }

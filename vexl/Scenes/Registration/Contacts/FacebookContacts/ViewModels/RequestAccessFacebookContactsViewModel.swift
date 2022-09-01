@@ -122,7 +122,7 @@ final class RequestAccessFacebookContactsViewModel: RequestAccessContactsViewMod
             currentState = .accessConfirmed
         case .accessConfirmed:
             currentState = .completed
-        case .completed, .confirmRejection:
+        case .completed:
             currentState = .initial
         }
     }
