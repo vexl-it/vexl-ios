@@ -20,6 +20,7 @@ struct OfferFilter: Equatable {
     var currency: Currency?
 
     var predicate: NSPredicate {
+        @Inject var cryptoManager: CryptocurrencyValueManagerType
         let userPredicate = NSPredicate(format: "user == nil")
         let offerPredicate = NSPredicate(format: "offerTypeRawType == %@", type.rawValue)
         let activePredicate = NSPredicate(format: "active == TRUE")
@@ -28,6 +29,36 @@ struct OfferFilter: Equatable {
 
         if let currency = currency {
             predicateList.append(NSPredicate(format: "currencyRawType == %@", currency.rawValue))
+        }
+
+        if let coinData = cryptoManager.currentCoinData.value.data {
+            let activePriceAbovePredicate = NSPredicate(format: "activePriceStateRawType == '\(OfferTrigger.above.rawValue)'")
+            let activePriceAbovePredicates = Currency.allCases.map { currency -> NSPredicate in
+                let priceDecimal: Decimal = coinData.price(for: currency)
+                let price = Double(truncating: priceDecimal as NSNumber)
+                return NSCompoundPredicate(andPredicateWithSubpredicates: [
+                    NSPredicate(format: "activePriceValue < \(price)"),
+                    NSPredicate(format: "activePriceCurrencyRawType == '\(currency.rawValue)'"),
+                    activePriceAbovePredicate
+                ])
+            }
+
+            predicateList.append(contentsOf: activePriceAbovePredicates)
+
+            let activePriceBelowPredicate = NSPredicate(format: "activePriceStateRawType == '\(OfferTrigger.below.rawValue)'")
+            let activePriceBelowPredicates = Currency.allCases.map { currency -> NSPredicate in
+                let priceDecimal: Decimal = coinData.price(for: currency)
+                let price = Double(truncating: priceDecimal as NSNumber)
+                return NSCompoundPredicate(andPredicateWithSubpredicates: [
+                    NSPredicate(format: "activePriceValue > \(price)"),
+                    NSPredicate(format: "activePriceCurrencyRawType == '\(currency.rawValue)'"),
+                    activePriceBelowPredicate
+                ])
+            }
+
+            predicateList.append(contentsOf: activePriceBelowPredicates)
+
+            predicateList.append(NSPredicate(format: "activePriceStateRawType == '\(OfferTrigger.none.rawValue)'"))
         }
 
         if !selectedFeeOptions.isEmpty {
