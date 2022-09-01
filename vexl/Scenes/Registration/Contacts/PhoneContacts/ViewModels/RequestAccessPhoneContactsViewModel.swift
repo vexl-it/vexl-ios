@@ -58,11 +58,6 @@ final class RequestAccessPhoneContactsViewModel: RequestAccessContactsViewModel 
             .store(in: cancelBag)
     }
 
-    override func update(state: ViewState) {
-        updateAlert(for: state)
-        super.update(state: state)
-    }
-
     override func advanceCurrentState() {
         switch currentState {
         case .initial:
@@ -82,17 +77,6 @@ final class RequestAccessPhoneContactsViewModel: RequestAccessContactsViewModel 
             currentState = .initial
         case .requestAccess:
             currentState = .confirmRejection
-        }
-    }
-
-    private func updateAlert(for state: ViewState) {
-        switch state {
-        case .initial, .completed, .accessConfirmed:
-            alert = nil
-        case .requestAccess:
-            alert = .request
-        case .confirmRejection:
-            alert = .reject
         }
     }
 }
