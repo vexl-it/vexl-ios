@@ -39,16 +39,6 @@ struct RequestAccessContactsView: View {
                     .padding(.horizontal, Appearance.GridGuide.point)
             }
         }
-        .alert(item: $viewModel.alert) { alert in
-            Alert(title: Text(alert.title),
-                  message: Text(alert.message),
-                  primaryButton: Alert.Button.cancel(Text(L.generalCancel()), action: {
-                viewModel.action.send(.cancel)
-            }),
-                  secondaryButton: Alert.Button.default(Text(L.generalOk()), action: {
-                viewModel.action.send(.next)
-            }))
-        }
     }
 
     private var card: some View {
