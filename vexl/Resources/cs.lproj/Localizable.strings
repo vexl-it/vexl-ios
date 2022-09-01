@@ -73,7 +73,7 @@
 "register.contacts.import.alert.allow" = "Povolit";
 "register.contacts.import.alert.not.allow" = "Zakázat";
 "register.phone.contacts.title" = "Najít kamarády";
-"register.phone.contacts.subtitle" = "Vexl nevidí tvoje kontakty";
+"register.phone.contacts.subtitle" = "We will store your contacts in our server in a secure way, even us won't be able to access them";
 "register.phone.alert.request.title" = "Povolit kontakty";
 "register.phone.alert.request.description" = "Vexl potřebuje přístup k tvým kontaktům.\nNemusíš ale mít obavy, nikdo je neuvidí.";
 "register.phone.alert.reject.title" = "Opravdu?";
