@@ -17,12 +17,19 @@ struct MarketplaceView: View {
     var body: some View {
         StickyBitcoinView(
             bitcoinViewModel: viewModel.bitcoinViewModel,
+            isMarketplaceLocked: viewModel.isMarketplaceLocked,
             content: { marketPlaceContent },
             stickyHeader: {
                 marketPlaceHeader.padding(.bottom, Appearance.GridGuide.point)
             },
             expandedBitcoinGraph: { isExpanded in
                 viewModel.action.send(.graphExpanded(isExpanded: isExpanded))
+            },
+            lockedSellAction: {
+                viewModel.action.send(.showSellOffer)
+            },
+            lockedBuyAction: {
+                viewModel.action.send(.showBuyOffer)
             }
         )
         .coordinateSpace(name: RefreshControlView.coordinateSpace)
@@ -32,26 +39,34 @@ struct MarketplaceView: View {
         .onAppear(perform: { viewModel.action.send(.fetchNewOffers) })
     }
 
-    private var marketPlaceContent: some View {
-        RefreshContainer(topPadding: Appearance.GridGuide.refreshContainerPadding,
-                         hideRefresh: viewModel.isGraphExpanded,
-                         isRefreshing: $viewModel.isRefreshing) {
-            VStack(spacing: Appearance.GridGuide.mediumPadding1) {
-                marketPlaceHeader
+    @ViewBuilder private var marketPlaceContent: some View {
+        if viewModel.isMarketplaceLocked {
+            marketPlaceHeader
+        } else {
+            RefreshContainer(topPadding: Appearance.GridGuide.refreshContainerPadding,
+                             hideRefresh: viewModel.isGraphExpanded,
+                             isRefreshing: $viewModel.isRefreshing) {
+                VStack(spacing: Appearance.GridGuide.mediumPadding1) {
+                    marketPlaceHeader
 
-                ForEach(viewModel.marketplaceFeedItems) { item in
-                    MarketplaceFeedView(data: item,
-                                        displayFooter: false,
-                                        detailAction: { _ in
-                        viewModel.action.send(.offerDetailTapped(offer: item.offer))
-                    },
-                                        requestAction: { _ in
-                        viewModel.action.send(.requestOfferTapped(offer: item.offer))
-                    })
-                    .padding(.horizontal, Appearance.GridGuide.point)
+                    marketplaceOfferList
                 }
+                .animation(.easeInOut, value: viewModel.marketplaceFeedItems)
             }
-            .animation(.easeInOut, value: viewModel.marketplaceFeedItems)
+        }
+    }
+
+    private var marketplaceOfferList: some View {
+        ForEach(viewModel.marketplaceFeedItems) { item in
+            MarketplaceFeedView(data: item,
+                                displayFooter: false,
+                                detailAction: { _ in
+                viewModel.action.send(.offerDetailTapped(offer: item.offer))
+            },
+                                requestAction: { _ in
+                viewModel.action.send(.requestOfferTapped(offer: item.offer))
+            })
+            .padding(.horizontal, Appearance.GridGuide.point)
         }
     }
 
@@ -60,7 +75,9 @@ struct MarketplaceView: View {
             MarketplaceSegmentView(selectedOption: $viewModel.selectedOption)
                 .padding(.top, Appearance.GridGuide.mediumPadding2)
 
-            filter
+            if !viewModel.isMarketplaceLocked {
+                filter
+            }
         }
     }
 

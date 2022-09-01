@@ -21,34 +21,39 @@ struct OfferSettingsView: View {
             ScrollView(showsIndicators: false) {
                 if viewModel.state != .initial {
 
-                    OfferStatusView(isActive: viewModel.isActive,
-                                    showDeleteButton: viewModel.showDeleteButton,
-                                    pauseAction: {
-                        viewModel.action.send(.activate)
-                    },
-                                    deleteAction: {
-                        viewModel.action.send(.delete)
-                    })
+                    if !viewModel.isOfferNew {
+                        OfferStatusView(isActive: viewModel.offer.isActive,
+                                        showDeleteButton: viewModel.showDeleteButton,
+                                        pauseAction: {
+                            viewModel.action.send(.activate)
+                        },
+                                        deleteAction: {
+                            viewModel.action.send(.delete)
+                        })
+                    }
 
-                    OfferDescriptionView(text: $viewModel.description)
+                    OfferDescriptionView(text: $viewModel.offer.description)
                         .padding(.bottom, Appearance.GridGuide.padding)
 
                     Group {
-                        OfferCurrencyPickerView(selectedOption: $viewModel.currency)
+                        OfferCurrencyPickerView(selectedOption: $viewModel.offer.currency)
                             .padding(.bottom, Appearance.GridGuide.padding)
 
-                        if let currency = viewModel.currency {
+                        if let currency = viewModel.offer.currency {
                             OfferAmountRangeView(currency: currency,
-                                                 currentValue: $viewModel.currentAmountRange,
-                                                 sliderBounds: viewModel.amountRange)
+                                                 currentValue: $viewModel.offer.currentAmountRange,
+                                                 sliderBounds: viewModel.offer.amountRange)
                         }
                     }
+                    .onChange(of: viewModel.offer.currency) { currency in
+                        viewModel.offer.update(newCurrency: currency, resetAmount: true)
+                    }
 
-                    OfferFeePickerView(feeLabel: "\(Int(viewModel.feeAmount))%",
+                    OfferFeePickerView(feeLabel: "\(Int(viewModel.offer.feeAmount))%",
                                        minValue: viewModel.minFee,
                                        maxValue: viewModel.maxFee,
-                                       selectedOption: $viewModel.selectedFeeOption,
-                                       feeValue: $viewModel.feeAmount)
+                                       selectedOption: $viewModel.offer.selectedFeeOption,
+                                       feeValue: $viewModel.offer.feeAmount)
 
                     OfferLocationPickerView(
                         items: $viewModel.locationViewModels,
@@ -61,24 +66,25 @@ struct OfferSettingsView: View {
                     )
                     .padding(.top, Appearance.GridGuide.largePadding1)
 
-                    OfferTradeLocationPickerView(selectedOption: $viewModel.selectedTradeStyleOption)
+                    OfferTradeLocationPickerView(selectedOption: $viewModel.offer.selectedTradeStyleOption)
 
-                    OfferPaymentMethodView(selectedOptions: $viewModel.selectedPaymentMethodOptions)
+                    OfferPaymentMethodView(selectedOptions: $viewModel.offer.selectedPaymentMethodOptions)
                         .padding(.top, Appearance.GridGuide.largePadding1)
 
-                    OfferTriggersView(currencySymbol: viewModel.currency?.sign ?? "",
+                    OfferTriggersView(currencySymbol: viewModel.offer.currency?.sign ?? "",
                                       showDeleteTrigger: viewModel.showDeleteTrigger,
-                                      selectedActivateOption: $viewModel.selectedPriceTrigger,
-                                      selectedActivateAmount: $viewModel.selectedPriceTriggerAmount,
+                                      selectedActivateOption: $viewModel.offer.selectedPriceTrigger,
+                                      selectedActivateAmount: $viewModel.offer.selectedPriceTriggerAmount,
                                       deleteTime: $viewModel.deleteTime,
                                       deleteTimeUnit: $viewModel.deleteTimeUnit)
                     .padding(.top, Appearance.GridGuide.mediumPadding2)
 
                     OfferAdvancedFilterView(
-                        selectedTypeOptions: $viewModel.selectedBTCOption,
-                        selectedFriendDegreeOption: $viewModel.selectedFriendDegreeOption,
+                        selectedTypeOptions: $viewModel.offer.selectedBTCOption,
+                        selectedFriendDegreeOption: $viewModel.offer.selectedFriendDegreeOption,
                         groupRows: $viewModel.groupRows,
-                        selectedGroup: $viewModel.selectedGroup
+                        selectedGroup: $viewModel.offer.selectedGroup,
+                        showContactsAndGroups: viewModel.isOfferNew
                     )
                     .padding(.top, Appearance.GridGuide.largePadding1)
 
@@ -86,7 +92,7 @@ struct OfferSettingsView: View {
                                      font: Appearance.TextStyle.titleSmallBold.font.asFont,
                                      style: .main,
                                      isFullWidth: true,
-                                     isEnabled: .constant(viewModel.isCreateEnabled),
+                                     isEnabled: .constant(viewModel.isButtonActive),
                                      action: { viewModel.action.send(.createOffer) })
                         .padding(.vertical, Appearance.GridGuide.largePadding1)
                 }

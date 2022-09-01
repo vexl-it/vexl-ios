@@ -42,16 +42,16 @@ final class TermsAndConditionsViewModel: ViewModelType {
     @Published var hasAgreedTermsAndConditions = false
     @Published var currentSection: Section = .termsOfUse
 
-    var currentContent: [TermsAndConditionsContent] {
+    var currentContent: NSMutableAttributedString {
         switch currentSection {
         case .termsOfUse:
-            return termsContent
+            return L.termsOfUseTerms().configureAttributedText(atributedMacros: FAQAttributedMacro.atributedMacros,
+                                                               textStyle: .paragraphSemibold)
         case .policy:
-            return policyConent
+            return L.termsOfUsePrivacy().configureAttributedText(atributedMacros: FAQAttributedMacro.atributedMacros,
+                                                                 textStyle: .paragraphSemibold)
         }
     }
-    private let termsContent: [TermsAndConditionsContent] = TermsAndConditionsContent.termsContent
-    private let policyConent: [TermsAndConditionsContent] = TermsAndConditionsContent.policyContent
 
     // MARK: - Coordinator Bindings
 

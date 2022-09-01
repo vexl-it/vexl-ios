@@ -16,6 +16,7 @@ enum MessageType: String {
     case messagingRequest = "REQUEST_MESSAGING"
     case messagingApproval = "APPROVE_MESSAGING"
     case messagingRejection = "DISAPPROVE_MESSAGING"
+    case blockChat = "BLOCK_CHAT"
     case deleteChat = "DELETE_CHAT"
     case invalid
 

@@ -26,13 +26,17 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>225</string>
+	<string>247</string>
 	<key>FacebookAppID</key>
 	<string>364593362214966</string>
 	<key>FacebookClientToken</key>
 	<string>d935a8def510c23fa883f758a8ab7261</string>
 	<key>FacebookDisplayName</key>
 	<string>Vexl-devel</string>
+	<key>FirebaseDynamicLinksCustomDomains</key>
+	<array>
+		<string>https://link.vexl.it</string>
+	</array>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>fbapi</string>
@@ -40,11 +44,6 @@
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
-	<key>NSAppTransportSecurity</key>
-	<dict>
-		<key>NSAllowsArbitraryLoadsInWebContent</key>
-		<true/>
-	</dict>
 	<key>NSCameraUsageDescription</key>
 	<string>Vexl wants to access your camera in order to select a photo for your avatar.</string>
 	<key>NSContactsUsageDescription</key>
@@ -74,6 +73,10 @@
 			</array>
 		</dict>
 	</dict>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>remote-notification</string>
+	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIRequiredDeviceCapabilities</key>

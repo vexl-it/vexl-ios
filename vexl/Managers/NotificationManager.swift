@@ -24,9 +24,18 @@ enum NotificationType: String {
     case newAppUser = "NEW_APP_USER"
 }
 
+enum NotificationKey: String {
+    case inboxPublicKey = "inbox"
+    case senderPublicKey = "sender"
+    case groupUUID = "group_uuid"
+    case publicKey = "public_key"
+    case notificationType = "type"
+}
+
 protocol NotificationManagerType {
     var notificationToken: AnyPublisher<String, Never> { get }
     var isRegisteredForNotifications: AnyPublisher<Bool, Never> { get }
+    func handleNotification(of type: NotificationType?, with userInfo: [AnyHashable: Any], completionHandler: ((Error?) -> Void)?)
 
     func requestToken()
 }
@@ -107,7 +116,7 @@ extension NotificationManager: UNUserNotificationCenterDelegate {
                                 withCompletionHandler completionHandler: @escaping () -> Void) {
         defer { notificationHandled = nil }
         let userInfo = response.notification.request.content.userInfo
-        let typeRawValue: String? = userInfo["type"] as? String
+        let typeRawValue: String? = userInfo[NotificationKey.notificationType.rawValue] as? String
 
         guard let type: NotificationType = typeRawValue.flatMap(NotificationType.init) else { return }
 
@@ -128,7 +137,7 @@ extension NotificationManager: UNUserNotificationCenterDelegate {
                                 withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         defer { notificationHandled = true }
 
-        let typeRawValue: String? = notification.request.content.userInfo["type"] as? String
+        let typeRawValue: String? = notification.request.content.userInfo[NotificationKey.notificationType.rawValue] as? String
         let type: NotificationType? = typeRawValue.flatMap(NotificationType.init)
 
         handleNotification(of: type, with: notification.request.content.userInfo)
@@ -148,19 +157,19 @@ extension NotificationManager: UNUserNotificationCenterDelegate {
         completionHandler(presentationOptions)
     }
 
-    private func handleNotification(of type: NotificationType?, with userInfo: [AnyHashable: Any]) {
+    func handleNotification(of type: NotificationType?, with userInfo: [AnyHashable: Any], completionHandler: ((Error?) -> Void)? = nil) {
         switch type {
         case .message, .requestReveal, .approveReveal, .disapproveReveal, .requestMessaging, .approveMessaging, .disaproveMessaging, .deleteChat:
-            if let inboxPK = userInfo["inbox"] as? String {
-                inboxManager.syncInbox(with: inboxPK)
+            if let inboxPK = userInfo[NotificationKey.inboxPublicKey.rawValue] as? String {
+                inboxManager.syncInbox(with: inboxPK, completionHandler: completionHandler)
             }
         case .groupNewMember:
-            if let groupUUID = userInfo["group_uuid"] as? String {
-                groupManager.updateOffersForNewMembers(groupUUID: groupUUID)
+            if let groupUUID = userInfo[NotificationKey.groupUUID.rawValue] as? String {
+                groupManager.updateOffersForNewMembers(groupUUID: groupUUID, completionHandler: completionHandler)
             }
         case .newAppUser:
-            if let publicKey = userInfo["public_key"] as? String {
-                offerManager.syncUserOffers(withPublicKeys: [publicKey])
+            if let publicKey = userInfo[NotificationKey.publicKey.rawValue] as? String {
+                offerManager.syncUserOffers(withPublicKeys: [publicKey], completionHandler: completionHandler)
             }
         case .none:
             break
@@ -170,7 +179,8 @@ extension NotificationManager: UNUserNotificationCenterDelegate {
     private func handleDeeplink(of type: NotificationType?, with userInfo: [AnyHashable: Any]) {
         switch type {
         case .message, .requestReveal, .approveReveal, .disapproveReveal, .approveMessaging:
-            if let inboxPK = userInfo["inbox"] as? String, let senderPK = userInfo["sender"] as? String {
+            if let inboxPK = userInfo[NotificationKey.inboxPublicKey.rawValue] as? String,
+               let senderPK = userInfo[NotificationKey.senderPublicKey.rawValue] as? String {
                 deeplinkManager.handleDeeplink(with: .openChat(inboxPK: inboxPK, senderPK: senderPK))
             }
         case .requestMessaging, .disaproveMessaging:

@@ -9,6 +9,7 @@
 import UIKit
 import Cleevio
 import FBSDKCoreKit
+import FirebaseDynamicLinks
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -30,6 +31,22 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             .store(in: cancelBag)
 
         self.window = window
+        
+        // Dynamic Links
+
+        if let userActivity = connectionOptions.userActivities.first {
+            if let incomingURL = userActivity.webpageURL {
+                DynamicLinks.dynamicLinks().handleUniversalLink(incomingURL) { dynamicLink, error in
+                    guard error == nil else { return }
+                    if let dynamicLink = dynamicLink {
+                        if let url = dynamicLink.url {
+                            @Inject var deeplinkManager: DeeplinkManagerType
+                            deeplinkManager.handleDeeplink(withURL: url)
+                        }
+                    }
+                }
+            }
+        }
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
@@ -69,5 +86,24 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                                                open: url,
                                                sourceApplication: nil,
                                                annotation: [UIApplication.OpenURLOptionsKey.annotation])
+
+        @Inject var deeplinkManager: DeeplinkManagerType
+        deeplinkManager.handleDeeplink(withURL: url)
+    }
+
+    func scene(_ scene: UIScene, continue userActivity: NSUserActivity) {
+        guard let webpageURL = userActivity.webpageURL else { return }
+
+        DynamicLinks.dynamicLinks().handleUniversalLink(webpageURL) { dynamiclink, error in
+            guard error == nil else {
+                log.error("⛔️ problem handling Firebase DynamicLink: \(String(describing: error))")
+                return
+            }
+
+            guard let url = dynamiclink?.url else { return }
+            log.info("Opening dynamiclink URL: \(url)")
+            @Inject var deeplinkManager: DeeplinkManagerType
+            deeplinkManager.handleDeeplink(withURL: url)
+        }
     }
 }

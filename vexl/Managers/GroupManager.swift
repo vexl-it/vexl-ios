@@ -13,9 +13,15 @@ import Cleevio
 protocol GroupManagerType {
     func createGroup(name: String, logo: UIImage, expiration: Date, closureAt: Date) -> AnyPublisher<Void, Error>
     func getAllGroupMembers(group: ManagedGroup?) -> AnyPublisher<[String], Error>
-    func updateOffersForNewMembers(groupUUID: String)
+    func updateOffersForNewMembers(groupUUID: String, completionHandler: ((Error?) -> Void)?)
     func leave(group: ManagedGroup) -> AnyPublisher<Void, Error>
     func joinGroup(code: Int) -> AnyPublisher<Void, Error>
+}
+
+extension GroupManagerType {
+    func updateOffersForNewMembers(groupUUID: String) {
+        updateOffersForNewMembers(groupUUID: groupUUID, completionHandler: nil)
+    }
 }
 
 final class GroupManager: GroupManagerType {
@@ -56,14 +62,22 @@ final class GroupManager: GroupManagerType {
             .eraseToAnyPublisher()
     }
 
-    func updateOffersForNewMembers(groupUUID: String) {
+    func updateOffersForNewMembers(groupUUID: String, completionHandler: ((Error?) -> Void)?) {
         guard let group = groupRepository.fetchGroup(uuid: groupUUID),
               let groupOfferSet = group.offers as? Set<ManagedOffer> else {
+            completionHandler?(nil)
             return
         }
         let userGroupOffers = groupOfferSet.filter { $0.user != nil }
         groupService.getNewMembers(groups: [group])
-            .compactMap(\.first?.publicKeys)
+            .compactMap { newMembers in
+                let pubKeys = newMembers.first?.publicKeys
+                guard pubKeys?.isEmpty == false else {
+                    completionHandler?(nil)
+                    return nil
+                }
+                return pubKeys
+            }
             .flatMap { [groupRepository] newMemberPublicKeys in
                 groupRepository
                     .update(group: group, members: newMemberPublicKeys, returnOnlyNewMembers: true)
@@ -77,6 +91,19 @@ final class GroupManager: GroupManagerType {
                 return offerManager
                     .sync(offers: Array(userGroupOffers), withPublicKeys: newMemeberPublicKeys)
             }
+            .handleEvents(
+                receiveOutput: {
+                    completionHandler?(nil)
+                },
+                receiveCompletion: { completion in
+                    switch completion {
+                    case let .failure(error):
+                        completionHandler?(error)
+                    case .finished:
+                        break
+                    }
+                }
+            )
             .sink()
             .store(in: cancelBag)
     }

@@ -11,10 +11,11 @@ import SwiftyBeaver
 import FBSDKCoreKit
 import Firebase
 import FirebaseMessaging
+import FirebaseDynamicLinks
+import FirebaseRemoteConfig
 #if DEBUG || DEVEL
 import AlamofireNetworkActivityLogger
 #endif
-import KeychainAccess
 
 let log = SwiftyBeaver.self
 
@@ -33,19 +34,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         whereIsMySQLite()
         #endif
 
-        if Keychain.standard[.localEncryptionKey] == nil {
-            let keyCount = 64
-            var key = Data(count: keyCount)
-            key.withUnsafeMutableBytes { (pointer: UnsafeMutableRawBufferPointer) in
-                let result = SecRandomCopyBytes(kSecRandomDefault, keyCount, pointer.baseAddress!)
-                assert(result == 0, "Failed to get random bytes")
-            }
-            let stringKey = String(data: key, encoding: .macOSRoman)
-            Keychain.standard[.localEncryptionKey] = stringKey
-        }
-
         // Firebase messaging
         FirebaseApp.configure()
+        RemoteConfigManager.setup()
 
         // Global appearance
         Appearance.setGlobalAppearance()
@@ -82,5 +73,61 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // If any sessions were discarded while the application was not running, this will be called shortly after
         // application:didFinishLaunchingWithOptions.
         // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
+    }
+
+    // MARK: - Dynamic link
+
+    func application(_ application: UIApplication,
+                     continue userActivity: NSUserActivity,
+                     restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
+        guard let webpageURL = userActivity.webpageURL else { return true }
+
+        let handled = DynamicLinks.dynamicLinks().handleUniversalLink(webpageURL) { dynamiclink, error in
+            guard error == nil else {
+                log.error("⛔️ problem handling Firebase DynamicLink: \(String(describing: error))")
+                return
+            }
+
+            guard let url = dynamiclink?.url else { return }
+            log.info("Opening dynamiclink URL: \(url)")
+            @Inject var deeplinkManager: DeeplinkManagerType
+            deeplinkManager.handleDeeplink(withURL: url)
+        }
+
+        return handled
+    }
+
+    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
+        application(app,
+                    open: url,
+                    sourceApplication: options[UIApplication.OpenURLOptionsKey.sourceApplication] as? String,
+                    annotation: "")
+    }
+
+    func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
+        guard let dynamicLink = DynamicLinks.dynamicLinks().dynamicLink(fromCustomSchemeURL: url)?.url else {
+            return false
+        }
+
+        @Inject var deeplinkManager: DeeplinkManagerType
+        deeplinkManager.handleDeeplink(withURL: dynamicLink)
+        return true
+    }
+
+    func application(
+        _ application: UIApplication,
+        didReceiveRemoteNotification userInfo: [AnyHashable: Any],
+        fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void
+    ) {
+        @Inject var notificationManager: NotificationManagerType
+        let typeRawValue: String? = userInfo[NotificationKey.notificationType.rawValue] as? String
+        let type: NotificationType? = typeRawValue.flatMap(NotificationType.init)
+        notificationManager.handleNotification(of: type, with: userInfo) { error in
+            if error != nil {
+                completionHandler(.failed)
+            } else {
+                completionHandler(.newData)
+            }
+        }
     }
 }

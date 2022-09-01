@@ -175,12 +175,15 @@ final class ChatManager: ChatManagerType {
     func setBlockMessaging(isBlocked: Bool, chat: ManagedChat) -> AnyPublisher<Void, Error> {
         guard let inbox = chat.inbox,
               let inboxKeys = inbox.keyPair?.keys,
-              let receiverPublicKey = chat.receiverKeyPair?.publicKey else {
+              let receiverPublicKey = chat.receiverKeyPair?.publicKey,
+              let blockPayload = MessagePayload.createBlock(inboxPublicKey: inboxKeys.publicKey, contactInboxKey: receiverPublicKey) else {
                   return Fail(error: PersistenceError.insufficientData)
                       .eraseToAnyPublisher()
               }
 
-        return chatService
+        let sendBlockMessage = send(payload: blockPayload, chat: chat)
+
+        let setBlock = chatService
             .setInboxBlock(inboxPublicKey: inboxKeys.publicKey,
                            publicKeyToBlock: receiverPublicKey,
                            eccKeys: inboxKeys,
@@ -190,6 +193,10 @@ final class ChatManager: ChatManagerType {
                 owner.chatRepository
                     .setBlockChat(chat: chat, isBlocked: isBlocked)
             }
+            .asVoid()
+            .eraseToAnyPublisher()
+
+        return Publishers.Zip(sendBlockMessage, setBlock)
             .asVoid()
             .eraseToAnyPublisher()
     }

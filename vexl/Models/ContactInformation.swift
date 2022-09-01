@@ -6,8 +6,12 @@
 //
 
 import Foundation
+import KeychainAccess
 
 struct ContactInformation: Identifiable {
+
+    @KeychainStore(key: .userCountryCode)
+    private var userCountryCode: String?
 
     enum Source: String {
         case phone
@@ -30,6 +34,17 @@ struct ContactInformation: Identifiable {
         case .facebook:
             return id
         }
+    }
+
+    var formattedPhone: String {
+        let countryCode = userCountryCode
+        let formattedIdentifier: String = {
+            if let countryCode = countryCode, !sourceIdentifier.contains("+") {
+                return "\(countryCode) \(sourceIdentifier)"
+            }
+            return sourceIdentifier
+        }()
+        return formattedIdentifier
     }
 
     #if DEBUG || DEVEL

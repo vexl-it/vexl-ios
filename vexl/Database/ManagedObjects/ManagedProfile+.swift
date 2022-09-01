@@ -19,7 +19,7 @@ extension ManagedProfile {
     }
 
     static func generateRandomName() -> String {
-        (0..<3)
+        (0..<Constants.numberOfSyllablesForName)
             .map { _ in Int.random(in: 0..<Constants.randomNameSyllables.count) }
             .map { Constants.randomNameSyllables[$0] }
             .joined()

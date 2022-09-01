@@ -63,21 +63,11 @@ struct TermsAndConditionsView: View {
 
     private var scrollView: some View {
         ScrollView {
-            ForEach(viewModel.currentContent) { content in
-                Text(content.title)
-                    .multilineTextAlignment(.leading)
-                    .foregroundColor(Appearance.Colors.whiteText)
-                    .textStyle(.paragraphSemibold)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.bottom, Appearance.GridGuide.smallPadding)
-
-                AttributedText(attributedText: content.attributedDescription)
-                    .multilineTextAlignment(.leading)
-                    .padding(.bottom, Appearance.GridGuide.mediumPadding2)
-            }
+            AttributedText(attributedText: viewModel.currentContent)
+                .multilineTextAlignment(.leading)
+                .foregroundColor(Appearance.Colors.whiteText)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .foregroundColor(Appearance.Colors.whiteText)
     }
 }
 

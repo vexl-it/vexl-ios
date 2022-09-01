@@ -84,7 +84,7 @@ class ImportContactsViewModel: ObservableObject {
 
     var filteredItems: [ContactInformation] {
         guard !searchText.isEmpty else { return items }
-        return items.filter { $0.name.contains(searchText) }
+        return items.filter { $0.name.lowercased().contains(searchText.lowercased()) }
     }
 
     var shouldSelectAll: Bool {
