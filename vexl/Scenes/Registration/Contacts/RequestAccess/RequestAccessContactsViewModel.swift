@@ -21,7 +21,6 @@ class RequestAccessContactsViewModel: ObservableObject {
     enum ViewState {
         case initial
         case requestAccess
-        case confirmRejection
         case accessConfirmed
         case completed
     }
@@ -39,7 +38,6 @@ class RequestAccessContactsViewModel: ObservableObject {
     // MARK: - View Bindings
 
     @Published var currentState: ViewState = .initial
-    @Published var alert: RequestAccessContactsAlertType?
 
     // MARK: - Actions Bindings
 
@@ -52,7 +50,6 @@ class RequestAccessContactsViewModel: ObservableObject {
     let action: ActionSubject<UserAction> = .init()
     let accessConfirmed: ActionSubject<Void> = .init()
     let requestAccess: ActionSubject<Void> = .init()
-    let rejectConfirmation: ActionSubject<Void> = .init()
     let completed: ActionSubject<Void> = .init()
     let skipped: ActionSubject<Void> = .init()
 
@@ -108,8 +105,6 @@ class RequestAccessContactsViewModel: ObservableObject {
             requestAccess.send(())
         case .accessConfirmed:
             accessConfirmed.send(())
-        case .confirmRejection:
-            rejectConfirmation.send(())
         case .initial:
             break
         }

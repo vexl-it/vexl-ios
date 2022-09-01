@@ -58,25 +58,22 @@ final class RequestAccessPhoneContactsViewModel: RequestAccessContactsViewModel 
             .store(in: cancelBag)
     }
 
+    // Here we don't need to do anything special on the rest of the states apart from initial
+    // because the Authorization request it's being handle else where.
+    // The rest of the cases are used for Facebook import
     override func advanceCurrentState() {
         switch currentState {
         case .initial:
-            currentState = .requestAccess
-        case .requestAccess, .confirmRejection:
-            currentState = .accessConfirmed
-        case .accessConfirmed:
             currentState = .completed
-        case .completed:
-            currentState = .initial
+        case .requestAccess, .accessConfirmed, .completed:
+            break
         }
     }
 
     override func cancelCurrentState() {
         switch currentState {
-        case .initial, .confirmRejection, .accessConfirmed, .completed:
+        case .initial, .requestAccess, .accessConfirmed, .completed:
             currentState = .initial
-        case .requestAccess:
-            currentState = .confirmRejection
         }
     }
 }
