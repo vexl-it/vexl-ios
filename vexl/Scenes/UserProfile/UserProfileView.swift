@@ -122,6 +122,12 @@ struct UserProfileView: View {
                     .cornerRadius(Appearance.GridGuide.buttonCorner)
                     .padding(Appearance.GridGuide.point)
                 }
+
+                Text(L.userProfileLogoutInfo())
+                    .multilineTextAlignment(.center)
+                    .textStyle(.description)
+                    .foregroundColor(Appearance.Colors.gray3)
+                    .padding(.vertical, Appearance.GridGuide.point)
             }
             .padding(.bottom, Appearance.GridGuide.scrollContentInset.bottom)
         }

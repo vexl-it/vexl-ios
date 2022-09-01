@@ -134,6 +134,7 @@ struct Constants {
 
     static let supportEmail = "support@vexl.it"
 
+    static let numberOfSyllablesForName = 4
     static let randomNameSyllables = [
         "bo", "da", "ga", "ge", "chi", "ka", "ko", "ku",
         "ma", "mi", "mo", "na", "no", "ro", "ri", "ru",

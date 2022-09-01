@@ -46,7 +46,7 @@ struct OfferSettingsView: View {
                         }
                     }
                     .onChange(of: viewModel.offer.currency) { currency in
-                        viewModel.offer.update(newCurrency: currency)
+                        viewModel.offer.update(newCurrency: currency, resetAmount: true)
                     }
 
                     OfferFeePickerView(feeLabel: "\(Int(viewModel.offer.feeAmount))%",
@@ -83,7 +83,8 @@ struct OfferSettingsView: View {
                         selectedTypeOptions: $viewModel.offer.selectedBTCOption,
                         selectedFriendDegreeOption: $viewModel.offer.selectedFriendDegreeOption,
                         groupRows: $viewModel.groupRows,
-                        selectedGroup: $viewModel.offer.selectedGroup
+                        selectedGroup: $viewModel.offer.selectedGroup,
+                        showContactsAndGroups: viewModel.isOfferNew
                     )
                     .padding(.top, Appearance.GridGuide.largePadding1)
 

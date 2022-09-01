@@ -73,7 +73,7 @@
 "register.contacts.import.alert.allow" = "Allow";
 "register.contacts.import.alert.not.allow" = "Don’t allow";
 "register.phone.contacts.title" = "Let’s find you\nfriends!";
-"register.phone.contacts.subtitle" = "Vexl doesn’t see your contacts";
+"register.phone.contacts.subtitle" = "We will store your contacts in our server in a secure way, even us won't be able to access them";
 "register.phone.alert.request.title" = "Allow contacts";
 "register.phone.alert.request.description" = "Vexl needs access to your contacts in order to work.\nDon't worry we won’t ever see them";
 "register.phone.alert.reject.title" = "Really?";
