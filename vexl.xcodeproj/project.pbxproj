@@ -233,11 +233,9 @@
 		F137A21428B93BCE0078A660 /* GroupError.swift in Sources */ = {isa = PBXBuildFile; fileRef = F137A21328B93BCE0078A660 /* GroupError.swift */; };
 		F137A21628BD7E7B0078A660 /* PhoneRegistrationData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F137A21528BD7E7B0078A660 /* PhoneRegistrationData.swift */; };
 		F137A21828BF97BA0078A660 /* LottieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F137A21728BF97BA0078A660 /* LottieView.swift */; };
-		F137A21D28BF9A480078A660 /* vexl_intro_3.json in Resources */ = {isa = PBXBuildFile; fileRef = F137A21A28BF9A480078A660 /* vexl_intro_3.json */; };
-		F137A21E28BF9A480078A660 /* vexl_intro_1.json in Resources */ = {isa = PBXBuildFile; fileRef = F137A21B28BF9A480078A660 /* vexl_intro_1.json */; };
-		F137A21F28BF9A480078A660 /* vexl_intro_2.json in Resources */ = {isa = PBXBuildFile; fileRef = F137A21C28BF9A480078A660 /* vexl_intro_2.json */; };
-		F137A22328BF9DE00078A660 /* 117204-basket-ball.json in Resources */ = {isa = PBXBuildFile; fileRef = F137A22228BF9DE00078A660 /* 117204-basket-ball.json */; };
-		F137A22528BFA22D0078A660 /* 116822-transfer-files.json in Resources */ = {isa = PBXBuildFile; fileRef = F137A22428BFA22D0078A660 /* 116822-transfer-files.json */; };
+		F137A22928C0FAE90078A660 /* vexl_intro_01.json in Resources */ = {isa = PBXBuildFile; fileRef = F137A22628C0FAE80078A660 /* vexl_intro_01.json */; };
+		F137A22A28C0FAE90078A660 /* vexl_intro_02.json in Resources */ = {isa = PBXBuildFile; fileRef = F137A22728C0FAE80078A660 /* vexl_intro_02.json */; };
+		F137A22B28C0FAE90078A660 /* vexl_intro_03.json in Resources */ = {isa = PBXBuildFile; fileRef = F137A22828C0FAE90078A660 /* vexl_intro_03.json */; };
 		F13B265C281897DE0011F2FB /* OfferAdvanceFilterFriendDegreeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F13B265B281897DE0011F2FB /* OfferAdvanceFilterFriendDegreeView.swift */; };
 		F13B265E281899250011F2FB /* OfferAdvancedFilterBTCNetworkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F13B265D281899250011F2FB /* OfferAdvancedFilterBTCNetworkView.swift */; };
 		F13B266028189F580011F2FB /* OfferService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F13B265F28189F580011F2FB /* OfferService.swift */; };
@@ -688,11 +686,9 @@
 		F137A21328B93BCE0078A660 /* GroupError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupError.swift; sourceTree = "<group>"; };
 		F137A21528BD7E7B0078A660 /* PhoneRegistrationData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneRegistrationData.swift; sourceTree = "<group>"; };
 		F137A21728BF97BA0078A660 /* LottieView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LottieView.swift; sourceTree = "<group>"; };
-		F137A21A28BF9A480078A660 /* vexl_intro_3.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = vexl_intro_3.json; sourceTree = "<group>"; };
-		F137A21B28BF9A480078A660 /* vexl_intro_1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = vexl_intro_1.json; sourceTree = "<group>"; };
-		F137A21C28BF9A480078A660 /* vexl_intro_2.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = vexl_intro_2.json; sourceTree = "<group>"; };
-		F137A22228BF9DE00078A660 /* 117204-basket-ball.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "117204-basket-ball.json"; sourceTree = "<group>"; };
-		F137A22428BFA22D0078A660 /* 116822-transfer-files.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "116822-transfer-files.json"; sourceTree = "<group>"; };
+		F137A22628C0FAE80078A660 /* vexl_intro_01.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = vexl_intro_01.json; sourceTree = "<group>"; };
+		F137A22728C0FAE80078A660 /* vexl_intro_02.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = vexl_intro_02.json; sourceTree = "<group>"; };
+		F137A22828C0FAE90078A660 /* vexl_intro_03.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = vexl_intro_03.json; sourceTree = "<group>"; };
 		F13B265B281897DE0011F2FB /* OfferAdvanceFilterFriendDegreeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferAdvanceFilterFriendDegreeView.swift; sourceTree = "<group>"; };
 		F13B265D281899250011F2FB /* OfferAdvancedFilterBTCNetworkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferAdvancedFilterBTCNetworkView.swift; sourceTree = "<group>"; };
 		F13B265F28189F580011F2FB /* OfferService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferService.swift; sourceTree = "<group>"; };
@@ -1792,11 +1788,9 @@
 		F137A21928BF99CB0078A660 /* Lottie */ = {
 			isa = PBXGroup;
 			children = (
-				F137A22428BFA22D0078A660 /* 116822-transfer-files.json */,
-				F137A22228BF9DE00078A660 /* 117204-basket-ball.json */,
-				F137A21B28BF9A480078A660 /* vexl_intro_1.json */,
-				F137A21C28BF9A480078A660 /* vexl_intro_2.json */,
-				F137A21A28BF9A480078A660 /* vexl_intro_3.json */,
+				F137A22628C0FAE80078A660 /* vexl_intro_01.json */,
+				F137A22728C0FAE80078A660 /* vexl_intro_02.json */,
+				F137A22828C0FAE90078A660 /* vexl_intro_03.json */,
 			);
 			path = Lottie;
 			sourceTree = "<group>";
@@ -2481,17 +2475,15 @@
 			files = (
 				F1B5FCC527C6C0720018729B /* Generic.strings in Resources */,
 				B08F390327AE7110008B344F /* LaunchScreen.storyboard in Resources */,
-				F137A22528BFA22D0078A660 /* 116822-transfer-files.json in Resources */,
 				F1BBC70F283BE5570067F81B /* TT Satoshi Medium.otf in Resources */,
+				F137A22B28C0FAE90078A660 /* vexl_intro_03.json in Resources */,
 				F1BBC710283BE5570067F81B /* TT Satoshi Regular.otf in Resources */,
-				F137A22328BF9DE00078A660 /* 117204-basket-ball.json in Resources */,
-				F137A21F28BF9A480078A660 /* vexl_intro_2.json in Resources */,
 				F1BBC713283BE55F0067F81B /* PPMonumentExtended-Bold.otf in Resources */,
-				F137A21D28BF9A480078A660 /* vexl_intro_3.json in Resources */,
 				F1B5FCC327C6BC330018729B /* Localizable.strings in Resources */,
+				F137A22928C0FAE90078A660 /* vexl_intro_01.json in Resources */,
 				B08F390F27AE7112008B344F /* Assets.xcassets in Resources */,
 				F1BBC711283BE5570067F81B /* TT Satoshi Bold.otf in Resources */,
-				F137A21E28BF9A480078A660 /* vexl_intro_1.json in Resources */,
+				F137A22A28C0FAE90078A660 /* vexl_intro_02.json in Resources */,
 				F1BBC70E283BE5570067F81B /* TT Satoshi SemiBold.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

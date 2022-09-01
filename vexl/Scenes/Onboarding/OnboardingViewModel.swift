@@ -27,11 +27,11 @@ final class OnboardingViewModel: ViewModelType {
         var animation: String {
             switch self {
             case .friends:
-                return "116822-transfer-files"
+                return "vexl_intro_01"
             case .buyAndSell:
-                return "117204-basket-ball"
+                return "vexl_intro_02"
             case .requestIdentity:
-                return "116822-transfer-files"
+                return "vexl_intro_03"
             }
         }
     }
