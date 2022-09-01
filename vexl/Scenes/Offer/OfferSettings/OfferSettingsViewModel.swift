@@ -58,6 +58,8 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
 
     @Published var locationViewModels: [OfferLocationViewModel] = []
 
+    let triggerCurrency: Currency
+
     var isOfferNew: Bool { managedOffer == nil }
     var isButtonActive: Bool { isCreateEnabled && offer != Offer(managedOffer: managedOffer) }
 
@@ -168,12 +170,15 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
         self.offerKey = offer.inbox?.keyPair?.keys ?? ECCKeys()
         self.offerType = offer.type ?? .buy
         self.managedOffer = offer
+        self.triggerCurrency = offer.activePriceCurrency ?? .usd
         setup()
     }
 
     init(offerType: OfferType, offerKey: ECCKeys) {
+        @Inject var cryptoManager: CryptocurrencyValueManager
         self.offerType = offerType
         self.offerKey = offerKey
+        self.triggerCurrency = cryptoManager.selectedCurrency.value
         setup()
     }
 
@@ -286,6 +291,7 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
             offer.type = owner.offerType
             offer.activePriceState = owner.offer.selectedPriceTrigger
             offer.activePriceValue = owner.priceTriggerAmount
+            offer.activePriceCurrency = owner.triggerCurrency
             offer.active = owner.offer.isActive
             offer.expirationDate = Date(timeIntervalSince1970: owner.expiration)
             offer.createdAt = Date()
