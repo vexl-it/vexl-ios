@@ -29,6 +29,7 @@
 # Checklist ✅
 
 - [ ] I have performed a self-review of my own code.
+- [ ] I updated the changelog for make life simpler to QAs
 - [ ] I have commented my code, particularly in hard-to-understand areas.
 - [ ] I have made corresponding changes to the documentation.
 
