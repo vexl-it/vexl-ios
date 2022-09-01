@@ -54,12 +54,13 @@ struct RequestAccessContactsView: View {
                 .foregroundColor(Appearance.Colors.primaryText)
                 .padding(.horizontal, Appearance.GridGuide.point)
 
-            HStack {
+            HStack(alignment: .top) {
                 Image(R.image.onboarding.eye.name)
 
                 Text(viewModel.subtitle)
                     .textStyle(.paragraphSmallMedium)
                     .foregroundColor(Appearance.Colors.gray2)
+                    .multilineTextAlignment(.center)
             }
             .padding(.bottom, Appearance.GridGuide.padding)
         }
