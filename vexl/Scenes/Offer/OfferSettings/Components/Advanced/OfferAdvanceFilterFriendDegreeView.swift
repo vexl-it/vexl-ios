@@ -11,6 +11,7 @@ struct OfferAdvanceFilterFriendDegreeView: View {
 
     @Binding var selectedOption: OfferFriendDegree
     private let options: [OfferFriendDegree] = [.firstDegree, .secondDegree]
+    @State private var imageHeight: CGFloat = .zero
 
     var body: some View {
         VStack(alignment: .leading) {
@@ -34,6 +35,7 @@ struct OfferAdvanceFilterFriendDegreeView: View {
                                 .resizable()
                                 .scaledToFit()
                                 .frame(maxWidth: .infinity)
+                                .frame(height: imageHeight)
                                 .overlay(
                                     Image(systemName: "checkmark.circle.fill")
                                         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
@@ -45,6 +47,9 @@ struct OfferAdvanceFilterFriendDegreeView: View {
                         .background(selectedOption == option ?
                                     Appearance.Colors.gray2 : Appearance.Colors.gray1)
                         .cornerRadius(Appearance.GridGuide.buttonCorner)
+                        .readSize { size in
+                            imageHeight = size.width
+                        }
 
                         Text(option.offerLabel)
                             .textStyle(.paragraphSemibold)

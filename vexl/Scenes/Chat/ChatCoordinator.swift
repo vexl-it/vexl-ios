@@ -106,7 +106,11 @@ final class ChatCoordinator: BaseCoordinator<RouterResult<Void>> {
             .filter { $0 == .dismissTapped }
             .map { _ -> RouterResult<Void> in .dismiss }
 
-        return dismiss
+        let deeplinkDismiss = deeplinkManager.goToInboxTab
+            .map { _ -> RouterResult<Void> in .dismiss }
+
+        return dismiss.merge(with: deeplinkDismiss)
+            .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()
     }
 

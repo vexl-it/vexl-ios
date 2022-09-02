@@ -10,6 +10,17 @@ import Cleevio
 import SwiftUI
 import Combine
 
+enum OfferSettingsError: LocalizedError {
+    case locationError
+
+    var errorDescription: String? {
+        switch self {
+        case .locationError:
+            return L.errorMissingOfferLocation()
+        }
+    }
+}
+
 final class OfferSettingsViewModel: ViewModelType, ObservableObject {
 
     @Inject var userRepository: UserRepositoryType
@@ -297,8 +308,23 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
             offer.createdAt = Date()
         }
 
-        let receiverPublicKeys = action
+        let checkLocations = action
             .filter { $0 == .createOffer }
+            .asVoid()
+            .withUnretained(self)
+            .flatMap { owner -> AnyPublisher<Void, Never> in
+                Future<Void, Error> { promise in
+                    let hasValidSuggestion = owner.locationViewModels.allSatisfy { $0.location?.isMapySuggestion == true }
+                    guard hasValidSuggestion && !owner.locationViewModels.isEmpty else {
+                        promise(.failure(OfferSettingsError.locationError))
+                        return
+                    }
+                    promise(.success(()))
+                }
+                .track(activity: owner.primaryActivity)
+            }
+
+        let receiverPublicKeys = checkLocations
             .withUnretained(self)
             .flatMap { owner, _ -> AnyPublisher<[String], Never> in
                 owner.offerService

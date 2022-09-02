@@ -14,21 +14,55 @@ struct OnboardingView: View {
 
     var body: some View {
         VStack {
-            PageControl(numberOfPages: viewModel.numberOfPages, currentIndex: $viewModel.selectedIndex)
+            card
 
-            Spacer()
+            buttons
+        }
+        .padding(.horizontal, Appearance.GridGuide.padding)
+        .background(Color.black.edgesIgnoringSafeArea(.all))
+    }
 
-            OnboardingPresentation(selectedIndex: $viewModel.selectedIndex,
-                                   title: viewModel.title)
-                .padding(.vertical, Appearance.GridGuide.mediumPadding2)
+    private var card: some View {
+        VStack {
+            PageControl(numberOfPages: viewModel.numberOfPages,
+                        currentIndex: viewModel.selectedIndex)
+                .padding([.horizontal, .top], Appearance.GridGuide.smallPadding)
 
-            Spacer()
+            VStack(alignment: .leading) {
+                LottieView(animation: viewModel.onboardingState.animation)
 
-            ButtonBarView(nextTitle: viewModel.buttonTitle,
-                          skipAction: {
+                Text(viewModel.title)
+                    .foregroundColor(Appearance.Colors.black1)
+                    .textStyle(.h3)
+                    .transition(.opacity)
+                    .id(viewModel.onboardingState.rawValue)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(Appearance.GridGuide.padding)
+            }
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+        .background(Appearance.Colors.whiteText)
+        .cornerRadius(Appearance.GridGuide.buttonCorner)
+    }
+
+    private var buttons: some View {
+        HStack(alignment: .center) {
+            LargeSolidButton(title: L.skip(),
+                             padding: Appearance.GridGuide.mediumPadding1,
+                             font: Appearance.TextStyle.titleSmallBold.font.asFont,
+                             style: .secondary,
+                             isFullWidth: true,
+                             isEnabled: .constant(true),
+                             action: {
                 viewModel.send(action: .showLogin)
-            },
-                          nextAction: {
+            })
+
+            LargeSolidButton(title: viewModel.buttonTitle,
+                             font: Appearance.TextStyle.titleSmallBold.font.asFont,
+                             style: .main,
+                             isFullWidth: true,
+                             isEnabled: .constant(true),
+                             action: {
                 guard viewModel.isLastOnboardingPage else {
                     viewModel.send(action: .showLogin)
                     return
@@ -39,8 +73,6 @@ struct OnboardingView: View {
                 }
             })
         }
-        .padding(.horizontal, Appearance.GridGuide.padding)
-        .background(Color.black.edgesIgnoringSafeArea(.all))
     }
 }
 

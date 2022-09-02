@@ -8,7 +8,13 @@
 import Foundation
 
 struct GroupMemberEnvelope: Codable {
-    var newMembers: [GroupMemberPayload]
+    var newMembers: [GroupNewMemberPayload]
+}
+
+struct GroupNewMemberPayload: Codable {
+    let groupUuid: String
+    let newPublicKeys: [String]
+    var removedPublicKeys: [String] = []
 }
 
 struct GroupMemberPayload: Codable {
