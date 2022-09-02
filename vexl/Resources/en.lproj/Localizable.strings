@@ -193,6 +193,7 @@
 "offer.mine" = "My offer";
 "offer.edit" = "Edit offer";
 "offer.added" = "Added %@";
+"error.missing.offer.location" = "Missing location";
 "filter.title" = "Filter";
 "filter.apply" = "Apply filter";
 "filter.offers" = "Filter offers";
