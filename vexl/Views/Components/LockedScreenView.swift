@@ -28,6 +28,18 @@ struct LockedScreenView: View {
         CGSize(width: 170.adjusted, height: 170.adjusted)
     }
 
+    private var title: Font? {
+        R.font.ttSatoshiMedium(size: 32.adjusted)?.asFont
+    }
+
+    private var subtitle: Font? {
+        R.font.ttSatoshiDemiBold(size: 18)?.asFont
+    }
+
+    private var paragraph: Font? {
+        R.font.ttSatoshiRegular(size: 16)?.asFont
+    }
+
     private var countdown: some View {
         VStack(spacing: Appearance.GridGuide.padding.adjusted) {
 
@@ -37,13 +49,13 @@ struct LockedScreenView: View {
                 .minimumScaleFactor(0.75)
                 .foregroundColor(Appearance.Colors.whiteText)
                 .multilineTextAlignment(.center)
-                .font(R.font.ttSatoshiDemiBold(size: 18)?.asFont)
+                .font(subtitle)
 
             Text(L.lockedScreenTitle())
                 .minimumScaleFactor(0.75)
                 .foregroundColor(Appearance.Colors.whiteText)
                 .multilineTextAlignment(.center)
-                .font(R.font.ttSatoshiDemiBold(size: 18)?.asFont)
+                .font(subtitle)
 
             HLine(color: Appearance.Colors.gray3, height: 1)
                 .padding(.vertical, Appearance.GridGuide.point.adjusted)
@@ -51,7 +63,7 @@ struct LockedScreenView: View {
             Text(L.lockedScreenSubtitle())
                 .foregroundColor(Appearance.Colors.whiteText)
                 .multilineTextAlignment(.center)
-                .font(R.font.ttSatoshiRegular(size: 16)?.asFont)
+                .font(paragraph)
 
             HStack {
                 LargeSolidButton(
@@ -96,7 +108,7 @@ struct LockedScreenView: View {
                 )
                 .overlay(
                     Text("\(Constants.numberOfOffersForLockedScreen)")
-                        .font(R.font.ttSatoshiMedium(size: 32.adjusted)?.asFont)
+                        .font(title)
                 )
 
             Circle()
