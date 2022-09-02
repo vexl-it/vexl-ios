@@ -10,7 +10,7 @@ import Combine
 
 final class ChatOfferSheetViewModel: BottomActionSheetViewModelProtocol {
 
-    typealias OfferBottomActionSheet = BottomActionSheet<ChatOfferActionSheetContent>
+    typealias OfferBottomActionSheet = BottomActionSheet<ChatOfferActionSheetContent, EmptyView>
 
     var title: String = L.chatMessageOffer()
     var primaryAction: OfferBottomActionSheet.Action = .init(title: L.buttonGotIt(), isDismissAction: true)

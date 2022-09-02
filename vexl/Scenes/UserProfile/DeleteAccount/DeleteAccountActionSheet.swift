@@ -9,7 +9,7 @@ import SwiftUI
 import Combine
 
 final class DeleteAccountSheetViewModel: BottomActionSheetViewModelProtocol {
-    typealias DeleteBottomActionSheet = BottomActionSheet<DeleteAccountActionSheetContent>
+    typealias DeleteBottomActionSheet = BottomActionSheet<DeleteAccountActionSheetContent, EmptyView>
 
     var primaryAction: DeleteBottomActionSheet.Action
     var secondaryAction: DeleteBottomActionSheet.Action? = .init(title: L.userProfileDeleteAccountNo(), isDismissAction: true)

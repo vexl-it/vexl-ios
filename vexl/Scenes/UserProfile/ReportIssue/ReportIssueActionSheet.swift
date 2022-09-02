@@ -10,7 +10,7 @@ import Combine
 
 final class ReportIssueSheetViewModel: BottomActionSheetViewModelProtocol {
 
-    typealias IdentityBottomActionSheet = BottomActionSheet<ReportIssueActionSheetContent>
+    typealias IdentityBottomActionSheet = BottomActionSheet<ReportIssueActionSheetContent, EmptyView>
 
     var primaryAction: IdentityBottomActionSheet.Action = .init(title: L.gotIt(), isDismissAction: true)
     var secondaryAction: IdentityBottomActionSheet.Action?

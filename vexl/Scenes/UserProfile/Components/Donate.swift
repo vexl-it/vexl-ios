@@ -9,12 +9,15 @@ import SwiftUI
 import Combine
 
 class DonateViewModel: BottomActionSheetViewModelProtocol {
+
+    typealias DonateBottomSheet = BottomActionSheet<DonateContent, LottieView>
+
     var title: String = L.userProfileDonateTitle()
-    var primaryAction: BottomActionSheet<DonateContent>.Action = .init(title: L.userProfileDonateButtonDonate(), isDismissAction: true)
-    var secondaryAction: BottomActionSheet<DonateContent>.Action? = .init(title: L.userProfileDonateButtonDismiss(), isDismissAction: true)
+    var primaryAction: DonateBottomSheet.Action = .init(title: L.userProfileDonateButtonDonate(), isDismissAction: true)
+    var secondaryAction: DonateBottomSheet.Action? = .init(title: L.userProfileDonateButtonDismiss(), isDismissAction: true)
     var actionPublisher: PassthroughSubject<BottomActionSheetActionType, Never> = .init()
     var dismissPublisher: PassthroughSubject<Void, Never> = .init()
-    var colorScheme: BottomActionSheet<DonateContent>.ColorScheme = .main
+    var colorScheme: DonateBottomSheet.ColorScheme = .main
     var content: DonateContent {
         DonateContent(viewModel: self)
     }
@@ -38,6 +41,7 @@ struct DonateViewPreview: PreviewProvider {
             primaryAction: model.primaryAction,
             secondaryAction: model.secondaryAction,
             colorScheme: model.colorScheme,
+            imageView: { nil },
             content: { model.content }
         )
         .background(Color.black.ignoresSafeArea())

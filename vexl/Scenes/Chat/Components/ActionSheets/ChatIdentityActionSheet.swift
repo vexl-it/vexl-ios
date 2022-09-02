@@ -10,7 +10,7 @@ import Combine
 
 final class ChatIdentitySheetViewModel: BottomActionSheetViewModelProtocol {
 
-    typealias IdentityBottomActionSheet = BottomActionSheet<ChatIdentityActionSheetContent>
+    typealias IdentityBottomActionSheet = BottomActionSheet<ChatIdentityActionSheetContent, EmptyView>
 
     var primaryAction: IdentityBottomActionSheet.Action
     var secondaryAction: IdentityBottomActionSheet.Action?
