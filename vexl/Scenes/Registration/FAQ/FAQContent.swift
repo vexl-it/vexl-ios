@@ -21,11 +21,13 @@ struct FAQContent: Identifiable {
     }
 
     let title: String
+    let imageName: String
     let description: [Description]
     let attributedDescription: NSAttributedString
 
-    init(title: String, description: [Description]) {
+    init(title: String, imageName: String, description: [Description]) {
         self.title = title
+        self.imageName = imageName
         self.description = description
         let mutableAttributedString = NSMutableAttributedString()
         for element in description {
@@ -38,25 +40,25 @@ struct FAQContent: Identifiable {
 
     static var content: [FAQContent] {
         [
-            .init(title: L.faqScene1Title(), description: [.init(text: L.faqScene1Description(),
+            .init(title: L.faqScene1Title(), imageName: R.image.faq1.name, description: [.init(text: L.faqScene1Description(),
                                                                  font: Appearance.TextStyle.paragraphSmall.font,
                                                                  color: R.color.gray3()!)]),
-            .init(title: L.faqScene2Title(), description: [.init(text: L.faqScene2Description(),
+            .init(title: L.faqScene2Title(), imageName: R.image.faq2.name, description: [.init(text: L.faqScene2Description(),
                                                                  font: Appearance.TextStyle.paragraphSmall.font,
                                                                  color: R.color.gray3()!)]),
-            .init(title: L.faqScene3Title(), description: [.init(text: L.faqScene3Description(),
+            .init(title: L.faqScene3Title(), imageName: R.image.faq3.name, description: [.init(text: L.faqScene3Description(),
                                                                  font: Appearance.TextStyle.paragraphSmall.font,
                                                                  color: R.color.gray3()!)]),
-            .init(title: L.faqScene4Title(), description: [.init(text: L.faqScene4Description(),
+            .init(title: L.faqScene4Title(), imageName: R.image.faq4.name, description: [.init(text: L.faqScene4Description(),
                                                                  font: Appearance.TextStyle.paragraphSmall.font,
                                                                  color: R.color.gray3()!)]),
-            .init(title: L.faqScene5Title(), description: [.init(text: L.faqScene5Description(),
+            .init(title: L.faqScene5Title(), imageName: R.image.faq5.name, description: [.init(text: L.faqScene5Description(),
                                                                  font: Appearance.TextStyle.paragraphSmall.font,
                                                                  color: R.color.gray3()!)]),
-            .init(title: L.faqScene6Title(), description: [.init(text: L.faqScene6Description(),
+            .init(title: L.faqScene6Title(), imageName: R.image.faq6.name, description: [.init(text: L.faqScene6Description(),
                                                                  font: Appearance.TextStyle.paragraphSmall.font,
                                                                  color: R.color.gray3()!)]),
-            .init(title: L.faqScene7Title(), description: [.init(text: L.faqScene7Description1(),
+            .init(title: L.faqScene7Title(), imageName: R.image.faq7.name, description: [.init(text: L.faqScene7Description1(),
                                                                  font: Appearance.TextStyle.paragraphSmall.font,
                                                                  color: R.color.gray3()!),
                                                            .init(text: L.faqScene7Description2(),

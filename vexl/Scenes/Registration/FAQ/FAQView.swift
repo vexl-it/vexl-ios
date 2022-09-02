@@ -66,16 +66,22 @@ struct FAQView: View {
             .padding(Appearance.GridGuide.padding)
 
             VStack(alignment: .leading, spacing: .zero) {
+                Image(viewModel.imageName)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .id("Image: \(viewModel.currentIndex)")
+
                 Text(viewModel.title)
                     .textStyle(.h3)
                     .foregroundColor(Appearance.Colors.primaryText)
                     .padding(.bottom, Appearance.GridGuide.point)
                     .transition(.opacity.animation(.easeIn))
-                    .id(viewModel.currentIndex)
+                    .id("Title: \(viewModel.currentIndex)")
 
                 AttributedText(attributedText: viewModel.description)
                     .transition(.opacity.animation(.easeIn))
-                    .id(viewModel.currentIndex)
+                    .id("Descripton: \(viewModel.currentIndex)")
             }
             .padding(Appearance.GridGuide.padding)
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomLeading)
