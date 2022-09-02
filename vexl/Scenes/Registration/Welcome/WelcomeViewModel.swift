@@ -50,6 +50,7 @@ final class WelcomeViewModel: ViewModelType {
         setupActions()
         generateLocalEncryptionKeyIfNeeded()
         initialScreenManager.update(onboardingState: .initial)
+        UserDefaultsConfig.hasSeenOnboarding = true
     }
 
     private func setupActions() {

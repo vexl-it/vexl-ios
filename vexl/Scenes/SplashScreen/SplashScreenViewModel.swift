@@ -73,7 +73,7 @@ final class SplashScreenViewModel: ViewModelType {
         let userSignedOut: AnyPublisher<InitialScreenManager.State, Never> = authenticationManager
             .isUserLoggedInPublisher
             .filter { !$0 }
-            .map { _ in .welcome }
+            .map { _ in .initial }
             .eraseToAnyPublisher()
 
         let refresh = authenticationManager
