@@ -59,13 +59,14 @@ final class RequestOfferViewModel: ViewModelType, ObservableObject {
 
     // MARK: - Variables
 
-    var username: String = ManagedProfile.generateRandomName()
+    var username: String
 
     private let offer: ManagedOffer
     private let cancelBag: CancelBag = .init()
 
     init(offer: ManagedOffer) {
         self.offer = offer
+        self.username = self.offer.receiversPublicKey?.profile?.name ?? ""
         setupDataBindings()
         setupActivityBindings()
         setupActionBindings()

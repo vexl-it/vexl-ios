@@ -14,13 +14,13 @@ protocol OfferManagerType {
     var didFinishSyncing: AnyPublisher<Void, Never> { get }
 
     func sync()
-    func syncUserOffers(withPublicKeys: [String], completionHandler: ((Error?) -> Void)?)
+    func syncUserOffers(withPublicKeys: [String], friendLevel: OfferFriendDegree, completionHandler: ((Error?) -> Void)?)
     func sync(offers: [ManagedOffer], withPublicKeys: [String]) -> AnyPublisher<Void, Error>
 }
 
 extension OfferManagerType {
-    func syncUserOffers(withPublicKeys: [String]) {
-        syncUserOffers(withPublicKeys: withPublicKeys, completionHandler: nil)
+    func syncUserOffers(withPublicKeys: [String], friendLevel: OfferFriendDegree) {
+        syncUserOffers(withPublicKeys: withPublicKeys, friendLevel: friendLevel, completionHandler: nil)
     }
 }
 
@@ -70,8 +70,19 @@ final class OfferManager: OfferManagerType {
             })
     }
 
-    func syncUserOffers(withPublicKeys publicKeys: [String], completionHandler: ((Error?) -> Void)?) {
-        let offers = userRepository.user?.offers?.allObjects as? [ManagedOffer] ?? []
+    func syncUserOffers(withPublicKeys publicKeys: [String], friendLevel: OfferFriendDegree, completionHandler: ((Error?) -> Void)?) {
+        let offers: [ManagedOffer] = {
+            let allOfferSet = userRepository.user?.offers ?? NSSet()
+            switch friendLevel {
+            case .firstDegree:
+                return allOfferSet.allObjects as? [ManagedOffer] ?? []
+            case .secondDegree:
+                let secondDegreeOffers = allOfferSet
+                    .filtered(using: NSPredicate(format: "friendDegreeRawType == '\(OfferFriendDegree.secondDegree.rawValue)'"))
+                return Array(secondDegreeOffers) as? [ManagedOffer] ?? []
+            }
+        }()
+
         sync(offers: offers, withPublicKeys: publicKeys)
             .handleEvents(
                 receiveOutput: {

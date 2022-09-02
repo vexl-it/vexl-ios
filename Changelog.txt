@@ -38,6 +38,7 @@
 - VEX-718: Sorted phone contacts
 - VEX-818: Reveal identity now is anchored to the bottom of the chat
 - VEX-806: Added dismiss to the identity banner
+- VEX-934: Support for 2nd degree newcomer notifications
 - VEX-535: Using prefix from phone number
 - VEX-924: Onboarding now uses lottie + updated UI
 
@@ -65,18 +66,20 @@
 - VEX-739: Fix group member count
 - VEX-749: Silence group notifications
 - VEX-671: Request offer button UI
-- VEX-786 - iOS [Profile] Cancel button doesn't work
-- VEX-759 - The name of the application should be Vexl with a capital V
-- VEX-686 - Incorrect height of the button for creating an offer
-- VEX-672 - iOS: [Onboarding] - the back arrow has an incorrect design
-- VEX-670 - Wrong text on the button for new offers
-- VEX-649 - The cross button should be aligned to the first line of text
-- VEX-715 - The layout of the buttons on the contact page does not match the design
-- VEX-898 - Fix double back buttons in navigation bar on iOS 16
-- VEX-902 - Fix multiple UI bugs related to iOS 16
-- VEX-903 - Fix BE error when creating offer without location suggestion
-- VEX-930 - Hide receiver connections when editing offer
-- VEX-927 - Fix loading offers on first launch
-- VEX-916 - Remove facebook section from user profile
+- VEX-786: iOS [Profile] Cancel button doesn't work
+- VEX-759: The name of the application should be Vexl with a capital V
+- VEX-686: Incorrect height of the button for creating an offer
+- VEX-672: iOS: [Onboarding] - the back arrow has an incorrect design
+- VEX-670: Wrong text on the button for new offers
+- VEX-649: The cross button should be aligned to the first line of text
+- VEX-715: The layout of the buttons on the contact page does not match the design
+- VEX-898: Fix double back buttons in navigation bar on iOS 16
+- VEX-902: Fix multiple UI bugs related to iOS 16
+- VEX-903: Fix BE error when creating offer without location suggestion
+- VEX-930: Hide receiver connections when editing offer
+- VEX-927: Fix loading offers on first launch
+- VEX-916: Remove facebook section from user profile
+- VEX-953: Updated group member model
+- VEX-784 - Going back to the chat list when user press on notification about chat deletion
 
 ### Known Issues

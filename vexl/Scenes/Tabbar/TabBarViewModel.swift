@@ -7,11 +7,13 @@
 
 import Foundation
 import Cleevio
+import Combine
 
 final class TabBarViewModel: ViewModelType {
 
     @Inject var cryptocurrencyManager: CryptocurrencyValueManagerType
     @Inject var syncInboxManager: SyncInboxManagerType
+    @Inject var deeplinkManager: DeeplinkManagerType
 
     // MARK: - Actions Bindings
 
@@ -19,6 +21,7 @@ final class TabBarViewModel: ViewModelType {
     }
 
     let action: ActionSubject<UserAction> = .init()
+    let goToInboxTab = PassthroughSubject<Void, Never>()
 
     @Published var primaryActivity: Activity = .init()
 
@@ -37,5 +40,19 @@ final class TabBarViewModel: ViewModelType {
         cryptocurrencyManager.startPollingCoinData()
         cryptocurrencyManager.fetchChart(option: cryptocurrencyManager.currentTimeline.value)
         syncInboxManager.startSyncingInboxes()
+        setupBindings()
+    }
+
+    func checkSelectedTab() {
+        if deeplinkManager.shouldGoToInboxOnStartup {
+            goToInboxTab.send()
+            deeplinkManager.cleanState()
+        }
+    }
+
+    private func setupBindings() {
+        deeplinkManager.goToInboxTab
+            .subscribe(goToInboxTab)
+            .store(in: cancelBag)
     }
 }

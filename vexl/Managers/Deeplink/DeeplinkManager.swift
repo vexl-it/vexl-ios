@@ -19,11 +19,14 @@ enum DeeplinkRequest {
     case openChat(inboxPK: String, senderPK: String)
     case openRequest
     case openGroup(id: String)
+    case openInbox
 }
 
 protocol DeeplinkManagerType {
     var openDeeplink: AnyPublisher<DeeplinkScreen, Never> { get }
+    var goToInboxTab: AnyPublisher<Void, Never> { get }
     var canOpenDeepLink: Bool { get }
+    var shouldGoToInboxOnStartup: Bool { get }
 
     func handleDeeplink(with request: DeeplinkRequest)
     func handleDeeplink(withURL url: URL)
@@ -33,10 +36,13 @@ protocol DeeplinkManagerType {
 
 final class DeeplinkManager: DeeplinkManagerType {
     var openDeeplink: AnyPublisher<DeeplinkScreen, Never> { openDeeplinkSubject.filterNil().eraseToAnyPublisher() }
+    var goToInboxTab: AnyPublisher<Void, Never> { goToInboxTabSubject.eraseToAnyPublisher() }
     var canOpenDeepLink = true
+    var shouldGoToInboxOnStartup = false
 
     @Inject private var chatRepository: ChatRepositoryType
 
+    private let goToInboxTabSubject = PassthroughSubject<Void, Never>()
     private let openDeeplinkSubject = CurrentValueSubject<DeeplinkScreen?, Never>(nil)
     private let cancelBag = CancelBag()
 
@@ -56,6 +62,9 @@ final class DeeplinkManager: DeeplinkManagerType {
             openDeeplinkSubject.send(.request)
         case let .openGroup(id):
             openDeeplinkSubject.send(.groupInput(id))
+        case .openInbox:
+            shouldGoToInboxOnStartup = true
+            goToInboxTabSubject.send()
         }
     }
 
@@ -66,6 +75,7 @@ final class DeeplinkManager: DeeplinkManagerType {
 
     func cleanState() {
         openDeeplinkSubject.send(nil)
+        shouldGoToInboxOnStartup = false
     }
 
     func setCanOpenDeeplink(to value: Bool) {
