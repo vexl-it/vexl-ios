@@ -193,6 +193,7 @@
 "offer.mine" = "Moje nabídka";
 "offer.edit" = "Upravit nabídku";
 "offer.added" = "Přidáno %@";
+"error.missing.offer.location" = "Chybí lokace";
 "filter.title" = "Filtr";
 "filter.apply" = "Použít filtr";
 "filter.offers" = "Filtrovat nabídky";

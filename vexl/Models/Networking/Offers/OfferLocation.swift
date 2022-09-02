@@ -12,6 +12,8 @@ struct OfferLocation: Codable, Hashable {
     var longitude: Float
     var city: String
 
+    var isMapySuggestion: Bool = false
+
     var asString: String? {
         let json: [String: Any] = [
             "latitude": latitude,
@@ -57,6 +59,7 @@ struct OfferLocation: Codable, Hashable {
         self.latitude = locationSuggestion.lat
         self.longitude = locationSuggestion.lon
         self.city = locationSuggestion.city
+        self.isMapySuggestion = true
     }
 
     ///

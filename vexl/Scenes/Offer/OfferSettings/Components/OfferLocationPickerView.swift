@@ -115,7 +115,7 @@ extension OfferLocationPickerView {
                                 Text(suggestionInfo.city)
                                     .textStyle(.paragraphMedium)
 
-                                Text(String(format: "%@, %@", suggestionInfo.region, suggestionInfo.country))
+                                Text(suggestionInfo.suggestSecondRow ?? "")
                                     .textStyle(.paragraphSmall)
                             }
                             .frame(maxWidth: .infinity, alignment: .leading)
