@@ -9,7 +9,7 @@ import SwiftUI
 import Combine
 
 final class GroupsLeaveSheetViewModel: BottomActionSheetViewModelProtocol {
-    typealias LeaveBottomActionSheet = BottomActionSheet<GroupsLeaveActionSheetContent>
+    typealias LeaveBottomActionSheet = BottomActionSheet<GroupsLeaveActionSheetContent, EmptyView>
 
     var primaryAction: LeaveBottomActionSheet.Action = .init(title: L.groupsLeaveGroupYes(), isDismissAction: true)
     var secondaryAction: LeaveBottomActionSheet.Action? = .init(title: L.groupsLeaveGroupNo(), isDismissAction: true)

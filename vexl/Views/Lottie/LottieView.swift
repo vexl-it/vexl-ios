@@ -9,30 +9,57 @@ import SwiftUI
 import UIKit
 import Lottie
 
+enum LottiePlayMode {
+    case play
+    case pause(Time)
+}
+
+extension LottiePlayMode {
+    enum Time {
+        case start
+        case end
+        case exact(Double)
+    }
+}
+
 struct LottieView: UIViewRepresentable {
 
     let animation: LottieAnimation
     let loopMode: LottieLoopMode
+    let playMode: LottiePlayMode
 
-    init(animation: LottieAnimation, loopMode: LottieLoopMode = .playOnce) {
+    init(animation: LottieAnimation, loopMode: LottieLoopMode = .playOnce, playMode: LottiePlayMode = .play) {
         self.animation = animation
         self.loopMode = loopMode
+        self.playMode = playMode
     }
 
     func makeUIView(context: UIViewRepresentableContext<LottieView>) -> UIView {
         let view = UIView()
         let animationView = createAnimationView()
         setupAnimationView(animationView, withParentView: view)
-        animationView.play()
+        switch playMode {
+        case .play:
+            animationView.play()
+        case .pause(let time):
+            switch time {
+            case .start:
+                animationView.currentProgress = AnimationProgressTime(0)
+            case .end:
+                animationView.currentProgress = AnimationProgressTime(1)
+            case .exact(let progress):
+                animationView.currentProgress = AnimationProgressTime(progress)
+            }
+        }
         return view
     }
 
     func updateUIView(_ uiView: UIView, context: UIViewRepresentableContext<LottieView>) {
-        uiView.subviews.forEach { $0.removeFromSuperview() }
-        let animationView = createAnimationView()
-        setupAnimationView(animationView, withParentView: uiView)
-        animationView.play()
-    }
+            uiView.subviews.forEach { $0.removeFromSuperview() }
+            let animationView = createAnimationView()
+            setupAnimationView(animationView, withParentView: uiView)
+            animationView.play()
+        }
 
     private func createAnimationView() -> AnimationView {
         let animationView = AnimationView()

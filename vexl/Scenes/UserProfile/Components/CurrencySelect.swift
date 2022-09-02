@@ -11,12 +11,14 @@ import Combine
 class CurrencySelectViewModel: BottomActionSheetViewModelProtocol {
     @Inject var cryptocurrencyValueManager: CryptocurrencyValueManagerType
 
+    typealias CurrencySelectBottomSheet = BottomActionSheet<CurrencySelectContent, EmptyView>
+
     var title: String = L.userProfileCurrencyTitle()
-    var primaryAction: BottomActionSheet<CurrencySelectContent>.Action
-    var secondaryAction: BottomActionSheet<CurrencySelectContent>.Action?
+    var primaryAction: CurrencySelectBottomSheet.Action
+    var secondaryAction: CurrencySelectBottomSheet.Action?
     var actionPublisher: PassthroughSubject<BottomActionSheetActionType, Never> = .init()
     var dismissPublisher: PassthroughSubject<Void, Never> = .init()
-    var colorScheme: BottomActionSheet<CurrencySelectContent>.ColorScheme = .main
+    var colorScheme: CurrencySelectBottomSheet.ColorScheme = .main
     var content: CurrencySelectContent {
         CurrencySelectContent(viewModel: self)
     }

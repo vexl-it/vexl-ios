@@ -14,7 +14,7 @@ final class ChatCommonFriendsSheetViewModel: BottomActionSheetViewModelProtocol 
     @Inject var contactService: ContactsServiceType
     @Inject var contactRepository: ContactsRepositoryType
 
-    typealias CommonFriendBottomActionSheet = BottomActionSheet<ChatCommonFriendsActionSheetContent>
+    typealias CommonFriendBottomActionSheet = BottomActionSheet<ChatCommonFriendsActionSheetContent, EmptyView>
 
     var title: String = L.chatMessageCommonFriend()
     var primaryAction: CommonFriendBottomActionSheet.Action = .init(title: L.buttonGotIt(), isDismissAction: true)

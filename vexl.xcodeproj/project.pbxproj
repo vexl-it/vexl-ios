@@ -144,6 +144,10 @@
 		B0B0A059288EDDAE00E81776 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B0A058288EDDAE00E81776 /* NotificationManager.swift */; };
 		B0B0A05B2891AC3E00E81776 /* Bool+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B0A05A2891AC3E00E81776 /* Bool+.swift */; };
 		B0BB493E28AFA1410068BCB8 /* vexl-crypto.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = B0BB493D28AFA1410068BCB8 /* vexl-crypto.xcframework */; };
+		B0C838EC28C2285F0086B8F3 /* vexl_delete_chat.json in Resources */ = {isa = PBXBuildFile; fileRef = B0C838E828C2285E0086B8F3 /* vexl_delete_chat.json */; };
+		B0C838ED28C2285F0086B8F3 /* vexl_block_user.json in Resources */ = {isa = PBXBuildFile; fileRef = B0C838E928C2285E0086B8F3 /* vexl_block_user.json */; };
+		B0C838EE28C2285F0086B8F3 /* vexl_get_started.json in Resources */ = {isa = PBXBuildFile; fileRef = B0C838EA28C2285F0086B8F3 /* vexl_get_started.json */; };
+		B0C838F028C243220086B8F3 /* vexl_donate.json in Resources */ = {isa = PBXBuildFile; fileRef = B0C838EF28C243220086B8F3 /* vexl_donate.json */; };
 		B0E9BB272815C5750012BF1D /* String+Encryptable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E9BB262815C5750012BF1D /* String+Encryptable.swift */; };
 		B0E9BB2A2815C7190012BF1D /* AES.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E9BB292815C7190012BF1D /* AES.swift */; };
 		B0E9BB2C2815C71E0012BF1D /* ECC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E9BB2B2815C71E0012BF1D /* ECC.swift */; };
@@ -595,6 +599,10 @@
 		B0BB493928ACFB0D0068BCB8 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		B0BB493B28ACFB3C0068BCB8 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		B0BB493D28AFA1410068BCB8 /* vexl-crypto.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = "vexl-crypto.xcframework"; sourceTree = "<group>"; };
+		B0C838E828C2285E0086B8F3 /* vexl_delete_chat.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = vexl_delete_chat.json; sourceTree = "<group>"; };
+		B0C838E928C2285E0086B8F3 /* vexl_block_user.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = vexl_block_user.json; sourceTree = "<group>"; };
+		B0C838EA28C2285F0086B8F3 /* vexl_get_started.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = vexl_get_started.json; sourceTree = "<group>"; };
+		B0C838EF28C243220086B8F3 /* vexl_donate.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = vexl_donate.json; sourceTree = "<group>"; };
 		B0E9BB262815C5750012BF1D /* String+Encryptable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Encryptable.swift"; sourceTree = "<group>"; };
 		B0E9BB292815C7190012BF1D /* AES.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AES.swift; sourceTree = "<group>"; };
 		B0E9BB2B2815C71E0012BF1D /* ECC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ECC.swift; sourceTree = "<group>"; };
@@ -1790,6 +1798,10 @@
 		F137A21928BF99CB0078A660 /* Lottie */ = {
 			isa = PBXGroup;
 			children = (
+				B0C838E928C2285E0086B8F3 /* vexl_block_user.json */,
+				B0C838EF28C243220086B8F3 /* vexl_donate.json */,
+				B0C838E828C2285E0086B8F3 /* vexl_delete_chat.json */,
+				B0C838EA28C2285F0086B8F3 /* vexl_get_started.json */,
 				F137A22628C0FAE80078A660 /* vexl_intro_01.json */,
 				F137A22728C0FAE80078A660 /* vexl_intro_02.json */,
 				F137A22828C0FAE90078A660 /* vexl_intro_03.json */,
@@ -2485,13 +2497,17 @@
 			buildActionMask = 2147483647;
 			files = (
 				F1B5FCC527C6C0720018729B /* Generic.strings in Resources */,
+				B0C838F028C243220086B8F3 /* vexl_donate.json in Resources */,
+				B0C838EE28C2285F0086B8F3 /* vexl_get_started.json in Resources */,
 				B08F390327AE7110008B344F /* LaunchScreen.storyboard in Resources */,
 				F1BBC70F283BE5570067F81B /* TT Satoshi Medium.otf in Resources */,
 				F137A22B28C0FAE90078A660 /* vexl_intro_03.json in Resources */,
 				F1BBC710283BE5570067F81B /* TT Satoshi Regular.otf in Resources */,
+				B0C838EC28C2285F0086B8F3 /* vexl_delete_chat.json in Resources */,
 				F1BBC713283BE55F0067F81B /* PPMonumentExtended-Bold.otf in Resources */,
 				F1B5FCC327C6BC330018729B /* Localizable.strings in Resources */,
 				F137A22928C0FAE90078A660 /* vexl_intro_01.json in Resources */,
+				B0C838ED28C2285F0086B8F3 /* vexl_block_user.json in Resources */,
 				B08F390F27AE7112008B344F /* Assets.xcassets in Resources */,
 				F1BBC711283BE5570067F81B /* TT Satoshi Bold.otf in Resources */,
 				F137A22A28C0FAE90078A660 /* vexl_intro_02.json in Resources */,
