@@ -10,7 +10,7 @@ import SwiftUI
 struct RegisterAvatarInputView: View {
 
     var name: String
-    var avatar: Data?
+    @Binding var avatar: Data?
     var addAction: () -> Void
     var deleteAction: () -> Void
 
@@ -35,7 +35,7 @@ struct RegisterAvatarInputView: View {
     }
 
     var addAvatarButton: some View {
-        RegisterAvatarAddImageView(image: avatar,
+        RegisterAvatarAddImageView(image: $avatar,
                                    addAction: {
             addAction()
         },
@@ -47,7 +47,7 @@ struct RegisterAvatarInputView: View {
 
 private struct RegisterAvatarAddImageView: View {
 
-    var image: Data?
+    @Binding var image: Data?
     var addAction: () -> Void
     var deleteAction: () -> Void
 
@@ -97,13 +97,13 @@ private struct RegisterAvatarAddImageView: View {
 struct RegisterNameAvatarInputViewPreview: PreviewProvider {
     static var previews: some View {
         RegisterAvatarInputView(name: "Name",
-                                avatar: R.image.onboarding.testAvatar()?.jpegData(compressionQuality: 1),
+                                avatar: .constant(R.image.onboarding.testAvatar()?.jpegData(compressionQuality: 1)),
                                 addAction: {},
                                 deleteAction: {})
             .background(Color.black)
 
         RegisterAvatarInputView(name: "Name",
-                                avatar: nil,
+                                avatar: .constant(nil),
                                 addAction: {},
                                 deleteAction: {})
             .background(Color.black)

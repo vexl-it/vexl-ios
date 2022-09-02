@@ -21,7 +21,7 @@ struct ImportContactItemView: View {
         HStack {
             avatarImage
                 .frame(size: imageSize)
-                .cornerRadius(Appearance.GridGuide.buttonCorner, corners: .allCorners)
+                .cornerRadius(Appearance.GridGuide.buttonCorner)
 
             Spacer()
 
