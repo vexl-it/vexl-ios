@@ -111,7 +111,7 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
     }
 
     var isMarketplaceLocked: Bool {
-        true//remoteConfigManager.getBoolValue(for: .isMarketplaceLocked)
+        remoteConfigManager.getBoolValue(for: .isMarketplaceLocked)
     }
 
     let refresh = PassthroughSubject<Void, Never>()
