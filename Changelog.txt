@@ -41,6 +41,7 @@
 - VEX-934: Support for 2nd degree newcomer notifications
 - VEX-535: Using prefix from phone number
 - VEX-924: Onboarding now uses lottie + updated UI
+- VEX-963: Updated update button conditions for Offer editing
 
 ### Fixes
 - VEX-525: Fixed common friends on chat request screen

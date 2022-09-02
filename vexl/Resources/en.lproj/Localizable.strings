@@ -169,8 +169,8 @@
 "marketplace.buy.add" = "Create new offer";
 "marketplace.detail.friend.first" = "Friend";
 "marketplace.detail.friend.second" = "Friend of a Friend";
-"marketplace.detail.sell" = "Buying";
-"marketplace.detail.buy" = "Selling";
+"marketplace.detail.sell" = "Buying2";
+"marketplace.detail.buy" = "Selling2";
 "marketplace.detail.user.sell" = "%@ is buying";
 "marketplace.detail.user.buy" = "%@ is selling";
 "marketplace.detail.up.to" = "Up to";

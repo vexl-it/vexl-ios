@@ -70,7 +70,7 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
     @Published var locationViewModels: [OfferLocationViewModel] = []
 
     var isOfferNew: Bool { managedOffer == nil }
-    var isButtonActive: Bool { isCreateEnabled && offer != Offer(managedOffer: managedOffer) }
+    var isButtonActive: Bool { isCreateEnabled && (offer != Offer(managedOffer: managedOffer) || areLocationsUpdated) }
 
     // MARK: - Coordinator Bindings
 
@@ -127,6 +127,19 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
         return !offer.description.isEmpty == true && !locationViewModels.compactMap(\.location).isEmpty
     }
 
+    private var areLocationsUpdated: Bool {
+        guard !locationViewModels.compactMap(\.location).isEmpty else {
+            return false
+        }
+
+        guard locationViewModels.compactMap(\.location).allSatisfy(\.isValid) else {
+            return false
+        }
+
+        let currentLocations = locationViewModels.compactMap(\.location)
+        return currentLocations != initialLocations
+    }
+
     var headerTitle: String {
         switch offerType {
         case .sell:
@@ -172,6 +185,7 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
     var offerKey: ECCKeys
     let offerType: OfferType
 
+    private var initialLocations: [OfferLocation] = []
     private var managedOffer: ManagedOffer?
     private let cancelBag: CancelBag = .init()
 
@@ -204,6 +218,7 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
             locationViewModels = managedLocations.map {
                 OfferLocationViewModel(location: $0.offerLocation)
             }
+            initialLocations = managedLocations.compactMap(\.offerLocation)
         }
 
         $fetchedGroups

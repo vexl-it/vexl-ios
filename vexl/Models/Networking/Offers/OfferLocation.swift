@@ -7,12 +7,16 @@
 
 import Foundation
 
-struct OfferLocation: Codable, Hashable {
+struct OfferLocation: Codable, Hashable, Equatable {
     var latitude: Float
     var longitude: Float
     var city: String
 
     var isMapySuggestion: Bool = false
+
+    var isValid: Bool {
+        latitude != 0 && longitude != 0 && !city.isEmpty
+    }
 
     var asString: String? {
         let json: [String: Any] = [
