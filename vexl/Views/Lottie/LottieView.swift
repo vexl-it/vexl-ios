@@ -11,11 +11,11 @@ import Lottie
 
 struct LottieView: UIViewRepresentable {
 
-    let name: String
+    let animation: LottieAnimation
     let loopMode: LottieLoopMode
 
-    init(name: String, loopMode: LottieLoopMode = .playOnce) {
-        self.name = name
+    init(animation: LottieAnimation, loopMode: LottieLoopMode = .playOnce) {
+        self.animation = animation
         self.loopMode = loopMode
     }
 
@@ -36,13 +36,13 @@ struct LottieView: UIViewRepresentable {
 
     private func createAnimationView() -> AnimationView {
         let animationView = AnimationView()
-        animationView.animation = Animation.named(name)
+        animationView.animation = Animation.named(animation.rawValue)
         animationView.contentMode = .scaleAspectFit
         animationView.backgroundBehavior = .pauseAndRestore
-        animationView.loopMode = .playOnce
+        animationView.loopMode = self.loopMode
         return animationView
     }
-    
+
     private func setupAnimationView(_ animationView: AnimationView, withParentView view: UIView) {
         view.addSubview(animationView)
         animationView.translatesAutoresizingMaskIntoConstraints = false

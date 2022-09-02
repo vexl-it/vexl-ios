@@ -375,6 +375,7 @@
 		F1BBC710283BE5570067F81B /* TT Satoshi Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = F1BBC70C283BE5570067F81B /* TT Satoshi Regular.otf */; };
 		F1BBC711283BE5570067F81B /* TT Satoshi Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = F1BBC70D283BE5570067F81B /* TT Satoshi Bold.otf */; };
 		F1BBC713283BE55F0067F81B /* PPMonumentExtended-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = F1BBC712283BE55F0067F81B /* PPMonumentExtended-Bold.otf */; };
+		F1BD829528C24321008E9984 /* LottieAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1BD829428C24321008E9984 /* LottieAnimation.swift */; };
 		F1BDC978285BF9D600F86581 /* ChatExpandedImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1BDC975285BF9D600F86581 /* ChatExpandedImageView.swift */; };
 		F1BDC979285BF9D600F86581 /* ChatExpandedImageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1BDC976285BF9D600F86581 /* ChatExpandedImageViewModel.swift */; };
 		F1BDC97A285BF9D600F86581 /* ChatExpandedImageCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1BDC977285BF9D600F86581 /* ChatExpandedImageCoordinator.swift */; };
@@ -830,6 +831,7 @@
 		F1BBC70C283BE5570067F81B /* TT Satoshi Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "TT Satoshi Regular.otf"; sourceTree = "<group>"; };
 		F1BBC70D283BE5570067F81B /* TT Satoshi Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "TT Satoshi Bold.otf"; sourceTree = "<group>"; };
 		F1BBC712283BE55F0067F81B /* PPMonumentExtended-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "PPMonumentExtended-Bold.otf"; sourceTree = "<group>"; };
+		F1BD829428C24321008E9984 /* LottieAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LottieAnimation.swift; sourceTree = "<group>"; };
 		F1BDC975285BF9D600F86581 /* ChatExpandedImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatExpandedImageView.swift; sourceTree = "<group>"; };
 		F1BDC976285BF9D600F86581 /* ChatExpandedImageViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatExpandedImageViewModel.swift; sourceTree = "<group>"; };
 		F1BDC977285BF9D600F86581 /* ChatExpandedImageCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatExpandedImageCoordinator.swift; sourceTree = "<group>"; };
@@ -1536,6 +1538,7 @@
 		F11441A1284681EC00307D39 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				F1BD829628C2432C008E9984 /* Lottie */,
 				F11441A9284681EC00307D39 /* Components */,
 				F11441A2284681EC00307D39 /* Registration */,
 				F11441A5284681EC00307D39 /* Modifiers */,
@@ -1543,7 +1546,6 @@
 				F11441C6284681EC00307D39 /* InfoBarView.swift */,
 				B007A72B2864FEBA00CFA5C9 /* BottomActionSheet.swift */,
 				6FF08EB028B67EE500B2CF65 /* TextView.swift */,
-				F137A21728BF97BA0078A660 /* LottieView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -2237,6 +2239,15 @@
 				F1BBC70C283BE5570067F81B /* TT Satoshi Regular.otf */,
 			);
 			path = Fonts;
+			sourceTree = "<group>";
+		};
+		F1BD829628C2432C008E9984 /* Lottie */ = {
+			isa = PBXGroup;
+			children = (
+				F137A21728BF97BA0078A660 /* LottieView.swift */,
+				F1BD829428C24321008E9984 /* LottieAnimation.swift */,
+			);
+			path = Lottie;
 			sourceTree = "<group>";
 		};
 		F1BDC974285BF9D600F86581 /* ChatExpandedImage */ = {
@@ -3045,6 +3056,7 @@
 				F1071D4B28B81318002BE9EF /* LockedScreenView.swift in Sources */,
 				B08F397027AE7112008B344F /* UserRouter.swift in Sources */,
 				F1886211280EC49B00659786 /* Image+Base64.swift in Sources */,
+				F1BD829528C24321008E9984 /* LottieAnimation.swift in Sources */,
 				F188622128105A1200659786 /* UserOffersViewModel.swift in Sources */,
 				F1485656284FD60D003213D7 /* InboxError.swift in Sources */,
 				4F700CBA2844B08B0085139F /* BitcoinView.swift in Sources */,

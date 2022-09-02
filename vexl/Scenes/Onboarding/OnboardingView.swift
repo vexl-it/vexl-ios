@@ -29,7 +29,7 @@ struct OnboardingView: View {
                 .padding([.horizontal, .top], Appearance.GridGuide.smallPadding)
 
             VStack(alignment: .leading) {
-                LottieView(name: viewModel.onboardingState.animation)
+                LottieView(animation: viewModel.onboardingState.animation)
 
                 Text(viewModel.title)
                     .foregroundColor(Appearance.Colors.black1)
