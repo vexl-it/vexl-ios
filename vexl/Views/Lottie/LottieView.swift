@@ -54,7 +54,12 @@ struct LottieView: UIViewRepresentable {
         return view
     }
 
-    func updateUIView(_ uiView: UIView, context: UIViewRepresentableContext<LottieView>) {}
+    func updateUIView(_ uiView: UIView, context: UIViewRepresentableContext<LottieView>) {
+            uiView.subviews.forEach { $0.removeFromSuperview() }
+            let animationView = createAnimationView()
+            setupAnimationView(animationView, withParentView: uiView)
+            animationView.play()
+        }
 
     private func createAnimationView() -> AnimationView {
         let animationView = AnimationView()
