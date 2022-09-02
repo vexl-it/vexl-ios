@@ -62,6 +62,8 @@ struct BottomActionSheet<ContentView: View, ImageView: View>: View {
     var imageView: () -> ImageView?
     @ViewBuilder var content: () -> ContentView
 
+    private let imageHeight: Double = 220
+
     var body: some View {
         VStack {
             VStack(alignment: .leading, spacing: Appearance.GridGuide.smallPadding) {
@@ -70,14 +72,14 @@ struct BottomActionSheet<ContentView: View, ImageView: View>: View {
                         Image(imageName)
                             .resizable()
                             .scaledToFit()
-                            .frame(size: Appearance.GridGuide.largeIconSize)
+                            .frame(height: imageHeight)
                             .frame(alignment: .center)
                     }
                     .frame(maxWidth: .infinity)
                 }
 
                 imageView()
-                    .frame(height: 220)
+                    .frame(height: imageHeight)
 
                 Text(title)
                     .textStyle(.h2)
