@@ -29,6 +29,7 @@ struct BottomActionSheetView<ViewModel: BottomActionSheetViewModelProtocol>: Vie
                 primaryAction: viewModel.primaryAction(dismiss: dismissAction),
                 secondaryAction: viewModel.secondaryAction(dismiss: dismissAction),
                 colorScheme: viewModel.colorScheme,
+                imageView: { viewModel.imageView },
                 content: { viewModel.content }
             )
             .offset(y: isVisible ? dragOffset : UIScreen.main.bounds.height)
