@@ -39,9 +39,7 @@ struct WelcomeView: View {
 
     private var card: some View {
         VStack(spacing: .zero) {
-            Image(R.image.onboarding.welcomeVexl.name)
-                .resizable()
-                .scaledToFit()
+            LottieView(name: "vexl_get_started", loopMode: .playOnce)
                 .padding(.top, Appearance.GridGuide.largePadding1)
                 .padding(.bottom, Appearance.GridGuide.padding)
 
