@@ -27,6 +27,7 @@ extension UIScreen {
     }
     
     static let topInset: CGFloat = UIApplication.shared.windows.filter { $0.isKeyWindow }.first?.safeAreaInsets.top ?? 0
+    static var isSmallScreen: Bool { Self.main.height < Self.referenceHeigth }
 }
 
 extension CGFloat {

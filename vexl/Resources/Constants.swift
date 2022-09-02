@@ -144,5 +144,5 @@ struct Constants {
 
     static let maxPhoneNumberDigits = 9
     static let registrationSteps = 3
-    static let numberOfOffersForLockedScreen = 133
+    static let numberOfOffersForLockedScreen = "98 734"
 }
