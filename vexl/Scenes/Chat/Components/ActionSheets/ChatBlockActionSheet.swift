@@ -18,6 +18,11 @@ class ChatBlockSheetViewModel: BottomActionSheetViewModelProtocol {
     var actionPublisher: PassthroughSubject<BottomActionSheetActionType, Never> = .init()
     var dismissPublisher: PassthroughSubject<Void, Never> = .init()
     var colorScheme: ChatBlockBottomSheet.ColorScheme = .red
+    var imageView: LottieView? {
+        isConfirmation
+            ? LottieView(name: "vexl_block_user", playMode: .pause(.end))
+            : LottieView(name: "vexl_block_user", loopMode: .playOnce)
+    }
     var content: ChatBlockActionSheetContent {
         ChatBlockActionSheetContent(description: description)
     }

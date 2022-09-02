@@ -18,6 +18,9 @@ class DonateViewModel: BottomActionSheetViewModelProtocol {
     var actionPublisher: PassthroughSubject<BottomActionSheetActionType, Never> = .init()
     var dismissPublisher: PassthroughSubject<Void, Never> = .init()
     var colorScheme: DonateBottomSheet.ColorScheme = .main
+    var imageView: LottieView? {
+        LottieView(name: "vexl_donate", loopMode: .loop)
+    }
     var content: DonateContent {
         DonateContent(viewModel: self)
     }

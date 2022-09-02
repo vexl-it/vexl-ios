@@ -41,6 +41,7 @@ struct JoinVexlViewPreview: PreviewProvider {
             primaryAction: model.primaryAction,
             secondaryAction: model.secondaryAction,
             colorScheme: model.colorScheme,
+            imageView: { nil },
             content: { model.content }
         )
         .background(Color.black.ignoresSafeArea())

@@ -17,6 +17,11 @@ final class ChatDeleteSheetViewModel: BottomActionSheetViewModelProtocol {
     var actionPublisher: PassthroughSubject<BottomActionSheetActionType, Never> = .init()
     var dismissPublisher: PassthroughSubject<Void, Never> = .init()
     var colorScheme: DeleteBottomActionSheet.ColorScheme = .main
+    var imageView: LottieView? {
+        isConfirmation
+            ? LottieView(name: "vexl_delete_chat", playMode: .pause(.end))
+            : LottieView(name: "vexl_delete_chat", loopMode: .playOnce)
+    }
     var content: ChatDeleteActionSheetContent {
         ChatDeleteActionSheetContent(viewModel: self)
     }
