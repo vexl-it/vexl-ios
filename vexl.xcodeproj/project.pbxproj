@@ -167,7 +167,6 @@
 		B0FF5F6F289EFB430026E4C4 /* GroupRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0FF5F6E289EFB430026E4C4 /* GroupRouter.swift */; };
 		C1A0B48D6D54EB5D7D8929FB /* Pods_vexl_vexlTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D776C4D0B95B9F6E229AF7E4 /* Pods_vexl_vexlTests.framework */; };
 		F1042BA227BEADB70048C2F0 /* WelcomeAgreementSwitch.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1042BA127BEADB70048C2F0 /* WelcomeAgreementSwitch.swift */; };
-		F1042BA527BEF0360048C2F0 /* OnboardingView+PageControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1042BA427BEF0360048C2F0 /* OnboardingView+PageControl.swift */; };
 		F1071D4328B439F5002BE9EF /* ChatRevealIdentityBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1071D4228B439F5002BE9EF /* ChatRevealIdentityBannerView.swift */; };
 		F1071D4728B698ED002BE9EF /* URL+.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1071D4628B698ED002BE9EF /* URL+.swift */; };
 		F1071D4928B6E2B6002BE9EF /* RemoteConfigManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1071D4828B6E2B6002BE9EF /* RemoteConfigManager.swift */; };
@@ -233,6 +232,10 @@
 		F13721EF287F29830013BB7B /* TimeInterval+.swift in Sources */ = {isa = PBXBuildFile; fileRef = F13721EE287F29830013BB7B /* TimeInterval+.swift */; };
 		F137A21428B93BCE0078A660 /* GroupError.swift in Sources */ = {isa = PBXBuildFile; fileRef = F137A21328B93BCE0078A660 /* GroupError.swift */; };
 		F137A21628BD7E7B0078A660 /* PhoneRegistrationData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F137A21528BD7E7B0078A660 /* PhoneRegistrationData.swift */; };
+		F137A21828BF97BA0078A660 /* LottieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F137A21728BF97BA0078A660 /* LottieView.swift */; };
+		F137A22928C0FAE90078A660 /* vexl_intro_01.json in Resources */ = {isa = PBXBuildFile; fileRef = F137A22628C0FAE80078A660 /* vexl_intro_01.json */; };
+		F137A22A28C0FAE90078A660 /* vexl_intro_02.json in Resources */ = {isa = PBXBuildFile; fileRef = F137A22728C0FAE80078A660 /* vexl_intro_02.json */; };
+		F137A22B28C0FAE90078A660 /* vexl_intro_03.json in Resources */ = {isa = PBXBuildFile; fileRef = F137A22828C0FAE90078A660 /* vexl_intro_03.json */; };
 		F13B265C281897DE0011F2FB /* OfferAdvanceFilterFriendDegreeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F13B265B281897DE0011F2FB /* OfferAdvanceFilterFriendDegreeView.swift */; };
 		F13B265E281899250011F2FB /* OfferAdvancedFilterBTCNetworkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F13B265D281899250011F2FB /* OfferAdvancedFilterBTCNetworkView.swift */; };
 		F13B266028189F580011F2FB /* OfferService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F13B265F28189F580011F2FB /* OfferService.swift */; };
@@ -272,7 +275,6 @@
 		F1485654284FD5FD003213D7 /* ChatChallenge.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1485652284FD5FD003213D7 /* ChatChallenge.swift */; };
 		F1485656284FD60D003213D7 /* InboxError.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1485655284FD60D003213D7 /* InboxError.swift */; };
 		F14D29C727BFD93C00D1CD85 /* ButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = F14D29C627BFD93C00D1CD85 /* ButtonStyle.swift */; };
-		F14D29C927BFEA1400D1CD85 /* OnboardingView+Presentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F14D29C827BFEA1400D1CD85 /* OnboardingView+Presentation.swift */; };
 		F14F890328BD247000DC7C4F /* CameraPreviewLayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F14F890228BD247000DC7C4F /* CameraPreviewLayerView.swift */; };
 		F14F890528BD24E200DC7C4F /* CameraPreviewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F14F890428BD24E200DC7C4F /* CameraPreviewViewModel.swift */; };
 		F14F890728BD29E200DC7C4F /* CameraQRScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F14F890628BD29E200DC7C4F /* CameraQRScannerView.swift */; };
@@ -349,7 +351,6 @@
 		F1B365DC288883000069788D /* ProfileFacebookContactsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B365DB288883000069788D /* ProfileFacebookContactsView.swift */; };
 		F1B5321C28202B36009D4E0C /* OfferItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B5321B28202B36009D4E0C /* OfferItemView.swift */; };
 		F1B5FCBC27C67DB00018729B /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B5FCBB27C67DB00018729B /* WelcomeViewController.swift */; };
-		F1B5FCBE27C68EA70018729B /* OnboardingView+BottomButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B5FCBD27C68EA70018729B /* OnboardingView+BottomButtons.swift */; };
 		F1B5FCC327C6BC330018729B /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = F1B5FCC127C6BC330018729B /* Localizable.strings */; };
 		F1B5FCC527C6C0720018729B /* Generic.strings in Resources */ = {isa = PBXBuildFile; fileRef = F1B5FCC427C6C0720018729B /* Generic.strings */; };
 		F1B5FCCD27C6F7E10018729B /* RegisterPhoneCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B5FCCC27C6F7E10018729B /* RegisterPhoneCoordinator.swift */; };
@@ -374,6 +375,7 @@
 		F1BBC710283BE5570067F81B /* TT Satoshi Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = F1BBC70C283BE5570067F81B /* TT Satoshi Regular.otf */; };
 		F1BBC711283BE5570067F81B /* TT Satoshi Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = F1BBC70D283BE5570067F81B /* TT Satoshi Bold.otf */; };
 		F1BBC713283BE55F0067F81B /* PPMonumentExtended-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = F1BBC712283BE55F0067F81B /* PPMonumentExtended-Bold.otf */; };
+		F1BD829528C24321008E9984 /* LottieAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1BD829428C24321008E9984 /* LottieAnimation.swift */; };
 		F1BDC978285BF9D600F86581 /* ChatExpandedImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1BDC975285BF9D600F86581 /* ChatExpandedImageView.swift */; };
 		F1BDC979285BF9D600F86581 /* ChatExpandedImageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1BDC976285BF9D600F86581 /* ChatExpandedImageViewModel.swift */; };
 		F1BDC97A285BF9D600F86581 /* ChatExpandedImageCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1BDC977285BF9D600F86581 /* ChatExpandedImageCoordinator.swift */; };
@@ -619,7 +621,6 @@
 		D776C4D0B95B9F6E229AF7E4 /* Pods_vexl_vexlTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_vexl_vexlTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DF8AC1A170DAA6A83E1E979B /* Pods-vexl.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-vexl.debug.xcconfig"; path = "Target Support Files/Pods-vexl/Pods-vexl.debug.xcconfig"; sourceTree = "<group>"; };
 		F1042BA127BEADB70048C2F0 /* WelcomeAgreementSwitch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeAgreementSwitch.swift; sourceTree = "<group>"; };
-		F1042BA427BEF0360048C2F0 /* OnboardingView+PageControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OnboardingView+PageControl.swift"; sourceTree = "<group>"; };
 		F1071D4228B439F5002BE9EF /* ChatRevealIdentityBannerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatRevealIdentityBannerView.swift; sourceTree = "<group>"; };
 		F1071D4628B698ED002BE9EF /* URL+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+.swift"; sourceTree = "<group>"; };
 		F1071D4828B6E2B6002BE9EF /* RemoteConfigManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteConfigManager.swift; sourceTree = "<group>"; };
@@ -685,6 +686,10 @@
 		F13721EE287F29830013BB7B /* TimeInterval+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TimeInterval+.swift"; sourceTree = "<group>"; };
 		F137A21328B93BCE0078A660 /* GroupError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupError.swift; sourceTree = "<group>"; };
 		F137A21528BD7E7B0078A660 /* PhoneRegistrationData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneRegistrationData.swift; sourceTree = "<group>"; };
+		F137A21728BF97BA0078A660 /* LottieView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LottieView.swift; sourceTree = "<group>"; };
+		F137A22628C0FAE80078A660 /* vexl_intro_01.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = vexl_intro_01.json; sourceTree = "<group>"; };
+		F137A22728C0FAE80078A660 /* vexl_intro_02.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = vexl_intro_02.json; sourceTree = "<group>"; };
+		F137A22828C0FAE90078A660 /* vexl_intro_03.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = vexl_intro_03.json; sourceTree = "<group>"; };
 		F13B265B281897DE0011F2FB /* OfferAdvanceFilterFriendDegreeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferAdvanceFilterFriendDegreeView.swift; sourceTree = "<group>"; };
 		F13B265D281899250011F2FB /* OfferAdvancedFilterBTCNetworkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferAdvancedFilterBTCNetworkView.swift; sourceTree = "<group>"; };
 		F13B265F28189F580011F2FB /* OfferService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferService.swift; sourceTree = "<group>"; };
@@ -724,7 +729,6 @@
 		F1485652284FD5FD003213D7 /* ChatChallenge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatChallenge.swift; sourceTree = "<group>"; };
 		F1485655284FD60D003213D7 /* InboxError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InboxError.swift; sourceTree = "<group>"; };
 		F14D29C627BFD93C00D1CD85 /* ButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonStyle.swift; sourceTree = "<group>"; };
-		F14D29C827BFEA1400D1CD85 /* OnboardingView+Presentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OnboardingView+Presentation.swift"; sourceTree = "<group>"; };
 		F14F890228BD247000DC7C4F /* CameraPreviewLayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraPreviewLayerView.swift; sourceTree = "<group>"; };
 		F14F890428BD24E200DC7C4F /* CameraPreviewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraPreviewViewModel.swift; sourceTree = "<group>"; };
 		F14F890628BD29E200DC7C4F /* CameraQRScannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraQRScannerView.swift; sourceTree = "<group>"; };
@@ -803,7 +807,6 @@
 		F1B365DB288883000069788D /* ProfileFacebookContactsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileFacebookContactsView.swift; sourceTree = "<group>"; };
 		F1B5321B28202B36009D4E0C /* OfferItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferItemView.swift; sourceTree = "<group>"; };
 		F1B5FCBB27C67DB00018729B /* WelcomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeViewController.swift; sourceTree = "<group>"; };
-		F1B5FCBD27C68EA70018729B /* OnboardingView+BottomButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OnboardingView+BottomButtons.swift"; sourceTree = "<group>"; };
 		F1B5FCC227C6BC330018729B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		F1B5FCC427C6C0720018729B /* Generic.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = Generic.strings; sourceTree = "<group>"; };
 		F1B5FCCC27C6F7E10018729B /* RegisterPhoneCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterPhoneCoordinator.swift; sourceTree = "<group>"; };
@@ -828,6 +831,7 @@
 		F1BBC70C283BE5570067F81B /* TT Satoshi Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "TT Satoshi Regular.otf"; sourceTree = "<group>"; };
 		F1BBC70D283BE5570067F81B /* TT Satoshi Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "TT Satoshi Bold.otf"; sourceTree = "<group>"; };
 		F1BBC712283BE55F0067F81B /* PPMonumentExtended-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "PPMonumentExtended-Bold.otf"; sourceTree = "<group>"; };
+		F1BD829428C24321008E9984 /* LottieAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LottieAnimation.swift; sourceTree = "<group>"; };
 		F1BDC975285BF9D600F86581 /* ChatExpandedImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatExpandedImageView.swift; sourceTree = "<group>"; };
 		F1BDC976285BF9D600F86581 /* ChatExpandedImageViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatExpandedImageViewModel.swift; sourceTree = "<group>"; };
 		F1BDC977285BF9D600F86581 /* ChatExpandedImageCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatExpandedImageCoordinator.swift; sourceTree = "<group>"; };
@@ -1323,8 +1327,10 @@
 		B08F38FE27AE7110008B344F /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				B0BB493D28AFA1410068BCB8 /* vexl-crypto.xcframework */,
+				F137A21928BF99CB0078A660 /* Lottie */,
+				B08F395227AE7112008B344F /* GoogleServices */,
 				F1BBC709283BE5430067F81B /* Fonts */,
+				B0BB493D28AFA1410068BCB8 /* vexl-crypto.xcframework */,
 				F1B5FCC427C6C0720018729B /* Generic.strings */,
 				F1B5FCC127C6BC330018729B /* Localizable.strings */,
 				B08F395A27AE7112008B344F /* Appearance.swift */,
@@ -1332,7 +1338,6 @@
 				B08F397127AE7112008B344F /* Formatters.swift */,
 				B08F390E27AE7112008B344F /* Assets.xcassets */,
 				B08F392527AE7112008B344F /* R.generated.swift */,
-				B08F395227AE7112008B344F /* GoogleServices */,
 				B0FE5244280E845000A77EC3 /* vexl-Bridging-Header.h */,
 			);
 			path = Resources;
@@ -1456,7 +1461,6 @@
 		B08F399827AE7D4B008B344F /* Onboarding */ = {
 			isa = PBXGroup;
 			children = (
-				F1042BA327BEF0220048C2F0 /* Components */,
 				B08F399927AE7D87008B344F /* OnboardingCoordinator.swift */,
 				B08F399B27AE7D8D008B344F /* OnboardingViewModel.swift */,
 				B08F399D27AE7D92008B344F /* OnboardingView.swift */,
@@ -1506,16 +1510,6 @@
 			path = Components;
 			sourceTree = "<group>";
 		};
-		F1042BA327BEF0220048C2F0 /* Components */ = {
-			isa = PBXGroup;
-			children = (
-				F1042BA427BEF0360048C2F0 /* OnboardingView+PageControl.swift */,
-				F14D29C827BFEA1400D1CD85 /* OnboardingView+Presentation.swift */,
-				F1B5FCBD27C68EA70018729B /* OnboardingView+BottomButtons.swift */,
-			);
-			path = Components;
-			sourceTree = "<group>";
-		};
 		F11441A0284681A900307D39 /* Recovered References */ = {
 			isa = PBXGroup;
 			children = (
@@ -1544,6 +1538,7 @@
 		F11441A1284681EC00307D39 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				F1BD829628C2432C008E9984 /* Lottie */,
 				F11441A9284681EC00307D39 /* Components */,
 				F11441A2284681EC00307D39 /* Registration */,
 				F11441A5284681EC00307D39 /* Modifiers */,
@@ -1790,6 +1785,16 @@
 				F12A150027DFC1D70096543E /* ImportContactItemView.swift */,
 			);
 			path = Components;
+			sourceTree = "<group>";
+		};
+		F137A21928BF99CB0078A660 /* Lottie */ = {
+			isa = PBXGroup;
+			children = (
+				F137A22628C0FAE80078A660 /* vexl_intro_01.json */,
+				F137A22728C0FAE80078A660 /* vexl_intro_02.json */,
+				F137A22828C0FAE90078A660 /* vexl_intro_03.json */,
+			);
+			path = Lottie;
 			sourceTree = "<group>";
 		};
 		F13B265A281897890011F2FB /* Advanced */ = {
@@ -2236,6 +2241,15 @@
 			path = Fonts;
 			sourceTree = "<group>";
 		};
+		F1BD829628C2432C008E9984 /* Lottie */ = {
+			isa = PBXGroup;
+			children = (
+				F137A21728BF97BA0078A660 /* LottieView.swift */,
+				F1BD829428C24321008E9984 /* LottieAnimation.swift */,
+			);
+			path = Lottie;
+			sourceTree = "<group>";
+		};
 		F1BDC974285BF9D600F86581 /* ChatExpandedImage */ = {
 			isa = PBXGroup;
 			children = (
@@ -2473,11 +2487,14 @@
 				F1B5FCC527C6C0720018729B /* Generic.strings in Resources */,
 				B08F390327AE7110008B344F /* LaunchScreen.storyboard in Resources */,
 				F1BBC70F283BE5570067F81B /* TT Satoshi Medium.otf in Resources */,
+				F137A22B28C0FAE90078A660 /* vexl_intro_03.json in Resources */,
 				F1BBC710283BE5570067F81B /* TT Satoshi Regular.otf in Resources */,
 				F1BBC713283BE55F0067F81B /* PPMonumentExtended-Bold.otf in Resources */,
 				F1B5FCC327C6BC330018729B /* Localizable.strings in Resources */,
+				F137A22928C0FAE90078A660 /* vexl_intro_01.json in Resources */,
 				B08F390F27AE7112008B344F /* Assets.xcassets in Resources */,
 				F1BBC711283BE5570067F81B /* TT Satoshi Bold.otf in Resources */,
+				F137A22A28C0FAE90078A660 /* vexl_intro_02.json in Resources */,
 				F1BBC70E283BE5570067F81B /* TT Satoshi SemiBold.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2746,7 +2763,6 @@
 				F1886257281193CA00659786 /* OfferLocationPickerView.swift in Sources */,
 				B08F394B27AE7112008B344F /* ServerError.swift in Sources */,
 				F1DF4A48289B2941008E5C87 /* RefreshContainer.swift in Sources */,
-				F14D29C927BFEA1400D1CD85 /* OnboardingView+Presentation.swift in Sources */,
 				F1EE5EFC28AAF36200E4EF76 /* UserOfferAttributedText.swift in Sources */,
 				F1A9454427F81211009B5AE3 /* ContactsAvailable.swift in Sources */,
 				B0EEE11A27B14D3D0097031E /* WelcomeView.swift in Sources */,
@@ -2868,7 +2884,6 @@
 				F11441D2284681EC00307D39 /* ImagePickerView.swift in Sources */,
 				F151A29227C807DD000D7242 /* RegisterPhoneCodeInputView.swift in Sources */,
 				B08F392627AE7112008B344F /* R.generated.swift in Sources */,
-				F1042BA527BEF0360048C2F0 /* OnboardingView+PageControl.swift in Sources */,
 				B007A73528659AD900CFA5C9 /* BottomActionSheetCoordinator.swift in Sources */,
 				F1B5FCD627C703BF0018729B /* View+.swift in Sources */,
 				F114420128495E1900307D39 /* LargeSolidButton.swift in Sources */,
@@ -3008,7 +3023,6 @@
 				B007A73C2868B69E00CFA5C9 /* Donate.swift in Sources */,
 				F1BFA956280223BD00F4E745 /* UserProfileView.swift in Sources */,
 				F14F890528BD24E200DC7C4F /* CameraPreviewViewModel.swift in Sources */,
-				F1B5FCBE27C68EA70018729B /* OnboardingView+BottomButtons.swift in Sources */,
 				F1886255281185E900659786 /* OfferFeePickerView.swift in Sources */,
 				4FEFE326289F21CD006AB8DA /* RegisterAnonymizeViewModel.swift in Sources */,
 				4FBF624C2840D31C00DDBE71 /* ToggleKeyboardHostingController.swift in Sources */,
@@ -3042,9 +3056,11 @@
 				F1071D4B28B81318002BE9EF /* LockedScreenView.swift in Sources */,
 				B08F397027AE7112008B344F /* UserRouter.swift in Sources */,
 				F1886211280EC49B00659786 /* Image+Base64.swift in Sources */,
+				F1BD829528C24321008E9984 /* LottieAnimation.swift in Sources */,
 				F188622128105A1200659786 /* UserOffersViewModel.swift in Sources */,
 				F1485656284FD60D003213D7 /* InboxError.swift in Sources */,
 				4F700CBA2844B08B0085139F /* BitcoinView.swift in Sources */,
+				F137A21828BF97BA0078A660 /* LottieView.swift in Sources */,
 				B08F394327AE7112008B344F /* Keychain+.swift in Sources */,
 				F11441CD284681EC00307D39 /* LabelButton.swift in Sources */,
 				F175AB8727E4D5C8000DAB15 /* UIScreen+.swift in Sources */,
@@ -3181,7 +3197,7 @@
 				CODE_SIGN_ENTITLEMENTS = vexl/vexl.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 247;
+				CURRENT_PROJECT_VERSION = 254;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = KQNTW88PVA;
 				ENABLE_BITCODE = NO;
@@ -3214,7 +3230,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 247;
+				CURRENT_PROJECT_VERSION = 254;
 				DEVELOPMENT_TEAM = SHD6TUKSPH;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
@@ -3299,7 +3315,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = vexl/vexlDebug.entitlements;
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 247;
+				CURRENT_PROJECT_VERSION = 254;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = KQNTW88PVA;
 				ENABLE_BITCODE = NO;
@@ -3332,7 +3348,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 247;
+				CURRENT_PROJECT_VERSION = 254;
 				DEVELOPMENT_TEAM = SHD6TUKSPH;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
@@ -3477,7 +3493,7 @@
 				CODE_SIGN_ENTITLEMENTS = vexl/vexl.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 247;
+				CURRENT_PROJECT_VERSION = 254;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = KQNTW88PVA;
 				ENABLE_BITCODE = NO;
@@ -3512,7 +3528,7 @@
 				CODE_SIGN_ENTITLEMENTS = vexl/vexl.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 247;
+				CURRENT_PROJECT_VERSION = 254;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = KQNTW88PVA;
 				ENABLE_BITCODE = NO;
@@ -3545,7 +3561,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 247;
+				CURRENT_PROJECT_VERSION = 254;
 				DEVELOPMENT_TEAM = SHD6TUKSPH;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
@@ -3564,7 +3580,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 247;
+				CURRENT_PROJECT_VERSION = 254;
 				DEVELOPMENT_TEAM = SHD6TUKSPH;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;

@@ -68,7 +68,6 @@ final class GroupsScanQRViewModel: ViewModelType, ObservableObject {
         setupActivityBindings()
         setupActions()
         setupCameraAction()
-        cameraViewModel.createSession()
     }
 
     private func setupActivityBindings() {
@@ -131,6 +130,7 @@ final class GroupsScanQRViewModel: ViewModelType, ObservableObject {
             .filter { $0 == .cameraAvailable }
             .withUnretained(self)
             .sink { owner, _ in
+                owner.cameraViewModel.createSession()
                 owner.cameraViewModel.startSession()
             }
             .store(in: cancelBag)

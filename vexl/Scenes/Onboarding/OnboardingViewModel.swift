@@ -19,12 +19,29 @@ final class OnboardingViewModel: ViewModelType {
         case next
     }
 
+    enum OnboardingState: Int, CaseIterable {
+        case friends = 0
+        case buyAndSell = 1
+        case requestIdentity = 2
+
+        var animation: LottieAnimation {
+            switch self {
+            case .friends:
+                return .firstOnboarding
+            case .buyAndSell:
+                return .secondOnboarding
+            case .requestIdentity:
+                return .thirdOnboarding
+            }
+        }
+    }
+
     let action: ActionSubject<UserAction> = .init()
 
     // MARK: - View Bindings
 
     @Published var primaryActivity: Activity = .init()
-    @Published var selectedIndex = OnboardingView.PresentationState.friends.rawValue
+    @Published var selectedIndex = OnboardingState.friends.rawValue
 
     // MARK: - Coordinator Bindings
 
@@ -39,11 +56,11 @@ final class OnboardingViewModel: ViewModelType {
     private let cancelBag: CancelBag = .init()
 
     var numberOfPages: Int {
-        OnboardingView.PresentationState.allCases.count
+        OnboardingState.allCases.count
     }
 
-    var presentationState: OnboardingView.PresentationState {
-        OnboardingView.PresentationState(rawValue: selectedIndex) ?? .friends
+    var onboardingState: OnboardingState {
+        OnboardingState(rawValue: selectedIndex) ?? .friends
     }
 
     var isLastOnboardingPage: Bool {
@@ -51,23 +68,18 @@ final class OnboardingViewModel: ViewModelType {
     }
 
     var title: String {
-        switch presentationState {
+        switch onboardingState {
         case .friends:
-            return L.onboardingIntroMessageFriend()
+            return L.introFirstTitle()
         case .buyAndSell:
-            return L.onboardingIntroMessageBuySell()
+            return L.introSecondTitle()
         case .requestIdentity:
-            return L.onboardingIntroMessageRequest()
+            return L.introThirdTitle()
         }
     }
 
     var buttonTitle: String {
-        switch presentationState {
-        case .friends, .buyAndSell:
-            return L.next()
-        case .requestIdentity:
-            return L.gotIt()
-        }
+        L.continue()
     }
 
     // MARK: - Initialization

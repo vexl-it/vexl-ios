@@ -14,6 +14,8 @@ final class ChatRequestCoordinator: BaseCoordinator<RouterResult<Void>> {
     private let router: Router
     private let animated: Bool
 
+    @Inject private var deeplinkManager: DeeplinkManagerType
+
     init(router: Router, animated: Bool) {
         self.router = router
         self.animated = animated
@@ -39,7 +41,11 @@ final class ChatRequestCoordinator: BaseCoordinator<RouterResult<Void>> {
             .filter { $0 == .dismissTapped }
             .map { _ -> RouterResult<Void> in .dismiss }
 
-        return dismiss
+        let deeplinkDismiss = deeplinkManager.goToInboxTab
+            .map { _ -> RouterResult<Void> in .dismiss }
+
+        return dismiss.merge(with: deeplinkDismiss)
+            .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()
     }
 }
