@@ -24,12 +24,12 @@ extension LottiePlayMode {
 
 struct LottieView: UIViewRepresentable {
 
-    let name: String
+    let animation: LottieAnimation
     let loopMode: LottieLoopMode
     let playMode: LottiePlayMode
 
-    init(name: String, loopMode: LottieLoopMode = .playOnce, playMode: LottiePlayMode = .play) {
-        self.name = name
+    init(animation: LottieAnimation, loopMode: LottieLoopMode = .playOnce, playMode: LottiePlayMode = .play) {
+        self.animation = animation
         self.loopMode = loopMode
         self.playMode = playMode
     }
@@ -58,13 +58,13 @@ struct LottieView: UIViewRepresentable {
 
     private func createAnimationView() -> AnimationView {
         let animationView = AnimationView()
-        animationView.animation = Animation.named(name)
+        animationView.animation = Animation.named(animation.rawValue)
         animationView.contentMode = .scaleAspectFit
         animationView.backgroundBehavior = .pauseAndRestore
-        animationView.loopMode = loopMode
+        animationView.loopMode = self.loopMode
         return animationView
     }
-    
+
     private func setupAnimationView(_ animationView: AnimationView, withParentView view: UIView) {
         view.addSubview(animationView)
         animationView.translatesAutoresizingMaskIntoConstraints = false

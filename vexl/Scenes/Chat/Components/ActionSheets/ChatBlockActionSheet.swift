@@ -20,8 +20,8 @@ class ChatBlockSheetViewModel: BottomActionSheetViewModelProtocol {
     var colorScheme: ChatBlockBottomSheet.ColorScheme = .red
     var imageView: LottieView? {
         isConfirmation
-            ? LottieView(name: "vexl_block_user", playMode: .pause(.end))
-            : LottieView(name: "vexl_block_user", loopMode: .playOnce)
+            ? LottieView(animation: .blockUser, playMode: .pause(.end))
+            : LottieView(animation: .blockUser, loopMode: .playOnce)
     }
     var content: ChatBlockActionSheetContent {
         ChatBlockActionSheetContent(description: description)

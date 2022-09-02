@@ -39,7 +39,7 @@ struct WelcomeView: View {
 
     private var card: some View {
         VStack(spacing: .zero) {
-            LottieView(name: "vexl_get_started", loopMode: .playOnce)
+            LottieView(animation: .getStarted, loopMode: .playOnce)
                 .padding(.top, Appearance.GridGuide.largePadding1)
                 .padding(.bottom, Appearance.GridGuide.padding)
 

@@ -24,14 +24,14 @@ final class OnboardingViewModel: ViewModelType {
         case buyAndSell = 1
         case requestIdentity = 2
 
-        var animation: String {
+        var animation: LottieAnimation {
             switch self {
             case .friends:
-                return "vexl_intro_01"
+                return .firstOnboarding
             case .buyAndSell:
-                return "vexl_intro_02"
+                return .secondOnboarding
             case .requestIdentity:
-                return "vexl_intro_03"
+                return .thirdOnboarding
             }
         }
     }
