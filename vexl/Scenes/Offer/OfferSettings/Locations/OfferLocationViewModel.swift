@@ -93,10 +93,18 @@ final class OfferLocationViewModel: ViewModelType, ObservableObject, Identifiabl
             })
             .debounce(for: 0.3, scheduler: DispatchQueue.main)
             .withUnretained(self)
-            .flatMap { owner, text in
-                owner.mapyService.getSuggestions(for: text)
+            .flatMap { owner, text -> AnyPublisher<(OfferLocationViewModel, [LocationSuggestion], String), Error> in
+                owner.mapyService
+                    .getSuggestions(for: text)
+                    .map { (owner, $0, text) }
+                    .eraseToAnyPublisher()
             }
-            .map { suggestions -> State in
+            .handleEvents(receiveOutput: { owner, suggestions, text in
+                if let match = suggestions.first(where: { $0.city == text }) {
+                    owner.location = OfferLocation(locationSuggestion: match)
+                }
+            })
+            .map { _, suggestions, _ -> State in
                 suggestions.isEmpty ? .empty : .results(suggestions)
             }
             .replaceError(with: .error)

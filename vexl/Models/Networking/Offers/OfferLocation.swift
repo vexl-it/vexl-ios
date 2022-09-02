@@ -12,6 +12,8 @@ struct OfferLocation: Codable, Hashable, Equatable {
     var longitude: Float
     var city: String
 
+    var isMapySuggestion: Bool = false
+
     var isValid: Bool {
         latitude != 0 && longitude != 0 && !city.isEmpty
     }
@@ -61,6 +63,7 @@ struct OfferLocation: Codable, Hashable, Equatable {
         self.latitude = locationSuggestion.lat
         self.longitude = locationSuggestion.lon
         self.city = locationSuggestion.city
+        self.isMapySuggestion = true
     }
 
     ///
