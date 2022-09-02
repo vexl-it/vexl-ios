@@ -8,8 +8,8 @@
 import UIKit
 import Cleevio
 
-enum Tab {
-    case marketplace
+enum Tab: Int {
+    case marketplace = 0
     case chat
     case profile
 
@@ -90,6 +90,16 @@ final class TabBarController: UITabBarController {
             .withUnretained(self)
             .sink { owner, index in
                 owner.selectedIndex = index
+            }
+            .store(in: cancelBag)
+
+        viewModel
+            .goToInboxTab
+            .withUnretained(self)
+            .filter { $0.isVisible }
+            .sink { owner in
+                owner.tabBarView.setSelectedUI(index: Tab.chat.rawValue)
+                owner.selectedIndex = Tab.chat.rawValue
             }
             .store(in: cancelBag)
     }
