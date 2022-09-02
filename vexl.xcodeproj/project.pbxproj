@@ -2647,7 +2647,7 @@
 		};
 		F1B5FCC627C6CF7F0018729B /* ACKLocalization */ = {
 			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 12;
+			buildActionMask = 8;
 			files = (
 			);
 			inputFileListPaths = (
@@ -2659,7 +2659,7 @@
 			);
 			outputPaths = (
 			);
-			runOnlyForDeploymentPostprocessing = 0;
+			runOnlyForDeploymentPostprocessing = 1;
 			shellPath = /bin/sh;
 			shellScript = "# Download the latest localized strings\nif [ \"${CONFIGURATION}\" == \"Debug\" ]\nthen\n    ./Pods/ACKLocalization/ACKLocalization\nfi\n";
 		};
