@@ -188,6 +188,8 @@ extension NotificationManager: UNUserNotificationCenterDelegate {
             }
         case .requestMessaging, .disaproveMessaging:
             deeplinkManager.handleDeeplink(with: .openRequest)
+        case .deleteChat:
+            deeplinkManager.handleDeeplink(with: .openInbox)
         default:
             break
         }
