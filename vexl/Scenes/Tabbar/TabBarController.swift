@@ -55,6 +55,11 @@ final class TabBarController: UITabBarController {
         view.backgroundColor = .black
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        viewModel.checkSelectedTab()
+    }
+
     override func setViewControllers(_ viewControllers: [UIViewController]?, animated: Bool) {
         guard let viewControllers = viewControllers else {
             super.setViewControllers(viewControllers, animated: animated)

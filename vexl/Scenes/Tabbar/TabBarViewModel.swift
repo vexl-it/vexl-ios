@@ -43,6 +43,13 @@ final class TabBarViewModel: ViewModelType {
         setupBindings()
     }
 
+    func checkSelectedTab() {
+        if deeplinkManager.shouldGoToInboxOnStartup {
+            goToInboxTab.send()
+            deeplinkManager.cleanState()
+        }
+    }
+
     private func setupBindings() {
         deeplinkManager.goToInboxTab
             .subscribe(goToInboxTab)
