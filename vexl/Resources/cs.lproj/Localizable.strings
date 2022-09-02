@@ -18,9 +18,9 @@
 "continue" = "Pokračovat";
 "button.gotIt" = "Rozumím";
 "general.delete" = "Delete";
-"onboarding.intro.message.friend" = "Anonymní import přátel.";
-"onboarding.intro.message.buySell" = "Nabídky a poptávky od tvých kontaktů.";
-"onboarding.intro.message.request" = "Líbí se ti něčí nabídka? Spojte se a vexlujte!";
+"onboarding.intro.message.friend" = "Anonymně se spoj se svými kontakty.";
+"onboarding.intro.message.buySell" = "Podívej se na jejich nabídky.";
+"onboarding.intro.message.request" = "Začněte chatovat, odhalte své identity a obchodujte.";
 "welcome.title" = "Vítej! Chceš začít vexlovat?";
 "welcome.terms.agreements" = "Souhlasím s podmínkami";
 "welcome.terms.agreements.one" = "Souhlasím s";
@@ -165,8 +165,8 @@
 "marketplace.sell" = "Koupit";
 "marketplace.facebook.friend" = "Přítel z Facebooku";
 "marketplace.phone.contact" = "Kontakt z telefonu";
-"marketplace.sell.offer" = "Nová nabídka nákupu";
-"marketplace.buy.add" = "Nová nabídka prodeje";
+"marketplace.sell.offer" = "";
+"marketplace.buy.add" = "";
 "marketplace.detail.friend.first" = "Přítel";
 "marketplace.detail.friend.second" = "Přítel přítele";
 "marketplace.detail.sell" = "K nákupu";
@@ -184,8 +184,8 @@
 "offer.sell.create.title" = "Chci\nkoupit";
 "offer.sell.new.offer" = "Nová nabídka";
 "offer.buy.new.offer" = "Nová nabídka";
-"offer.sell.amount.toSell" = "K prodeji";
-"offer.buy.amount.toBuy" = "K nákupu";
+"offer.sell.amount.toSell" = "";
+"offer.buy.amount.toBuy" = "";
 "offer.sell.noLocation" = "Bez lokality";
 "offer.sort.active" = "%@ aktivních nabídek";
 "offer.sort.newest" = "Seřazeno od nejnovějších";
@@ -256,8 +256,8 @@
 "request.common.friends.empty.state" = "Nemáte společné přátele";
 "chat.main.title" = "Chat";
 "chat.filter.all" = "Vše";
-"chat.filter.buy" = "Kupující";
-"chat.filter.sell" = "Prodávající";
+"chat.filter.buy" = "Prodávající";
+"chat.filter.sell" = "Kupující";
 "chat.messageMe" = "já:";
 "chat.request.identity.sent" = "Odhalení identity vyžádáno!";
 "chat.request.identity.receive" = "Nová žádost o odhalení identity!";
