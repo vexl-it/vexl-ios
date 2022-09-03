@@ -57,7 +57,7 @@ final class GroupManager: GroupManagerType {
             .getAllMembers(uuid: group.uuid)
             .flatMap { [groupRepository] membersPayload in
                 groupRepository
-                    .update(group: group, members: membersPayload.publicKeys, returnOnlyNewMembers: false)
+                    .update(group: group, members: membersPayload.newPublicKeys, returnOnlyNewMembers: false)
             }
             .eraseToAnyPublisher()
     }
@@ -71,7 +71,7 @@ final class GroupManager: GroupManagerType {
         let userGroupOffers = groupOfferSet.filter { $0.user != nil }
         groupService.getNewMembers(groups: [group])
             .compactMap { newMembers in
-                let pubKeys = newMembers.first?.publicKeys
+                let pubKeys = newMembers.first?.newPublicKeys
                 guard pubKeys?.isEmpty == false else {
                     completionHandler?(nil)
                     return nil
@@ -173,7 +173,7 @@ final class GroupManager: GroupManagerType {
             }
             .flatMap { [groupService] payload in
                 groupService.getAllMembers(uuid: payload.uuid)
-                    .map { (payload, $0.publicKeys) }
+                    .map { (payload, $0.newPublicKeys) }
                     .eraseToAnyPublisher()
             }
             .flatMap { [groupRepository] groupPayload, members in

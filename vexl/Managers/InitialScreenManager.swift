@@ -12,7 +12,7 @@ import Cleevio
 extension InitialScreenManager {
     enum State {
         case splashScreen
-        case welcome
+        case initial
         case registerName
         case registerContacts
         case home
@@ -48,13 +48,13 @@ final class InitialScreenManager {
 
         switch onboardingState {
         case .initial:
-            return .welcome
+            return .initial
         case .nameAndAvatar:
             return .registerName
         case .importContacts:
             return .registerContacts
         case .finished:
-            return authenticationManager.isUserLoggedIn ? .home : .welcome
+            return authenticationManager.isUserLoggedIn ? .home : .initial
         }
     }
 

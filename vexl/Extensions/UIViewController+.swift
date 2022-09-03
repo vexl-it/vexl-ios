@@ -9,6 +9,8 @@
 import UIKit
 
 extension UIViewController {
+    var isVisible: Bool { view.window != nil }
+
     func presentAlert(title: String, message: String, actions: [UIAlertAction]) {
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
         actions.forEach(alertController.addAction(_:))

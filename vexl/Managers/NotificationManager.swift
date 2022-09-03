@@ -30,6 +30,7 @@ enum NotificationKey: String {
     case groupUUID = "group_uuid"
     case publicKey = "public_key"
     case notificationType = "type"
+    case connectionLevel = "connection_level"
 }
 
 protocol NotificationManagerType {
@@ -168,8 +169,10 @@ extension NotificationManager: UNUserNotificationCenterDelegate {
                 groupManager.updateOffersForNewMembers(groupUUID: groupUUID, completionHandler: completionHandler)
             }
         case .newAppUser:
-            if let publicKey = userInfo[NotificationKey.publicKey.rawValue] as? String {
-                offerManager.syncUserOffers(withPublicKeys: [publicKey], completionHandler: completionHandler)
+            if let publicKey = userInfo[NotificationKey.publicKey.rawValue] as? String,
+               let friendDegreeRawValue = userInfo[NotificationKey.connectionLevel.rawValue] as? String,
+               let friendDegree = OfferFriendDegree(rawValue: friendDegreeRawValue) {
+                offerManager.syncUserOffers(withPublicKeys: [publicKey], friendLevel: friendDegree, completionHandler: completionHandler)
             }
         case .none:
             break
@@ -185,6 +188,8 @@ extension NotificationManager: UNUserNotificationCenterDelegate {
             }
         case .requestMessaging, .disaproveMessaging:
             deeplinkManager.handleDeeplink(with: .openRequest)
+        case .deleteChat:
+            deeplinkManager.handleDeeplink(with: .openInbox)
         default:
             break
         }

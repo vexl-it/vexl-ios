@@ -9,7 +9,7 @@ import SwiftUI
 
 struct OfferTriggerActiveView: View {
 
-    let currencySymbol: String
+    let currency: Currency
     @Binding var selectedOption: OfferTrigger
     @Binding var activeAmount: String
 
@@ -36,9 +36,9 @@ struct OfferTriggerActiveView: View {
                     .padding(.all, Appearance.GridGuide.point)
 
                 HStack(spacing: .zero) {
-                    Text(currencySymbol)
-                        .textStyle(.titleSmallBold)
-                        .foregroundColor(Appearance.Colors.yellow100)
+                    if currency.position == .left {
+                        currencySign
+                    }
 
                     TextField("", text: $activeAmount)
                         .multilineTextAlignment(.center)
@@ -46,6 +46,11 @@ struct OfferTriggerActiveView: View {
                         .foregroundColor(Appearance.Colors.yellow100)
                         .frame(maxWidth: .infinity)
                         .keyboardType(.numberPad)
+
+                    if currency.position == .right {
+                        currencySign
+                    }
+
                 }
             }
             .padding(Appearance.GridGuide.tinyPadding)
@@ -53,17 +58,23 @@ struct OfferTriggerActiveView: View {
             .cornerRadius(Appearance.GridGuide.buttonCorner)
         }
     }
+
+    var currencySign: some View {
+        Text(currency.sign)
+            .textStyle(.titleSmallBold)
+            .foregroundColor(Appearance.Colors.yellow100)
+    }
 }
 
 #if DEBUG || DEVEL
 struct OfferTriggerActiveViewPreview: PreviewProvider {
     static var previews: some View {
         VStack {
-            OfferTriggerActiveView(currencySymbol: "$",
+            OfferTriggerActiveView(currency: .usd,
                                    selectedOption: .constant(.none),
                                    activeAmount: .constant("10000"))
 
-            OfferTriggerActiveView(currencySymbol: "$",
+            OfferTriggerActiveView(currency: .usd,
                                    selectedOption: .constant(.above),
                                    activeAmount: .constant("10000"))
         }

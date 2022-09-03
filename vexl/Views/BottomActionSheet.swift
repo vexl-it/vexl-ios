@@ -8,7 +8,7 @@
 import SwiftUI
 import Cleevio
 
-struct BottomActionSheet<ContentView: View>: View {
+struct BottomActionSheet<ContentView: View, ImageView: View>: View {
     struct Action {
         var title: String
         var imageName: String?
@@ -59,7 +59,10 @@ struct BottomActionSheet<ContentView: View>: View {
 
     var colorScheme: ColorScheme = .main
 
+    var imageView: () -> ImageView?
     @ViewBuilder var content: () -> ContentView
+
+    private let imageHeight: Double = 220
 
     var body: some View {
         VStack {
@@ -69,11 +72,15 @@ struct BottomActionSheet<ContentView: View>: View {
                         Image(imageName)
                             .resizable()
                             .scaledToFit()
-                            .frame(size: Appearance.GridGuide.largeIconSize)
+                            .frame(height: imageHeight)
                             .frame(alignment: .center)
                     }
                     .frame(maxWidth: .infinity)
                 }
+
+                imageView()
+                    .frame(height: imageHeight)
+
                 Text(title)
                     .textStyle(.h2)
                     .foregroundColor(Appearance.Colors.primaryText)
@@ -115,19 +122,18 @@ struct BottomActionSheet<ContentView: View>: View {
 
 struct BottomSheet_Previews: PreviewProvider {
     static var previews: some View {
-        BottomActionSheet(
+        BottomActionSheet<OfferInformationDetailView, EmptyView>(
             title: "String",
             primaryAction: .init(title: "title", isDismissAction: false, action: {}),
             secondaryAction: .init(title: "title", isDismissAction: false, action: {}),
             colorScheme: .main,
+            imageView: { nil },
             content: {
                 OfferInformationDetailView(
                     data: .stub,
                     useInnerPadding: true,
                     showBackground: false
                 )
-                .background(Appearance.Colors.gray6)
-                .cornerRadius(Appearance.GridGuide.buttonCorner)
             })
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color.blue)

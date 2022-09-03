@@ -9,14 +9,17 @@ import SwiftUI
 import Combine
 
 class JoinVexlViewModel: BottomActionSheetViewModelProtocol {
+
+    typealias JoinVexlBottomSheet = BottomActionSheet<JoinVexlContent, EmptyView>
+
     var imageName: String? = R.image.profile.joinVexlQR.name
     var title: String = L.userProfileJoinVexlTitle()
     var titleAlignment: Alignment = .center
-    var primaryAction: BottomActionSheet<JoinVexlContent>.Action = .init(title: L.userProfileJoinVexlButtonTitle(), isDismissAction: true)
-    var secondaryAction: BottomActionSheet<JoinVexlContent>.Action?
+    var primaryAction: JoinVexlBottomSheet.Action = .init(title: L.userProfileJoinVexlButtonTitle(), isDismissAction: true)
+    var secondaryAction: JoinVexlBottomSheet.Action?
     var actionPublisher: PassthroughSubject<BottomActionSheetActionType, Never> = .init()
     var dismissPublisher: PassthroughSubject<Void, Never> = .init()
-    var colorScheme: BottomActionSheet<JoinVexlContent>.ColorScheme = .main
+    var colorScheme: JoinVexlBottomSheet.ColorScheme = .main
     var content: JoinVexlContent {
         JoinVexlContent(viewModel: self)
     }
@@ -38,6 +41,7 @@ struct JoinVexlViewPreview: PreviewProvider {
             primaryAction: model.primaryAction,
             secondaryAction: model.secondaryAction,
             colorScheme: model.colorScheme,
+            imageView: { nil },
             content: { model.content }
         )
         .background(Color.black.ignoresSafeArea())

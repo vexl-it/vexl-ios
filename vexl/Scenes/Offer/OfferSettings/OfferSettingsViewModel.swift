@@ -10,6 +10,17 @@ import Cleevio
 import SwiftUI
 import Combine
 
+enum OfferSettingsError: LocalizedError {
+    case locationError
+
+    var errorDescription: String? {
+        switch self {
+        case .locationError:
+            return L.errorMissingOfferLocation()
+        }
+    }
+}
+
 final class OfferSettingsViewModel: ViewModelType, ObservableObject {
 
     @Inject var userRepository: UserRepositoryType
@@ -58,8 +69,10 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
 
     @Published var locationViewModels: [OfferLocationViewModel] = []
 
+    let triggerCurrency: Currency
+
     var isOfferNew: Bool { managedOffer == nil }
-    var isButtonActive: Bool { isCreateEnabled && offer != Offer(managedOffer: managedOffer) }
+    var isButtonActive: Bool { isCreateEnabled && (offer != Offer(managedOffer: managedOffer) || areLocationsUpdated) }
 
     // MARK: - Coordinator Bindings
 
@@ -116,6 +129,19 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
         return !offer.description.isEmpty == true && !locationViewModels.compactMap(\.location).isEmpty
     }
 
+    private var areLocationsUpdated: Bool {
+        guard !locationViewModels.compactMap(\.location).isEmpty else {
+            return false
+        }
+
+        guard locationViewModels.compactMap(\.location).allSatisfy(\.isValid) else {
+            return false
+        }
+
+        let currentLocations = locationViewModels.compactMap(\.location)
+        return currentLocations != initialLocations
+    }
+
     var headerTitle: String {
         switch offerType {
         case .sell:
@@ -161,6 +187,7 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
     var offerKey: ECCKeys
     let offerType: OfferType
 
+    private var initialLocations: [OfferLocation] = []
     private var managedOffer: ManagedOffer?
     private let cancelBag: CancelBag = .init()
 
@@ -168,12 +195,15 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
         self.offerKey = offer.inbox?.keyPair?.keys ?? ECCKeys()
         self.offerType = offer.type ?? .buy
         self.managedOffer = offer
+        self.triggerCurrency = offer.activePriceCurrency ?? .usd
         setup()
     }
 
     init(offerType: OfferType, offerKey: ECCKeys) {
+        @Inject var cryptoManager: CryptocurrencyValueManagerType
         self.offerType = offerType
         self.offerKey = offerKey
+        self.triggerCurrency = cryptoManager.selectedCurrency.value
         setup()
     }
 
@@ -193,6 +223,7 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
             locationViewModels = managedLocations.map {
                 OfferLocationViewModel(location: $0.offerLocation)
             }
+            initialLocations = managedLocations.compactMap(\.offerLocation)
         }
 
         $fetchedGroups
@@ -286,13 +317,29 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
             offer.type = owner.offerType
             offer.activePriceState = owner.offer.selectedPriceTrigger
             offer.activePriceValue = owner.priceTriggerAmount
+            offer.activePriceCurrency = owner.triggerCurrency
             offer.active = owner.offer.isActive
             offer.expirationDate = Date(timeIntervalSince1970: owner.expiration)
             offer.createdAt = Date()
         }
 
-        let receiverPublicKeys = action
+        let checkLocations = action
             .filter { $0 == .createOffer }
+            .asVoid()
+            .withUnretained(self)
+            .flatMap { owner -> AnyPublisher<Void, Never> in
+                Future<Void, Error> { promise in
+                    let hasValidSuggestion = owner.locationViewModels.allSatisfy { $0.location?.isMapySuggestion == true }
+                    guard hasValidSuggestion && !owner.locationViewModels.isEmpty else {
+                        promise(.failure(OfferSettingsError.locationError))
+                        return
+                    }
+                    promise(.success(()))
+                }
+                .track(activity: owner.primaryActivity)
+            }
+
+        let receiverPublicKeys = checkLocations
             .withUnretained(self)
             .flatMap { owner, _ -> AnyPublisher<[String], Never> in
                 owner.offerService

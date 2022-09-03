@@ -71,7 +71,7 @@ struct OfferSettingsView: View {
                     OfferPaymentMethodView(selectedOptions: $viewModel.offer.selectedPaymentMethodOptions)
                         .padding(.top, Appearance.GridGuide.largePadding1)
 
-                    OfferTriggersView(currencySymbol: viewModel.offer.currency?.sign ?? "",
+                    OfferTriggersView(currency: viewModel.triggerCurrency,
                                       showDeleteTrigger: viewModel.showDeleteTrigger,
                                       selectedActivateOption: $viewModel.offer.selectedPriceTrigger,
                                       selectedActivateAmount: $viewModel.offer.selectedPriceTriggerAmount,

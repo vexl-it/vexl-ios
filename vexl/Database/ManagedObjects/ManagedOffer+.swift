@@ -95,6 +95,11 @@ extension ManagedOffer {
         get { activePriceStateRawType.flatMap(OfferTrigger.init) }
         set { activePriceStateRawType = newValue?.rawValue }
     }
+
+    var activePriceCurrency: Currency? {
+        get { activePriceCurrencyRawType.flatMap(Currency.init) }
+        set { activePriceCurrencyRawType = newValue?.rawValue }
+    }
 }
 
 extension ManagedOffer {
