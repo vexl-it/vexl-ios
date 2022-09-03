@@ -81,7 +81,6 @@ struct OfferPayload: Codable {
         let maxAmount = try offer.maxAmount.ecc.encrypt(publicKey: encryptionPublicKey)
         let feeAmount = try offer.feeAmount.ecc.encrypt(publicKey: encryptionPublicKey)
         let activePriceValue = try offer.activePriceValue.ecc.encrypt(publicKey: encryptionPublicKey)
-        let activePriceCurrency = try Currency.usd.rawValue.ecc.encrypt(publicKey: encryptionPublicKey)
         let active = try offer.active.ecc.encrypt(publicKey: encryptionPublicKey)
         let commonFriends = try commonFriends.map({ try $0.ecc.encrypt(publicKey: encryptionPublicKey) })
         let paymentMethods = try offer.paymentMethods.map(\.rawValue).map({ try $0.ecc.encrypt(publicKey: encryptionPublicKey) })
@@ -94,6 +93,7 @@ struct OfferPayload: Codable {
             let friendLevel = try offer.friendDegreeRawType?.ecc.encrypt(publicKey: encryptionPublicKey),
             let offerType = try offer.offerTypeRawType?.ecc.encrypt(publicKey: encryptionPublicKey),
             let activePriceState = try offer.activePriceStateRawType?.ecc.encrypt(publicKey: encryptionPublicKey),
+            let activePriceCurrency = try offer.activePriceCurrency?.rawValue.ecc.encrypt(publicKey: encryptionPublicKey),
             let groupUuid = try offer.groupUuid?.rawValue.ecc.encrypt(publicKey: encryptionPublicKey),
             let currency = try offer.currencyRawType?.ecc.encrypt(publicKey: encryptionPublicKey)
         else {
@@ -155,6 +155,7 @@ struct OfferPayload: Codable {
             let isActiveString = try active.ecc.decrypt(keys: keys)
             let activePriceStateString = try activePriceState.ecc.decrypt(keys: keys)
             let activePriceValueString = try activePriceValue.ecc.decrypt(keys: keys)
+            let activePriceCurrencyString = try activePriceCurrency.ecc.decrypt(keys: keys)
 
             let paymentMethods = Self.getPaymentMethods(paymentMethod, withKeys: keys)
             let btcNetworks = Self.getBTCNetwork(btcNetwork, withKeys: keys)
@@ -177,7 +178,8 @@ struct OfferPayload: Codable {
                   let locationState = OfferTradeLocationOption(rawValue: locationStateString),
                   let friendLevel = OfferFriendDegree(rawValue: friendLevelString),
                   let activePriceState = OfferTrigger(rawValue: activePriceStateString),
-                  let offerType = OfferType(rawValue: offerTypeString) else {
+                  let offerType = OfferType(rawValue: offerTypeString),
+                  let activePriceCurrency = Currency(rawValue: activePriceCurrencyString)  else {
                       return nil
                   }
 
@@ -202,6 +204,7 @@ struct OfferPayload: Codable {
             offer.active = isActive
             offer.activePriceState = activePriceState
             offer.activePriceValue = activePriceValue
+            offer.activePriceCurrency = activePriceCurrency
             offer.paymentMethods = paymentMethods
             offer.btcNetworks = btcNetworks
             offer.commonFriends = commonFirends

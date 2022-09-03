@@ -19,84 +19,6 @@ struct OfferFilter: Equatable {
     var selectedGroups: [ManagedGroup] = []
     var currency: Currency?
 
-    var predicate: NSPredicate {
-        let userPredicate = NSPredicate(format: "user == nil")
-        let offerPredicate = NSPredicate(format: "offerTypeRawType == %@", type.rawValue)
-        let activePredicate = NSPredicate(format: "active == TRUE")
-
-        var predicateList = [userPredicate, offerPredicate, activePredicate]
-
-        if let currency = currency {
-            predicateList.append(NSPredicate(format: "currencyRawType == %@", currency.rawValue))
-        }
-
-        if !selectedFeeOptions.isEmpty {
-            let feePredicates = selectedFeeOptions
-                .map { NSPredicate(format: "feeStateRawType == %@", $0.rawValue) }
-            predicateList.append(NSCompoundPredicate(orPredicateWithSubpredicates: feePredicates))
-
-            if selectedFeeOptions.contains(.withFee) {
-                predicateList.append(NSPredicate(format: "feeAmount <= \(feeAmount)"))
-            }
-        }
-
-        if !selectedFriendDegreeOptions.isEmpty {
-            let friendDegreePredicates = selectedFriendDegreeOptions
-                .map { NSPredicate(format: "friendDegreeRawType == %@", $0.rawValue) }
-            predicateList.append(NSCompoundPredicate(orPredicateWithSubpredicates: friendDegreePredicates))
-        }
-
-        if let currentAmountRange = currentAmountRange {
-            let amountRangePredicate: [NSPredicate] = [
-                NSPredicate(format: "maxAmount >= %d AND maxAmount <= %d", currentAmountRange.lowerBound, currentAmountRange.upperBound),
-                NSPredicate(format: "minAmount >= %d AND minAmount <= %d", currentAmountRange.lowerBound, currentAmountRange.upperBound),
-                NSPredicate(format: "%d >= minAmount AND %d <= maxAmount", currentAmountRange.lowerBound, currentAmountRange.lowerBound),
-                NSPredicate(format: "%d >= minAmount AND %d <= maxAmount", currentAmountRange.upperBound, currentAmountRange.upperBound)
-            ]
-            predicateList.append(NSCompoundPredicate(orPredicateWithSubpredicates: amountRangePredicate))
-        }
-
-        if !selectedPaymentMethodOptions.isEmpty {
-            let paymentMethodPredicates: [NSPredicate] = selectedPaymentMethodOptions.map { option in
-                switch option {
-                case .cash:
-                    return NSPredicate(format: "acceptsCash == YES")
-                case .revolut:
-                    return NSPredicate(format: "acceptsRevolut == YES")
-                case .bank:
-                    return NSPredicate(format: "acceptsBankTransfer == YES")
-                }
-            }
-            predicateList.append(NSCompoundPredicate(orPredicateWithSubpredicates: paymentMethodPredicates))
-        }
-
-        if !selectedBTCOptions.isEmpty {
-            let btcOptionPredicates: [NSPredicate] = selectedBTCOptions.map { option in
-                switch option {
-                case .onChain:
-                    return NSPredicate(format: "acceptsOnChain == YES")
-                case .lightning:
-                    return NSPredicate(format: "acceptsOnLighting == YES")
-                }
-            }
-            predicateList.append(NSCompoundPredicate(orPredicateWithSubpredicates: btcOptionPredicates))
-        }
-
-        if !selectedGroups.isEmpty {
-            let groupPredicates = selectedGroups
-                .map { NSPredicate(format: "group == %@", $0) }
-            predicateList.append(NSCompoundPredicate(orPredicateWithSubpredicates: groupPredicates))
-        }
-
-        if !locations.isEmpty {
-            let locationPredicates = locations
-                .map { NSPredicate(format: "ANY locations.city == %@", $0.city) }
-            predicateList.append(NSCompoundPredicate(orPredicateWithSubpredicates: locationPredicates))
-        }
-
-        return NSCompoundPredicate(andPredicateWithSubpredicates: predicateList)
-    }
-
     var isFilterEmpty: Bool {
         currency == nil &&
         selectedFeeOptions.isEmpty &&
@@ -115,6 +37,145 @@ struct OfferFilter: Equatable {
         selectedBTCOptions = []
         selectedFriendDegreeOptions = []
         currency = nil
+    }
+
+    var predicate: NSPredicate {
+        @Inject var cryptoManager: CryptocurrencyValueManagerType
+        let userPredicate = NSPredicate(format: "user == nil")
+        let offerPredicate = NSPredicate(format: "offerTypeRawType == %@", type.rawValue)
+        let activePredicate = NSPredicate(format: "active == TRUE")
+
+        var predicateList = [userPredicate, offerPredicate, activePredicate]
+
+        if let currency = currency {
+            predicateList.append(NSPredicate(format: "currencyRawType == %@", currency.rawValue))
+        }
+
+        if let coinData = cryptoManager.currentCoinData.value.data {
+            predicateList.append(contentsOf: generatePredicatesForActivePriceTrigger(coinData: coinData))
+        }
+
+        if !selectedFeeOptions.isEmpty {
+            predicateList.append(contentsOf: generatePredicatesForFeeOptions())
+        }
+
+        if !selectedFriendDegreeOptions.isEmpty {
+            predicateList.append(contentsOf: generatePredicatesForFriendDegree())
+        }
+
+        if let currentAmountRange = currentAmountRange {
+            predicateList.append(contentsOf: generatePredicatesForAmmountRange(currentAmountRange: currentAmountRange))
+        }
+
+        if !selectedPaymentMethodOptions.isEmpty {
+            predicateList.append(contentsOf: generatePredicatesForPaymmentMethods())
+        }
+
+        if !selectedBTCOptions.isEmpty {
+            predicateList.append(contentsOf: generatePredicatesForBTCOptions())
+        }
+
+        if !selectedGroups.isEmpty {
+            predicateList.append(contentsOf: generatePredicatesForGroups())
+        }
+
+        if !locations.isEmpty {
+            predicateList.append(contentsOf: generatePredicatesForLocations())
+        }
+
+        return NSCompoundPredicate(andPredicateWithSubpredicates: predicateList)
+    }
+
+    private func generatePredicatesForActivePriceTrigger(coinData: CoinData) -> [NSPredicate] {
+        let activePriceAbovePredicate = NSPredicate(format: "activePriceStateRawType == '\(OfferTrigger.above.rawValue)'")
+        let activePriceAbovePredicates = Currency.allCases.map { currency -> NSPredicate in
+            let priceDecimal: Decimal = coinData.price(for: currency)
+            let price = Double(truncating: priceDecimal as NSNumber)
+            return NSCompoundPredicate(andPredicateWithSubpredicates: [
+                NSPredicate(format: "activePriceValue < \(price)"),
+                NSPredicate(format: "activePriceCurrencyRawType == '\(currency.rawValue)'"),
+                activePriceAbovePredicate
+            ])
+        }
+
+        let activePriceBelowPredicate = NSPredicate(format: "activePriceStateRawType == '\(OfferTrigger.below.rawValue)'")
+        let activePriceBelowPredicates = Currency.allCases.map { currency -> NSPredicate in
+            let priceDecimal: Decimal = coinData.price(for: currency)
+            let price = Double(truncating: priceDecimal as NSNumber)
+            return NSCompoundPredicate(andPredicateWithSubpredicates: [
+                NSPredicate(format: "activePriceValue > \(price)"),
+                NSPredicate(format: "activePriceCurrencyRawType == '\(currency.rawValue)'"),
+                activePriceBelowPredicate
+            ])
+        }
+
+        let nonePredicate = NSPredicate(format: "activePriceStateRawType == '\(OfferTrigger.none.rawValue)'")
+
+        return activePriceAbovePredicates + activePriceBelowPredicates + [nonePredicate]
+    }
+
+    private func generatePredicatesForFeeOptions() -> [NSPredicate] {
+        let feePredicates = selectedFeeOptions
+            .map { NSPredicate(format: "feeStateRawType == %@", $0.rawValue) }
+
+        var feeStatePredicates: [NSPredicate] = [
+            NSCompoundPredicate(orPredicateWithSubpredicates: feePredicates)
+        ]
+
+        if selectedFeeOptions.contains(.withFee) {
+            feeStatePredicates.append(NSPredicate(format: "feeAmount <= \(feeAmount)"))
+        }
+        return feeStatePredicates
+    }
+
+    private func generatePredicatesForFriendDegree() -> [NSPredicate] {
+        selectedFriendDegreeOptions
+            .map { NSPredicate(format: "friendDegreeRawType == %@", $0.rawValue) }
+    }
+
+    private func generatePredicatesForAmmountRange(currentAmountRange: ClosedRange<Int>) -> [NSPredicate] {
+        [
+            NSPredicate(format: "maxAmount >= %d AND maxAmount <= %d", currentAmountRange.lowerBound, currentAmountRange.upperBound),
+            NSPredicate(format: "minAmount >= %d AND minAmount <= %d", currentAmountRange.lowerBound, currentAmountRange.upperBound),
+            NSPredicate(format: "%d >= minAmount AND %d <= maxAmount", currentAmountRange.lowerBound, currentAmountRange.lowerBound),
+            NSPredicate(format: "%d >= minAmount AND %d <= maxAmount", currentAmountRange.upperBound, currentAmountRange.upperBound)
+        ]
+    }
+
+    private func generatePredicatesForPaymmentMethods() -> [NSPredicate] {
+        selectedPaymentMethodOptions
+            .map { option in
+                switch option {
+                case .cash:
+                    return NSPredicate(format: "acceptsCash == YES")
+                case .revolut:
+                    return NSPredicate(format: "acceptsRevolut == YES")
+                case .bank:
+                    return NSPredicate(format: "acceptsBankTransfer == YES")
+                }
+            }
+    }
+
+    private func generatePredicatesForBTCOptions() -> [NSPredicate] {
+        selectedBTCOptions
+            .map { option in
+                switch option {
+                case .onChain:
+                    return NSPredicate(format: "acceptsOnChain == YES")
+                case .lightning:
+                    return NSPredicate(format: "acceptsOnLighting == YES")
+                }
+            }
+    }
+
+    private func generatePredicatesForGroups() -> [NSPredicate] {
+        selectedGroups
+            .map { NSPredicate(format: "group == %@", $0) }
+    }
+
+    private func generatePredicatesForLocations() -> [NSPredicate] {
+        locations
+            .map { NSPredicate(format: "ANY locations.city == %@", $0.city) }
     }
 }
 
