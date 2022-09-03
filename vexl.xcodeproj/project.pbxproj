@@ -148,6 +148,7 @@
 		B0C838ED28C2285F0086B8F3 /* vexl_block_user.json in Resources */ = {isa = PBXBuildFile; fileRef = B0C838E928C2285E0086B8F3 /* vexl_block_user.json */; };
 		B0C838EE28C2285F0086B8F3 /* vexl_get_started.json in Resources */ = {isa = PBXBuildFile; fileRef = B0C838EA28C2285F0086B8F3 /* vexl_get_started.json */; };
 		B0C838F028C243220086B8F3 /* vexl_donate.json in Resources */ = {isa = PBXBuildFile; fileRef = B0C838EF28C243220086B8F3 /* vexl_donate.json */; };
+		B0C838F328C2AA9D0086B8F3 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = B0C838F528C2AA9D0086B8F3 /* InfoPlist.strings */; };
 		B0E9BB272815C5750012BF1D /* String+Encryptable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E9BB262815C5750012BF1D /* String+Encryptable.swift */; };
 		B0E9BB2A2815C7190012BF1D /* AES.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E9BB292815C7190012BF1D /* AES.swift */; };
 		B0E9BB2C2815C71E0012BF1D /* ECC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E9BB2B2815C71E0012BF1D /* ECC.swift */; };
@@ -603,6 +604,9 @@
 		B0C838E928C2285E0086B8F3 /* vexl_block_user.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = vexl_block_user.json; sourceTree = "<group>"; };
 		B0C838EA28C2285F0086B8F3 /* vexl_get_started.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = vexl_get_started.json; sourceTree = "<group>"; };
 		B0C838EF28C243220086B8F3 /* vexl_donate.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = vexl_donate.json; sourceTree = "<group>"; };
+		B0C838F428C2AA9D0086B8F3 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		B0C838F628C2AAA00086B8F3 /* cs */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = cs; path = cs.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		B0C838F728C2AAA10086B8F3 /* sk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sk; path = sk.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		B0E9BB262815C5750012BF1D /* String+Encryptable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Encryptable.swift"; sourceTree = "<group>"; };
 		B0E9BB292815C7190012BF1D /* AES.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AES.swift; sourceTree = "<group>"; };
 		B0E9BB2B2815C71E0012BF1D /* ECC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ECC.swift; sourceTree = "<group>"; };
@@ -1335,6 +1339,7 @@
 		B08F38FE27AE7110008B344F /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				B0C838F528C2AA9D0086B8F3 /* InfoPlist.strings */,
 				F137A21928BF99CB0078A660 /* Lottie */,
 				B08F395227AE7112008B344F /* GoogleServices */,
 				F1BBC709283BE5430067F81B /* Fonts */,
@@ -2501,6 +2506,7 @@
 				B0C838EE28C2285F0086B8F3 /* vexl_get_started.json in Resources */,
 				B08F390327AE7110008B344F /* LaunchScreen.storyboard in Resources */,
 				F1BBC70F283BE5570067F81B /* TT Satoshi Medium.otf in Resources */,
+				B0C838F328C2AA9D0086B8F3 /* InfoPlist.strings in Resources */,
 				F137A22B28C0FAE90078A660 /* vexl_intro_03.json in Resources */,
 				F1BBC710283BE5570067F81B /* TT Satoshi Regular.otf in Resources */,
 				B0C838EC28C2285F0086B8F3 /* vexl_delete_chat.json in Resources */,
@@ -3126,6 +3132,16 @@
 			);
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
+		};
+		B0C838F528C2AA9D0086B8F3 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B0C838F428C2AA9D0086B8F3 /* en */,
+				B0C838F628C2AAA00086B8F3 /* cs */,
+				B0C838F728C2AAA10086B8F3 /* sk */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = SOURCE_ROOT;
 		};
 		F1B5FCC127C6BC330018729B /* Localizable.strings */ = {
 			isa = PBXVariantGroup;

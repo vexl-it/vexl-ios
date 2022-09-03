@@ -54,11 +54,12 @@ struct UserProfileView: View {
 
     private var header: some View {
         HStack {
-            Button(
-                action: { viewModel.action.send(.donate) },
-                label: { Image(R.image.profile.donate.name) }
-            )
-            .frame(width: headerHeight, height: headerHeight)
+            // TODO: Bring back donate button when posible
+//            Button(
+//                action: { viewModel.action.send(.donate) },
+//                label: { Image(R.image.profile.donate.name) }
+//            )
+//            .frame(width: headerHeight, height: headerHeight)
             Spacer()
             Button(
                 action: { viewModel.action.send(.joinVexl) },
