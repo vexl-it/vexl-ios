@@ -180,8 +180,8 @@
 "offer.requested" = "Žádost poslána";
 "offer.sell.title" = "Nová nabídka";
 "offer.buy.title" = "Nová nabídka";
-"offer.buy.create.title" = "Nová\nabídka";
-"offer.sell.create.title" = "Nová\nabídka";
+"offer.buy.create.title" = "Nová\nnabídka";
+"offer.sell.create.title" = "Nová\nnabídka";
 "offer.sell.new.offer" = "Nová nabídka";
 "offer.buy.new.offer" = "Nová nabídka";
 "offer.sell.amount.toSell" = "";
