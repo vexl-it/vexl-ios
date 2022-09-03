@@ -161,8 +161,8 @@
 "marketplace.currency.3month" = "3 mth";
 "marketplace.currency.6month" = "6 mth";
 "marketplace.currency.1year" = "1 year";
-"marketplace.buy" = "To Sell";
-"marketplace.sell" = "To Buy";
+"marketplace.buy" = "Selling";
+"marketplace.sell" = "Buying";
 "marketplace.facebook.friend" = "Facebook friend";
 "marketplace.phone.contact" = "Phone contact";
 "marketplace.sell.offer" = "Create new offer";
@@ -178,10 +178,10 @@
 "marketplace.sign.for.thousand" = "K";
 "offer.request" = "Request";
 "offer.requested" = "Requested";
-"offer.sell.title" = "I want to sell";
-"offer.buy.title" = "I want to buy";
-"offer.buy.create.title" = "I want to\nbuy";
-"offer.sell.create.title" = "I want to\nsell";
+"offer.sell.title" = "Create new offer";
+"offer.buy.title" = "Create new offer";
+"offer.buy.create.title" = "Create\nnew offer";
+"offer.sell.create.title" = "Create\nnew offer";
 "offer.sell.new.offer" = "Create new offer";
 "offer.buy.new.offer" = "Create new offer";
 "offer.sell.amount.toSell" = "Buying";
@@ -240,7 +240,7 @@
 "offer.create.advanced.type" = "Type";
 "offer.create.advanced.friend.level.title" = "Friend level";
 "offer.create.action.title" = "Create buy offer";
-"offer.update.action.title" = "Update sell offer";
+"offer.update.action.title" = "Update buy offer";
 "offer.create.buy.action.title" = "Create sell offer";
 "offer.update.buy.action.title" = "Update sell offer";
 "offer.location.placeholder" = "City";
@@ -362,9 +362,9 @@
 "locked.screen.contacts.remaining" = "Contacts remaining";
 "intro.skip" = "Skip";
 "intro.continue" = "Continue";
-"intro.first.title" = "Connect\nanonymously\nwith your friends. Connect anonymously with your contacts.";
+"intro.first.title" = "Connect\nanonymously\nwith your friends.";
 "intro.second.title" = "See buy & sell\noffers.";
-"intro.third.title" = "Start chatting\nreveal identities\nand trade.";
+"intro.third.title" = "Start chatting,\nreveal identities\nand trade.";
 "error.user.is.blocked" = "User is blocked";
 "error.unauthorized" = "Unauthorized error. You were logged out.";
 "error.unknown.error.occurred" = "The action could not be completed because an unknown error occurred. Please try again later.";

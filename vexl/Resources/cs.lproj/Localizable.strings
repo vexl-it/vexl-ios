@@ -161,8 +161,8 @@
 "marketplace.currency.3month" = "3 měs";
 "marketplace.currency.6month" = "6 měs";
 "marketplace.currency.1year" = "1 rok";
-"marketplace.buy" = "Prodat";
-"marketplace.sell" = "Koupit";
+"marketplace.buy" = "Prodej";
+"marketplace.sell" = "Nákup";
 "marketplace.facebook.friend" = "Přítel z Facebooku";
 "marketplace.phone.contact" = "Kontakt z telefonu";
 "marketplace.sell.offer" = "Moje nabídky";
@@ -178,10 +178,10 @@
 "marketplace.sign.for.thousand" = "K";
 "offer.request" = "Žádost";
 "offer.requested" = "Žádost poslána";
-"offer.sell.title" = "Chci prodat";
-"offer.buy.title" = "Chci koupit";
-"offer.buy.create.title" = "Chci\nkoupit";
-"offer.sell.create.title" = "Chci\nprodat";
+"offer.sell.title" = "Nová nabídka";
+"offer.buy.title" = "Nová nabídka";
+"offer.buy.create.title" = "Nová\nabídka";
+"offer.sell.create.title" = "Nová\nabídka";
 "offer.sell.new.offer" = "Nová nabídka";
 "offer.buy.new.offer" = "Nová nabídka";
 "offer.sell.amount.toSell" = "";
@@ -364,7 +364,7 @@
 "intro.continue" = "Pokračovat";
 "intro.first.title" = "Anonymně\nse spoj\nse svými kontakty.";
 "intro.second.title" = "Podívej se\nna jejich\nnabídky.";
-"intro.third.title" = "Začnete chatovat\nodhlate své identity\na obchodujte.";
+"intro.third.title" = "Začnete chatovat,\nodhlate své identity\na obchodujte.";
 "error.user.is.blocked" = "Uživatel je zablokován";
 "error.unauthorized" = "Neoprávněná chyba. Byli jste odhlášeni.";
 "error.unknown.error.occurred" = "Akci nebylo možné dokončit, protože došlo k neznámé chybě. Prosím zkuste to znovu později.";
