@@ -77,7 +77,16 @@ final class ChatViewModel: ViewModelType, ObservableObject {
     let friends: [ChatCommonFriendViewData] = [.stub, .stub, .stub]
     lazy var offer: ManagedOffer? = chat.receiverKeyPair?.offer
     var imageSource = ImageSource.photoAlbum
-    var offerLabel: String { offer?.type == .buy ? L.marketplaceDetailUserBuy("") : L.marketplaceDetailUserSell("") }
+    var offerLabel: String {
+        switch offer?.type {
+        case .buy:
+            return offer?.user == nil ? L.marketplaceDetailUserBuy("") : L.marketplaceDetailUserSell("")
+        case .sell:
+            return offer?.user != nil ? L.marketplaceDetailUserBuy("") : L.marketplaceDetailUserSell("")
+        case .none:
+            return ""
+        }
+    }
     var offerViewData: OfferDetailViewData? { offer.flatMap(OfferDetailViewData.init) }
     var selectedImageData: Data? { selectedImage }
 
