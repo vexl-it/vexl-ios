@@ -40,6 +40,9 @@
 - VEX-806: Added dismiss to the identity banner
 - VEX-934: Support for 2nd degree newcomer notifications
 - VEX-535: Using prefix from phone number
+- VEX-855: Added support for active price triger
+- VEX-924: Onboarding now uses lottie + updated UI
+- VEX-963: Updated update button conditions for Offer editing
 
 ### Fixes
 - VEX-525: Fixed common friends on chat request screen
@@ -79,6 +82,7 @@
 - VEX-927: Fix loading offers on first launch
 - VEX-916: Remove facebook section from user profile
 - VEX-953: Updated group member model
-- VEX-784 - Going back to the chat list when user press on notification about chat deletion
+- VEX-784: Going back to the chat list when user press on notification about chat deletion
+- VEX-921: Maintaining filter for price range
 
 ### Known Issues

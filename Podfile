@@ -57,6 +57,8 @@ target 'vexl' do
 
     pod 'Firebase/Messaging'
 
+    pod 'lottie-ios'
+
     target 'vexlTests' do
     end
 

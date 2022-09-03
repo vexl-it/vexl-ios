@@ -1,0 +1,10 @@
+/* 
+  InfoPlist.strings
+  vexl
+
+  Created by Adam Salih on 02.09.2022.
+  
+*/
+
+NSCameraUsageDescription = "Vexl wants to access your camera in order to select a photo for your avatar.";
+NSContactsUsageDescription = "Vaše kontakty uložíme bezpečně zašifrované na našich serverech. Neuvidíme je ani my.";

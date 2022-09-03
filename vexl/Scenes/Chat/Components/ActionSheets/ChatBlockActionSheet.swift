@@ -11,11 +11,18 @@ import Cleevio
 
 class ChatBlockSheetViewModel: BottomActionSheetViewModelProtocol {
 
-    var primaryAction: BottomActionSheet<ChatBlockActionSheetContent>.Action = .init(title: L.chatMessageBlockAction(), isDismissAction: true)
-    var secondaryAction: BottomActionSheet<ChatBlockActionSheetContent>.Action? = .init(title: L.chatMessageBlockBack(), isDismissAction: true)
+    typealias ChatBlockBottomSheet = BottomActionSheet<ChatBlockActionSheetContent, LottieView>
+
+    var primaryAction: ChatBlockBottomSheet.Action = .init(title: L.chatMessageBlockAction(), isDismissAction: true)
+    var secondaryAction: ChatBlockBottomSheet.Action? = .init(title: L.chatMessageBlockBack(), isDismissAction: true)
     var actionPublisher: PassthroughSubject<BottomActionSheetActionType, Never> = .init()
     var dismissPublisher: PassthroughSubject<Void, Never> = .init()
-    var colorScheme: BottomActionSheet<ChatBlockActionSheetContent>.ColorScheme = .red
+    var colorScheme: ChatBlockBottomSheet.ColorScheme = .red
+    var imageView: LottieView? {
+        isConfirmation
+            ? LottieView(animation: .blockUser, playMode: .pause(.end))
+            : LottieView(animation: .blockUser, loopMode: .playOnce)
+    }
     var content: ChatBlockActionSheetContent {
         ChatBlockActionSheetContent(description: description)
     }

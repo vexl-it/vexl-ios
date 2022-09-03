@@ -10,15 +10,20 @@ import Combine
 
 final class ChatDeleteSheetViewModel: BottomActionSheetViewModelProtocol {
 
-    typealias DeleteBottomActionSheet = BottomActionSheet<ChatDeleteActionSheetContent>
+    typealias DeleteBottomActionSheet = BottomActionSheet<ChatDeleteActionSheetContent, LottieView>
 
     var primaryAction: DeleteBottomActionSheet.Action = .init(title: L.chatMessageDeleteAction(), isDismissAction: true)
     var secondaryAction: DeleteBottomActionSheet.Action? = .init(title: L.chatMessageDeleteBack(), isDismissAction: true)
     var actionPublisher: PassthroughSubject<BottomActionSheetActionType, Never> = .init()
     var dismissPublisher: PassthroughSubject<Void, Never> = .init()
     var colorScheme: DeleteBottomActionSheet.ColorScheme = .main
+    var imageView: LottieView? {
+        isConfirmation
+            ? LottieView(animation: .deleteChat, playMode: .pause(.end))
+            : LottieView(animation: .deleteChat, loopMode: .playOnce)
+    }
     var content: ChatDeleteActionSheetContent {
-        ChatDeleteActionSheetContent(description: description)
+        ChatDeleteActionSheetContent(viewModel: self)
     }
 
     var title: String {
@@ -37,14 +42,15 @@ final class ChatDeleteSheetViewModel: BottomActionSheetViewModelProtocol {
 }
 
 struct ChatDeleteActionSheetContent: View {
-
-    let description: String
+    @ObservedObject var viewModel: ChatDeleteSheetViewModel
 
     var body: some View {
-        Text(description)
+        Text(viewModel.description)
             .textStyle(.paragraph)
+            .frame(maxWidth: .infinity)
             .foregroundColor(Appearance.Colors.gray3)
             .padding(.vertical, Appearance.GridGuide.padding)
+            .id(viewModel.description)
     }
 }
 
@@ -52,7 +58,7 @@ struct ChatDeleteActionSheetContent: View {
 
 struct ChatDeleteActionSheetContentPreview: PreviewProvider {
     static var previews: some View {
-        ChatDeleteActionSheetContent(description: "qwerty")
+        ChatDeleteActionSheetContent(viewModel: .init(isConfirmation: false))
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color.black)
             .previewDevice("iPhone 11")

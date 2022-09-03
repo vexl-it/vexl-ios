@@ -290,7 +290,7 @@ platform :ios do
 				compileBitcode: false,
 				signingStyle: "manual",
 				provisioningProfiles:{
-					"it.vexl.staging": "match AppStore it.vexl.staging"
+					staging_identifier: "match AppStore " + staging_identifier
 				}
 			}
 		)

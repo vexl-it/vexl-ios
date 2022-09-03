@@ -16,23 +16,54 @@ struct LockedScreenView: View {
         countdown
     }
 
+    private var blackCircleSize: CGSize {
+        CGSize(width: 175.adjusted, height: 175.adjusted)
+    }
+
+    private var whiteCircleSize: CGSize {
+        CGSize(width: 160.adjusted, height: 160.adjusted)
+    }
+
+    private var yellowCircleSize: CGSize {
+        CGSize(width: 170.adjusted, height: 170.adjusted)
+    }
+
+    private var title: Font? {
+        R.font.ttSatoshiMedium(size: 32.adjusted)?.asFont
+    }
+
+    private var subtitle: Font? {
+        R.font.ttSatoshiDemiBold(size: 18)?.asFont
+    }
+
+    private var paragraph: Font? {
+        R.font.ttSatoshiRegular(size: 16)?.asFont
+    }
+
     private var countdown: some View {
-        VStack(spacing: Appearance.GridGuide.padding) {
+        VStack(spacing: Appearance.GridGuide.padding.adjusted) {
 
             countdownCircle
 
-            Text(L.lockedScreenTitle())
+            Text(L.lockedScreenContactsRemaining())
+                .minimumScaleFactor(0.75)
                 .foregroundColor(Appearance.Colors.whiteText)
                 .multilineTextAlignment(.center)
-                .textStyle(.paragraphSemibold)
+                .font(subtitle)
+
+            Text(L.lockedScreenTitle())
+                .minimumScaleFactor(0.75)
+                .foregroundColor(Appearance.Colors.whiteText)
+                .multilineTextAlignment(.center)
+                .font(subtitle)
 
             HLine(color: Appearance.Colors.gray3, height: 1)
-                .padding(.vertical, Appearance.GridGuide.point)
+                .padding(.vertical, Appearance.GridGuide.point.adjusted)
 
             Text(L.lockedScreenSubtitle())
                 .foregroundColor(Appearance.Colors.whiteText)
                 .multilineTextAlignment(.center)
-                .textStyle(.paragraphSmall)
+                .font(paragraph)
 
             HStack {
                 LargeSolidButton(
@@ -61,33 +92,29 @@ struct LockedScreenView: View {
             }
         }
         .padding(.horizontal, Appearance.GridGuide.mediumPadding2)
+        .frame(maxHeight: .infinity, alignment: .top)
+        .padding(.top, UIScreen.isSmallScreen ? 0 : Appearance.GridGuide.mediumPadding1)
     }
 
     private var countdownCircle: some View {
         ZStack {
             Circle()
                 .strokeBorder(Color.black, lineWidth: 5)
-                .frame(size: CGSize(width: 128, height: 128))
+                .frame(size: blackCircleSize)
                 .background(
                     Circle()
                         .foregroundColor(Color.white)
-                        .frame(width: 110, height: 110)
+                        .frame(size: whiteCircleSize)
                 )
                 .overlay(
-                    VStack {
-                        Text("\(Constants.numberOfOffersForLockedScreen)")
-                            .textStyle(.h3)
-
-                        Text(L.lockedScreenOffers())
-                            .textStyle(.paragraphSmall)
-                            .foregroundColor(Appearance.Colors.gray3)
-                    }
+                    Text("\(Constants.numberOfOffersForLockedScreen)")
+                        .font(title)
                 )
 
             Circle()
                 .trim(from: 0, to: 0.25)
                 .stroke(Appearance.Colors.yellow100, style: StrokeStyle(lineWidth: 5))
-                .frame(size: CGSize(width: 123, height: 123))
+                .frame(size: yellowCircleSize)
                 .rotationEffect(.degrees(270))
         }
     }

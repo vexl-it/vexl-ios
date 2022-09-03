@@ -11,7 +11,6 @@ import Combine
 import Cleevio
 
 final class AppCoordinator: BaseCoordinator<Void> {
-
     @Inject var initialScreenManager: InitialScreenManager
     @Inject var syncQueue: SyncQueueManagerType
     @Inject var notificationManager: NotificationManagerType
@@ -40,8 +39,8 @@ final class AppCoordinator: BaseCoordinator<Void> {
             switch initialScreenManager.getCurrentScreenState() {
             case .splashScreen:
                 return showSplashCoordinator()
-            case .welcome:
-                return showOnboardingCoordinator()
+            case .initial:
+                return showInitialCoordinator()
             case .registerName:
                 return showRegisterNameAvatarCoordinator()
             case .registerContacts:
@@ -101,7 +100,26 @@ extension AppCoordinator {
         coordinate(to: SplashScreenCoordinator(window: window))
     }
 
+    private func showInitialCoordinator() -> CoordinatingResult<Void> {
+        if UserDefaultsConfig.hasSeenOnboarding {
+            return showWelcomeCoordinator()
+        } else {
+            return showOnboardingCoordinator()
+        }
+    }
+
     private func showOnboardingCoordinator() -> CoordinatingResult<Void> {
+        coordinate(to:
+            WindowNavigationCoordinator(window: window) { router, animated -> OnboardingCoordinator in
+                OnboardingCoordinator(router: router, animated: animated)
+            }
+        )
+            .asVoid()
+            .prefix(1)
+            .eraseToAnyPublisher()
+    }
+
+    private func showWelcomeCoordinator() -> CoordinatingResult<Void> {
         coordinate(to:
             WindowNavigationCoordinator(window: window) { router, animated -> WelcomeCoordinator in
                 WelcomeCoordinator(router: router, animated: animated)

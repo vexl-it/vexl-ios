@@ -39,6 +39,11 @@ final class FAQViewModel: ViewModelType, ObservableObject {
     var title: String {
         FAQContent.content[currentIndex].title
     }
+
+    var imageName: String {
+        FAQContent.content[currentIndex].imageName
+    }
+
     var description: NSAttributedString {
         FAQContent.content[currentIndex].attributedDescription
     }
