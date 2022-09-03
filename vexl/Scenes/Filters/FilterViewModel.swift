@@ -72,11 +72,13 @@ final class FilterViewModel: ViewModelType, ObservableObject {
 
     var minFee: Double = Constants.OfferInitialData.minFee
     var maxFee: Double = Constants.OfferInitialData.maxFee
+    private var initialAmountRange: ClosedRange<Int>?
     private var offerFilter: OfferFilter
     private let cancelBag: CancelBag = .init()
 
     init(offerFilter: OfferFilter) {
         self.offerFilter = offerFilter
+        self.initialAmountRange = offerFilter.currentAmountRange
         currentAmountRange = offerFilter.currentAmountRange ?? Constants.OfferInitialData.minOffer...Constants.OfferInitialData.maxOffer
         selectedFeeOptions = offerFilter.selectedFeeOptions
         feeAmount = offerFilter.feeAmount
@@ -99,6 +101,7 @@ final class FilterViewModel: ViewModelType, ObservableObject {
         }
 
         $currency
+            .removeDuplicates()
             .withUnretained(self)
             .sink { owner, option in
                 let minOffer = Constants.OfferInitialData.minOffer
@@ -108,13 +111,15 @@ final class FilterViewModel: ViewModelType, ObservableObject {
                 switch option {
                 case .eur, .usd:
                     owner.amountRange = minOffer...maxOffer
-                    owner.currentAmountRange = minOffer...maxOffer
+                    owner.currentAmountRange = owner.initialAmountRange ?? minOffer...maxOffer
                 case .czk:
                     owner.amountRange = minOffer...maxOfferCZK
-                    owner.currentAmountRange = minOffer...maxOfferCZK
+                    owner.currentAmountRange = owner.initialAmountRange ?? minOffer...maxOfferCZK
                 case .none:
                     break
                 }
+
+                owner.initialAmountRange = nil
             }
             .store(in: cancelBag)
     }

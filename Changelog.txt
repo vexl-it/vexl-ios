@@ -82,6 +82,7 @@
 - VEX-927: Fix loading offers on first launch
 - VEX-916: Remove facebook section from user profile
 - VEX-953: Updated group member model
-- VEX-784 - Going back to the chat list when user press on notification about chat deletion
+- VEX-784: Going back to the chat list when user press on notification about chat deletion
+- VEX-921: Maintaining filter for price range
 
 ### Known Issues
