@@ -200,7 +200,7 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
     }
 
     init(offerType: OfferType, offerKey: ECCKeys) {
-        @Inject var cryptoManager: CryptocurrencyValueManager
+        @Inject var cryptoManager: CryptocurrencyValueManagerType
         self.offerType = offerType
         self.offerKey = offerKey
         self.triggerCurrency = cryptoManager.selectedCurrency.value
