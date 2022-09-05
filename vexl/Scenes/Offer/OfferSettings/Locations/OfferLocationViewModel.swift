@@ -46,10 +46,12 @@ final class OfferLocationViewModel: ViewModelType, ObservableObject, Identifiabl
     // MARK: - Variables
 
     var location: OfferLocation?
+    var currentLocations: [OfferLocation]
     private let cancelBag: CancelBag = .init()
 
-    init(location: OfferLocation? = nil) {
+    init(location: OfferLocation? = nil, currentLocations: [OfferLocation]) {
         self.location = location
+        self.currentLocations = currentLocations
         self.name = location?.city ?? ""
 
         setupBindings()
@@ -104,14 +106,21 @@ final class OfferLocationViewModel: ViewModelType, ObservableObject, Identifiabl
                     owner.location = OfferLocation(locationSuggestion: match)
                 }
             })
-            .map { _, suggestions, _ -> State in
-                suggestions.isEmpty ? .empty : .results(suggestions)
+            .map { [currentLocations] _, suggestions, _ -> State in
+                suggestions.isEmpty ? .empty : .results(Self.filterSuggestedLocations(suggestions, locations: currentLocations))
             }
             .replaceError(with: .error)
             .withUnretained(self)
             .filter { owner, _ in owner.isTextFieldFocused }
             .map(\.1)
             .assign(to: &$state)
+    }
+
+    private static func filterSuggestedLocations(_ suggestions: [LocationSuggestion], locations: [OfferLocation]) -> [LocationSuggestion] {
+        let filtered = suggestions.filter { suggestion in
+            !locations.contains(where: { $0.isEqual(toSuggestion: suggestion) })
+        }
+        return filtered
     }
 }
 

@@ -74,4 +74,8 @@ struct OfferLocation: Codable, Hashable, Equatable {
         self.longitude = longitude
         self.city = city
     }
+
+    func isEqual(toSuggestion suggestion: LocationSuggestion) -> Bool {
+        self.latitude == suggestion.lat && self.longitude == suggestion.lon && self.city == suggestion.city
+    }
 }

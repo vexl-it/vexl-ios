@@ -72,6 +72,9 @@ final class FilterViewModel: ViewModelType, ObservableObject {
 
     var minFee: Double = Constants.OfferInitialData.minFee
     var maxFee: Double = Constants.OfferInitialData.maxFee
+    private var currentLocations: [OfferLocation] {
+        locationViewModels.compactMap(\.location)
+    }
     private var initialAmountRange: ClosedRange<Int>?
     private var offerFilter: OfferFilter
     private let cancelBag: CancelBag = .init()
@@ -82,7 +85,7 @@ final class FilterViewModel: ViewModelType, ObservableObject {
         currentAmountRange = offerFilter.currentAmountRange ?? Constants.OfferInitialData.minOffer...Constants.OfferInitialData.maxOffer
         selectedFeeOptions = offerFilter.selectedFeeOptions
         feeAmount = offerFilter.feeAmount
-        locationViewModels = offerFilter.locations.map(OfferLocationViewModel.init)
+        locationViewModels = offerFilter.locations.map { OfferLocationViewModel(location: $0, currentLocations: offerFilter.locations) }
         selectedPaymentMethodOptions = offerFilter.selectedPaymentMethodOptions
         selectedBTCOptions = offerFilter.selectedBTCOptions
         selectedFriendDegreeOptions = offerFilter.selectedFriendDegreeOptions
@@ -177,7 +180,7 @@ final class FilterViewModel: ViewModelType, ObservableObject {
             .filter { $0 == .addLocation }
             .withUnretained(self)
             .sink { owner, _ in
-                owner.locationViewModels.append(.init())
+                owner.locationViewModels.append(OfferLocationViewModel(location: nil, currentLocations: owner.currentLocations))
             }
             .store(in: cancelBag)
 

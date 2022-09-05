@@ -146,7 +146,7 @@ extension OfferLocationPickerView {
 struct OfferLocationPickerViewPreview: PreviewProvider {
     static var previews: some View {
         OfferLocationPickerView(
-            items: .constant([.init()]),
+            items: .constant([OfferLocationViewModel(location: nil, currentLocations: [])]),
             addLocation: { },
             deleteLocation: { _ in }
         )
