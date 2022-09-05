@@ -71,7 +71,7 @@ extension InboxItemView {
         var avatar: Data? { chat.receiverKeyPair?.profile?.avatar }
         var username: String { chat.receiverKeyPair?.profile?.name ?? L.generalAnonymous() }
         var time: String { lastMessage?.formatedDate ?? "" }
-        var offerType: OfferType? { chat.receiverKeyPair?.offer?.type }
+        var offerType: OfferType? { chat.receiverKeyPair?.offer?.currentUserPerspectiveOfferType?.inversePerspecitve }
 
         var detail: String {
             guard let message = lastMessage else { return "" }

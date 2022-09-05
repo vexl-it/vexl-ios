@@ -268,7 +268,7 @@ extension OfferInformationDetailView {
             offer.paymentMethodsPublisher.assign(to: &$paymentMethods)
             offer.publisher(for: \.feeStateRawType).compactMap { _ in offer.feeState }.assign(to: &$feeOption)
             offer.publisher(for: \.feeAmount).map { Formatters.numberFormatter.string(from: NSNumber(value: $0)) }.filterNil().assign(to: &$feeAmount)
-            offer.publisher(for: \.offerTypeRawType).map { _ in offer.type }.filterNil().assign(to: &$offerType)
+            offer.publisher(for: \.offerTypeRawType).map { _ in offer.currentUserPerspectiveOfferType }.filterNil().assign(to: &$offerType)
             offer.publisher(for: \.createdAt).filterNil().assign(to: &$createdDate)
             offer.publisher(for: \.group).map { $0 != nil }.assign(to: &$isGroupOffer)
             offer.publisher(for: \.locationStateRawType).map { _ in offer.locationState }.assign(to: &$locationState)
