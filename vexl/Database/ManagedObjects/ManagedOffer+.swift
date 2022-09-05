@@ -86,9 +86,16 @@ extension ManagedOffer {
         set { friendDegreeRawType = newValue?.rawValue }
     }
 
-    var type: OfferType? {
+    private var type: OfferType? {
         get { offerTypeRawType.flatMap(OfferType.init) }
         set { offerTypeRawType = newValue?.rawValue }
+    }
+
+    var currentUserPerspectiveOfferType: OfferType? {
+        guard user != nil else {
+            return type?.inversePerspecitve
+        }
+        return type
     }
 
     var activePriceState: OfferTrigger? {
