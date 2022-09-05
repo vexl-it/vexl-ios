@@ -197,7 +197,7 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
 
     init(offer: ManagedOffer) {
         self.offerKey = offer.inbox?.keyPair?.keys ?? ECCKeys()
-        self.offerType = offer.type ?? .buy
+        self.offerType = offer.currentUserPerspectiveOfferType ?? .buy
         self.managedOffer = offer
         self.triggerCurrency = offer.activePriceCurrency ?? .usd
         setup()
@@ -318,7 +318,7 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
             offer.paymentMethods = owner.offer.selectedPaymentMethodOptions
             offer.btcNetworks = owner.offer.selectedBTCOption
             offer.friendLevel = owner.offer.selectedFriendDegreeOption
-            offer.type = owner.offerType
+            offer.offerTypeRawType = owner.offerType.rawValue
             offer.activePriceState = owner.offer.selectedPriceTrigger
             offer.activePriceValue = owner.priceTriggerAmount
             offer.activePriceCurrency = owner.triggerCurrency

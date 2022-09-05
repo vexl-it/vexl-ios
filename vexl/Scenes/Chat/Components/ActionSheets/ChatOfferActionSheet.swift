@@ -12,7 +12,7 @@ final class ChatOfferSheetViewModel: BottomActionSheetViewModelProtocol {
 
     typealias OfferBottomActionSheet = BottomActionSheet<ChatOfferActionSheetContent, EmptyView>
 
-    var title: String = L.chatMessageOffer()
+    var title: String = L.chatMessageOfferMy()
     var primaryAction: OfferBottomActionSheet.Action = .init(title: L.buttonGotIt(), isDismissAction: true)
     var secondaryAction: OfferBottomActionSheet.Action?
     var actionPublisher: PassthroughSubject<BottomActionSheetActionType, Never> = .init()
@@ -27,6 +27,7 @@ final class ChatOfferSheetViewModel: BottomActionSheetViewModelProtocol {
 
     init(offer: ManagedOffer) {
         self.offer = offer
+        title = offer.user != nil ? L.chatMessageOfferMy() : L.chatMessageOfferTheirs()
     }
 }
 

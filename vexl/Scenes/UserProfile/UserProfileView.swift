@@ -86,10 +86,10 @@ struct UserProfileView: View {
     private var avatarImage: some View {
         Image(data: viewModel.avatar, placeholder: R.image.onboarding.emptyAvatar.name)
             .resizable()
-            .aspectRatio(contentMode: .fill)
+            .scaledToFill()
             .frame(size: Appearance.GridGuide.largeIconSize)
             .clipped()
-            .cornerRadius(Appearance.GridGuide.baseHeight * 0.5, corners: .allCorners)
+            .cornerRadius(Appearance.GridGuide.baseHeight * 0.5)
     }
 
     @ViewBuilder private var profileItems: some View {

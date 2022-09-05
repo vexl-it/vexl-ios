@@ -200,7 +200,7 @@ struct OfferPayload: Codable {
             offer.feeState = feeState
             offer.locationState = locationState
             offer.friendLevel = friendLevel
-            offer.type = offerType
+            offer.offerTypeRawType = offerType.rawValue
             offer.active = isActive
             offer.activePriceState = activePriceState
             offer.activePriceValue = activePriceValue
