@@ -12,7 +12,7 @@ struct OfferLocation: Codable, Hashable, Equatable {
     var longitude: Float
     var city: String
 
-    var isMapySuggestion: Bool = false
+    var isMapySuggestion: Bool? = false
 
     var isValid: Bool {
         latitude != 0 && longitude != 0 && !city.isEmpty

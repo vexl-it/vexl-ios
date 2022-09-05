@@ -11,13 +11,12 @@ struct CardViewModifier: ViewModifier {
     var backgroundColor: Color = Color.white
     var shadowEnabled: Bool = true
     var shadowColor: Color = Color.black
-    var corners: UIRectCorner = .allCorners
     var cornerRadius: CGFloat = Appearance.GridGuide.padding
 
     func body(content: Content) -> some View {
         content
             .background(backgroundColor)
-            .cornerRadius(cornerRadius, corners: corners)
+            .cornerRadius(cornerRadius)
             .shadow(color: shadowColor.opacity(shadowEnabled ? 0.05 : 0),
                     radius: Appearance.GridGuide.point,
                     x: 0,
