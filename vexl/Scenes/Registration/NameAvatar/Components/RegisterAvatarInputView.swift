@@ -54,36 +54,26 @@ private struct RegisterAvatarAddImageView: View {
     private let defaultImageSize: CGSize = Appearance.GridGuide.avatarPickerSize
 
     var body: some View {
-        VStack(alignment: .center) {
-            ZStack(alignment: .topTrailing) {
-                Button {
+        ZStack(alignment: .topTrailing) {
+            Image(data: image, placeholder: R.image.onboarding.addAvatar.name)
+                .resizable()
+                .scaledToFill()
+                .frame(size: defaultImageSize)
+                .clipped()
+                .cornerRadius(Appearance.GridGuide.requestAvatarCorner)
+                .onTapGesture {
                     addAction()
-                } label: {
-                    if let image = image {
-                        Image(data: image, placeholder: "")
-                            .resizable()
-                            .scaledToFill()
-                            .frame(size: defaultImageSize)
-                            .clipped()
-                            .cornerRadius(Appearance.GridGuide.requestAvatarCorner)
-                    } else {
-                        Image(R.image.onboarding.addAvatar.name)
-                            .resizable()
-                            .scaledToFill()
-                            .frame(size: defaultImageSize)
-                    }
                 }
 
-                if image != nil {
-                    Button {
-                        deleteAction()
-                    } label: {
-                        Image(systemName: "trash.fill")
-                            .foregroundColor(Appearance.Colors.primaryText)
-                            .padding(Appearance.GridGuide.point)
-                            .background(Appearance.Colors.yellow100)
-                            .clipShape(Circle())
-                    }
+            if image != nil {
+                Button {
+                    deleteAction()
+                } label: {
+                    Image(systemName: "trash.fill")
+                        .foregroundColor(Appearance.Colors.primaryText)
+                        .padding(Appearance.GridGuide.point)
+                        .background(Appearance.Colors.yellow100)
+                        .clipShape(Circle())
                 }
             }
         }
