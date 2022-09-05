@@ -28,9 +28,15 @@ struct InboxFilterView: View {
         var chatPredicate: NSPredicate? {
             switch self {
             case .buy:
-                return NSPredicate(format: "receiverKeyPair.userOffer.offerTypeRawType == '\(OfferType.buy.rawValue)'")
+                return NSCompoundPredicate(orPredicateWithSubpredicates: [
+                    NSPredicate(format: "receiverKeyPair.userOffer != nil AND receiverKeyPair.userOffer.offerTypeRawType == '\(OfferType.sell.rawValue)'"),
+                    NSPredicate(format: "receiverKeyPair.receiversOffer != nil AND receiverKeyPair.receiversOffer.offerTypeRawType == '\(OfferType.buy.rawValue)'")
+                ])
             case .sell:
-                return NSPredicate(format: "receiverKeyPair.userOffer.offerTypeRawType == '\(OfferType.sell.rawValue)'")
+                return NSCompoundPredicate(orPredicateWithSubpredicates: [
+                    NSPredicate(format: "receiverKeyPair.userOffer != nil AND receiverKeyPair.userOffer.offerTypeRawType == '\(OfferType.buy.rawValue)'"),
+                    NSPredicate(format: "receiverKeyPair.receiversOffer != nil AND receiverKeyPair.receiversOffer.offerTypeRawType == '\(OfferType.sell.rawValue)'")
+                ])
             case .all:
                 return nil
             }

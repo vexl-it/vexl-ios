@@ -28,4 +28,13 @@ enum OfferType: String {
             return L.marketplaceBuy()
         }
     }
+
+    var inversePerspecitve: OfferType {
+        switch self {
+        case .sell:
+            return .buy
+        case .buy:
+            return .sell
+        }
+    }
 }

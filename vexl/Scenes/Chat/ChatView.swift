@@ -44,7 +44,7 @@ struct ChatView: View {
             ChatHeaderView(username: viewModel.username,
                            offerLabel: viewModel.offerLabel,
                            avatar: viewModel.avatar,
-                           offerType: viewModel.offer?.type,
+                           offerType: viewModel.offer?.currentUserPerspectiveOfferType?.inversePerspecitve,
                            closeAction: {
                 viewModel.action.send(.dismissTap)
             })

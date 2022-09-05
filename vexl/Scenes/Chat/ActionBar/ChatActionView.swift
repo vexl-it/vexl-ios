@@ -31,7 +31,7 @@ struct ChatActionView: View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack {
                 ForEach(availableActions) { chatAction in
-                    Button(chatAction.title) {
+                    Button(viewModel.title(for: chatAction)) {
                         viewModel.action.send(chatAction)
                     }
                     .textStyle(.paragraphSmallMedium)
@@ -58,19 +58,5 @@ extension ChatActionView {
         case deleteChat
         case blockUser
 
-        var title: String {
-            switch self {
-            case .revealIdentity:
-                return L.chatMessageRevealIdentity()
-            case .showOffer:
-                return L.chatMessageOffer()
-            case .commonFriends:
-                return L.chatMessageCommonFriend()
-            case .deleteChat:
-                return L.chatMessageDeleteChat()
-            case .blockUser:
-                return L.chatMessageBlockUser()
-            }
-        }
     }
 }
