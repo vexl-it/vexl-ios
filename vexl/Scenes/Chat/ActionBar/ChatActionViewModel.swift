@@ -45,6 +45,21 @@ final class ChatActionViewModel: ObservableObject {
         setupActionBindings()
     }
 
+    func title(for action: ChatActionOption) -> String {
+        switch action {
+        case .revealIdentity:
+            return L.chatMessageRevealIdentity()
+        case .showOffer:
+            return offer?.user != nil ? L.chatMessageOfferMy() : L.chatMessageOfferTheirs()
+        case .commonFriends:
+            return L.chatMessageCommonFriend()
+        case .deleteChat:
+            return L.chatMessageDeleteChat()
+        case .blockUser:
+            return L.chatMessageBlockUser()
+        }
+    }
+
     private func setupActionBindings() {
         let sharedAction = action
             .share()

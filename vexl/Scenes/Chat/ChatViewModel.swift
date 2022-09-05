@@ -78,11 +78,11 @@ final class ChatViewModel: ViewModelType, ObservableObject {
     lazy var offer: ManagedOffer? = chat.receiverKeyPair?.offer
     var imageSource = ImageSource.photoAlbum
     var offerLabel: String {
-        switch offer?.type {
+        switch offer?.currentUserPerspectiveOfferType?.inversePerspecitve {
         case .buy:
-            return offer?.user == nil ? L.marketplaceDetailUserBuy("") : L.marketplaceDetailUserSell("")
+            return L.marketplaceDetailUserBuy("")
         case .sell:
-            return offer?.user != nil ? L.marketplaceDetailUserBuy("") : L.marketplaceDetailUserSell("")
+            return L.marketplaceDetailUserSell("")
         case .none:
             return ""
         }
