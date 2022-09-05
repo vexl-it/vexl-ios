@@ -10,7 +10,7 @@ import SwiftUI
 struct RegisterAvatarInputView: View {
 
     var name: String
-    var avatar: Data?
+    @Binding var avatar: Data?
     var addAction: () -> Void
     var deleteAction: () -> Void
 
@@ -35,7 +35,7 @@ struct RegisterAvatarInputView: View {
     }
 
     var addAvatarButton: some View {
-        RegisterAvatarAddImageView(image: avatar,
+        RegisterAvatarAddImageView(image: $avatar,
                                    addAction: {
             addAction()
         },
@@ -47,43 +47,33 @@ struct RegisterAvatarInputView: View {
 
 private struct RegisterAvatarAddImageView: View {
 
-    var image: Data?
+    @Binding var image: Data?
     var addAction: () -> Void
     var deleteAction: () -> Void
 
     private let defaultImageSize: CGSize = Appearance.GridGuide.avatarPickerSize
 
     var body: some View {
-        VStack(alignment: .center) {
-            ZStack(alignment: .topTrailing) {
-                Button {
+        ZStack(alignment: .topTrailing) {
+            Image(data: image, placeholder: R.image.onboarding.addAvatar.name)
+                .resizable()
+                .scaledToFill()
+                .frame(size: defaultImageSize)
+                .clipped()
+                .cornerRadius(Appearance.GridGuide.requestAvatarCorner)
+                .onTapGesture {
                     addAction()
-                } label: {
-                    if let image = image {
-                        Image(data: image, placeholder: "")
-                            .resizable()
-                            .scaledToFill()
-                            .frame(size: defaultImageSize)
-                            .clipped()
-                            .cornerRadius(Appearance.GridGuide.requestAvatarCorner)
-                    } else {
-                        Image(R.image.onboarding.addAvatar.name)
-                            .resizable()
-                            .scaledToFill()
-                            .frame(size: defaultImageSize)
-                    }
                 }
 
-                if image != nil {
-                    Button {
-                        deleteAction()
-                    } label: {
-                        Image(systemName: "trash.fill")
-                            .foregroundColor(Appearance.Colors.primaryText)
-                            .padding(Appearance.GridGuide.point)
-                            .background(Appearance.Colors.yellow100)
-                            .clipShape(Circle())
-                    }
+            if image != nil {
+                Button {
+                    deleteAction()
+                } label: {
+                    Image(systemName: "trash.fill")
+                        .foregroundColor(Appearance.Colors.primaryText)
+                        .padding(Appearance.GridGuide.point)
+                        .background(Appearance.Colors.yellow100)
+                        .clipShape(Circle())
                 }
             }
         }
@@ -97,13 +87,13 @@ private struct RegisterAvatarAddImageView: View {
 struct RegisterNameAvatarInputViewPreview: PreviewProvider {
     static var previews: some View {
         RegisterAvatarInputView(name: "Name",
-                                avatar: R.image.onboarding.testAvatar()?.jpegData(compressionQuality: 1),
+                                avatar: .constant(R.image.onboarding.testAvatar()?.jpegData(compressionQuality: 1)),
                                 addAction: {},
                                 deleteAction: {})
             .background(Color.black)
 
         RegisterAvatarInputView(name: "Name",
-                                avatar: nil,
+                                avatar: .constant(nil),
                                 addAction: {},
                                 deleteAction: {})
             .background(Color.black)

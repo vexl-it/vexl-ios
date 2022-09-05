@@ -75,7 +75,7 @@ struct RegisterNameAvatarView: View {
     private var avatarInputView: some View {
         Group {
             RegisterAvatarInputView(name: viewModel.username,
-                                    avatar: viewModel.avatar,
+                                    avatar: $viewModel.avatar,
                                     addAction: {
                 viewModel.send(action: .addAvatar)
             },

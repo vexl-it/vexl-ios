@@ -68,19 +68,17 @@ struct ChatInputView: View {
 }
 
 extension ChatInputView {
-    
     struct SelectedImageView: View {
-        
         let image: Data
         let deleteAction: () -> Void
-        
+
         var body: some View {
             ZStack(alignment: .topTrailing) {
                 Image(data: image, placeholder: "")
                     .resizable()
                     .frame(size: Appearance.GridGuide.chatInputImageSize)
                     .cornerRadius(Appearance.GridGuide.containerCorner)
-                
+
                 Button {
                     deleteAction()
                 } label: {
@@ -104,7 +102,7 @@ struct ChatMessageInputViewPreview: PreviewProvider {
                           deleteImageAction: {})
             .background(Color.black)
             .previewDevice("iPhone 11")
-            
+
             ChatInputView(text: .constant(""),
                           image: nil,
                           sendAction: {},
@@ -112,7 +110,7 @@ struct ChatMessageInputViewPreview: PreviewProvider {
                           deleteImageAction: {})
             .background(Color.black)
             .previewDevice("iPhone 11")
-            
+
             ChatInputView(text: .constant("Hello there"),
                           image: R.image.onboarding.testAvatar()!.jpegData(compressionQuality: 0.25)!,
                           sendAction: {},

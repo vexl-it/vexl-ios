@@ -84,5 +84,6 @@
 - VEX-953: Updated group member model
 - VEX-784: Going back to the chat list when user press on notification about chat deletion
 - VEX-921: Maintaining filter for price range
+- VEX-933: Camera picture not appearing fixed
 
 ### Known Issues
