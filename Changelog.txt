@@ -3,5 +3,8 @@
 ### Improvements
 
 ### Fixes
+- VEX-933: Fixed blank profile picture when taken by camera
+- VEX-984: Fixed offer perspective
+- VEX-988: Fixed blank offer locations
 
 ### Known Issues
