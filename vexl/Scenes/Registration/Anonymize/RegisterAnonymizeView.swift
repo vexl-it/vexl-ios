@@ -98,9 +98,7 @@ struct RegisterAnonymizeView: View {
     private var avatarView: some View {
         ZStack(alignment: .topTrailing) {
             if viewModel.currentState == .anonymized {
-                Image(viewModel.anonymizedAvatar)
-                    .resizable()
-                    .scaledToFill()
+                RandomAvatarView(name: viewModel.anonymizedAvatar, contentMode: .scaleToFill)
                     .frame(size: UIProperties.anonymizeSize)
                     .clipped()
                     .cornerRadius(UIProperties.cornerRadius)
@@ -130,6 +128,26 @@ struct RegisterAnonymizeView: View {
         Appearance.Colors.yellow100
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .ignoresSafeArea()
+    }
+}
+
+extension RegisterAnonymizeView {
+    private struct RandomAvatarView: UIViewRepresentable {
+        var name: String
+        var contentMode: UIView.ContentMode = .scaleAspectFit
+
+        func makeUIView(context: Context) -> UIImageView {
+            let imageView = UIImageView()
+            imageView.setContentCompressionResistancePriority(.fittingSizeLevel, for: .vertical)
+            return imageView
+        }
+
+        func updateUIView(_ uiView: UIImageView, context: Context) {
+            uiView.contentMode = contentMode
+            if let image = UIImage(named: name) {
+                uiView.image = image
+            }
+        }
     }
 }
 
