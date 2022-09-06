@@ -86,7 +86,7 @@ extension ManagedOffer {
         set { friendDegreeRawType = newValue?.rawValue }
     }
 
-    private var type: OfferType? {
+    var type: OfferType? {
         get { offerTypeRawType.flatMap(OfferType.init) }
         set { offerTypeRawType = newValue?.rawValue }
     }
