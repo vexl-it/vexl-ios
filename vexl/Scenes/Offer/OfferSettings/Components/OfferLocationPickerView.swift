@@ -32,13 +32,15 @@ struct OfferLocationPickerView: View {
                 }
             }
 
-            DottedButton(color: Appearance.Colors.gray3,
-                         content: {
-                addLocationLabel
-            },
-                         action: {
-                addLocation()
-            })
+            if items.count < Constants.maxNumberOfLocations {
+                DottedButton(color: Appearance.Colors.gray3,
+                             content: {
+                    addLocationLabel
+                },
+                             action: {
+                    addLocation()
+                })
+            }
         }
     }
 
