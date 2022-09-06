@@ -42,6 +42,7 @@
 "register.phone.number.not.valid" = "Telefonní číslo není správně";
 "register.phone.code.input.title" = "Poslali jsme ti ověřovací kód.";
 "register.phone.code.input.subtitle" = "Zadej ho níže a ověř %@";
+"verify.phone.code.hint" = "Aktivační kód";
 "register.phone.code.input.retry" = "Neobdržel jsi kód? Zkus ho poslat znova za %@ s";
 "register.phone.code.input.send.code" = "Neobdržel jsi kód? Zkus ho poslat znova";
 "register.phone.code.input.verifying" = "Ověřuji...";
@@ -232,7 +233,7 @@
 "offer.create.advanced.type.lightning" = "Lightning";
 "offer.create.advanced.type.chain" = "On-chain";
 "offer.create.advanced.group.title" = "Skupina";
-"offer.create.advanced.group.description" = "Sdílej offer ve skupině";
+"offer.create.advanced.group.description" = "Sdílej nabídku ve skupině";
 "offer.create.description" = "Popis";
 "offer.create.description.placeholder" = "Popiš svou nabídku";
 "offer.create.currency" = "Měna";

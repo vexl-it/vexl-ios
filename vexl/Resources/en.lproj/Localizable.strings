@@ -42,6 +42,7 @@
 "register.phone.number.not.valid" = "Phone number is invalid";
 "register.phone.code.input.title" = "We've just sent you a verification code.";
 "register.phone.code.input.subtitle" = "Enter it bellow to verify %@";
+"verify.phone.code.hint" = "Activation code";
 "register.phone.code.input.retry" = "Didn’t receive a code? Resend in %@ s";
 "register.phone.code.input.send.code" = "Didn’t receive a code? Click here to try again.";
 "register.phone.code.input.verifying" = "Verifying...";

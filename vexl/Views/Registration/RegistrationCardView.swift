@@ -11,7 +11,8 @@ import Combine
 struct RegistrationCardView<Content>: View where Content: View {
 
     let title: String
-    let subtitle: String
+    let attributedSubtitle: NSAttributedString?
+    let subtitle: String?
     let subtitlePositionIsBottom: Bool
     let iconName: String?
     let bottomPadding: CGFloat
@@ -48,11 +49,15 @@ struct RegistrationCardView<Content>: View where Content: View {
                 Image(iconName)
             }
 
-            Text(subtitle)
-                .foregroundColor(Appearance.Colors.gray2)
-                .textStyle(.description)
-                .lineLimit(2)
-                .minimumScaleFactor(0.5)
+            if let attributedSubtitle = attributedSubtitle {
+                AttributedText(attributedText: attributedSubtitle)
+            } else if let subtitle = subtitle {
+                Text(subtitle)
+                    .foregroundColor(Appearance.Colors.gray2)
+                    .textStyle(.description)
+                    .lineLimit(2)
+                    .minimumScaleFactor(0.5)
+            }
         }
         .padding(.top, Appearance.GridGuide.point)
     }
@@ -66,6 +71,7 @@ struct RegistrationCardViewPreview: PreviewProvider {
         let text = Text("Text goes here")
 
         RegistrationCardView(title: title,
+                             attributedSubtitle: nil,
                              subtitle: subtitle,
                              subtitlePositionIsBottom: true,
                              iconName: R.image.onboarding.eye.name,
@@ -76,6 +82,7 @@ struct RegistrationCardViewPreview: PreviewProvider {
             .background(Color.black)
 
         RegistrationCardView(title: title,
+                             attributedSubtitle: nil,
                              subtitle: subtitle,
                              subtitlePositionIsBottom: false,
                              iconName: nil,

@@ -15,6 +15,7 @@ struct RegisterNameInputView: View {
 
     var body: some View {
         RegistrationCardView(title: L.registerNameAvatarInputTitle(),
+                             attributedSubtitle: nil,
                              subtitle: L.registerNameAvatarInputSubtitle(),
                              subtitlePositionIsBottom: true,
                              iconName: R.image.onboarding.eye.name,
