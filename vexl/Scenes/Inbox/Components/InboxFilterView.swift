@@ -29,13 +29,13 @@ struct InboxFilterView: View {
             switch self {
             case .buy:
                 return NSCompoundPredicate(orPredicateWithSubpredicates: [
-                    NSPredicate(format: "receiverKeyPair.userOffer != nil AND receiverKeyPair.userOffer.offerTypeRawType == '\(OfferType.sell.rawValue)'"),
-                    NSPredicate(format: "receiverKeyPair.receiversOffer != nil AND receiverKeyPair.receiversOffer.offerTypeRawType == '\(OfferType.buy.rawValue)'")
+                    NSPredicate(format: "receiverKeyPair.userOffer != nil AND receiverKeyPair.userOffer.offerTypeRawType == '\(OfferType.buy.rawValue)'"),
+                    NSPredicate(format: "receiverKeyPair.receiversOffer != nil AND receiverKeyPair.receiversOffer.offerTypeRawType == '\(OfferType.sell.rawValue)'")
                 ])
             case .sell:
                 return NSCompoundPredicate(orPredicateWithSubpredicates: [
-                    NSPredicate(format: "receiverKeyPair.userOffer != nil AND receiverKeyPair.userOffer.offerTypeRawType == '\(OfferType.buy.rawValue)'"),
-                    NSPredicate(format: "receiverKeyPair.receiversOffer != nil AND receiverKeyPair.receiversOffer.offerTypeRawType == '\(OfferType.sell.rawValue)'")
+                    NSPredicate(format: "receiverKeyPair.userOffer != nil AND receiverKeyPair.userOffer.offerTypeRawType == '\(OfferType.sell.rawValue)'"),
+                    NSPredicate(format: "receiverKeyPair.receiversOffer != nil AND receiverKeyPair.receiversOffer.offerTypeRawType == '\(OfferType.buy.rawValue)'")
                 ])
             case .all:
                 return nil
