@@ -13,9 +13,19 @@ struct OfferDescriptionView: View {
 
     var body: some View {
         VStack(alignment: .leading) {
-            Text(L.offerCreateDescription())
-                .textStyle(.titleSemiBold)
-                .foregroundColor(Appearance.Colors.whiteText)
+            HStack {
+                Image(R.image.offer.description.name)
+
+                Text(L.offerCreateDescription())
+                    .multilineTextAlignment(.leading)
+                    .textStyle(.titleSemiBold)
+                    .foregroundColor(Appearance.Colors.whiteText)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+
+                Text("\(text.count)/\(Constants.maxOfferDescriptionCount)")
+                    .textStyle(.paragraphSmallMedium)
+                    .foregroundColor(Appearance.Colors.whiteText)
+            }
 
             ExpandingTextView(
                 placeholder: L.offerCreateDescriptionPlaceholder(),
