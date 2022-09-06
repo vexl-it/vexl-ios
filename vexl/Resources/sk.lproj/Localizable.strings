@@ -172,8 +172,8 @@
 "marketplace.detail.friend.second" = "Přítel přítele";
 "marketplace.detail.sell" = "K prodeji";
 "marketplace.detail.buy" = "K nákupu";
-"marketplace.detail.user.sell" = "%@ nakupuje";
-"marketplace.detail.user.buy" = "%@ prodává";
+"marketplace.detail.user.sell" = "%@ prodává";
+"marketplace.detail.user.buy" = "%@ nakupuje";
 "marketplace.detail.up.to" = "do";
 "marketplace.detail.fee" = "Zahrnuje %1$@ %% transakční poplatek";
 "marketplace.sign.for.thousand" = "K";

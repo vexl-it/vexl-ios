@@ -172,8 +172,8 @@
 "marketplace.detail.friend.second" = "Friend of a Friend";
 "marketplace.detail.sell" = "Selling";
 "marketplace.detail.buy" = "Buying";
-"marketplace.detail.user.sell" = "%@ is buying";
-"marketplace.detail.user.buy" = "%@ is selling";
+"marketplace.detail.user.sell" = "%@ is selling";
+"marketplace.detail.user.buy" = "%@ is buying";
 "marketplace.detail.up.to" = "Up to";
 "marketplace.detail.fee" = "Includes %1$@ %% transaction fee";
 "marketplace.sign.for.thousand" = "K";
