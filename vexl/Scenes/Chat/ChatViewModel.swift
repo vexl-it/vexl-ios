@@ -77,6 +77,8 @@ final class ChatViewModel: ViewModelType, ObservableObject {
     let friends: [ChatCommonFriendViewData] = [.stub, .stub, .stub]
     lazy var offer: ManagedOffer? = chat.receiverKeyPair?.offer
     var imageSource = ImageSource.photoAlbum
+    var selectedImageData: Data? { selectedImage }
+
     var offerLabel: String {
         switch offer?.currentUserPerspectiveOfferType?.inversePerspecitve {
         case .buy:
@@ -87,8 +89,6 @@ final class ChatViewModel: ViewModelType, ObservableObject {
             return ""
         }
     }
-    var offerViewData: OfferDetailViewData? { offer.flatMap(OfferDetailViewData.init) }
-    var selectedImageData: Data? { selectedImage }
 
     @Published var showIdentityRevealBanner: IdentityRevealBannerType = .none
 
