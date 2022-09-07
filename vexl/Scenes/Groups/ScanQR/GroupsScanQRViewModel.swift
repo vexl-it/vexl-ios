@@ -160,13 +160,16 @@ final class GroupsScanQRViewModel: ViewModelType, ObservableObject {
     }
 
     private func handleUniversalLink(url: URL) -> AnyPublisher<Int, Error> {
-        guard let codeStr = URLComponents(string: url.absoluteString)?.queryItems?.first(where: { $0.name == "code" })?.value,
-              let code = Int(codeStr) else {
-            return Fail(error: GroupQRScanError.codeNotFound)
-                .eraseToAnyPublisher()
-        }
-        return Just(code)
-            .setFailureType(to: Error.self)
-            .eraseToAnyPublisher()
+        Just(url.absoluteString)
+           .map(URLComponents.init)
+           .map(\.?.queryItems)
+           .tryMap { queryItems in
+               guard let codeStr = queryItems?.first(where: { $0.name == "code" })?.value,
+                     let code = Int(codeStr) else {
+                   throw GroupQRScanError.codeNotFound
+               }
+               return code
+           }
+           .eraseToAnyPublisher()
     }
 }
