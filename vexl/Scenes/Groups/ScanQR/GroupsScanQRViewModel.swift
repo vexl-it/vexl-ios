@@ -11,6 +11,10 @@ import AVFoundation
 import Combine
 import FirebaseDynamicLinks
 
+enum GroupQRScanError: Error {
+    case codeNotFound
+}
+
 final class GroupsScanQRViewModel: ViewModelType, ObservableObject {
 
     @Inject var groupManaged: GroupManagerType
@@ -156,19 +160,13 @@ final class GroupsScanQRViewModel: ViewModelType, ObservableObject {
     }
 
     private func handleUniversalLink(url: URL) -> AnyPublisher<Int, Error> {
-        Future { promise in
-            DynamicLinks.dynamicLinks().handleUniversalLink(url) { dynamiclink, error in
-                guard error == nil else {
-                    promise(.failure(GroupError.invalidQRCode))
-                    return
-                }
-
-                guard let url = dynamiclink?.url,
-                      let code = url.valueOf("code"),
-                      let intCode = Int(code) else { return }
-                promise(.success(intCode))
-            }
+        guard let codeStr = URLComponents(string: url.absoluteString)?.queryItems?.first(where: { $0.name == "code" })?.value,
+              let code = Int(codeStr) else {
+            return Fail(error: GroupQRScanError.codeNotFound)
+                .eraseToAnyPublisher()
         }
-        .eraseToAnyPublisher()
+        return Just(code)
+            .setFailureType(to: Error.self)
+            .eraseToAnyPublisher()
     }
 }
