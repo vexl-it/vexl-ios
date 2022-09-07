@@ -19,9 +19,9 @@ struct OfferLocation: Codable, Hashable, Equatable {
     }
 
     var asString: String? {
-        let json: [String: Any] = [
-            "latitude": latitude,
-            "longitude": longitude,
+        let json: [String: String] = [
+            "latitude": String(latitude),
+            "longitude": String(longitude),
             "city": city
         ]
 
@@ -48,12 +48,14 @@ struct OfferLocation: Codable, Hashable, Equatable {
     /// Use this init when initializing from Networking
     ///
     init?(string: String) {
-        guard let data = string.data(using: .utf8) else { return nil }
-        do {
-            self = try JSONDecoder().decode(OfferLocation.self, from: data)
-        } catch {
-            return nil
-        }
+        guard let data = string.data(using: .utf8),
+              let dict = try? JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? [String: String] else { return nil }
+        guard let latitudeString = dict["latitude"],
+              let longitudeString = dict["longitude"],
+              let city = dict["city"] else { return nil }
+        self.latitude = Float(latitudeString) ?? 0
+        self.longitude = Float(longitudeString) ?? 0
+        self.city = city
     }
 
     ///
