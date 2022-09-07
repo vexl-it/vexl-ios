@@ -48,7 +48,7 @@ final class GroupsScanQRCoordinator: BaseCoordinator<RouterResult<Void>> {
 
         let dismiss = viewModel
             .route
-            .filter { $0 == .dismissTapped }
+            .filter { $0 == .dismissTapped || $0 == .codeScanned }
             .map { _ -> RouterResult<Void> in .dismiss }
 
         let dismissByRouter = dismissObservable(with: viewController, dismissHandler: router)
