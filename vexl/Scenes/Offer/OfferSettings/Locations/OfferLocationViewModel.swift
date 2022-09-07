@@ -47,6 +47,7 @@ final class OfferLocationViewModel: ViewModelType, ObservableObject, Identifiabl
 
     var location: OfferLocation?
     var currentLocations: [OfferLocation]
+    var canBeModified = true
     private let cancelBag: CancelBag = .init()
 
     init(location: OfferLocation? = nil, currentLocations: [OfferLocation]) {
@@ -66,6 +67,7 @@ final class OfferLocationViewModel: ViewModelType, ObservableObject, Identifiabl
                 case .suggestionTap(let suggestionInfo):
                     owner.name = suggestionInfo.city
                     owner.isTextFieldFocused = false
+                    owner.canBeModified = false
                     owner.location = OfferLocation(locationSuggestion: suggestionInfo)
                 }
             }

@@ -92,6 +92,7 @@ extension OfferLocationPickerView {
                     placeholder: L.offerLocationPlaceholder(),
                     textColor: R.color.yellow100(),
                     text: $viewModel.name,
+                    isEnabled: viewModel.canBeModified,
                     isFocused: $viewModel.isTextFieldFocused
                 )
                 .padding(Appearance.GridGuide.mediumPadding1)
