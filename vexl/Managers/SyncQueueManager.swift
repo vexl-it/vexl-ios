@@ -143,7 +143,7 @@ final class SyncQueueManager: SyncQueueManagerType {
     }
 
     private func createOffer(offer: ManagedOffer, item: ManagedSyncItem) -> AnyPublisher<Void, Error> {
-        guard let receiverPublicKeys = item.publicKeys, let expiration = offer.expirationDate else {
+        guard let receiverPublicKeys = item.publicKeys, let expiration = offer.expirationDate, let type = offer.type else {
             return Fail(error: PersistenceError.insufficientData).eraseToAnyPublisher()
         }
 
@@ -155,7 +155,7 @@ final class SyncQueueManager: SyncQueueManagerType {
         let createOffer = encryptedOffer
             .flatMap { [offerService] payloads in
                 offerService
-                    .createOffer(expiration: expiration, offerPayloads: payloads)
+                    .createOffer(expiration: expiration, offerPayloads: payloads, offerTyoe: type)
             }
 
         let updatePersistence = createOffer
