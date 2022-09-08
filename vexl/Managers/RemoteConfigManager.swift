@@ -32,6 +32,11 @@ class RemoteConfigManager: RemoteConfigManagerType {
     // MARK: - Methods for getting remote values
 
     func getBoolValue(for key: RemoteConfigManager.Key) -> Bool {
-        RemoteConfigManager.remoteConfig.configValue(forKey: key.rawValue).boolValue
+        #if STAGING
+        if key == .isMarketplaceLocked {
+            return false
+        }
+        #endif
+        return RemoteConfigManager.remoteConfig.configValue(forKey: key.rawValue).boolValue
     }
 }
