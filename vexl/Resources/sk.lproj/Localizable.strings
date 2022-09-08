@@ -179,6 +179,7 @@
 "marketplace.sign.for.thousand" = "K";
 "offer.request" = "Žádost";
 "offer.requested" = "Žádost poslána";
+"offer.your.offer" = "Tvá nabídka";
 "offer.sell.title" = "Nová nabídka";
 "offer.buy.title" = "Nová nabídka";
 "offer.buy.create.title" = "Nová\nnabídka";
@@ -353,7 +354,7 @@
 "faq.scene7.description" = "Vždy se na nás můžete obrátit prostřednictvím e-mailu: support@vexl.it. Nebo se s námi můžete setkat během svého příštího P2P obchodu! 😻";
 "faq.scene7.description1" = "Vždy se na nás můžete obrátit prostřednictvím e-mailu:";
 "faq.scene7.description2" = "support@vexl.it";
-"faq.scene7.description3" = "Nebo se s námi můžete setkat během dalšího P2P obchodu! 😻";
+"faq.scene7.description3" = " Nebo se s námi můžete setkat během dalšího P2P obchodu! 😻";
 "permission.camera.denied" = "Přístup ke kameře byl odepřen";
 "locked.screen.title" = "V současnosti vytváříme sociální síť. Importuj své kontakty a pomoz nám šířit Vexl!";
 "locked.screen.subtitle" = "Vytvořil jsi už svou nabídku?";

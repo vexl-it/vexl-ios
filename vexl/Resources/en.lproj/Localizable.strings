@@ -179,6 +179,7 @@
 "marketplace.sign.for.thousand" = "K";
 "offer.request" = "Request";
 "offer.requested" = "Requested";
+"offer.your.offer" = "Your offer";
 "offer.sell.title" = "Create new offer";
 "offer.buy.title" = "Create new offer";
 "offer.buy.create.title" = "Create\nnew offer";
@@ -353,7 +354,7 @@
 "faq.scene7.description" = "You can always reach out to us via email: support@vexl.it. For a private comms, you can also send us an e2ee mail. Or you can meet us during your next P2P trade! 😻";
 "faq.scene7.description1" = "You can always reach out to us via email: ";
 "faq.scene7.description2" = "support@vexl.it";
-"faq.scene7.description3" = "Or you can meet us during your next P2P trade! 😻";
+"faq.scene7.description3" = " Or you can meet us during your next P2P trade! 😻";
 "permission.camera.denied" = "Camera permission denied";
 "locked.screen.title" = "We are currently growing our social network. Import your contacts and help us spread the world!";
 "locked.screen.subtitle" = "Have you already created your offer?";
