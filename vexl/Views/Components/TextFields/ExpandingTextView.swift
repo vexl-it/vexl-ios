@@ -54,7 +54,8 @@ struct ExpandingTextView: View {
             TextView(text: $text,
                      textStyle: .paragraph,
                      textColor: UIColor(textColor),
-                     isFirstResponder: isFirstResponder)
+                     isFirstResponder: isFirstResponder,
+                     characterLimit: Constants.maxOfferDescriptionCount)
             .frame(height: height, alignment: .bottom)
         }
         .offset(y: Appearance.GridGuide.tinyPadding)

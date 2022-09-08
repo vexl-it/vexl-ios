@@ -33,6 +33,7 @@ struct IsFocusTextField: UIViewRepresentable {
     private let keyboardType: UIKeyboardType
     private let textColor: UIColor?
     private let textStyle: Appearance.TextStyle
+    private var isEnabled: Bool
 
     // swiftlint:disable function_default_parameter_at_end
     init(
@@ -41,12 +42,14 @@ struct IsFocusTextField: UIViewRepresentable {
         textColor: UIColor? = R.color.black1(),
         textStyle: Appearance.TextStyle = .paragraphMedium,
         text: Binding<String>,
+        isEnabled: Bool,
         isFocused: Binding<Bool>? = nil
     ) {
         self.placeholder = placeholder
         self.keyboardType = keyboardType
         self.textColor = textColor
         self.textStyle = textStyle
+        self.isEnabled = isEnabled
         self._text = text
         if let isFocused = isFocused {
             _isFocusedExternal = isFocused
@@ -79,6 +82,7 @@ struct IsFocusTextField: UIViewRepresentable {
         setupView(uiView, context: context)
 
         uiView.text = text
+        uiView.isEnabled = isEnabled
         uiView.isEnabled = context.environment.isEnabled
 
         if isFocused.wrappedValue {

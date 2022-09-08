@@ -32,13 +32,15 @@ struct OfferLocationPickerView: View {
                 }
             }
 
-            DottedButton(color: Appearance.Colors.gray3,
-                         content: {
-                addLocationLabel
-            },
-                         action: {
-                addLocation()
-            })
+            if items.count < Constants.maxNumberOfLocations {
+                DottedButton(color: Appearance.Colors.gray3,
+                             content: {
+                    addLocationLabel
+                },
+                             action: {
+                    addLocation()
+                })
+            }
         }
     }
 
@@ -90,6 +92,7 @@ extension OfferLocationPickerView {
                     placeholder: L.offerLocationPlaceholder(),
                     textColor: R.color.yellow100(),
                     text: $viewModel.name,
+                    isEnabled: viewModel.canBeModified,
                     isFocused: $viewModel.isTextFieldFocused
                 )
                 .padding(Appearance.GridGuide.mediumPadding1)
@@ -146,7 +149,7 @@ extension OfferLocationPickerView {
 struct OfferLocationPickerViewPreview: PreviewProvider {
     static var previews: some View {
         OfferLocationPickerView(
-            items: .constant([.init()]),
+            items: .constant([OfferLocationViewModel(location: nil, currentLocations: [])]),
             addLocation: { },
             deleteLocation: { _ in }
         )

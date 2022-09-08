@@ -19,7 +19,7 @@ protocol OfferServiceType {
 
     // MARK: Offer Creation
 
-    func createOffer(expiration: Date, offerPayloads: [OfferPayload]) -> AnyPublisher<OfferPayload, Error>
+    func createOffer(expiration: Date, offerPayloads: [OfferPayload], offerTyoe: OfferType) -> AnyPublisher<OfferPayload, Error>
     func createNewPrivateParts(for offer: ManagedOffer, userPublicKey: String, receiverPublicKeys: [String]) -> AnyPublisher<Void, Error>
 
     // MARK: Offer Updating
@@ -70,12 +70,13 @@ final class OfferService: BaseService, OfferServiceType {
 
     // MARK: - Offer Creation
 
-    func createOffer(expiration: Date, offerPayloads: [OfferPayload]) -> AnyPublisher<OfferPayload, Error> {
+    func createOffer(expiration: Date, offerPayloads: [OfferPayload], offerTyoe: OfferType) -> AnyPublisher<OfferPayload, Error> {
         request(
             type: OfferPayload.self,
             endpoint: OffersRouter.createOffer(
                 offerPayloads: offerPayloads,
-                expiration: expiration.timeIntervalSince1970
+                expiration: expiration.timeIntervalSince1970,
+                offerType: offerTyoe
             )
         )
         .eraseToAnyPublisher()
