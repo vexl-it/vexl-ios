@@ -16,8 +16,7 @@ struct RegisterPhoneNumberInputView: View {
 
     var body: some View {
         RegistrationCardView(title: L.registerPhoneNumberInputTitle(),
-                             attributedSubtitle: nil,
-                             subtitle: L.registerPhoneNumberInputSubtitle(),
+                             subtitle: .regular(L.registerPhoneNumberInputSubtitle()),
                              subtitlePositionIsBottom: true,
                              iconName: R.image.onboarding.eye.name,
                              bottomPadding: Appearance.GridGuide.point,

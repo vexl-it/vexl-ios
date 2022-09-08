@@ -10,9 +10,13 @@ import Combine
 
 struct RegistrationCardView<Content>: View where Content: View {
 
+    enum SubtitleType {
+        case regular(String)
+        case attributed(NSAttributedString)
+    }
+    
     let title: String
-    let attributedSubtitle: NSAttributedString?
-    let subtitle: String?
+    let subtitle: SubtitleType
     let subtitlePositionIsBottom: Bool
     let iconName: String?
     let bottomPadding: CGFloat
@@ -48,15 +52,16 @@ struct RegistrationCardView<Content>: View where Content: View {
             if let iconName = iconName {
                 Image(iconName)
             }
-
-            if let attributedSubtitle = attributedSubtitle {
-                AttributedText(attributedText: attributedSubtitle)
-            } else if let subtitle = subtitle {
+            
+            switch subtitle {
+            case .regular(let subtitle):
                 Text(subtitle)
                     .foregroundColor(Appearance.Colors.gray2)
                     .textStyle(.description)
                     .lineLimit(2)
                     .minimumScaleFactor(0.5)
+            case .attributed(let attributedSubtitle):
+                AttributedText(attributedText: attributedSubtitle)
             }
         }
         .padding(.top, Appearance.GridGuide.point)
@@ -71,8 +76,7 @@ struct RegistrationCardViewPreview: PreviewProvider {
         let text = Text("Text goes here")
 
         RegistrationCardView(title: title,
-                             attributedSubtitle: nil,
-                             subtitle: subtitle,
+                             subtitle: .regular(subtitle) ,
                              subtitlePositionIsBottom: true,
                              iconName: R.image.onboarding.eye.name,
                              bottomPadding: Appearance.GridGuide.padding,
@@ -82,8 +86,7 @@ struct RegistrationCardViewPreview: PreviewProvider {
             .background(Color.black)
 
         RegistrationCardView(title: title,
-                             attributedSubtitle: nil,
-                             subtitle: subtitle,
+                             subtitle: .regular(subtitle),
                              subtitlePositionIsBottom: false,
                              iconName: nil,
                              bottomPadding: Appearance.GridGuide.padding,

@@ -23,8 +23,7 @@ struct RegisterPhoneCodeInputView: View {
 
     var body: some View {
         RegistrationCardView(title: L.registerPhoneCodeInputTitle(),
-                             attributedSubtitle: phoneNumber,
-                             subtitle: nil,
+                             subtitle: .attributed(phoneNumber),
                              subtitlePositionIsBottom: false,
                              iconName: nil,
                              bottomPadding: .zero,
