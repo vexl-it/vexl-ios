@@ -70,12 +70,12 @@ struct GroupCell: View {
                 if let image = viewModel.logoImage {
                     image
                         .resizable()
-                        .scaledToFill()
+                        .scaledToFit()
+                        .padding(imagePadding)
                         .frame(
                             width: Appearance.GridGuide.mediumIconSize.width,
                             height: Appearance.GridGuide.mediumIconSize.height
                         )
-                        .padding(imagePadding)
                         .background(viewModel.groupColor)
                 } else {
                     EmptyGroupLogoSmall(name: $viewModel.name)
@@ -152,11 +152,8 @@ final class GroupCellViewModel: ObservableObject, Identifiable {
         self.groupColor = group.color
 
         group
-            .publisher(for: \.logoURL)
+            .publisher(for: \.logo)
             .filterNil()
-            .subscribe(on: DispatchQueue.global(qos: .userInitiated))
-            .compactMap { try? Data(contentsOf: $0) }
-            .subscribe(on: DispatchQueue.main)
             .compactMap(UIImage.init)
             .map(Image.init)
             .assign(to: &$logoImage)
