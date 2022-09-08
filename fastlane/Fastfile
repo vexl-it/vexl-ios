@@ -130,7 +130,6 @@ platform :ios do
 		match(
 			git_branch: match_repository,
 			type: "appstore",
-			readonly: true,
 			app_identifier: appstore_identifier
 		)
 	end
