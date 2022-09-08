@@ -39,6 +39,7 @@ struct RegisterPhoneCodeInputView: View {
                 placeholder: "",
                 keyboardType: .numberPad,
                 text: $code,
+                isEnabled: true,
                 isFocused: .constant(true)
             )
             .multilineTextAlignment(.leading)

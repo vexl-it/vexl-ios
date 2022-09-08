@@ -13,6 +13,7 @@ struct TextView: UIViewRepresentable {
     let textColor: UIColor
     var cursorColor: UIColor = R.color.yellow100() ?? .yellow
     var isFirstResponder: Bool = false
+    var characterLimit: Int
 
     typealias UIViewType = UITextView
 
@@ -31,27 +32,33 @@ struct TextView: UIViewRepresentable {
 
         return view
     }
-    
+
     func updateUIView(_ uiView: UIViewType, context: UIViewRepresentableContext<Self>) {
         uiView.text = text
     }
 
     func makeCoordinator() -> Coordinator {
-        Coordinator(self)
+        Coordinator(self, characterLimit: characterLimit)
     }
 
     final class Coordinator: NSObject, UITextViewDelegate {
         let parent: TextView
+        let characterLimit: Int
 
-        init(_ parent: TextView) {
+        init(_ parent: TextView, characterLimit: Int) {
             self.parent = parent
+            self.characterLimit = characterLimit
         }
 
         func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-            notifyParent(textView,
-                         shouldChangeTextIn: range,
-                         replacementText: text)
-            return false
+            if textView.text.count + (text.count - range.length) <= characterLimit {
+                notifyParent(textView,
+                             shouldChangeTextIn: range,
+                             replacementText: text)
+                return false
+            } else {
+                return textView.text.count + (text.count - range.length) <= characterLimit
+            }
         }
 
         func notifyParent(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) {

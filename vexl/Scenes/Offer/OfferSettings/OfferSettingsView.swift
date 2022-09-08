@@ -61,7 +61,7 @@ struct OfferSettingsView: View {
                             viewModel.action.send(.addLocation)
                         },
                         deleteLocation: { id in
-                        viewModel.action.send(.deleteLocation(id: id))
+                            viewModel.action.send(.deleteLocation(id: id))
                         }
                     )
                     .padding(.top, Appearance.GridGuide.largePadding1)
