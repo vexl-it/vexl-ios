@@ -20,7 +20,7 @@ struct RegisterAvatarInputView: View {
 
     var body: some View {
         RegistrationCardView(title: title,
-                             subtitle: L.registerNameAvatarImageSubtitle(),
+                             subtitle: .regular(L.registerNameAvatarImageSubtitle()),
                              subtitlePositionIsBottom: false,
                              iconName: R.image.onboarding.eye.name,
                              bottomPadding: Appearance.GridGuide.padding,

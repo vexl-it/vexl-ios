@@ -98,6 +98,8 @@ struct GroupCell: View {
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
+            // TODO: Return back leave button whenever possible
+            /*
             Button(
                 action: {
                     viewModel.action.send(.leaveGroupTap(group: viewModel.group))
@@ -110,6 +112,7 @@ struct GroupCell: View {
             .frame(width: 64, height: 40)
             .background(Appearance.Colors.gray1)
             .cornerRadius(Appearance.GridGuide.buttonCorner)
+             */
         }
     }
 }

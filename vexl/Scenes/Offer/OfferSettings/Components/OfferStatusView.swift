@@ -23,7 +23,7 @@ struct OfferStatusView: View {
 
                 Text(isActive ? L.offerCreateStatusActive() : L.offerCreateStatusInactive())
                     .textStyle(.paragraph)
-                    .foregroundColor(Appearance.Colors.green100)
+                    .foregroundColor(isActive ? Appearance.Colors.green100 : Appearance.Colors.yellow100)
             }
 
             Spacer()
