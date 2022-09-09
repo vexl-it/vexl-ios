@@ -18,7 +18,7 @@ struct RegisterPhoneView: View {
         VStack {
             Group {
                 if viewModel.showCodeInput {
-                    RegisterPhoneCodeInputView(phoneNumber: viewModel.phoneNumber,
+                    RegisterPhoneCodeInputView(phoneNumber: viewModel.phoneSubtitle,
                                                isEnabled: viewModel.codeInputEnabled,
                                                remainingTime: viewModel.countdown,
                                                displayRetry: viewModel.currentState != .codeInputSuccess,
