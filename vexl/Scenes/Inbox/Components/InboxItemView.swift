@@ -46,7 +46,7 @@ struct InboxItemView: View {
                             Image(icon)
                         }
                         Text(data.detail)
-                            .minimumScaleFactor(0.5)
+                            .lineLimit(1)
                             .foregroundColor(data.detailColor)
                             .textStyle(data.detailTextStyle)
                     }
@@ -84,6 +84,8 @@ extension InboxItemView {
                 return L.chatRequestIdentityApprove()
             case .revealRejected:
                 return L.chatRequestIdentityDecline()
+            case .messagingApproval:
+                return L.chatMessageConversationRequestAccepted()
             default:
                 return ""
             }
