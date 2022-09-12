@@ -16,7 +16,7 @@ struct OfferTypeOption: OptionSet {
     static let all: OfferTypeOption = [.sell, .buy]
 }
 
-enum OfferType: String, CaseIterable {
+enum OfferType: String {
     case sell = "SELL"
     case buy = "BUY"
 
