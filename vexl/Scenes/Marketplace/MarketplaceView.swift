@@ -18,7 +18,9 @@ struct MarketplaceView: View {
         StickyBitcoinView(
             bitcoinViewModel: viewModel.bitcoinViewModel,
             isMarketplaceLocked: viewModel.isMarketplaceLocked,
-            content: { marketPlaceContent },
+            content: {
+                marketPlaceContent
+            },
             stickyHeader: {
                 marketPlaceHeader.padding(.bottom, Appearance.GridGuide.point)
             },
@@ -73,7 +75,7 @@ struct MarketplaceView: View {
     private var marketPlaceHeader: some View {
         VStack(spacing: Appearance.GridGuide.padding) {
             MarketplaceSegmentView(selectedOption: $viewModel.selectedOption)
-                .padding(.top, Appearance.GridGuide.mediumPadding2)
+                .padding(.top, Appearance.GridGuide.padding)
 
             if !viewModel.isMarketplaceLocked {
                 filter

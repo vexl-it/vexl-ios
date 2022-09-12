@@ -17,15 +17,15 @@ struct LockedScreenView: View {
     }
 
     private var blackCircleSize: CGSize {
-        CGSize(width: 175.adjusted, height: 175.adjusted)
+        CGSize(width: 145.adjusted, height: 145.adjusted)
     }
 
     private var whiteCircleSize: CGSize {
-        CGSize(width: 160.adjusted, height: 160.adjusted)
+        CGSize(width: 130.adjusted, height: 130.adjusted)
     }
 
     private var yellowCircleSize: CGSize {
-        CGSize(width: 170.adjusted, height: 170.adjusted)
+        CGSize(width: 140.adjusted, height: 140.adjusted)
     }
 
     private var title: Font? {
@@ -42,7 +42,6 @@ struct LockedScreenView: View {
 
     private var countdown: some View {
         VStack(spacing: Appearance.GridGuide.padding.adjusted) {
-
             countdownCircle
 
             Text(L.lockedScreenContactsRemaining())
@@ -91,9 +90,10 @@ struct LockedScreenView: View {
                 )
             }
         }
-        .padding(.horizontal, Appearance.GridGuide.mediumPadding2)
-        .frame(maxHeight: .infinity, alignment: .top)
+        .padding(.horizontal, Appearance.GridGuide.padding)
+        .frame(maxHeight: .infinity, alignment: .center)
         .padding(.top, UIScreen.isSmallScreen ? 0 : Appearance.GridGuide.mediumPadding1)
+        .padding(.bottom, Appearance.GridGuide.tabBarHeight)
     }
 
     private var countdownCircle: some View {
@@ -125,6 +125,12 @@ struct LockedScreenViewPreview: PreviewProvider {
     static var previews: some View {
         LockedScreenView(sellingAction: {},
                          buyingAction: {})
+            .previewDevice(.init(rawValue: "iPhone 13 Pro"))
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background(Color.black.edgesIgnoringSafeArea(.all))
+        LockedScreenView(sellingAction: {},
+                         buyingAction: {})
+            .previewDevice(.init(rawValue: "iPhone 5S"))
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color.black.edgesIgnoringSafeArea(.all))
     }
