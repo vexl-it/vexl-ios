@@ -95,7 +95,7 @@ struct LockedScreenView: View {
         .padding(.horizontal, Appearance.GridGuide.padding)
         .frame(maxHeight: .infinity, alignment: .center)
         .padding(.top, UIScreen.isSmallScreen ? 0 : Appearance.GridGuide.mediumPadding1)
-        .padding(.bottom, Appearance.GridGuide.tabBarHeight)
+        .padding(.bottom, Appearance.GridGuide.homeTabBarHeight)
     }
 
     private var countdownCircle: some View {
