@@ -33,7 +33,7 @@ final class CryptocurrencyValueManager: CryptocurrencyValueManagerType {
     @Inject private var userService: UserServiceType
 
     let currentTimeline: CurrentValueSubject<TimelineOption, Never>
-    let currentCoinData: CurrentValueSubject<ContentState<CoinData>, Never> = .init(.loading)
+    let currentCoinData: CurrentValueSubject<ContentState<CoinData>, Never>
     let currentCoinChartData: CurrentValueSubject<ContentState<CoinChartData>, Never> = .init(.loading)
     let selectedCurrency: CurrentValueSubject<Currency, Never>
     let chartIsExpanded: CurrentValueSubject<Bool, Never> = .init(false)
@@ -50,8 +50,17 @@ final class CryptocurrencyValueManager: CryptocurrencyValueManagerType {
         let currency: Currency = UserDefaults.standard.codable(forKey: .selectedCurrency) ?? .usd
         selectedCurrency = .init(currency)
 
+        let coinData: CoinData? = UserDefaults.standard.codable(forKey: .cachedCoinData)
+        let coinDataState: ContentState<CoinData> = coinData.flatMap(ContentState.content) ?? .loading
+        currentCoinData = .init(coinDataState)
+
         selectedCurrency
             .sink { UserDefaults.standard.set(value: $0, forKey: .selectedCurrency) }
+            .store(in: cancelBag)
+
+        currentCoinData
+            .compactMap(\.data)
+            .sink { UserDefaults.standard.set(value: $0, forKey: .cachedCoinData) }
             .store(in: cancelBag)
     }
 

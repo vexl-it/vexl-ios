@@ -3,8 +3,11 @@
 ### Improvements
 
 ### Fixes
+- VEX-855: Make bitcoin data cached
 - VEX-933: Fixed blank profile picture when taken by camera
 - VEX-984: Fixed offer perspective
 - VEX-988: Fixed blank offer locations
+- VEX-1006: Fixed locked view on smaller devices
+- VEX-1008: Fixed marketplace header
 
 ### Known Issues
