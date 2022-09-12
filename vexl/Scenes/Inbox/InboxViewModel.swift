@@ -5,7 +5,7 @@
 //  Created by Diego Espinoza on 9/05/22.
 //
 
-import Foundation
+import SwiftUI
 import Cleevio
 import Combine
 
@@ -90,7 +90,13 @@ final class InboxViewModel: ViewModelType, ObservableObject {
         $chats.publisher
             .map(\.objects)
             .map { $0.map(InboxItem.init) }
-            .assign(to: &$inboxItems)
+            .withUnretained(self)
+            .sink(receiveValue: { owner, items in
+                withAnimation {
+                    owner.inboxItems = items
+                }
+            })
+            .store(in: cancelBag)
 
         $isRefreshing
             .filter { $0 }
