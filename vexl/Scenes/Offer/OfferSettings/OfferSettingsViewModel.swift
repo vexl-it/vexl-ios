@@ -172,6 +172,10 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
         }
     }
 
+    var currentOfferLocations: [OfferLocation] {
+        locationViewModels.compactMap(\.location)
+    }
+
     var showDeleteButton: Bool {
         managedOffer != nil
     }
@@ -220,8 +224,8 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
         if let managedOffer = managedOffer {
             offer.update(with: managedOffer)
             let managedLocations = managedOffer.locations?.allObjects as? [ManagedOfferLocation] ?? []
-            locationViewModels = managedLocations.map {
-                OfferLocationViewModel(location: $0.offerLocation)
+            locationViewModels = managedLocations.map { [currentOfferLocations] in
+                OfferLocationViewModel(location: $0.offerLocation, currentLocations: currentOfferLocations)
             }
             initialLocations = managedLocations.compactMap(\.offerLocation)
         }
@@ -274,7 +278,7 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
             .filter { $0 == .addLocation }
             .withUnretained(self)
             .sink { owner, _ in
-                let locationViewModel = OfferLocationViewModel()
+                let locationViewModel = OfferLocationViewModel(location: nil, currentLocations: owner.currentOfferLocations)
                 owner.setupLocationBindings(for: locationViewModel)
                 owner.locationViewModels.append(locationViewModel)
             }
@@ -423,12 +427,15 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
             }
 
         let beRequest = encryption
-            .flatMap { [offerService, expiration, primaryActivity] isCreating, payloads, offer -> AnyPublisher<(OfferPayload, ManagedOffer), Never> in
+            .withUnretained(self)
+            .flatMap { [offerService, expiration, primaryActivity] owner, zip -> AnyPublisher<(OfferPayload, ManagedOffer), Never> in
+                let (isCreating, payloads, offer) = zip
                 guard !isCreating, let adminID = offer.adminID else {
                     return offerService
                         .createOffer(
                             expiration: Date(timeIntervalSince1970: expiration),
-                            offerPayloads: payloads
+                            offerPayloads: payloads,
+                            offerTyoe: owner.offerType
                         )
                         .track(activity: primaryActivity)
                         .materialize()

@@ -10,7 +10,7 @@ import Cleevio
 
 struct RegisterPhoneCodeInputView: View {
 
-    let phoneNumber: String
+    let phoneNumber: NSAttributedString
     let isEnabled: Bool
     let remainingTime: Int
     let displayRetry: Bool
@@ -23,9 +23,9 @@ struct RegisterPhoneCodeInputView: View {
 
     var body: some View {
         RegistrationCardView(title: L.registerPhoneCodeInputTitle(),
-                             subtitle: L.registerPhoneCodeInputSubtitle(phoneNumber),
+                             subtitle: .attributed(phoneNumber),
                              subtitlePositionIsBottom: false,
-                             iconName: R.image.onboarding.eye.name,
+                             iconName: nil,
                              bottomPadding: .zero,
                              content: {
             codeInputView
@@ -36,9 +36,10 @@ struct RegisterPhoneCodeInputView: View {
     private var codeInputView: some View {
         VStack {
             IsFocusTextField(
-                placeholder: "",
+                placeholder: L.verifyPhoneCodeHint(),
                 keyboardType: .numberPad,
                 text: $code,
+                isEnabled: true,
                 isFocused: .constant(true)
             )
             .multilineTextAlignment(.leading)
@@ -67,7 +68,7 @@ struct RegisterPhoneCodeInputView: View {
 
 struct RegisterPhoneView_CodeInput_Preview: PreviewProvider {
     static var previews: some View {
-        RegisterPhoneCodeInputView(phoneNumber: "+420 720 183 578",
+        RegisterPhoneCodeInputView(phoneNumber: NSAttributedString(string: "+420 720 183 578"),
                                    isEnabled: true,
                                    remainingTime: 30,
                                    displayRetry: true,

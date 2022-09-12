@@ -358,8 +358,8 @@
 "permission.camera.denied" = "Přístup ke kameře byl odepřen";
 "locked.screen.title" = "V současnosti vytváříme sociální síť. Importuj své kontakty a pomoz nám šířit Vexl!";
 "locked.screen.subtitle" = "Vytvořil jsi už svou nabídku?";
-"locked.screen.sell" = "Chci koupit";
-"locked.screen.buy" = "Chci prodat";
+"locked.screen.sell" = "Chci prodat";
+"locked.screen.buy" = "Chci koupit";
 "locked.screen.offers" = "Nabídka";
 "locked.groups" = "Funkce Skupiny je zamčena.";
 "locked.screen.contacts.remaining" = "Zbývajících kontaktů";

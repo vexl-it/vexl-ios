@@ -10,12 +10,14 @@ import FirebaseRemoteConfig
 
 protocol RemoteConfigManagerType {
     func getBoolValue(for key: RemoteConfigManager.Key) -> Bool
+    func getIntValue(for key: RemoteConfigManager.Key) -> Int
 }
 
 class RemoteConfigManager: RemoteConfigManagerType {
 
     enum Key: String {
         case isMarketplaceLocked = "marketplace_locked"
+        case remainingConstacts = "remaining_contacts_to_unlock"
     }
 
     private static var remoteConfig = RemoteConfig.remoteConfig()
@@ -32,6 +34,15 @@ class RemoteConfigManager: RemoteConfigManagerType {
     // MARK: - Methods for getting remote values
 
     func getBoolValue(for key: RemoteConfigManager.Key) -> Bool {
-        RemoteConfigManager.remoteConfig.configValue(forKey: key.rawValue).boolValue
+        #if STAGING
+        if key == .isMarketplaceLocked {
+            return false
+        }
+        #endif
+        return RemoteConfigManager.remoteConfig.configValue(forKey: key.rawValue).boolValue
+    }
+
+    func getIntValue(for key: RemoteConfigManager.Key) -> Int {
+        RemoteConfigManager.remoteConfig.configValue(forKey: key.rawValue).numberValue.intValue
     }
 }
