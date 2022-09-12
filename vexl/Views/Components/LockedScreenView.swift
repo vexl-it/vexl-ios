@@ -9,6 +9,8 @@ import SwiftUI
 
 struct LockedScreenView: View {
 
+    let viewModel: LockedScreenViewModel = .init()
+
     let sellingAction: () -> Void
     let buyingAction: () -> Void
 
@@ -107,16 +109,30 @@ struct LockedScreenView: View {
                         .frame(size: whiteCircleSize)
                 )
                 .overlay(
-                    Text("\(Constants.numberOfOffersForLockedScreen)")
+                    Text("\(viewModel.currentRemainingContactsCount)")
                         .font(title)
                 )
 
             Circle()
-                .trim(from: 0, to: 0.25)
+                .trim(from: 0, to: viewModel.progress)
                 .stroke(Appearance.Colors.yellow100, style: StrokeStyle(lineWidth: 5))
                 .frame(size: yellowCircleSize)
                 .rotationEffect(.degrees(270))
         }
+    }
+}
+
+class LockedScreenViewModel {
+    @Inject var remoteConfig: RemoteConfigManagerType
+
+    let totalContactsCount: CGFloat = 130_000
+
+    var currentRemainingContactsCount: Int {
+        remoteConfig.getIntValue(for: .remainingConstacts)
+    }
+
+    var progress: CGFloat {
+        (1.0 - (CGFloat(currentRemainingContactsCount) / totalContactsCount)).clamped(from: 0, to: 1)
     }
 }
 
