@@ -29,6 +29,11 @@ platform :ios do
 	# ******************** BEFORE ALL ********************* #
 	# ***************************************************** #
 
+	before_all do
+		ENV["FASTLANE_ITUNES_TRANSPORTER_USE_SHELL_SCRIPT"] = "1"
+		ENV["FASTLANE_ITUNES_TRANSPORTER_PATH"] = "/Applications/Transporter.app/Contents/itms"
+  	end
+
 	ensure_env_vars(
 		env_vars: [
 			'FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD',
