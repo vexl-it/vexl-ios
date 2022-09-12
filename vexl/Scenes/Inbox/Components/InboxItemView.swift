@@ -46,7 +46,7 @@ struct InboxItemView: View {
                             Image(icon)
                         }
                         Text(data.detail)
-                            .minimumScaleFactor(0.5)
+                            .lineLimit(1)
                             .foregroundColor(data.detailColor)
                             .textStyle(data.detailTextStyle)
                     }
