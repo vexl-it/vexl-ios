@@ -16,6 +16,7 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
     @Inject private var offerManager: OfferManagerType
     @Inject private var inboxManager: InboxManagerType
     @Inject private var remoteConfigManager: RemoteConfigManagerType
+    @Inject private var cryptoManager: CryptocurrencyValueManagerType
 
     // MARK: - Fetched Bindings
 
@@ -147,6 +148,11 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
         }
     }
 
+    func reloadFilters() {
+        [buyOfferFilter, sellOfferFilter]
+            .forEach(applyFilter)
+    }
+
     private func setupInbox() {
         inboxManager.syncInboxes()
     }
@@ -172,15 +178,13 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
             .map { !$0.isEmpty }
             .assign(to: &$createdSellOffers)
 
-        $fetchedBuyOffers.load(
-            sortDescriptors: [ NSSortDescriptor(key: "isRequested", ascending: true), NSSortDescriptor(key: "createdAt", ascending: false) ],
-            predicate: buyOfferFilter.predicate
-        )
-
-        $fetchedSellOffers.load(
-            sortDescriptors: [ NSSortDescriptor(key: "isRequested", ascending: true), NSSortDescriptor(key: "createdAt", ascending: false) ],
-            predicate: sellOfferFilter.predicate
-        )
+        cryptoManager
+            .currentCoinData
+            .withUnretained(self)
+            .sink { owner, _ in
+                owner.reloadFilters()
+            }
+            .store(in: cancelBag)
 
         $userBuyOffers
             .load(

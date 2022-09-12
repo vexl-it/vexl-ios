@@ -29,6 +29,11 @@ platform :ios do
 	# ******************** BEFORE ALL ********************* #
 	# ***************************************************** #
 
+	before_all do
+		ENV["FASTLANE_ITUNES_TRANSPORTER_USE_SHELL_SCRIPT"] = "1"
+		ENV["FASTLANE_ITUNES_TRANSPORTER_PATH"] = "/Applications/Transporter.app/Contents/itms"
+  	end
+
 	ensure_env_vars(
 		env_vars: [
 			'FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD',
@@ -70,6 +75,7 @@ platform :ios do
 	desc "Build the app and run tests"
 	lane :test do
 		install_pods()
+		xcode_select("/Applications/Xcode-14.0.0-Release.Candidate.app")
 		clear_derived_data
 		run_tests(
 			workspace: "vexl.xcworkspace",
@@ -130,7 +136,6 @@ platform :ios do
 		match(
 			git_branch: match_repository,
 			type: "appstore",
-			readonly: true,
 			app_identifier: appstore_identifier
 		)
 	end
@@ -148,6 +153,8 @@ platform :ios do
 			build_number: ENV['CI_JOBENV_ID'],
 			xcodeproj: xcodeproj_identifier
 		)
+
+		xcode_select("/Applications/Xcode-14.0.0-Release.Candidate.app")
 
 		clean_build_artifacts
 
@@ -232,6 +239,7 @@ platform :ios do
 			xcodeproj: xcodeproj_identifier
 		)
 
+		xcode_select("/Applications/Xcode-14.0.0-Release.Candidate.app")
 
 		clean_build_artifacts
 
@@ -333,6 +341,7 @@ platform :ios do
 			xcodeproj: xcodeproj_identifier
 		)
 
+		xcode_select("/Applications/Xcode-14.0.0-Release.Candidate.app")
 
 		clean_build_artifacts
 
