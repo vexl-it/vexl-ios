@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct CoinData: Decodable {
+struct CoinData: Codable {
     let priceUsd: Decimal
     let priceEur: Decimal
     let priceCzk: Decimal

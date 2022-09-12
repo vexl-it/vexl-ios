@@ -82,6 +82,16 @@ final class RegisterPhoneViewModel: ViewModelType {
 
     // MARK: - Variables
 
+    var phoneSubtitle: NSAttributedString {
+        let attributedString = NSMutableAttributedString(string: L.registerPhoneCodeInputSubtitle(""),
+                                                         attributes: [.font: Appearance.TextStyle.description.font,
+                                                                      .foregroundColor: UIColor(Appearance.Colors.gray3)])
+        attributedString.append(NSAttributedString(string: phoneNumber,
+                                                   attributes: [.font: Appearance.TextStyle.descriptionSemiBold.font,
+                                                                .foregroundColor: UIColor(Appearance.Colors.black1)]))
+        return attributedString
+    }
+
     var showCodeInput: Bool {
         [RegisterPhoneViewModel.ViewState.codeInput, .codeInputValidation, .codeInputSuccess].contains(currentState)
     }

@@ -24,7 +24,7 @@ struct MarketplaceSegmentView: View {
                     Text(L.marketplaceBuy())
                         .textStyle(.h1)
                         .foregroundColor(selectedOption == .buy ? Appearance.Colors.whiteText : Appearance.Colors.gray1)
-                        .minimumScaleFactor(0.7)
+                        .minimumScaleFactor(0.1)
                         .lineLimit(1)
                         .padding(.horizontal, Appearance.GridGuide.padding)
                 }
@@ -36,7 +36,7 @@ struct MarketplaceSegmentView: View {
                     Text(L.marketplaceSell())
                         .textStyle(.h1)
                         .foregroundColor(selectedOption == .sell ? Appearance.Colors.whiteText : Appearance.Colors.gray1)
-                        .minimumScaleFactor(0.7)
+                        .minimumScaleFactor(0.1)
                         .lineLimit(1)
                         .padding(.horizontal, Appearance.GridGuide.padding)
                 }

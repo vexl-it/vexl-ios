@@ -19,6 +19,7 @@ struct StickyBitcoinView<Content: View, Header: View>: View {
     @State private var bitcoinSize: CGSize = .zero
     @State private var stickHeaderIsVisible = false
     @State private var scrollableContentSize: CGSize = .zero
+    @State private var safeAreaCoverOpacity: CGFloat = 0
 
     var body: some View {
         ZStack(alignment: .top) {
@@ -29,13 +30,21 @@ struct StickyBitcoinView<Content: View, Header: View>: View {
                 content: { scrollableContent }
             )
             .padding(.top, 1) // to make scroll view clipped content
+            .edgesIgnoringSafeArea(.top)
+
+            Rectangle()
+                .foregroundColor(.black)
+                .frame(maxWidth: .infinity)
+                .frame(height: 48)
+                .opacity(safeAreaCoverOpacity)
+                .edgesIgnoringSafeArea(.top)
 
             if stickHeaderIsVisible {
+
                 stickyHeader()
                     .background(Color.black)
             }
         }
-        .edgesIgnoringSafeArea(.top)
     }
 
     private var scrollableContent: some View {
@@ -86,11 +95,14 @@ struct StickyBitcoinView<Content: View, Header: View>: View {
     private func offsetChanged(to offset: CGPoint) {
         if offset.y < 0 {
             let currentOffset = abs(offset.y)
-            let headerIsVisible = currentOffset >= bitcoinSize.height
+            let headerIsVisible = currentOffset >= bitcoinSize.height + (UIScreen.main.focusedView?.safeAreaInsets.top ?? 0)
             if headerIsVisible != stickHeaderIsVisible {
                 stickHeaderIsVisible = headerIsVisible
             }
+            let opacity = currentOffset / (bitcoinSize.height + (UIScreen.main.focusedView?.safeAreaInsets.top ?? 0))
+            safeAreaCoverOpacity = opacity.clamped(from: 0, to: 1)
         } else {
+            safeAreaCoverOpacity = 0
             stickHeaderIsVisible = false
         }
     }
@@ -102,7 +114,7 @@ struct StickyBitcoinViewViewPreview: PreviewProvider {
         let bvm = BitcoinViewModel()
         return StickyBitcoinView(
             bitcoinViewModel: bvm,
-            isMarketplaceLocked: true,
+            isMarketplaceLocked: false,
             content: {
                 VStack {
                     Text("Some content")
