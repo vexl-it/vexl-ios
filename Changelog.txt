@@ -1,6 +1,8 @@
 - Requires uninstall: ⚠️ YES ⚠️
 
 ### Improvements
+- VEX-1007: Chat messages are now animated
+- VEX-1007: all chats have now preview
 
 ### Fixes
 - VEX-855: Make bitcoin data cached
@@ -9,5 +11,6 @@
 - VEX-988: Fixed blank offer locations
 - VEX-1006: Fixed locked view on smaller devices
 - VEX-1008: Fixed marketplace header
+- VEX-1007: Fixed case when chat previews are not updating
 
 ### Known Issues
