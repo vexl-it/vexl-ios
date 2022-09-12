@@ -71,6 +71,12 @@ final class InboxViewModel: ViewModelType, ObservableObject {
     let bitcoinViewModel: BitcoinViewModel
     private let cancelBag: CancelBag = .init()
 
+    /// This variable is used for bypassing a bug that causes latest chat messages to not update.
+    /// The bug is caused when fetched `chats` publisher emits a new value. we create a new array of view models that gets assigned to `inboxItems` replacing the old view models.
+    /// For some weird reson the SwiftUI updates the UI correctly (e.g. reorders them), but doesn't update the reference to the cells `data` model, which gets deallocated and stops updating its fields.
+    /// Solution for this is to hold strong reference for the old view models and not release them.
+    private var inboxItemStrongReference: [InboxItem] = .init()
+
     init(bitcoinViewModel: BitcoinViewModel) {
         self.bitcoinViewModel = bitcoinViewModel
         setupActionBindings()
@@ -92,6 +98,7 @@ final class InboxViewModel: ViewModelType, ObservableObject {
             .map { $0.map(InboxItem.init) }
             .withUnretained(self)
             .sink(receiveValue: { owner, items in
+                owner.inboxItemStrongReference.append(contentsOf: items)
                 withAnimation {
                     owner.inboxItems = items
                 }
