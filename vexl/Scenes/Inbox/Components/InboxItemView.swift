@@ -84,6 +84,8 @@ extension InboxItemView {
                 return L.chatRequestIdentityApprove()
             case .revealRejected:
                 return L.chatRequestIdentityDecline()
+            case .messagingApproval:
+                return L.chatMessageConversationRequestAccepted()
             default:
                 return ""
             }
