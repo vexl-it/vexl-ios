@@ -141,6 +141,7 @@
 		B08F399A27AE7D87008B344F /* OnboardingCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B08F399927AE7D87008B344F /* OnboardingCoordinator.swift */; };
 		B08F399C27AE7D8D008B344F /* OnboardingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B08F399B27AE7D8D008B344F /* OnboardingViewModel.swift */; };
 		B08F399E27AE7D92008B344F /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B08F399D27AE7D92008B344F /* OnboardingView.swift */; };
+		B09C0B4E28D129A500985564 /* OfferAmountTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B09C0B4D28D129A500985564 /* OfferAmountTextField.swift */; };
 		B0B0A059288EDDAE00E81776 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B0A058288EDDAE00E81776 /* NotificationManager.swift */; };
 		B0B0A05B2891AC3E00E81776 /* Bool+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B0A05A2891AC3E00E81776 /* Bool+.swift */; };
 		B0BACE7228CF2A8500ED0979 /* Clampable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0BACE7128CF2A8500ED0979 /* Clampable.swift */; };
@@ -594,6 +595,7 @@
 		B08F399927AE7D87008B344F /* OnboardingCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingCoordinator.swift; sourceTree = "<group>"; };
 		B08F399B27AE7D8D008B344F /* OnboardingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewModel.swift; sourceTree = "<group>"; };
 		B08F399D27AE7D92008B344F /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		B09C0B4D28D129A500985564 /* OfferAmountTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferAmountTextField.swift; sourceTree = "<group>"; };
 		B0B0A058288EDDAE00E81776 /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
 		B0B0A05A2891AC3E00E81776 /* Bool+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bool+.swift"; sourceTree = "<group>"; };
 		B0BACE7128CF2A8500ED0979 /* Clampable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Clampable.swift; sourceTree = "<group>"; };
@@ -2039,6 +2041,7 @@
 				F13B265A281897890011F2FB /* Advanced */,
 				F18862502811710100659786 /* OfferStatusView.swift */,
 				4FBF620A283CE08800DDBE71 /* OfferAmountRangeView.swift */,
+				B09C0B4D28D129A500985564 /* OfferAmountTextField.swift */,
 				F1886254281185E900659786 /* OfferFeePickerView.swift */,
 				F188625C2811E3E700659786 /* OfferTradeLocationPickerView.swift */,
 				F188625E2811E53400659786 /* OfferPaymentMethodView.swift */,
@@ -3037,6 +3040,7 @@
 				B01C01E92860D2CD00A29F85 /* ContentState.swift in Sources */,
 				F13B2679281FC5A90011F2FB /* OfferLocation.swift in Sources */,
 				B0EEE11627B14D320097031E /* WelcomeCoordinator.swift in Sources */,
+				B09C0B4E28D129A500985564 /* OfferAmountTextField.swift in Sources */,
 				F1485641284FD451003213D7 /* ChatConfirmationView.swift in Sources */,
 				F1485626284FD0FB003213D7 /* InboxItemView.swift in Sources */,
 				6FF08EB128B67EE500B2CF65 /* TextView.swift in Sources */,
