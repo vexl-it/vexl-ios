@@ -52,6 +52,25 @@ final class FilterViewModel: ViewModelType, ObservableObject {
 
     @Published var locationViewModels: [OfferLocationViewModel] = []
 
+    lazy var minAmountTextFieldViewModel: OfferAmountTextFieldViewModel = .init(
+        type: .min,
+        currentAmountRangePublisher: $currentAmountRange.eraseToAnyPublisher(),
+        sliderBoundsPublisher: $amountRange.eraseToAnyPublisher(),
+        currencyPublisher: $currency.filterNil().eraseToAnyPublisher(),
+        rangeSetter: { [weak self] newRange in
+            self?.currentAmountRange = newRange
+        }
+    )
+    lazy var maxAmountTextFieldViewModel: OfferAmountTextFieldViewModel = .init(
+        type: .max,
+        currentAmountRangePublisher: $currentAmountRange.eraseToAnyPublisher(),
+        sliderBoundsPublisher: $amountRange.eraseToAnyPublisher(),
+        currencyPublisher: $currency.filterNil().eraseToAnyPublisher(),
+        rangeSetter: { [weak self] newRange in
+            self?.currentAmountRange = newRange
+        }
+    )
+
     var filterType: String { offerFilter.type.title }
     var formatedFeeAmount: String {
         // TODO: use NumberFormatter for percentages

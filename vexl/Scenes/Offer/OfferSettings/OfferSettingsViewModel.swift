@@ -54,12 +54,8 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
 
     @Published var offer: Offer = .init()
     @Published var primaryActivity: Activity = .init()
-    var errorIndicator: ErrorIndicator {
-        primaryActivity.error
-    }
-    var activityIndicator: ActivityIndicator {
-        primaryActivity.indicator
-    }
+    var errorIndicator: ErrorIndicator { primaryActivity.error }
+    var activityIndicator: ActivityIndicator { primaryActivity.indicator }
 
     @Published var deleteTimeUnit: OfferTriggerDeleteTimeUnit = .days
     @Published var deleteTime: String = Constants.defaultOfferDeleteTime
@@ -68,6 +64,20 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
     @Published var error: Error?
 
     @Published var locationViewModels: [OfferLocationViewModel] = []
+    lazy var minAmountTextFieldViewModel: OfferAmountTextFieldViewModel = .init(
+        type: .min,
+        offerPublisher: $offer,
+        rangeSetter: { [weak self] newRange in
+            self?.offer.currentAmountRange = newRange
+        }
+    )
+    lazy var maxAmountTextFieldViewModel: OfferAmountTextFieldViewModel = .init(
+        type: .max,
+        offerPublisher: $offer,
+        rangeSetter: { [weak self] newRange in
+            self?.offer.currentAmountRange = newRange
+        }
+    )
 
     let triggerCurrency: Currency
 
@@ -181,8 +191,8 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
     }
 
     var showDeleteTrigger: Bool {
-        //TODO: - Add it back when the BE is ready to use expiration times. (VEX-848)
-        //managedOffer == nil
+        // TODO: - Add it back when the BE is ready to use expiration times. (VEX-848)
+        // managedOffer == nil
         false
     }
 

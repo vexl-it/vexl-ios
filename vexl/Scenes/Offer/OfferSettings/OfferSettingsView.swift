@@ -42,7 +42,9 @@ struct OfferSettingsView: View {
                         if let currency = viewModel.offer.currency {
                             OfferAmountRangeView(currency: currency,
                                                  currentValue: $viewModel.offer.currentAmountRange,
-                                                 sliderBounds: viewModel.offer.amountRange)
+                                                 sliderBounds: viewModel.offer.amountRange,
+                                                 minAmountTextFieldViewModel: viewModel.minAmountTextFieldViewModel,
+                                                 maxAmountTextFieldViewModel: viewModel.maxAmountTextFieldViewModel)
                         }
                     }
                     .onChange(of: viewModel.offer.currency) { currency in

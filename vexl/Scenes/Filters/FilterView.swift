@@ -78,7 +78,9 @@ struct FilterView: View {
                 OfferAmountRangeView(
                     currency: currency,
                     currentValue: $viewModel.currentAmountRange,
-                    sliderBounds: viewModel.amountRange
+                    sliderBounds: viewModel.amountRange,
+                    minAmountTextFieldViewModel: viewModel.minAmountTextFieldViewModel,
+                    maxAmountTextFieldViewModel: viewModel.maxAmountTextFieldViewModel
                 )
 
                 feeOptions
