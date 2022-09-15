@@ -9,26 +9,22 @@ import SwiftUI
 
 struct RangePickerView: View {
     let currency: Currency
-    let currentValue: Binding<ClosedRange<Int>>
+    @Binding var currentValue: ClosedRange<Int>
     let sliderBounds: ClosedRange<Int>
 
     var minValue: String {
-        currency.formattedCurrency(amount: currentValue.wrappedValue.lowerBound)
+        currency.formattedCurrency(amount: currentValue.lowerBound)
     }
 
     var maxValue: String {
-        currency.formattedCurrency(amount: currentValue.wrappedValue.upperBound)
+        currency.formattedCurrency(amount: currentValue.upperBound)
     }
 
     var body: some View {
         VStack(alignment: .leading, spacing: Appearance.GridGuide.mediumPadding2) {
-            Text("\(minValue) - \(maxValue)")
-                .textStyle(.paragraph)
-                .foregroundColor(Appearance.Colors.yellow100)
-
-            RangeSliderView(value: currentValue, bounds: sliderBounds)
+            RangeSliderView(value: $currentValue, bounds: sliderBounds)
                 .padding(.horizontal, Appearance.GridGuide.padding)
-                .padding(.bottom, Appearance.GridGuide.mediumPadding2)
+                .padding(.vertical, Appearance.GridGuide.mediumPadding2)
         }
         .padding()
         .background(Appearance.Colors.gray1)

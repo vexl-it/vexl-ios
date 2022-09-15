@@ -219,6 +219,8 @@
 "offer.create.status.active" = "Active";
 "offer.create.status.inactive" = "Inactive";
 "offer.create.status.amount.title" = "Amount";
+"offer.create.amount.min.title" = "Min. price";
+"offer.create.amount.max.title" = "Max. price";
 "offer.create.location.title" = "Location";
 "offer.create.location.add" = "Another Location";
 "offer.create.payment.method.cash" = "Cash";
@@ -356,7 +358,7 @@
 "faq.scene7.description2" = "support@vexl.it";
 "faq.scene7.description3" = " Or you can meet us during your next P2P trade! 😻";
 "permission.camera.denied" = "Camera permission denied";
-"locked.screen.title" = "We are currently growing our social network. Import your contacts and help us spread the world!";
+"locked.screen.title" = "We are currently growing our social network. Import your contacts and help us spread the word!";
 "locked.screen.subtitle" = "Have you already created your offer?";
 "locked.screen.sell" = "I'm selling";
 "locked.screen.buy" = "I'm buying";
@@ -373,3 +375,13 @@
 "error.unknown.error.occurred" = "The action could not be completed because an unknown error occurred. Please try again later.";
 "error.unknown.connection.problem" = "Connection problem. Please try again later.";
 "error.invalid.data.format" = "Invalid data format";
+"user.passcode.initial.title" = "Setup your\nnew passcode";
+"user.passcode.initial.subtitle" = "Without passcode, nobody will be able to\naccess your Vexl or Privacy Settings in app.";
+"user.passcode.confirm.title" = "Repeat your\nnew passcode";
+"user.passcode.confirm.subtitle" = "Without passcode, nobody will be able to\naccess your Vexl or Privacy Settings in app.";
+"user.passcode.loader.one" = "Anonymizing your identity...";
+"user.passcode.loader.two" = "Anonymizing your contact list...";
+"user.passcode.loader.three" = "Securing your profile...";
+"user.passcode.input" = "Enter your passcode";
+"user.passcode.error.invalid" = "Wrong passcode";
+"user.passcode.error.not.equal" = "Passcodes are not the same";

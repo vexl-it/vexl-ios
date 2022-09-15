@@ -16,30 +16,32 @@ struct ImportContactsView: View {
         VStack(spacing: Appearance.GridGuide.point) {
             ImportContactListView(viewModel: viewModel)
 
-            if viewModel.showBackButton {
-                LargeSolidButton(
-                    title: L.generalBack(),
-                    font: Appearance.TextStyle.titleSmallBold.font.asFont,
-                    style: .secondary,
-                    isFullWidth: true,
-                    isEnabled: .constant(!viewModel.loading),
-                    action: {
-                        viewModel.action.send(.dismiss)
-                    }
-                )
-            }
+            HStack(spacing: Appearance.GridGuide.point) {
+                if viewModel.showBackButton {
+                    LargeSolidButton(
+                        title: L.generalBack(),
+                        font: Appearance.TextStyle.titleSmallBold.font.asFont,
+                        style: .secondary,
+                        isFullWidth: true,
+                        isEnabled: .constant(!viewModel.loading),
+                        action: {
+                            viewModel.action.send(.dismiss)
+                        }
+                    )
+                }
 
-            if viewModel.showActionButton {
-                LargeSolidButton(
-                    title: viewModel.actionTitle,
-                    font: Appearance.TextStyle.titleSmallBold.font.asFont,
-                    style: .main,
-                    isFullWidth: true,
-                    isEnabled: .constant(!viewModel.loading),
-                    action: {
-                        viewModel.action.send(.importContacts)
-                    }
-                )
+                if viewModel.showActionButton {
+                    LargeSolidButton(
+                        title: viewModel.actionTitle,
+                        font: Appearance.TextStyle.titleSmallBold.font.asFont,
+                        style: .main,
+                        isFullWidth: true,
+                        isEnabled: .constant(!viewModel.loading),
+                        action: {
+                            viewModel.action.send(.importContacts)
+                        }
+                    )
+                }
             }
         }
         .navigationBarBackButtonHidden(true)
