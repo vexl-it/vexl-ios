@@ -113,8 +113,12 @@ final class ChatRequestViewModel: ViewModelType, ObservableObject {
                     return nil
                 }
             }
-            .flatMap { [chatManager] chat, confirmation in
-                chatManager.communicationResponse(chat: chat, confirmation: confirmation)
+            .withUnretained(self)
+            .flatMap { [chatManager] owner, tupl in
+                let (chat, confirmation) = tupl
+                return chatManager
+                    .communicationResponse(chat: chat, confirmation: confirmation)
+                    .track(activity: owner.primaryActivity)
             }
             .sink()
             .store(in: cancelBag)
