@@ -27,7 +27,8 @@ struct ChatConversationView: View {
                                         .padding(.bottom, Appearance.GridGuide.padding)
                                 case .text:
                                     ChatTextBubbleView(text: message.text ?? "",
-                                                       style: message.isContact ? .contact : .user)
+                                                       style: message.isContact ? .contact : .user,
+                                                       urlHandler: { url in viewModel.action.send(.open(url: url)) })
                                 case .image:
                                     ChatImageBubbleView(image: message.imageView,
                                                         text: message.text,

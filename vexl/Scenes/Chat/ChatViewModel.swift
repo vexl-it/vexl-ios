@@ -68,6 +68,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
         case showBlockTapped
         case showCommonFriendsTapped
         case showCommonFriendsModal(contacts: [ManagedContact])
+        case urlTapped(url: URL)
     }
 
     var route: CoordinatingSubject<Route> = .init()
@@ -160,6 +161,12 @@ final class ChatViewModel: ViewModelType, ObservableObject {
         chatConversationViewModel
             .identityRevealResponseTap
             .map { _ -> Route in .showRevealIdentityResponseTapped }
+            .subscribe(route)
+            .store(in: cancelBag)
+
+        chatConversationViewModel
+            .urlTap
+            .map { url -> Route in .urlTapped(url: url) }
             .subscribe(route)
             .store(in: cancelBag)
 
