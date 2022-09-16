@@ -100,6 +100,12 @@ final class ApiService: ApiServiceType {
             throw APIError.serverError(.internalError)
         }
 
+        if httpResponse.statusCode == 403 || httpResponse.statusCode == 401 {
+            @Inject var authenticationManager: AuthenticationManagerType
+            authenticationManager.logoutUser(force: true)
+            throw APIError.serverError(.unauthorized)
+        }
+
         if !(ApiService.StatusCode.success ~= httpResponse.statusCode),
             let data = response.data,
             let errorPayload = try? Constants.jsonDecoder.decode(ErrorPayload.self, from: data),
