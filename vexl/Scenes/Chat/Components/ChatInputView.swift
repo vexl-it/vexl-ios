@@ -8,18 +8,19 @@
 import SwiftUI
 
 struct ChatInputView: View {
-    
+
     @Binding var text: String
+    @Binding var isLoading: Bool
     let image: Data?
     let sendAction: () -> Void
     let cameraAction: () -> Void
     let deleteImageAction: () -> Void
-    
+
     var body: some View {
         HStack {
             
             // TODO: - Activate back when images are supported crossplatform
-            
+
             //            Button {
             //                cameraAction()
             //            } label: {
@@ -30,7 +31,7 @@ struct ChatInputView: View {
             //                    .background(Appearance.Colors.gray1)
             //                    .clipShape(Circle())
             //            }
-            
+
             VStack(alignment: .leading) {
                 if let image = image {
                     SelectedImageView(image: image,
@@ -39,7 +40,7 @@ struct ChatInputView: View {
                     })
                     .padding(.top, Appearance.GridGuide.point)
                 }
-                
+
                 ExpandingTextView(
                     placeholder: L.chatMessageInputPlaceholder(),
                     text: $text,
@@ -48,16 +49,26 @@ struct ChatInputView: View {
                     textColor: Appearance.Colors.whiteText
                 )
             }
-            
+
             Button {
-                sendAction()
+                if !isLoading {
+                    sendAction()
+                }
             } label: {
-                Image(R.image.chat.sendMessage.name)
-                    .resizable()
-                    .frame(size: Appearance.GridGuide.iconSize)
-                    .padding(Appearance.GridGuide.tinyPadding)
-                    .background(Appearance.Colors.yellow100)
-                    .clipShape(Circle())
+                if !isLoading {
+                    Image(R.image.chat.sendMessage.name)
+                        .resizable()
+                        .frame(size: Appearance.GridGuide.iconSize)
+                        .padding(Appearance.GridGuide.tinyPadding)
+                        .background(Appearance.Colors.yellow100)
+                        .clipShape(Circle())
+                } else {
+                    LoadingDotsView(dotCount: 3, dotDiameter: 4, color: .black)
+                        .frame(size: Appearance.GridGuide.iconSize)
+                        .padding(Appearance.GridGuide.tinyPadding)
+                        .background(Appearance.Colors.yellow100)
+                        .clipShape(Circle())
+                }
             }
         }
         .padding(.vertical, Appearance.GridGuide.tinyPadding)
@@ -96,6 +107,7 @@ struct ChatMessageInputViewPreview: PreviewProvider {
     static var previews: some View {
         VStack {
             ChatInputView(text: .constant("Hello there"),
+                          isLoading: .constant(false),
                           image: nil,
                           sendAction: {},
                           cameraAction: {},
@@ -104,6 +116,7 @@ struct ChatMessageInputViewPreview: PreviewProvider {
             .previewDevice("iPhone 11")
 
             ChatInputView(text: .constant(""),
+                          isLoading: .constant(false),
                           image: nil,
                           sendAction: {},
                           cameraAction: {},
@@ -112,6 +125,7 @@ struct ChatMessageInputViewPreview: PreviewProvider {
             .previewDevice("iPhone 11")
 
             ChatInputView(text: .constant("Hello there"),
+                          isLoading: .constant(false),
                           image: R.image.onboarding.testAvatar()!.jpegData(compressionQuality: 0.25)!,
                           sendAction: {},
                           cameraAction: {},

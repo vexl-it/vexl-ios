@@ -79,6 +79,7 @@ struct ChatView: View {
 
             if viewModel.allowsInput {
                 ChatInputView(text: $viewModel.currentMessage,
+                              isLoading: $viewModel.isSendingMessage,
                               image: viewModel.selectedImageData,
                               sendAction: {
                     viewModel.action.send(.messageSend)
