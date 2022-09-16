@@ -317,6 +317,11 @@
 "chat.message.identity.reveal.reject.received" = "Tvoje žádost byla zamítnuta.";
 "chat.message.identity.reveal.reject" = "Zamítnul jsi žádost o odhalení tvé identity.";
 "chat.message.identity.reveal.approved" = "Identita odhalena!";
+"chat.message.identity.reveal.sent" = "Žádost o odhalení identity odeslána!";
+"chat.message.identity.reveal.declined" = "";
+"chat.message.copy.message" = "Zkopírovat zprávu";
+"chat.message.copy.link" = "Zkopírovat odkaz";
+"chat.message.open.link" = "Otevřít odkaz";
 "groups.join.button" = "Přidat se ke skupině";
 "groups.title" = "Skupiny";
 "groups.leave.button" = "Opustit skupinu";
@@ -369,7 +374,7 @@
 "intro.continue" = "Pokračovat";
 "intro.first.title" = "Anonymně\nse spoj\nse svými kontakty.";
 "intro.second.title" = "Podívej se\nna jejich\nnabídky.";
-"intro.third.title" = "Začnete chatovat,\odhalte své identity\na obchodujte.";
+"intro.third.title" = "Začněte chatovat,\odhalte své identity\na obchodujte.";
 "error.user.is.blocked" = "Uživatel je zablokován";
 "error.unauthorized" = "Neoprávněná chyba. Byli jste odhlášeni.";
 "error.unknown.error.occurred" = "Akci nebylo možné dokončit, protože došlo k neznámé chybě. Prosím zkuste to znovu později.";

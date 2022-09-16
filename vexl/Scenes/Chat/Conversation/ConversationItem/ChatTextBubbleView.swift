@@ -70,7 +70,7 @@ struct ChatTextBubbleView: View {
 
     @ViewBuilder
     var menuItems: some View {
-        Button("Copy text") {
+        Button(L.chatMessageCopyMessage()) {
             UIPasteboard.general.string = text
         }
 
@@ -78,13 +78,13 @@ struct ChatTextBubbleView: View {
             Button {
                 UIPasteboard.general.string = url.absoluteString
             } label: {
-                Label("Copy Link \"\(url.absoluteString)\"", systemImage: "plus.circle")
+                Label("\(L.chatMessageCopyLink()) \"\(url.absoluteString)\"", systemImage: "plus.circle")
             }
             if UIApplication.shared.canOpenURL(url) {
                 Button {
                     urlHandler(url)
                 } label: {
-                    Label("Open Link \"\(url.absoluteString)\"", systemImage: "plus.circle")
+                    Label("\(L.chatMessageOpenLink()) \"\(url.absoluteString)\"", systemImage: "plus.circle")
                 }
             }
         }
