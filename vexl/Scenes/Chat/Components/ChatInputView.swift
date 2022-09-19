@@ -8,18 +8,18 @@
 import SwiftUI
 
 struct ChatInputView: View {
-    
+
     @Binding var text: String
     let image: Data?
     let sendAction: () -> Void
     let cameraAction: () -> Void
     let deleteImageAction: () -> Void
-    
+
     var body: some View {
         HStack {
-            
+
             // TODO: - Activate back when images are supported crossplatform
-            
+
             //            Button {
             //                cameraAction()
             //            } label: {
@@ -30,16 +30,15 @@ struct ChatInputView: View {
             //                    .background(Appearance.Colors.gray1)
             //                    .clipShape(Circle())
             //            }
-            
+
             VStack(alignment: .leading) {
                 if let image = image {
-                    SelectedImageView(image: image,
-                                      deleteAction: {
+                    SelectedImageView(image: image, deleteAction: {
                         deleteImageAction()
                     })
                     .padding(.top, Appearance.GridGuide.point)
                 }
-                
+
                 ExpandingTextView(
                     placeholder: L.chatMessageInputPlaceholder(),
                     text: $text,
@@ -48,7 +47,7 @@ struct ChatInputView: View {
                     textColor: Appearance.Colors.whiteText
                 )
             }
-            
+
             Button {
                 sendAction()
             } label: {
