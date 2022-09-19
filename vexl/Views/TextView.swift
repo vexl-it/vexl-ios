@@ -15,10 +15,8 @@ struct TextView: UIViewRepresentable {
     var isFirstResponder: Bool = false
     var characterLimit: Int
 
-    typealias UIViewType = UITextView
-
-    func makeUIView(context: UIViewRepresentableContext<Self>) -> UIViewType {
-        let view = UIViewType()
+    func makeUIView(context: UIViewRepresentableContext<Self>) -> UITextView {
+        let view = UITextView()
         view.text = text
         view.font = textStyle.font
         view.textColor = textColor
@@ -33,39 +31,32 @@ struct TextView: UIViewRepresentable {
         return view
     }
 
-    func updateUIView(_ uiView: UIViewType, context: UIViewRepresentableContext<Self>) {
-        uiView.text = text
+    func updateUIView(_ uiView: UITextView, context: UIViewRepresentableContext<Self>) {
+        if text.isEmpty {
+            uiView.text = ""
+        }
     }
 
     func makeCoordinator() -> Coordinator {
-        Coordinator(self, characterLimit: characterLimit)
+        Coordinator($text, characterLimit: characterLimit)
     }
 
     final class Coordinator: NSObject, UITextViewDelegate {
-        let parent: TextView
+        @Binding var text: String
         let characterLimit: Int
 
-        init(_ parent: TextView, characterLimit: Int) {
-            self.parent = parent
+        init(_ textBinding: Binding<String>, characterLimit: Int) {
+            self._text = textBinding
             self.characterLimit = characterLimit
         }
 
         func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-            if textView.text.count + (text.count - range.length) <= characterLimit {
-                notifyParent(textView,
-                             shouldChangeTextIn: range,
-                             replacementText: text)
-                return false
-            } else {
-                return textView.text.count + (text.count - range.length) <= characterLimit
-            }
-        }
-
-        func notifyParent(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) {
-            if let value = textView.text as NSString? {
+            let shouldChange = textView.text.count + (text.count - range.length) <= characterLimit
+            if shouldChange, let value = textView.text as NSString? {
                 let proposedValue = value.replacingCharacters(in: range, with: text)
-                parent.text = proposedValue as String
+                self.text = proposedValue
             }
+            return shouldChange
         }
     }
 }

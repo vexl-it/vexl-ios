@@ -160,6 +160,7 @@
 		B0EEE11627B14D320097031E /* WelcomeCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0EEE11527B14D320097031E /* WelcomeCoordinator.swift */; };
 		B0EEE11827B14D360097031E /* WelcomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0EEE11727B14D360097031E /* WelcomeViewModel.swift */; };
 		B0EEE11A27B14D3D0097031E /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0EEE11927B14D3D0097031E /* WelcomeView.swift */; };
+		B0EF7E1028D7B621002DC7D6 /* SingleAxisGeometryReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0EF7E0F28D7B621002DC7D6 /* SingleAxisGeometryReader.swift */; };
 		B0F206EF27AE8F6900A44E72 /* Publisher+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0F206EE27AE8F6900A44E72 /* Publisher+.swift */; };
 		B0F206F127AE94C400A44E72 /* InitialScreenManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0F206F027AE94C400A44E72 /* InitialScreenManager.swift */; };
 		B0F206F327AEA4C800A44E72 /* WindowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0F206F227AEA4C800A44E72 /* WindowCoordinator.swift */; };
@@ -621,6 +622,7 @@
 		B0EEE11527B14D320097031E /* WelcomeCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeCoordinator.swift; sourceTree = "<group>"; };
 		B0EEE11727B14D360097031E /* WelcomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeViewModel.swift; sourceTree = "<group>"; };
 		B0EEE11927B14D3D0097031E /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
+		B0EF7E0F28D7B621002DC7D6 /* SingleAxisGeometryReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleAxisGeometryReader.swift; sourceTree = "<group>"; };
 		B0F206EE27AE8F6900A44E72 /* Publisher+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Publisher+.swift"; sourceTree = "<group>"; };
 		B0F206F027AE94C400A44E72 /* InitialScreenManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitialScreenManager.swift; sourceTree = "<group>"; };
 		B0F206F227AEA4C800A44E72 /* WindowCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowCoordinator.swift; sourceTree = "<group>"; };
@@ -1213,6 +1215,7 @@
 				F13721EE287F29830013BB7B /* TimeInterval+.swift */,
 				6FF08EB228B6846000B2CF65 /* DiffableState.swift */,
 				6FE2BE9B28BCD790004331F1 /* MacroFormatting.swift */,
+				B0EF7E0F28D7B621002DC7D6 /* SingleAxisGeometryReader.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -2845,6 +2848,7 @@
 				F11441CF284681EC00307D39 /* ExpandingTextView.swift in Sources */,
 				B01C01ED2862F06D00A29F85 /* Currency.swift in Sources */,
 				B007A74B2871EB2900CFA5C9 /* UserRepository.swift in Sources */,
+				B0EF7E1028D7B621002DC7D6 /* SingleAxisGeometryReader.swift in Sources */,
 				B042C95028A8457800860F91 /* Color+.swift in Sources */,
 				4F26F44F28A54D6F005558E8 /* IsFocusTextField.swift in Sources */,
 				B0F206F127AE94C400A44E72 /* InitialScreenManager.swift in Sources */,

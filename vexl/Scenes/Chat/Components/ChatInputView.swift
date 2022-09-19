@@ -18,7 +18,7 @@ struct ChatInputView: View {
 
     var body: some View {
         HStack {
-            
+
             // TODO: - Activate back when images are supported crossplatform
 
             //            Button {
@@ -34,8 +34,7 @@ struct ChatInputView: View {
 
             VStack(alignment: .leading) {
                 if let image = image {
-                    SelectedImageView(image: image,
-                                      deleteAction: {
+                    SelectedImageView(image: image, deleteAction: {
                         deleteImageAction()
                     })
                     .padding(.top, Appearance.GridGuide.point)
