@@ -10,6 +10,7 @@ import SwiftUI
 struct ChatInputView: View {
 
     @Binding var text: String
+    @Binding var isLoading: Bool
     let image: Data?
     let sendAction: () -> Void
     let cameraAction: () -> Void
@@ -46,17 +47,28 @@ struct ChatInputView: View {
                     minHeight: Appearance.GridGuide.chatTextFieldHeight,
                     textColor: Appearance.Colors.whiteText
                 )
+                .disabled(isLoading)
             }
 
             Button {
-                sendAction()
+                if !isLoading {
+                    sendAction()
+                }
             } label: {
-                Image(R.image.chat.sendMessage.name)
-                    .resizable()
-                    .frame(size: Appearance.GridGuide.iconSize)
-                    .padding(Appearance.GridGuide.tinyPadding)
-                    .background(Appearance.Colors.yellow100)
-                    .clipShape(Circle())
+                if !isLoading {
+                    Image(R.image.chat.sendMessage.name)
+                        .resizable()
+                        .frame(size: Appearance.GridGuide.iconSize)
+                        .padding(Appearance.GridGuide.tinyPadding)
+                        .background(Appearance.Colors.yellow100)
+                        .clipShape(Circle())
+                } else {
+                    LoadingDotsView(dotCount: 3, dotDiameter: 4, color: .black)
+                        .frame(size: Appearance.GridGuide.iconSize)
+                        .padding(Appearance.GridGuide.tinyPadding)
+                        .background(Appearance.Colors.yellow100)
+                        .clipShape(Circle())
+                }
             }
         }
         .padding(.vertical, Appearance.GridGuide.tinyPadding)
@@ -95,6 +107,7 @@ struct ChatMessageInputViewPreview: PreviewProvider {
     static var previews: some View {
         VStack {
             ChatInputView(text: .constant("Hello there"),
+                          isLoading: .constant(false),
                           image: nil,
                           sendAction: {},
                           cameraAction: {},
@@ -103,6 +116,7 @@ struct ChatMessageInputViewPreview: PreviewProvider {
             .previewDevice("iPhone 11")
 
             ChatInputView(text: .constant(""),
+                          isLoading: .constant(false),
                           image: nil,
                           sendAction: {},
                           cameraAction: {},
@@ -111,6 +125,7 @@ struct ChatMessageInputViewPreview: PreviewProvider {
             .previewDevice("iPhone 11")
 
             ChatInputView(text: .constant("Hello there"),
+                          isLoading: .constant(false),
                           image: R.image.onboarding.testAvatar()!.jpegData(compressionQuality: 0.25)!,
                           sendAction: {},
                           cameraAction: {},
