@@ -37,6 +37,8 @@
 	<array>
 		<string>https://link.vexl.it</string>
 	</array>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>fbapi</string>
