@@ -47,6 +47,7 @@ struct ChatInputView: View {
                     minHeight: Appearance.GridGuide.chatTextFieldHeight,
                     textColor: Appearance.Colors.whiteText
                 )
+                .disabled(isLoading)
             }
 
             Button {
