@@ -44,6 +44,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
     @Published var currentMessage: String = ""
     @Published var selectedImage: Data?
     @Published var primaryActivity: Activity = .init()
+    @Published var isSendingMessage = false
     @Published var isLoading = false
     @Published var error: Error?
     @Published var showImagePicker = false
@@ -54,6 +55,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
 
     var errorIndicator: ErrorIndicator { primaryActivity.error }
     var activityIndicator: ActivityIndicator { primaryActivity.indicator }
+    var sendIndicator: ActivityIndicator = .init()
 
     // MARK: - Coordinator Bindings
 
@@ -68,6 +70,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
         case showBlockTapped
         case showCommonFriendsTapped
         case showCommonFriendsModal(contacts: [ManagedContact])
+        case urlTapped(url: URL)
     }
 
     var route: CoordinatingSubject<Route> = .init()
@@ -126,6 +129,10 @@ final class ChatViewModel: ViewModelType, ObservableObject {
             .errors
             .asOptional()
             .assign(to: &$error)
+
+        sendIndicator
+            .loading
+            .assign(to: &$isSendingMessage)
     }
 
     private func setupChildViewModelBindings() {
@@ -160,6 +167,12 @@ final class ChatViewModel: ViewModelType, ObservableObject {
         chatConversationViewModel
             .identityRevealResponseTap
             .map { _ -> Route in .showRevealIdentityResponseTapped }
+            .subscribe(route)
+            .store(in: cancelBag)
+
+        chatConversationViewModel
+            .urlTap
+            .map { url -> Route in .urlTapped(url: url) }
             .subscribe(route)
             .store(in: cancelBag)
 
@@ -256,6 +269,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
                 owner.chatManager
                     .send(payload: payload, chat: owner.chat)
                     .trackError(owner.primaryActivity.error)
+                    .trackActivity(owner.sendIndicator)
                     .materialize()
                     .compactMap(\.value)
             }
@@ -296,6 +310,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
             .map { _ -> Route in .dismissTapped }
             .subscribe(route)
             .store(in: cancelBag)
+
         // TODO: dismiss on delete ManagedObject
     }
 

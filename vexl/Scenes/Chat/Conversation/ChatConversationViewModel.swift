@@ -13,6 +13,7 @@ final class ChatConversationViewModel: ObservableObject {
 
     enum UserAction: Equatable {
         case imageTapped(image: Data?)
+        case open(url: URL)
     }
 
     @Inject var inboxManager: InboxManagerType
@@ -29,6 +30,7 @@ final class ChatConversationViewModel: ObservableObject {
 
     var updateContactInformation: ActionSubject<MessagePayload.ChatUser> = .init()
     var displayExpandedImage: ActionSubject<Data> = .init()
+    var urlTap: ActionSubject<URL> = .init()
     var identityRevealResponseTap: ActionSubject<Void> = .init()
 
     var action: ActionSubject<UserAction> = .init()
@@ -87,6 +89,14 @@ final class ChatConversationViewModel: ObservableObject {
                 return image
             }
             .subscribe(displayExpandedImage)
+            .store(in: cancelBag)
+
+        action
+            .compactMap { action -> URL? in
+                guard case let .open(url) = action else { return nil }
+                return url
+            }
+            .subscribe(urlTap)
             .store(in: cancelBag)
     }
 

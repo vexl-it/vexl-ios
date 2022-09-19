@@ -166,7 +166,7 @@
 "marketplace.sell" = "Selling";
 "marketplace.facebook.friend" = "Facebook friend";
 "marketplace.phone.contact" = "Phone contact";
-"marketplace.sell.offer" = "Create new offer";
+"marketplace.sell.offer" = "My offers";
 "marketplace.buy.add" = "+";
 "marketplace.detail.friend.first" = "Friend";
 "marketplace.detail.friend.second" = "Friend of a Friend";
@@ -317,6 +317,11 @@
 "chat.message.identity.reveal.reject.received" = "Your request has been declined.";
 "chat.message.identity.reveal.reject" = "Identity reveal declined.";
 "chat.message.identity.reveal.approved" = "Identity revealed!";
+"chat.message.identity.reveal.sent" = "Identity reveal request sent!";
+"chat.message.identity.reveal.declined" = "Declined to reveal identity";
+"chat.message.copy.message" = "Copy message";
+"chat.message.copy.link" = "Copy link";
+"chat.message.open.link" = "Open link";
 "groups.join.button" = "Join new group";
 "groups.title" = "Groups";
 "groups.leave.button" = "Leave";
