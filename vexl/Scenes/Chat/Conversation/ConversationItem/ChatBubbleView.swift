@@ -67,9 +67,9 @@ enum ChatBubbleStyle {
 struct ChatBubbleViewPreview: PreviewProvider {
     static var previews: some View {
         VStack {
-            ChatTextBubbleView(text: "qwerty qwerty qwerty qwerty qwerty", style: .contact)
+            ChatTextBubbleView(text: "qwerty qwerty qwerty qwerty qwerty", style: .contact, urlHandler: { _ in })
 
-            ChatTextBubbleView(text: "qwerty", style: .user)
+            ChatTextBubbleView(text: "qwerty", style: .user, urlHandler: { _ in })
 
             ChatImageBubbleView(image: Image(uiImage: R.image.onboarding.testAvatar()!),
                                 text: nil,

@@ -101,6 +101,21 @@ final class ChatCoordinator: BaseCoordinator<RouterResult<Void>> {
             .sink()
             .store(in: cancelBag)
 
+        viewModel
+            .route
+            .compactMap { action -> URL? in
+                guard case let .urlTapped(url) = action else { return nil }
+                return url
+            }
+            .flatMap { url -> Just<Void> in
+                if UIApplication.shared.canOpenURL(url) {
+                    UIApplication.shared.open(url)
+                }
+                return Just(())
+            }
+            .sink()
+            .store(in: cancelBag)
+
         let dismiss = viewModel
             .route
             .filter { $0 == .dismissTapped }
