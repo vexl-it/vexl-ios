@@ -23,6 +23,29 @@ extension String {
     func removeWhitespaces() -> String {
         return components(separatedBy: .whitespaces).joined()
     }
+
+    func calculatedSize(for style: Appearance.TextStyle, horizontalPadding: CGFloat = 0, verticalPadding: CGFloat = 0, width: CGFloat? = nil, lineLimit: Int = 0) -> CGSize {
+        var size: CGSize
+
+        if let width = width {
+            let attrString = NSAttributedString(string: self, attributes: [NSAttributedString.Key.font: style.font])
+            let bounds = attrString.boundingRect(with: CGSize(width: width, height: .greatestFiniteMagnitude), options: .usesLineFragmentOrigin, context: nil)
+            size = CGSize(width: bounds.width, height: bounds.height)
+        } else {
+            size = self.size(withAttributes: [
+                NSAttributedString.Key.font: style.font
+            ])
+        }
+
+        if lineLimit > 0 {
+            let currentHeight = size.height
+            size.height = min(style.font.lineHeight * CGFloat(lineLimit), currentHeight)
+        }
+
+        size.width += 2 * horizontalPadding
+        size.height += 2 * verticalPadding
+        return size
+    }
 }
 
 extension String: Identifiable {

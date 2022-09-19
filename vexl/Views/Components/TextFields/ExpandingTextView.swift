@@ -51,14 +51,21 @@ struct ExpandingTextView: View {
                     textEditorHeight = size.height
                 }
 
-            TextView(text: $text,
-                     textStyle: .paragraph,
-                     textColor: UIColor(textColor),
-                     isFirstResponder: isFirstResponder,
-                     characterLimit: Constants.maxOfferDescriptionCount)
-            .frame(height: height, alignment: .bottom)
+            SingleAxisGeometryReader { width in
+                TextView(
+                    text: $text,
+                    textStyle: .paragraph,
+                    textColor: UIColor(textColor),
+                    isFirstResponder: isFirstResponder,
+                    characterLimit: Constants.maxOfferDescriptionCount
+                )
+                .frame(
+                    height: calculateHeight(width: width - 10),
+                    alignment: .bottom
+                )
+            }
         }
-        .offset(y: Appearance.GridGuide.tinyPadding)
+        .padding(.top, Appearance.GridGuide.tinyPadding)
         .background(Appearance.Colors.gray1)
         .cornerRadius(UIProperties.cornerRadius)
     }
@@ -67,6 +74,14 @@ struct ExpandingTextView: View {
         Text(placeholder)
             .textStyle(.paragraph)
             .foregroundColor(Appearance.Colors.gray3)
+    }
+
+    private func calculateHeight(width: CGFloat) -> CGFloat {
+        let textHeight = text.calculatedSize(
+            for: .paragraph,
+            width: width
+        ).height
+        return max(minHeight, textHeight + 10)
     }
 }
 
