@@ -31,7 +31,11 @@ struct TextView: UIViewRepresentable {
         return view
     }
 
-    func updateUIView(_ uiView: UITextView, context: UIViewRepresentableContext<Self>) { }
+    func updateUIView(_ uiView: UITextView, context: UIViewRepresentableContext<Self>) {
+        if text.isEmpty {
+            uiView.text = ""
+        }
+    }
 
     func makeCoordinator() -> Coordinator {
         Coordinator($text, characterLimit: characterLimit)
