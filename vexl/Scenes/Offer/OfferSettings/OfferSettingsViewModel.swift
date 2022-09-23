@@ -21,6 +21,8 @@ enum OfferSettingsError: LocalizedError {
     }
 }
 
+// swiftlint: disable file_length
+// swiftlint: disable type_body_length
 final class OfferSettingsViewModel: ViewModelType, ObservableObject {
 
     @Inject var userRepository: UserRepositoryType
@@ -51,6 +53,10 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
     let action: ActionSubject<UserAction> = .init()
 
     // MARK: - View Bindings
+
+    @Published var progress = 0
+    @Published var progressMax = 0
+    @Published var showEncryptionLoader = false
 
     @Published var offer: Offer = .init()
     @Published var primaryActivity: Activity = .init()
@@ -417,15 +423,19 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
             .compactMap { $0 ?? $1 }
 
         let encryption = offerData
-            .flatMap { [offerService, primaryActivity] isCreating, offer, receiverPublicKeys in
+            .withUnretained(self)
+            .flatMap { owner, zip in
+                let (isCreating, offer, receiverPublicKeys) = zip
                 // TODO: devide receiverPublicKeys into chunks of (lets say) 100. These chunks can be incement number for progress bar
                 // NOTE: Use `receiverPublicKeys.splitIntoChunks(by: 100)` to do that
-                offerService
-                    .encryptOffer(offer: offer, publicKeys: receiverPublicKeys)
-                    .track(activity: primaryActivity)
-                    .materialize()
-                    .compactMap(\.value)
-                    .map { (isCreating, $0, offer) }
+//                return owner.offerService
+//                    .encryptOffer(offer: offer, publicKeys: receiverPublicKeys)
+//                    .track(activity: owner.primaryActivity)
+//                    .materialize()
+//                    .compactMap(\.value)
+//                    .map { (isCreating, $0, offer) }
+
+                return owner.encryptOffer(isCreating: isCreating, offer: offer, receiverPublicKeys: receiverPublicKeys)
 
                 // NOTE: The progress bar *could* be interuptable. If user would decide to hide the progress bar, you could:
                 // 1. collect all encrypted payloads and send them to BE
@@ -524,5 +534,49 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
                 owner.objectWillChange.send()
             }
             .store(in: cancelBag)
+    }
+
+    private func encryptOffer(isCreating: Bool,
+                              offer: ManagedOffer,
+                              receiverPublicKeys: [String]) -> AnyPublisher<(Bool, [OfferPayload], ManagedOffer), Never> {
+
+        let receiverChunks = receiverPublicKeys.splitIntoChunks(by: 1)
+        showEncryptionLoader = true
+        progress = 0
+        progressMax = receiverPublicKeys.count
+
+        let publicKeys = receiverChunks.publisher
+            .withUnretained(self)
+            .flatMap { owner, keys in
+                owner.offerService
+                    .encryptOffer(offer: offer, publicKeys: keys)
+                    .materialize()
+                    .compactMap(\.value)
+                    .delay(for: .seconds(Int.random(in: 0...5)), scheduler: DispatchQueue.main) // TODO: - remove this, only for testing
+            }
+            .withUnretained(self)
+            .handleEvents(receiveOutput: { owner, payloads in
+                owner.progress = payloads.count
+            })
+            .map { $0.1 }
+
+        return publicKeys
+            .collect(receiverChunks.count)
+            .map { Array($0.joined()) }
+            .withUnretained(self)
+            .handleEvents(receiveOutput: { owner, _ in
+                owner.showEncryptionLoader = false
+            })
+            .map { (isCreating, $0.1, offer) }
+            .eraseToAnyPublisher()
+    }
+
+    private func testF(key: String) -> AnyPublisher<String, Never> {
+        Future { p in
+            after(3) {
+                p(.success(key))
+            }
+        }
+        .eraseToAnyPublisher()
     }
 }

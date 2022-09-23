@@ -18,6 +18,10 @@ struct OfferSettingsView: View {
                 viewModel.action.send(.dismissTap)
             }
 
+            Button("SHOw") {
+                viewModel.showEncryptionLoader = true
+            }
+
             ScrollView(showsIndicators: false) {
                 if viewModel.state != .initial {
 
@@ -102,6 +106,27 @@ struct OfferSettingsView: View {
         }
         .padding(Appearance.GridGuide.padding)
         .background(Color.black.edgesIgnoringSafeArea(.all))
+        .overlay(
+            Group {
+                if viewModel.showEncryptionLoader {
+                    dimmingView
+                        .transition(.opacity)
+                    OfferSettingsProgressView(currentValue: viewModel.progress,
+                                              maxValue: viewModel.progressMax)
+                    .transition(.move(edge: .bottom).combined(with: .opacity))
+                    .onTapGesture {
+                        viewModel.showEncryptionLoader = false
+                    }
+                }
+            }
+                .animation(.spring(), value: viewModel.showEncryptionLoader)
+        )
+    }
+
+    private var dimmingView: some View {
+        Color.black
+            .opacity(Appearance.dimmingViewOpacity)
+            .edgesIgnoringSafeArea(.all)
     }
 }
 
