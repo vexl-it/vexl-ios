@@ -7,8 +7,10 @@
 
 import Foundation
 import FirebaseRemoteConfig
+import Combine
 
 protocol RemoteConfigManagerType {
+    var fetchCompleted: AnyPublisher<Void, Never> { get }
     func getBoolValue(for key: RemoteConfigManager.Key) -> Bool
     func getIntValue(for key: RemoteConfigManager.Key) -> Int
 }
@@ -18,9 +20,16 @@ class RemoteConfigManager: RemoteConfigManagerType {
     enum Key: String {
         case isMarketplaceLocked = "marketplace_locked"
         case remainingConstacts = "remaining_contacts_to_unlock"
+        case forceUpdate = "force_update_screen_showed"
+        case maintenance = "maintenance_screen_showed"
+    }
+
+    var fetchCompleted: AnyPublisher<Void, Never> {
+        Self._fetchCompleted.eraseToAnyPublisher()
     }
 
     private static var remoteConfig = RemoteConfig.remoteConfig()
+    private static var _fetchCompleted: PassthroughSubject<Void, Never> = .init()
 
     // MARK: - Configure remote config
 
@@ -28,7 +37,9 @@ class RemoteConfigManager: RemoteConfigManagerType {
         let settings = RemoteConfigSettings()
         settings.minimumFetchInterval = 0
         remoteConfig.configSettings = settings
-        remoteConfig.fetchAndActivate()
+        remoteConfig.fetchAndActivate { _, error in
+            if error == nil { _fetchCompleted.send(()) }
+        }
     }
 
     // MARK: - Methods for getting remote values

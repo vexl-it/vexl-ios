@@ -11,17 +11,18 @@ import Combine
 
 final class LockAppCoordinator: BaseCoordinator<RouterResult<Void>> {
 
-    let publisher = PassthroughSubject<String, Never>()
+    private let style: LockAppViewModel.Style
     private let router: Router
     private let animated: Bool
 
-    init(router: Router, animated: Bool) {
+    init(style: LockAppViewModel.Style, router: Router, animated: Bool) {
+        self.style = style
         self.router = router
         self.animated = animated
     }
 
     override func start() -> CoordinatingResult<CoordinationResult> {
-        let viewModel = LockAppViewModel(style: .update)
+        let viewModel = LockAppViewModel(style: style)
         let viewController = BaseViewController(rootView: LockAppView(viewModel: viewModel))
         router.present(viewController, animated: animated)
 
@@ -29,4 +30,3 @@ final class LockAppCoordinator: BaseCoordinator<RouterResult<Void>> {
             .eraseToAnyPublisher()
     }
 }
-
