@@ -92,7 +92,7 @@ final class LockAppViewModel: ViewModelType {
         action
             .filter { $0 == .updateTap }
             .sink { _ in
-                print("123123123")
+                // TODO: - Open app store URL
             }
             .store(in: cancelBag)
     }
