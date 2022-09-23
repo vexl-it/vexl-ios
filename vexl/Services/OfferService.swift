@@ -173,7 +173,6 @@ final class OfferService: BaseService, OfferServiceType {
                 encryptionService
                     .encryptOffer(withContactKey: contactsAndHashes, offer: offer)
             }
-            .print("hello there x3")
             .eraseToAnyPublisher()
     }
 }
