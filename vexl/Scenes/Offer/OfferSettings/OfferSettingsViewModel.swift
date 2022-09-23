@@ -54,8 +54,8 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
 
     // MARK: - View Bindings
 
-    @Published var progress = 0
-    @Published var progressMax = 0
+    @Published var encryptionProgress = 0
+    @Published var encryptionMaxProgress = 0
     @Published var showEncryptionLoader = false
 
     @Published var offer: Offer = .init()
@@ -426,15 +426,6 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
             .withUnretained(self)
             .flatMap { owner, zip in
                 let (isCreating, offer, receiverPublicKeys) = zip
-                // TODO: devide receiverPublicKeys into chunks of (lets say) 100. These chunks can be incement number for progress bar
-                // NOTE: Use `receiverPublicKeys.splitIntoChunks(by: 100)` to do that
-//                return owner.offerService
-//                    .encryptOffer(offer: offer, publicKeys: receiverPublicKeys)
-//                    .track(activity: owner.primaryActivity)
-//                    .materialize()
-//                    .compactMap(\.value)
-//                    .map { (isCreating, $0, offer) }
-
                 return owner.encryptOffer(isCreating: isCreating, offer: offer, receiverPublicKeys: receiverPublicKeys)
 
                 // NOTE: The progress bar *could* be interuptable. If user would decide to hide the progress bar, you could:
@@ -536,14 +527,18 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
             .store(in: cancelBag)
     }
 
+    /// The receiver keys are split into groups of X keys.
+    /// After that each group is encrypted using the `OfferService` - `encryptOffer` method.
+    /// Once the encryption is done, the progress number is updated so that it is visualized in the progress view
+    /// When all the groups have finish encrypting, the publishers are collected an a single array of payloads is sent to the stream.
     private func encryptOffer(isCreating: Bool,
                               offer: ManagedOffer,
                               receiverPublicKeys: [String]) -> AnyPublisher<(Bool, [OfferPayload], ManagedOffer), Never> {
 
-        let receiverChunks = receiverPublicKeys.splitIntoChunks(by: 1)
+        let receiverChunks = receiverPublicKeys.splitIntoChunks(by: Constants.encryptionKeySplitAmount)
         showEncryptionLoader = true
-        progress = 0
-        progressMax = receiverPublicKeys.count
+        encryptionProgress = 0
+        encryptionMaxProgress = receiverPublicKeys.count
 
         let publicKeys = receiverChunks.publisher
             .withUnretained(self)
@@ -552,11 +547,10 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
                     .encryptOffer(offer: offer, publicKeys: keys)
                     .materialize()
                     .compactMap(\.value)
-                    .delay(for: .seconds(Int.random(in: 0...5)), scheduler: DispatchQueue.main) // TODO: - remove this, only for testing
             }
             .withUnretained(self)
             .handleEvents(receiveOutput: { owner, payloads in
-                owner.progress = payloads.count
+                owner.encryptionProgress += payloads.count
             })
             .map { $0.1 }
 
@@ -569,14 +563,5 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
             })
             .map { (isCreating, $0.1, offer) }
             .eraseToAnyPublisher()
-    }
-
-    private func testF(key: String) -> AnyPublisher<String, Never> {
-        Future { p in
-            after(3) {
-                p(.success(key))
-            }
-        }
-        .eraseToAnyPublisher()
     }
 }

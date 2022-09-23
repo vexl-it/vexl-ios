@@ -11,10 +11,6 @@ struct OfferSettingsProgressView: View {
     let currentValue: Int
     let maxValue: Int
 
-    @State private var opacity: CGFloat = 0
-    @State private var offset: CGFloat = .zero
-    @State private var isVisible = false
-
     private var percentage: Int {
         let double = Double(currentValue) / Double(maxValue)
         return Int(double * 100)
@@ -22,9 +18,17 @@ struct OfferSettingsProgressView: View {
 
     private var progressText: String {
         if inProgress {
-            return "for \(maxValue) vexlers"
+            return L.offerProgressBarTitle("\(maxValue)")
         } else {
-            return "Anonymously delivered to \(maxValue) vexlers"
+            return L.offerProgressBarTitleComplete("\(maxValue)")
+        }
+    }
+
+    private var progressTitle: String {
+        if inProgress {
+            return L.offerProgressTitleLoading()
+        } else {
+            return L.offerProgressTitleComplete()
         }
     }
 
@@ -33,35 +37,8 @@ struct OfferSettingsProgressView: View {
     }
 
     var body: some View {
-        VStack {
-            //dimmingView
-                //.opacity(isVisible ? Appearance.dimmingViewOpacity : 0)
-
-            progress
-                //.offset(y: isVisible ? .zero : UIScreen.main.bounds.height)
-        }
-        .frame(maxHeight: .infinity, alignment: .bottom)
-//        .onTapGesture {
-//            withAnimation {
-//                isVisible = false
-//            }
-//        }
-//        .onAppear {
-//            withAnimation {
-//                isVisible = true
-//            }
-//        }
-    }
-
-    private var dimmingView: some View {
-        Color.black
-            .opacity(Appearance.dimmingViewOpacity)
-            .edgesIgnoringSafeArea(.all)
-    }
-
-    private var progress: some View {
         VStack(alignment: .leading, spacing: Appearance.GridGuide.smallPadding) {
-            Text("Encrypting your offer ...")
+            Text(progressTitle)
                 .textStyle(.h2)
                 .foregroundColor(Appearance.Colors.black1)
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -79,14 +56,14 @@ struct OfferSettingsProgressView: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
 
                 if inProgress {
-                    Text("\(percentage)% Done")
+                    Text(L.offerProgressBarSubtitle("\(percentage)"))
                         .foregroundColor(Appearance.Colors.gray3)
                         .textStyle(.description)
                 }
             }
                 .padding(.bottom, Appearance.GridGuide.smallPadding)
 
-            Text("Don’t shut down the app while encrypting. It can take several minutes.")
+            Text(L.offerProgressSubtitle())
                 .textStyle(.paragraph)
                 .foregroundColor(Appearance.Colors.gray3)
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -117,6 +94,10 @@ struct OfferSettingsProgressViewPreview: PreviewProvider {
 
     static var previews: some View {
         OfferSettingsTestView()
+            .background(Color.black.edgesIgnoringSafeArea(.all))
+            .previewDevice("iPhone 11")
+
+        OfferSettingsProgressView(currentValue: 100, maxValue: 1_000)
             .background(Color.black.edgesIgnoringSafeArea(.all))
             .previewDevice("iPhone 11")
     }

@@ -142,6 +142,7 @@ struct Constants {
         "ta", "te", "to", "yu", "za", "zo"
     ]
 
+    static let encryptionKeySplitAmount = 10
     static let maxPhoneNumberDigits = 9
     static let registrationSteps = 3
     static let maxOfferDescriptionCount = 140
