@@ -11,10 +11,6 @@ import Combine
 import Cleevio
 
 final class AppCoordinator: BaseCoordinator<Void> {
-    enum LockScreen {
-        case maintenance, forceUpdate
-    }
-
     @Inject var initialScreenManager: InitialScreenManager
     @Inject var syncQueue: SyncQueueManagerType
     @Inject var notificationManager: NotificationManagerType
@@ -24,7 +20,7 @@ final class AppCoordinator: BaseCoordinator<Void> {
     private let window: UIWindow
     private var deeplinkCancellable: AnyCancellable?
     private var remoteCancellable: AnyCancellable?
-    private var lockScreen: LockScreen?
+    private var lockScreen: LockAppViewModel.Style?
 
     init(window: UIWindow) {
         self.window = window
@@ -45,12 +41,7 @@ final class AppCoordinator: BaseCoordinator<Void> {
     private func coordinateToRoot() {
         let coordinationResult: CoordinatingResult<Void> = {
             if let lockScreen = lockScreen {
-                switch lockScreen {
-                case .forceUpdate:
-                    return showLockApp(isMaintenance: false)
-                case .maintenance:
-                    return showLockApp(isMaintenance: true)
-                }
+                return showLockApp(style: lockScreen)
             }
 
             switch initialScreenManager.getCurrentScreenState() {
@@ -87,11 +78,11 @@ final class AppCoordinator: BaseCoordinator<Void> {
     private func setupLockScreen() {
         remoteCancellable = remoteConfigManager
             .fetchCompleted
-            .compactMap { [remoteConfigManager] _ -> LockScreen? in
+            .compactMap { [remoteConfigManager] _ -> LockAppViewModel.Style? in
                 if remoteConfigManager.getBoolValue(for: .maintenance) {
                     return .maintenance
                 } else if remoteConfigManager.getBoolValue(for: .forceUpdate) {
-                    return .forceUpdate
+                    return .update
                 } else {
                     return nil
                 }
@@ -134,10 +125,10 @@ final class AppCoordinator: BaseCoordinator<Void> {
 }
 
 extension AppCoordinator {
-    private func showLockApp(isMaintenance: Bool) -> CoordinatingResult<Void> {
+    private func showLockApp(style: LockAppViewModel.Style) -> CoordinatingResult<Void> {
         coordinate(to:
             WindowNavigationCoordinator(window: window) { router, animated -> LockAppCoordinator in
-                LockAppCoordinator(style: isMaintenance ? .maintenance : .update, router: router, animated: animated)
+                LockAppCoordinator(style: style, router: router, animated: animated)
             }
         )
             .asVoid()
