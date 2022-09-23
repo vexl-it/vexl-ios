@@ -255,7 +255,7 @@
 "offer.progress.title.loading" = "Encrypting your offer ...";
 "offer.progress.title.complete" = "Done! Offer posted.";
 "offer.progress.bar.title" = "for %@ vexlers";
-"offer.progress.bar.subtitle" = "%@ %% done";
+"offer.progress.bar.subtitle" = "%@ done";
 "offer.progress.bar.title.complete" = "Anonymously delivered to %@ vexlers";
 "offer.progress.subtitle" = "Don’t shut down the app while encrypting. It can take several minutes.";
 "offer.progress.subtitle.complete" = "Your friends and friends of their friends can now see your offer.";

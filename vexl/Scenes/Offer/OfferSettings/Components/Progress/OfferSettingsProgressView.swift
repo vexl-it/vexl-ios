@@ -11,9 +11,9 @@ struct OfferSettingsProgressView: View {
     let currentValue: Int
     let maxValue: Int
 
-    private var percentage: Int {
-        let double = Double(currentValue) / Double(maxValue)
-        return Int(double * 100)
+    private var percentage: String {
+        let percentage = Double(currentValue) / Double(maxValue)
+        return Formatters.percentageFormatter.string(from: NSNumber(value: percentage)) ?? Constants.notAvailable
     }
 
     private var progressText: String {
@@ -56,7 +56,7 @@ struct OfferSettingsProgressView: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
 
                 if inProgress {
-                    Text(L.offerProgressBarSubtitle("\(percentage)"))
+                    Text(L.offerProgressBarSubtitle(percentage))
                         .foregroundColor(Appearance.Colors.gray3)
                         .textStyle(.description)
                 }
