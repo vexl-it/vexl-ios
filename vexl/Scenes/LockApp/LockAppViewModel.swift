@@ -92,7 +92,8 @@ final class LockAppViewModel: ViewModelType {
         action
             .filter { $0 == .updateTap }
             .sink { _ in
-                // TODO: - Open app store URL
+                guard let url = URL(string: "https://apps.apple.com/cz/app/vexl/id1639849421") else { return }
+                UIApplication.shared.open(url)
             }
             .store(in: cancelBag)
     }
