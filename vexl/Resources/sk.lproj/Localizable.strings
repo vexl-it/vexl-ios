@@ -18,7 +18,10 @@
 "continue" = "Pokračovať";
 "button.gotIt" = "Rozumiem";
 "general.delete" = "Vymazať";
+<<<<<<< HEAD
 "general.app.name" = "VEXL";
+=======
+>>>>>>> devel
 "onboarding.intro.message.friend" = "Anonymne se spoj so svojimi kontaktmi.";
 "onboarding.intro.message.buySell" = "Pozri sa na ich ponuky.";
 "onboarding.intro.message.request" = "Začnite chatovat, odhaľte svoje identity a obchodujte.";

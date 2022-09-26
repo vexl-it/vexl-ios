@@ -12,6 +12,11 @@ struct OfferSettingsView: View {
 
     @ObservedObject var viewModel: OfferSettingsViewModel
 
+    private var springAnimation: Animation {
+        .spring(response: 0.4, dampingFraction: 0.7, blendDuration: 0)
+    }
+
+    // swiftlint: disable closure_body_length
     var body: some View {
         VStack {
             HeaderTitleView(title: viewModel.headerTitle, showsSeparator: true) {
@@ -102,12 +107,39 @@ struct OfferSettingsView: View {
         }
         .padding(Appearance.GridGuide.padding)
         .background(Color.black.edgesIgnoringSafeArea(.all))
+        .overlay(progressView)
+    }
+
+    private var progressView: some View {
+        ZStack(alignment: .bottom) {
+            if viewModel.showEncryptionLoader {
+                Color.black
+                    .opacity(Appearance.dimmingViewOpacity)
+                    .transition(.opacity)
+                    .zIndex(0)
+
+                OfferSettingsProgressView(currentValue: viewModel.encryptionProgress,
+                                          maxValue: viewModel.encryptionMaxProgress)
+                .transition(.move(edge: .bottom).combined(with: .opacity))
+                .zIndex(1)
+            }
+        }
+        .animation(springAnimation, value: viewModel.showEncryptionLoader)
     }
 }
 
 #if DEBUG || DEVEL
 struct CreateOfferViewPreview: PreviewProvider {
+    static var progressViewModel: OfferSettingsViewModel {
+        let vm = OfferSettingsViewModel(offerType: .sell, offerKey: ECCKeys())
+        vm.showEncryptionLoader = true
+        return vm
+    }
+
     static var previews: some View {
+        OfferSettingsView(viewModel: progressViewModel)
+            .previewDevice("iPhone 11")
+
         OfferSettingsView(viewModel: .init(offerType: .sell, offerKey: ECCKeys()))
             .previewDevice("iPhone 11")
 
