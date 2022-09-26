@@ -71,11 +71,9 @@ struct LockAppView: View {
         .cornerRadius(Appearance.GridGuide.buttonCorner)
     }
 
-    private var maintenanceOverlay: some View {
-        Group {
-            if viewModel.showOverlay {
-                Image(R.image.lockApp.maintenanceSleep.name)
-            }
+    @ViewBuilder private var maintenanceOverlay: some View {
+        if viewModel.showOverlay {
+            Image(R.image.lockApp.maintenanceSleep.name)
         }
     }
 }
