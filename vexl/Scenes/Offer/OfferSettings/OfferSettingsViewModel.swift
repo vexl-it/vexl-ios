@@ -202,6 +202,10 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
         false
     }
 
+    var userAvatar: Data? {
+        userRepository.user?.profile?.avatarData
+    }
+
     var minFee: Double = Constants.OfferInitialData.minFee
     var maxFee: Double = Constants.OfferInitialData.maxFee
     var offerKey: ECCKeys
