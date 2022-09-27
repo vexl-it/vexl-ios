@@ -12,6 +12,8 @@ import Combine
 final class NotificationViewModel {
     @Inject private var notificationManager: NotificationManagerType
     @Inject private var contactsService: ContactsServiceType
+    @Inject private var chatService: ChatServiceType
+    @Inject private var userRepository: UserRepositoryType
 
     enum Route: Equatable {
         case showNotifications
@@ -23,6 +25,8 @@ final class NotificationViewModel {
 
     private var notificationsChecked = false
     private let cancelBag: CancelBag = .init()
+    private var userTokenUpdateCancellable: AnyCancellable?
+    private var inboxUpdateCancellable: AnyCancellable?
 
     init() {
         setupBindings()
@@ -50,10 +54,34 @@ final class NotificationViewModel {
         }
         .map(\.1)
         .withUnretained(self)
-        .flatMap { owner, token in
-            owner.contactsService.updateUser(token: token)
-        }
-        .sink()
+        .sink(receiveValue: { owner, token in
+            owner.updateToken(token: token)
+        })
         .store(in: cancelBag)
+    }
+
+    private func updateToken(token: String) {
+        userTokenUpdateCancellable?.cancel()
+        userTokenUpdateCancellable = contactsService
+            .updateUser(token: token)
+            .sink()
+
+        updateInboxesToken(token: token)
+    }
+
+    private func updateInboxesToken(token: String) {
+        inboxUpdateCancellable?.cancel()
+
+        var streams: [AnyPublisher<Void, Error>] = []
+
+        for inbox in userRepository.getInboxes() {
+            if let inboxKeys = inbox.keyPair?.keys {
+                streams.append(chatService.updateInbox(eccKeys: inboxKeys, pushToken: token))
+            }
+        }
+
+        inboxUpdateCancellable = Publishers.MergeMany(streams)
+            .collect()
+            .sink()
     }
 }

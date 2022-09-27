@@ -13,6 +13,7 @@ protocol ChatServiceType {
     // MARK: - Create inbox and request messaging permission
 
     func createInbox(eccKeys: ECCKeys, pushToken: String?) -> AnyPublisher<Void, Error>
+    func updateInbox(eccKeys: ECCKeys, pushToken: String) -> AnyPublisher<Void, Error>
     func requestCommunication(inboxPublicKey: String, message: String) -> AnyPublisher<Void, Error>
     func communicationConfirmation(confirmation: Bool,
                                    message: MessagePayload?,
@@ -46,6 +47,21 @@ final class ChatService: BaseService, ChatServiceType {
             .flatMapLatest { owner, signedChallenge in
                 owner.request(
                     endpoint: ChatRouter.createInbox(
+                        publicKey: eccKeys.publicKey,
+                        pushToken: pushToken,
+                        signedChallenge: signedChallenge
+                    )
+                )
+            }
+            .eraseToAnyPublisher()
+    }
+
+    func updateInbox(eccKeys: ECCKeys, pushToken: String) -> AnyPublisher<Void, Error> {
+        getSignedChallenge(eccKeys: eccKeys)
+            .withUnretained(self)
+            .flatMapLatest { owner, signedChallenge in
+                owner.request(
+                    endpoint: ChatRouter.updateInbox(
                         publicKey: eccKeys.publicKey,
                         pushToken: pushToken,
                         signedChallenge: signedChallenge
