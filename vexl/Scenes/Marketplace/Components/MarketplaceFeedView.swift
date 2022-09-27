@@ -19,9 +19,13 @@ struct MarketplaceFeedView: View {
             OfferInformationDetailView(
                 data: data,
                 useInnerPadding: true,
+                showArrowIndicator: true,
                 showBackground: true
             )
-            .padding(.bottom, displayFooter ? 0 : Appearance.GridGuide.padding)
+            .clipShape(
+                MarketplaceItemShape(horizontalStartPoint: Appearance.GridGuide.feedAvatarSize.width)
+            )
+            .padding(.bottom, displayFooter ? 0 : Appearance.GridGuide.point)
             .onTapGesture {
                 detailAction(data.id)
             }
