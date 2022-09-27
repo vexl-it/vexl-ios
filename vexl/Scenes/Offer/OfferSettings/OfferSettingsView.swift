@@ -87,6 +87,7 @@ struct OfferSettingsView: View {
                     .padding(.top, Appearance.GridGuide.mediumPadding2)
 
                     OfferAdvancedFilterView(
+                        avatar: viewModel.userAvatar,
                         selectedTypeOptions: $viewModel.offer.selectedBTCOption,
                         selectedFriendDegreeOption: $viewModel.offer.selectedFriendDegreeOption,
                         groupRows: $viewModel.groupRows,

@@ -8,8 +8,9 @@
 import SwiftUI
 
 struct OfferAdvanceFilterFriendDegreeView: View {
-
+    var avatar: Data?
     @Binding var selectedOption: OfferFriendDegree
+
     private let options: [OfferFriendDegree] = [.firstDegree, .secondDegree]
     @State private var imageHeight: CGFloat = .zero
 
@@ -31,9 +32,7 @@ struct OfferAdvanceFilterFriendDegreeView: View {
                 if let option = option {
                     VStack {
                         Group {
-                            Image(option.imageName)
-                                .resizable()
-                                .scaledToFit()
+                            friendPicker(forLevel: option.imageName)
                                 .frame(maxWidth: .infinity)
                                 .frame(height: imageHeight)
                                 .overlay(
@@ -60,6 +59,20 @@ struct OfferAdvanceFilterFriendDegreeView: View {
             }, action: nil)
         }
     }
+
+    private func friendPicker(forLevel level: String) -> some View {
+        ZStack(alignment: .top) {
+            Image(level)
+                .padding(.top, Appearance.GridGuide.padding)
+
+            Image(data: avatar, placeholder: R.image.marketplace.defaultAvatar.name)
+                .resizable()
+                .scaledToFill()
+                .frame(size: Appearance.GridGuide.feedAvatarSize)
+                .clipped()
+                .cornerRadius(Appearance.GridGuide.buttonCorner)
+        }
+    }
 }
 
 #if DEBUG || DEVEL
@@ -67,6 +80,7 @@ struct OfferAdvanceFilterFriendDegreeView: View {
 struct OfferAdvanceFilterFriendDegreeViewPreview: PreviewProvider {
     static var previews: some View {
         OfferAdvanceFilterFriendDegreeView(
+            avatar: R.image.onboarding.testAvatar()!.jpegData(compressionQuality: 1),
             selectedOption: .constant(.firstDegree)
         )
         .background(Color.black)
