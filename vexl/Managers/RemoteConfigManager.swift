@@ -11,6 +11,7 @@ import Combine
 
 protocol RemoteConfigManagerType {
     var fetchCompleted: AnyPublisher<Void, Never> { get }
+    func setup()
     func getBoolValue(for key: RemoteConfigManager.Key) -> Bool
     func getIntValue(for key: RemoteConfigManager.Key) -> Int
 }
@@ -25,24 +26,25 @@ class RemoteConfigManager: RemoteConfigManagerType {
     }
 
     var fetchCompleted: AnyPublisher<Void, Never> {
-        Self._fetchCompleted.eraseToAnyPublisher()
+        _fetchCompleted.eraseToAnyPublisher()
     }
 
-    private static var remoteConfig = RemoteConfig.remoteConfig()
-    private static var _fetchCompleted: PassthroughSubject<Void, Never> = .init()
+    private var remoteConfig = RemoteConfig.remoteConfig()
+    private var _fetchCompleted: PassthroughSubject<Void, Never> = .init()
 
     // MARK: - Configure remote config
 
-    static func setup() {
+    func setup() {
         let settings = RemoteConfigSettings()
+        let remoteConfig = RemoteConfig.remoteConfig()
         #if APPSTORE
         settings.minimumFetchInterval = 3600
         #else
         settings.minimumFetchInterval = 0
         #endif
         remoteConfig.configSettings = settings
-        remoteConfig.fetchAndActivate { _, error in
-            if error == nil { _fetchCompleted.send(()) }
+        remoteConfig.fetchAndActivate { [weak self] _, error in
+            if error == nil { self?._fetchCompleted.send(()) }
         }
     }
 
@@ -54,10 +56,10 @@ class RemoteConfigManager: RemoteConfigManagerType {
             return false
         }
         #endif
-        return RemoteConfigManager.remoteConfig.configValue(forKey: key.rawValue).boolValue
+        return remoteConfig.configValue(forKey: key.rawValue).boolValue
     }
 
     func getIntValue(for key: RemoteConfigManager.Key) -> Int {
-        RemoteConfigManager.remoteConfig.configValue(forKey: key.rawValue).numberValue.intValue
+        remoteConfig.configValue(forKey: key.rawValue).numberValue.intValue
     }
 }
