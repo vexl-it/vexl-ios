@@ -16,7 +16,7 @@ struct NotificationPermissionView: View {
             card
                 .padding(.horizontal, Appearance.GridGuide.point)
 
-            LargeSolidButton(title: L.notificationsPermissionEnable(),
+            LargeSolidButton(title: viewModel.buttonTitle,
                              font: Appearance.TextStyle.titleSmallBold.font.asFont,
                              style: .main,
                              isFullWidth: true,
@@ -44,17 +44,17 @@ struct NotificationPermissionView: View {
 
             Spacer()
 
-            Text(L.notificationsPermissionTitle())
+            Text(viewModel.title)
                 .multilineTextAlignment(.center)
                 .textStyle(.h3)
                 .foregroundColor(Appearance.Colors.primaryText)
                 .padding(.horizontal, Appearance.GridGuide.point)
 
-            Text(L.notificationsPermissionSubttile())
+            Text(viewModel.subtitle)
                 .textStyle(.paragraphSmallMedium)
                 .foregroundColor(Appearance.Colors.gray2)
                 .multilineTextAlignment(.center)
-                .padding(.bottom, Appearance.GridGuide.padding)
+                .padding([.horizontal, .bottom], Appearance.GridGuide.padding)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
         .background(Appearance.Colors.whiteText)

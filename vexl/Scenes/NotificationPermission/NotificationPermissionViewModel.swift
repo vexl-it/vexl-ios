@@ -31,6 +31,33 @@ final class NotificationPermissionViewModel: ViewModelType {
 
     // MARK: - View Bindings
 
+    var title: String {
+        switch notificationManager.currentStatus {
+        case .denied:
+            return L.notificationsPermissionDisabledTitle()
+        default:
+            return L.notificationsPermissionTitle()
+        }
+    }
+
+    var subtitle: String {
+        switch notificationManager.currentStatus {
+        case .denied:
+            return L.notificationsPermissionDisabledSubtitle()
+        default:
+            return L.notificationsPermissionSubttile()
+        }
+    }
+
+    var buttonTitle: String {
+        switch notificationManager.currentStatus {
+        case .denied:
+            return L.notificationsPermissionDisabledButton()
+        default:
+            return L.notificationsPermissionEnable()
+        }
+    }
+
     // MARK: - Activities
 
     var primaryActivity: Activity = .init()
@@ -39,7 +66,7 @@ final class NotificationPermissionViewModel: ViewModelType {
 
     enum Route: Equatable {
         case showAreYouSureDialog
-        case showDeniedDialog
+        case openSettings
         case continueTapped
         case closeTapped
     }
@@ -95,7 +122,7 @@ final class NotificationPermissionViewModel: ViewModelType {
                     case .authorized:
                         return .continueTapped
                     case .denied:
-                        return .showDeniedDialog
+                        return .openSettings
                     default:
                         return nil
                     }

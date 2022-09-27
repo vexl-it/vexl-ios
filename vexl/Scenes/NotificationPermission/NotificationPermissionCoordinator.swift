@@ -30,26 +30,35 @@ class NotificationPermissionCoordinator: BaseCoordinator<RouterResult<Void>> {
         viewModel
             .route
             .receive(on: DispatchQueue.main)
-            .filter { [.showDeniedDialog, .showAreYouSureDialog].contains($0) }
-            .flatMapLatest(with: self) { owner, route -> ActionSheetResult in
-                let isDenied = route == .showDeniedDialog
+            .filter { $0 == .showAreYouSureDialog }
+            .flatMapLatest(with: self) { owner, _ -> ActionSheetResult in
                 let router = ModalRouter(parentViewController: viewController,
                                          presentationStyle: .overFullScreen,
                                          transitionStyle: .crossDissolve)
-                return owner.presentActionSheet(router: router, viewModel: PermissionActionSheetViewModel(isDenied: isDenied))
+                return owner.presentActionSheet(router: router, viewModel: PermissionActionSheetViewModel())
             }
-            .sink { result in
+            .withUnretained(self)
+            .sink { data in
+                let (owner, result) = data
                 switch result {
                 case .finished(.primary):
-                    if let appSettings = URL(string: UIApplication.openSettingsURLString), UIApplication.shared.canOpenURL(appSettings) {
-                        UIApplication.shared.open(appSettings)
-                    }
+                    owner.openSettings()
                 case .finished(.secondary):
                     viewModel.rejectNotifications()
                 default:
                     break
                 }
             }
+            .store(in: cancelBag)
+
+        viewModel
+            .route
+            .receive(on: DispatchQueue.main)
+            .filter { $0 == .openSettings }
+            .withUnretained(self)
+            .sink(receiveValue: { owner, _ in
+                owner.openSettings()
+            })
             .store(in: cancelBag)
 
         let close = viewModel
@@ -65,6 +74,12 @@ class NotificationPermissionCoordinator: BaseCoordinator<RouterResult<Void>> {
         return finish.merge(with: close)
             .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()
+    }
+
+    private func openSettings() {
+        if let appSettings = URL(string: UIApplication.openSettingsURLString), UIApplication.shared.canOpenURL(appSettings) {
+            UIApplication.shared.open(appSettings)
+        }
     }
 }
 
