@@ -9,8 +9,6 @@ import Combine
 import SwiftUI
 import Cleevio
 
-private typealias ActionSheetResult = CoordinatingResult<RouterResult<BottomActionSheetActionType>>
-
 final class WelcomeCoordinator: BaseCoordinator<RouterResult<Void>> {
 
     let publisher = PassthroughSubject<String, Never>()

@@ -83,6 +83,16 @@
 "register.facebook.import.button" = "Import priateľov z Facebooku";
 "register.contacts.update.button" = "Aktualizovať";
 "register.contacts.back.button" = "Späť";
+"notifications.permission.title" = "Povoliť notifikácie";
+"notifications.permission.subttile" = "Zapnuté notifikácie sú kľúčové pre správne fungovanie Vexlu.";
+"notifications.permission.enable" = "Povoliť";
+"notifications.permission.reject.title" = "Naozaj?";
+"notifications.permission.dialog.title" = "Povoľ notifikácie, prosím. Vexl bez nich nebude fungovať tak, ako má. Nemusíš mať obavy, nebudeme ťa spamovať.\n";
+"notifications.permission.dialog.allow" = "Povoliť";
+"notifications.permission.dialog.dont.allow" = "Zakázať";
+"notifications.permission.disabled.title" = "Vypnuté notifikace";
+"notifications.permission.disabled.subtitle" = "Máš vypnuté notifikácie. Povoľ ich v nastaveniach, Vexl bez nich nebude fungovať tak, ako má. Nemusíš mať obavy, nebudeme ťa spamovať.";
+"notifications.permission.disabled.button" = "Isť do Nastavení";
 "error.register.invalid.validation.code" = "Overovací kód je neplatný";
 "error.register.invalid.challenge" = "Pri overení užívateľa došlo k chybe";
 "error.register.invalid.email" = "Neplatný email";

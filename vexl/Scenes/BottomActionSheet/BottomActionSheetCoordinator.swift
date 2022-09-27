@@ -9,7 +9,7 @@ import SwiftUI
 import Cleevio
 import Combine
 
-typealias BottonActionSheetRouterResult = RouterResult<BottomActionSheetActionType>
+typealias ActionSheetResult = CoordinatingResult<RouterResult<BottomActionSheetActionType>>
 
 enum BottomActionSheetActionType {
     case primary

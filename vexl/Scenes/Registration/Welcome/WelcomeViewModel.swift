@@ -54,13 +54,6 @@ final class WelcomeViewModel: ViewModelType {
     }
 
     private func setupActions() {
-        $hasAgreedTermsAndConditions
-            .filter { $0 }
-            .sink(receiveValue: { [notificationManager] _ in
-                notificationManager.requestToken()
-            })
-            .store(in: cancelBag)
-
         action
             .filter { $0 == .continueTap }
             .map { _ -> Route in .continueTapped }
