@@ -29,7 +29,7 @@ class NotificationPermissionCoordinator: BaseCoordinator<RouterResult<Void>> {
 
         viewModel
             .route
-            .receive(on: RunLoop.main)
+            .receive(on: DispatchQueue.main)
             .filter { [.showDeniedDialog, .showAreYouSureDialog].contains($0) }
             .flatMapLatest(with: self) { owner, route -> ActionSheetResult in
                 let isDenied = route == .showDeniedDialog
@@ -63,7 +63,7 @@ class NotificationPermissionCoordinator: BaseCoordinator<RouterResult<Void>> {
             .map { _ in RouterResult<Void>.finished(()) }
 
         return finish.merge(with: close)
-            .receive(on: RunLoop.main)
+            .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()
     }
 }
