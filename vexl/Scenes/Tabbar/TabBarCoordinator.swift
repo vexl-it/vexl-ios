@@ -42,11 +42,15 @@ final class TabBarCoordinator: BaseCoordinator<Void> {
         )
 
         viewModel
+            .notificationViewModel
             .route
             .filter { $0 == .showNotifications }
             .withUnretained(self)
             .flatMap { owner, _ -> CoordinatingResult<RouterResult<Void>> in
-                let router = ModalRouter(parentViewController: owner.tabBarController, presentationStyle: .fullScreen)
+                let router = ModalRouter(
+                    parentViewController: owner.tabBarController,
+                    presentationStyle: .fullScreen
+                )
                 return owner.showNotificationPermission(router: router)
             }
             .sink()

@@ -11,7 +11,10 @@ import Combine
 final class PermissionActionSheetViewModel: BottomActionSheetViewModelProtocol {
     typealias PermissionBottomActionSheet = BottomActionSheet<PermissionActionSheetContent, EmptyView>
 
-    var primaryAction: PermissionBottomActionSheet.Action
+    var primaryAction: PermissionBottomActionSheet.Action = .init(
+        title: L.notificationsPermissionDialogAllow(),
+        isDismissAction: true
+    )
 
     var secondaryAction: PermissionBottomActionSheet.Action? = .init(
         title: L.notificationsPermissionDialogDontAllow(),
@@ -22,39 +25,17 @@ final class PermissionActionSheetViewModel: BottomActionSheetViewModelProtocol {
     var colorScheme: PermissionBottomActionSheet.ColorScheme = .main
 
     var title: String {
-        isDenied ?
-        L.notificationsPermissionDisabledTitle() :
         L.notificationsPermissionRejectTitle()
     }
 
     var content: PermissionActionSheetContent {
-        PermissionActionSheetContent(isDenied: isDenied)
-    }
-
-    let isDenied: Bool
-
-    init(isDenied: Bool) {
-        self.isDenied = isDenied
-        let primaryActionTitle = isDenied ? L.notificationsPermissionDisabledButton() : L.notificationsPermissionDialogAllow()
-
-        primaryAction = .init(
-            title: primaryActionTitle,
-            isDismissAction: true
-        )
+        PermissionActionSheetContent()
     }
 }
 
 struct PermissionActionSheetContent: View {
-    let isDenied: Bool
-
-    private var title: String {
-        isDenied ?
-        L.notificationsPermissionDisabledSubtitle() :
-        L.notificationsPermissionDialogTitle()
-    }
-
     var body: some View {
-        Text(title)
+        Text(L.notificationsPermissionDialogTitle())
             .fixedSize(horizontal: false, vertical: true)
             .textStyle(.paragraph)
             .foregroundColor(Appearance.Colors.gray3)
@@ -64,7 +45,7 @@ struct PermissionActionSheetContent: View {
 
 struct PermissionActionSheetContentPreview: PreviewProvider {
     static var previews: some View {
-        PermissionActionSheetContent(isDenied: false)
+        PermissionActionSheetContent()
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color.white)
             .previewDevice("iPhone 11")

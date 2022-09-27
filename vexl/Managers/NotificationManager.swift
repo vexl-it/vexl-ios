@@ -86,9 +86,6 @@ final class NotificationManager: NSObject, NotificationManagerType {
 
     override init() {
         super.init()
-        if UIApplication.shared.isRegisteredForRemoteNotifications {
-            update()
-        }
         Messaging.messaging().delegate = self
         UNUserNotificationCenter.current().delegate = self
         refreshStatus()
@@ -98,26 +95,24 @@ final class NotificationManager: NSObject, NotificationManagerType {
         let center = UNUserNotificationCenter.current()
         center.requestAuthorization(options: [.alert, .sound, .badge]) { [weak self] _, _ in
             DispatchQueue.main.async { [weak self] in
-                self?.update()
+                self?.refreshStatus()
             }
         }
         UIApplication.shared.registerForRemoteNotifications()
     }
 
     func refreshStatus() {
-        UNUserNotificationCenter.current().getNotificationSettings { [weak self] settings in
-            self?.authorisationStatus.send(settings.authorizationStatus)
-        }
-    }
-
-    private func update() {
         UIApplication.shared.registerForRemoteNotifications()
+
         Messaging.messaging().token { [weak self] token, _ in
             if let token = token {
                 self?.fcmTokenValue.send(token)
             }
         }
-        refreshStatus()
+
+        UNUserNotificationCenter.current().getNotificationSettings { [weak self] settings in
+            self?.authorisationStatus.send(settings.authorizationStatus)
+        }
     }
 }
 
