@@ -341,6 +341,9 @@
 		F1A61A3D28A1F98300904F3F /* GroupsInputCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1A61A3C28A1F98300904F3F /* GroupsInputCoordinator.swift */; };
 		F1A61A3F28A1F99B00904F3F /* GroupsInputViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1A61A3E28A1F99B00904F3F /* GroupsInputViewModel.swift */; };
 		F1A61A4128A1F9A200904F3F /* GroupsInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1A61A4028A1F9A200904F3F /* GroupsInputView.swift */; };
+		F1A9410028DE4AF8005D08D7 /* LockAppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1A940FF28DE4AF8005D08D7 /* LockAppCoordinator.swift */; };
+		F1A9410228DE4AFF005D08D7 /* LockAppViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1A9410128DE4AFF005D08D7 /* LockAppViewModel.swift */; };
+		F1A9410428DE4B26005D08D7 /* LockAppView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1A9410328DE4B26005D08D7 /* LockAppView.swift */; };
 		F1A9452D27F67FD5009B5AE3 /* PhoneConfirmation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1A9452C27F67FD5009B5AE3 /* PhoneConfirmation.swift */; };
 		F1A9453627F686D1009B5AE3 /* CodeValidation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1A9453427F686D1009B5AE3 /* CodeValidation.swift */; };
 		F1A9453727F686D1009B5AE3 /* PhoneVerification.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1A9453527F686D1009B5AE3 /* PhoneVerification.swift */; };
@@ -813,6 +816,9 @@
 		F1A61A3C28A1F98300904F3F /* GroupsInputCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupsInputCoordinator.swift; sourceTree = "<group>"; };
 		F1A61A3E28A1F99B00904F3F /* GroupsInputViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupsInputViewModel.swift; sourceTree = "<group>"; };
 		F1A61A4028A1F9A200904F3F /* GroupsInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupsInputView.swift; sourceTree = "<group>"; };
+		F1A940FF28DE4AF8005D08D7 /* LockAppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockAppCoordinator.swift; sourceTree = "<group>"; };
+		F1A9410128DE4AFF005D08D7 /* LockAppViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockAppViewModel.swift; sourceTree = "<group>"; };
+		F1A9410328DE4B26005D08D7 /* LockAppView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockAppView.swift; sourceTree = "<group>"; };
 		F1A9452C27F67FD5009B5AE3 /* PhoneConfirmation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneConfirmation.swift; sourceTree = "<group>"; };
 		F1A9453427F686D1009B5AE3 /* CodeValidation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodeValidation.swift; sourceTree = "<group>"; };
 		F1A9453527F686D1009B5AE3 /* PhoneVerification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhoneVerification.swift; sourceTree = "<group>"; };
@@ -1347,6 +1353,7 @@
 		B08F38FB27AE7110008B344F /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
+				F1A940FE28DE487C005D08D7 /* LockApp */,
 				4F82A09C28E19CED00352A3F /* NotificationPermission */,
 				F1156AE928A19AFC00B9A5B9 /* Groups */,
 				B007A72F286598CD00CFA5C9 /* BottomActionSheet */,
@@ -2149,6 +2156,16 @@
 			path = Input;
 			sourceTree = "<group>";
 		};
+		F1A940FE28DE487C005D08D7 /* LockApp */ = {
+			isa = PBXGroup;
+			children = (
+				F1A940FF28DE4AF8005D08D7 /* LockAppCoordinator.swift */,
+				F1A9410128DE4AFF005D08D7 /* LockAppViewModel.swift */,
+				F1A9410328DE4B26005D08D7 /* LockAppView.swift */,
+			);
+			path = LockApp;
+			sourceTree = "<group>";
+		};
 		F1A9452B27F67FC6009B5AE3 /* Confirmation */ = {
 			isa = PBXGroup;
 			children = (
@@ -2786,6 +2803,7 @@
 				F1B365CD2885CBEB0069788D /* EditProfileAvatarView.swift in Sources */,
 				B0501BA02884B45E00A44E18 /* OfferManager.swift in Sources */,
 				B08F396A27AE7112008B344F /* URLRequest+.swift in Sources */,
+				F1A9410028DE4AF8005D08D7 /* LockAppCoordinator.swift in Sources */,
 				F188627728169A3700659786 /* MarketplaceViewModel.swift in Sources */,
 				F1156AE6289F260900B9A5B9 /* TermsAndConditionsView.swift in Sources */,
 				F1B30111287C770D00C86F83 /* OfferTriggerActiveView.swift in Sources */,
@@ -2796,6 +2814,7 @@
 				B007A73128659A8700CFA5C9 /* BottomActionSheetView.swift in Sources */,
 				F1DF4A51289D59BA008E5C87 /* AttributedText.swift in Sources */,
 				F1B365D1288608680069788D /* ProfilePhoneContactsCoordinator.swift in Sources */,
+				F1A9410428DE4B26005D08D7 /* LockAppView.swift in Sources */,
 				F1A43DC2288E33D30032A11F /* ReportIssueActionSheet.swift in Sources */,
 				F188625D2811E3E700659786 /* OfferTradeLocationPickerView.swift in Sources */,
 				F1F0FBD128A2FB3000C783D3 /* GroupsLeaveActionSheet.swift in Sources */,
@@ -2975,6 +2994,7 @@
 				F1B30107287A40DC00C86F83 /* ChatIdentityActionSheet.swift in Sources */,
 				4F2416A328490B3C00B4A437 /* ChatInbox.swift in Sources */,
 				F1156AEF28A19B4200B9A5B9 /* GroupsScanQRViewModel.swift in Sources */,
+				F1A9410228DE4AFF005D08D7 /* LockAppViewModel.swift in Sources */,
 				F148564F284FD5E2003213D7 /* InboxManager.swift in Sources */,
 				F1D200A628252C44006DF4AB /* TabBarController.swift in Sources */,
 				F14F890728BD29E200DC7C4F /* CameraQRScannerView.swift in Sources */,

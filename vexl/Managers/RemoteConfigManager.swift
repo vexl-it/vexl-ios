@@ -7,8 +7,11 @@
 
 import Foundation
 import FirebaseRemoteConfig
+import Combine
 
 protocol RemoteConfigManagerType {
+    var fetchCompleted: AnyPublisher<Void, Never> { get }
+    func setup()
     func getBoolValue(for key: RemoteConfigManager.Key) -> Bool
     func getIntValue(for key: RemoteConfigManager.Key) -> Int
 }
@@ -18,17 +21,31 @@ class RemoteConfigManager: RemoteConfigManagerType {
     enum Key: String {
         case isMarketplaceLocked = "marketplace_locked"
         case remainingConstacts = "remaining_contacts_to_unlock"
+        case forceUpdate = "force_update_screen_showed"
+        case maintenance = "maintenance_screen_showed"
     }
 
-    private static var remoteConfig = RemoteConfig.remoteConfig()
+    var fetchCompleted: AnyPublisher<Void, Never> {
+        _fetchCompleted.eraseToAnyPublisher()
+    }
+
+    private var remoteConfig = RemoteConfig.remoteConfig()
+    private var _fetchCompleted: PassthroughSubject<Void, Never> = .init()
 
     // MARK: - Configure remote config
 
-    static func setup() {
+    func setup() {
         let settings = RemoteConfigSettings()
+        let remoteConfig = RemoteConfig.remoteConfig()
+        #if APPSTORE
+        settings.minimumFetchInterval = 3600
+        #else
         settings.minimumFetchInterval = 0
+        #endif
         remoteConfig.configSettings = settings
-        remoteConfig.fetchAndActivate()
+        remoteConfig.fetchAndActivate { [weak self] _, error in
+            if error == nil { self?._fetchCompleted.send(()) }
+        }
     }
 
     // MARK: - Methods for getting remote values
@@ -39,10 +56,10 @@ class RemoteConfigManager: RemoteConfigManagerType {
             return false
         }
         #endif
-        return RemoteConfigManager.remoteConfig.configValue(forKey: key.rawValue).boolValue
+        return remoteConfig.configValue(forKey: key.rawValue).boolValue
     }
 
     func getIntValue(for key: RemoteConfigManager.Key) -> Int {
-        RemoteConfigManager.remoteConfig.configValue(forKey: key.rawValue).numberValue.intValue
+        remoteConfig.configValue(forKey: key.rawValue).numberValue.intValue
     }
 }

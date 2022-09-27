@@ -18,6 +18,7 @@
 "continue" = "Pokračovat";
 "button.gotIt" = "Rozumím";
 "general.delete" = "Smazat";
+"general.app.name" = "VEXL";
 "onboarding.intro.message.friend" = "Anonymně se spoj se svými kontakty.";
 "onboarding.intro.message.buySell" = "Podívej se na jejich nabídky.";
 "onboarding.intro.message.request" = "Začněte chatovat, odhalte své identity a obchodujte.";
@@ -410,3 +411,5 @@
 "force.update.title" = "Je dostupná nová verze Vexlu!";
 "force.update.subtitle" = "Pro správné fungování Vexlu je nutné aplikaci aktualizovat.";
 "force.update.button" = "Aktualizovat";
+"lock.maintenance.title" = "Marketplace maintenance";
+"lock.maintenance.subtitle" = "Vexl app is in maintenance. Come back later, please.";

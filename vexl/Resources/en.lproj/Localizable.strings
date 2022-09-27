@@ -18,6 +18,7 @@
 "continue" = "Continue";
 "button.gotIt" = "Got it";
 "general.delete" = "Delete";
+"general.app.name" = "VEXL";
 "onboarding.intro.message.friend" = "Connect anonymously with your contacts.";
 "onboarding.intro.message.buySell" = "See buy & sell offers.";
 "onboarding.intro.message.request" = "Start chatting, reveal identities and trade.";
@@ -410,3 +411,5 @@
 "force.update.title" = "New version of Vexl available!";
 "force.update.subtitle" = "Get the latest version of Vexl to ensure proper functionality.\n";
 "force.update.button" = "Update now";
+"lock.maintenance.title" = "Marketplace maintenance";
+"lock.maintenance.subtitle" = "Vexl app is in maintenance. Come back later, please.";
