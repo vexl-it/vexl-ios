@@ -11,10 +11,10 @@ import Combine
 
 final class TabBarViewModel: ViewModelType {
 
-    @Inject var cryptocurrencyManager: CryptocurrencyValueManagerType
-    @Inject var syncInboxManager: SyncInboxManagerType
-    @Inject var deeplinkManager: DeeplinkManagerType
-    @Inject var notificationManager: NotificationManagerType
+    @Inject private var cryptocurrencyManager: CryptocurrencyValueManagerType
+    @Inject private var syncInboxManager: SyncInboxManagerType
+    @Inject private var deeplinkManager: DeeplinkManagerType
+    let notificationViewModel = NotificationViewModel()
 
     // MARK: - Actions Bindings
 
@@ -29,14 +29,12 @@ final class TabBarViewModel: ViewModelType {
     // MARK: - Coordinator Bindings
 
     enum Route: Equatable {
-        case showNotifications
     }
 
     var route: CoordinatingSubject<Route> = .init()
 
     // MARK: - Variables
 
-    private var notificationsChecked = false
     private let cancelBag: CancelBag = .init()
 
     init() {
@@ -54,14 +52,7 @@ final class TabBarViewModel: ViewModelType {
     }
 
     func checkIfNotificationsAreEnabled() {
-        guard !notificationsChecked else { return }
-        notificationsChecked = true
-        switch notificationManager.currentStatus {
-        case .denied, .notDetermined:
-            route.send(.showNotifications)
-        default:
-            break
-        }
+        notificationViewModel.checkIfNotificationsAreEnabled()
     }
 
     private func setupBindings() {
