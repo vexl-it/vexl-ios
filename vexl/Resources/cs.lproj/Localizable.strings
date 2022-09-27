@@ -18,10 +18,7 @@
 "continue" = "Pokračovat";
 "button.gotIt" = "Rozumím";
 "general.delete" = "Smazat";
-<<<<<<< HEAD
 "general.app.name" = "VEXL";
-=======
->>>>>>> devel
 "onboarding.intro.message.friend" = "Anonymně se spoj se svými kontakty.";
 "onboarding.intro.message.buySell" = "Podívej se na jejich nabídky.";
 "onboarding.intro.message.request" = "Začněte chatovat, odhalte své identity a obchodujte.";
@@ -87,6 +84,16 @@
 "register.facebook.import.button" = "Import přátel z Facebooku";
 "register.contacts.update.button" = "Aktualizovat";
 "register.contacts.back.button" = "Zpět";
+"notifications.permission.title" = "Povolit notifikace";
+"notifications.permission.subttile" = "Zapnuté notifikace jsou klíčové pro správné fungování Vexlu.";
+"notifications.permission.enable" = "Povolit ";
+"notifications.permission.reject.title" = "Opravdu?";
+"notifications.permission.dialog.title" = "Povol notifikace, prosím. Vexl bez nich nebude fungovat jak má. Neboj, nebudeme tě spamovat.\n";
+"notifications.permission.dialog.allow" = "Povolit";
+"notifications.permission.dialog.dont.allow" = "Zakázat";
+"notifications.permission.disabled.title" = "Vypnuté notifikace";
+"notifications.permission.disabled.subtitle" = "Máš vypnuté notifikace. Povol ich v Nastaveních, Vexl bez nich nebude fungovat jak má. Neboj, nebudeme tě spamovat.";
+"notifications.permission.disabled.button" = "Jít do Nastavení";
 "error.register.invalid.validation.code" = "Ověřovací kód je neplatný";
 "error.register.invalid.challenge" = "Při ověření uživatele došlo k chybě";
 "error.register.invalid.email" = "Neplatný email";

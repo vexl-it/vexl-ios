@@ -22,6 +22,10 @@
 		4F700CBC2844C3260085139F /* TabBarNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F700CBB2844C3260085139F /* TabBarNavigationController.swift */; };
 		4F700CBE2844C4C20085139F /* StickyBitcoinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F700CBD2844C4C20085139F /* StickyBitcoinView.swift */; };
 		4F700CC02844C54E0085139F /* BitcoinViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F700CBF2844C54E0085139F /* BitcoinViewModel.swift */; };
+		4F82A09E28E19D0100352A3F /* NotificationPermissionCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F82A09D28E19D0100352A3F /* NotificationPermissionCoordinator.swift */; };
+		4F82A0A028E19D0A00352A3F /* NotificationPermissionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F82A09F28E19D0A00352A3F /* NotificationPermissionViewModel.swift */; };
+		4F82A0A228E19D1400352A3F /* NotificationPermissionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F82A0A128E19D1400352A3F /* NotificationPermissionView.swift */; };
+		4F82A0A428E1AFFC00352A3F /* PermissionActionSheetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F82A0A328E1AFFC00352A3F /* PermissionActionSheetViewModel.swift */; };
 		4F9ECFF728AE93350074EA47 /* KeyboardReadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F9ECFF628AE93350074EA47 /* KeyboardReadable.swift */; };
 		4FA3BF6A28AEE8F3000BE679 /* DeeplinkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA3BF6928AEE8F3000BE679 /* DeeplinkManager.swift */; };
 		4FA3BF6C28AFDB7A000BE679 /* UIWindow+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA3BF6B28AFDB7A000BE679 /* UIWindow+.swift */; };
@@ -466,6 +470,10 @@
 		4F700CBD2844C4C20085139F /* StickyBitcoinView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickyBitcoinView.swift; sourceTree = "<group>"; };
 		4F700CBF2844C54E0085139F /* BitcoinViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BitcoinViewModel.swift; sourceTree = "<group>"; };
 		4F700CC22844DA250085139F /* OffsetScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OffsetScrollView.swift; sourceTree = "<group>"; };
+		4F82A09D28E19D0100352A3F /* NotificationPermissionCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationPermissionCoordinator.swift; sourceTree = "<group>"; };
+		4F82A09F28E19D0A00352A3F /* NotificationPermissionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationPermissionViewModel.swift; sourceTree = "<group>"; };
+		4F82A0A128E19D1400352A3F /* NotificationPermissionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationPermissionView.swift; sourceTree = "<group>"; };
+		4F82A0A328E1AFFC00352A3F /* PermissionActionSheetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionActionSheetViewModel.swift; sourceTree = "<group>"; };
 		4F9ECFF628AE93350074EA47 /* KeyboardReadable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardReadable.swift; sourceTree = "<group>"; };
 		4FA3BF6928AEE8F3000BE679 /* DeeplinkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeeplinkManager.swift; sourceTree = "<group>"; };
 		4FA3BF6B28AFDB7A000BE679 /* UIWindow+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIWindow+.swift"; sourceTree = "<group>"; };
@@ -985,6 +993,17 @@
 			path = BitcoinView;
 			sourceTree = "<group>";
 		};
+		4F82A09C28E19CED00352A3F /* NotificationPermission */ = {
+			isa = PBXGroup;
+			children = (
+				4F82A09D28E19D0100352A3F /* NotificationPermissionCoordinator.swift */,
+				4F82A09F28E19D0A00352A3F /* NotificationPermissionViewModel.swift */,
+				4F82A0A128E19D1400352A3F /* NotificationPermissionView.swift */,
+				4F82A0A328E1AFFC00352A3F /* PermissionActionSheetViewModel.swift */,
+			);
+			path = NotificationPermission;
+			sourceTree = "<group>";
+		};
 		4FA3BF6828AEE8E7000BE679 /* Deeplink */ = {
 			isa = PBXGroup;
 			children = (
@@ -1333,6 +1352,7 @@
 			isa = PBXGroup;
 			children = (
 				F1A940FE28DE487C005D08D7 /* LockApp */,
+				4F82A09C28E19CED00352A3F /* NotificationPermission */,
 				F1156AE928A19AFC00B9A5B9 /* Groups */,
 				B007A72F286598CD00CFA5C9 /* BottomActionSheet */,
 				F1B93EFE287771E3008DAA90 /* ChatIdentityReveal */,
@@ -2808,6 +2828,7 @@
 				6FE2BE9C28BCD790004331F1 /* MacroFormatting.swift in Sources */,
 				F12A14E827D6A8690096543E /* RequestAccessContactsView.swift in Sources */,
 				B01C01E62860B2C400A29F85 /* CoinChartData.swift in Sources */,
+				4F82A0A228E19D1400352A3F /* NotificationPermissionView.swift in Sources */,
 				F1B365D32886093D0069788D /* ProfilePhoneContactsViewModel.swift in Sources */,
 				F13B2675281EB23A0011F2FB /* ContactFriendLevel.swift in Sources */,
 				B0E9BB302815C7310012BF1D /* SHA.swift in Sources */,
@@ -3032,7 +3053,9 @@
 				F1BFA8D027FB31E800F4E745 /* FacebookUserData.swift in Sources */,
 				F19B37E7288E0D6400412D78 /* EditProfileNameView.swift in Sources */,
 				F11441D3284681EC00307D39 /* ContactAvatarInfo.swift in Sources */,
+				4F82A0A028E19D0A00352A3F /* NotificationPermissionViewModel.swift in Sources */,
 				F1156ADD289ED49F00B9A5B9 /* RegisterFacebookContactsCoordinator.swift in Sources */,
+				4F82A09E28E19D0100352A3F /* NotificationPermissionCoordinator.swift in Sources */,
 				B08F399E27AE7D92008B344F /* OnboardingView.swift in Sources */,
 				B007A758287226B500CFA5C9 /* ManagedKeyPair+.swift in Sources */,
 				B08F393F27AE7112008B344F /* APIError.swift in Sources */,
@@ -3041,6 +3064,7 @@
 				F11441DA284681EC00307D39 /* MultipleOptionPickerView.swift in Sources */,
 				B0FE523F280E822400A77EC3 /* CryptoService.swift in Sources */,
 				F14F890328BD247000DC7C4F /* CameraPreviewLayerView.swift in Sources */,
+				4F82A0A428E1AFFC00352A3F /* PermissionActionSheetViewModel.swift in Sources */,
 				F17ACAAF289210EE00E05408 /* OfferCurrencyPickerView.swift in Sources */,
 				F1485646284FD451003213D7 /* ChatConversationView.swift in Sources */,
 				F1A9452D27F67FD5009B5AE3 /* PhoneConfirmation.swift in Sources */,
@@ -3274,7 +3298,7 @@
 				CODE_SIGN_ENTITLEMENTS = vexl/vexl.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 295;
+				CURRENT_PROJECT_VERSION = 296;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = KQNTW88PVA;
 				ENABLE_BITCODE = NO;
@@ -3307,7 +3331,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 295;
+				CURRENT_PROJECT_VERSION = 296;
 				DEVELOPMENT_TEAM = SHD6TUKSPH;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
@@ -3392,7 +3416,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = vexl/vexlDebug.entitlements;
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 295;
+				CURRENT_PROJECT_VERSION = 296;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = KQNTW88PVA;
 				ENABLE_BITCODE = NO;
@@ -3425,7 +3449,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 295;
+				CURRENT_PROJECT_VERSION = 296;
 				DEVELOPMENT_TEAM = SHD6TUKSPH;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
@@ -3570,7 +3594,7 @@
 				CODE_SIGN_ENTITLEMENTS = vexl/vexl.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 295;
+				CURRENT_PROJECT_VERSION = 296;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = KQNTW88PVA;
 				ENABLE_BITCODE = NO;
@@ -3605,7 +3629,7 @@
 				CODE_SIGN_ENTITLEMENTS = vexl/vexl.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 295;
+				CURRENT_PROJECT_VERSION = 296;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = KQNTW88PVA;
 				ENABLE_BITCODE = NO;
@@ -3638,7 +3662,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 295;
+				CURRENT_PROJECT_VERSION = 296;
 				DEVELOPMENT_TEAM = SHD6TUKSPH;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
@@ -3657,7 +3681,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 295;
+				CURRENT_PROJECT_VERSION = 296;
 				DEVELOPMENT_TEAM = SHD6TUKSPH;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;

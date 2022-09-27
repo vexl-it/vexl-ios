@@ -16,9 +16,9 @@ final class TabBarCoordinator: BaseCoordinator<Void> {
     private let tabBarController: TabBarController
     private let window: UIWindow
     private let tabs: [Tab] = [.marketplace, .chat, .profile]
+    private let viewModel = TabBarViewModel()
 
     init(window: UIWindow) {
-        let viewModel = TabBarViewModel()
         self.tabBarController = TabBarController(viewModel: viewModel)
         self.window = window
     }
@@ -40,6 +40,17 @@ final class TabBarCoordinator: BaseCoordinator<Void> {
             animations: nil,
             completion: nil
         )
+
+        viewModel
+            .route
+            .filter { $0 == .showNotifications }
+            .withUnretained(self)
+            .flatMap { owner, _ -> CoordinatingResult<RouterResult<Void>> in
+                let router = ModalRouter(parentViewController: owner.tabBarController, presentationStyle: .fullScreen)
+                return owner.showNotificationPermission(router: router)
+            }
+            .sink()
+            .store(in: cancelBag)
 
         let logout = authenticationManager.isUserLoggedInPublisher
             .filter { !$0 }
@@ -82,5 +93,19 @@ final class TabBarCoordinator: BaseCoordinator<Void> {
                     )
                 }
             }
+    }
+
+    private func showNotificationPermission(router: Router) -> CoordinatingResult<RouterResult<Void>> {
+        coordinate(to: NotificationPermissionCoordinator(router: router, animated: true))
+            .flatMap { result -> CoordinatingResult<RouterResult<Void>> in
+                switch result {
+                case .dismiss, .finished:
+                    return router.dismiss(animated: true, returning: result)
+                case .dismissedByRouter:
+                    return Just(result).eraseToAnyPublisher()
+                }
+            }
+            .prefix(1)
+            .eraseToAnyPublisher()
     }
 }

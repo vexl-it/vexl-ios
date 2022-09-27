@@ -35,7 +35,11 @@ class RemoteConfigManager: RemoteConfigManagerType {
 
     static func setup() {
         let settings = RemoteConfigSettings()
+        #if APPSTORE
+        settings.minimumFetchInterval = 3600
+        #else
         settings.minimumFetchInterval = 0
+        #endif
         remoteConfig.configSettings = settings
         remoteConfig.fetchAndActivate { _, error in
             if error == nil { _fetchCompleted.send(()) }

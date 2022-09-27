@@ -84,6 +84,16 @@
 "register.facebook.import.button" = "Import Facebook contacts";
 "register.contacts.update.button" = "Update";
 "register.contacts.back.button" = "Back";
+"notifications.permission.title" = "Allow notifications";
+"notifications.permission.subttile" = "Enabling notifications is crucial for Vexl to function correctly.";
+"notifications.permission.enable" = "Enable";
+"notifications.permission.reject.title" = "Really?";
+"notifications.permission.dialog.title" = "Please enable notifications, Vexl will not work without them. Don't worry, we won't spam you.";
+"notifications.permission.dialog.allow" = "Allow";
+"notifications.permission.dialog.dont.allow" = "Don't allow";
+"notifications.permission.disabled.title" = "Notifications disabled";
+"notifications.permission.disabled.subtitle" = "You have disabled notifications. Please enable them in Settings as Vexl will not work without them. Don't worry, we won't spam you.";
+"notifications.permission.disabled.button" = "Go to Settings";
 "error.register.invalid.validation.code" = "The validation code is invalid";
 "error.register.invalid.challenge" = "There was an error validating the user";
 "error.register.invalid.email" = "The email is invalid";

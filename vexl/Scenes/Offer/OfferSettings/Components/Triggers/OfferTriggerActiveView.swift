@@ -50,7 +50,6 @@ struct OfferTriggerActiveView: View {
                     if currency.position == .right {
                         currencySign
                     }
-
                 }
             }
             .padding(Appearance.GridGuide.tinyPadding)
