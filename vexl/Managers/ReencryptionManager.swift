@@ -22,14 +22,13 @@ class ReencryptionManager: ReencryptionManagerType {
     private var cancelBag: CancelBag = .init()
 
     func synchronizeContacts() {
-        let completion: (Error?) -> Void = { _ in }
         anonymousProfileManager.gethNewContacts()
             .flatMap { [offerManager] envelope in
-                offerManager.reencryptUserOffers(withPublicKeys: envelope.firstDegree, friendLevel: .firstDegree, completionHandler: completion)
+                offerManager.reencryptUserOffers(withPublicKeys: envelope.firstDegree, friendLevel: .firstDegree)
                     .map { envelope }
             }
             .flatMap { [offerManager] envelope in
-                offerManager.reencryptUserOffers(withPublicKeys: envelope.secondDegree, friendLevel: .secondDegree, completionHandler: completion)
+                offerManager.reencryptUserOffers(withPublicKeys: envelope.secondDegree, friendLevel: .secondDegree)
                     .map { envelope }
             }
             .flatMap { [anonymousProfileManager] envelope in

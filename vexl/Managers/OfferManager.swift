@@ -19,7 +19,7 @@ protocol OfferManagerType {
 }
 
 extension OfferManagerType {
-    func syncUserOffers(withPublicKeys: [String], friendLevel: OfferFriendDegree) -> AnyPublisher<Void, Error> {
+    func reencryptUserOffers(withPublicKeys: [String], friendLevel: OfferFriendDegree) -> AnyPublisher<Void, Error> {
         reencryptUserOffers(withPublicKeys: withPublicKeys, friendLevel: friendLevel, completionHandler: nil)
     }
 }
