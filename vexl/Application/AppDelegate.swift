@@ -22,7 +22,6 @@ let log = SwiftyBeaver.self
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-
         ApplicationDelegate.shared.application(
             application,
             didFinishLaunchingWithOptions: launchOptions
@@ -36,7 +35,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         // Firebase messaging
         FirebaseApp.configure()
-        RemoteConfigManager.setup()
+
+        // Firebase remote config
+        @Inject var remoteConfigManager: RemoteConfigManagerType
+        remoteConfigManager.setup()
 
         // Global appearance
         Appearance.setGlobalAppearance()

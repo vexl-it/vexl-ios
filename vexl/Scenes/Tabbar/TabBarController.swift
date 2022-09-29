@@ -59,6 +59,7 @@ final class TabBarController: UITabBarController {
         super.viewDidAppear(animated)
         viewModel.checkSelectedTab()
         viewModel.action.send(.didAppear)
+        viewModel.checkIfNotificationsAreEnabled()
     }
 
     override func setViewControllers(_ viewControllers: [UIViewController]?, animated: Bool) {

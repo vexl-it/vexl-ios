@@ -15,9 +15,12 @@ final class AppCoordinator: BaseCoordinator<Void> {
     @Inject var syncQueue: SyncQueueManagerType
     @Inject var notificationManager: NotificationManagerType
     @Inject var deeplinkManager: DeeplinkManagerType
+    @Inject var remoteConfigManager: RemoteConfigManagerType
 
     private let window: UIWindow
     private var deeplinkCancellable: AnyCancellable?
+    private var remoteCancellable: AnyCancellable?
+    private var lockScreen: LockAppViewModel.Style?
 
     init(window: UIWindow) {
         self.window = window
@@ -26,6 +29,7 @@ final class AppCoordinator: BaseCoordinator<Void> {
     override func start() -> CoordinatingResult<Void> {
         coordinateToRoot()
         setupDeeplink()
+        setupLockScreen()
 
         return Empty()
             .eraseToAnyPublisher()
@@ -36,6 +40,10 @@ final class AppCoordinator: BaseCoordinator<Void> {
     // https://github.com/uptechteam/Coordinator-MVVM-Rx-Example/issues/3
     private func coordinateToRoot() {
         let coordinationResult: CoordinatingResult<Void> = {
+            if let lockScreen = lockScreen {
+                return showLockApp(style: lockScreen)
+            }
+
             switch initialScreenManager.getCurrentScreenState() {
             case .splashScreen:
                 return showSplashCoordinator()
@@ -60,9 +68,30 @@ final class AppCoordinator: BaseCoordinator<Void> {
     private func resetFlow() {
         cancellable?.cancel()
         deeplinkCancellable?.cancel()
+        remoteCancellable?.cancel()
         window.rootViewController = nil
         coordinateToRoot()
         setupDeeplink()
+        setupLockScreen()
+    }
+
+    private func setupLockScreen() {
+        remoteCancellable = remoteConfigManager
+            .fetchCompleted
+            .compactMap { [remoteConfigManager] _ -> LockAppViewModel.Style? in
+                if remoteConfigManager.getBoolValue(for: .maintenance) {
+                    return .maintenance
+                } else if remoteConfigManager.getBoolValue(for: .forceUpdate) {
+                    return .update
+                } else {
+                    return nil
+                }
+            }
+            .withUnretained(self)
+            .sink { owner, lockScreen in
+                owner.lockScreen = lockScreen
+                owner.resetFlow()
+            }
     }
 
     private func setupDeeplink() {
@@ -96,6 +125,17 @@ final class AppCoordinator: BaseCoordinator<Void> {
 }
 
 extension AppCoordinator {
+    private func showLockApp(style: LockAppViewModel.Style) -> CoordinatingResult<Void> {
+        coordinate(to:
+            WindowNavigationCoordinator(window: window) { router, animated -> LockAppCoordinator in
+                LockAppCoordinator(style: style, router: router, animated: animated)
+            }
+        )
+            .asVoid()
+            .prefix(1)
+            .eraseToAnyPublisher()
+    }
+
     private func showSplashCoordinator() -> CoordinatingResult<Void> {
         coordinate(to: SplashScreenCoordinator(window: window))
     }
