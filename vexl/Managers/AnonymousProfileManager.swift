@@ -65,9 +65,11 @@ final class AnonymousProfileManager: AnonymousProfileManagerType {
                     }
             }
             .withUnretained(self)
-            .map { [anonymousProfileRepository] owner, envelope -> ContactPKsEnvelope in
-                let firstDegreeProfiles = anonymousProfileRepository.getProfiles(publicKeys: envelope.firstDegree, type: .firstDegree, context: nil)
-                let scndDegreeProfiles = anonymousProfileRepository.getProfiles(publicKeys: envelope.secondDegree, type: .secondDegree, context: nil)
+            .map { owner, envelope -> ContactPKsEnvelope in
+                let firstDegreeProfiles = owner.anonymousProfileRepository
+                    .getProfiles(publicKeys: envelope.firstDegree, type: .firstDegree, context: nil)
+                let scndDegreeProfiles = owner.anonymousProfileRepository
+                    .getProfiles(publicKeys: envelope.secondDegree, type: .secondDegree, context: nil)
                 return ContactPKsEnvelope(
                     firstDegree: owner.getNewPublicKeys(from: envelope.secondDegree, subtracting: firstDegreeProfiles),
                     secondDegree: owner.getNewPublicKeys(from: envelope.firstDegree, subtracting: scndDegreeProfiles)
