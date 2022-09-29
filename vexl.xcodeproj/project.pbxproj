@@ -75,6 +75,7 @@
 		B01C01E62860B2C400A29F85 /* CoinChartData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B01C01E52860B2C400A29F85 /* CoinChartData.swift */; };
 		B01C01E92860D2CD00A29F85 /* ContentState.swift in Sources */ = {isa = PBXBuildFile; fileRef = B01C01E82860D2CD00A29F85 /* ContentState.swift */; };
 		B01C01ED2862F06D00A29F85 /* Currency.swift in Sources */ = {isa = PBXBuildFile; fileRef = B01C01EC2862F06D00A29F85 /* Currency.swift */; };
+		B02939A928E5B88A00DEB462 /* PublicKeysEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = B02939A828E5B88A00DEB462 /* PublicKeysEnvelope.swift */; };
 		B02B894528E4E6F100DC811F /* ReencryptionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B02B894428E4E6F100DC811F /* ReencryptionManager.swift */; };
 		B03910652889D9E20034358C /* InboxRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = B03910642889D9E20034358C /* InboxRepository.swift */; };
 		B03910672889E6D80034358C /* ChatManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B03910662889E6D80034358C /* ChatManager.swift */; };
@@ -531,6 +532,7 @@
 		B01C01E52860B2C400A29F85 /* CoinChartData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinChartData.swift; sourceTree = "<group>"; };
 		B01C01E82860D2CD00A29F85 /* ContentState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentState.swift; sourceTree = "<group>"; };
 		B01C01EC2862F06D00A29F85 /* Currency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Currency.swift; sourceTree = "<group>"; };
+		B02939A828E5B88A00DEB462 /* PublicKeysEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublicKeysEnvelope.swift; sourceTree = "<group>"; };
 		B02B894428E4E6F100DC811F /* ReencryptionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReencryptionManager.swift; sourceTree = "<group>"; };
 		B03910642889D9E20034358C /* InboxRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InboxRepository.swift; sourceTree = "<group>"; };
 		B03910662889E6D80034358C /* ChatManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatManager.swift; sourceTree = "<group>"; };
@@ -1134,6 +1136,14 @@
 			path = Staging;
 			sourceTree = "<group>";
 		};
+		B02939A728E5B87300DEB462 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				B02939A828E5B88A00DEB462 /* PublicKeysEnvelope.swift */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
 		B08F38B027AE7110008B344F = {
 			isa = PBXGroup;
 			children = (
@@ -1291,6 +1301,7 @@
 				F1B93ECE286A20F9008DAA90 /* Storage */,
 				F175AB8227E4CBFE000DAB15 /* Networking */,
 				B01C01E72860B58500A29F85 /* Coin */,
+				B02939A728E5B87300DEB462 /* Common */,
 				B08F391827AE7112008B344F /* User.swift */,
 				F1A9454527F81278009B5AE3 /* ContactInformation.swift */,
 				B0FE5248280E93D200A77EC3 /* ECCKeys.swift */,
@@ -2786,6 +2797,7 @@
 				F12A150827E1A4940096543E /* RequestAccessAlert.swift in Sources */,
 				B0E9BB2E2815C7260012BF1D /* HMAC.swift in Sources */,
 				4FBF61E2283BD12D00DDBE71 /* FilterViewModel.swift in Sources */,
+				B02939A928E5B88A00DEB462 /* PublicKeysEnvelope.swift in Sources */,
 				F11441D1284681EC00307D39 /* PlaceholderTextField.swift in Sources */,
 				B0F206EF27AE8F6900A44E72 /* Publisher+.swift in Sources */,
 				F1B93EDE286E372D008DAA90 /* ChatOfferActionSheet.swift in Sources */,

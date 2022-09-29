@@ -22,27 +22,6 @@ extension AnonymousProfileManagerType {
     }
 }
 
-struct ContactPKsEnvelope {
-    var firstDegree: [String]
-    var secondDegree: [String]
-
-    func publicKeys(for type: AnonymousProfileType) -> [String] {
-        switch type {
-        case .firstDegree:
-            return firstDegree
-        case .secondDegree:
-            return secondDegree
-        case .group:
-            return []
-        }
-    }
-}
-
-struct GroupPKsEnvelope {
-    var group: ManagedGroup
-    var publicKeys: [String]
-}
-
 final class AnonymousProfileManager: AnonymousProfileManagerType {
     @Inject private var anonymousProfileRepository: AnonymousProfileRepositoryType
     @Inject private var userRepository: UserRepositoryType
