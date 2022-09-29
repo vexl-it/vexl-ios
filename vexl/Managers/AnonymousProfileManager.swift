@@ -78,10 +78,9 @@ class AnonymousProfileManager: AnonymousProfileManagerType {
 
     func getNewGroupMembers() -> AnyPublisher<[GroupPKsEnvelope], Error> {
         let groups = userRepository.user?.groups?.allObjects as? [ManagedGroup] ?? []
-        var groupMap: [String: ManagedGroup] = [:]
-        groups.forEach { group in
+        var groupMap = groups.reduce(into: [String: ManagedGroup]()) { partialResult, group in
             if let uuid = group.uuid {
-                groupMap[uuid] = group
+                partialResult[uuid] = group
             }
         }
         return groupService
