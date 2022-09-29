@@ -97,7 +97,7 @@ struct OfferSettingsProgressViewPreview: PreviewProvider {
             .background(Color.black.edgesIgnoringSafeArea(.all))
             .previewDevice("iPhone 11")
 
-        OfferSettingsProgressView(currentValue: 100, maxValue: 1_000)
+        OfferSettingsProgressView(currentValue: 1_000, maxValue: 1_000)
             .background(Color.black.edgesIgnoringSafeArea(.all))
             .previewDevice("iPhone 11")
     }
