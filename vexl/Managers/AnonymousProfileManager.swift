@@ -51,6 +51,7 @@ final class AnonymousProfileManager: AnonymousProfileManagerType {
     @Inject private var contactsService: ContactsServiceType
 
     func getNewContacts() -> AnyPublisher<ContactPKsEnvelope, Error> {
+        // TODO: refactor this code when facebook will start working
         let useFacebook = false
         return contactsService
             .getContacts(fromFacebook: useFacebook, friendLevel: .first, pageLimit: Constants.pageMaxLimit)
