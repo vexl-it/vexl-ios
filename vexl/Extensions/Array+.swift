@@ -33,10 +33,9 @@ extension Array where Element: Publisher, Element.Output == Void {
                 .setFailureType(to: Element.Failure.self)
                 .eraseToAnyPublisher()
         }
-        var copy = self
-        let result = copy
+        let result = self
             .dropFirst()
-            .reduce(into: AnyPublisher(copy[0])) { result, publisher in
+            .reduce(into: AnyPublisher(self[0])) { result, publisher in
                 result = result
                     .zip(publisher) { _, _ in }
                     .eraseToAnyPublisher()
@@ -52,10 +51,9 @@ extension Array where Element: Publisher {
                 .setFailureType(to: Element.Failure.self)
                 .eraseToAnyPublisher()
         }
-        var copy = self
-        let result = copy
+        let result = self
             .dropFirst()
-            .reduce(into: AnyPublisher(copy[0].map { [$0] })) { result, publisher in
+            .reduce(into: AnyPublisher(self[0].map { [$0] })) { result, publisher in
                 result = result
                     .zip(publisher) { $0 + [$1] }
                     .eraseToAnyPublisher()
