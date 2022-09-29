@@ -54,15 +54,13 @@ class AnonymousProfileManager: AnonymousProfileManagerType {
         let useFacebook = false
         return contactsService
             .getContacts(fromFacebook: useFacebook, friendLevel: .first, pageLimit: Constants.pageMaxLimit)
-            .map { $0.map(\.publicKey) }
-            .flatMap { [contactsService] firstDegreePKs in
+            .flatMap { [contactsService] firstDegreeContactKeys in
                 contactsService
                     .getContacts(fromFacebook: useFacebook, friendLevel: .second, pageLimit: Constants.pageMaxLimit)
-                    .map { $0.map(\.publicKey) }
-                    .map { secondDegreePKs -> ContactPKsEnvelope in
+                    .map { secondContactKeys -> ContactPKsEnvelope in
                         ContactPKsEnvelope(
-                            firstDegree: firstDegreePKs,
-                            secondDegree: secondDegreePKs
+                            firstDegree: firstDegreeContactKeys.map(\.publicKey),
+                            secondDegree: secondContactKeys.map(\.publicKey)
                         )
                     }
             }
