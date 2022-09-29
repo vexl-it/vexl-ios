@@ -15,7 +15,7 @@ protocol AnonymousProfileRepositoryType {
     func getProfiles(publicKeys: [String], type: AnonymousProfileType, context: NSManagedObjectContext?) -> [ManagedAnonymousProfile]
 }
 
-class AnonymousProfileRepository: AnonymousProfileRepositoryType {
+final class AnonymousProfileRepository: AnonymousProfileRepositoryType {
     @Inject var persistence: PersistenceStoreManagerType
 
     func saveNewContacts(envelope: ContactPKsEnvelope) -> AnyPublisher<Void, Error> {

@@ -14,7 +14,7 @@ protocol ReencryptionManagerType {
     func synchronizeGroups()
 }
 
-class ReencryptionManager: ReencryptionManagerType {
+final class ReencryptionManager: ReencryptionManagerType {
     @Inject var anonymousProfileManager: AnonymousProfileManagerType
     @Inject var offerManager: OfferManagerType
     @Inject var groupManager: GroupManagerType

@@ -43,7 +43,7 @@ struct GroupPKsEnvelope {
     var publicKeys: [String]
 }
 
-class AnonymousProfileManager: AnonymousProfileManagerType {
+final class AnonymousProfileManager: AnonymousProfileManagerType {
     @Inject var anonymousProfileRepository: AnonymousProfileRepositoryType
     @Inject var userRepository: UserRepositoryType
     @Inject var persistence: PersistenceStoreManagerType
