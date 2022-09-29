@@ -14,13 +14,13 @@ protocol OfferManagerType {
     var didFinishSyncing: AnyPublisher<Void, Never> { get }
 
     func sync()
-    func syncUserOffers(withPublicKeys: [String], friendLevel: OfferFriendDegree, completionHandler: ((Error?) -> Void)?)
-    func sync(offers: [ManagedOffer], withPublicKeys: [String]) -> AnyPublisher<Void, Error>
+    func reencryptUserOffers(withPublicKeys publicKeys: [String], friendLevel: OfferFriendDegree, completionHandler: ((Error?) -> Void)?) -> AnyPublisher<Void, Error>
+    func reencrypt(offers: [ManagedOffer], withPublicKeys: [String]) -> AnyPublisher<Void, Error>
 }
 
 extension OfferManagerType {
-    func syncUserOffers(withPublicKeys: [String], friendLevel: OfferFriendDegree) {
-        syncUserOffers(withPublicKeys: withPublicKeys, friendLevel: friendLevel, completionHandler: nil)
+    func syncUserOffers(withPublicKeys: [String], friendLevel: OfferFriendDegree) -> AnyPublisher<Void, Error> {
+        reencryptUserOffers(withPublicKeys: withPublicKeys, friendLevel: friendLevel, completionHandler: nil)
     }
 }
 
@@ -70,7 +70,7 @@ final class OfferManager: OfferManagerType {
             })
     }
 
-    func syncUserOffers(withPublicKeys publicKeys: [String], friendLevel: OfferFriendDegree, completionHandler: ((Error?) -> Void)?) {
+    func reencryptUserOffers(withPublicKeys publicKeys: [String], friendLevel: OfferFriendDegree, completionHandler: ((Error?) -> Void)?) -> AnyPublisher<Void, Error> {
         let offers: [ManagedOffer] = {
             let allOfferSet = userRepository.user?.offers ?? NSSet()
             switch friendLevel {
@@ -83,7 +83,7 @@ final class OfferManager: OfferManagerType {
             }
         }()
 
-        sync(offers: offers, withPublicKeys: publicKeys)
+        return reencrypt(offers: offers, withPublicKeys: publicKeys)
             .handleEvents(
                 receiveOutput: {
                     completionHandler?(nil)
@@ -97,11 +97,10 @@ final class OfferManager: OfferManagerType {
                     }
                 }
             )
-            .sink()
-            .store(in: cancelBag)
+            .eraseToAnyPublisher()
     }
 
-    func sync(offers unsafeOffers: [ManagedOffer], withPublicKeys publicKeys: [String]) -> AnyPublisher<Void, Error> {
+    func reencrypt(offers unsafeOffers: [ManagedOffer], withPublicKeys publicKeys: [String]) -> AnyPublisher<Void, Error> {
         offerRepository.sync(offers: unsafeOffers, withPublicKeys: publicKeys)
     }
 }

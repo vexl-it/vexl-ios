@@ -20,6 +20,8 @@ protocol GroupRepositoryType {
 final class GroupRepository: GroupRepositoryType {
     @Inject var persistence: PersistenceStoreManagerType
     @Inject var userRepository: UserRepositoryType
+    @Inject var anonymousProfileManager: AnonymousProfileManagerType
+    @Inject var anonymousProfileRepository: AnonymousProfileRepositoryType
 
     func createOrUpdateGroup(payloads: [(GroupPayload, [String])]) -> AnyPublisher<Void, Error> {
         guard !payloads.isEmpty else {
@@ -28,9 +30,9 @@ final class GroupRepository: GroupRepositoryType {
                 .eraseToAnyPublisher()
         }
         let context = persistence.newEditContext()
-        return persistence.insert(context: context) { [persistence, userRepository] context -> [ManagedGroup] in
+        return persistence.insert(context: context) { [persistence, userRepository, anonymousProfileManager] context -> [ManagedGroup] in
             let user = userRepository.getUser(for: context)
-            return payloads.compactMap { payload, members in
+            return payloads.compactMap { payload, members -> ManagedGroup? in
                 if let uuid = payload.uuid {
                     let groups = persistence.loadSyncroniously(
                         type: ManagedGroup.self,
@@ -39,17 +41,14 @@ final class GroupRepository: GroupRepositoryType {
                     )
                     if let group = groups.first {
                         payload.decode(context: context, userRepository: userRepository, into: group)
+                        anonymousProfileManager.registerGroupMembers(publicKeys: members, group: group, context: context)
                         return nil
                     }
                 }
                 let group = ManagedGroup(context: context)
                 return payload.decode(context: context, userRepository: userRepository, into: group)
                     .flatMap { group -> ManagedGroup in
-                        members.forEach { pubKey in
-                            let profile = ManagedAnonymisedProfile(context: context)
-                            profile.publicKey = pubKey
-                            profile.group = group
-                        }
+                        anonymousProfileManager.registerGroupMembers(publicKeys: members, group: group, context: context)
                         group.user = user
                         return group
                     }
@@ -68,27 +67,29 @@ final class GroupRepository: GroupRepositoryType {
     }
 
     func update(group unsafeGroup: ManagedGroup, members: [String], returnOnlyNewMembers: Bool) -> AnyPublisher<[String], Error> {
-        persistence.update(context: persistence.viewContext) { [persistence] context in
+        persistence.update(context: persistence.viewContext) { [persistence, anonymousProfileRepository] context in
             guard let group = persistence.loadSyncroniously(type: ManagedGroup.self, context: context, objectID: unsafeGroup.objectID) else {
                 return []
             }
-            let currentMemberProfileSet = group.members as? Set<ManagedAnonymisedProfile> ?? .init()
+            let currentMemberProfileSet = group.members as? Set<ManagedAnonymousProfile> ?? .init()
             let currentMemberSet = currentMemberProfileSet.compactMap(\.publicKey)
 
             var newMemberSet = Set(members)
             newMemberSet.subtract(currentMemberSet)
 
             newMemberSet.forEach { publicKey in
-                let newMember = ManagedAnonymisedProfile(context: context)
+                let newMember = ManagedAnonymousProfile(context: context)
                 newMember.publicKey = publicKey
-                newMember.group = group
+                newMember.addToGroups(group)
+                let profileType = anonymousProfileRepository.getProfileType(context: context, type: .group)
+                newMember.addToTypes(profileType)
             }
 
             if returnOnlyNewMembers {
                 return Array(newMemberSet)
             }
 
-            let allMembers = group.members?.allObjects as? [ManagedAnonymisedProfile] ?? []
+            let allMembers = group.members?.allObjects as? [ManagedAnonymousProfile] ?? []
 
             return allMembers.compactMap(\.publicKey)
         }
