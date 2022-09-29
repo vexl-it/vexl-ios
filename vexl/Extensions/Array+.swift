@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Combine
 
 extension Array {
     func splitIntoChunks(by count: Int) -> [[Element]] {
@@ -22,5 +23,43 @@ extension Array {
             chunks.append(chunk)
         }
         return chunks
+    }
+}
+
+extension Array where Element: Publisher, Element.Output == Void {
+    func zip() -> AnyPublisher<Void, Element.Failure> {
+        guard !isEmpty else {
+            return Just(())
+                .setFailureType(to: Element.Failure.self)
+                .eraseToAnyPublisher()
+        }
+        var copy = self
+        let result = copy
+            .dropFirst()
+            .reduce(into: AnyPublisher(copy[0])) { result, publisher in
+                result = result
+                    .zip(publisher) { _, _ in }
+                    .eraseToAnyPublisher()
+            }
+        return result
+    }
+}
+
+extension Array where Element: Publisher {
+    func zip() -> AnyPublisher<[Element.Output], Element.Failure> {
+        guard !isEmpty else {
+            return Just([])
+                .setFailureType(to: Element.Failure.self)
+                .eraseToAnyPublisher()
+        }
+        var copy = self
+        let result = copy
+            .dropFirst()
+            .reduce(into: AnyPublisher(copy[0].map { [$0] })) { result, publisher in
+                result = result
+                    .zip(publisher) { $0 + [$1] }
+                    .eraseToAnyPublisher()
+            }
+        return result
     }
 }
