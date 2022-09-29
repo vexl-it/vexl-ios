@@ -22,7 +22,7 @@ struct GroupMemberPayload: Codable {
     let publicKeys: [String]
 
     init?(group: ManagedGroup) {
-        guard let uuid = group.uuid, let members = group.members?.allObjects as? [ManagedAnonymisedProfile] else {
+        guard let uuid = group.uuid, let members = group.members?.allObjects as? [ManagedAnonymousProfile] else {
             return nil
         }
         self.groupUuid = uuid

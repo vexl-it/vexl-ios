@@ -39,8 +39,8 @@ class ManagerAssembly: Assembly {
         }
         .inObjectScope(.container)
 
-        container.register(ContactsManagerType.self) { _ in
-            ContactsManager()
+        container.register(PhoneContactsManagerType.self) { _ in
+            PhoneContactsManager()
         }
         .inObjectScope(.container)
 
@@ -91,6 +91,16 @@ class ManagerAssembly: Assembly {
 
         container.register(RemoteConfigManagerType.self) { _ in
             RemoteConfigManager()
+        }
+        .inObjectScope(.container)
+
+        container.register(AnonymousProfileManagerType.self) { _ in
+            AnonymousProfileManager()
+        }
+        .inObjectScope(.container)
+
+        container.register(ReencryptionManagerType.self) { _ in
+            ReencryptionManager()
         }
         .inObjectScope(.container)
     }
