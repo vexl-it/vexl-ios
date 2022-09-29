@@ -16,10 +16,10 @@ protocol AnonymousProfileRepositoryType {
 }
 
 final class AnonymousProfileRepository: AnonymousProfileRepositoryType {
-    @Inject var persistence: PersistenceStoreManagerType
+    @Inject var persistenceManager: PersistenceStoreManagerType
 
     func saveNewContacts(envelope: ContactPKsEnvelope) -> AnyPublisher<Void, Error> {
-        persistence.insert(context: persistence.viewContext) { [weak self] context -> [ManagedAnonymousProfile] in
+        persistenceManager.insert(context: persistenceManager.viewContext) { [weak self] context -> [ManagedAnonymousProfile] in
             [AnonymousProfileType.firstDegree, .secondDegree]
                 .compactMap { [weak self] type -> (AnonymousProfileType, ManagedAnonymousProfileType)? in
                     guard let managedType = self?.getProfileType(context: context, type: type) else {
@@ -65,9 +65,9 @@ final class AnonymousProfileRepository: AnonymousProfileRepositoryType {
     }
 
     func getProfiles(publicKeys: [String], type: AnonymousProfileType, context: NSManagedObjectContext?) -> [ManagedAnonymousProfile] {
-        let context = context ?? persistence.viewContext
+        let context = context ?? persistenceManager.viewContext
         let nsArray = NSArray(array: publicKeys)
         let predicate = NSPredicate(format: "publicKey IN %@ AND ANY types.rawType == '\(type.rawValue)'", nsArray)
-        return persistence.loadSyncroniously(type: ManagedAnonymousProfile.self, context: context, predicate: predicate)
+        return persistenceManager.loadSyncroniously(type: ManagedAnonymousProfile.self, context: context, predicate: predicate)
     }
 }
