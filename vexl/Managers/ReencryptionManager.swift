@@ -15,9 +15,9 @@ protocol ReencryptionManagerType {
 }
 
 final class ReencryptionManager: ReencryptionManagerType {
-    @Inject var anonymousProfileManager: AnonymousProfileManagerType
-    @Inject var offerManager: OfferManagerType
-    @Inject var groupManager: GroupManagerType
+    @Inject private var anonymousProfileManager: AnonymousProfileManagerType
+    @Inject private var offerManager: OfferManagerType
+    @Inject private var groupManager: GroupManagerType
 
     private var cancelBag: CancelBag = .init()
 

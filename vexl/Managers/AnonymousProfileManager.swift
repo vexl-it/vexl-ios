@@ -44,11 +44,11 @@ struct GroupPKsEnvelope {
 }
 
 final class AnonymousProfileManager: AnonymousProfileManagerType {
-    @Inject var anonymousProfileRepository: AnonymousProfileRepositoryType
-    @Inject var userRepository: UserRepositoryType
-    @Inject var persistence: PersistenceStoreManagerType
-    @Inject var groupService: GroupServiceType
-    @Inject var contactsService: ContactsServiceType
+    @Inject private var anonymousProfileRepository: AnonymousProfileRepositoryType
+    @Inject private var userRepository: UserRepositoryType
+    @Inject private var persistence: PersistenceStoreManagerType
+    @Inject private var groupService: GroupServiceType
+    @Inject private var contactsService: ContactsServiceType
 
     func getNewContacts() -> AnyPublisher<ContactPKsEnvelope, Error> {
         let useFacebook = false

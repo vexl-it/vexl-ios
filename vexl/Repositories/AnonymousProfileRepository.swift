@@ -16,7 +16,7 @@ protocol AnonymousProfileRepositoryType {
 }
 
 final class AnonymousProfileRepository: AnonymousProfileRepositoryType {
-    @Inject var persistenceManager: PersistenceStoreManagerType
+    @Inject private var persistenceManager: PersistenceStoreManagerType
 
     func saveNewContacts(envelope: ContactPKsEnvelope) -> AnyPublisher<Void, Error> {
         persistenceManager.insert(context: persistenceManager.viewContext) { [weak self] context -> [ManagedAnonymousProfile] in
