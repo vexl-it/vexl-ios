@@ -213,6 +213,8 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
 
     private var initialLocations: [OfferLocation] = []
     private var managedOffer: ManagedOffer?
+    private let secondsToWaitForOfferLoader = RunLoop.SchedulerTimeType.Stride(3)
+
     private let cancelBag: CancelBag = .init()
 
     init(offer: ManagedOffer) {
@@ -272,6 +274,9 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
         errorIndicator
             .errors
             .asOptional()
+            .handleEvents(receiveOutput: { [weak self] _ in
+                self?.showEncryptionLoader = false
+            })
             .assign(to: &$error)
     }
 
@@ -487,6 +492,7 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
             }
 
         updateOfferId
+            .delay(for: secondsToWaitForOfferLoader, scheduler: RunLoop.main)
             .map { _ in .offerCreated }
             .subscribe(route)
             .store(in: cancelBag)
@@ -562,9 +568,6 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
             .collect(receiverChunks.count)
             .map { Array($0.joined()) }
             .withUnretained(self)
-            .handleEvents(receiveOutput: { owner, _ in
-                owner.showEncryptionLoader = false
-            })
             .map { (isCreating, $0.1, offer) }
             .eraseToAnyPublisher()
     }
