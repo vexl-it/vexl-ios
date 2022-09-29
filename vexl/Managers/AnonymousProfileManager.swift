@@ -10,7 +10,7 @@ import Combine
 import CoreData
 
 protocol AnonymousProfileManagerType {
-    func gethNewContacts() -> AnyPublisher<ContactPKsEnvelope, Error>
+    func getNewContacts() -> AnyPublisher<ContactPKsEnvelope, Error>
     func getNewGroupMembers() -> AnyPublisher<[GroupPKsEnvelope], Error>
     func registerNewProfiles(envelope: ContactPKsEnvelope) -> AnyPublisher<Void, Error>
     func registerGroupMembers(publicKeys: [String], group: ManagedGroup, context: NSManagedObjectContext?)
@@ -50,7 +50,7 @@ class AnonymousProfileManager: AnonymousProfileManagerType {
     @Inject var groupService: GroupServiceType
     @Inject var contactsService: ContactsServiceType
 
-    func gethNewContacts() -> AnyPublisher<ContactPKsEnvelope, Error> {
+    func getNewContacts() -> AnyPublisher<ContactPKsEnvelope, Error> {
         let useFacebook = false
         return contactsService
             .getContacts(fromFacebook: useFacebook, friendLevel: .first, pageLimit: Constants.pageMaxLimit)
