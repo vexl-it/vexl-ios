@@ -57,6 +57,7 @@ struct OfferAdvanceFilterGroupView: View {
                     if let group = group {
                         if let logo = group.logo, let dataImage = UIImage(data: logo) {
                             Image(uiImage: dataImage)
+                                .resizable()
                                 .frame(maxWidth: cellSize, maxHeight: cellSize)
                                 .aspectRatio(1, contentMode: .fill)
                                 .fixedSize(horizontal: false, vertical: true)

@@ -12,6 +12,7 @@ typealias UserContacts = (phone: [ContactKey], facebook: [ContactKey])
 
 protocol ContactsServiceType {
     func createUser(forFacebook isFacebook: Bool, firebaseToken: String?) -> AnyPublisher<Void, Error>
+    func updateUser(token: String) -> AnyPublisher<Void, Error>
     func importContacts(_ contacts: [String]) -> AnyPublisher<ContactsImported, Error>
     func removeContacts(_ contacts: [String], fromFacebook: Bool) -> AnyPublisher<Void, Error>
     func getActivePhoneContacts(_ contacts: [String]) -> AnyPublisher<ContactsAvailable, Error>
@@ -31,6 +32,11 @@ final class ContactsService: BaseService, ContactsServiceType {
 
     func createUser(forFacebook isFacebook: Bool, firebaseToken: String?) -> AnyPublisher<Void, Error> {
         request(endpoint: ContactsRouter.createUser(token: firebaseToken, useFacebookHeader: isFacebook))
+            .eraseToAnyPublisher()
+    }
+
+    func updateUser(token: String) -> AnyPublisher<Void, Error> {
+        request(endpoint: ContactsRouter.updateUser(token: token))
             .eraseToAnyPublisher()
     }
 

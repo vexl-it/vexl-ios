@@ -77,9 +77,9 @@ enum OfferFriendDegree: String, CaseIterable {
     var imageName: String {
         switch self {
         case .firstDegree:
-            return R.image.offer.firstDegree.name
+            return R.image.offer.friendLevelOne.name
         case .secondDegree:
-            return R.image.offer.secondDegree.name
+            return R.image.offer.friendLevelTwo.name
         }
     }
 

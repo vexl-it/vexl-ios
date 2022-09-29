@@ -11,9 +11,10 @@ import Combine
 
 final class TabBarViewModel: ViewModelType {
 
-    @Inject var cryptocurrencyManager: CryptocurrencyValueManagerType
-    @Inject var syncInboxManager: SyncInboxManagerType
-    @Inject var deeplinkManager: DeeplinkManagerType
+    @Inject private var cryptocurrencyManager: CryptocurrencyValueManagerType
+    @Inject private var syncInboxManager: SyncInboxManagerType
+    @Inject private var deeplinkManager: DeeplinkManagerType
+    let notificationViewModel = NotificationViewModel()
 
     // MARK: - Actions Bindings
 
@@ -48,6 +49,10 @@ final class TabBarViewModel: ViewModelType {
             goToInboxTab.send()
             deeplinkManager.cleanState()
         }
+    }
+
+    func checkIfNotificationsAreEnabled() {
+        notificationViewModel.checkIfNotificationsAreEnabled()
     }
 
     private func setupBindings() {
