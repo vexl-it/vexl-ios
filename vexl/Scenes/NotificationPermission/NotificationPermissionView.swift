@@ -10,6 +10,7 @@ import SwiftUI
 
 struct NotificationPermissionView: View {
     @ObservedObject var viewModel: NotificationPermissionViewModel
+    @State private var screenSize: CGSize = .zero
 
     var body: some View {
         VStack {
@@ -26,6 +27,7 @@ struct NotificationPermissionView: View {
             })
             .padding(.horizontal, Appearance.GridGuide.point)
         }
+        .readSize(onChange: { screenSize = $0 })
         .background(Color.black.ignoresSafeArea())
         .navigationBarHidden(true)
     }
@@ -41,22 +43,26 @@ struct NotificationPermissionView: View {
             Spacer()
 
             Image(R.image.faq7.name)
+                .resizable()
+                .scaledToFit()
+                .frame(height: screenSize.height * 0.3)
 
             Spacer()
 
             Text(viewModel.title)
+                .fixedSize(horizontal: false, vertical: true)
                 .multilineTextAlignment(.center)
                 .textStyle(.h3)
                 .foregroundColor(Appearance.Colors.primaryText)
                 .padding(.horizontal, Appearance.GridGuide.point)
 
             Text(viewModel.subtitle)
+                .fixedSize(horizontal: false, vertical: true)
                 .textStyle(.paragraphSmallMedium)
                 .foregroundColor(Appearance.Colors.gray2)
                 .multilineTextAlignment(.center)
                 .padding([.horizontal, .bottom], Appearance.GridGuide.padding)
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
         .background(Appearance.Colors.whiteText)
         .cornerRadius(Appearance.GridGuide.buttonCorner)
     }
