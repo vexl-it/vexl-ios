@@ -1,5 +1,5 @@
 //
-//  ContactsManager.swift
+//  PhoneContactsManager.swift
 //  vexl
 //
 //  Created by Diego Espinoza on 27/03/22.
@@ -11,7 +11,7 @@ import Contacts
 import FBSDKCoreKit
 import FBSDKLoginKit
 
-protocol ContactsManagerType {
+protocol PhoneContactsManagerType {
     var availableFacebookContacts: [ContactInformation] { get }
 
     func fetchPhoneContacts() -> AnyPublisher<[ContactInformation], Never>
@@ -21,7 +21,7 @@ protocol ContactsManagerType {
     func getActiveFacebookContacts(_ contacts: [String], withId id: String, token: String) -> AnyPublisher<[ContactInformation], Error>
 }
 
-final class ContactsManager: ContactsManagerType {
+final class PhoneContactsManager: PhoneContactsManagerType {
 
     @Inject var contactsService: ContactsServiceType
     @Inject var cryptoService: CryptoServiceType

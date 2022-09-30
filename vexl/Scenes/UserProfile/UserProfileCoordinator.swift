@@ -9,8 +9,6 @@ import Foundation
 import Cleevio
 import Combine
 
-private typealias ActionSheetResult = CoordinatingResult<RouterResult<BottomActionSheetActionType>>
-
 final class UserProfileCoordinator: BaseCoordinator<Void> {
 
     private let router: Router

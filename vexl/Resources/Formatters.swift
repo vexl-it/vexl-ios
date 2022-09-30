@@ -92,4 +92,10 @@ struct Formatters {
         formatter.numberStyle = .decimal
         return formatter
     }()
+
+    static let percentageFormatter: NumberFormatter = {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .percent
+        return formatter
+    }()
 }

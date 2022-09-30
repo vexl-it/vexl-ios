@@ -19,6 +19,7 @@ protocol UserRepositoryType {
     func getUser(for context: NSManagedObjectContext) -> ManagedUser?
     func update(with userResponse: User, avatar: Data?, anonymizedUsername: String) -> AnyPublisher<ManagedUser, Error>
     func update(username: String, avatarURL: String?, avatar: Data?) -> AnyPublisher<Void, Error>
+    func getInboxes() -> [ManagedInbox]
 }
 
 final class UserRepository: UserRepositoryType {
@@ -104,5 +105,12 @@ final class UserRepository: UserRepositoryType {
             }
         }
         .eraseToAnyPublisher()
+    }
+
+    func getInboxes() -> [ManagedInbox] {
+        let offers = user?.offers?.allObjects as? [ManagedOffer] ?? []
+        let offerInboxes = offers.compactMap(\.inbox)
+        let userInbox = user?.profile?.keyPair?.inbox
+        return offerInboxes + [userInbox].compactMap { $0 }
     }
 }

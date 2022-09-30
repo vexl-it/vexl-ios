@@ -34,11 +34,14 @@ enum NotificationKey: String {
 }
 
 protocol NotificationManagerType {
+    var currentStatus: UNAuthorizationStatus { get }
+    var statusPublisher: AnyPublisher<UNAuthorizationStatus, Never> { get }
     var notificationToken: AnyPublisher<String, Never> { get }
     var isRegisteredForNotifications: AnyPublisher<Bool, Never> { get }
     func handleNotification(of type: NotificationType?, with userInfo: [AnyHashable: Any], completionHandler: ((Error?) -> Void)?)
 
     func requestToken()
+    func refreshStatus()
 }
 
 final class NotificationManager: NSObject, NotificationManagerType {
@@ -52,6 +55,16 @@ final class NotificationManager: NSObject, NotificationManagerType {
     private var authorisationStatus: CurrentValueSubject<UNAuthorizationStatus?, Never> = .init(nil)
     // swiftlint:disable discouraged_optional_boolean
     private var notificationHandled: Bool?
+
+    var currentStatus: UNAuthorizationStatus {
+        authorisationStatus.value ?? .notDetermined
+    }
+
+    var statusPublisher: AnyPublisher<UNAuthorizationStatus, Never> {
+        authorisationStatus
+            .filterNil()
+            .eraseToAnyPublisher()
+    }
 
     var isRegisteredForNotifications: AnyPublisher<Bool, Never> {
         authorisationStatus
@@ -73,41 +86,33 @@ final class NotificationManager: NSObject, NotificationManagerType {
 
     override init() {
         super.init()
-        if UIApplication.shared.isRegisteredForRemoteNotifications {
-            update()
-        }
         Messaging.messaging().delegate = self
         UNUserNotificationCenter.current().delegate = self
+        refreshStatus()
     }
 
     func requestToken() {
         let center = UNUserNotificationCenter.current()
-        center.requestAuthorization(options: [.alert, .sound, .badge]) { [weak self] granted, _ in
-            guard granted else { return }
+        center.requestAuthorization(options: [.alert, .sound, .badge]) { [weak self] _, _ in
             DispatchQueue.main.async { [weak self] in
-                self?.update()
+                self?.refreshStatus()
             }
         }
         UIApplication.shared.registerForRemoteNotifications()
     }
 
-    private func update() {
+    func refreshStatus() {
         UIApplication.shared.registerForRemoteNotifications()
+
         Messaging.messaging().token { [weak self] token, _ in
             if let token = token {
                 self?.fcmTokenValue.send(token)
             }
         }
-        Future { promise in
-            UNUserNotificationCenter.current().getNotificationSettings { settings in
-                promise(.success(settings.authorizationStatus))
-            }
+
+        UNUserNotificationCenter.current().getNotificationSettings { [weak self] settings in
+            self?.authorisationStatus.send(settings.authorizationStatus)
         }
-        .withUnretained(self)
-        .sink { owner, status in
-            owner.authorisationStatus.send(status)
-        }
-        .store(in: cancelBag)
     }
 }
 
@@ -166,13 +171,13 @@ extension NotificationManager: UNUserNotificationCenterDelegate {
             }
         case .groupNewMember:
             if let groupUUID = userInfo[NotificationKey.groupUUID.rawValue] as? String {
-                groupManager.updateOffersForNewMembers(groupUUID: groupUUID, completionHandler: completionHandler)
+                groupManager.reencryptOffersForNewMembers(groupUUID: groupUUID, completionHandler: completionHandler)
             }
         case .newAppUser:
             if let publicKey = userInfo[NotificationKey.publicKey.rawValue] as? String,
                let friendDegreeRawValue = userInfo[NotificationKey.connectionLevel.rawValue] as? String,
                let friendDegree = OfferFriendDegree(rawValue: friendDegreeRawValue) {
-                offerManager.syncUserOffers(withPublicKeys: [publicKey], friendLevel: friendDegree, completionHandler: completionHandler)
+                offerManager.reencryptUserOffers(withPublicKeys: [publicKey], friendLevel: friendDegree, completionHandler: completionHandler)
             }
         case .none:
             break

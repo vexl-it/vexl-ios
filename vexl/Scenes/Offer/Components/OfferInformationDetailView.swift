@@ -15,6 +15,7 @@ typealias OfferDetailViewData = OfferInformationDetailView.ViewData
 struct OfferInformationDetailView: View {
     @ObservedObject var data: ViewData
     let useInnerPadding: Bool
+    var showArrowIndicator: Bool = false
     let showBackground: Bool
     @State private var lineSize: CGSize = .zero
 
@@ -77,6 +78,7 @@ struct OfferInformationDetailView: View {
                 }
             }
             .padding(.bottom, useInnerPadding ? Appearance.GridGuide.padding : 0)
+            .padding(.bottom, showArrowIndicator ? Appearance.GridGuide.point : 0)
         }
         .padding(.horizontal, useInnerPadding ? Appearance.GridGuide.padding : 0)
         .background(backgroundColor)

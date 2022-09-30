@@ -13,14 +13,14 @@ import Cleevio
 protocol GroupManagerType {
     func createGroup(name: String, logo: UIImage, expiration: Date, closureAt: Date) -> AnyPublisher<Void, Error>
     func getAllGroupMembers(group: ManagedGroup?) -> AnyPublisher<[String], Error>
-    func updateOffersForNewMembers(groupUUID: String, completionHandler: ((Error?) -> Void)?)
+    func reencryptOffersForNewMembers(groupUUID: String, completionHandler: ((Error?) -> Void)?)
     func leave(group: ManagedGroup) -> AnyPublisher<Void, Error>
     func joinGroup(code: Int) -> AnyPublisher<Void, Error>
 }
 
 extension GroupManagerType {
     func updateOffersForNewMembers(groupUUID: String) {
-        updateOffersForNewMembers(groupUUID: groupUUID, completionHandler: nil)
+        reencryptOffersForNewMembers(groupUUID: groupUUID, completionHandler: nil)
     }
 }
 
@@ -62,7 +62,7 @@ final class GroupManager: GroupManagerType {
             .eraseToAnyPublisher()
     }
 
-    func updateOffersForNewMembers(groupUUID: String, completionHandler: ((Error?) -> Void)?) {
+    func reencryptOffersForNewMembers(groupUUID: String, completionHandler: ((Error?) -> Void)?) {
         guard let group = groupRepository.fetchGroup(uuid: groupUUID),
               let groupOfferSet = group.offers as? Set<ManagedOffer> else {
             completionHandler?(nil)
@@ -89,7 +89,7 @@ final class GroupManager: GroupManagerType {
                         .eraseToAnyPublisher()
                 }
                 return offerManager
-                    .sync(offers: Array(userGroupOffers), withPublicKeys: newMemeberPublicKeys)
+                    .reencrypt(offers: Array(userGroupOffers), withPublicKeys: newMemeberPublicKeys)
             }
             .handleEvents(
                 receiveOutput: {
@@ -123,7 +123,7 @@ final class GroupManager: GroupManagerType {
             .map { (contacts: UserContacts) -> [String] in
                 let allContacts: [ContactKey] = contacts.phone + contacts.facebook
                 let myContactSet: Set<String> = Set(allContacts.map(\.publicKey))
-                let groupMembers: [ManagedAnonymisedProfile] = group.members?.allObjects as? [ManagedAnonymisedProfile] ?? []
+                let groupMembers: [ManagedAnonymousProfile] = group.members?.allObjects as? [ManagedAnonymousProfile] ?? []
                 var memberSet: Set<String> = Set(groupMembers.compactMap(\.publicKey))
                 memberSet.subtract(myContactSet)
                 let members: [String] = Array(memberSet)

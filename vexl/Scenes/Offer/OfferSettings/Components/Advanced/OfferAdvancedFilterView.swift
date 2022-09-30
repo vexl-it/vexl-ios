@@ -9,6 +9,7 @@ import SwiftUI
 
 struct OfferAdvancedFilterView: View {
 
+    var avatar: Data?
     @Binding var selectedTypeOptions: [OfferAdvancedBTCOption]
     @Binding var selectedFriendDegreeOption: OfferFriendDegree
 
@@ -43,7 +44,8 @@ struct OfferAdvancedFilterView: View {
                     .padding(.top, Appearance.GridGuide.padding)
 
                 if showContactsAndGroups {
-                    OfferAdvanceFilterFriendDegreeView(selectedOption: $selectedFriendDegreeOption)
+                    OfferAdvanceFilterFriendDegreeView(avatar: avatar,
+                                                       selectedOption: $selectedFriendDegreeOption)
                         .padding(.top, Appearance.GridGuide.mediumPadding1)
 
                     if !groupRows.isEmpty {
@@ -61,6 +63,7 @@ struct OfferAdvancedFilterView: View {
 struct OfferAdvancedFilterViewPreview: PreviewProvider {
     static var previews: some View {
         OfferAdvancedFilterView(
+                avatar: nil,
                 selectedTypeOptions: .constant([]),
                 selectedFriendDegreeOption: .constant(.firstDegree),
                 groupRows: .constant([]),
@@ -71,6 +74,7 @@ struct OfferAdvancedFilterViewPreview: PreviewProvider {
             .background(Color.black)
 
         OfferAdvancedFilterView(
+                avatar: nil,
                 selectedTypeOptions: .constant([]),
                 selectedFriendDegreeOption: .constant(.firstDegree),
                 groupRows: .constant([]),
