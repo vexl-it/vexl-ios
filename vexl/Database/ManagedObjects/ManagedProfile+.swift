@@ -17,7 +17,7 @@ extension ManagedProfile {
         set { avatarData = newValue }
     }
 
-    func getAvatar() -> AnyPublisher<Data?, Never> {
+    func fetchAvatar() -> AnyPublisher<Data?, Never> {
         let placeholder = UIImage(named: R.image.profile.avatar.name)?.pngData()
 
         return Future { [weak self] promise in
