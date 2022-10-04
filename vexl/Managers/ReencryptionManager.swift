@@ -21,8 +21,14 @@ final class ReencryptionManager: ReencryptionManagerType {
 
     private var cancelBag: CancelBag = .init()
 
+    private var queue: DispatchQueue = .init(label: "ReencryptionManager")
+
     func synchronizeContacts() {
-        anonymousProfileManager.getNewContacts()
+        Just(())
+            .receive(on: queue)
+            .flatMap { [anonymousProfileManager] in
+                anonymousProfileManager.getNewContacts()
+            }
             .flatMap { [offerManager] envelope in
                 offerManager.reencryptUserOffers(withPublicKeys: envelope.firstDegree, friendLevel: .firstDegree)
                     .map { envelope }
@@ -39,8 +45,11 @@ final class ReencryptionManager: ReencryptionManagerType {
     }
 
     func synchronizeGroups() {
-        let envelopes = anonymousProfileManager
-            .getNewGroupMembers()
+        let envelopes = Just(())
+            .receive(on: queue)
+            .flatMap { [anonymousProfileManager] in
+                anonymousProfileManager.getNewGroupMembers()
+            }
             .flatMap { [offerManager] envelopes -> AnyPublisher<[GroupPKsEnvelope], Error> in
                 envelopes
                     .map { envelope -> AnyPublisher<Void, Error> in
