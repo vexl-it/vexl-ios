@@ -431,7 +431,12 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
         let offerData = Publishers.Zip(create, update)
             .compactMap { $0 ?? $1 }
 
-        let encryption = offerData
+        let disableIdleTimer = offerData
+            .handleEvents(receiveOutput: { _ in
+                UIApplication.shared.isIdleTimerDisabled = true
+            })
+
+        let encryption = disableIdleTimer
             .withUnretained(self)
             .flatMap { owner, zip in
                 let (isCreating, offer, receiverPublicKeys) = zip
@@ -491,7 +496,12 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
                     .eraseToAnyPublisher()
             }
 
-        updateOfferId
+        let enableIdleTimer = updateOfferId
+            .handleEvents(receiveOutput: { _ in
+                UIApplication.shared.isIdleTimerDisabled = false
+            })
+
+        enableIdleTimer
             .delay(for: secondsToWaitForOfferLoader, scheduler: RunLoop.main)
             .map { _ in .offerCreated }
             .subscribe(route)
