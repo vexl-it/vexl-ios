@@ -64,7 +64,7 @@ struct MessagePayload: Codable {
             ]
 
             if let imageData = user.imageData {
-                jsonUser["GET_THE_IMAGE_DATA_KEY"] = imageData
+                jsonUser["imageBase64"] = imageData
             }
 
             json["deanonymizedUser"] = jsonUser
@@ -102,7 +102,7 @@ extension MessagePayload {
         let jsonUser = json["deanonymizedUser"] as? [String: Any]
         let userName = jsonUser?["name"] as? String
         let userImage = jsonUser?["image"] as? String
-        let userImageData = jsonUser?["GET_THE_IMAGE_DATA_KEY"] as? String
+        let userImageData = jsonUser?["imageBase64"] as? String
 
         self.contactInboxKey = chatMessage.senderPublicKey
         self.inboxKey = inboxPublicKey
