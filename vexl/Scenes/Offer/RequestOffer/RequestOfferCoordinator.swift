@@ -29,21 +29,78 @@ final class RequestOfferCoordinator: BaseCoordinator<RouterResult<Void>> {
             .$error
             .assign(to: &viewController.$error)
 
-        let dismiss = viewModel
-            .route
+        let flagPopUps = viewModel.route
+            .filter { $0 == .flagTapped }
+            .withUnretained(self)
+            .flatMap { owner, _ in
+                owner.presentActionSheet(
+                    router: ModalRouter(
+                        parentViewController: viewController,
+                        presentationStyle: .overFullScreen,
+                        transitionStyle: .crossDissolve
+                    ),
+                    viewModel: OfferFlagBottomActionSheetViewModel()
+                )
+            }
+            .filter { result in
+                guard case let .finished(action) = result, action == .primary else {
+                    return false
+                }
+                return true
+            }
+            .withUnretained(self)
+            .flatMap { [viewController] owner, _ in
+                owner.presentActionSheet(
+                    router: ModalRouter(
+                        parentViewController: viewController,
+                        presentationStyle: .overFullScreen,
+                        transitionStyle: .crossDissolve
+                    ),
+                    viewModel: OfferFlagConfirmationActionSheetViewModel()
+                )
+            }
+
+        let offerFlagged = flagPopUps
+            .withUnretained(viewModel)
+            .flatMap { viewModel, _ in
+                viewModel
+                    .flagOffer()
+                    .nilOnError()
+                    .filterNil()
+            }
+            .map { () -> RouterResult<Void> in .dismiss }
+
+        let dismiss = viewModel.route
             .filter { $0 == .dismissTapped }
             .map { _ -> RouterResult<Void> in .dismiss }
 
-        let requestSent = viewModel
-            .route
+        let requestSent = viewModel.route
             .filter { $0 == .requestSent }
             .map { _ -> RouterResult<Void> in .finished(()) }
 
         let dismissByRouter = dismissObservable(with: viewController, dismissHandler: router)
             .dismissedByRouter(type: Void.self)
 
-        return Publishers.Merge3(requestSent, dismiss, dismissByRouter)
+        return Publishers.Merge4(requestSent, dismiss, dismissByRouter, offerFlagged)
+            .prefix(1)
             .receive(on: RunLoop.main)
+            .eraseToAnyPublisher()
+    }
+}
+
+extension RequestOfferCoordinator {
+    private func presentActionSheet<ViewModel: BottomActionSheetViewModelProtocol>(
+        router: Router,
+        viewModel: ViewModel
+    ) -> ActionSheetResult {
+        coordinate(to: BottomActionSheetCoordinator(router: router, viewModel: viewModel))
+            .flatMap { result -> CoordinatingResult<RouterResult<BottomActionSheetActionType>> in
+                guard result != .dismissedByRouter else {
+                    return Just(result).eraseToAnyPublisher()
+                }
+                return router.dismiss(animated: true, returning: result)
+            }
+            .prefix(1)
             .eraseToAnyPublisher()
     }
 }
