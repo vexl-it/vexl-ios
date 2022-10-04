@@ -47,9 +47,9 @@ final class AnonymousProfileManager: AnonymousProfileManagerType {
             .withUnretained(self)
             .map { owner, envelope -> ContactPKsEnvelope in
                 let firstDegreeProfiles = owner.anonymousProfileRepository
-                    .getProfiles(publicKeys: envelope.firstDegree, type: .firstDegree, context: nil)
+                    .getProfiles(publicKeys: envelope.firstDegree, type: .firstDegree, context: owner.persistence.newEditContext())
                 let scndDegreeProfiles = owner.anonymousProfileRepository
-                    .getProfiles(publicKeys: envelope.secondDegree, type: .secondDegree, context: nil)
+                    .getProfiles(publicKeys: envelope.secondDegree, type: .secondDegree, context: owner.persistence.newEditContext())
                 return ContactPKsEnvelope(
                     firstDegree: owner.getNewPublicKeys(from: envelope.secondDegree, subtracting: firstDegreeProfiles),
                     secondDegree: owner.getNewPublicKeys(from: envelope.firstDegree, subtracting: scndDegreeProfiles)
@@ -87,8 +87,11 @@ final class AnonymousProfileManager: AnonymousProfileManagerType {
             .saveNewContacts(envelope: envelope)
     }
 
-    func registerGroupMembers(publicKeys: [String], group: ManagedGroup, context: NSManagedObjectContext?) {
-        let context = context ?? persistence.viewContext
+    func registerGroupMembers(publicKeys: [String], group unsafeGroup: ManagedGroup, context: NSManagedObjectContext?) {
+        let context = context ?? persistence.newEditContext()
+        guard let group = context.object(with: unsafeGroup.objectID) as? ManagedGroup else {
+            return
+        }
         let currentProfiles = anonymousProfileRepository.getProfiles(publicKeys: publicKeys, type: .group, context: context)
         let newProfileSet = getNewPublicKeys(from: publicKeys, subtracting: currentProfiles)
             .map { publicKey -> ManagedAnonymousProfile in
