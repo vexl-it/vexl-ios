@@ -52,14 +52,13 @@ final class TabBarController: UITabBarController {
         arrangeSubviews()
         layout()
         setupBindings()
+        viewModel.action.send(.didLoad)
         view.backgroundColor = .black
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        viewModel.checkSelectedTab()
         viewModel.action.send(.didAppear)
-        viewModel.checkIfNotificationsAreEnabled()
     }
 
     override func setViewControllers(_ viewControllers: [UIViewController]?, animated: Bool) {
@@ -82,10 +81,8 @@ final class TabBarController: UITabBarController {
 
     private func layout() {
         NSLayoutConstraint.activate([
-            tabBarView.leadingAnchor.constraint(equalTo: view.leadingAnchor,
-                                                constant: Appearance.GridGuide.mediumPadding1),
-            tabBarView.trailingAnchor.constraint(equalTo: view.trailingAnchor,
-                                                 constant: -Appearance.GridGuide.mediumPadding1),
+            tabBarView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Appearance.GridGuide.mediumPadding1),
+            tabBarView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Appearance.GridGuide.mediumPadding1),
             tabBarView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             tabBarView.heightAnchor.constraint(equalToConstant: Appearance.GridGuide.homeTabBarHeight)
         ])

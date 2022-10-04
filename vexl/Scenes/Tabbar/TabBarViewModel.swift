@@ -20,6 +20,7 @@ final class TabBarViewModel: ViewModelType {
 
     enum UserAction: Equatable {
         case didAppear
+        case didLoad
     }
 
     let action: ActionSubject<UserAction> = .init()
@@ -65,11 +66,20 @@ final class TabBarViewModel: ViewModelType {
 
     private func setupActions() {
         action
-            .filter { $0 == .didAppear}
+            .filter { $0 == .didLoad}
             .asVoid()
             .sink { [reencryptionManager] in
                 reencryptionManager.synchronizeContacts()
                 reencryptionManager.synchronizeGroups()
+            }
+            .store(in: cancelBag)
+
+        action
+            .filter { $0 == .didAppear}
+            .withUnretained(self)
+            .sink { owner, _ in
+                owner.checkSelectedTab()
+                owner.checkIfNotificationsAreEnabled()
             }
             .store(in: cancelBag)
     }
