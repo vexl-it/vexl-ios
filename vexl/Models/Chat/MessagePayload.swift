@@ -58,10 +58,15 @@ struct MessagePayload: Codable {
         }
 
         if let user = user {
-            let jsonUser = [
+            var jsonUser = [
                 "name": user.name,
-                "image": user.image
+                "image": user.imageURL
             ]
+
+            if let imageData = user.imageData {
+                jsonUser["GET_THE_IMAGE_DATA_KEY"] = imageData
+            }
+
             json["deanonymizedUser"] = jsonUser
         }
 
@@ -106,7 +111,7 @@ extension MessagePayload {
         self.image = image
         self.messageTypeValue = chatMessage.messageType
         self.time = TimeInterval(time) / 1_000
-        self.user = ChatUser(name: userName, image: userImage, imageData: userImageData)
+        self.user = ChatUser(name: userName, imageURL: userImage, imageData: userImageData)
     }
 
     /// Use this initializer to manually create a message,
@@ -174,7 +179,7 @@ extension MessagePayload {
                                       username: String?,
                                       avatar: String?,
                                       avatarData: String?) -> MessagePayload? {
-        let chatUser = ChatUser(name: username, image: avatar, imageData: avatarData)
+        let chatUser = ChatUser(name: username, imageURL: avatar, imageData: avatarData)
         let parsedMessage = MessagePayload(
             inboxPublicKey: inboxPublicKey,
             messageType: .revealRequest,
@@ -192,7 +197,7 @@ extension MessagePayload {
                                        username: String?,
                                        avatar: String?,
                                        avatarData: String?) -> MessagePayload? {
-        let chatUser = ChatUser(name: username, image: avatar, imageData: avatarData)
+        let chatUser = ChatUser(name: username, imageURL: avatar, imageData: avatarData)
         let parsedMessage = MessagePayload(
             inboxPublicKey: inboxPublicKey,
             messageType: isAccepted ? .revealApproval : .revealRejected,
@@ -232,13 +237,13 @@ extension MessagePayload {
 
     struct ChatUser: Codable {
         let name: String
-        let image: String?
+        let imageURL: String?
         let imageData: String?
 
-        init?(name: String?, image: String?, imageData: String?) {
+        init?(name: String?, imageURL: String?, imageData: String?) {
             guard let name = name else { return nil }
             self.name = name
-            self.image = image
+            self.imageURL = imageURL
             self.imageData = imageData
         }
     }

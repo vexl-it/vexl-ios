@@ -87,7 +87,7 @@ class InboxRepository: InboxRepositoryType {
             chat.showIdentityRequest = false
             chat.shouldDisplayRevealBanner = true
             if payload.isFromContact {
-                if let imageURL = payload.user?.image, let avatarURL = URL(string: imageURL), let avatar = try? Data(contentsOf: avatarURL) {
+                if let imageURL = payload.user?.imageURL, let avatarURL = URL(string: imageURL), let avatar = try? Data(contentsOf: avatarURL) {
                     chat.receiverKeyPair?.profile?.realAvatarBeforeReveal = avatar
                     chat.receiverKeyPair?.profile?.realAvatarURLBeforeReveal = imageURL
                 } else if let imageData = payload.user?.imageData, let imageString = imageData.dataFromBase64 {
@@ -108,7 +108,7 @@ class InboxRepository: InboxRepositoryType {
                 if let name = payload.user?.name {
                     chat.receiverKeyPair?.profile?.name = name
                 }
-                if let imageURL = payload.user?.image, let avatarURL = URL(string: imageURL), let avatar = try? Data(contentsOf: avatarURL) {
+                if let imageURL = payload.user?.imageURL, let avatarURL = URL(string: imageURL), let avatar = try? Data(contentsOf: avatarURL) {
                     chat.receiverKeyPair?.profile?.avatar = avatar
                     chat.receiverKeyPair?.profile?.avatarURL = imageURL
                 } else if let imageData = payload.user?.imageData, let imageString = imageData.dataFromBase64 {
