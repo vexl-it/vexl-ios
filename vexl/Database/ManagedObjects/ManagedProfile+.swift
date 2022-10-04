@@ -17,27 +17,10 @@ extension ManagedProfile {
         set { avatarData = newValue }
     }
 
-    func fetchAvatar() -> AnyPublisher<Data?, Never> {
-        let placeholder = UIImage(named: R.image.profile.avatar.name)?.pngData()
-
-        return Future { [weak self] promise in
-            guard let owner = self else {
-                promise(.success(placeholder))
-                return
-            }
-
-            if let avatarData = owner.avatarData {
-                promise(.success(avatarData))
-            } else if let avatarURL = owner.avatarURL, let url = URL(string: avatarURL) {
-                Self.avatarQueue.async {
-                    let data = try? Data(contentsOf: url)
-                    promise(.success(data))
-                }
-            } else {
-                promise(.success(placeholder))
-            }
-        }
-        .eraseToAnyPublisher()
+    func setAvatar(withURL url: String?) {
+        avatarURL = url
+        guard let url = url, let dataURL = URL(string: url), let data = try? Data(contentsOf: dataURL) else { return }
+        avatar = data
     }
 
     func generateRandomName() {
