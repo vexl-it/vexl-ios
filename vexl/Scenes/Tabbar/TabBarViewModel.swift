@@ -10,15 +10,17 @@ import Cleevio
 import Combine
 
 final class TabBarViewModel: ViewModelType {
-
     @Inject private var cryptocurrencyManager: CryptocurrencyValueManagerType
     @Inject private var syncInboxManager: SyncInboxManagerType
     @Inject private var deeplinkManager: DeeplinkManagerType
+    @Inject private var reencryptionManager: ReencryptionManagerType
     let notificationViewModel = NotificationViewModel()
 
     // MARK: - Actions Bindings
 
     enum UserAction: Equatable {
+        case didAppear
+        case didLoad
     }
 
     let action: ActionSubject<UserAction> = .init()
@@ -42,6 +44,7 @@ final class TabBarViewModel: ViewModelType {
         cryptocurrencyManager.fetchChart(option: cryptocurrencyManager.currentTimeline.value)
         syncInboxManager.startSyncingInboxes()
         setupBindings()
+        setupActions()
     }
 
     func checkSelectedTab() {
@@ -58,6 +61,26 @@ final class TabBarViewModel: ViewModelType {
     private func setupBindings() {
         deeplinkManager.goToInboxTab
             .subscribe(goToInboxTab)
+            .store(in: cancelBag)
+    }
+
+    private func setupActions() {
+        action
+            .filter { $0 == .didLoad}
+            .asVoid()
+            .sink { [reencryptionManager] in
+                reencryptionManager.synchronizeContacts()
+                reencryptionManager.synchronizeGroups()
+            }
+            .store(in: cancelBag)
+
+        action
+            .filter { $0 == .didAppear}
+            .withUnretained(self)
+            .sink { owner, _ in
+                owner.checkSelectedTab()
+                owner.checkIfNotificationsAreEnabled()
+            }
             .store(in: cancelBag)
     }
 }

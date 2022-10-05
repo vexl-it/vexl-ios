@@ -38,5 +38,10 @@ final class RepositoryAssembly: Assembly {
             GroupRepository()
         }
         .inObjectScope(.container)
+
+        container.register(AnonymousProfileRepositoryType.self) { _ in
+            AnonymousProfileRepository()
+        }
+        .inObjectScope(.container)
     }
 }

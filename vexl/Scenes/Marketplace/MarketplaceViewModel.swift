@@ -35,7 +35,7 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
     // MARK: - View Bindings
 
     @Published var primaryActivity: Activity = .init()
-    @Published var selectedOption: OfferType = .buy
+    @Published var selectedOption: OfferType = .sell
     @Published var isRefreshing = false
     @Published var isGraphExpanded = false
     @Published var createdBuyOffers = false

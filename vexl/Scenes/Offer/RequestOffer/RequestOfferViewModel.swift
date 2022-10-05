@@ -14,6 +14,7 @@ final class RequestOfferViewModel: ViewModelType, ObservableObject {
     @Inject var authenticationManager: AuthenticationManagerType
     @Inject var persistence: PersistenceStoreManagerType
     @Inject var chatManager: ChatManagerType
+    @Inject var offerManager: OfferManagerType
 
     @Fetched(fetchImmediately: false)
     var fetchedCommonFriends: [ManagedContact]
@@ -28,6 +29,7 @@ final class RequestOfferViewModel: ViewModelType, ObservableObject {
     enum UserAction: Equatable {
         case dismissTap
         case sendRequest
+        case flagTap
     }
 
     let action: ActionSubject<UserAction> = .init()
@@ -53,6 +55,7 @@ final class RequestOfferViewModel: ViewModelType, ObservableObject {
     enum Route: Equatable {
         case dismissTapped
         case requestSent
+        case flagTapped
     }
 
     var route: CoordinatingSubject<Route> = .init()
@@ -107,6 +110,12 @@ final class RequestOfferViewModel: ViewModelType, ObservableObject {
             .store(in: cancelBag)
 
         userAction
+            .filter { $0 == .flagTap }
+            .map { _ in Route.flagTapped }
+            .subscribe(route)
+            .store(in: cancelBag)
+
+        userAction
             .filter { $0 == .sendRequest }
             .withUnretained(self)
             .compactMap { owner, _ -> MessagePayload? in
@@ -136,5 +145,12 @@ final class RequestOfferViewModel: ViewModelType, ObservableObject {
             .map { Route.requestSent }
             .subscribe(route)
             .store(in: cancelBag)
+    }
+
+    func flagOffer() -> AnyPublisher<Void, Never> {
+        offerManager
+            .flag(offer: offer)
+            .track(activity: primaryActivity)
+            .eraseToAnyPublisher()
     }
 }

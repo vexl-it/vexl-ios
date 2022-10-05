@@ -19,11 +19,11 @@ struct MarketplaceSegmentView: View {
         VStack(spacing: Appearance.GridGuide.mediumPadding1) {
             HStack {
                 Button {
-                    selectedOption = .buy
+                    selectedOption = .sell
                 } label: {
-                    Text(L.marketplaceBuy())
+                    Text(L.marketplaceSell())
                         .textStyle(.h1)
-                        .foregroundColor(selectedOption == .buy ? Appearance.Colors.whiteText : Appearance.Colors.gray1)
+                        .foregroundColor(selectedOption == .sell ? Appearance.Colors.whiteText : Appearance.Colors.gray1)
                         .minimumScaleFactor(0.1)
                         .lineLimit(1)
                         .padding(.horizontal, Appearance.GridGuide.padding)
@@ -31,11 +31,11 @@ struct MarketplaceSegmentView: View {
                 .frame(maxWidth: .infinity)
 
                 Button {
-                    selectedOption = .sell
+                    selectedOption = .buy
                 } label: {
-                    Text(L.marketplaceSell())
+                    Text(L.marketplaceBuy())
                         .textStyle(.h1)
-                        .foregroundColor(selectedOption == .sell ? Appearance.Colors.whiteText : Appearance.Colors.gray1)
+                        .foregroundColor(selectedOption == .buy ? Appearance.Colors.whiteText : Appearance.Colors.gray1)
                         .minimumScaleFactor(0.1)
                         .lineLimit(1)
                         .padding(.horizontal, Appearance.GridGuide.padding)
@@ -58,7 +58,7 @@ struct MarketplaceSegmentView: View {
 
             Appearance.Colors.yellow100
                 .frame(width: viewWidth * 0.48, height: selectorHeight, alignment: .leading)
-                .offset(x: selectedOption == .buy ? viewWidth * 0.02 : viewWidth * 0.5)
+                .offset(x: selectedOption == .sell ? viewWidth * 0.02 : viewWidth * 0.5)
                 .animation(.easeIn(duration: 0.15),
                            value: selectedOption)
         }

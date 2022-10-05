@@ -171,13 +171,13 @@ extension NotificationManager: UNUserNotificationCenterDelegate {
             }
         case .groupNewMember:
             if let groupUUID = userInfo[NotificationKey.groupUUID.rawValue] as? String {
-                groupManager.updateOffersForNewMembers(groupUUID: groupUUID, completionHandler: completionHandler)
+                groupManager.reencryptOffersForNewMembers(groupUUID: groupUUID, completionHandler: completionHandler)
             }
         case .newAppUser:
             if let publicKey = userInfo[NotificationKey.publicKey.rawValue] as? String,
                let friendDegreeRawValue = userInfo[NotificationKey.connectionLevel.rawValue] as? String,
                let friendDegree = OfferFriendDegree(rawValue: friendDegreeRawValue) {
-                offerManager.syncUserOffers(withPublicKeys: [publicKey], friendLevel: friendDegree, completionHandler: completionHandler)
+                offerManager.reencryptUserOffers(withPublicKeys: [publicKey], friendLevel: friendDegree, completionHandler: completionHandler)
             }
         case .none:
             break

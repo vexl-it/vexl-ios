@@ -413,3 +413,11 @@
 "force.update.button" = "Aktualizovat";
 "lock.maintenance.title" = "Marketplace maintenance";
 "lock.maintenance.subtitle" = "Vexl app is in maintenance. Come back later, please.";
+"report.offer.modal.title" = "Nahlásit nabídku?";
+"report.offer.modal.subtitle" = "Skutečně chcete nahlásit tuhle nabídku? ";
+"report.offer.modal.button.yes" = "Ano, nahlásit";
+"report.offer.modal.button.no" = "Ne";
+"report.offer.confirmation.modal.title" = "Díky!";
+"report.offer.confirmation.modal.subtitle" = "Nevhodný obsah byl anonymně nahlášen.";
+"report.offer.confirmation.modal.button" = "Pokračovat";
+"error.no.offer.id.found" = "Akce zlyhala. ID nabídky neexistuje.";

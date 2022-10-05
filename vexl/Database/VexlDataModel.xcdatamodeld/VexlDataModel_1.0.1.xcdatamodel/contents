@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="20086" systemVersion="21G83" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
-    <entity name="ManagedAnonymisedProfile" representedClassName="ManagedAnonymisedProfile" syncable="YES" codeGenerationType="class">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="21279" systemVersion="21G72" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="ManagedAnonymousProfile" representedClassName="ManagedAnonymousProfile" syncable="YES" codeGenerationType="class">
         <attribute name="publicKey" optional="YES" attributeType="String"/>
-        <relationship name="group" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ManagedGroup" inverseName="members" inverseEntity="ManagedGroup"/>
+        <relationship name="groups" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ManagedGroup" inverseName="members" inverseEntity="ManagedGroup"/>
+        <relationship name="types" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ManagedAnonymousProfileType" inverseName="anonymousProfiles" inverseEntity="ManagedAnonymousProfileType"/>
+    </entity>
+    <entity name="ManagedAnonymousProfileType" representedClassName="ManagedAnonymousProfileType" syncable="YES" codeGenerationType="class">
+        <attribute name="rawType" optional="YES" attributeType="String"/>
+        <relationship name="anonymousProfiles" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ManagedAnonymousProfile" inverseName="types" inverseEntity="ManagedAnonymousProfile"/>
     </entity>
     <entity name="ManagedChat" representedClassName="ManagedChat" syncable="YES" codeGenerationType="class">
         <attribute name="gotRevealedResponse" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
@@ -37,7 +42,7 @@
         <attribute name="logoURL" optional="YES" attributeType="URI"/>
         <attribute name="name" optional="YES" attributeType="String"/>
         <attribute name="uuid" optional="YES" attributeType="String"/>
-        <relationship name="members" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ManagedAnonymisedProfile" inverseName="group" inverseEntity="ManagedAnonymisedProfile"/>
+        <relationship name="members" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ManagedAnonymousProfile" inverseName="groups" inverseEntity="ManagedAnonymousProfile"/>
         <relationship name="offers" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ManagedOffer" inverseName="group" inverseEntity="ManagedOffer"/>
         <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ManagedUser" inverseName="groups" inverseEntity="ManagedUser"/>
     </entity>
@@ -88,6 +93,7 @@
         <attribute name="feeAmount" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="feeStateRawType" optional="YES" attributeType="String"/>
         <attribute name="friendDegreeRawType" optional="YES" attributeType="String"/>
+        <attribute name="isRemoved" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="isRequested" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="locationStateRawType" optional="YES" attributeType="String"/>
         <attribute name="maxAmount" optional="YES" attributeType="Double" defaultValueString="0" usesScalarValueType="YES"/>
@@ -118,6 +124,7 @@
         <attribute name="phoneNumber" optional="YES" attributeType="String"/>
         <attribute name="phoneNumberHmac" optional="YES" attributeType="String"/>
         <attribute name="realAvatarBeforeReveal" optional="YES" attributeType="Binary"/>
+        <attribute name="realAvatarURLBeforeReveal" optional="YES" attributeType="String"/>
         <attribute name="realNameBeforeReveal" optional="YES" attributeType="String"/>
         <relationship name="currentUser" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ManagedUser" inverseName="profile" inverseEntity="ManagedUser"/>
         <relationship name="keyPair" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ManagedKeyPair" inverseName="profile" inverseEntity="ManagedKeyPair"/>
@@ -136,18 +143,4 @@
         <relationship name="offers" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ManagedOffer" inverseName="user" inverseEntity="ManagedOffer"/>
         <relationship name="profile" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ManagedProfile" inverseName="currentUser" inverseEntity="ManagedProfile"/>
     </entity>
-    <elements>
-        <element name="ManagedAnonymisedProfile" positionX="-1077.6640625" positionY="-369.7421875" width="170.62890625" height="73"/>
-        <element name="ManagedChat" positionX="-314.09765625" positionY="-523.9609375" width="162.57421875" height="209"/>
-        <element name="ManagedContact" positionX="-889.3515625" positionY="-86.04296875" width="128" height="134"/>
-        <element name="ManagedGroup" positionX="-1261.953125" positionY="-339.99609375" width="128" height="209"/>
-        <element name="ManagedInbox" positionX="-545.4609375" positionY="-382.8515625" width="128" height="118"/>
-        <element name="ManagedKeyPair" positionX="-312.15625" positionY="-289.875" width="128" height="148"/>
-        <element name="ManagedMessage" positionX="-95.99609375" positionY="-524.015625" width="128" height="194"/>
-        <element name="ManagedOffer" positionX="-892.38671875" positionY="-589.39453125" width="128" height="508"/>
-        <element name="ManagedOfferLocation" positionX="-731.2578125" positionY="-711.6640625" width="128" height="89"/>
-        <element name="ManagedProfile" positionX="-633.3203125" positionY="-96.95703125" width="128" height="193"/>
-        <element name="ManagedSyncItem" positionX="-591.86328125" positionY="-567.52734375" width="128" height="89"/>
-        <element name="ManagedUser" positionX="-1185.640625" positionY="-51.8984375" width="165.6171875" height="133"/>
-    </elements>
 </model>

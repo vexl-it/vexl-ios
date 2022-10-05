@@ -42,6 +42,7 @@ struct MarketplaceFilterView: View {
             .background(Appearance.Colors.yellow20)
             .cornerRadius(Appearance.GridGuide.buttonCorner)
         }
+        .frame(height: Appearance.GridGuide.baseHeight)
         .padding(.horizontal, Appearance.GridGuide.point)
     }
 }
