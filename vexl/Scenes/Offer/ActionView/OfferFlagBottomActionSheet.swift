@@ -38,7 +38,7 @@ final class OfferFlagBottomActionSheetViewModel: BottomActionSheetViewModelProto
 struct OfferFlagBottomActionSheetContent: View {
     var body: some View {
         Text(L.reportOfferModalSubtitle())
-            .fixedSize(horizontal: false, vertical: true)
+            .fixedSize(horizontal: false, vertical: true) // TODO: discuss using fixed size
             .textStyle(.paragraph)
             .foregroundColor(Appearance.Colors.gray3)
             .padding(.vertical, Appearance.GridGuide.padding)

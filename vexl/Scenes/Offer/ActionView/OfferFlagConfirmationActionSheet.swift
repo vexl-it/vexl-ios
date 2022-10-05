@@ -5,14 +5,6 @@
 //  Created by Adam Salih on 04.10.2022.
 //
 
-import Foundation
-//
-//  OfferFlagBottomActionSheet.swift
-//  vexl
-//
-//  Created by Adam Salih on 04.10.2022.
-//
-
 import SwiftUI
 import Combine
 
