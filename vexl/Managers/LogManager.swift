@@ -7,16 +7,33 @@
 
 import Foundation
 import Alamofire
+import Combine
 
 protocol LogManagerType {
+    var logPublisher: AnyPublisher<[Log], Never> { get }
 
+    func log(notification: NotificationType)
+    func log(message: String)
+}
+
+struct Log {
+    var date: Date = Date()
+    var message: String
 }
 
 final class LogManager: LogManagerType {
-    private(set) var logs: [String] = []
-    private let queue: DispatchQueue = DispatchQueue(label: "Log queue")
+    var logPublisher: AnyPublisher<[Log], Never> {
+        $logs
+            .receive(on: DispatchQueue.main)
+            .eraseToAnyPublisher()
+    }
+
+    @Published private var logs: [Log] = []
+    private let operationQueue = OperationQueue()
 
     init() {
+        operationQueue.maxConcurrentOperationCount = 1
+
         let notificationCenter = NotificationCenter.default
 
         notificationCenter.addObserver(
@@ -34,24 +51,38 @@ final class LogManager: LogManagerType {
         )
     }
 
-    @objc private func requestDidStart(notification: Notification) {
-        queue.async {
+    func log(message: String) {
+        if logs.count > 100 {
+            logs.removeFirst()
+        }
+        logs.append(Log(message: message))
+    }
+
+    func log(notification: NotificationType) {
+        operationQueue.addOperation { [weak self] in
+            self?.log(message: "Notification received: \(notification.rawValue)")
+        }
+    }
+
+    @objc
+    private func requestDidStart(notification: Notification) {
+        operationQueue.addOperation { [weak self] in
             guard let dataRequest = notification.request as? DataRequest,
                 let task = dataRequest.task,
                 let request = task.originalRequest,
                 let httpMethod = request.httpMethod,
                 let requestURL = request.url
                 else {
-                    return
+                return
             }
 
-            print("\(httpMethod) '\(requestURL.absoluteString)':")
-
+            self?.log(message: "\(httpMethod) '\(requestURL.absoluteString)':")
         }
     }
 
-    @objc private func requestDidFinish(notification: Notification) {
-        queue.async {
+    @objc
+    private func requestDidFinish(notification: Notification) {
+        operationQueue.addOperation { [weak self] in
             guard let dataRequest = notification.request as? DataRequest,
                 let task = dataRequest.task,
                 let metrics = dataRequest.metrics,
@@ -59,48 +90,24 @@ final class LogManager: LogManagerType {
                 let httpMethod = request.httpMethod,
                 let requestURL = request.url
                 else {
-                    return
+                return
             }
+
+            var message = ""
 
             let elapsedTime = metrics.taskInterval.duration
 
             if let error = task.error {
-                print("[Error] \(httpMethod) '\(requestURL.absoluteString)' [\(String(format: "%.04f", elapsedTime)) s]:")
-                print(error)
+                message = "[Error] \(httpMethod) '\(requestURL.absoluteString)' [\(String(format: "%.04f", elapsedTime)) s]"
+                message += "\(error)"
             } else {
                 guard let response = task.response as? HTTPURLResponse else {
                     return
                 }
-
-                print("\(String(response.statusCode)) '\(requestURL.absoluteString)' [\(String(format: "%.04f", elapsedTime)) s]:")
-
-                let headers = response.allHeaderFields
-                print("Headers: [")
-                for (key, value) in headers {
-                    print("  \(key): \(value)")
-                }
-                print("]")
-
-                guard let data = dataRequest.data else {
-                    return
-                }
-
-                print("Body:")
-
-                do {
-                    let jsonObject = try JSONSerialization.jsonObject(with: data, options: .mutableContainers)
-                    let prettyData = try JSONSerialization.data(withJSONObject: jsonObject, options: .prettyPrinted)
-
-                    if let prettyString = String(data: prettyData, encoding: .utf8) {
-                        print(prettyString)
-                    }
-                } catch {
-                    if let string = NSString(data: data, encoding: String.Encoding.utf8.rawValue) {
-                        print(string)
-                    }
-                }
+                message = "\(String(response.statusCode)) '\(requestURL.absoluteString)' [\(String(format: "%.04f", elapsedTime)) s]:"
             }
-        }
 
+            self?.log(message: message)
+        }
     }
 }

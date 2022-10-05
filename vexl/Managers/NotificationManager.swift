@@ -129,7 +129,7 @@ extension NotificationManager: UNUserNotificationCenterDelegate {
 
         log.debug("Notification received with following data \(userInfo)")
 
-        logManager
+        logManager.log(notification: type)
 
         if notificationHandled == nil {
             log.debug("Notification wasn't handled in foreground")
