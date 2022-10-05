@@ -6,11 +6,8 @@
 //
 
 import UIKit
-import Combine
 
 extension ManagedProfile {
-
-    private static let avatarQueue = DispatchQueue(label: "Avatar Image Download", qos: .userInitiated)
 
     var avatar: Data? {
         get { avatarData ?? UIImage(named: R.image.profile.avatar.name)?.pngData() }// TODO: generate random avatar
