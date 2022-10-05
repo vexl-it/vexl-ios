@@ -109,6 +109,8 @@ struct Constants {
 
     static let pageMaxLimit = 1_000
 
+    static let maxLogLimit = 100
+
     static let inboxSyncPollInterval: TimeInterval = 10
     // TODO: set bitcoin polling to some more apropriate value when BE solves issue (previously was 30)
     static let bitcoinPollInterval: TimeInterval = 9_000_000_000

@@ -52,7 +52,7 @@ final class LogManager: LogManagerType {
     }
 
     func log(message: String) {
-        if logs.count > 100 {
+        if logs.count > Constants.maxLogLimit {
             logs.removeFirst()
         }
         logs.append(Log(message: message))
