@@ -420,4 +420,4 @@
 "report.offer.confirmation.modal.title" = "Díky!";
 "report.offer.confirmation.modal.subtitle" = "Nevhodný obsah byl anonymně nahlášen.";
 "report.offer.confirmation.modal.button" = "Pokračovat";
-"error.no.offer.id.found" = "Akce zlyhala. ID nabídky neexistuje.";
+"error.no.offer.id.found" = "Akce zlyhala. ID nabídky se nenašlo.";
