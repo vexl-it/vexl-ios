@@ -24,6 +24,7 @@ protocol OfferServiceType {
 
     // MARK: Offer Updating
 
+    func report(offerID: String) -> AnyPublisher<Void, Error>
     func updateOffers(adminID: String, offerPayloads: [OfferPayload]) -> AnyPublisher<OfferPayload, Error>
     func deleteOffers(adminIDs: [String]) -> AnyPublisher<Void, Error>
     func deleteOfferPrivateParts(adminIDs: [String], publicKeys: [String]) -> AnyPublisher<Void, Error>
@@ -96,6 +97,10 @@ final class OfferService: BaseService, OfferServiceType {
     }
 
     // MARK: - Offer updating
+
+    func report(offerID: String) -> AnyPublisher<Void, Error> {
+        request(endpoint: OffersRouter.report(offerID: offerID))
+    }
 
     func updateOffers(adminID: String, offerPayloads: [OfferPayload]) -> AnyPublisher<OfferPayload, Error> {
         request(

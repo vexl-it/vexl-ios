@@ -107,6 +107,21 @@ final class OfferManager: OfferManagerType {
     }
 
     func flag(offer: ManagedOffer) -> AnyPublisher<Void, Error> {
-        offerRepository.flag(offer: offer)
+        guard let offerID = offer.offerID else {
+            return Fail(error: PersistenceError.insufficientData)
+                .eraseToAnyPublisher()
+        }
+        return Just(())
+            .flatMap { [offerRepository] in
+                offerRepository
+                    .flag(offer: offer)
+            }
+            .flatMap { [offerService] in
+                offerService
+                    .report(offerID: offerID)
+                    .nilOnError()
+                    .filterNil()
+            }
+            .eraseToAnyPublisher()
     }
 }
