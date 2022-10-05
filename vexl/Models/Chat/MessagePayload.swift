@@ -179,7 +179,7 @@ extension MessagePayload {
                                       username: String?,
                                       avatar: String?,
                                       avatarData: String?) -> MessagePayload? {
-        let chatUser = ChatUser(name: username, imageURL: avatar, imageData: avatarData)
+        let chatUser = ChatUser(name: username, imageURL: avatar, imageData: nil)
         let parsedMessage = MessagePayload(
             inboxPublicKey: inboxPublicKey,
             messageType: .revealRequest,
@@ -197,7 +197,7 @@ extension MessagePayload {
                                        username: String?,
                                        avatar: String?,
                                        avatarData: String?) -> MessagePayload? {
-        let chatUser = ChatUser(name: username, imageURL: avatar, imageData: avatarData)
+        let chatUser = ChatUser(name: username, imageURL: avatar, imageData: nil)
         let parsedMessage = MessagePayload(
             inboxPublicKey: inboxPublicKey,
             messageType: isAccepted ? .revealApproval : .revealRejected,
