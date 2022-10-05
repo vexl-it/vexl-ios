@@ -50,6 +50,7 @@ final class NotificationManager: NSObject, NotificationManagerType {
     @Inject var inboxManager: InboxManagerType
     @Inject var offerManager: OfferManagerType
     @Inject var deeplinkManager: DeeplinkManagerType
+    @Inject var logManager: LogManagerType
 
     private var fcmTokenValue: CurrentValueSubject<String?, Never> = .init(nil)
     private var authorisationStatus: CurrentValueSubject<UNAuthorizationStatus?, Never> = .init(nil)
@@ -127,6 +128,8 @@ extension NotificationManager: UNUserNotificationCenterDelegate {
         guard let type: NotificationType = typeRawValue.flatMap(NotificationType.init) else { return }
 
         log.debug("Notification received with following data \(userInfo)")
+
+        logManager
 
         if notificationHandled == nil {
             log.debug("Notification wasn't handled in foreground")
