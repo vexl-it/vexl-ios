@@ -83,6 +83,7 @@
 		B02939A928E5B88A00DEB462 /* PublicKeysEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = B02939A828E5B88A00DEB462 /* PublicKeysEnvelope.swift */; };
 		B02939AC28EC2E1800DEB462 /* OfferFlagBottomActionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = B02939AB28EC2E1800DEB462 /* OfferFlagBottomActionSheet.swift */; };
 		B02939AE28EC37D800DEB462 /* OfferFlagConfirmationActionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = B02939AD28EC37D800DEB462 /* OfferFlagConfirmationActionSheet.swift */; };
+		B02939B028ED689D00DEB462 /* LogManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B02939AF28ED689D00DEB462 /* LogManager.swift */; };
 		B02B894528E4E6F100DC811F /* ReencryptionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B02B894428E4E6F100DC811F /* ReencryptionManager.swift */; };
 		B03910652889D9E20034358C /* InboxRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = B03910642889D9E20034358C /* InboxRepository.swift */; };
 		B03910672889E6D80034358C /* ChatManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B03910662889E6D80034358C /* ChatManager.swift */; };
@@ -552,6 +553,7 @@
 		B02939A828E5B88A00DEB462 /* PublicKeysEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublicKeysEnvelope.swift; sourceTree = "<group>"; };
 		B02939AB28EC2E1800DEB462 /* OfferFlagBottomActionSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferFlagBottomActionSheet.swift; sourceTree = "<group>"; };
 		B02939AD28EC37D800DEB462 /* OfferFlagConfirmationActionSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferFlagConfirmationActionSheet.swift; sourceTree = "<group>"; };
+		B02939AF28ED689D00DEB462 /* LogManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogManager.swift; sourceTree = "<group>"; };
 		B02B894428E4E6F100DC811F /* ReencryptionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReencryptionManager.swift; sourceTree = "<group>"; };
 		B03910642889D9E20034358C /* InboxRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InboxRepository.swift; sourceTree = "<group>"; };
 		B03910662889E6D80034358C /* ChatManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatManager.swift; sourceTree = "<group>"; };
@@ -1383,6 +1385,7 @@
 				B08D2AB6289FFDD100A1C901 /* GroupManager.swift */,
 				F1071D4828B6E2B6002BE9EF /* RemoteConfigManager.swift */,
 				B02B894428E4E6F100DC811F /* ReencryptionManager.swift */,
+				B02939AF28ED689D00DEB462 /* LogManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -2991,6 +2994,7 @@
 				B007A7922877629A00CFA5C9 /* Bool+Encryptable.swift in Sources */,
 				F11441D8284681EC00307D39 /* OptionPickerItemView.swift in Sources */,
 				F1B365DA288882F50069788D /* ProfileFacebookContactsViewModel.swift in Sources */,
+				B02939B028ED689D00DEB462 /* LogManager.swift in Sources */,
 				4FBF6242283FBF6B00DDBE71 /* RequestOfferViewModel.swift in Sources */,
 				F12A150127DFC1D70096543E /* ImportContactItemView.swift in Sources */,
 				F1BFA96E2803A49300F4E745 /* UserProfileView+Item.swift in Sources */,
