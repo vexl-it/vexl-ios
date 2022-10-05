@@ -413,3 +413,11 @@
 "force.update.button" = "Aktualizovat";
 "lock.maintenance.title" = "Marketplace maintenance";
 "lock.maintenance.subtitle" = "Vexl app is in maintenance. Come back later, please.";
+"report.offer.modal.title" = "Report offer?";
+"report.offer.modal.subtitle" = "Do you really want to report this offer? You will never be able to undo this action. Choose wisley.";
+"report.offer.modal.button.yes" = "Yes, report";
+"report.offer.modal.button.no" = "Nope";
+"report.offer.confirmation.modal.title" = "Thank you!";
+"report.offer.confirmation.modal.subtitle" = "Inappropriate content was anonymously reported.";
+"report.offer.confirmation.modal.button" = "Continue";
+"error.no.offer.id.found" = "";

@@ -66,6 +66,8 @@ struct RequestOfferView: View {
                 .foregroundColor(Appearance.Colors.whiteText)
                 .frame(maxWidth: .infinity, alignment: .leading)
 
+            flagButton
+
             closeButton
         }
     }
@@ -85,6 +87,18 @@ struct RequestOfferView: View {
     private var closeButton: some View {
         Button(action: { viewModel.send(action: .dismissTap) }, label: {
             Image(systemName: "xmark")
+                .foregroundColor(Appearance.Colors.whiteText)
+                .frame(size: Appearance.GridGuide.baseButtonSize)
+        })
+        .background(
+            RoundedRectangle(cornerRadius: 4)
+                .fill(Appearance.Colors.gray1)
+        )
+    }
+
+    private var flagButton: some View {
+        Button(action: { viewModel.send(action: .flagTap) }, label: {
+            Image(R.image.marketplace.flag.name)
                 .foregroundColor(Appearance.Colors.whiteText)
                 .frame(size: Appearance.GridGuide.baseButtonSize)
         })
