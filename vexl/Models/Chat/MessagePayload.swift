@@ -58,10 +58,15 @@ struct MessagePayload: Codable {
         }
 
         if let user = user {
-            let jsonUser = [
+            var jsonUser = [
                 "name": user.name,
-                "image": user.image
+                "image": user.imageURL
             ]
+
+            if let imageData = user.imageData {
+                jsonUser["imageBase64"] = imageData
+            }
+
             json["deanonymizedUser"] = jsonUser
         }
 
@@ -97,6 +102,7 @@ extension MessagePayload {
         let jsonUser = json["deanonymizedUser"] as? [String: Any]
         let userName = jsonUser?["name"] as? String
         let userImage = jsonUser?["image"] as? String
+        let userImageData = jsonUser?["imageBase64"] as? String
 
         self.contactInboxKey = chatMessage.senderPublicKey
         self.inboxKey = inboxPublicKey
@@ -105,7 +111,7 @@ extension MessagePayload {
         self.image = image
         self.messageTypeValue = chatMessage.messageType
         self.time = TimeInterval(time) / 1_000
-        self.user = ChatUser(name: userName, image: userImage)
+        self.user = ChatUser(name: userName, imageURL: userImage, imageData: userImageData)
     }
 
     /// Use this initializer to manually create a message,
@@ -171,8 +177,9 @@ extension MessagePayload {
     static func createIdentityRequest(inboxPublicKey: String,
                                       contactInboxKey: String,
                                       username: String?,
-                                      avatar: String?) -> MessagePayload? {
-        let chatUser = ChatUser(name: username, image: avatar)
+                                      avatar: String?,
+                                      avatarData: String?) -> MessagePayload? {
+        let chatUser = ChatUser(name: username, imageURL: avatar, imageData: avatarData)
         let parsedMessage = MessagePayload(
             inboxPublicKey: inboxPublicKey,
             messageType: .revealRequest,
@@ -188,8 +195,9 @@ extension MessagePayload {
                                        contactInboxKey: String,
                                        isAccepted: Bool,
                                        username: String?,
-                                       avatar: String?) -> MessagePayload? {
-        let chatUser = ChatUser(name: username, image: avatar)
+                                       avatar: String?,
+                                       avatarData: String?) -> MessagePayload? {
+        let chatUser = ChatUser(name: username, imageURL: avatar, imageData: avatarData)
         let parsedMessage = MessagePayload(
             inboxPublicKey: inboxPublicKey,
             messageType: isAccepted ? .revealApproval : .revealRejected,
@@ -229,12 +237,14 @@ extension MessagePayload {
 
     struct ChatUser: Codable {
         let name: String
-        let image: String?
+        let imageURL: String?
+        let imageData: String?
 
-        init?(name: String?, image: String?) {
+        init?(name: String?, imageURL: String?, imageData: String?) {
             guard let name = name else { return nil }
             self.name = name
-            self.image = image
+            self.imageURL = imageURL
+            self.imageData = imageData
         }
     }
 }

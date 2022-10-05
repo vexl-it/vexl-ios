@@ -87,8 +87,12 @@ class InboxRepository: InboxRepositoryType {
             chat.showIdentityRequest = false
             chat.shouldDisplayRevealBanner = true
             if payload.isFromContact {
-                if let imageURL = payload.user?.image, let avatarURL = URL(string: imageURL), let avatar = try? Data(contentsOf: avatarURL) {
+                if let imageURL = payload.user?.imageURL, let avatarURL = URL(string: imageURL), let avatar = try? Data(contentsOf: avatarURL) {
                     chat.receiverKeyPair?.profile?.realAvatarBeforeReveal = avatar
+                    chat.receiverKeyPair?.profile?.realAvatarURLBeforeReveal = imageURL
+                } else if let imageData = payload.user?.imageData, let imageString = imageData.dataFromBase64 {
+                    chat.receiverKeyPair?.profile?.realAvatarBeforeReveal = imageString
+                    chat.receiverKeyPair?.profile?.realAvatarURLBeforeReveal = nil
                 }
                 chat.receiverKeyPair?.profile?.realNameBeforeReveal = payload.user?.name
             }
@@ -104,10 +108,15 @@ class InboxRepository: InboxRepositoryType {
                 if let name = payload.user?.name {
                     chat.receiverKeyPair?.profile?.name = name
                 }
-                if let imageURL = payload.user?.image, let avatarURL = URL(string: imageURL), let avatar = try? Data(contentsOf: avatarURL) {
+                if let imageURL = payload.user?.imageURL, let avatarURL = URL(string: imageURL), let avatar = try? Data(contentsOf: avatarURL) {
                     chat.receiverKeyPair?.profile?.avatar = avatar
+                    chat.receiverKeyPair?.profile?.avatarURL = imageURL
+                } else if let imageData = payload.user?.imageData, let imageString = imageData.dataFromBase64 {
+                    chat.receiverKeyPair?.profile?.avatar = imageString
+                    chat.receiverKeyPair?.profile?.avatarURL = nil
                 }
             } else {
+                chat.receiverKeyPair?.profile?.avatarURL = chat.receiverKeyPair?.profile?.realAvatarURLBeforeReveal
                 chat.receiverKeyPair?.profile?.avatar = chat.receiverKeyPair?.profile?.realAvatarBeforeReveal
                 chat.receiverKeyPair?.profile?.name = chat.receiverKeyPair?.profile?.realNameBeforeReveal
             }
@@ -122,6 +131,7 @@ class InboxRepository: InboxRepositoryType {
 
             chat.receiverKeyPair?.profile?.realNameBeforeReveal = nil
             chat.receiverKeyPair?.profile?.realAvatarBeforeReveal = nil
+            chat.receiverKeyPair?.profile?.realAvatarURLBeforeReveal = nil
         case .messagingRequest:
             chat.isApproved = false
             chat.isRequesting = true
