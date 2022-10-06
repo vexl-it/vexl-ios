@@ -16,6 +16,8 @@ protocol OfferManagerType {
     func sync()
     func reencryptUserOffers(withPublicKeys publicKeys: [String], friendLevel: OfferFriendDegree, completionHandler: ((Error?) -> Void)?) -> AnyPublisher<Void, Error>
     func reencrypt(offers: [ManagedOffer], withPublicKeys: [String]) -> AnyPublisher<Void, Error>
+
+    func flag(offer: ManagedOffer) -> AnyPublisher<Void, Error>
 }
 
 extension OfferManagerType {
@@ -102,5 +104,24 @@ final class OfferManager: OfferManagerType {
 
     func reencrypt(offers unsafeOffers: [ManagedOffer], withPublicKeys publicKeys: [String]) -> AnyPublisher<Void, Error> {
         offerRepository.sync(offers: unsafeOffers, withPublicKeys: publicKeys)
+    }
+
+    func flag(offer: ManagedOffer) -> AnyPublisher<Void, Error> {
+        guard let offerID = offer.offerID else {
+            return Fail(error: PersistenceError.insufficientData)
+                .eraseToAnyPublisher()
+        }
+        return Just(())
+            .flatMap { [offerRepository] in
+                offerRepository
+                    .flag(offer: offer)
+            }
+            .flatMap { [offerService] in
+                offerService
+                    .report(offerID: offerID)
+                    .nilOnError()
+                    .filterNil()
+            }
+            .eraseToAnyPublisher()
     }
 }

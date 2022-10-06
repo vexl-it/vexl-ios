@@ -23,6 +23,8 @@ protocol OfferRepositoryType {
 
     func sync(offers: [ManagedOffer], withPublicKeys: [String]) -> AnyPublisher<Void, Error>
 
+    func flag(offer: ManagedOffer) -> AnyPublisher<Void, Error>
+
     func deleteOffers(offerIDs ids: [String]) -> AnyPublisher<Void, Error>
 }
 
@@ -204,6 +206,13 @@ class OfferRepository: OfferRepositoryType {
                 item.type = .offerEncryptionUpdate
                 item.offer = offer
             }
+        }
+    }
+
+    func flag(offer unsafeOffer: ManagedOffer) -> AnyPublisher<Void, Error> {
+        persistence.update(context: persistence.viewContext) { context in
+            let offer = context.object(with: unsafeOffer.objectID) as? ManagedOffer
+            offer?.isRemoved = true
         }
     }
 

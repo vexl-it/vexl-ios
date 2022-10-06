@@ -70,7 +70,6 @@ private class VexlPhoneNumberTextField: PhoneNumberTextField {
         self.currentPhoneNumber = phoneNumber
         self.currentRegionCode = regionCode
         super.init(frame: .zero)
-        self.maxDigits = Constants.maxPhoneNumberDigits
         setPhoneNumber()
     }
 

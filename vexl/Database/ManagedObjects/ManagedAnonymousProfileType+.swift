@@ -30,4 +30,3 @@ extension ManagedAnonymousProfileType {
         set { rawType = newValue?.rawValue }
     }
 }
-
