@@ -420,4 +420,4 @@
 "report.offer.confirmation.modal.title" = "Thank you!";
 "report.offer.confirmation.modal.subtitle" = "Inappropriate content was anonymously reported.";
 "report.offer.confirmation.modal.button" = "Continue";
-"error.no.offer.id.found" = "Report offer failed. No offer with this ID found";
+"error.no.offer.id.found" = "Report offer failed. No offer with this ID found.";

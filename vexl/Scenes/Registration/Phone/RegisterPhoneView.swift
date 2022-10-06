@@ -48,6 +48,7 @@ struct RegisterPhoneView: View {
                 .padding([.horizontal, .bottom], Appearance.GridGuide.point)
                 .transaction { $0.disablesAnimations = true }
         }
+        .navigationBarBackButtonHidden(true)
         .background(Color.black.edgesIgnoringSafeArea(.all))
         .animation(.easeInOut(duration: 0.5), value: viewModel.showCodeInput)
     }

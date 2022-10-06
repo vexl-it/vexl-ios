@@ -22,7 +22,7 @@ final class OfferFlagBottomActionSheetViewModel: BottomActionSheetViewModelProto
     )
     var actionPublisher: PassthroughSubject<BottomActionSheetActionType, Never> = .init()
     var dismissPublisher: PassthroughSubject<Void, Never> = .init()
-    var colorScheme: OfferFlagBottomActionSheet.ColorScheme = .main
+    var colorScheme: OfferFlagBottomActionSheet.ColorScheme = .red
 
     var title: String {
         L.reportOfferModalTitle()

@@ -19,7 +19,7 @@ final class OfferFlagConfirmationActionSheetViewModel: BottomActionSheetViewMode
     var secondaryAction: OfferFlagConfirmationActionSheet.Action?
     var actionPublisher: PassthroughSubject<BottomActionSheetActionType, Never> = .init()
     var dismissPublisher: PassthroughSubject<Void, Never> = .init()
-    var colorScheme: OfferFlagConfirmationActionSheet.ColorScheme = .main
+    var colorScheme: OfferFlagConfirmationActionSheet.ColorScheme = .red
 
     var title: String {
         L.reportOfferConfirmationModalTitle()

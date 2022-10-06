@@ -147,8 +147,10 @@ final class RequestOfferViewModel: ViewModelType, ObservableObject {
             .store(in: cancelBag)
     }
 
-    func flagOffer() -> AnyPublisher<Void, Error> {
-        // TODO: Add BE call for flaging the offer when EP is implemented
-        offerManager.flag(offer: offer)
+    func flagOffer() -> AnyPublisher<Void, Never> {
+        offerManager
+            .flag(offer: offer)
+            .track(activity: primaryActivity)
+            .eraseToAnyPublisher()
     }
 }
