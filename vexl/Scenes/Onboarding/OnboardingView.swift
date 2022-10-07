@@ -40,6 +40,7 @@ struct OnboardingView: View {
                     .padding(Appearance.GridGuide.padding)
             }
         }
+        .navigationBarBackButtonHidden(true)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
         .background(Appearance.Colors.whiteText)
         .cornerRadius(Appearance.GridGuide.buttonCorner)
