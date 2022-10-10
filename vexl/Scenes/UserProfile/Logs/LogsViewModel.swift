@@ -62,12 +62,6 @@ final class LogsViewModel: ViewModelType, ObservableObject {
             .withUnretained(self)
             .sink { owner, logs in
                 owner.logs = logs
-
-                if let lastLog = logs.last {
-                    withAnimation {
-                        owner.lastLog = lastLog
-                    }
-                }
             }
             .store(in: cancelBag)
 
