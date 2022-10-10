@@ -160,6 +160,18 @@ final class UserProfileCoordinator: BaseCoordinator<Void> {
         viewModel
             .route
             .receive(on: RunLoop.main)
+            .filter { $0 == .logsTapped }
+            .flatMapLatest(with: self) { owner, _ -> CoordinatingResult<RouterResult<Void>> in
+                let router = ModalRouter(parentViewController: viewController, presentationStyle: .fullScreen, transitionStyle: .coverVertical)
+                let coordinator = LogsCoordinator(router: router, animated: true)
+                return owner.present(coordinator: coordinator, router: router)
+            }
+            .sink()
+            .store(in: cancelBag)
+
+        viewModel
+            .route
+            .receive(on: RunLoop.main)
             .filter { $0 == .showGroups }
             .flatMapLatest(with: self) { owner, _ -> CoordinatingResult<RouterResult<Void>> in
                 let router = ModalNavigationRouter(

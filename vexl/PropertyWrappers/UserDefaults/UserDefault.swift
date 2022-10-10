@@ -18,6 +18,11 @@ struct UserDefault<T> {
         self.defaultValue = defaultValue
     }
 
+    init(_ key: UserDefaultKey, defaultValue: T) {
+        self.key = key.rawValue
+        self.defaultValue = defaultValue
+    }
+
     var wrappedValue: T {
         get { UserDefaults.standard.object(forKey: key) as? T ?? defaultValue }
         set { UserDefaults.standard.set(newValue, forKey: key) }

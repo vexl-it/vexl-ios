@@ -8,17 +8,25 @@
 import Foundation
 import Alamofire
 import Combine
+import Cleevio
 
 protocol LogManagerType {
     var logPublisher: AnyPublisher<[Log], Never> { get }
+    var collectLogs: Bool { get }
 
+    func collectLogs(enable: Bool)
     func log(notification: NotificationType)
     func log(message: String)
 }
 
-struct Log {
+struct Log: Identifiable, Equatable {
+    let id: UUID = .init()
     var date: Date = Date()
     var message: String
+
+    var formattedDate: String {
+        Formatters.logFormatter.string(from: date)
+    }
 }
 
 final class LogManager: LogManagerType {
@@ -28,8 +36,11 @@ final class LogManager: LogManagerType {
             .eraseToAnyPublisher()
     }
 
+    @UserDefault(.inappLoggingEnabled, defaultValue: true) private(set) var collectLogs: Bool
     @Published private var logs: [Log] = []
+
     private let operationQueue = OperationQueue()
+    private let cancelBag: CancelBag = .init()
 
     init() {
         operationQueue.maxConcurrentOperationCount = 1
@@ -51,7 +62,14 @@ final class LogManager: LogManagerType {
         )
     }
 
+    func collectLogs(enable: Bool) {
+        collectLogs = enable
+    }
+
     func log(message: String) {
+        guard collectLogs else {
+            return
+        }
         if logs.count > Constants.maxLogLimit {
             logs.removeFirst()
         }
@@ -60,7 +78,9 @@ final class LogManager: LogManagerType {
 
     func log(notification: NotificationType) {
         operationQueue.addOperation { [weak self] in
-            self?.log(message: "Notification received: \(notification.rawValue)")
+            var message = "Notification received\n"
+            message += "type: \(notification.rawValue)"
+            self?.log(message: message)
         }
     }
 
@@ -76,7 +96,11 @@ final class LogManager: LogManagerType {
                 return
             }
 
-            self?.log(message: "\(httpMethod) '\(requestURL.absoluteString)':")
+            var message = "Server request\n"
+            message += "url: \(requestURL.absoluteString)\n"
+            message += "method: \(httpMethod)"
+
+            self?.log(message: message)
         }
     }
 
@@ -87,25 +111,18 @@ final class LogManager: LogManagerType {
                 let task = dataRequest.task,
                 let metrics = dataRequest.metrics,
                 let request = task.originalRequest,
-                let httpMethod = request.httpMethod,
-                let requestURL = request.url
+                let requestURL = request.url,
+                let response = task.response as? HTTPURLResponse
                 else {
                 return
             }
 
-            var message = ""
-
             let elapsedTime = metrics.taskInterval.duration
 
-            if let error = task.error {
-                message = "[Error] \(httpMethod) '\(requestURL.absoluteString)' [\(String(format: "%.04f", elapsedTime)) s]"
-                message += "\(error)"
-            } else {
-                guard let response = task.response as? HTTPURLResponse else {
-                    return
-                }
-                message = "\(String(response.statusCode)) '\(requestURL.absoluteString)' [\(String(format: "%.04f", elapsedTime)) s]:"
-            }
+            var message = "Server response\n"
+            message += "url: \(requestURL.absoluteString)\n"
+            message += "response: \(String(response.statusCode))\n"
+            message += "elapsed time: \(String(format: "%.04f", elapsedTime))s"
 
             self?.log(message: message)
         }

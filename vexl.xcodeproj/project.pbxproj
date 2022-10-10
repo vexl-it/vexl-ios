@@ -84,6 +84,9 @@
 		B02939AC28EC2E1800DEB462 /* OfferFlagBottomActionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = B02939AB28EC2E1800DEB462 /* OfferFlagBottomActionSheet.swift */; };
 		B02939AE28EC37D800DEB462 /* OfferFlagConfirmationActionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = B02939AD28EC37D800DEB462 /* OfferFlagConfirmationActionSheet.swift */; };
 		B02939B028ED689D00DEB462 /* LogManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B02939AF28ED689D00DEB462 /* LogManager.swift */; };
+		B02939B328EF7A4800DEB462 /* LogsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B02939B228EF7A4800DEB462 /* LogsCoordinator.swift */; };
+		B02939B528EF7A5100DEB462 /* LogsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B02939B428EF7A5100DEB462 /* LogsViewModel.swift */; };
+		B02939B728EF7A5900DEB462 /* LogsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B02939B628EF7A5900DEB462 /* LogsView.swift */; };
 		B02B894528E4E6F100DC811F /* ReencryptionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B02B894428E4E6F100DC811F /* ReencryptionManager.swift */; };
 		B03910652889D9E20034358C /* InboxRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = B03910642889D9E20034358C /* InboxRepository.swift */; };
 		B03910672889E6D80034358C /* ChatManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B03910662889E6D80034358C /* ChatManager.swift */; };
@@ -554,6 +557,9 @@
 		B02939AB28EC2E1800DEB462 /* OfferFlagBottomActionSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferFlagBottomActionSheet.swift; sourceTree = "<group>"; };
 		B02939AD28EC37D800DEB462 /* OfferFlagConfirmationActionSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferFlagConfirmationActionSheet.swift; sourceTree = "<group>"; };
 		B02939AF28ED689D00DEB462 /* LogManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogManager.swift; sourceTree = "<group>"; };
+		B02939B228EF7A4800DEB462 /* LogsCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogsCoordinator.swift; sourceTree = "<group>"; };
+		B02939B428EF7A5100DEB462 /* LogsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogsViewModel.swift; sourceTree = "<group>"; };
+		B02939B628EF7A5900DEB462 /* LogsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogsView.swift; sourceTree = "<group>"; };
 		B02B894428E4E6F100DC811F /* ReencryptionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReencryptionManager.swift; sourceTree = "<group>"; };
 		B03910642889D9E20034358C /* InboxRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InboxRepository.swift; sourceTree = "<group>"; };
 		B03910662889E6D80034358C /* ChatManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatManager.swift; sourceTree = "<group>"; };
@@ -1196,6 +1202,16 @@
 				B02939AD28EC37D800DEB462 /* OfferFlagConfirmationActionSheet.swift */,
 			);
 			path = ActionView;
+			sourceTree = "<group>";
+		};
+		B02939B128EF7A1D00DEB462 /* Logs */ = {
+			isa = PBXGroup;
+			children = (
+				B02939B228EF7A4800DEB462 /* LogsCoordinator.swift */,
+				B02939B428EF7A5100DEB462 /* LogsViewModel.swift */,
+				B02939B628EF7A5900DEB462 /* LogsView.swift */,
+			);
+			path = Logs;
 			sourceTree = "<group>";
 		};
 		B08F38B027AE7110008B344F = {
@@ -2410,6 +2426,7 @@
 				F1B365C72885CBEB0069788D /* EditAvatar */,
 				B00BAC292897D11E008E3CA2 /* Groups */,
 				F1BFA96F2803A59F00F4E745 /* Components */,
+				B02939B128EF7A1D00DEB462 /* Logs */,
 				F1BFA955280223BD00F4E745 /* UserProfileCoordinator.swift */,
 				F1BFA952280223BD00F4E745 /* UserProfileView.swift */,
 				F1BFA953280223BD00F4E745 /* UserProfileViewModel.swift */,
@@ -2896,6 +2913,7 @@
 				F12A14E827D6A8690096543E /* RequestAccessContactsView.swift in Sources */,
 				B01C01E62860B2C400A29F85 /* CoinChartData.swift in Sources */,
 				4F82A0A228E19D1400352A3F /* NotificationPermissionView.swift in Sources */,
+				B02939B728EF7A5900DEB462 /* LogsView.swift in Sources */,
 				F1B365D32886093D0069788D /* ProfilePhoneContactsViewModel.swift in Sources */,
 				F13B2675281EB23A0011F2FB /* ContactFriendLevel.swift in Sources */,
 				B0E9BB302815C7310012BF1D /* SHA.swift in Sources */,
@@ -2943,6 +2961,7 @@
 				F175ABAC27F4FF30000DAB15 /* ImportFacebookContactsViewModel.swift in Sources */,
 				F1DF4A432898B457008E5C87 /* ChatCommonFriendsActionSheet.swift in Sources */,
 				B08F392A27AE7112008B344F /* ServiceAssembly.swift in Sources */,
+				B02939B528EF7A5100DEB462 /* LogsViewModel.swift in Sources */,
 				F11441C8284681EC00307D39 /* RegistrationCounterView.swift in Sources */,
 				F148564D284FD452003213D7 /* ChatConversationSection.swift in Sources */,
 				F11441E1284681EC00307D39 /* LinkTextView.swift in Sources */,
@@ -3246,6 +3265,7 @@
 				B007A76128722A1F00CFA5C9 /* NSManagedObject+.swift in Sources */,
 				F151A29027C80708000D7242 /* RegisterPhoneNumberInputView.swift in Sources */,
 				F1071D4928B6E2B6002BE9EF /* RemoteConfigManager.swift in Sources */,
+				B02939B328EF7A4800DEB462 /* LogsCoordinator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3374,7 +3394,7 @@
 				CODE_SIGN_ENTITLEMENTS = vexl/vexl.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 308;
+				CURRENT_PROJECT_VERSION = 313;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = KQNTW88PVA;
 				ENABLE_BITCODE = NO;
@@ -3407,7 +3427,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 308;
+				CURRENT_PROJECT_VERSION = 313;
 				DEVELOPMENT_TEAM = SHD6TUKSPH;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
@@ -3492,7 +3512,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = vexl/vexlDebug.entitlements;
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 308;
+				CURRENT_PROJECT_VERSION = 313;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = KQNTW88PVA;
 				ENABLE_BITCODE = NO;
@@ -3525,7 +3545,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 308;
+				CURRENT_PROJECT_VERSION = 313;
 				DEVELOPMENT_TEAM = SHD6TUKSPH;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
@@ -3670,7 +3690,7 @@
 				CODE_SIGN_ENTITLEMENTS = vexl/vexl.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 308;
+				CURRENT_PROJECT_VERSION = 313;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = KQNTW88PVA;
 				ENABLE_BITCODE = NO;
@@ -3705,7 +3725,7 @@
 				CODE_SIGN_ENTITLEMENTS = vexl/vexl.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 308;
+				CURRENT_PROJECT_VERSION = 313;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = KQNTW88PVA;
 				ENABLE_BITCODE = NO;
@@ -3738,7 +3758,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 308;
+				CURRENT_PROJECT_VERSION = 313;
 				DEVELOPMENT_TEAM = SHD6TUKSPH;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
@@ -3757,7 +3777,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 308;
+				CURRENT_PROJECT_VERSION = 313;
 				DEVELOPMENT_TEAM = SHD6TUKSPH;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;

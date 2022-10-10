@@ -32,6 +32,7 @@ extension UserProfileViewModel {
         case termsAndPrivacy
         case faq
         case reportIssue
+        case logs
 
         case requestData
         case logout
@@ -68,6 +69,8 @@ extension UserProfileViewModel {
                 return L.userProfileFaq()
             case .reportIssue:
                 return L.userProfileReportIssue()
+            case .logs:
+                return L.userProfileLogs()
             }
         }
 
@@ -108,6 +111,8 @@ extension UserProfileViewModel {
                 return R.image.profile.faQ.name
             case .reportIssue:
                 return R.image.profile.reportIssue.name
+            case .logs:
+                return R.image.profile.cpu.name
             }
         }
 
@@ -118,7 +123,7 @@ extension UserProfileViewModel {
                 OptionGroup(id: 2, options: [.contacts]), // , .facebook]),
                 OptionGroup(id: 3, options: [.groups]),
                 OptionGroup(id: 4, options: [.currency]),
-                OptionGroup(id: 5, options: [.termsAndPrivacy, .faq, .reportIssue]),
+                OptionGroup(id: 5, options: [.termsAndPrivacy, .faq, .reportIssue, .logs]),
                 OptionGroup(id: 6, options: [.logout])
             ]
         }
