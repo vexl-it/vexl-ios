@@ -549,6 +549,7 @@
 		B01C01E52860B2C400A29F85 /* CoinChartData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinChartData.swift; sourceTree = "<group>"; };
 		B01C01E82860D2CD00A29F85 /* ContentState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentState.swift; sourceTree = "<group>"; };
 		B01C01EC2862F06D00A29F85 /* Currency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Currency.swift; sourceTree = "<group>"; };
+		B020E21D28F431AD00FFA426 /* VexlDataModel_1.0.8.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = VexlDataModel_1.0.8.xcdatamodel; sourceTree = "<group>"; };
 		B02939A828E5B88A00DEB462 /* PublicKeysEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublicKeysEnvelope.swift; sourceTree = "<group>"; };
 		B02939AB28EC2E1800DEB462 /* OfferFlagBottomActionSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferFlagBottomActionSheet.swift; sourceTree = "<group>"; };
 		B02939AD28EC37D800DEB462 /* OfferFlagConfirmationActionSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferFlagConfirmationActionSheet.swift; sourceTree = "<group>"; };
@@ -3807,10 +3808,11 @@
 		F1B93ED8286D6671008DAA90 /* VexlDataModel.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				B020E21D28F431AD00FFA426 /* VexlDataModel_1.0.8.xcdatamodel */,
 				B0DF087628C61BAB004E77DB /* VexlDataModel_1.0.1.xcdatamodel */,
 				F1B93ED9286D6671008DAA90 /* VexlDataModel.xcdatamodel */,
 			);
-			currentVersion = B0DF087628C61BAB004E77DB /* VexlDataModel_1.0.1.xcdatamodel */;
+			currentVersion = B020E21D28F431AD00FFA426 /* VexlDataModel_1.0.8.xcdatamodel */;
 			path = VexlDataModel.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
