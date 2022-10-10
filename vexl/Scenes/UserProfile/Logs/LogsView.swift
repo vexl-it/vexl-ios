@@ -11,7 +11,7 @@ struct LogsView: View {
 
     @ObservedObject var viewModel: LogsViewModel
 
-    @State var isAnimatingButton: Bool = false
+    @State private var isAnimatingButton: Bool = false
 
     var body: some View {
         VStack(alignment: .leading, spacing: Appearance.GridGuide.padding) {
