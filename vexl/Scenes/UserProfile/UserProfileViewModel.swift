@@ -63,6 +63,7 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
         case importContacts
         case importFacebook
         case reportIssue
+        case logsTapped
         case showGroups
         case deleteAccount
         case faq
@@ -204,6 +205,12 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
         option
             .filter { $0 == .reportIssue }
             .map { _ -> Route in .reportIssue }
+            .subscribe(route)
+            .store(in: cancelBag)
+
+        option
+            .filter { $0 == .logs }
+            .map { _ -> Route in .logsTapped }
             .subscribe(route)
             .store(in: cancelBag)
 

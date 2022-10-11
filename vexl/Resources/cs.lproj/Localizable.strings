@@ -92,7 +92,7 @@
 "notifications.permission.dialog.allow" = "Povolit";
 "notifications.permission.dialog.dont.allow" = "Zakázat";
 "notifications.permission.disabled.title" = "Vypnuté notifikace";
-"notifications.permission.disabled.subtitle" = "Máš vypnuté notifikace. Povol ich v Nastaveních, Vexl bez nich nebude fungovat jak má. Neboj, nebudeme tě spamovat.";
+"notifications.permission.disabled.subtitle" = "Máš vypnuté notifikace. Povol je v Nastavení, Vexl bez nich nebude fungovat jak má. Neboj, nebudeme tě spamovat.";
 "notifications.permission.disabled.button" = "Jít do Nastavení";
 "error.register.invalid.validation.code" = "Ověřovací kód je neplatný";
 "error.register.invalid.challenge" = "Při ověření uživatele došlo k chybě";
@@ -111,6 +111,7 @@
 "user.profile.terms.and.privacy" = "Podmínky použití a Ochrana soukromí";
 "user.profile.faq" = "Často kladené otázky";
 "user.profile.report.issue" = "Nahlásit problém";
+"user.profile.logs" = "In-app logs";
 "user.profile.request.data" = "Vyžádat uložená data";
 "user.profile.logout" = "Smazat účet";
 "user.profile.currency" = "Měna";
@@ -421,3 +422,6 @@
 "report.offer.confirmation.modal.subtitle" = "Nevhodný obsah byl anonymně nahlášen.";
 "report.offer.confirmation.modal.button" = "Pokračovat";
 "error.no.offer.id.found" = "Akce zlyhala. ID nabídky se nenašlo.";
+"logs.title" = "Logs";
+"logs.button" = "Copy all to clipboard";
+"logs.text.copied.clipboard" = "Logs copied to clipboard!";

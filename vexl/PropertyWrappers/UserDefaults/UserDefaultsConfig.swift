@@ -11,6 +11,7 @@ import Foundation
 enum UserDefaultKey: String {
     case hasSeenOnboarding
     case storedUser
+    case inappLoggingEnabled
     case storedSecurity
     case storedOfferKeys
     case selectedCurrency
