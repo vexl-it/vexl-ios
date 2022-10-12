@@ -11,6 +11,8 @@ import Combine
 
 final class FilterViewModel: ViewModelType, ObservableObject {
 
+    @Inject var userRepository: UserRepositoryType
+
     // MARK: - Fetch Bindings
 
     @Fetched(sortDescriptors: [ NSSortDescriptor(key: "name", ascending: true) ])
@@ -88,7 +90,9 @@ final class FilterViewModel: ViewModelType, ObservableObject {
     let primaryActivity: Activity = .init()
 
     // MARK: - Variables
-
+    var userAvatar: Data? {
+        userRepository.user?.profile?.avatarData
+    }
     var minFee: Double = Constants.OfferInitialData.minFee
     var maxFee: Double = Constants.OfferInitialData.maxFee
     private var currentLocations: [OfferLocation] {
