@@ -198,14 +198,14 @@ final class UserProfileCoordinator: BaseCoordinator<Void> {
             }
             .sink(receiveValue: { urlString in
                 guard let url = URL(string: urlString) else {
-                    // show invalid url error
+                    viewModel.error = UserProfileViewModel.OptionError.invalidUrl
                     return
                 }
 
                 if UIApplication.shared.canOpenURL(url) {
                     UIApplication.shared.open(url)
                 } else {
-                    // show invalid url error
+                    viewModel.error = UserProfileViewModel.OptionError.invalidUrl
                 }
             })
             .store(in: cancelBag)

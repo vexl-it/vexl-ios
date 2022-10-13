@@ -188,4 +188,15 @@ extension UserProfileViewModel {
             ]
         }
     }
+
+    enum OptionError: Error, LocalizedError {
+        case invalidUrl
+
+        var errorDescription: String? {
+            switch self {
+            case .invalidUrl:
+                return L.errorInvalidUrl()
+            }
+        }
+    }
 }
