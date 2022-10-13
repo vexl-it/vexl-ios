@@ -3,6 +3,7 @@
 ### Improvements
 - VEX-1007: Chat messages are now animated
 - VEX-1007: all chats have now preview
+- VEX-1227: Showing app version in profile
 
 ### Fixes
 - VEX-855: Make bitcoin data cached
