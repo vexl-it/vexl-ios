@@ -82,6 +82,10 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
         remoteConfigManager.getBoolValue(for: .isMarketplaceLocked)
     }
 
+    var appVersion: String {
+        UIDevice.appVersion
+    }
+
     let bitcoinViewModel: BitcoinViewModel
     private let cancelBag: CancelBag = .init()
 
