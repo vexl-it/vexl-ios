@@ -120,6 +120,7 @@
 "user.profile.refuse.snap.chat" = "Allow in-app screenshots";
 "user.profile.private.settings.title" = "Private settings";
 "user.profile.private.settings.subtitle" = "Unlock to access your private profile.";
+"user.profile.app.version" = "Vexl App Version %@";
 "user.profile.edit.name.title" = "Edit name";
 "user.profile.edit.name.subtitle" = "Remember your name won't be revealed without your permission. ";
 "user.profile.edit.name.action" = "Save";

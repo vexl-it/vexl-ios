@@ -129,9 +129,20 @@ struct UserProfileView: View {
                     .textStyle(.description)
                     .foregroundColor(Appearance.Colors.gray3)
                     .padding(.vertical, Appearance.GridGuide.point)
+
+                appVersion
             }
             .padding(.bottom, Appearance.GridGuide.scrollContentInset.bottom)
         }
+    }
+
+    private var appVersion: some View {
+        Text(L.userProfileAppVersion(viewModel.appVersion))
+            .multilineTextAlignment(.center)
+            .textStyle(.description)
+            .foregroundColor(Appearance.Colors.gray3)
+            .padding(.top, Appearance.GridGuide.point)
+            .padding(.bottom, Appearance.GridGuide.padding)
     }
 
     private func getItemType(option: UserProfileViewModel.Option) -> OptionType {

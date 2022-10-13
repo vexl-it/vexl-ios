@@ -120,6 +120,7 @@
 "user.profile.refuse.snap.chat" = "Povoliť screenshoty v aplikácií";
 "user.profile.private.settings.title" = "Súkromný profil";
 "user.profile.private.settings.subtitle" = "Odomkni pre prístup do súkromného profilu.";
+"user.profile.app.version" = "Vexl App Version %@";
 "user.profile.edit.name.title" = "Upraviť meno";
 "user.profile.edit.name.subtitle" = "Nezabudni, že tvoje meno bez tvojho dovolenia nikto neuvidí.";
 "user.profile.edit.name.action" = "Uložiť";
