@@ -146,6 +146,19 @@ extension UserProfileViewModel {
             }
         }
 
+        var url: String? {
+            switch self {
+            case .socialTwitter:
+                return "https://twitter.com/vexl"
+            case .socialMedium:
+                return "https://blog.vexl.it/"
+            case .socialVexl:
+                return "https://vexl.it/"
+            default:
+                return nil
+            }
+        }
+
         private func setupAttributedTitle(text: String, boldText: String) -> NSMutableAttributedString {
             let normal = NSMutableAttributedString(string: text)
             normal.bold(text: boldText, font: Appearance.TextStyle.paragraphBold.font)
