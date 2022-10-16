@@ -17,5 +17,6 @@
 - VEX-1107: Notifications at the end of onboarding
 - VEX-1061: Making the loader readable for 3 seconds
 - VEX-1229: Paste long urls is now possible on chat
+- VEX-1220: Emojis not appearing in chat
 
 ### Known Issues
