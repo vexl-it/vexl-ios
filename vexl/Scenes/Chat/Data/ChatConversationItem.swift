@@ -46,7 +46,13 @@ final class ChatConversationItem: Identifiable, Hashable, ObservableObject {
         }()
 
         self.id = message.id ?? UUID().uuidString
-        self.text = message.text
+
+        if message.type == .messagingRequest, message.text?.isEmpty == true {
+            self.text = "Placeholder"
+        } else {
+            self.text = message.text
+        }
+
         self.type = itemType
         self.isContact = message.isContact
         self.image = message.image?.dataFromBase64
