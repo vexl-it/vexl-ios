@@ -99,12 +99,4 @@ final class ChatConversationViewModel: ObservableObject {
             .subscribe(urlTap)
             .store(in: cancelBag)
     }
-
-    private func filterMessaged(_ messages: [ManagedMessage], filter: [MessageType]) -> [ChatConversationSection] {
-        let filteredMessages = messages
-            .filter { !filter.contains($0.type) }
-            .map { ChatConversationItem(message: $0) }
-        let section = ChatConversationSection(date: Date(), messages: filteredMessages)
-        return [section]
-    }
 }
