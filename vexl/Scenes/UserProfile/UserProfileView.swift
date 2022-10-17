@@ -100,7 +100,7 @@ struct UserProfileView: View {
                 ForEach(viewModel.options) { group in
                     VStack(spacing: .zero) {
                         ForEach(group.options) { item in
-                            Item(title: item.title,
+                            Item(titleType: getTitleType(option: item),
                                  subtitle: viewModel.subtitle(for: item),
                                  icon: item.iconName,
                                  type: getItemType(option: item))
@@ -143,6 +143,19 @@ struct UserProfileView: View {
             .foregroundColor(Appearance.Colors.gray3)
             .padding(.top, Appearance.GridGuide.point)
             .padding(.bottom, Appearance.GridGuide.padding)
+    }
+
+    private func getTitleType(option: UserProfileViewModel.Option) -> TitleType {
+        if let title = option.title {
+            return .normal(title)
+        }
+
+        if let attributedTitle = option.attributedTitle {
+            return .attributed(attributedTitle)
+        }
+
+        assertionFailure("Wrong setup for option")
+        return .normal("")
     }
 
     private func getItemType(option: UserProfileViewModel.Option) -> OptionType {

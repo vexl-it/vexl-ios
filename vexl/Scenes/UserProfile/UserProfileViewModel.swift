@@ -68,6 +68,7 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
         case deleteAccount
         case faq
         case termsAndPrivacy
+        case openUrl(URL)
     }
 
     var route: CoordinatingSubject<Route> = .init()
@@ -163,6 +164,8 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
             }
             .share()
 
+        handleSocialOptionTap(item: option.eraseToAnyPublisher())
+
         option
             .filter { $0 == .faq }
             .map { _ in .faq }
@@ -234,6 +237,18 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
     func logoutUser() {
         authenticationManager.logoutUserPublisher(force: false)
             .sink()
+            .store(in: cancelBag)
+    }
+
+    private func handleSocialOptionTap(item: AnyPublisher<Option, Never>) {
+        item
+            .filter { item in
+                [Option.socialTwitter, .socialMedium, .socialVexl].contains(item)
+            }
+            .compactMap(\.url)
+            .compactMap(URL.init)
+            .map(Route.openUrl)
+            .subscribe(route)
             .store(in: cancelBag)
     }
 }
