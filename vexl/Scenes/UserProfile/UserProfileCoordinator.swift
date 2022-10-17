@@ -188,7 +188,7 @@ final class UserProfileCoordinator: BaseCoordinator<Void> {
         viewModel
             .route
             .receive(on: RunLoop.main)
-            .compactMap { action -> String? in
+            .compactMap { action -> URL? in
                 switch action {
                 case .openUrl(let url):
                     return url
@@ -196,12 +196,7 @@ final class UserProfileCoordinator: BaseCoordinator<Void> {
                     return nil
                 }
             }
-            .sink(receiveValue: { urlString in
-                guard let url = URL(string: urlString) else {
-                    viewModel.error = UserProfileViewModel.OptionError.invalidUrl
-                    return
-                }
-
+            .sink(receiveValue: { url in
                 if UIApplication.shared.canOpenURL(url) {
                     UIApplication.shared.open(url)
                 } else {

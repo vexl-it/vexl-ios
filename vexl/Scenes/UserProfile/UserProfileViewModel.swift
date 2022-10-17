@@ -68,7 +68,7 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
         case deleteAccount
         case faq
         case termsAndPrivacy
-        case openUrl(String)
+        case openUrl(URL)
     }
 
     var route: CoordinatingSubject<Route> = .init()
@@ -242,14 +242,12 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
 
     private func handleSocialOptionTap(item: AnyPublisher<Option, Never>) {
         item
-            .compactMap { option -> Route? in
-                switch option {
-                case .socialTwitter, .socialMedium, .socialVexl:
-                    return .openUrl(option.url ?? "")
-                default:
-                    return nil
-                }
+            .filter { item in
+                [Option.socialTwitter, .socialMedium, .socialVexl].contains(item)
             }
+            .compactMap(\.url)
+            .compactMap(URL.init)
+            .map(Route.openUrl)
             .subscribe(route)
             .store(in: cancelBag)
     }
