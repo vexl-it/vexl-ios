@@ -27,7 +27,13 @@ final class ChatConversationItem: Identifiable, Hashable, ObservableObject {
     init(message: ManagedMessage) {
         let itemType: ChatConversationItem.ItemType = {
             switch message.type {
-            case .message, .messagingRequest:
+            case .messagingRequest where message.text?.isEmpty == true:
+                return .noContent
+            case .messagingRequest where message.text?.isEmpty == false:
+                return .text
+            case .messagingRequest:
+                return .text
+            case .message:
                 return .text
             case .messagingApproval:
                 return .start
@@ -46,13 +52,7 @@ final class ChatConversationItem: Identifiable, Hashable, ObservableObject {
         }()
 
         self.id = message.id ?? UUID().uuidString
-
-        if message.type == .messagingRequest, message.text?.isEmpty == true {
-            self.text = "Placeholder"
-        } else {
-            self.text = message.text
-        }
-
+        self.text = message.text
         self.type = itemType
         self.isContact = message.isContact
         self.image = message.image?.dataFromBase64
