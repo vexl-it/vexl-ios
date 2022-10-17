@@ -32,7 +32,7 @@ final class ChatConversationItem: Identifiable, Hashable, ObservableObject {
             case .messagingRequest where message.text?.isEmpty == false:
                 return .text
             case .messagingRequest:
-                return .text
+                return .noContent
             case .message:
                 return .text
             case .messagingApproval:
