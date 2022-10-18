@@ -27,6 +27,12 @@ final class ChatConversationItem: Identifiable, Hashable, ObservableObject {
     init(message: ManagedMessage) {
         let itemType: ChatConversationItem.ItemType = {
             switch message.type {
+            case .messagingRequest where message.text?.isEmpty == true:
+                return .noContent
+            case .messagingRequest where message.text?.isEmpty == false:
+                return .text
+            case .messagingRequest:
+                return .noContent
             case .message:
                 return .text
             case .messagingApproval:
@@ -37,7 +43,7 @@ final class ChatConversationItem: Identifiable, Hashable, ObservableObject {
                 return .approveIdentityReveal
             case .revealRejected:
                 return .rejectIdentityReveal
-            case .invalid, .deleteChat, .messagingRequest, .messagingRejection, .blockChat:
+            case .invalid, .deleteChat, .messagingRejection, .blockChat:
                 return .noContent
             // TODO: return image item type when BE adds image message type
 //            case .image:

@@ -20,6 +20,7 @@ struct ExpandingTextView: View {
     private let isFirstResponder: Bool
     private let textColor: Color
     private let minHeight: CGFloat
+    private let enableMaxCharacters: Bool
     @DiffableState private var textEditorHeight: CGFloat = .zero
 
     private var height: CGFloat { max(minHeight, textEditorHeight) }
@@ -28,12 +29,14 @@ struct ExpandingTextView: View {
          text: Binding<String>,
          isFirstResponder: Bool,
          minHeight: CGFloat = UIProperties.minHeight,
-         textColor: Color = Appearance.Colors.gray3) {
+         textColor: Color = Appearance.Colors.gray3,
+         enableMaxCharacters: Bool = true) {
         self.placeholder = placeholder
         self._text = text
         self.isFirstResponder = isFirstResponder
         self.minHeight = minHeight
         self.textColor = textColor
+        self.enableMaxCharacters = enableMaxCharacters
     }
 
     var body: some View {
@@ -57,7 +60,7 @@ struct ExpandingTextView: View {
                     textStyle: .paragraph,
                     textColor: UIColor(textColor),
                     isFirstResponder: isFirstResponder,
-                    characterLimit: Constants.maxOfferDescriptionCount
+                    characterLimit: enableMaxCharacters ?  Constants.maxOfferDescriptionCount : nil
                 )
                 .frame(
                     height: calculateHeight(width: width - 10),
