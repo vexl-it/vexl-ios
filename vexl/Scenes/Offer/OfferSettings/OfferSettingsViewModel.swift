@@ -74,14 +74,14 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
         type: .min,
         offerPublisher: $offer,
         rangeSetter: { [weak self] newRange in
-            self?.offer.currentAmountRange = newRange
+            self?.offer.setRange(newRange)
         }
     )
     lazy var maxAmountTextFieldViewModel: OfferAmountTextFieldViewModel = .init(
         type: .max,
         offerPublisher: $offer,
         rangeSetter: { [weak self] newRange in
-            self?.offer.currentAmountRange = newRange
+            self?.offer.setRange(newRange)
         }
     )
 
@@ -334,8 +334,8 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
             guard let owner = self else { return }
             offer.group = owner.offer.selectedGroup
             offer.currency = owner.offer.currency
-            offer.minAmount = Double(owner.offer.currentAmountRange.lowerBound)
-            offer.maxAmount = Double(owner.offer.currentAmountRange.upperBound)
+            offer.minAmount = Double(owner.offer.calculatedAmountRange.lowerBound)
+            offer.maxAmount = Double(owner.offer.calculatedAmountRange.upperBound)
             offer.offerDescription = owner.offer.description
             offer.feeState = owner.offer.selectedFeeOption
             offer.feeAmount = floor(owner.offer.feeAmount)

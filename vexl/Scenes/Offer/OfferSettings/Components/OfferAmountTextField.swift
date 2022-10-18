@@ -66,12 +66,21 @@ extension OfferAmountTextField {
             guard let value = Int(text) else {
                 switch type {
                 case .min:
-                    return currentRange.lowerBound
+                    return calculateRange(currentRange).lowerBound
                 case .max:
-                    return currentRange.upperBound
+                    return calculateRange(currentRange).upperBound
                 }
             }
             return value
+        }
+
+        private var currencyStepValue: Int {
+            switch currency {
+            case .usd, .eur:
+                return Constants.OfferInitialData.maxOfferStep
+            case .czk:
+                return Constants.OfferInitialData.maxOfferCZKStep
+            }
         }
 
         convenience init(type: AmountRangeType, offerPublisher: Published<Offer>.Publisher, rangeSetter: @escaping (ClosedRange<Int>) -> Void) {
@@ -105,9 +114,9 @@ extension OfferAmountTextField {
 
             switch type {
             case .min:
-                self.text = "\(self.currentRange.lowerBound)"
+                self.text = "\(self.calculateRange(currentRange).lowerBound)"
             case .max:
-                self.text = "\(self.currentRange.upperBound)"
+                self.text = "\(self.calculateRange(currentRange).upperBound)"
             }
             setupBindings()
         }
@@ -120,15 +129,18 @@ extension OfferAmountTextField {
                     let range: ClosedRange<Int> = {
                         switch owner.type {
                         case .min:
-                            if owner.textToValue <= owner.currentRange.upperBound, owner.textToValue >= owner.sliderBounds.lowerBound {
-                                return owner.textToValue...owner.currentRange.upperBound
+                            if owner.textToValue <= owner.calculateRange(owner.currentRange).upperBound,
+                               owner.textToValue >= owner.calculateRange(owner.sliderBounds).lowerBound {
+                                return owner.textToValue...owner.calculateRange(owner.currentRange).upperBound
                             }
                         case .max:
-                            if owner.textToValue >= owner.currentRange.lowerBound, owner.textToValue <= owner.sliderBounds.upperBound {
-                                return owner.currentRange.lowerBound...owner.textToValue
+
+                            if owner.textToValue >= owner.calculateRange(owner.currentRange).lowerBound,
+                               owner.textToValue <= owner.calculateRange(owner.sliderBounds).upperBound {
+                                return owner.calculateRange(owner.currentRange).lowerBound...owner.textToValue
                             }
                         }
-                        return owner.currentRange
+                        return owner.calculateRange(owner.currentRange)
                     }()
                     owner.rangeSetter(range)
                 }
@@ -139,12 +151,18 @@ extension OfferAmountTextField {
                 .sink(receiveValue: { owner, range in
                     switch owner.type {
                     case .min:
-                        self.text = "\(range.lowerBound)"
+                        self.text = "\(owner.calculateRange(range).lowerBound)"
                     case .max:
-                        self.text = "\(range.upperBound)"
+                        self.text = "\(owner.calculateRange(range).upperBound)"
                     }
                 })
                 .store(in: cancelBag)
+        }
+
+        private func calculateRange(_ range: ClosedRange<Int>) -> ClosedRange<Int> {
+            let min = range.lowerBound * currencyStepValue
+            let max = range.upperBound * currencyStepValue
+            return min...max
         }
     }
 }

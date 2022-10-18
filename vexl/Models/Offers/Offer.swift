@@ -23,6 +23,16 @@ struct Offer: Equatable {
     var selectedPriceTriggerAmount: String
     var selectedGroup: ManagedGroup?
 
+    var calculatedAmountRange: ClosedRange<Int> {
+        let min = currentAmountRange.lowerBound * currencyStepValue
+        let max = currentAmountRange.upperBound * currencyStepValue
+        return min...max
+    }
+
+    private var currencyStepValue: Int {
+        currency == .czk ? Constants.OfferInitialData.maxOfferCZKStep : Constants.OfferInitialData.maxOfferStep
+    }
+
     init(isActive: Bool = true,
          description: String = "",
          currency: Currency = Constants.OfferInitialData.currency,
@@ -84,6 +94,12 @@ struct Offer: Equatable {
         selectedPriceTriggerAmount = "\(Int(managedOffer.activePriceValue))"
         selectedGroup = managedOffer.group
         self.update(newCurrency: currency, resetAmount: false)
+    }
+
+    mutating func setRange(_ range: ClosedRange<Int>) {
+        let min = range.lowerBound / currencyStepValue
+        let max = range.upperBound / currencyStepValue
+        self.currentAmountRange = min...max
     }
 
     mutating func update(newCurrency: Currency?, resetAmount: Bool) {
