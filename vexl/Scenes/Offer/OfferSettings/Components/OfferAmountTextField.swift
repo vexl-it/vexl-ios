@@ -160,6 +160,7 @@ extension OfferAmountTextField {
         }
 
         func resetInitialRangeValues(withCurrency currency: Currency) {
+            self.currency = currency
             let initialRange = initialRange(forCurrency: currency)
             switch type {
             case .min:
