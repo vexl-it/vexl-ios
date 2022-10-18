@@ -60,7 +60,7 @@ final class FilterViewModel: ViewModelType, ObservableObject {
         sliderBoundsPublisher: $amountRange.eraseToAnyPublisher(),
         currencyPublisher: $currency.filterNil().eraseToAnyPublisher(),
         rangeSetter: { [weak self] newRange in
-            self?.currentAmountRange = newRange
+            self?.setRange(newRange)
         }
     )
     lazy var maxAmountTextFieldViewModel: OfferAmountTextFieldViewModel = .init(
@@ -69,7 +69,7 @@ final class FilterViewModel: ViewModelType, ObservableObject {
         sliderBoundsPublisher: $amountRange.eraseToAnyPublisher(),
         currencyPublisher: $currency.filterNil().eraseToAnyPublisher(),
         rangeSetter: { [weak self] newRange in
-            self?.currentAmountRange = newRange
+            self?.setRange(newRange)
         }
     )
 
@@ -97,6 +97,9 @@ final class FilterViewModel: ViewModelType, ObservableObject {
     var maxFee: Double = Constants.OfferInitialData.maxFee
     private var currentLocations: [OfferLocation] {
         locationViewModels.compactMap(\.location)
+    }
+    private var currencyStepValue: Int {
+        currency == .czk ? Constants.OfferInitialData.maxOfferCZKStep : Constants.OfferInitialData.maxOfferStep
     }
     private var initialAmountRange: ClosedRange<Int>?
     private var offerFilter: OfferFilter
@@ -236,5 +239,11 @@ final class FilterViewModel: ViewModelType, ObservableObject {
         offerFilter.reset(with: currentAmountRange)
         selectedGroups = []
         currency = nil
+    }
+
+    private func setRange(_ range: ClosedRange<Int>) {
+        let min = range.lowerBound / currencyStepValue
+        let max = range.upperBound / currencyStepValue
+        self.currentAmountRange = min...max
     }
 }

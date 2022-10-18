@@ -80,10 +80,12 @@ struct Offer: Equatable {
     }
 
     mutating func update(with managedOffer: ManagedOffer) {
+        let minAmount = Int(managedOffer.minAmount) / currencyStepValue
+        let maxAmount = Int(managedOffer.maxAmount) / currencyStepValue
         isActive = managedOffer.active
         description = managedOffer.offerDescription ?? ""
         currency = managedOffer.currency ?? .usd
-        currentAmountRange = Int(managedOffer.minAmount)...Int(managedOffer.maxAmount)
+        currentAmountRange = minAmount...maxAmount
         selectedFeeOption = managedOffer.feeState ?? .withoutFee
         feeAmount = managedOffer.feeAmount
         selectedTradeStyleOption = managedOffer.locationState ?? .personal
