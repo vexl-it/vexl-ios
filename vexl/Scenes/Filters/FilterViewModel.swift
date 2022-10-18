@@ -140,14 +140,26 @@ final class FilterViewModel: ViewModelType, ObservableObject {
                 switch option {
                 case .eur, .usd:
                     owner.amountRange = minOffer...maxOffer
-                    owner.currentAmountRange = owner.initialAmountRange ?? minOffer...maxOffer
+                    if let initialRange = owner.initialAmountRange {
+                        owner.setRange(initialRange)
+                    } else {
+                        owner.currentAmountRange = minOffer...maxOffer
+                    }
                 case .czk:
                     owner.amountRange = minOffer...maxOfferCZK
-                    owner.currentAmountRange = owner.initialAmountRange ?? minOffer...maxOfferCZK
+                    if let initialRange = owner.initialAmountRange {
+                        owner.setRange(initialRange)
+                    } else {
+                        owner.currentAmountRange = minOffer...maxOfferCZK
+                    }
                 case .none:
                     break
                 }
 
+                if let option = option {
+                    owner.minAmountTextFieldViewModel.resetInitialRangeValues(withCurrency: option)
+                    owner.maxAmountTextFieldViewModel.resetInitialRangeValues(withCurrency: option)
+                }
                 owner.initialAmountRange = nil
             }
             .store(in: cancelBag)

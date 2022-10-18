@@ -159,10 +159,39 @@ extension OfferAmountTextField {
                 .store(in: cancelBag)
         }
 
+        func resetInitialRangeValues(withCurrency currency: Currency) {
+            let initialRange = initialRange(forCurrency: currency)
+            switch type {
+            case .min:
+                self.text = "\(initialRange.lowerBound)"
+            case .max:
+                self.text = "\(initialRange.upperBound)"
+            }
+        }
+
         private func calculateRange(_ range: ClosedRange<Int>) -> ClosedRange<Int> {
-            let min = range.lowerBound * currencyStepValue
-            let max = range.upperBound * currencyStepValue
+            let min = range.lowerBound * currencyStepValue(for: currency)
+            let max = range.upperBound * currencyStepValue(for: currency)
             return min...max
+        }
+
+        private func currencyStepValue(for currency: Currency) -> Int {
+            switch currency {
+            case .usd, .eur:
+                return Constants.OfferInitialData.maxOfferStep
+            case .czk:
+                return Constants.OfferInitialData.maxOfferCZKStep
+            }
+        }
+
+        private func initialRange(forCurrency currency: Currency) -> ClosedRange<Int> {
+            let stepValue = currencyStepValue(for: currency)
+            switch currency {
+            case .usd, .eur:
+                return (Constants.OfferInitialData.minOffer * stepValue)...(Constants.OfferInitialData.maxOffer * stepValue)
+            case .czk:
+                return (Constants.OfferInitialData.minOffer * stepValue)...(Constants.OfferInitialData.maxOfferCZK * stepValue)
+            }
         }
     }
 }
