@@ -6,6 +6,7 @@
 - VEX-1227: Showing app version in profile
 - VEX-1223: Social media added to profile
 - VEX-1213: Multiple request now are obvious
+- VEX-1216: Initial currency based on user country code
 
 ### Fixes
 - VEX-855: Make bitcoin data cached
