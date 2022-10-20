@@ -21,8 +21,8 @@ enum OfferSettingsError: LocalizedError {
     }
 }
 
-// swiftlint: disable file_length
-// swiftlint: disable type_body_length
+// swiftlint:disable file_length
+// swiftlint:disable type_body_length
 final class OfferSettingsViewModel: ViewModelType, ObservableObject {
 
     @Inject var userRepository: UserRepositoryType
