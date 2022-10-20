@@ -7,6 +7,10 @@
 
 import Foundation
 
+enum AESError: Error {
+    case couldMotGeneratePassword
+}
+
 struct AES {
     static func encrypt(password: String, secret: String) throws -> String {
         let nsSecret = NSString(string: secret)
@@ -34,6 +38,17 @@ struct AES {
         let secret = String(cString: secretPtr)
         secretPtr.deallocate()
         return secret
+    }
+
+    static func generateRandomPassword(lenght: Int = 256) throws -> String {
+        var data = Data(count: lenght)
+        let result = data.withUnsafeMutableBytes { bytes in
+            SecRandomCopyBytes(kSecRandomDefault, lenght, bytes)
+        }
+        guard result == errSecSuccess else {
+            throw AESError.couldMotGeneratePassword
+        }
+        return data.base64EncodedString()
     }
 
     var secret: String
