@@ -7,6 +7,7 @@
 
 import Foundation
 import Combine
+import KeychainAccess
 
 extension ManagedOffer {
     var currency: Currency? {
@@ -86,6 +87,13 @@ extension ManagedOffer {
         set { friendDegreeRawType = newValue?.rawValue }
     }
 
+    var friendLevels: [OfferFriendDegree] {
+        get {
+            friendDegreeRawTypes?.compactMap(OfferFriendDegree.init) ?? []
+        }
+        set { friendDegreeRawTypes = newValue.map(\.rawValue) }
+    }
+
     var type: OfferType? {
         get { offerTypeRawType.flatMap(OfferType.init) }
         set { offerTypeRawType = newValue?.rawValue }
@@ -106,6 +114,30 @@ extension ManagedOffer {
     var activePriceCurrency: Currency? {
         get { activePriceCurrencyRawType.flatMap(Currency.init) }
         set { activePriceCurrencyRawType = newValue?.rawValue }
+    }
+
+    var symetricKey: String? {
+        get {
+            guard let localEncryptionKey = Keychain.standard[.localEncryptionKey],
+                  let symetricKey = try? encryptedSymetricKey?.aes.decrypt(password: localEncryptionKey) else {
+                return nil
+            }
+            return symetricKey
+        }
+        set {
+            guard let localEncryptionKey = Keychain.standard[.localEncryptionKey],
+                  let encryptedSymetricKey = try? newValue?.aes.encrypt(password: localEncryptionKey) else {
+                return
+            }
+            self.encryptedSymetricKey = encryptedSymetricKey
+        }
+    }
+
+    func generateSymetricKey() {
+        guard let newKey = try? AES.generateRandomPassword() else {
+            return
+        }
+        self.symetricKey = newKey
     }
 }
 
