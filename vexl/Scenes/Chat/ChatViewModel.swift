@@ -98,7 +98,10 @@ final class ChatViewModel: ViewModelType, ObservableObject {
     private let receiverPublicKey: String?
     private let cancelBag: CancelBag = .init()
     private lazy var sharedAction: AnyPublisher<UserAction, Never> = action.share().eraseToAnyPublisher()
-    private var isInputValid: Bool { !currentMessage.isEmpty || selectedImage != nil }
+    private var isInputValid: Bool {
+        !currentMessage.trimmingCharacters(in: .whitespaces).isEmpty || selectedImage != nil
+    }
+
     private var chat: ManagedChat
 
     var chatActionViewModel: ChatActionViewModel

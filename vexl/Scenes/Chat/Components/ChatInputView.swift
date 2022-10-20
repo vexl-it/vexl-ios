@@ -45,7 +45,8 @@ struct ChatInputView: View {
                     text: $text,
                     isFirstResponder: true,
                     minHeight: Appearance.GridGuide.chatTextFieldHeight,
-                    textColor: Appearance.Colors.whiteText
+                    textColor: Appearance.Colors.whiteText,
+                    enableMaxCharacters: false
                 )
                 .disabled(isLoading)
             }

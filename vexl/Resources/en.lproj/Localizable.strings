@@ -426,3 +426,10 @@
 "logs.title" = "Logs";
 "logs.button" = "Copy all to clipboard";
 "logs.text.copied.clipboard" = "Logs copied to clipboard!";
+"profile.twitter" = "Follow us on Twitter";
+"twitter" = "Twitter";
+"profile.medium" = "Read more on Medium";
+"medium" = "Medium";
+"profile.vexl.it" = "Learn more on Vexl.it";
+"vexl.it" = "Vexl.it";
+"error.invalid.url" = "Invalid URL";

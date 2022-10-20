@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct PageControl: View {
-
     let numberOfPages: Int
     let currentIndex: Int
 
@@ -22,5 +21,28 @@ struct PageControl: View {
                     .transition(.opacity)
             }
         }
+    }
+}
+
+struct CirclePageControl: View {
+    let numberOfPages: Int
+    let currentIndex: Int
+
+    private enum Constants {
+        static let elementSize: CGFloat = 8
+    }
+
+    var body: some View {
+        HStack(spacing: Appearance.GridGuide.tinyPadding) {
+            ForEach((0..<numberOfPages), id: \.self) { index in
+                Circle()
+                    .foregroundColor(foregroundColor(for: index))
+                    .frame(width: Constants.elementSize, height: Constants.elementSize)
+            }
+        }
+    }
+
+    private func foregroundColor(for index: Int) -> Color {
+        currentIndex == index ?  Appearance.Colors.gray6 : Appearance.Colors.gray3
     }
 }

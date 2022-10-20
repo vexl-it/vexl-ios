@@ -82,11 +82,14 @@ struct Constants {
 
     struct OfferInitialData {
         static let minOffer: Int = 0
-        static let maxOffer: Int = 10_000
-        static let maxOfferCZK: Int = 250_000
+        static let maxOffer: Int = 200
+        static let maxOfferCZK: Int = 250
         static let minFee: Double = 1
         static let maxFee: Double = 10
         static let currency: Currency = .usd
+
+        static let maxOfferStep: Int = 50
+        static let maxOfferCZKStep: Int = 1_000
     }
 
     // MARK: - Decoder

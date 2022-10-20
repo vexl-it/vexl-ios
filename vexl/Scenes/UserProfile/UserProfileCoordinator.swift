@@ -185,6 +185,26 @@ final class UserProfileCoordinator: BaseCoordinator<Void> {
             .sink()
             .store(in: cancelBag)
 
+        viewModel
+            .route
+            .receive(on: RunLoop.main)
+            .compactMap { action -> URL? in
+                switch action {
+                case .openUrl(let url):
+                    return url
+                default:
+                    return nil
+                }
+            }
+            .sink(receiveValue: { url in
+                if UIApplication.shared.canOpenURL(url) {
+                    UIApplication.shared.open(url)
+                } else {
+                    viewModel.error = UserProfileViewModel.OptionError.invalidUrl
+                }
+            })
+            .store(in: cancelBag)
+
         return Empty(completeImmediately: false)
             .eraseToAnyPublisher()
     }
