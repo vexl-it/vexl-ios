@@ -28,6 +28,7 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
     @Inject var userRepository: UserRepositoryType
     @Inject var offerRepository: OfferRepositoryType
     @Inject var offerService: OfferServiceType
+    @Inject var encryptionService: EncryptionServiceType
     @Inject var mapyService: MapyServiceType
 
     @Fetched(sortDescriptors: [ NSSortDescriptor(key: "name", ascending: true) ])
@@ -350,6 +351,7 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
             offer.active = owner.offer.isActive
             offer.expirationDate = Date(timeIntervalSince1970: owner.expiration)
             offer.createdAt = Date()
+            offer.generateSymetricKey()
         }
 
         let checkLocations = action
@@ -368,14 +370,27 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
                 .track(activity: owner.primaryActivity)
             }
 
-        let receiverPublicKeys = checkLocations
+        let userPublicKey = checkLocations
             .withUnretained(self)
-            .flatMap { owner, _ -> AnyPublisher<[String], Never> in
+            .flatMap { owner, _ in
+                Future<String, Error> { [weak owner] promise in
+                    guard let userPublicKey = owner?.userRepository.user?.profile?.keyPair?.publicKey else {
+                        promise(.failure(PersistenceError.insufficientData))
+                        return
+                    }
+                    promise(.success(userPublicKey))
+                }
+                .track(activity: owner.primaryActivity)
+            }
+
+        let receiverPublicKeys = userPublicKey
+            .withUnretained(self)
+            .flatMap { owner, userPublicKey -> AnyPublisher<PKsEnvelope, Never> in
                 owner.offerService
                     .getReceiverPublicKeys(
                         friendLevel: owner.friendLevel,
-                        group: owner.offer.selectedGroup,
-                        includeUserPublicKey: owner.userRepository.user?.profile?.keyPair?.publicKey
+                        groups: [owner.offer.selectedGroup].compactMap { $0 },
+                        includeUserPublicKey: userPublicKey
                     )
                     .track(activity: owner.primaryActivity)
                     .materialize()
@@ -390,7 +405,7 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
 
         let update = receiverPublicKeys
             .withUnretained(self)
-            .flatMap { owner, receiverPublicKeys -> AnyPublisher<(Bool, ManagedOffer, [String])?, Never> in
+            .flatMap { owner, receiverPublicKeys -> AnyPublisher<(Bool, ManagedOffer, PKsEnvelope)?, Never> in
                 guard let offer = owner.managedOffer else {
                     return Just(nil)
                         .eraseToAnyPublisher()
@@ -410,7 +425,7 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
 
         let create = receiverPublicKeys
             .withUnretained(self)
-            .flatMap { owner, receiverPublicKeys -> AnyPublisher<(Bool, ManagedOffer, [String])?, Never> in
+            .flatMap { owner, receiverPublicKeys -> AnyPublisher<(Bool, ManagedOffer, PKsEnvelope)?, Never> in
                 guard owner.managedOffer == nil else {
                     return Just(nil)
                         .eraseToAnyPublisher()
@@ -440,7 +455,7 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
             .withUnretained(self)
             .flatMap { owner, zip in
                 let (isCreating, offer, receiverPublicKeys) = zip
-                return owner.encryptOffer(isCreating: isCreating, offer: offer, receiverPublicKeys: receiverPublicKeys)
+                return owner.encryptOffer(isCreating: isCreating, offer: offer, publicKeyEnvelope: receiverPublicKeys)
 
                 // NOTE: The progress bar *could* be interuptable. If user would decide to hide the progress bar, you could:
                 // 1. collect all encrypted payloads and send them to BE
@@ -453,24 +468,20 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
 
         let beRequest = encryption
             .withUnretained(self)
-            .flatMap { [offerService, expiration, primaryActivity] owner, zip -> AnyPublisher<(OfferPayload, ManagedOffer), Never> in
-                let (isCreating, payloads, offer) = zip
-                guard !isCreating, let adminID = offer.adminID else {
+            .flatMap { [offerService] owner, zip -> AnyPublisher<(OfferPayload, ManagedOffer), Never> in
+                let (isCreating, payload, offer) = zip
+                if !isCreating, let adminID = offer.adminID {
                     return offerService
-                        .createOffer(
-                            expiration: Date(timeIntervalSince1970: expiration),
-                            offerPayloads: payloads,
-                            offerTyoe: owner.offerType
-                        )
-                        .track(activity: primaryActivity)
+                        .updateOffers(adminID: adminID, offerPayload: payload)
+                        .track(activity: owner.primaryActivity)
                         .materialize()
                         .compactMap(\.value)
                         .map { ($0, offer) }
                         .eraseToAnyPublisher()
                 }
                 return offerService
-                    .updateOffers(adminID: adminID, offerPayloads: payloads)
-                    .track(activity: primaryActivity)
+                    .createOffer(offerPayload: payload)
+                    .track(activity: owner.primaryActivity)
                     .materialize()
                     .compactMap(\.value)
                     .map { ($0, offer) }
@@ -479,14 +490,15 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
 
         let updateOfferId = beRequest
             .flatMap { [offerRepository, primaryActivity] responsePayload, offer -> AnyPublisher<Void, Never> in
-                guard let offerID = responsePayload.offerId, offer.offerID != offerID,
-                      let adminID = responsePayload.adminId, offer.adminID != adminID else {
+                guard let adminID = responsePayload.adminId,
+                    offer.adminID != adminID,
+                    offer.offerID != responsePayload.offerId else {
                     return Just(())
                         .eraseToAnyPublisher()
                 }
                 return offerRepository
                     .update(offer: offer, locations: nil) { offer in
-                        offer.offerID = offerID
+                        offer.offerID = responsePayload.offerId
                         offer.adminID = adminID
                     }
                     .asVoid()
@@ -553,32 +565,69 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
     /// When all the groups have finish encrypting, the publishers are collected an a single array of payloads is sent to the stream.
     private func encryptOffer(isCreating: Bool,
                               offer: ManagedOffer,
-                              receiverPublicKeys: [String]) -> AnyPublisher<(Bool, [OfferPayload], ManagedOffer), Never> {
+                              publicKeyEnvelope: PKsEnvelope) -> AnyPublisher<(Bool, OfferRequestPayload, ManagedOffer), Never> {
+        guard let symetricKey = offer.symetricKey else {
+            return Fail(error: AESError.couldMotGeneratePassword)
+                .trackError(errorIndicator)
+                .eraseToAnyPublisher()
+        }
 
-        let receiverChunks = receiverPublicKeys.splitIntoChunks(by: Constants.encryptionKeySplitAmount)
-        showEncryptionLoader = true
-        encryptionProgress = 0
-        encryptionMaxProgress = receiverPublicKeys.count
+        let receiverPublicKeys = publicKeyEnvelope.allPublicKeys
+        let receiverChunksRatio = (Double(receiverPublicKeys.count) / Double(Constants.encryptionKeySplitAmount))
+        let receiverChunksCount = Int(receiverChunksRatio.rounded(.up))
 
-        let publicKeys = receiverChunks.publisher
+        let chuncks = offerService
+            .generateOfferPayloadPrivateParts(envelope: publicKeyEnvelope, symetricKey: symetricKey)
+            .flatMap { $0.splitIntoChunks(by: Constants.encryptionKeySplitAmount).publisher }
             .withUnretained(self)
-            .flatMap { owner, keys in
-                owner.offerService
-                    .encryptOffer(offer: offer, publicKeys: keys)
-                    .materialize()
-                    .compactMap(\.value)
+            .handleEvents(receiveOutput: { owner, chunks in
+                owner.showEncryptionLoader = true
+                owner.encryptionProgress = 0
+                owner.encryptionMaxProgress = chunks.count + 1
+            })
+            .map(\.1)
+
+        let privatePartEncryption = chuncks
+            .flatMap { [offerService] privateParts in
+                offerService.encryptOfferPayloadPrivateParts(privateParts: privateParts)
             }
             .withUnretained(self)
             .handleEvents(receiveOutput: { owner, payloads in
                 owner.encryptionProgress += payloads.count
             })
             .map { $0.1 }
+            .collect(receiverChunksCount)
+            .map { chunks in chunks.flatMap { $0 } }
+            .eraseToAnyPublisher()
 
-        return publicKeys
-            .collect(receiverChunks.count)
-            .map { Array($0.joined()) }
+        let publicPartEncryption = privatePartEncryption
+            .flatMap { [encryptionService] privateParts -> AnyPublisher<(String, [OfferPayloadPrivateWrapperEncrypted]), Error> in
+                encryptionService
+                    .encryptOfferPayloadPublic(offer: offer, symetricKey: symetricKey)
+                    .map { ($0, privateParts) }
+                    .eraseToAnyPublisher()
+            }
             .withUnretained(self)
-            .map { (isCreating, $0.1, offer) }
+            .handleEvents(receiveOutput: { owner, _ in
+                owner.encryptionProgress += 1
+            })
+            .map { $0.1 }
+
+        let requestPayload = publicPartEncryption
+            .withUnretained(self)
+            .map { (owner: OfferSettingsViewModel, tupl: (String, [OfferPayloadPrivateWrapperEncrypted])) -> OfferRequestPayload in
+                let (publicPart, privateParts) = tupl
+                return OfferRequestPayload(
+                    offerType: owner.offerType.rawValue,
+                    expiration: Int(owner.expiration),
+                    payloadPublic: publicPart,
+                    offerPrivateList: privateParts
+                )
+            }
+
+        return requestPayload
+            .map { (isCreating, $0, offer) }
+            .trackError(errorIndicator)
             .eraseToAnyPublisher()
     }
 }
