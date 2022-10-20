@@ -73,7 +73,11 @@ final class OfferManager: OfferManagerType {
             })
     }
 
-    func reencryptUserOffers(withPublicKeys publicKeys: [String], friendLevel: OfferFriendDegree, completionHandler: ((Error?) -> Void)?) -> AnyPublisher<Void, Error> {
+    func reencryptUserOffers(
+        withPublicKeys publicKeys: [String],
+        friendLevel: OfferFriendDegree,
+        completionHandler: ((Error?) -> Void)?
+    ) -> AnyPublisher<Void, Error> {
         let offers: [ManagedOffer] = {
             let allOfferSet = userRepository.user?.offers ?? NSSet()
             switch friendLevel {
