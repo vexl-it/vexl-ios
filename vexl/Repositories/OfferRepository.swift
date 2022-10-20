@@ -109,7 +109,7 @@ class OfferRepository: OfferRepositoryType {
         }
         return persistence.insert(context: context) { [persistence] context in
             offerPayloads.compactMap { payload in
-                guard let offerPublicKey = try? payload.offerPublicKey.ecc.decrypt(keys: userKeys) else {
+                guard let offerPublicKey = payload.decryptPublicKey(keyPair: userKeys) else {
                     return nil
                 }
                 let pks = persistence.loadSyncroniously(
