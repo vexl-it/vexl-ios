@@ -54,6 +54,10 @@ enum OffersRouter: ApiRouter {
             return "offers/not-exist"
         }
     }
+    
+    var version: Constants.API.Version? {
+            return .v1
+    }
 
     var parameters: Parameters {
         switch self {

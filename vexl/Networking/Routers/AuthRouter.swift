@@ -8,7 +8,7 @@
 import Foundation
 import Alamofire
 
- enum AuthRouter: ApiRouter {
+enum AuthRouter: ApiRouter {
     case refresh
 
     var method: HTTPMethod {
@@ -24,6 +24,8 @@ import Alamofire
             return "auth/refresh"
         }
     }
+
+    var version: Constants.API.Version? { .v1 }
 
     var parameters: Parameters {
         switch self {
