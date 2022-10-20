@@ -8,8 +8,6 @@
 import Foundation
 import Combine
 
-typealias UserContacts = (phone: [ContactKey], facebook: [ContactKey])
-
 protocol ContactsServiceType {
     func createUser(forFacebook isFacebook: Bool, firebaseToken: String?) -> AnyPublisher<Void, Error>
     func updateUser(token: String) -> AnyPublisher<Void, Error>
@@ -21,7 +19,7 @@ protocol ContactsServiceType {
     func getContacts(fromFacebook: Bool, friendLevel: ContactFriendLevel, pageLimit: Int?) -> AnyPublisher<[ContactKey], Error>
     func getAllContacts(friendLevel: ContactFriendLevel,
                         hasFacebookAccount: Bool,
-                        pageLimit: Int?) -> AnyPublisher<UserContacts, Error>
+                        pageLimit: Int?) -> AnyPublisher<ContactPKsEnvelope, Error>
     func deleteUser() -> AnyPublisher<Void, Error>
     func countPhoneContacts() -> AnyPublisher<Int, Error>
 
@@ -82,23 +80,24 @@ final class ContactsService: BaseService, ContactsServiceType {
 
     func getAllContacts(friendLevel: ContactFriendLevel,
                         hasFacebookAccount: Bool,
-                        pageLimit: Int?) -> AnyPublisher<UserContacts, Error> {
-
-        getContacts(fromFacebook: false, friendLevel: friendLevel, pageLimit: pageLimit)
-            .eraseToAnyPublisher()
+                        pageLimit: Int?) -> AnyPublisher<ContactPKsEnvelope, Error> {
+        getContacts(fromFacebook: false, friendLevel: .first, pageLimit: pageLimit)
             .withUnretained(self)
-            .flatMap { owner, contacts -> AnyPublisher<([ContactKey], [ContactKey]), Error> in
-                if hasFacebookAccount {
-                    return owner.getContacts(fromFacebook: true, friendLevel: friendLevel, pageLimit: pageLimit)
-                        .map { (contacts, $0) }
-                        .eraseToAnyPublisher()
-                } else {
-                    return Just((contacts, []))
+            .flatMap({ owner, firstDegree -> AnyPublisher<ContactPKsEnvelope, Error> in
+                guard friendLevel == .second || friendLevel == .all else {
+                    return Just(ContactPKsEnvelope(firstDegree: firstDegree.map(\.publicKey), secondDegree: []) )
                         .setFailureType(to: Error.self)
                         .eraseToAnyPublisher()
                 }
-            }
-            .map { UserContacts(phone: $0.0, facebook: $0.1) }
+                return owner.getContacts(fromFacebook: false, friendLevel: .second, pageLimit: Constants.pageMaxLimit)
+                    .map { secondDegree in
+                        ContactPKsEnvelope(
+                            firstDegree: firstDegree.map(\.publicKey),
+                            secondDegree: secondDegree.map(\.publicKey)
+                        )
+                    }
+                    .eraseToAnyPublisher()
+            })
             .eraseToAnyPublisher()
     }
 

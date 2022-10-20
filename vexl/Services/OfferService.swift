@@ -31,8 +31,8 @@ protocol OfferServiceType {
 
     // MARK: Helper functions
 
-    func getReceiverPublicKeys(friendLevel: ContactFriendLevel, group: ManagedGroup?, includeUserPublicKey userPublicKey: String?) -> AnyPublisher<[String], Error>
     func encryptOffer(offer: ManagedOffer, publicKeys: [String]) -> AnyPublisher<[OfferPayload], Error>
+    func getReceiverPublicKeys(friendLevel: ContactFriendLevel, groups: [ManagedGroup], includeUserPublicKey userPublicKey: String) -> AnyPublisher<PKsEnvelope, Error>
 }
 
 final class OfferService: BaseService, OfferServiceType {
@@ -133,28 +133,27 @@ final class OfferService: BaseService, OfferServiceType {
 
     // MARK: Helper functions
 
-    func getReceiverPublicKeys(friendLevel: ContactFriendLevel, group: ManagedGroup?, includeUserPublicKey userPublicKey: String?) -> AnyPublisher<[String], Error> {
+    func getReceiverPublicKeys(friendLevel: ContactFriendLevel, groups: [ManagedGroup], includeUserPublicKey userPublicKey: String) -> AnyPublisher<PKsEnvelope, Error> {
         contactsService
             .getAllContacts(
                 friendLevel: friendLevel,
                 hasFacebookAccount: authenticationManager.facebookSecurityHeader != nil,
                 pageLimit: Constants.pageMaxLimit
             )
-            .flatMap { contacts -> AnyPublisher<[String], Never> in
-                let myPubKeys = [userPublicKey].compactMap { $0 }
-                    + contacts.phone.map(\.publicKey)
-                    + contacts.facebook.map(\.publicKey)
-                guard let group = group else {
-                    return Just(Array(Set(myPubKeys)))
+            .flatMap { contactEnvelope -> AnyPublisher<PKsEnvelope, Never> in
+                guard !groups.isEmpty else {
+                    return Just(
+                            PKsEnvelope(contacts: contactEnvelope, groups: [], userPublicKey: userPublicKey)
+                        )
                         .eraseToAnyPublisher()
                 }
                 // If this dependency is defined in header, it would cause circular dependency
                 @Inject var groupManager: GroupManagerType
                 return groupManager
-                    .getAllGroupMembers(group: group)
+                    .getAllGroupMembers(groups: groups)
                     .catch { _ in Just([]) }
-                    .map { groupMembers -> [String] in
-                        Array(Set(groupMembers + myPubKeys))
+                    .map { groupEnvelopes in
+                        PKsEnvelope(contacts: contactEnvelope, groups: groupEnvelopes, userPublicKey: userPublicKey)
                     }
                     .eraseToAnyPublisher()
             }
