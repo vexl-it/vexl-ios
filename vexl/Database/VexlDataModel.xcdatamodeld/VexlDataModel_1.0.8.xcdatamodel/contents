@@ -89,7 +89,7 @@
         <attribute name="commonFriends" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromDataTransformer" customClassName="[String]"/>
         <attribute name="createdAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="currencyRawType" optional="YES" attributeType="String"/>
-        <attribute name="encryptedSymetricKey" optional="YES" attributeType="String"/>
+        <attribute name="encryptedSymmetricKey" optional="YES" attributeType="String"/>
         <attribute name="expirationDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="feeAmount" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="feeStateRawType" optional="YES" attributeType="String"/>

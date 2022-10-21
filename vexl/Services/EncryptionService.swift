@@ -14,7 +14,7 @@ typealias OfferEncprytionInput = (receiverPublicKey: String, commonFriends: [Str
 protocol EncryptionServiceType {
     func hashContacts(contacts: [ContactInformation]) -> AnyPublisher<[(ContactInformation, String)], Error>
     func encryptOfferPayloadPrivateParts(privateParts: [OfferPayloadPrivateWrapper]) -> AnyPublisher<[OfferPayloadPrivateWrapperEncrypted], Error>
-    func encryptOfferPayloadPublic(offer: ManagedOffer, symetricKey: String) -> AnyPublisher<String, Error>
+    func encryptOfferPayloadPublic(offer: ManagedOffer, symmetricKey: String) -> AnyPublisher<String, Error>
 }
 
 final class EncryptionService: EncryptionServiceType {
@@ -80,7 +80,7 @@ final class EncryptionService: EncryptionServiceType {
                                 payloadPrivate: try privatePart.payloadPrivate
                                     .asJsonString()
                                     .ecc.encrypt(publicKey: privatePart.userPublicKey)
-                                    .encode(version: OfferPayloadPrivateVersion.v1)
+                                    .encodeEncryptionVersion(version: OfferPayloadPrivateVersion.v1)
                             )
                             promise(.success(encryptedPart))
                         } catch {
@@ -94,7 +94,7 @@ final class EncryptionService: EncryptionServiceType {
             .eraseToAnyPublisher()
     }
 
-    func encryptOfferPayloadPublic(offer: ManagedOffer, symetricKey: String) -> AnyPublisher<String, Error> {
+    func encryptOfferPayloadPublic(offer: ManagedOffer, symmetricKey: String) -> AnyPublisher<String, Error> {
             Future { [weak self] promise in
                 guard let owner = self else {
                     promise(.failure(EncryptionError.dataEncryption))
@@ -104,8 +104,8 @@ final class EncryptionService: EncryptionServiceType {
                     do {
                         let encryptedPart = try OfferPayloadPublic(offer: offer)
                             .asJsonString()
-                            .aes.encrypt(password: symetricKey)
-                            .encode(version: OfferPayloadPublicVersion.v1)
+                            .aes.encrypt(password: symmetricKey)
+                            .encodeEncryptionVersion(version: OfferPayloadPublicVersion.v1)
                         promise(.success(encryptedPart))
                     } catch {
                         promise(.failure(error))

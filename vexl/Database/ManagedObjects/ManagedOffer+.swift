@@ -116,28 +116,28 @@ extension ManagedOffer {
         set { activePriceCurrencyRawType = newValue?.rawValue }
     }
 
-    var symetricKey: String? {
+    var symmetricKey: String? {
         get {
             guard let localEncryptionKey = Keychain.standard[.localEncryptionKey],
-                  let symetricKey = try? encryptedSymetricKey?.aes.decrypt(password: localEncryptionKey) else {
+                  let symmetricKey = try? encryptedSymmetricKey?.aes.decrypt(password: localEncryptionKey) else {
                 return nil
             }
-            return symetricKey
+            return symmetricKey
         }
         set {
             guard let localEncryptionKey = Keychain.standard[.localEncryptionKey],
-                  let encryptedSymetricKey = try? newValue?.aes.encrypt(password: localEncryptionKey) else {
+                  let encryptedSymmetricKey = try? newValue?.aes.encrypt(password: localEncryptionKey) else {
                 return
             }
-            self.encryptedSymetricKey = encryptedSymetricKey
+            self.encryptedSymmetricKey = encryptedSymmetricKey
         }
     }
 
-    func generateSymetricKey() {
+    func generateSymmetricKey() {
         guard let newKey = try? AES.generateRandomPassword() else {
             return
         }
-        self.symetricKey = newKey
+        self.symmetricKey = newKey
     }
 }
 

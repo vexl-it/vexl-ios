@@ -351,7 +351,7 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
             offer.active = owner.offer.isActive
             offer.expirationDate = Date(timeIntervalSince1970: owner.expiration)
             offer.createdAt = Date()
-            offer.generateSymetricKey()
+            offer.generateSymmetricKey()
         }
 
         let checkLocations = action
@@ -566,7 +566,7 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
     private func encryptOffer(isCreating: Bool,
                               offer: ManagedOffer,
                               publicKeyEnvelope: PKsEnvelope) -> AnyPublisher<(Bool, OfferRequestPayload, ManagedOffer), Never> {
-        guard let symetricKey = offer.symetricKey else {
+        guard let symmetricKey = offer.symmetricKey else {
             return Fail(error: AESError.couldMotGeneratePassword)
                 .trackError(errorIndicator)
                 .eraseToAnyPublisher()
@@ -577,7 +577,7 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
         let receiverChunksCount = Int(receiverChunksRatio.rounded(.up))
 
         let chuncks = offerService
-            .generateOfferPayloadPrivateParts(envelope: publicKeyEnvelope, symetricKey: symetricKey)
+            .generateOfferPayloadPrivateParts(envelope: publicKeyEnvelope, symmetricKey: symmetricKey)
             .flatMap { $0.splitIntoChunks(by: Constants.encryptionKeySplitAmount).publisher }
             .withUnretained(self)
             .handleEvents(receiveOutput: { owner, chunks in
@@ -603,7 +603,7 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
         let publicPartEncryption = privatePartEncryption
             .flatMap { [encryptionService] privateParts -> AnyPublisher<(String, [OfferPayloadPrivateWrapperEncrypted]), Error> in
                 encryptionService
-                    .encryptOfferPayloadPublic(offer: offer, symetricKey: symetricKey)
+                    .encryptOfferPayloadPublic(offer: offer, symmetricKey: symmetricKey)
                     .map { ($0, privateParts) }
                     .eraseToAnyPublisher()
             }

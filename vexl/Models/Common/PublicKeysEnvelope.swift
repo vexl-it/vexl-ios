@@ -16,9 +16,9 @@ struct PKsEnvelope {
         contacts.firstDegree + contacts.secondDegree + groups.flatMap(\.publicKeys) + [userPublicKey]
     }
 
-    func generatePrivateParts(symetricKey: String) -> [OfferPayloadPrivateWrapper] {
+    func generatePrivateParts(symmetricKey: String) -> [OfferPayloadPrivateWrapper] {
         var hashMap = allPublicKeys.reduce(into: [String: OfferPayloadPrivate]()) { partialResult, publicKey in
-            partialResult[publicKey] = OfferPayloadPrivate(commonFriends: [], friendLevel: [], symetricKey: symetricKey)
+            partialResult[publicKey] = OfferPayloadPrivate(commonFriends: [], friendLevel: [], symmetricKey: symmetricKey)
         }
         contacts.firstDegree.forEach { publicKey in
             hashMap[publicKey]?.friendLevel.append(AnonymousProfileType.firstDegree.rawValue)

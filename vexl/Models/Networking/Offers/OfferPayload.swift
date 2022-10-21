@@ -33,7 +33,7 @@ enum OfferPayloadPrivateVersion: Int {
 struct OfferPayloadPrivate: Codable {
     var commonFriends: [String]
     var friendLevel: [String]
-    var symetricKey: String
+    var symmetricKey: String
 }
 
 struct OfferPayloadPrivateWrapper: Codable {
@@ -235,13 +235,13 @@ extension OfferPayload {
     }
 
     private func decryptParts(keyPair: ECCKeys) -> (publicPart: OfferPayloadPublic, privatePart: OfferPayloadPrivate)? {
-        guard let (privateVersion, privateCipher) = privatePayload.decode(version: OfferPayloadPrivateVersion.self),
+        guard let (privateVersion, privateCipher) = privatePayload.decodeEncryptionVersion(version: OfferPayloadPrivateVersion.self),
              privateVersion == .v1,
              let privatePartJson = try? privateCipher.ecc.decrypt(keys: keyPair).data(using: .utf8),
              let privatePart = try? Constants.jsonDecoder.decode(OfferPayloadPrivate.self, from: privatePartJson),
-             let (publicVersion, publicCipher) = publicPayload.decode(version: OfferPayloadPrivateVersion.self),
+             let (publicVersion, publicCipher) = publicPayload.decodeEncryptionVersion(version: OfferPayloadPrivateVersion.self),
              publicVersion == .v1,
-             let publicPartJson = try? publicCipher.aes.decrypt(password: privatePart.symetricKey).data(using: .utf8),
+             let publicPartJson = try? publicCipher.aes.decrypt(password: privatePart.symmetricKey).data(using: .utf8),
              let publicPart = try? Constants.jsonDecoder.decode(OfferPayloadPublic.self, from: publicPartJson)
         else {
            return nil

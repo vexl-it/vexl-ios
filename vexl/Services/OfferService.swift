@@ -33,7 +33,7 @@ protocol OfferServiceType {
 
     func getReceiverPublicKeys(friendLevel: ContactFriendLevel, groups: [ManagedGroup], includeUserPublicKey userPublicKey: String) -> AnyPublisher<PKsEnvelope, Error>
     func encryptOffer(offer: ManagedOffer, envelope: PKsEnvelope) -> AnyPublisher<OfferRequestPayload, Error>
-    func generateOfferPayloadPrivateParts(envelope: PKsEnvelope, symetricKey: String) -> AnyPublisher<[OfferPayloadPrivateWrapper], Never>
+    func generateOfferPayloadPrivateParts(envelope: PKsEnvelope, symmetricKey: String) -> AnyPublisher<[OfferPayloadPrivateWrapper], Never>
     func encryptOfferPayloadPrivateParts(privateParts: [OfferPayloadPrivateWrapper]) -> AnyPublisher<[OfferPayloadPrivateWrapperEncrypted], Error>
 }
 
@@ -85,11 +85,11 @@ final class OfferService: BaseService, OfferServiceType {
     }
 
     func createNewPrivateParts(for offer: ManagedOffer, envelope: PKsEnvelope) -> AnyPublisher<Void, Error> {
-        guard let adminID = offer.adminID, let symetricKey = offer.symetricKey else {
+        guard let adminID = offer.adminID, let symmetricKey = offer.symmetricKey else {
             return Fail(error: PersistenceError.insufficientData)
                 .eraseToAnyPublisher()
         }
-        return generateOfferPayloadPrivateParts(envelope: envelope, symetricKey: symetricKey)
+        return generateOfferPayloadPrivateParts(envelope: envelope, symmetricKey: symmetricKey)
             .withUnretained(self)
             .flatMap { owner, privateParts in
                 owner.encryptOfferPayloadPrivateParts(privateParts: privateParts)
@@ -166,16 +166,16 @@ final class OfferService: BaseService, OfferServiceType {
     }
 
     func encryptOffer(offer: ManagedOffer, envelope: PKsEnvelope) -> AnyPublisher<OfferRequestPayload, Error> {
-        guard let symetricKey = offer.symetricKey, let offerType = offer.type, let expiration = offer.expirationDate?.timeIntervalSince1970 else {
+        guard let symmetricKey = offer.symmetricKey, let offerType = offer.type, let expiration = offer.expirationDate?.timeIntervalSince1970 else {
             return Fail(error: PersistenceError.insufficientData)
                 .eraseToAnyPublisher()
         }
         let privateParts = self
-            .generateOfferPayloadPrivateParts(envelope: envelope, symetricKey: symetricKey)
+            .generateOfferPayloadPrivateParts(envelope: envelope, symmetricKey: symmetricKey)
             .flatMap(encryptOfferPayloadPrivateParts)
 
         let publicPart = self
-            .encryptOfferPayloadPublic(offer: offer, symetricKey: symetricKey)
+            .encryptOfferPayloadPublic(offer: offer, symmetricKey: symmetricKey)
 
         let payload = Publishers.Zip(publicPart, privateParts)
             .map { (publicPart, privateParts) -> OfferRequestPayload in
@@ -191,9 +191,9 @@ final class OfferService: BaseService, OfferServiceType {
         return payload
     }
 
-    func generateOfferPayloadPrivateParts(envelope: PKsEnvelope, symetricKey: String) -> AnyPublisher<[OfferPayloadPrivateWrapper], Never> {
+    func generateOfferPayloadPrivateParts(envelope: PKsEnvelope, symmetricKey: String) -> AnyPublisher<[OfferPayloadPrivateWrapper], Never> {
         let allPublicKeys = envelope.allPublicKeys
-        let privateParts = envelope.generatePrivateParts(symetricKey: symetricKey)
+        let privateParts = envelope.generatePrivateParts(symmetricKey: symmetricKey)
         let commonFriends = contactsService
             .getCommonFriends(publicKeys: allPublicKeys)
             .catch { _ in Just([:]) }
@@ -212,7 +212,7 @@ final class OfferService: BaseService, OfferServiceType {
         encryptionService.encryptOfferPayloadPrivateParts(privateParts: privateParts)
     }
 
-    func encryptOfferPayloadPublic(offer: ManagedOffer, symetricKey: String) -> AnyPublisher<String, Error> {
-        encryptionService.encryptOfferPayloadPublic(offer: offer, symetricKey: symetricKey)
+    func encryptOfferPayloadPublic(offer: ManagedOffer, symmetricKey: String) -> AnyPublisher<String, Error> {
+        encryptionService.encryptOfferPayloadPublic(offer: offer, symmetricKey: symmetricKey)
     }
 }
