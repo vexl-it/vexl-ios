@@ -8,9 +8,9 @@
 import Foundation
 
 enum AnonymousProfileType: String {
-    case firstDegree
-    case secondDegree
-    case group
+    case firstDegree = "FIRST_DEGREE"
+    case secondDegree = "SECOND_DEGREE"
+    case group = "GROUP"
 
     var asOfferFriendDegree: OfferFriendDegree? {
         switch self {

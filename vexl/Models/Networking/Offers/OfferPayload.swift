@@ -164,7 +164,7 @@ extension OfferPayload {
               let activePriceCurrency = Currency(rawValue: publicPart.activePriceCurrency)  else {
             return nil
         }
-        let friendLevel = privatePart.friendLevel.compactMap(OfferFriendDegree.init)
+        let friendLevel = privatePart.friendLevel.compactMap(AnonymousProfileType.init)
 
         offer.offerID = offerId
         offer.adminID = adminId
@@ -177,7 +177,7 @@ extension OfferPayload {
         offer.offerDescription = publicPart.offerDescription
         offer.feeState = feeState
         offer.locationState = locationState
-        offer.friendLevels = friendLevel
+        offer.friendLevels = friendLevel.compactMap(\.asOfferFriendDegree)
         offer.offerTypeRawType = offerType.rawValue
         offer.active = publicPart.active
         offer.activePriceState = activePriceState
