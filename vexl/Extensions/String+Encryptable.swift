@@ -10,11 +10,11 @@ import Foundation
 extension String: Encryptable {
     var asString: String { self }
 
-    func encode<T: RawRepresentable>(version: T) -> String where T.RawValue == Int {
+    func encodeEncryptionVersion<T: RawRepresentable>(version: T) -> String where T.RawValue == Int {
         "\(version.rawValue)" + self
     }
 
-    func decode<T: RawRepresentable>(version: T.Type) -> (T, String)? where T.RawValue == Int {
+    func decodeEncryptionVersion<T: RawRepresentable>(version: T.Type) -> (T, String)? where T.RawValue == Int {
         guard let versionString = self.first,
             let version = Int("\(versionString)"),
             let enumeratedVersion = T(rawValue: version) else {
