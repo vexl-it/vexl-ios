@@ -36,7 +36,7 @@ final class LogManager: LogManagerType {
             .eraseToAnyPublisher()
     }
 
-    @UserDefault(.inappLoggingEnabled, defaultValue: true) private(set) var collectLogs: Bool
+    @UserDefault(.inappLoggingEnabled, defaultValue: false) private(set) var collectLogs: Bool
     @Published private var logs: [Log] = []
 
     private let operationQueue = OperationQueue()

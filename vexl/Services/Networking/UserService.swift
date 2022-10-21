@@ -10,23 +10,15 @@ import Foundation
 import Combine
 
 protocol UserServiceType {
-    func me() -> AnyPublisher<User, Error>
     func requestVerificationCode(phoneNumber: String) -> AnyPublisher<PhoneVerification, Error>
     func confirmValidationCode(id: Int, code: String, key: String) -> AnyPublisher<CodeValidation, Error>
     func validateChallenge(key: String, signature: String) -> AnyPublisher<ChallengeValidation, Error>
-    func createUser(username: String, avatar: String?) -> AnyPublisher<User, Error>
-    func updateUser(username: String, avatar: String?) -> AnyPublisher<EditUser, Error>
-    func deleteUser() -> AnyPublisher<Void, Error>
     func facebookSignature(id: String) -> AnyPublisher<ChallengeValidation, Error>
     func getBitcoinData() -> AnyPublisher<CoinData, Error>
     func getBitcoinChartData(currency: Currency, option: TimelineOption) -> AnyPublisher<CoinChartData, Error>
 }
 
 final class UserService: BaseService, UserServiceType {
-
-    func me() -> AnyPublisher<User, Error> {
-        request(type: User.self, endpoint: UserRouter.me)
-    }
 
     func requestVerificationCode(phoneNumber: String) -> AnyPublisher<PhoneVerification, Error> {
         request(type: PhoneVerification.self, endpoint: UserRouter.confirmPhone(phoneNumber: phoneNumber))
@@ -41,23 +33,6 @@ final class UserService: BaseService, UserServiceType {
     func validateChallenge(key: String, signature: String) -> AnyPublisher<ChallengeValidation, Error> {
         request(type: ChallengeValidation.self, endpoint: UserRouter.validateChallenge(signature: signature, key: key))
             .eraseToAnyPublisher()
-    }
-
-    func createUser(username: String, avatar: String?) -> AnyPublisher<User, Error> {
-        request(type: User.self, endpoint: UserRouter.createUser(username: username,
-                                                                 avatar: avatar,
-                                                                 imageExtension: Constants.jpegFormat))
-            .eraseToAnyPublisher()
-    }
-
-    func updateUser(username: String, avatar: String?) -> AnyPublisher<EditUser, Error> {
-        request(type: EditUser.self, endpoint: UserRouter.updateUser(username: username,
-                                                                     avatar: avatar,
-                                                                     imageExtension: Constants.jpegFormat))
-    }
-
-    func deleteUser() -> AnyPublisher<Void, Error> {
-        request(endpoint: UserRouter.deleteUser)
     }
 
     func facebookSignature(id: String) -> AnyPublisher<ChallengeValidation, Error> {

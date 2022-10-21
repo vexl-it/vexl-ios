@@ -17,9 +17,19 @@ protocol UserRepositoryType {
 
     func createNewUser(newKeys: ECCKeys, signature: String?, hash: String?, phoneNumber: String) -> AnyPublisher<ManagedUser, Error>
     func getUser(for context: NSManagedObjectContext) -> ManagedUser?
-    func update(with userResponse: User, avatar: Data?, anonymizedUsername: String) -> AnyPublisher<ManagedUser, Error>
-    func update(username: String, avatarURL: String?, avatar: Data?) -> AnyPublisher<Void, Error>
+    func update(username: String?, avatar: Data?, avatarURL: String?, anonymizedUsername: String?) -> AnyPublisher<ManagedUser, Error>
     func getInboxes() -> [ManagedInbox]
+}
+
+extension UserRepositoryType {
+    func update(
+        username: String? = nil,
+        avatar: Data? = nil,
+        avatarURL: String? = nil,
+        anonymizedUsername: String? = nil
+    ) -> AnyPublisher<ManagedUser, Error> {
+        update(username: username, avatar: avatar, avatarURL: avatarURL, anonymizedUsername: anonymizedUsername)
+    }
 }
 
 final class UserRepository: UserRepositoryType {
@@ -77,34 +87,26 @@ final class UserRepository: UserRepositoryType {
         return persistenceManager.loadSyncroniously(type: ManagedUser.self, context: context, objectID: objId)
     }
 
-    func update(with userResponse: User, avatar: Data?, anonymizedUsername: String) -> AnyPublisher<ManagedUser, Error> {
+    func update(username: String?, avatar: Data?, avatarURL: String?, anonymizedUsername: String?) -> AnyPublisher<ManagedUser, Error> {
         guard let user = user else {
             return Fail(error: PersistenceError.insufficientData)
                 .eraseToAnyPublisher()
         }
         return persistenceManager.update(context: context) { [user] _ in
-            user.userId = Int64(userResponse.userId ?? 0)
-            user.profile?.name = userResponse.username
-            user.profile?.avatarURL = userResponse.avatar
-            user.profile?.avatar = avatar
-            user.profile?.anonymizedUsername = anonymizedUsername
-            return user
-        }
-    }
-
-    func update(username: String, avatarURL: String?, avatar: Data?) -> AnyPublisher<Void, Error> {
-        guard let user = user else {
-            return Fail(error: PersistenceError.insufficientData)
-                .eraseToAnyPublisher()
-        }
-        return persistenceManager.update(context: context) { [user] _ in
-            user.profile?.name = username
-            if avatar != nil {
+            if let username = username {
+                user.profile?.name = username
+            }
+            if let avatarURL = avatarURL {
                 user.profile?.avatarURL = avatarURL
+            }
+            if let avatar = avatar {
                 user.profile?.avatar = avatar
             }
+            if let anonymizedUsername = anonymizedUsername {
+                user.profile?.anonymizedUsername = anonymizedUsername
+            }
+            return user
         }
-        .eraseToAnyPublisher()
     }
 
     func getInboxes() -> [ManagedInbox] {
