@@ -110,15 +110,9 @@ extension AuthenticationManager {
 
         let serverPublishers: AnyPublisher<Void, Never> = {
                 if !force {
-                    return userService
+                    return contactService
                         .deleteUser()
-                        .nilOnError()
-                        .flatMap { [contactService] _ in
-                            contactService
-                                .deleteUser()
-                                .justOnError()
-                                .eraseToAnyPublisher()
-                        }
+                        .justOnError()
                         .flatMap { [persistanceManager] _ -> AnyPublisher<Void, Never> in
                             let offers = persistanceManager.loadSyncroniously(
                                 type: ManagedOffer.self,
