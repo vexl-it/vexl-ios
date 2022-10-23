@@ -164,6 +164,7 @@
 		B0C838EE28C2285F0086B8F3 /* vexl_get_started.json in Resources */ = {isa = PBXBuildFile; fileRef = B0C838EA28C2285F0086B8F3 /* vexl_get_started.json */; };
 		B0C838F028C243220086B8F3 /* vexl_donate.json in Resources */ = {isa = PBXBuildFile; fileRef = B0C838EF28C243220086B8F3 /* vexl_donate.json */; };
 		B0C838F328C2AA9D0086B8F3 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = B0C838F528C2AA9D0086B8F3 /* InfoPlist.strings */; };
+		B0E3699E2903DEC600BAFC9C /* OfferPayloadEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E3699D2903DEC600BAFC9C /* OfferPayloadEncoder.swift */; };
 		B0E9BB272815C5750012BF1D /* String+Encryptable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E9BB262815C5750012BF1D /* String+Encryptable.swift */; };
 		B0E9BB2A2815C7190012BF1D /* AES.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E9BB292815C7190012BF1D /* AES.swift */; };
 		B0E9BB2C2815C71E0012BF1D /* ECC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E9BB2B2815C71E0012BF1D /* ECC.swift */; };
@@ -649,6 +650,7 @@
 		B0C838F628C2AAA00086B8F3 /* cs */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = cs; path = cs.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		B0C838F728C2AAA10086B8F3 /* sk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sk; path = sk.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		B0DF087628C61BAB004E77DB /* VexlDataModel_1.0.1.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = VexlDataModel_1.0.1.xcdatamodel; sourceTree = "<group>"; };
+		B0E3699D2903DEC600BAFC9C /* OfferPayloadEncoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferPayloadEncoder.swift; sourceTree = "<group>"; };
 		B0E9BB262815C5750012BF1D /* String+Encryptable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Encryptable.swift"; sourceTree = "<group>"; };
 		B0E9BB292815C7190012BF1D /* AES.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AES.swift; sourceTree = "<group>"; };
 		B0E9BB2B2815C71E0012BF1D /* ECC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ECC.swift; sourceTree = "<group>"; };
@@ -1599,6 +1601,7 @@
 				B0E9BB2F2815C7310012BF1D /* SHA.swift */,
 				B0E9BB312815D2B60012BF1D /* CryptographicError.swift */,
 				B06A3B4E287C967F00911795 /* Encryptable.swift */,
+				B0E3699D2903DEC600BAFC9C /* OfferPayloadEncoder.swift */,
 			);
 			path = Cryptography;
 			sourceTree = "<group>";
@@ -3172,6 +3175,7 @@
 				F1A9454627F81278009B5AE3 /* ContactInformation.swift in Sources */,
 				F1D2011F282960DC006DF4AB /* TabBarView.swift in Sources */,
 				B08D2AB7289FFDD100A1C901 /* GroupManager.swift in Sources */,
+				B0E3699E2903DEC600BAFC9C /* OfferPayloadEncoder.swift in Sources */,
 				F11441C7284681EC00307D39 /* RegistrationCardView.swift in Sources */,
 				B08F391327AE7112008B344F /* ManagerAssembly.swift in Sources */,
 				B007A75A287226D000CFA5C9 /* ManagedChat+.swift in Sources */,
