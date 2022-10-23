@@ -173,12 +173,9 @@ final class SplashScreenViewModel: ViewModelType {
         let requests = switchContext
             .flatMap(\.1.publisher)
 //            .receive(on: reencryptionRequestQueue)
-//            .print("[debug] requests")
             .flatMap { [offerService] payload in
                 offerService.createOffer(offerPayload: payload)
-//                    .print("[debug] requests 2")
             }
-//            .print("[debug] requests 3")
 
             .receive(on: DispatchQueue.main)
             .asVoid()
