@@ -7,13 +7,19 @@
 
 import Foundation
 
-struct PKsEnvelope {
-    var contacts: ContactPKsEnvelope
-    var groups: [GroupPKsEnvelope]
-    var userPublicKey: String
+class PKsEnvelope {
+    let contacts: ContactPKsEnvelope
+    let groups: [GroupPKsEnvelope]
+    let userPublicKey: String
 
-    var allPublicKeys: [String] {
-        contacts.firstDegree + contacts.secondDegree + groups.flatMap(\.publicKeys) + [userPublicKey]
+    lazy var allPublicKeys: [String] = {
+        Array(Set(contacts.firstDegree + contacts.secondDegree + groups.flatMap(\.publicKeys) + [userPublicKey]))
+    }()
+
+    init(contacts: ContactPKsEnvelope, groups: [GroupPKsEnvelope], userPublicKey: String) {
+        self.contacts = contacts
+        self.groups = groups
+        self.userPublicKey = userPublicKey
     }
 
     func generatePrivateParts(symmetricKey: String) -> [OfferPayloadPrivateWrapper] {
@@ -31,6 +37,19 @@ struct PKsEnvelope {
         }
         hashMap[userPublicKey]?.commonFriends.append(AnonymousProfileType.firstDegree.rawValue)
         return hashMap.map { OfferPayloadPrivateWrapper(userPublicKey: $0.key, payloadPrivate: $0.value) }
+    }
+
+    func subset(for offer: ManagedOffer) -> PKsEnvelope {
+        PKsEnvelope(
+            contacts: ContactPKsEnvelope(
+                firstDegree: contacts.firstDegree,
+                secondDegree: offer.friendLevels.contains(.secondDegree) ? contacts.secondDegree : []
+            ),
+            groups: offer.group?.uuid != nil
+                ? groups.filter { $0.group.uuid == offer.group?.uuid }
+                : [],
+            userPublicKey: userPublicKey
+        )
     }
 }
 

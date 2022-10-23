@@ -216,6 +216,8 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
     private var managedOffer: ManagedOffer?
     private let secondsToWaitForOfferLoader = RunLoop.SchedulerTimeType.Stride(3)
 
+    private let encoder = OfferRequestPayloadEncoder()
+
     private let cancelBag: CancelBag = .init()
 
     init(offer: ManagedOffer) {
@@ -258,6 +260,16 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
             .map(\.objects)
             .map { $0.splitIntoChunks(by: 2) }
             .assign(to: &$groupRows)
+
+
+        encoder.progressPublisher
+            .withUnretained(self)
+            .sink { owner, zip in
+                let (currentProgress, maxProgress) = zip
+                owner.encryptionProgress = currentProgress
+                owner.encryptionMaxProgress = maxProgress
+            }
+            .store(in: cancelBag)
     }
 
     private func setupActivity() {
@@ -453,9 +465,13 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
 
         let encryption = disableIdleTimer
             .withUnretained(self)
-            .flatMap { owner, zip in
+            .flatMap { owner, zip -> AnyPublisher<(Bool, OfferRequestPayload, ManagedOffer), Never> in
                 let (isCreating, offer, receiverPublicKeys) = zip
-                return owner.encryptOffer(isCreating: isCreating, offer: offer, publicKeyEnvelope: receiverPublicKeys)
+                owner.showEncryptionLoader = true
+                return owner.encoder.encode(offer: offer, envelope: receiverPublicKeys)
+                    .map { (isCreating, $0, offer) }
+                    .trackError(owner.errorIndicator)
+                    .eraseToAnyPublisher()
 
                 // NOTE: The progress bar *could* be interuptable. If user would decide to hide the progress bar, you could:
                 // 1. collect all encrypted payloads and send them to BE
@@ -557,77 +573,5 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
                 owner.objectWillChange.send()
             }
             .store(in: cancelBag)
-    }
-
-    /// The receiver keys are split into groups of X keys.
-    /// After that each group is encrypted using the `OfferService` - `encryptOffer` method.
-    /// Once the encryption is done, the progress number is updated so that it is visualized in the progress view
-    /// When all the groups have finish encrypting, the publishers are collected an a single array of payloads is sent to the stream.
-    private func encryptOffer(isCreating: Bool,
-                              offer: ManagedOffer,
-                              publicKeyEnvelope: PKsEnvelope) -> AnyPublisher<(Bool, OfferRequestPayload, ManagedOffer), Never> {
-        guard let symmetricKey = offer.symmetricKey else {
-            return Fail(error: AESError.couldMotGeneratePassword)
-                .trackError(errorIndicator)
-                .eraseToAnyPublisher()
-        }
-
-        let receiverPublicKeys = publicKeyEnvelope.allPublicKeys
-        let receiverChunksRatio = (Double(receiverPublicKeys.count) / Double(Constants.encryptionKeySplitAmount))
-        let receiverChunksCount = Int(receiverChunksRatio.rounded(.up))
-
-        let chuncks = offerService
-            .generateOfferPayloadPrivateParts(envelope: publicKeyEnvelope, symmetricKey: symmetricKey)
-            .flatMap { $0.splitIntoChunks(by: Constants.encryptionKeySplitAmount).publisher }
-            .withUnretained(self)
-            .handleEvents(receiveOutput: { owner, chunks in
-                owner.showEncryptionLoader = true
-                owner.encryptionProgress = 0
-                owner.encryptionMaxProgress = chunks.count + 1
-            })
-            .map(\.1)
-
-        let privatePartEncryption = chuncks
-            .flatMap { [offerService] privateParts in
-                offerService.encryptOfferPayloadPrivateParts(privateParts: privateParts)
-            }
-            .withUnretained(self)
-            .handleEvents(receiveOutput: { owner, payloads in
-                owner.encryptionProgress += payloads.count
-            })
-            .map { $0.1 }
-            .collect(receiverChunksCount)
-            .map { chunks in chunks.flatMap { $0 } }
-            .eraseToAnyPublisher()
-
-        let publicPartEncryption = privatePartEncryption
-            .flatMap { [encryptionService] privateParts -> AnyPublisher<(String, [OfferPayloadPrivateWrapperEncrypted]), Error> in
-                encryptionService
-                    .encryptOfferPayloadPublic(offer: offer, symmetricKey: symmetricKey)
-                    .map { ($0, privateParts) }
-                    .eraseToAnyPublisher()
-            }
-            .withUnretained(self)
-            .handleEvents(receiveOutput: { owner, _ in
-                owner.encryptionProgress += 1
-            })
-            .map { $0.1 }
-
-        let requestPayload = publicPartEncryption
-            .withUnretained(self)
-            .map { (owner: OfferSettingsViewModel, tupl: (String, [OfferPayloadPrivateWrapperEncrypted])) -> OfferRequestPayload in
-                let (publicPart, privateParts) = tupl
-                return OfferRequestPayload(
-                    offerType: owner.offerType.rawValue,
-                    expiration: Int(owner.expiration),
-                    payloadPublic: publicPart,
-                    offerPrivateList: privateParts
-                )
-            }
-
-        return requestPayload
-            .map { (isCreating, $0, offer) }
-            .trackError(errorIndicator)
-            .eraseToAnyPublisher()
     }
 }

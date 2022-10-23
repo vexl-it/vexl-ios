@@ -209,7 +209,7 @@ final class OfferService: BaseService, OfferServiceType {
     }
 
     func encryptOfferPayloadPrivateParts(privateParts: [OfferPayloadPrivateWrapper]) -> AnyPublisher<[OfferPayloadPrivateWrapperEncrypted], Error> {
-        encryptionService.encryptOfferPayloadPrivateParts(privateParts: privateParts)
+        encryptionService.encryptOfferPayload(privateParts: privateParts)
     }
 
     func encryptOfferPayloadPublic(offer: ManagedOffer, symmetricKey: String) -> AnyPublisher<String, Error> {
