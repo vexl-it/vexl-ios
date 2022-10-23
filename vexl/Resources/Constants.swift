@@ -28,7 +28,7 @@ struct Constants {
         #else
         private static let userApiHostname = "https://user.vexl.devel.cleevio.io"
         private static let contactsApiHostname = "https://contact.vexl.devel.cleevio.io"
-        private static let offersApiHostname = "https://offer.vexl.devel.cleevio.io"
+        private static let offersApiHostname = "https://offer2.vexl.devel.cleevio.io"
         private static let chatApiHostname = "https://chat.vexl.devel.cleevio.io"
         #endif
 

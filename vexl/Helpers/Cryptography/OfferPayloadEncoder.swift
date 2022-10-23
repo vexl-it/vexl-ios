@@ -110,4 +110,17 @@ class OfferRequestPayloadEncoder {
         return requestPayload
     }
 
+    func encode(offers: [ManagedOffer], envelope: PKsEnvelope) -> AnyPublisher<[OfferRequestPayload], Error>{
+        Just(offers)
+            .flatMap(\.publisher)
+            .withUnretained(self)
+            .flatMap { owner, offer -> AnyPublisher<OfferRequestPayload, Error> in
+                let subsetEnvelope = envelope.subset(for: offer)
+                return owner.encode(offer: offer, envelope: subsetEnvelope)
+            }
+            .collect()
+            .eraseToAnyPublisher()
+    }
+
+
 }
