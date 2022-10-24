@@ -159,11 +159,9 @@ final class RegisterAnonymizeViewModel: ViewModelType {
         action
             .filter { $0 == .createUser }
             .asVoid()
-            .withUnretained(self)
-            .map(\.input.avatar)
-            .flatMapLatest(with: self, { owner, avatarData in
+            .flatMapLatest(with: self, { owner in
                 owner.userRepository
-                    .update(username: owner.input.username, avatar: avatarData, avatarURL: nil, anonymizedUsername: owner.anonymizedUsername ?? "")
+                    .update(username: owner.input.username, avatar: owner.input.avatar, avatarURL: nil, anonymizedUsername: owner.anonymizedUsername ?? "")
                     .track(activity: owner.primaryActivity)
                     .receive(on: RunLoop.main)
             })
