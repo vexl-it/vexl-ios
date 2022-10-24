@@ -121,6 +121,7 @@ class OfferRepository: OfferRepositoryType {
                 if let localOfferKey = pks.first {
                     if let offer = localOfferKey.offer {
                         payload.decrypt(context: context, userInbox: userInbox, into: offer)
+                        offer.isRemoved = false
                     }
                     return nil
                 }
@@ -245,14 +246,15 @@ class OfferRepository: OfferRepositoryType {
                           predicate: NSPredicate(format: "%@ contains[cd] keyPair.publicKey AND typeRawValue == nil",
                                                  NSArray(array: inboxesPublicKeys)))
             }
-            .flatMap { [persistence] inboxes -> AnyPublisher<Void, Error> in
-                persistence.delete(context: context, editor: { _ in inboxes })
-            }
             .eraseToAnyPublisher()
 
         let deleteOffers = getOffers
             .flatMap { [persistence] offers -> AnyPublisher<Void, Error> in
-                persistence.delete(context: context, editor: { _ in offers })
+                persistence.update(context: context) { _ in
+                    offers.forEach { offer in
+                        offer.isRemoved = true
+                    }
+                }
             }
             .eraseToAnyPublisher()
 
