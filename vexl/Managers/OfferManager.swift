@@ -56,7 +56,6 @@ final class OfferManager: OfferManagerType {
         cancellable = offerService
             .getNewOffers(pageLimit: Constants.pageMaxLimit, lastSyncDate: lastSyncDate)
             .map(\.offers)
-            .filter(\.isEmpty.not)
             .flatMap { [offerRepository] payloads -> AnyPublisher<[ManagedOffer], Error> in
                 offerRepository.createOrUpdateOffer(offerPayloads: payloads)
             }
