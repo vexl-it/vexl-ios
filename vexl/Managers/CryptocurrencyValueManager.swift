@@ -47,7 +47,7 @@ final class CryptocurrencyValueManager: CryptocurrencyValueManagerType {
     init(option: TimelineOption) {
         currentTimeline = .init(option)
 
-        let currency: Currency = UserDefaults.standard.codable(forKey: .selectedCurrency) ?? .usd
+        let currency: Currency = UserDefaultsConfig.selectedCurrency
         selectedCurrency = .init(currency)
 
         let coinData: CoinData? = UserDefaults.standard.codable(forKey: .cachedCoinData)
@@ -55,7 +55,7 @@ final class CryptocurrencyValueManager: CryptocurrencyValueManagerType {
         currentCoinData = .init(coinDataState)
 
         selectedCurrency
-            .sink { UserDefaults.standard.set(value: $0, forKey: .selectedCurrency) }
+            .sink { UserDefaultsConfig.selectedCurrency = $0 }
             .store(in: cancelBag)
 
         currentCoinData
