@@ -29,6 +29,7 @@ final class SplashScreenViewModel: ViewModelType {
 
     @Inject var initialScreenManager: InitialScreenManager
     @Inject var authenticationManager: AuthenticationManager
+    @Inject var offerManager: OfferManagerType
     @Inject var offerRepository: OfferRepositoryType
     @Inject var offerService: OfferServiceType
     @Inject var userRepository: UserRepositoryType
@@ -199,6 +200,9 @@ final class SplashScreenViewModel: ViewModelType {
 
         return Publishers.Merge(update, noOffers)
             .justOnError()
+            .handleEvents(receiveOutput: { [offerManager] in
+                offerManager.resetSyncDate()
+            })
             .eraseToAnyPublisher()
     }
 }

@@ -14,6 +14,7 @@ protocol OfferManagerType {
     var didFinishSyncing: AnyPublisher<Void, Never> { get }
 
     func sync()
+    func resetSyncDate()
     func reencryptUserOffers(withPublicKeys publicKeys: [String], friendLevel: OfferFriendDegree, completionHandler: ((Error?) -> Void)?) -> AnyPublisher<Void, Error>
     func reencrypt(offers: [ManagedOffer], withPublicKeys: [String]) -> AnyPublisher<Void, Error>
 
@@ -43,13 +44,17 @@ final class OfferManager: OfferManagerType {
 
     private var _didFinishSyncing: PassthroughSubject<Void, Never> = .init()
 
+    func resetSyncDate() {
+        lastSyncDate = Date(timeIntervalSince1970: 0)
+    }
+
     func sync() {
         guard cancellable == nil else {
             return
         }
         let startDate = Date()
         cancellable = offerService
-            .getNewOffers(pageLimit: Constants.pageMaxLimit, lastSyncDate: Date(timeIntervalSince1970: 0))
+            .getNewOffers(pageLimit: Constants.pageMaxLimit, lastSyncDate: lastSyncDate)
             .map(\.offers)
             .filter(\.isEmpty.not)
             .flatMap { [offerRepository] payloads -> AnyPublisher<[ManagedOffer], Error> in
