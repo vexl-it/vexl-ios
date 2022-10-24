@@ -93,16 +93,16 @@ final class UserRepository: UserRepositoryType {
                 .eraseToAnyPublisher()
         }
         return persistenceManager.update(context: context) { [user] _ in
-            if let username = username {
+            if let username {
                 user.profile?.name = username
             }
-            if let avatarURL = avatarURL {
+            if let avatarURL {
                 user.profile?.avatarURL = avatarURL
             }
-            if let avatar = avatar {
+            if let avatar  {
                 user.profile?.avatar = avatar
             }
-            if let anonymizedUsername = anonymizedUsername {
+            if let anonymizedUsername {
                 user.profile?.anonymizedUsername = anonymizedUsername
             }
             return user
