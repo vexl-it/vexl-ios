@@ -35,7 +35,7 @@ struct Offer: Equatable {
 
     init(isActive: Bool = true,
          description: String = "",
-         currency: Currency = Constants.OfferInitialData.currency,
+         currency: Currency = UserDefaultsConfig.selectedCurrency,
          currentAmountRange: ClosedRange<Int> = Constants.OfferInitialData.minOffer...Constants.OfferInitialData.maxOffer,
          selectedFeeOption: OfferFeeOption = .withoutFee,
          feeAmount: Double = Constants.OfferInitialData.minFee,
@@ -65,7 +65,7 @@ struct Offer: Equatable {
         guard let managedOffer = managedOffer else { return nil }
         isActive = managedOffer.active
         description = managedOffer.offerDescription ?? ""
-        currency = managedOffer.currency ?? Constants.OfferInitialData.currency
+        currency = managedOffer.currency ?? UserDefaultsConfig.selectedCurrency
         currentAmountRange = Int(managedOffer.minAmount)...Int(managedOffer.maxAmount)
         selectedFeeOption = managedOffer.feeState ?? .withoutFee
         feeAmount = managedOffer.feeAmount
