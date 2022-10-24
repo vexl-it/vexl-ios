@@ -28,13 +28,13 @@ struct SplashScreenView: View {
                     Color.black
                         .opacity(Appearance.dimmingViewOpacity)
                         .transition(.opacity)
-                    
+                        .ignoresSafeArea()
+
                     OfferSettingsProgressView(currentValue: viewModel.currentEncryptedItemCount,
                                               maxValue: viewModel.maxEncryptedItemCount)
                         .transition(.move(edge: .bottom).combined(with: .opacity))
                 }
             }
-            .ignoresSafeArea()
         }
     }
 }
