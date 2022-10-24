@@ -85,7 +85,7 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
         }
     )
 
-    let triggerCurrency: Currency
+    var triggerCurrency: Currency
 
     var isOfferNew: Bool { managedOffer == nil }
     var isButtonActive: Bool { isCreateEnabled && (offer != Offer(managedOffer: managedOffer) || areLocationsUpdated) }
@@ -257,6 +257,14 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
             .map(\.objects)
             .map { $0.splitIntoChunks(by: 2) }
             .assign(to: &$groupRows)
+
+        $offer
+            .compactMap(\.currency)
+            .withUnretained(self)
+            .sink { owner, currency in
+                owner.triggerCurrency = currency
+            }
+            .store(in: cancelBag)
     }
 
     private func setupActivity() {
