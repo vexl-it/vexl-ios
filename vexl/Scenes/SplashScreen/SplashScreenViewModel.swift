@@ -32,6 +32,7 @@ final class SplashScreenViewModel: ViewModelType {
     @Inject var offerRepository: OfferRepositoryType
     @Inject var offerService: OfferServiceType
     @Inject var userRepository: UserRepositoryType
+    @Inject var persistenceManager: PersistenceStoreManagerType
 
     // MARK: - Actions Bindings
 
@@ -169,22 +170,34 @@ final class SplashScreenViewModel: ViewModelType {
                 owner.showReencryptionProgress = true
             })
 
-        let requests = switchContext
+        let requests: AnyPublisher<[(ManagedOffer, OfferPayload)], Error> = switchContext
             .flatMap(\.1.publisher)
-            .flatMap { [offerService] payload in
+            .flatMap { [offerService] offer, payload in
                 offerService.createOffer(offerPayload: payload)
+                    .map { (offer, $0) }
             }
-
             .receive(on: DispatchQueue.main)
-            .asVoid()
             .withUnretained(self)
             .handleEvents(receiveOutput: { owner, _ in
                 owner.currentEncryptedItemCount += 1
             })
+            .map(\.1)
             .collect()
-            .asVoid()
+            .eraseToAnyPublisher()
 
-        return Publishers.Merge(requests, noOffers)
+        let update = requests
+            .flatMap { [persistenceManager] offerReposnses -> AnyPublisher<Void, Error> in
+                let context = persistenceManager.viewContext
+                return persistenceManager.update(context: context) { context -> Void in
+                    offerReposnses.map { offer, response in
+                        offer.offerID = response.offerId
+                        offer.adminID = response.adminId
+                    }
+                }
+                .eraseToAnyPublisher()
+            }
+
+        return Publishers.Merge(update, noOffers)
             .justOnError()
             .eraseToAnyPublisher()
     }
