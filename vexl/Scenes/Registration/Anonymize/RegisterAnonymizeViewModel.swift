@@ -158,24 +158,10 @@ final class RegisterAnonymizeViewModel: ViewModelType {
     private func setupCreateUserBindings() {
         action
             .filter { $0 == .createUser }
-            .flatMapLatest(with: self) { owner, _ -> AnyPublisher<String?, Never> in
-                guard let avatar = owner.input.avatar else { return Just<String?>(nil).eraseToAnyPublisher() }
-                return avatar.base64Publisher
-                    .track(activity: owner.primaryActivity)
-            }
-            .flatMapLatest(with: self) { owner, base64 -> AnyPublisher<(User, String?), Never> in
-                owner.userService
-                    .createUser(username: owner.input.username,
-                                avatar: base64)
-                    .track(activity: owner.primaryActivity)
-                    .materialize()
-                    .compactMap(\.value)
-                    .map { ($0, base64) }
-                    .eraseToAnyPublisher()
-            }
-            .flatMapLatest(with: self, { owner, user in
+            .asVoid()
+            .flatMapLatest(with: self, { owner in
                 owner.userRepository
-                    .update(with: user.0, avatar: user.1?.dataFromBase64, anonymizedUsername: owner.anonymizedUsername ?? "")
+                    .update(username: owner.input.username, avatar: owner.input.avatar, avatarURL: nil, anonymizedUsername: owner.anonymizedUsername ?? "")
                     .track(activity: owner.primaryActivity)
                     .receive(on: RunLoop.main)
             })

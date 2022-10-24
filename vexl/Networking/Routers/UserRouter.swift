@@ -10,10 +10,6 @@ import Foundation
 import Alamofire
 
 enum UserRouter: ApiRouter {
-    case me
-    case createUser(username: String, avatar: String?, imageExtension: String)
-    case updateUser(username: String, avatar: String?, imageExtension: String)
-    case deleteUser
     case confirmPhone(phoneNumber: String)
     case validateCode(id: Int, code: String, key: String)
     case validateChallenge(signature: String, key: String)
@@ -23,20 +19,16 @@ enum UserRouter: ApiRouter {
 
     var method: HTTPMethod {
         switch self {
-        case .me, .facebookSignature, .bitcoin, .bitcoinChart:
+        case .facebookSignature, .bitcoin, .bitcoinChart:
             return .get
-        case .createUser, .confirmPhone, .validateCode, .validateChallenge:
+        case .confirmPhone, .validateCode, .validateChallenge:
             return .post
-        case .deleteUser:
-            return .delete
-        case .updateUser:
-            return .put
         }
     }
 
     var additionalHeaders: [Header] {
         switch self {
-        case .createUser, .facebookSignature, .bitcoin, .deleteUser, .bitcoinChart, .updateUser:
+        case .facebookSignature, .bitcoin, .bitcoinChart:
             return securityHeader
         default:
             return []
@@ -45,10 +37,6 @@ enum UserRouter: ApiRouter {
 
     var path: String {
         switch self {
-        case .me, .deleteUser, .updateUser:
-            return "user/me"
-        case .createUser:
-            return "user"
         case .confirmPhone:
             return "user/confirmation/phone"
         case .validateCode:
@@ -66,15 +54,8 @@ enum UserRouter: ApiRouter {
 
     var parameters: Parameters {
         switch self {
-        case .me, .facebookSignature, .bitcoin, .deleteUser:
+        case .facebookSignature, .bitcoin:
             return [:]
-        case let .createUser(username, avatar, imageExtension),
-             let .updateUser(username, avatar, imageExtension):
-            guard let avatar = avatar else {
-                return ["username": username]
-            }
-            return ["username": username,
-                    "avatar": ["extension": imageExtension, "data": avatar]]
         case let .validateChallenge(signature, key):
             return ["userPublicKey": key,
                     "signature": signature]
