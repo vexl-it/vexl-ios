@@ -69,18 +69,19 @@ class OfferRequestPayloadEncoder {
             .generateOfferPayloadPrivateParts(envelope: envelope, symmetricKey: symmetricKey)
 
         let privatePartEncryption = chuncks
-            .flatMap(\.publisher)
-            .receive(on: encryptionQueue)
-            .flatMap { [encryptionService] privatePart in
-                encryptionService.encryptOfferPayload(privatePart: privatePart)
-            }
             .withUnretained(self)
-            .handleEvents(receiveOutput: { owner, _ in
-                owner.progressInput.send(())
-            })
-            .map { $0.1 }
-            .receive(on: RunLoop.current)
-            .collect(envelopeCount)
+            .flatMap { [encryptionService] owner, payloads in
+                payloads.publisher
+                    .flatMap { [encryptionService] privatePart in
+                        encryptionService.encryptOfferPayload(privatePart: privatePart)
+                    }
+                    .withUnretained(owner)
+                    .handleEvents(receiveOutput: { owner, _ in
+                        owner.progressInput.send(())
+                    })
+                    .map { $0.1 }
+                    .collect()
+            }
             .eraseToAnyPublisher()
 
         let publicPartEncryption = privatePartEncryption
