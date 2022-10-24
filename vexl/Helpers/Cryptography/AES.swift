@@ -8,7 +8,7 @@
 import Foundation
 
 enum AESError: Error {
-    case couldMotGeneratePassword
+    case couldNotGeneratePassword
 }
 
 struct AES {

@@ -30,7 +30,9 @@ class OfferRequestPayloadEncoder {
     private let progressQueue: OperationQueue = .init()
     private let cancelBag: CancelBag = .init()
 
-    init() {
+    init(encryptedItemsCount: Int = 0, maxEncryptedItemsCount: Int = 0) {
+        self.encryptedItemsCount = encryptedItemsCount
+        self.maxEncryptedItemsCount = maxEncryptedItemsCount
         progressQueue.maxConcurrentOperationCount = 1
         progressInput
             .receive(on: progressQueue)

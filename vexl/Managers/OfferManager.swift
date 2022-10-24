@@ -49,7 +49,7 @@ final class OfferManager: OfferManagerType {
         }
         let startDate = Date()
         cancellable = offerService
-            .getNewOffers(pageLimit: Constants.pageMaxLimit, lastSyncDate: lastSyncDate)
+            .getNewOffers(pageLimit: Constants.pageMaxLimit, lastSyncDate: Date(timeIntervalSince1970: 0))
             .map(\.offers)
             .filter(\.isEmpty.not)
             .flatMap { [offerRepository] payloads -> AnyPublisher<[ManagedOffer], Error> in

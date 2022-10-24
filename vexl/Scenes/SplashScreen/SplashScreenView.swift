@@ -28,12 +28,10 @@ struct SplashScreenView: View {
                     Color.black
                         .opacity(Appearance.dimmingViewOpacity)
                         .transition(.opacity)
-                        .zIndex(0)
                     
                     OfferSettingsProgressView(currentValue: viewModel.currentEncryptedItemCount,
                                               maxValue: viewModel.maxEncryptedItemCount)
-                    .transition(.move(edge: .bottom).combined(with: .opacity))
-                    .zIndex(1)
+                        .transition(.move(edge: .bottom).combined(with: .opacity))
                 }
             }
             .ignoresSafeArea()
