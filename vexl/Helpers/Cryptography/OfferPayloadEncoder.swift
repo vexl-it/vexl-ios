@@ -13,8 +13,8 @@ class OfferRequestPayloadEncoder {
     @Inject private var encryptionService: EncryptionServiceType
     @Inject private var offerService: OfferServiceType
 
-    @Published private var encryptedItemsCount: Int = 0
-    @Published private var maxEncryptedItemsCount: Int = 0
+    @Published private var encryptedItemsCount: Int
+    @Published private var maxEncryptedItemsCount: Int
 
     var progressPublisher: AnyPublisher<(Int, Int), Never> {
         Publishers.CombineLatest(
@@ -51,7 +51,7 @@ class OfferRequestPayloadEncoder {
 
     func encode(offer: ManagedOffer, envelope: PKsEnvelope) -> AnyPublisher<OfferRequestPayload, Error> {
         guard let symmetricKey = offer.symmetricKey else {
-            return Fail(error: AESError.couldMotGeneratePassword)
+            return Fail(error: AESError.couldNotGeneratePassword)
                 .eraseToAnyPublisher()
         }
         guard let expiration = offer.expirationDate?.timeIntervalSince1970, let offerType = offer.type else {

@@ -42,8 +42,8 @@ struct OfferPayloadPrivateWrapper: Codable {
 }
 
 struct OfferPayloadPrivateWrapperEncrypted: Codable {
-    var userPublicKey: String
-    var payloadPrivate: String
+    let userPublicKey: String
+    let payloadPrivate: String
 
     var asJson: [String: Any] {
         [
@@ -58,23 +58,23 @@ enum OfferPayloadPublicVersion: Int {
 }
 
 struct OfferPayloadPublic: Codable {
-    var location: [String]
-    var offerPublicKey: String
-    var offerDescription: String
-    var amountBottomLimit: String
-    var amountTopLimit: String
-    var feeState: String
-    var feeAmount: String
-    var locationState: String
-    var paymentMethod: [String]
-    var btcNetwork: [String]
-    var currency: String
-    var offerType: String
-    var activePriceState: String
-    var activePriceValue: String
-    var activePriceCurrency: String
-    var active: String
-    var groupUuids: [String]
+    let location: [String]
+    let offerPublicKey: String
+    let offerDescription: String
+    let amountBottomLimit: String
+    let amountTopLimit: String
+    let feeState: String
+    let feeAmount: String
+    let locationState: String
+    let paymentMethod: [String]
+    let btcNetwork: [String]
+    let currency: String
+    let offerType: String
+    let activePriceState: String
+    let activePriceValue: String
+    let activePriceCurrency: String
+    let active: String
+    let groupUuids: [String]
 
     init(offer: ManagedOffer) throws {
         guard
@@ -116,10 +116,10 @@ struct OfferPayloadPublic: Codable {
 }
 
 struct OfferRequestPayload: Codable {
-    var offerType: String
-    var expiration: Int
-    var payloadPublic: String
-    var offerPrivateList: [OfferPayloadPrivateWrapperEncrypted]
+    let offerType: String
+    let expiration: Int
+    let payloadPublic: String
+    let offerPrivateList: [OfferPayloadPrivateWrapperEncrypted]
 
     var asJson: [String: Any] {
         [
@@ -132,13 +132,13 @@ struct OfferRequestPayload: Codable {
 }
 
 struct OfferPayload: Codable {
-    var offerId: String
-    var adminId: String?
-    var publicPayload: String
-    var privatePayload: String
-    var expiration: Int
-    var createdAt: Date
-    var modifiedAt: Date
+    let offerId: String
+    let adminId: String?
+    let publicPayload: String
+    let privatePayload: String
+    let expiration: Int
+    let createdAt: Date
+    let modifiedAt: Date
 }
 
 extension OfferPayload {

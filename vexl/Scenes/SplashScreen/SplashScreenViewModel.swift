@@ -121,7 +121,6 @@ final class SplashScreenViewModel: ViewModelType {
 
         let oldOffers = offerRepository
             .getUsersOffersWithoutSymetricKey()
-            .print("[debug] old offers")
             .share()
 
         let noOffers = oldOffers
@@ -172,7 +171,6 @@ final class SplashScreenViewModel: ViewModelType {
 
         let requests = switchContext
             .flatMap(\.1.publisher)
-//            .receive(on: reencryptionRequestQueue)
             .flatMap { [offerService] payload in
                 offerService.createOffer(offerPayload: payload)
             }
@@ -183,10 +181,7 @@ final class SplashScreenViewModel: ViewModelType {
             .handleEvents(receiveOutput: { owner, _ in
                 owner.currentEncryptedItemCount += 1
             })
-            .print("[debug] requests 3")
             .collect()
-
-            .print("[debug] requests collect")
             .asVoid()
 
         return Publishers.Merge(requests, noOffers)
