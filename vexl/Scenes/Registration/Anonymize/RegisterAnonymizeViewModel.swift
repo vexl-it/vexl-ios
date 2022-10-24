@@ -159,12 +159,13 @@ final class RegisterAnonymizeViewModel: ViewModelType {
         action
             .filter { $0 == .createUser }
             .asVoid()
-            .flatMapLatest(with: self, { owner in
+            .withUnretained(self)
+            .flatMapLatest { owner in
                 owner.userRepository
                     .update(username: owner.input.username, avatar: owner.input.avatar, avatarURL: nil, anonymizedUsername: owner.anonymizedUsername ?? "")
                     .track(activity: owner.primaryActivity)
                     .receive(on: RunLoop.main)
-            })
+            }
             .map { _ in Route.continueTapped }
             .subscribe(route)
             .store(in: cancelBag)
