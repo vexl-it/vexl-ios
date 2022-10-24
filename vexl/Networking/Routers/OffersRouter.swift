@@ -89,9 +89,9 @@ enum OffersRouter: ApiRouter {
         case let .createOffer(offerPayload):
             return offerPayload.asJson
         case let .updateOffer(offer, adminId):
-            let offers = offer.asJson
-            return ["adminId": adminId,
-                    "offerPrivateCreateList": offers]
+            var offerPayload = offer.asJson
+            offerPayload["adminId"] = adminId
+            return offerPayload
         case let .createNewPrivateParts(adminId, offers):
             return [
                 "adminId": adminId,
