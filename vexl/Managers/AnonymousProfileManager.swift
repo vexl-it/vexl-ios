@@ -15,6 +15,7 @@ protocol AnonymousProfileManagerType {
     func getFriendLevels(publicKey: String) -> [AnonymousProfileType]
     func registerNewProfiles(envelope: ContactPKsEnvelope) -> AnyPublisher<Void, Error>
     func registerGroupMembers(publicKeys: [String], group: ManagedGroup, context: NSManagedObjectContext?)
+    func wipeProfiles() -> AnyPublisher<Void, Error>
 }
 
 extension AnonymousProfileManagerType {
@@ -122,5 +123,9 @@ final class AnonymousProfileManager: AnonymousProfileManagerType {
         let memberSet = Set(publicKeys)
         let matchedProfilesSet = Set(profiles.compactMap(\.publicKey))
         return Array(memberSet.subtracting(matchedProfilesSet))
+    }
+
+    func wipeProfiles() -> AnyPublisher<Void, Error> {
+        anonymousProfileRepository.wipe()
     }
 }

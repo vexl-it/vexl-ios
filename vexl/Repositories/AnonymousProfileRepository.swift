@@ -14,6 +14,7 @@ protocol AnonymousProfileRepositoryType {
     func getProfileType(context: NSManagedObjectContext, type: AnonymousProfileType) -> ManagedAnonymousProfileType
     func getProfiles(publicKeys: [String], type: AnonymousProfileType, context: NSManagedObjectContext?) -> [ManagedAnonymousProfile]
     func getProfile(publicKey: String) -> ManagedAnonymousProfile?
+    func wipe() -> AnyPublisher<Void, Error>
 }
 
 final class AnonymousProfileRepository: AnonymousProfileRepositoryType {
@@ -88,5 +89,13 @@ final class AnonymousProfileRepository: AnonymousProfileRepositoryType {
         let context = persistenceManager.viewContext
         let predicate = NSPredicate(format: "publicKey == '\(publicKey)'")
         return persistenceManager.loadSyncroniously(type: ManagedAnonymousProfile.self, context: context, predicate: predicate).first
+    }
+
+    func wipe() -> AnyPublisher<Void, Error> {
+        let context = persistenceManager.viewContext
+        return persistenceManager.delete(context: context, editor: { [weak self] context in
+            self?.persistenceManager.loadSyncroniously(type: ManagedAnonymousProfile.self, context: context) ?? []
+        })
+        .eraseToAnyPublisher()
     }
 }

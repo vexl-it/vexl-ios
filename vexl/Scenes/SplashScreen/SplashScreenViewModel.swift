@@ -156,11 +156,15 @@ final class SplashScreenViewModel: ViewModelType {
 
         let contactsUpdate = pks
             .flatMap { [profileManager] envelope, offers in
-                profileManager.registerNewProfiles(envelope: envelope.contacts)
+                profileManager
+                    .wipeProfiles()
+                    .flatMap { [profileManager] in
+                        profileManager.registerNewProfiles(envelope: envelope.contacts)
+                    }
                     .map { (envelope, offers) }
             }
 
-        let payloads = pks
+        let payloads = contactsUpdate
             .withUnretained(self)
             .flatMap { owner, tupl in
                 owner.offerEncoder.encode(offers: tupl.1, envelope: tupl.0)
