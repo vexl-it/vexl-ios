@@ -63,10 +63,12 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
         case importContacts
         case importFacebook
         case reportIssue
+        case logsTapped
         case showGroups
         case deleteAccount
         case faq
         case termsAndPrivacy
+        case openUrl(URL)
     }
 
     var route: CoordinatingSubject<Route> = .init()
@@ -79,6 +81,10 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
 
     var isMarketplaceLocked: Bool {
         remoteConfigManager.getBoolValue(for: .isMarketplaceLocked)
+    }
+
+    var appVersion: String {
+        UIDevice.appVersion
     }
 
     let bitcoinViewModel: BitcoinViewModel
@@ -158,6 +164,8 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
             }
             .share()
 
+        handleSocialOptionTap(item: option.eraseToAnyPublisher())
+
         option
             .filter { $0 == .faq }
             .map { _ in .faq }
@@ -208,6 +216,12 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
             .store(in: cancelBag)
 
         option
+            .filter { $0 == .logs }
+            .map { _ -> Route in .logsTapped }
+            .subscribe(route)
+            .store(in: cancelBag)
+
+        option
             .filter { $0 == .groups }
             .map { _ -> Route in .showGroups }
             .subscribe(route)
@@ -223,6 +237,18 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
     func logoutUser() {
         authenticationManager.logoutUserPublisher(force: false)
             .sink()
+            .store(in: cancelBag)
+    }
+
+    private func handleSocialOptionTap(item: AnyPublisher<Option, Never>) {
+        item
+            .filter { item in
+                [Option.socialTwitter, .socialMedium, .socialVexl].contains(item)
+            }
+            .compactMap(\.url)
+            .compactMap(URL.init)
+            .map(Route.openUrl)
+            .subscribe(route)
             .store(in: cancelBag)
     }
 }

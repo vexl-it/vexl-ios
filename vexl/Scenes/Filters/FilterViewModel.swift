@@ -11,6 +11,8 @@ import Combine
 
 final class FilterViewModel: ViewModelType, ObservableObject {
 
+    @Inject var userRepository: UserRepositoryType
+
     // MARK: - Fetch Bindings
 
     @Fetched(sortDescriptors: [ NSSortDescriptor(key: "name", ascending: true) ])
@@ -58,7 +60,7 @@ final class FilterViewModel: ViewModelType, ObservableObject {
         sliderBoundsPublisher: $amountRange.eraseToAnyPublisher(),
         currencyPublisher: $currency.filterNil().eraseToAnyPublisher(),
         rangeSetter: { [weak self] newRange in
-            self?.currentAmountRange = newRange
+            self?.setRange(newRange)
         }
     )
     lazy var maxAmountTextFieldViewModel: OfferAmountTextFieldViewModel = .init(
@@ -67,7 +69,7 @@ final class FilterViewModel: ViewModelType, ObservableObject {
         sliderBoundsPublisher: $amountRange.eraseToAnyPublisher(),
         currencyPublisher: $currency.filterNil().eraseToAnyPublisher(),
         rangeSetter: { [weak self] newRange in
-            self?.currentAmountRange = newRange
+            self?.setRange(newRange)
         }
     )
 
@@ -88,11 +90,16 @@ final class FilterViewModel: ViewModelType, ObservableObject {
     let primaryActivity: Activity = .init()
 
     // MARK: - Variables
-
+    var userAvatar: Data? {
+        userRepository.user?.profile?.avatarData
+    }
     var minFee: Double = Constants.OfferInitialData.minFee
     var maxFee: Double = Constants.OfferInitialData.maxFee
     private var currentLocations: [OfferLocation] {
         locationViewModels.compactMap(\.location)
+    }
+    private var currencyStepValue: Int {
+        currency == .czk ? Constants.OfferInitialData.maxOfferCZKStep : Constants.OfferInitialData.maxOfferStep
     }
     private var initialAmountRange: ClosedRange<Int>?
     private var offerFilter: OfferFilter
@@ -133,14 +140,26 @@ final class FilterViewModel: ViewModelType, ObservableObject {
                 switch option {
                 case .eur, .usd:
                     owner.amountRange = minOffer...maxOffer
-                    owner.currentAmountRange = owner.initialAmountRange ?? minOffer...maxOffer
+                    if let initialRange = owner.initialAmountRange {
+                        owner.setRange(initialRange)
+                    } else {
+                        owner.currentAmountRange = minOffer...maxOffer
+                    }
                 case .czk:
                     owner.amountRange = minOffer...maxOfferCZK
-                    owner.currentAmountRange = owner.initialAmountRange ?? minOffer...maxOfferCZK
+                    if let initialRange = owner.initialAmountRange {
+                        owner.setRange(initialRange)
+                    } else {
+                        owner.currentAmountRange = minOffer...maxOfferCZK
+                    }
                 case .none:
                     break
                 }
 
+                if let option = option {
+                    owner.minAmountTextFieldViewModel.resetInitialRangeValues(withCurrency: option)
+                    owner.maxAmountTextFieldViewModel.resetInitialRangeValues(withCurrency: option)
+                }
                 owner.initialAmountRange = nil
             }
             .store(in: cancelBag)
@@ -232,5 +251,11 @@ final class FilterViewModel: ViewModelType, ObservableObject {
         offerFilter.reset(with: currentAmountRange)
         selectedGroups = []
         currency = nil
+    }
+
+    private func setRange(_ range: ClosedRange<Int>) {
+        let min = range.lowerBound / currencyStepValue
+        let max = range.upperBound / currencyStepValue
+        self.currentAmountRange = min...max
     }
 }

@@ -14,6 +14,7 @@ protocol GroupServiceType {
     func createGroup(payload: GroupPayload) -> AnyPublisher<GroupPayload, Error>
     func getNewMembers(groups: [ManagedGroup]) -> AnyPublisher<[GroupNewMemberPayload], Error>
     func getAllMembers(uuid: String?) -> AnyPublisher<GroupNewMemberPayload, Error>
+    func getAllMembers(uuids: [String]) -> AnyPublisher<[GroupNewMemberPayload], Error>
     func joinGroup(code: Int) -> AnyPublisher<Void, Error>
     func getExpiredGroups(groups: [ManagedGroup]) -> AnyPublisher<[GroupPayload], Error>
     func getUserGroups() -> AnyPublisher<[GroupPayload], Error>
@@ -53,6 +54,19 @@ final class GroupService: BaseService, GroupServiceType {
         return getNewMembers(memberRequest: [ GroupMemberPayload(groupUuid: uuid, publicKeys: []) ])
             .compactMap(\.first)
             .eraseToAnyPublisher()
+    }
+
+    func getAllMembers(uuids: [String]) -> AnyPublisher<[GroupNewMemberPayload], Error> {
+        guard !uuids.isEmpty else {
+            return Just([])
+                .setFailureType(to: Error.self)
+                .eraseToAnyPublisher()
+        }
+        let payloads = uuids
+            .map { ($0, [] as [String]) }
+            .map(GroupMemberPayload.init)
+
+        return getNewMembers(memberRequest: payloads)
     }
 
     private func getNewMembers(memberRequest payloads: [GroupMemberPayload]) -> AnyPublisher<[GroupNewMemberPayload], Error> {

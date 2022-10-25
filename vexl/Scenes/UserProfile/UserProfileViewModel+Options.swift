@@ -32,15 +32,21 @@ extension UserProfileViewModel {
         case termsAndPrivacy
         case faq
         case reportIssue
+        case logs
 
         case requestData
+
+        case socialTwitter
+        case socialMedium
+        case socialVexl
+
         case logout
 
         var id: Int {
             self.rawValue
         }
 
-        var title: String {
+        var title: String? {
             switch self {
             case .editAvatar:
                 return L.userProfileChangePicture()
@@ -68,6 +74,27 @@ extension UserProfileViewModel {
                 return L.userProfileFaq()
             case .reportIssue:
                 return L.userProfileReportIssue()
+            case .logs:
+                return L.userProfileLogs()
+            case .socialTwitter:
+                return nil
+            case .socialMedium:
+                return nil
+            case .socialVexl:
+                return nil
+            }
+        }
+
+        var attributedTitle: NSMutableAttributedString? {
+            switch self {
+            case .socialTwitter:
+                return setupAttributedTitle(text: L.profileTwitter(), boldText: L.twitter())
+            case .socialMedium:
+                return setupAttributedTitle(text: L.profileMedium(), boldText: L.medium())
+            case .socialVexl:
+                return setupAttributedTitle(text: L.profileVexlIt(), boldText: L.vexlIt())
+            default:
+                return nil
             }
         }
 
@@ -108,7 +135,34 @@ extension UserProfileViewModel {
                 return R.image.profile.faQ.name
             case .reportIssue:
                 return R.image.profile.reportIssue.name
+            case .logs:
+                return R.image.profile.cpu.name
+            case .socialTwitter:
+                return R.image.profile.socialTwitter.name
+            case .socialMedium:
+                return R.image.profile.socialMedium.name
+            case .socialVexl:
+                return R.image.profile.socialVexl.name
             }
+        }
+
+        var url: String? {
+            switch self {
+            case .socialTwitter:
+                return "https://twitter.com/vexl"
+            case .socialMedium:
+                return "https://blog.vexl.it/"
+            case .socialVexl:
+                return "https://vexl.it/"
+            default:
+                return nil
+            }
+        }
+
+        private func setupAttributedTitle(text: String, boldText: String) -> NSMutableAttributedString {
+            let normal = NSMutableAttributedString(string: text)
+            normal.bold(text: boldText, font: Appearance.TextStyle.paragraphBold.font)
+            return normal
         }
 
         static var groupedOptions: [OptionGroup] {
@@ -118,8 +172,9 @@ extension UserProfileViewModel {
                 OptionGroup(id: 2, options: [.contacts]), // , .facebook]),
                 OptionGroup(id: 3, options: [.groups]),
                 OptionGroup(id: 4, options: [.currency]),
-                OptionGroup(id: 5, options: [.termsAndPrivacy, .faq, .reportIssue]),
-                OptionGroup(id: 6, options: [.logout])
+                OptionGroup(id: 5, options: [.termsAndPrivacy, .faq, .reportIssue, .logs]),
+                OptionGroup(id: 6, options: [.socialTwitter, .socialMedium, .socialVexl]),
+                OptionGroup(id: 7, options: [.logout])
             ]
         }
 
@@ -131,6 +186,17 @@ extension UserProfileViewModel {
                 OptionGroup(id: 4, options: [.termsAndPrivacy, .faq, .reportIssue]),
                 OptionGroup(id: 5, options: [.logout])
             ]
+        }
+    }
+
+    enum OptionError: Error, LocalizedError {
+        case invalidUrl
+
+        var errorDescription: String? {
+            switch self {
+            case .invalidUrl:
+                return L.errorInvalidUrl()
+            }
         }
     }
 }

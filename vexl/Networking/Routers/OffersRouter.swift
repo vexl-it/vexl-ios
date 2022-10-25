@@ -9,17 +9,18 @@ import Foundation
 import Alamofire
 
 enum OffersRouter: ApiRouter {
-    case createOffer(offerPayloads: [OfferPayload], expiration: TimeInterval, offerType: OfferType)
+
+    case createOffer(offerPayload: OfferRequestPayload)
     case getOffers(pageLimit: Int?)
     case getUserOffers(offerIds: [String])
     case getNewOffers(pageLimit: Int?, lastSyncDate: Date)
-    case createNewPrivateParts(adminID: String, offerPayloads: [OfferPayload])
+    case createNewPrivateParts(adminID: String, offerPrivateParts: [OfferPayloadPrivateWrapperEncrypted])
     case getDeletedOffers(knownOfferIds: [String])
     case report(offerID: String)
 
     case deleteOffers(adminIDs: [String])
     case deleteOfferPrivateParts(adminIDs: [String], publicKeys: [String])
-    case updateOffer(offer: [OfferPayload], adminID: String)
+    case updateOffer(offerPayload: OfferRequestPayload, adminID: String)
 
     var method: HTTPMethod {
         switch self {
@@ -54,6 +55,15 @@ enum OffersRouter: ApiRouter {
             return "offers/not-exist"
         }
     }
+    
+    var version: Constants.API.Version? {
+        switch self {
+        case .createOffer, .getOffers, .getUserOffers, .getNewOffers, .createNewPrivateParts, .updateOffer:
+            return .v2
+        case .getDeletedOffers, .report, .deleteOffers, .deleteOfferPrivateParts:
+            return .v1
+        }
+    }
 
     var parameters: Parameters {
         switch self {
@@ -76,22 +86,16 @@ enum OffersRouter: ApiRouter {
             return ["offerId": offerID]
         case let .deleteOffers(adminIDs):
             return ["adminIds": adminIDs.joined(separator: ",")]
-        case let .createOffer(offer, expiration, offerType):
-            let offers = offer.map { $0.asJson }
-            return [
-                "offerPrivateList": offers,
-                "expiration": expiration,
-                "offerType": offerType.rawValue
-            ]
+        case let .createOffer(offerPayload):
+            return offerPayload.asJson
         case let .updateOffer(offer, adminId):
-            let offers = offer.map { $0.asJson }
-            return ["adminId": adminId,
-                    "offerPrivateCreateList": offers]
+            var offerPayload = offer.asJson
+            offerPayload["adminId"] = adminId
+            return offerPayload
         case let .createNewPrivateParts(adminId, offers):
-            let offers = offers.map { $0.asJson }
             return [
                 "adminId": adminId,
-                "privateParts": offers
+                "privateParts": offers.map(\.asJson)
             ]
         case let .deleteOfferPrivateParts(adminIds, publicKeys):
             return [

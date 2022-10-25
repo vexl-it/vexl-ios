@@ -110,10 +110,18 @@ extension ChatRequestOfferView {
             self.chat = chat
             id = chat.id ?? UUID().uuidString
             contactName = chat.receiverKeyPair?.profile?.name ?? L.generalAnonymous()
-            contactFriendLevel = chat.receiverKeyPair?.offer?.friendLevel?.label ?? ""
             let messages: Set<ManagedMessage>? = chat.messages as? Set<ManagedMessage>
             requestText = messages?.first(where: { $0.type == .messagingRequest })?.text ?? ""
             self.offer = .init(offer: offer)
+
+            @Inject var profileManager: AnonymousProfileManagerType
+            if let publicKey = chat.receiverKeyPair?.publicKey,
+               let priorityType = profileManager.getFriendLevels(publicKey: publicKey).priorityProfileType,
+               let type = priorityType.asOfferFriendDegree {
+                contactFriendLevel = type.label
+            } else {
+                contactFriendLevel = ""
+            }
 
             contactService
                 .getCommonFriends(publicKeys: [pubKey])

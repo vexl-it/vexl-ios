@@ -10,16 +10,18 @@ import SwiftUI
 struct AttributedText: View {
 
     var attributedText: NSAttributedString
+    var color: UIColor?
     @State private var height: CGFloat = .zero
 
     var body: some View {
-        InternalTextView(attributedText: attributedText, dynamicHeight: $height)
+        InternalTextView(attributedText: attributedText, color: color, dynamicHeight: $height)
             .frame(height: height)
     }
 
     private struct InternalTextView: UIViewRepresentable {
 
         var attributedText: NSAttributedString
+        var color: UIColor?
         @Binding var dynamicHeight: CGFloat
 
         func makeUIView(context: Context) -> UILabel {
@@ -28,6 +30,11 @@ struct AttributedText: View {
             label.lineBreakMode = .byWordWrapping
             label.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
             label.setContentCompressionResistancePriority(.required, for: .vertical)
+
+            if let color {
+                label.textColor = color
+            }
+
             return label
         }
 

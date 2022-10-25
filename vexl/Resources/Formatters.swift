@@ -64,6 +64,15 @@ struct Formatters {
         return formatter
     }()
 
+    /// format: HH:mm:ss
+    /// example: 12:30
+    static let logFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "HH:mm:ss"
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        return formatter
+    }()
+
     static let phoneNumberFormatter = PhoneNumberKit()
 
     static let currencyFormatter: NumberFormatter = {

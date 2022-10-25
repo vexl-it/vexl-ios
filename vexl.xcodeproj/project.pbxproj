@@ -83,6 +83,10 @@
 		B02939A928E5B88A00DEB462 /* PublicKeysEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = B02939A828E5B88A00DEB462 /* PublicKeysEnvelope.swift */; };
 		B02939AC28EC2E1800DEB462 /* OfferFlagBottomActionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = B02939AB28EC2E1800DEB462 /* OfferFlagBottomActionSheet.swift */; };
 		B02939AE28EC37D800DEB462 /* OfferFlagConfirmationActionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = B02939AD28EC37D800DEB462 /* OfferFlagConfirmationActionSheet.swift */; };
+		B02939B028ED689D00DEB462 /* LogManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B02939AF28ED689D00DEB462 /* LogManager.swift */; };
+		B02939B328EF7A4800DEB462 /* LogsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B02939B228EF7A4800DEB462 /* LogsCoordinator.swift */; };
+		B02939B528EF7A5100DEB462 /* LogsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B02939B428EF7A5100DEB462 /* LogsViewModel.swift */; };
+		B02939B728EF7A5900DEB462 /* LogsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B02939B628EF7A5900DEB462 /* LogsView.swift */; };
 		B02B894528E4E6F100DC811F /* ReencryptionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B02B894428E4E6F100DC811F /* ReencryptionManager.swift */; };
 		B03910652889D9E20034358C /* InboxRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = B03910642889D9E20034358C /* InboxRepository.swift */; };
 		B03910672889E6D80034358C /* ChatManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B03910662889E6D80034358C /* ChatManager.swift */; };
@@ -160,6 +164,7 @@
 		B0C838EE28C2285F0086B8F3 /* vexl_get_started.json in Resources */ = {isa = PBXBuildFile; fileRef = B0C838EA28C2285F0086B8F3 /* vexl_get_started.json */; };
 		B0C838F028C243220086B8F3 /* vexl_donate.json in Resources */ = {isa = PBXBuildFile; fileRef = B0C838EF28C243220086B8F3 /* vexl_donate.json */; };
 		B0C838F328C2AA9D0086B8F3 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = B0C838F528C2AA9D0086B8F3 /* InfoPlist.strings */; };
+		B0E3699E2903DEC600BAFC9C /* OfferPayloadEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E3699D2903DEC600BAFC9C /* OfferPayloadEncoder.swift */; };
 		B0E9BB272815C5750012BF1D /* String+Encryptable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E9BB262815C5750012BF1D /* String+Encryptable.swift */; };
 		B0E9BB2A2815C7190012BF1D /* AES.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E9BB292815C7190012BF1D /* AES.swift */; };
 		B0E9BB2C2815C71E0012BF1D /* ECC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E9BB2B2815C71E0012BF1D /* ECC.swift */; };
@@ -549,9 +554,14 @@
 		B01C01E52860B2C400A29F85 /* CoinChartData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinChartData.swift; sourceTree = "<group>"; };
 		B01C01E82860D2CD00A29F85 /* ContentState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentState.swift; sourceTree = "<group>"; };
 		B01C01EC2862F06D00A29F85 /* Currency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Currency.swift; sourceTree = "<group>"; };
+		B020E21D28F431AD00FFA426 /* VexlDataModel_1.0.8.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = VexlDataModel_1.0.8.xcdatamodel; sourceTree = "<group>"; };
 		B02939A828E5B88A00DEB462 /* PublicKeysEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublicKeysEnvelope.swift; sourceTree = "<group>"; };
 		B02939AB28EC2E1800DEB462 /* OfferFlagBottomActionSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferFlagBottomActionSheet.swift; sourceTree = "<group>"; };
 		B02939AD28EC37D800DEB462 /* OfferFlagConfirmationActionSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferFlagConfirmationActionSheet.swift; sourceTree = "<group>"; };
+		B02939AF28ED689D00DEB462 /* LogManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogManager.swift; sourceTree = "<group>"; };
+		B02939B228EF7A4800DEB462 /* LogsCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogsCoordinator.swift; sourceTree = "<group>"; };
+		B02939B428EF7A5100DEB462 /* LogsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogsViewModel.swift; sourceTree = "<group>"; };
+		B02939B628EF7A5900DEB462 /* LogsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogsView.swift; sourceTree = "<group>"; };
 		B02B894428E4E6F100DC811F /* ReencryptionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReencryptionManager.swift; sourceTree = "<group>"; };
 		B03910642889D9E20034358C /* InboxRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InboxRepository.swift; sourceTree = "<group>"; };
 		B03910662889E6D80034358C /* ChatManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatManager.swift; sourceTree = "<group>"; };
@@ -640,6 +650,7 @@
 		B0C838F628C2AAA00086B8F3 /* cs */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = cs; path = cs.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		B0C838F728C2AAA10086B8F3 /* sk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sk; path = sk.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		B0DF087628C61BAB004E77DB /* VexlDataModel_1.0.1.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = VexlDataModel_1.0.1.xcdatamodel; sourceTree = "<group>"; };
+		B0E3699D2903DEC600BAFC9C /* OfferPayloadEncoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferPayloadEncoder.swift; sourceTree = "<group>"; };
 		B0E9BB262815C5750012BF1D /* String+Encryptable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Encryptable.swift"; sourceTree = "<group>"; };
 		B0E9BB292815C7190012BF1D /* AES.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AES.swift; sourceTree = "<group>"; };
 		B0E9BB2B2815C71E0012BF1D /* ECC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ECC.swift; sourceTree = "<group>"; };
@@ -1196,6 +1207,16 @@
 			path = ActionView;
 			sourceTree = "<group>";
 		};
+		B02939B128EF7A1D00DEB462 /* Logs */ = {
+			isa = PBXGroup;
+			children = (
+				B02939B228EF7A4800DEB462 /* LogsCoordinator.swift */,
+				B02939B428EF7A5100DEB462 /* LogsViewModel.swift */,
+				B02939B628EF7A5900DEB462 /* LogsView.swift */,
+			);
+			path = Logs;
+			sourceTree = "<group>";
+		};
 		B08F38B027AE7110008B344F = {
 			isa = PBXGroup;
 			children = (
@@ -1383,6 +1404,7 @@
 				B08D2AB6289FFDD100A1C901 /* GroupManager.swift */,
 				F1071D4828B6E2B6002BE9EF /* RemoteConfigManager.swift */,
 				B02B894428E4E6F100DC811F /* ReencryptionManager.swift */,
+				B02939AF28ED689D00DEB462 /* LogManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -1579,6 +1601,7 @@
 				B0E9BB2F2815C7310012BF1D /* SHA.swift */,
 				B0E9BB312815D2B60012BF1D /* CryptographicError.swift */,
 				B06A3B4E287C967F00911795 /* Encryptable.swift */,
+				B0E3699D2903DEC600BAFC9C /* OfferPayloadEncoder.swift */,
 			);
 			path = Cryptography;
 			sourceTree = "<group>";
@@ -2407,6 +2430,7 @@
 				F1B365C72885CBEB0069788D /* EditAvatar */,
 				B00BAC292897D11E008E3CA2 /* Groups */,
 				F1BFA96F2803A59F00F4E745 /* Components */,
+				B02939B128EF7A1D00DEB462 /* Logs */,
 				F1BFA955280223BD00F4E745 /* UserProfileCoordinator.swift */,
 				F1BFA952280223BD00F4E745 /* UserProfileView.swift */,
 				F1BFA953280223BD00F4E745 /* UserProfileViewModel.swift */,
@@ -2893,6 +2917,7 @@
 				F12A14E827D6A8690096543E /* RequestAccessContactsView.swift in Sources */,
 				B01C01E62860B2C400A29F85 /* CoinChartData.swift in Sources */,
 				4F82A0A228E19D1400352A3F /* NotificationPermissionView.swift in Sources */,
+				B02939B728EF7A5900DEB462 /* LogsView.swift in Sources */,
 				F1B365D32886093D0069788D /* ProfilePhoneContactsViewModel.swift in Sources */,
 				F13B2675281EB23A0011F2FB /* ContactFriendLevel.swift in Sources */,
 				B0E9BB302815C7310012BF1D /* SHA.swift in Sources */,
@@ -2940,6 +2965,7 @@
 				F175ABAC27F4FF30000DAB15 /* ImportFacebookContactsViewModel.swift in Sources */,
 				F1DF4A432898B457008E5C87 /* ChatCommonFriendsActionSheet.swift in Sources */,
 				B08F392A27AE7112008B344F /* ServiceAssembly.swift in Sources */,
+				B02939B528EF7A5100DEB462 /* LogsViewModel.swift in Sources */,
 				F11441C8284681EC00307D39 /* RegistrationCounterView.swift in Sources */,
 				F148564D284FD452003213D7 /* ChatConversationSection.swift in Sources */,
 				F11441E1284681EC00307D39 /* LinkTextView.swift in Sources */,
@@ -2991,6 +3017,7 @@
 				B007A7922877629A00CFA5C9 /* Bool+Encryptable.swift in Sources */,
 				F11441D8284681EC00307D39 /* OptionPickerItemView.swift in Sources */,
 				F1B365DA288882F50069788D /* ProfileFacebookContactsViewModel.swift in Sources */,
+				B02939B028ED689D00DEB462 /* LogManager.swift in Sources */,
 				4FBF6242283FBF6B00DDBE71 /* RequestOfferViewModel.swift in Sources */,
 				F12A150127DFC1D70096543E /* ImportContactItemView.swift in Sources */,
 				F1BFA96E2803A49300F4E745 /* UserProfileView+Item.swift in Sources */,
@@ -3148,6 +3175,7 @@
 				F1A9454627F81278009B5AE3 /* ContactInformation.swift in Sources */,
 				F1D2011F282960DC006DF4AB /* TabBarView.swift in Sources */,
 				B08D2AB7289FFDD100A1C901 /* GroupManager.swift in Sources */,
+				B0E3699E2903DEC600BAFC9C /* OfferPayloadEncoder.swift in Sources */,
 				F11441C7284681EC00307D39 /* RegistrationCardView.swift in Sources */,
 				B08F391327AE7112008B344F /* ManagerAssembly.swift in Sources */,
 				B007A75A287226D000CFA5C9 /* ManagedChat+.swift in Sources */,
@@ -3242,6 +3270,7 @@
 				B007A76128722A1F00CFA5C9 /* NSManagedObject+.swift in Sources */,
 				F151A29027C80708000D7242 /* RegisterPhoneNumberInputView.swift in Sources */,
 				F1071D4928B6E2B6002BE9EF /* RemoteConfigManager.swift in Sources */,
+				B02939B328EF7A4800DEB462 /* LogsCoordinator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3370,7 +3399,7 @@
 				CODE_SIGN_ENTITLEMENTS = vexl/vexl.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 313;
+				CURRENT_PROJECT_VERSION = 322;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = KQNTW88PVA;
 				ENABLE_BITCODE = NO;
@@ -3382,7 +3411,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.8;
+				MARKETING_VERSION = 1.0.10;
 				PRODUCT_BUNDLE_IDENTIFIER = it.vexl.staging;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match AdHoc it.vexl.staging";
@@ -3403,7 +3432,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 313;
+				CURRENT_PROJECT_VERSION = 322;
 				DEVELOPMENT_TEAM = SHD6TUKSPH;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
@@ -3488,7 +3517,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = vexl/vexlDebug.entitlements;
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 313;
+				CURRENT_PROJECT_VERSION = 322;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = KQNTW88PVA;
 				ENABLE_BITCODE = NO;
@@ -3500,7 +3529,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.8;
+				MARKETING_VERSION = 1.0.10;
 				PRODUCT_BUNDLE_IDENTIFIER = it.vexl.debug;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match Development it.vexl.debug";
@@ -3521,7 +3550,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 313;
+				CURRENT_PROJECT_VERSION = 322;
 				DEVELOPMENT_TEAM = SHD6TUKSPH;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
@@ -3666,7 +3695,7 @@
 				CODE_SIGN_ENTITLEMENTS = vexl/vexl.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 313;
+				CURRENT_PROJECT_VERSION = 322;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = KQNTW88PVA;
 				ENABLE_BITCODE = NO;
@@ -3678,7 +3707,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.8;
+				MARKETING_VERSION = 1.0.10;
 				PRODUCT_BUNDLE_IDENTIFIER = it.vexl.devel;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match AdHoc it.vexl.devel";
@@ -3701,7 +3730,7 @@
 				CODE_SIGN_ENTITLEMENTS = vexl/vexl.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 313;
+				CURRENT_PROJECT_VERSION = 322;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = KQNTW88PVA;
 				ENABLE_BITCODE = NO;
@@ -3713,7 +3742,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.8;
+				MARKETING_VERSION = 1.0.10;
 				PRODUCT_BUNDLE_IDENTIFIER = it.vexl.appstore;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore it.vexl.appstore";
@@ -3734,7 +3763,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 313;
+				CURRENT_PROJECT_VERSION = 322;
 				DEVELOPMENT_TEAM = SHD6TUKSPH;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
@@ -3753,7 +3782,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 313;
+				CURRENT_PROJECT_VERSION = 322;
 				DEVELOPMENT_TEAM = SHD6TUKSPH;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
@@ -3807,10 +3836,11 @@
 		F1B93ED8286D6671008DAA90 /* VexlDataModel.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				B020E21D28F431AD00FFA426 /* VexlDataModel_1.0.8.xcdatamodel */,
 				B0DF087628C61BAB004E77DB /* VexlDataModel_1.0.1.xcdatamodel */,
 				F1B93ED9286D6671008DAA90 /* VexlDataModel.xcdatamodel */,
 			);
-			currentVersion = B0DF087628C61BAB004E77DB /* VexlDataModel_1.0.1.xcdatamodel */;
+			currentVersion = B020E21D28F431AD00FFA426 /* VexlDataModel_1.0.8.xcdatamodel */;
 			path = VexlDataModel.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

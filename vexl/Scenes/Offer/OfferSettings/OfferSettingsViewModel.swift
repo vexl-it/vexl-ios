@@ -21,13 +21,14 @@ enum OfferSettingsError: LocalizedError {
     }
 }
 
-// swiftlint: disable file_length
-// swiftlint: disable type_body_length
+// swiftlint:disable file_length
+// swiftlint:disable type_body_length
 final class OfferSettingsViewModel: ViewModelType, ObservableObject {
 
     @Inject var userRepository: UserRepositoryType
     @Inject var offerRepository: OfferRepositoryType
     @Inject var offerService: OfferServiceType
+    @Inject var encryptionService: EncryptionServiceType
     @Inject var mapyService: MapyServiceType
 
     @Fetched(sortDescriptors: [ NSSortDescriptor(key: "name", ascending: true) ])
@@ -74,18 +75,18 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
         type: .min,
         offerPublisher: $offer,
         rangeSetter: { [weak self] newRange in
-            self?.offer.currentAmountRange = newRange
+            self?.offer.setRange(newRange)
         }
     )
     lazy var maxAmountTextFieldViewModel: OfferAmountTextFieldViewModel = .init(
         type: .max,
         offerPublisher: $offer,
         rangeSetter: { [weak self] newRange in
-            self?.offer.currentAmountRange = newRange
+            self?.offer.setRange(newRange)
         }
     )
 
-    let triggerCurrency: Currency
+    var triggerCurrency: Currency
 
     var isOfferNew: Bool { managedOffer == nil }
     var isButtonActive: Bool { isCreateEnabled && (offer != Offer(managedOffer: managedOffer) || areLocationsUpdated) }
@@ -213,7 +214,9 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
 
     private var initialLocations: [OfferLocation] = []
     private var managedOffer: ManagedOffer?
-    private let secondsToWaitForOfferLoader = RunLoop.SchedulerTimeType.Stride(3)
+    private let secondsToWaitForOfferLoader = RunLoop.SchedulerTimeType.Stride(1.5)
+
+    private let encoder = OfferRequestPayloadEncoder()
 
     private let cancelBag: CancelBag = .init()
 
@@ -257,6 +260,23 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
             .map(\.objects)
             .map { $0.splitIntoChunks(by: 2) }
             .assign(to: &$groupRows)
+
+        encoder.progressPublisher
+            .withUnretained(self)
+            .sink { owner, zip in
+                let (currentProgress, maxProgress) = zip
+                owner.encryptionProgress = currentProgress
+                owner.encryptionMaxProgress = maxProgress
+            }
+            .store(in: cancelBag)
+
+        $offer
+            .compactMap(\.currency)
+            .withUnretained(self)
+            .sink { owner, currency in
+                owner.triggerCurrency = currency
+            }
+            .store(in: cancelBag)
     }
 
     private func setupActivity() {
@@ -334,8 +354,8 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
             guard let owner = self else { return }
             offer.group = owner.offer.selectedGroup
             offer.currency = owner.offer.currency
-            offer.minAmount = Double(owner.offer.currentAmountRange.lowerBound)
-            offer.maxAmount = Double(owner.offer.currentAmountRange.upperBound)
+            offer.minAmount = Double(owner.offer.calculatedAmountRange.lowerBound)
+            offer.maxAmount = Double(owner.offer.calculatedAmountRange.upperBound)
             offer.offerDescription = owner.offer.description
             offer.feeState = owner.offer.selectedFeeOption
             offer.feeAmount = floor(owner.offer.feeAmount)
@@ -350,6 +370,7 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
             offer.active = owner.offer.isActive
             offer.expirationDate = Date(timeIntervalSince1970: owner.expiration)
             offer.createdAt = Date()
+            offer.generateSymmetricKey()
         }
 
         let checkLocations = action
@@ -368,14 +389,27 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
                 .track(activity: owner.primaryActivity)
             }
 
-        let receiverPublicKeys = checkLocations
+        let userPublicKey = checkLocations
             .withUnretained(self)
-            .flatMap { owner, _ -> AnyPublisher<[String], Never> in
+            .flatMap { owner, _ in
+                Future<String, Error> { [weak owner] promise in
+                    guard let userPublicKey = owner?.userRepository.user?.profile?.keyPair?.publicKey else {
+                        promise(.failure(PersistenceError.insufficientData))
+                        return
+                    }
+                    promise(.success(userPublicKey))
+                }
+                .track(activity: owner.primaryActivity)
+            }
+
+        let receiverPublicKeys = userPublicKey
+            .withUnretained(self)
+            .flatMap { owner, userPublicKey -> AnyPublisher<PKsEnvelope, Never> in
                 owner.offerService
                     .getReceiverPublicKeys(
                         friendLevel: owner.friendLevel,
-                        group: owner.offer.selectedGroup,
-                        includeUserPublicKey: owner.userRepository.user?.profile?.keyPair?.publicKey
+                        groups: [owner.offer.selectedGroup].compactMap { $0 },
+                        includeUserPublicKey: userPublicKey
                     )
                     .track(activity: owner.primaryActivity)
                     .materialize()
@@ -390,7 +424,7 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
 
         let update = receiverPublicKeys
             .withUnretained(self)
-            .flatMap { owner, receiverPublicKeys -> AnyPublisher<(Bool, ManagedOffer, [String])?, Never> in
+            .flatMap { owner, receiverPublicKeys -> AnyPublisher<(Bool, ManagedOffer, PKsEnvelope)?, Never> in
                 guard let offer = owner.managedOffer else {
                     return Just(nil)
                         .eraseToAnyPublisher()
@@ -410,7 +444,7 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
 
         let create = receiverPublicKeys
             .withUnretained(self)
-            .flatMap { owner, receiverPublicKeys -> AnyPublisher<(Bool, ManagedOffer, [String])?, Never> in
+            .flatMap { owner, receiverPublicKeys -> AnyPublisher<(Bool, ManagedOffer, PKsEnvelope)?, Never> in
                 guard owner.managedOffer == nil else {
                     return Just(nil)
                         .eraseToAnyPublisher()
@@ -438,9 +472,13 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
 
         let encryption = disableIdleTimer
             .withUnretained(self)
-            .flatMap { owner, zip in
+            .flatMap { owner, zip -> AnyPublisher<(Bool, OfferRequestPayload, ManagedOffer), Never> in
                 let (isCreating, offer, receiverPublicKeys) = zip
-                return owner.encryptOffer(isCreating: isCreating, offer: offer, receiverPublicKeys: receiverPublicKeys)
+                owner.showEncryptionLoader = true
+                return owner.encoder.encode(offer: offer, envelope: receiverPublicKeys)
+                    .map { (isCreating, $0, offer) }
+                    .trackError(owner.errorIndicator)
+                    .eraseToAnyPublisher()
 
                 // NOTE: The progress bar *could* be interuptable. If user would decide to hide the progress bar, you could:
                 // 1. collect all encrypted payloads and send them to BE
@@ -453,24 +491,20 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
 
         let beRequest = encryption
             .withUnretained(self)
-            .flatMap { [offerService, expiration, primaryActivity] owner, zip -> AnyPublisher<(OfferPayload, ManagedOffer), Never> in
-                let (isCreating, payloads, offer) = zip
-                guard !isCreating, let adminID = offer.adminID else {
+            .flatMap { [offerService] owner, zip -> AnyPublisher<(OfferPayload, ManagedOffer), Never> in
+                let (isCreating, payload, offer) = zip
+                if !isCreating, let adminID = offer.adminID {
                     return offerService
-                        .createOffer(
-                            expiration: Date(timeIntervalSince1970: expiration),
-                            offerPayloads: payloads,
-                            offerTyoe: owner.offerType
-                        )
-                        .track(activity: primaryActivity)
+                        .updateOffers(adminID: adminID, offerPayload: payload)
+                        .trackError(owner.errorIndicator)
                         .materialize()
                         .compactMap(\.value)
                         .map { ($0, offer) }
                         .eraseToAnyPublisher()
                 }
                 return offerService
-                    .updateOffers(adminID: adminID, offerPayloads: payloads)
-                    .track(activity: primaryActivity)
+                    .createOffer(offerPayload: payload)
+                    .trackError(owner.errorIndicator)
                     .materialize()
                     .compactMap(\.value)
                     .map { ($0, offer) }
@@ -478,19 +512,22 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
             }
 
         let updateOfferId = beRequest
-            .flatMap { [offerRepository, primaryActivity] responsePayload, offer -> AnyPublisher<Void, Never> in
-                guard let offerID = responsePayload.offerId, offer.offerID != offerID,
-                      let adminID = responsePayload.adminId, offer.adminID != adminID else {
+            .withUnretained(self)
+            .flatMap { owner, zip -> AnyPublisher<Void, Never> in
+                let (responsePayload, offer) = zip
+                guard let adminID = responsePayload.adminId,
+                    offer.adminID != adminID,
+                    offer.offerID != responsePayload.offerId else {
                     return Just(())
                         .eraseToAnyPublisher()
                 }
-                return offerRepository
+                return owner.offerRepository
                     .update(offer: offer, locations: nil) { offer in
-                        offer.offerID = offerID
+                        offer.offerID = responsePayload.offerId
                         offer.adminID = adminID
                     }
                     .asVoid()
-                    .track(activity: primaryActivity)
+                    .trackError(owner.errorIndicator)
                     .materialize()
                     .compactMap(\.value)
                     .eraseToAnyPublisher()
@@ -545,40 +582,5 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
                 owner.objectWillChange.send()
             }
             .store(in: cancelBag)
-    }
-
-    /// The receiver keys are split into groups of X keys.
-    /// After that each group is encrypted using the `OfferService` - `encryptOffer` method.
-    /// Once the encryption is done, the progress number is updated so that it is visualized in the progress view
-    /// When all the groups have finish encrypting, the publishers are collected an a single array of payloads is sent to the stream.
-    private func encryptOffer(isCreating: Bool,
-                              offer: ManagedOffer,
-                              receiverPublicKeys: [String]) -> AnyPublisher<(Bool, [OfferPayload], ManagedOffer), Never> {
-
-        let receiverChunks = receiverPublicKeys.splitIntoChunks(by: Constants.encryptionKeySplitAmount)
-        showEncryptionLoader = true
-        encryptionProgress = 0
-        encryptionMaxProgress = receiverPublicKeys.count
-
-        let publicKeys = receiverChunks.publisher
-            .withUnretained(self)
-            .flatMap { owner, keys in
-                owner.offerService
-                    .encryptOffer(offer: offer, publicKeys: keys)
-                    .materialize()
-                    .compactMap(\.value)
-            }
-            .withUnretained(self)
-            .handleEvents(receiveOutput: { owner, payloads in
-                owner.encryptionProgress += payloads.count
-            })
-            .map { $0.1 }
-
-        return publicKeys
-            .collect(receiverChunks.count)
-            .map { Array($0.joined()) }
-            .withUnretained(self)
-            .map { (isCreating, $0.1, offer) }
-            .eraseToAnyPublisher()
     }
 }

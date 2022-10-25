@@ -12,6 +12,23 @@ enum HorizontalPosition {
     case right
 }
 
+enum SupportedCountryCurrency: Int {
+    case czech = 420
+    case slovakia = 421
+    case unknown
+
+    var currency: Currency {
+        switch self {
+        case .czech:
+            return .czk
+        case .slovakia:
+            return .eur
+        case .unknown:
+            return .eur
+        }
+    }
+}
+
 enum Currency: String, Codable, CaseIterable, Identifiable {
     var id: Int { self.rawValue.hashValue }
 

@@ -275,6 +275,11 @@ final class RegisterPhoneViewModel: ViewModelType {
                 if !response.phoneVerified {
                     owner.error = RegistryError.invalidValidationCode
                 }
+
+                if let countryCode = owner.parsedPhoneNumber?.countryCode,
+                   let supportedCountry = SupportedCountryCurrency(rawValue: Int(countryCode)) {
+                    UserDefaultsConfig.selectedCurrency = supportedCountry.currency
+                }
             })
             .map(\.1)
             .filter(\.phoneVerified)
