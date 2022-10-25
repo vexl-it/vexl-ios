@@ -34,6 +34,7 @@ final class SplashScreenViewModel: ViewModelType {
     @Inject var offerService: OfferServiceType
     @Inject var userRepository: UserRepositoryType
     @Inject var persistenceManager: PersistenceStoreManagerType
+    @Inject var profileManager: AnonymousProfileManagerType
 
     // MARK: - Actions Bindings
 
@@ -151,6 +152,12 @@ final class SplashScreenViewModel: ViewModelType {
                     )
                     .map { envelope in (envelope, offers) }
                     .eraseToAnyPublisher()
+            }
+
+        let contactsUpdate = pks
+            .flatMap { [profileManager] envelope, offers in
+                profileManager.registerNewProfiles(envelope: envelope.contacts)
+                    .map { (envelope, offers) }
             }
 
         let payloads = pks

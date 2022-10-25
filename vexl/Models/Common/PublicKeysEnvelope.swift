@@ -67,6 +67,19 @@ struct ContactPKsEnvelope {
             return []
         }
     }
+
+    var hashMap: [String: [AnonymousProfileType]] {
+        var hashMap = Set(firstDegree + secondDegree).reduce(into: [String: [AnonymousProfileType]]()) { partialResult, publicKey in
+            partialResult[publicKey] = []
+        }
+        firstDegree.forEach { publicKey in
+            hashMap[publicKey]?.append(AnonymousProfileType.firstDegree)
+        }
+        secondDegree.forEach { publicKey in
+            hashMap[publicKey]?.append(AnonymousProfileType.secondDegree)
+        }
+        return hashMap
+    }
 }
 
 struct GroupPKsEnvelope {

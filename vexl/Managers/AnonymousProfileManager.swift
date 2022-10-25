@@ -12,6 +12,7 @@ import CoreData
 protocol AnonymousProfileManagerType {
     func getNewContacts() -> AnyPublisher<ContactPKsEnvelope, Error>
     func getNewGroupMembers() -> AnyPublisher<[GroupPKsEnvelope], Error>
+    func getFriendLevels(publicKey: String) -> [AnonymousProfileType]
     func registerNewProfiles(envelope: ContactPKsEnvelope) -> AnyPublisher<Void, Error>
     func registerGroupMembers(publicKeys: [String], group: ManagedGroup, context: NSManagedObjectContext?)
 }
@@ -80,6 +81,16 @@ final class AnonymousProfileManager: AnonymousProfileManagerType {
                     }
             }
             .eraseToAnyPublisher()
+    }
+
+    func getFriendLevels(publicKey: String) -> [AnonymousProfileType] {
+        guard let profile = anonymousProfileRepository.getProfile(publicKey: publicKey),
+              let types = profile.types?.allObjects as? [ManagedAnonymousProfileType]
+        else {
+            return []
+        }
+        return types.compactMap(\.type)
+
     }
 
     func registerNewProfiles(envelope: ContactPKsEnvelope) -> AnyPublisher<Void, Error> {
