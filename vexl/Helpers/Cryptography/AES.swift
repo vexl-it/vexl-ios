@@ -8,7 +8,7 @@
 import Foundation
 
 enum AESError: Error {
-    case couldMotGeneratePassword
+    case couldNotGeneratePassword
 }
 
 struct AES {
@@ -46,7 +46,7 @@ struct AES {
             SecRandomCopyBytes(kSecRandomDefault, lenght, bytes)
         }
         guard result == errSecSuccess else {
-            throw AESError.couldMotGeneratePassword
+            throw AESError.couldNotGeneratePassword
         }
         return data.base64EncodedString()
     }

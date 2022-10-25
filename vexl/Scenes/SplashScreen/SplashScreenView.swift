@@ -22,6 +22,19 @@ struct SplashScreenView: View {
                 .animation(
                     .spring(response: 0.6, dampingFraction: 0.4, blendDuration: 0), value: viewModel.animationState
                 )
+
+            ZStack(alignment: .bottom) {
+                if viewModel.showReencryptionProgress {
+                    Color.black
+                        .opacity(Appearance.dimmingViewOpacity)
+                        .transition(.opacity)
+                        .ignoresSafeArea()
+
+                    OfferSettingsProgressView(currentValue: viewModel.currentEncryptedItemCount,
+                                              maxValue: viewModel.maxEncryptedItemCount)
+                        .transition(.move(edge: .bottom).combined(with: .opacity))
+                }
+            }
         }
     }
 }

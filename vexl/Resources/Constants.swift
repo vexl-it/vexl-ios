@@ -18,7 +18,7 @@ struct Constants {
         #if APPSTORE
         private static let userApiHostname = "https://user.vexl.it"
         private static let contactsApiHostname = "https://contact.vexl.it"
-        private static let offersApiHostname = "https://offer.vexl.it"
+        private static let offersApiHostname = "https://offer2.vexl.it"
         private static let chatApiHostname = "https://chat.vexl.it"
         #elseif STAGING
         private static let userApiHostname = "https://user.vexl.staging.cleevio.io"
@@ -28,7 +28,7 @@ struct Constants {
         #else
         private static let userApiHostname = "https://user.vexl.devel.cleevio.io"
         private static let contactsApiHostname = "https://contact.vexl.devel.cleevio.io"
-        private static let offersApiHostname = "https://offer.vexl.devel.cleevio.io"
+        private static let offersApiHostname = "https://offer2.vexl.devel.cleevio.io"
         private static let chatApiHostname = "https://chat.vexl.devel.cleevio.io"
         #endif
 
@@ -86,7 +86,6 @@ struct Constants {
         static let maxOfferCZK: Int = 250
         static let minFee: Double = 1
         static let maxFee: Double = 10
-        static let currency: Currency = .usd
 
         static let maxOfferStep: Int = 50
         static let maxOfferCZKStep: Int = 1_000

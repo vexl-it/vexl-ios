@@ -20,6 +20,7 @@ protocol OfferRepositoryType {
     func getOffer(with publicKey: String) -> AnyPublisher<ManagedOffer, Error>
     func getOffers(fromType type: OfferType?, fromSource source: OfferSource?) -> AnyPublisher<[ManagedOffer], Error>
     func getKnownOffers() -> AnyPublisher<[ManagedOffer], Error>
+    func getUsersOffersWithoutSymetricKey() -> AnyPublisher<[ManagedOffer], Error>
 
     func sync(offers: [ManagedOffer], withPublicKeys: [String]) -> AnyPublisher<Void, Error>
 
@@ -120,6 +121,7 @@ class OfferRepository: OfferRepositoryType {
                 if let localOfferKey = pks.first {
                     if let offer = localOfferKey.offer {
                         payload.decrypt(context: context, userInbox: userInbox, into: offer)
+                        offer.isRemoved = false
                     }
                     return nil
                 }
@@ -189,6 +191,14 @@ class OfferRepository: OfferRepositoryType {
         )
     }
 
+    func getUsersOffersWithoutSymetricKey() -> AnyPublisher<[ManagedOffer], Error> {
+        persistence.load(
+            type: ManagedOffer.self,
+            context: persistence.viewContext,
+            predicate: NSPredicate(format: "encryptedSymmetricKey == nil AND user != nil")
+        )
+    }
+
     func getKnownOffers() -> AnyPublisher<[ManagedOffer], Error> {
         persistence.load(type: ManagedOffer.self, context: persistence.viewContext, predicate: NSPredicate(format: "user == nil AND offerID != nil"))
     }
@@ -236,14 +246,15 @@ class OfferRepository: OfferRepositoryType {
                           predicate: NSPredicate(format: "%@ contains[cd] keyPair.publicKey AND typeRawValue == nil",
                                                  NSArray(array: inboxesPublicKeys)))
             }
-            .flatMap { [persistence] inboxes -> AnyPublisher<Void, Error> in
-                persistence.delete(context: context, editor: { _ in inboxes })
-            }
             .eraseToAnyPublisher()
 
         let deleteOffers = getOffers
             .flatMap { [persistence] offers -> AnyPublisher<Void, Error> in
-                persistence.delete(context: context, editor: { _ in offers })
+                persistence.update(context: context) { _ in
+                    offers.forEach { offer in
+                        offer.isRemoved = true
+                    }
+                }
             }
             .eraseToAnyPublisher()
 

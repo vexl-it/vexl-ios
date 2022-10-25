@@ -42,8 +42,8 @@ struct OfferPayloadPrivateWrapper: Codable {
 }
 
 struct OfferPayloadPrivateWrapperEncrypted: Codable {
-    var userPublicKey: String
-    var payloadPrivate: String
+    let userPublicKey: String
+    let payloadPrivate: String
 
     var asJson: [String: Any] {
         [
@@ -58,23 +58,23 @@ enum OfferPayloadPublicVersion: Int {
 }
 
 struct OfferPayloadPublic: Codable {
-    var location: [String]
-    var offerPublicKey: String
-    var offerDescription: String
-    var amountBottomLimit: Double
-    var amountTopLimit: Double
-    var feeState: String
-    var feeAmount: Double
-    var locationState: String
-    var paymentMethod: [String]
-    var btcNetwork: [String]
-    var currency: String
-    var offerType: String
-    var activePriceState: String
-    var activePriceValue: Double
-    var activePriceCurrency: String
-    var active: Bool
-    var groupUuids: [String]
+    let location: [String]
+    let offerPublicKey: String
+    let offerDescription: String
+    let amountBottomLimit: String
+    let amountTopLimit: String
+    let feeState: String
+    let feeAmount: String
+    let locationState: String
+    let paymentMethod: [String]
+    let btcNetwork: [String]
+    let currency: String
+    let offerType: String
+    let activePriceState: String
+    let activePriceValue: String
+    let activePriceCurrency: String
+    let active: String
+    let groupUuids: [String]
 
     init(offer: ManagedOffer) throws {
         guard
@@ -99,27 +99,27 @@ struct OfferPayloadPublic: Codable {
         self.groupUuids = [groupUuid]
         self.offerPublicKey = offerPublicKey
         self.offerDescription = description
-        self.amountTopLimit = offer.maxAmount
-        self.amountBottomLimit = offer.minAmount
+        self.amountTopLimit = offer.maxAmount.asString
+        self.amountBottomLimit = offer.minAmount.asString
         self.feeState = feeState
-        self.feeAmount = offer.feeAmount
+        self.feeAmount = offer.feeAmount.asString
         self.locationState = locationState
         self.paymentMethod = offer.paymentMethods.map(\.rawValue)
         self.btcNetwork = offer.btcNetworks.map(\.rawValue)
         self.offerType = offerType
         self.currency = currency
         self.activePriceState = activePriceState
-        self.activePriceValue = offer.activePriceValue
+        self.activePriceValue = offer.activePriceValue.asString
         self.activePriceCurrency = activePriceCurrency
-        self.active = offer.active
+        self.active = offer.active.asString
     }
 }
 
 struct OfferRequestPayload: Codable {
-    var offerType: String
-    var expiration: Int
-    var payloadPublic: String
-    var offerPrivateList: [OfferPayloadPrivateWrapperEncrypted]
+    let offerType: String
+    let expiration: Int
+    let payloadPublic: String
+    let offerPrivateList: [OfferPayloadPrivateWrapperEncrypted]
 
     var asJson: [String: Any] {
         [
@@ -132,13 +132,13 @@ struct OfferRequestPayload: Codable {
 }
 
 struct OfferPayload: Codable {
-    var offerId: String
-    var adminId: String?
-    var publicPayload: String
-    var privatePayload: String
-    var expiration: Int
-    var createdAt: Date
-    var modifiedAt: Date
+    let offerId: String
+    let adminId: String?
+    let publicPayload: String
+    let privatePayload: String
+    let expiration: Int
+    let createdAt: Date
+    let modifiedAt: Date
 }
 
 extension OfferPayload {
@@ -161,7 +161,11 @@ extension OfferPayload {
               let locationState = OfferTradeLocationOption(rawValue: publicPart.locationState),
               let activePriceState = OfferTrigger(rawValue: publicPart.activePriceState),
               let offerType = OfferType(rawValue: publicPart.offerType),
-              let activePriceCurrency = Currency(rawValue: publicPart.activePriceCurrency)  else {
+              let activePriceCurrency = Currency(rawValue: publicPart.activePriceCurrency),
+              let minAmount = Double(publicPart.amountBottomLimit),
+              let maxAmount = Double(publicPart.amountTopLimit),
+              let activePrice = Double(publicPart.activePriceValue),
+              let feeAmount = Double(publicPart.feeAmount) else {
             return nil
         }
         let friendLevel = privatePart.friendLevel.compactMap(AnonymousProfileType.init)
@@ -171,17 +175,17 @@ extension OfferPayload {
         offer.createdAt = createdAt
         offer.modifiedAt = Formatters.dateApiFormatter.string(from: modifiedAt)
         offer.currency = currency
-        offer.minAmount = publicPart.amountBottomLimit
-        offer.maxAmount = publicPart.amountTopLimit
-        offer.feeAmount = publicPart.feeAmount
+        offer.minAmount = minAmount
+        offer.maxAmount = maxAmount
+        offer.feeAmount = feeAmount
         offer.offerDescription = publicPart.offerDescription
         offer.feeState = feeState
         offer.locationState = locationState
         offer.friendLevels = friendLevel.compactMap(\.asOfferFriendDegree)
         offer.offerTypeRawType = offerType.rawValue
-        offer.active = publicPart.active
+        offer.active = Bool(publicPart.active) ?? false
         offer.activePriceState = activePriceState
-        offer.activePriceValue = publicPart.activePriceValue
+        offer.activePriceValue = activePrice
         offer.activePriceCurrency = activePriceCurrency
         offer.paymentMethods = publicPart.paymentMethod.compactMap(OfferPaymentMethodOption.init)
         offer.btcNetworks = publicPart.btcNetwork.compactMap(OfferAdvancedBTCOption.init)

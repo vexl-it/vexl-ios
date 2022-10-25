@@ -94,28 +94,11 @@ final class EditProfileAvatarViewModel: ViewModelType, ObservableObject {
 
         action
             .filter { $0 == .updateAvatar }
-            .withUnretained(self)
-            .flatMap { owner, _ -> AnyPublisher<String?, Never> in
-                guard let avatar = owner.avatar else { return Just<String?>(nil).eraseToAnyPublisher() }
-                let compressedAvatar = avatar.compressImage(quality: 0.25)
-                return compressedAvatar.base64Publisher
-                    .track(activity: owner.primaryActivity)
-            }
+            .asVoid()
             .withUnretained(self)
             .flatMap { owner, avatar in
-                owner.userService
-                    .updateUser(username: owner.userRepository.user?.profile?.name ?? "",
-                                avatar: avatar)
-                    .track(activity: owner.primaryActivity)
-                    .materialize()
-                    .compactMap(\.value)
-            }
-            .withUnretained(self)
-            .flatMap { owner, editUser in
                 owner.userRepository
-                    .update(username: editUser.username,
-                            avatarURL: editUser.avatar,
-                            avatar: owner.avatar)
+                    .update(avatar: owner.avatar?.compressImage(quality: 0.25))
                     .track(activity: owner.primaryActivity)
                     .materialize()
                     .compactMap(\.value)
