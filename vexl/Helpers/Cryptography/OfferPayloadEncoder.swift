@@ -69,18 +69,19 @@ class OfferRequestPayloadEncoder {
             .generateOfferPayloadPrivateParts(envelope: envelope, symmetricKey: symmetricKey)
 
         let privatePartEncryption = chuncks
-            .flatMap(\.publisher)
-            .receive(on: encryptionQueue)
-            .flatMap { [encryptionService] privatePart in
-                encryptionService.encryptOfferPayload(privatePart: privatePart)
-            }
             .withUnretained(self)
-            .handleEvents(receiveOutput: { owner, _ in
-                owner.progressInput.send(())
-            })
-            .map { $0.1 }
-            .receive(on: RunLoop.current)
-            .collect(envelopeCount)
+            .flatMap { [encryptionService] owner, payloads in
+                payloads.publisher
+                    .flatMap { [encryptionService] privatePart in
+                        encryptionService.encryptOfferPayload(privatePart: privatePart)
+                    }
+                    .withUnretained(owner)
+                    .handleEvents(receiveOutput: { owner, _ in
+                        owner.progressInput.send(())
+                    })
+                    .map { $0.1 }
+                    .collect()
+            }
             .eraseToAnyPublisher()
 
         let publicPartEncryption = privatePartEncryption
@@ -112,13 +113,15 @@ class OfferRequestPayloadEncoder {
         return requestPayload
     }
 
-    func encode(offers: [ManagedOffer], envelope: PKsEnvelope) -> AnyPublisher<[OfferRequestPayload], Error>{
+    func encode(offers: [ManagedOffer], envelope: PKsEnvelope) -> AnyPublisher<[(ManagedOffer, OfferRequestPayload)], Error>{
         Just(offers)
             .flatMap(\.publisher)
             .withUnretained(self)
-            .flatMap { owner, offer -> AnyPublisher<OfferRequestPayload, Error> in
+            .flatMap { owner, offer -> AnyPublisher<(ManagedOffer, OfferRequestPayload), Error> in
                 let subsetEnvelope = envelope.subset(for: offer)
                 return owner.encode(offer: offer, envelope: subsetEnvelope)
+                    .map { (offer, $0) }
+                    .eraseToAnyPublisher()
             }
             .collect()
             .eraseToAnyPublisher()

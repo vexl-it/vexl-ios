@@ -86,7 +86,7 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
         }
     )
 
-    let triggerCurrency: Currency
+    var triggerCurrency: Currency
 
     var isOfferNew: Bool { managedOffer == nil }
     var isButtonActive: Bool { isCreateEnabled && (offer != Offer(managedOffer: managedOffer) || areLocationsUpdated) }
@@ -214,7 +214,7 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
 
     private var initialLocations: [OfferLocation] = []
     private var managedOffer: ManagedOffer?
-    private let secondsToWaitForOfferLoader = RunLoop.SchedulerTimeType.Stride(3)
+    private let secondsToWaitForOfferLoader = RunLoop.SchedulerTimeType.Stride(1.5)
 
     private let encoder = OfferRequestPayloadEncoder()
 
@@ -261,13 +261,20 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
             .map { $0.splitIntoChunks(by: 2) }
             .assign(to: &$groupRows)
 
-
         encoder.progressPublisher
             .withUnretained(self)
             .sink { owner, zip in
                 let (currentProgress, maxProgress) = zip
                 owner.encryptionProgress = currentProgress
                 owner.encryptionMaxProgress = maxProgress
+            }
+            .store(in: cancelBag)
+
+        $offer
+            .compactMap(\.currency)
+            .withUnretained(self)
+            .sink { owner, currency in
+                owner.triggerCurrency = currency
             }
             .store(in: cancelBag)
     }
@@ -489,7 +496,7 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
                 if !isCreating, let adminID = offer.adminID {
                     return offerService
                         .updateOffers(adminID: adminID, offerPayload: payload)
-                        .track(activity: owner.primaryActivity)
+                        .trackError(owner.errorIndicator)
                         .materialize()
                         .compactMap(\.value)
                         .map { ($0, offer) }
@@ -497,7 +504,7 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
                 }
                 return offerService
                     .createOffer(offerPayload: payload)
-                    .track(activity: owner.primaryActivity)
+                    .trackError(owner.errorIndicator)
                     .materialize()
                     .compactMap(\.value)
                     .map { ($0, offer) }
@@ -505,20 +512,22 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
             }
 
         let updateOfferId = beRequest
-            .flatMap { [offerRepository, primaryActivity] responsePayload, offer -> AnyPublisher<Void, Never> in
+            .withUnretained(self)
+            .flatMap { owner, zip -> AnyPublisher<Void, Never> in
+                let (responsePayload, offer) = zip
                 guard let adminID = responsePayload.adminId,
                     offer.adminID != adminID,
                     offer.offerID != responsePayload.offerId else {
                     return Just(())
                         .eraseToAnyPublisher()
                 }
-                return offerRepository
+                return owner.offerRepository
                     .update(offer: offer, locations: nil) { offer in
                         offer.offerID = responsePayload.offerId
                         offer.adminID = adminID
                     }
                     .asVoid()
-                    .track(activity: primaryActivity)
+                    .trackError(owner.errorIndicator)
                     .materialize()
                     .compactMap(\.value)
                     .eraseToAnyPublisher()
