@@ -56,6 +56,7 @@ struct ContinuousPageControl: UIViewRepresentable {
         pageControl.currentPage = currentIndex
         pageControl.numberOfPages = numberOfPages
         pageControl.allowsContinuousInteraction = true
+        pageControl.isUserInteractionEnabled = false
         return pageControl
     }
 
