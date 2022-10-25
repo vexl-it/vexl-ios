@@ -48,7 +48,7 @@ struct CirclePageControl: View {
 }
 
 struct ContinuousPageControl: UIViewRepresentable {
-    let numberOfPages: Int
+    @Binding var numberOfPages: Int
     @Binding var currentIndex: Int
 
     func makeUIView(context: Context) -> UIPageControl {
@@ -60,6 +60,7 @@ struct ContinuousPageControl: UIViewRepresentable {
     }
 
     func updateUIView(_ uiView: UIPageControl, context: Context) {
+        uiView.numberOfPages = numberOfPages
         uiView.currentPage = currentIndex
     }
 }

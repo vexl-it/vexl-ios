@@ -16,6 +16,13 @@ struct ChatRequestView: View {
         Appearance.GridGuide.largeButtonHeight + Appearance.GridGuide.padding
     }
 
+    private var numberOfPages: Binding<Int> {
+        Binding(
+            get: { self.viewModel.offerRequests.count },
+            set: { _ in }
+        )
+    }
+
     var body: some View {
         VStack {
             HeaderTitleView(title: L.chatRequestMainTitle("\(viewModel.offerRequests.count)"),
@@ -30,7 +37,7 @@ struct ChatRequestView: View {
             } else {
                 ZStack(alignment: .bottom) {
                     ContinuousPageControl(
-                        numberOfPages: viewModel.offerRequests.count,
+                        numberOfPages: numberOfPages,
                         currentIndex: $currentIndex
                     )
                     .padding(.bottom, pageControlBottomPadding)
