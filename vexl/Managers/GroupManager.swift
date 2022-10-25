@@ -13,6 +13,7 @@ import Cleevio
 protocol GroupManagerType {
     func createGroup(name: String, logo: UIImage, expiration: Date, closureAt: Date) -> AnyPublisher<Void, Error>
     func getAllGroupMembers(group: ManagedGroup?) -> AnyPublisher<[String], Error>
+    func getAllGroupMembers(groups: [ManagedGroup]) -> AnyPublisher<[GroupPKsEnvelope], Error>
     func reencryptOffersForNewMembers(groupUUID: String, completionHandler: ((Error?) -> Void)?)
     func leave(group: ManagedGroup) -> AnyPublisher<Void, Error>
     func joinGroup(code: Int) -> AnyPublisher<Void, Error>
@@ -58,6 +59,39 @@ final class GroupManager: GroupManagerType {
             .flatMap { [groupRepository] membersPayload in
                 groupRepository
                     .update(group: group, members: membersPayload.newPublicKeys, returnOnlyNewMembers: false)
+            }
+            .eraseToAnyPublisher()
+    }
+
+    func getAllGroupMembers(groups: [ManagedGroup]) -> AnyPublisher<[GroupPKsEnvelope], Error> {
+        guard groups.isEmpty else {
+            return Just([])
+                .setFailureType(to: Error.self)
+                .eraseToAnyPublisher()
+        }
+        let uuidMap = groups.reduce(into: [String: ManagedGroup]()) { partialResult, group in
+            guard let uuid = group.uuid else {
+                return
+            }
+            partialResult[uuid] = group
+        }
+        return groupService
+            .getAllMembers(uuids: Array(uuidMap.keys))
+            .map { (membersPayloads: [GroupNewMemberPayload]) -> [GroupPKsEnvelope] in
+                membersPayloads.compactMap { payload in
+                    uuidMap[payload.groupUuid].flatMap { group in
+                        GroupPKsEnvelope(group: group, publicKeys: payload.newPublicKeys)
+                    }
+                }
+            }
+            .flatMap { [groupRepository] envelopes in
+                envelopes.publisher
+                    .flatMap { envelope in
+                        groupRepository
+                            .update(group: envelope.group, members: envelope.publicKeys, returnOnlyNewMembers: false)
+                    }
+                    .collect()
+                    .map { _ in envelopes }
             }
             .eraseToAnyPublisher()
     }
@@ -109,20 +143,20 @@ final class GroupManager: GroupManagerType {
     }
 
     func leave(group: ManagedGroup) -> AnyPublisher<Void, Error> { // swiftlint:disable:this function_body_length
-        let allPublicKeys: AnyPublisher<UserContacts, Never> = Just(())
-            .flatMap { [contactService] () -> AnyPublisher<UserContacts, Never> in
+        let allPublicKeys: AnyPublisher<ContactPKsEnvelope, Never> = Just(())
+            .flatMap { [contactService] () -> AnyPublisher<ContactPKsEnvelope, Never> in
                 contactService
                     .getAllContacts(friendLevel: .second, hasFacebookAccount: false, pageLimit: Constants.pageMaxLimit)
                     .nilOnError()
-                    .map { $0 ?? UserContacts(phone: [], facebook: []) }
+                    .map { $0 ?? ContactPKsEnvelope(firstDegree: [], secondDegree: []) }
                     .eraseToAnyPublisher()
             }
             .eraseToAnyPublisher()
 
         let deleteMemberPublicKeys = allPublicKeys
-            .map { (contacts: UserContacts) -> [String] in
-                let allContacts: [ContactKey] = contacts.phone + contacts.facebook
-                let myContactSet: Set<String> = Set(allContacts.map(\.publicKey))
+            .map { (contacts: ContactPKsEnvelope) -> [String] in
+                let allContacts = contacts.firstDegree + contacts.secondDegree
+                let myContactSet: Set<String> = Set(allContacts)
                 let groupMembers: [ManagedAnonymousProfile] = group.members?.allObjects as? [ManagedAnonymousProfile] ?? []
                 var memberSet: Set<String> = Set(groupMembers.compactMap(\.publicKey))
                 memberSet.subtract(myContactSet)

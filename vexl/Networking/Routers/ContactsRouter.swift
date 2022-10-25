@@ -78,6 +78,8 @@ enum ContactsRouter: ApiRouter {
         }
     }
 
+    var version: Constants.API.Version? { .v1 }
+
     var parameters: Parameters {
         switch self {
         case .getFacebookContacts, .getAvailableFacebookContacts, .deleteUser, .countPhoneContacts:

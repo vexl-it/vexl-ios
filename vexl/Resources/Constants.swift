@@ -28,18 +28,21 @@ struct Constants {
         #else
         private static let userApiHostname = "https://user.vexl.devel.cleevio.io"
         private static let contactsApiHostname = "https://contact.vexl.devel.cleevio.io"
-        private static let offersApiHostname = "https://offer.vexl.devel.cleevio.io"
+        private static let offersApiHostname = "https://offer2.vexl.devel.cleevio.io"
         private static let chatApiHostname = "https://chat.vexl.devel.cleevio.io"
         #endif
 
-        private static let apiVersion = "v1/"
-
         static let baseURLString = ""
-        static let userBaseURLString = "\(userApiHostname)/api/\(apiVersion)"
-        static let contactsBaseURLString = "\(contactsApiHostname)/api/\(apiVersion)"
-        static let offersBaseURLString = "\(offersApiHostname)/api/\(apiVersion)"
-        static let chatBaseURLString = "\(chatApiHostname)/api/\(apiVersion)"
+        static let userBaseURLString = "\(userApiHostname)/api/"
+        static let contactsBaseURLString = "\(contactsApiHostname)/api/"
+        static let offersBaseURLString = "\(offersApiHostname)/api/"
+        static let chatBaseURLString = "\(chatApiHostname)/api/"
         static let mapyBaseURLString = "https://api.mapy.cz/"
+
+        enum Version: String {
+            case v1
+            case v2
+        }
     }
 
     // MARK: - Keychain keys

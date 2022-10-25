@@ -71,6 +71,14 @@ extension Encodable {
         guard let data = try? Constants.jsonEncoder.encode(self) else { return nil }
         return (try? JSONSerialization.jsonObject(with: data, options: .allowFragments)).flatMap { $0 as? [String: Any] }
     }
+
+    func asJsonString() throws -> String {
+        let jsonData = try Constants.jsonEncoder.encode(self)
+        guard let json = String(data: jsonData, encoding: .utf8) else {
+            return "nil"
+        }
+        return json
+    }
 }
 
 // MARK: - Any array Codable

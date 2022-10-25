@@ -13,29 +13,32 @@ protocol OfferServiceType {
     // MARK: Offer Fetching
 
     func getUserOffers(offerIds: [String]) -> AnyPublisher<[OfferPayload], Error>
-    func getMyOffers(pageLimit: Int?) -> AnyPublisher<Paged<OfferPayload>, Error>
-    func getNewOffers(pageLimit: Int?, lastSyncDate: Date) -> AnyPublisher<Paged<OfferPayload>, Error>
+    func getMyOffers(pageLimit: Int?) -> AnyPublisher<OfferPayloadListWrapper, Error>
+    func getNewOffers(pageLimit: Int?, lastSyncDate: Date) -> AnyPublisher<OfferPayloadListWrapper, Error>
     func getDeletedOffers(knownOffers: [ManagedOffer]) -> AnyPublisher<[String], Error>
 
     // MARK: Offer Creation
 
-    func createOffer(expiration: Date, offerPayloads: [OfferPayload], offerTyoe: OfferType) -> AnyPublisher<OfferPayload, Error>
-    func createNewPrivateParts(for offer: ManagedOffer, userPublicKey: String, receiverPublicKeys: [String]) -> AnyPublisher<Void, Error>
+    func createOffer(offerPayload: OfferRequestPayload) -> AnyPublisher<OfferPayload, Error>
+    func createNewPrivateParts(for offer: ManagedOffer, envelope: PKsEnvelope) -> AnyPublisher<Void, Error>
 
     // MARK: Offer Updating
 
     func report(offerID: String) -> AnyPublisher<Void, Error>
-    func updateOffers(adminID: String, offerPayloads: [OfferPayload]) -> AnyPublisher<OfferPayload, Error>
+    func updateOffers(adminID: String, offerPayload: OfferRequestPayload) -> AnyPublisher<OfferPayload, Error>
     func deleteOffers(adminIDs: [String]) -> AnyPublisher<Void, Error>
     func deleteOfferPrivateParts(adminIDs: [String], publicKeys: [String]) -> AnyPublisher<Void, Error>
 
     // MARK: Helper functions
 
-    func getReceiverPublicKeys(friendLevel: ContactFriendLevel, group: ManagedGroup?, includeUserPublicKey userPublicKey: String?) -> AnyPublisher<[String], Error>
-    func encryptOffer(offer: ManagedOffer, publicKeys: [String]) -> AnyPublisher<[OfferPayload], Error>
+    func getReceiverPublicKeys(friendLevel: ContactFriendLevel, groups: [ManagedGroup], includeUserPublicKey userPublicKey: String) -> AnyPublisher<PKsEnvelope, Error>
+    func encryptOffer(offer: ManagedOffer, envelope: PKsEnvelope) -> AnyPublisher<OfferRequestPayload, Error>
+    func generateOfferPayloadPrivateParts(envelope: PKsEnvelope, symmetricKey: String) -> AnyPublisher<[OfferPayloadPrivateWrapper], Never>
+    func encryptOfferPayloadPrivateParts(privateParts: [OfferPayloadPrivateWrapper]) -> AnyPublisher<[OfferPayloadPrivateWrapperEncrypted], Error>
 }
 
 final class OfferService: BaseService, OfferServiceType {
+
 
     @Inject private var contactsService: ContactsServiceType
     @Inject private var encryptionService: EncryptionServiceType
@@ -48,13 +51,13 @@ final class OfferService: BaseService, OfferServiceType {
             .eraseToAnyPublisher()
     }
 
-    func getMyOffers(pageLimit: Int?) -> AnyPublisher<Paged<OfferPayload>, Error> {
-        request(type: Paged<OfferPayload>.self, endpoint: OffersRouter.getOffers(pageLimit: pageLimit))
+    func getMyOffers(pageLimit: Int?) -> AnyPublisher<OfferPayloadListWrapper, Error> {
+        request(type: OfferPayloadListWrapper.self, endpoint: OffersRouter.getOffers(pageLimit: pageLimit))
             .eraseToAnyPublisher()
     }
 
-    func getNewOffers(pageLimit: Int?, lastSyncDate: Date) -> AnyPublisher<Paged<OfferPayload>, Error> {
-        request(type: Paged<OfferPayload>.self, endpoint: OffersRouter.getNewOffers(pageLimit: pageLimit, lastSyncDate: lastSyncDate))
+    func getNewOffers(pageLimit: Int?, lastSyncDate: Date) -> AnyPublisher<OfferPayloadListWrapper, Error> {
+        request(type: OfferPayloadListWrapper.self, endpoint: OffersRouter.getNewOffers(pageLimit: pageLimit, lastSyncDate: lastSyncDate))
     }
 
     func getDeletedOffers(knownOffers: [ManagedOffer]) -> AnyPublisher<[String], Error> {
@@ -71,27 +74,29 @@ final class OfferService: BaseService, OfferServiceType {
 
     // MARK: - Offer Creation
 
-    func createOffer(expiration: Date, offerPayloads: [OfferPayload], offerTyoe: OfferType) -> AnyPublisher<OfferPayload, Error> {
+    func createOffer(offerPayload: OfferRequestPayload) -> AnyPublisher<OfferPayload, Error> {
         request(
             type: OfferPayload.self,
             endpoint: OffersRouter.createOffer(
-                offerPayloads: offerPayloads,
-                expiration: expiration.timeIntervalSince1970,
-                offerType: offerTyoe
+                offerPayload: offerPayload
             )
         )
         .eraseToAnyPublisher()
     }
 
-    func createNewPrivateParts(for offer: ManagedOffer, userPublicKey: String, receiverPublicKeys: [String]) -> AnyPublisher<Void, Error> {
-        guard let adminID = offer.adminID else {
+    func createNewPrivateParts(for offer: ManagedOffer, envelope: PKsEnvelope) -> AnyPublisher<Void, Error> {
+        guard let adminID = offer.adminID, let symmetricKey = offer.symmetricKey else {
             return Fail(error: PersistenceError.insufficientData)
                 .eraseToAnyPublisher()
         }
-        return encryptOffer(offer: offer, publicKeys: receiverPublicKeys)
+        return generateOfferPayloadPrivateParts(envelope: envelope, symmetricKey: symmetricKey)
+            .withUnretained(self)
+            .flatMap { owner, privateParts in
+                owner.encryptOfferPayloadPrivateParts(privateParts: privateParts)
+            }
             .withUnretained(self)
             .flatMap { owner, payloads in
-                owner.request(endpoint: OffersRouter.createNewPrivateParts(adminID: adminID, offerPayloads: payloads))
+                owner.request(endpoint: OffersRouter.createNewPrivateParts(adminID: adminID, offerPrivateParts: payloads))
             }
             .eraseToAnyPublisher()
     }
@@ -102,11 +107,11 @@ final class OfferService: BaseService, OfferServiceType {
         request(endpoint: OffersRouter.report(offerID: offerID))
     }
 
-    func updateOffers(adminID: String, offerPayloads: [OfferPayload]) -> AnyPublisher<OfferPayload, Error> {
+    func updateOffers(adminID: String, offerPayload: OfferRequestPayload) -> AnyPublisher<OfferPayload, Error> {
         request(
             type: OfferPayload.self,
             endpoint: OffersRouter.updateOffer(
-                offer: offerPayloads,
+                offerPayload: offerPayload,
                 adminID: adminID
             )
         )
@@ -133,51 +138,81 @@ final class OfferService: BaseService, OfferServiceType {
 
     // MARK: Helper functions
 
-    func getReceiverPublicKeys(friendLevel: ContactFriendLevel, group: ManagedGroup?, includeUserPublicKey userPublicKey: String?) -> AnyPublisher<[String], Error> {
+    func getReceiverPublicKeys(friendLevel: ContactFriendLevel, groups: [ManagedGroup], includeUserPublicKey userPublicKey: String) -> AnyPublisher<PKsEnvelope, Error> {
         contactsService
             .getAllContacts(
                 friendLevel: friendLevel,
                 hasFacebookAccount: authenticationManager.facebookSecurityHeader != nil,
                 pageLimit: Constants.pageMaxLimit
             )
-            .flatMap { contacts -> AnyPublisher<[String], Never> in
-                let myPubKeys = [userPublicKey].compactMap { $0 }
-                    + contacts.phone.map(\.publicKey)
-                    + contacts.facebook.map(\.publicKey)
-                guard let group = group else {
-                    return Just(Array(Set(myPubKeys)))
+            .flatMap { contactEnvelope -> AnyPublisher<PKsEnvelope, Never> in
+                guard !groups.isEmpty else {
+                    return Just(
+                            PKsEnvelope(contacts: contactEnvelope, groups: [], userPublicKey: userPublicKey)
+                        )
                         .eraseToAnyPublisher()
                 }
                 // If this dependency is defined in header, it would cause circular dependency
                 @Inject var groupManager: GroupManagerType
                 return groupManager
-                    .getAllGroupMembers(group: group)
+                    .getAllGroupMembers(groups: groups)
                     .catch { _ in Just([]) }
-                    .map { groupMembers -> [String] in
-                        Array(Set(groupMembers + myPubKeys))
+                    .map { groupEnvelopes in
+                        PKsEnvelope(contacts: contactEnvelope, groups: groupEnvelopes, userPublicKey: userPublicKey)
                     }
                     .eraseToAnyPublisher()
             }
             .eraseToAnyPublisher()
     }
 
-    func encryptOffer(offer: ManagedOffer, publicKeys: [String]) -> AnyPublisher<[OfferPayload], Error> {
-        let commonFriends = contactsService
-            .getCommonFriends(publicKeys: publicKeys)
-            .catch { _ in Just([:]) }
-            .map { (publicKeys, $0) }
-            .map { publicKeys, hashes -> [OfferEncprytionInput] in
-                publicKeys.map { publicKey in
-                    let commonFriends = hashes[publicKey] ?? []
-                    return OfferEncprytionInput(receiverPublicKey: publicKey, commonFriends: commonFriends)
-                }
-            }
+    func encryptOffer(offer: ManagedOffer, envelope: PKsEnvelope) -> AnyPublisher<OfferRequestPayload, Error> {
+        guard let symmetricKey = offer.symmetricKey, let offerType = offer.type, let expiration = offer.expirationDate?.timeIntervalSince1970 else {
+            return Fail(error: PersistenceError.insufficientData)
+                .eraseToAnyPublisher()
+        }
+        let privateParts = self
+            .generateOfferPayloadPrivateParts(envelope: envelope, symmetricKey: symmetricKey)
+            .flatMap(encryptOfferPayloadPrivateParts)
 
-        return commonFriends
-            .flatMap { [encryptionService] contactsAndHashes in
-                encryptionService
-                    .encryptOffer(withContactKey: contactsAndHashes, offer: offer)
+        let publicPart = self
+            .encryptOfferPayloadPublic(offer: offer, symmetricKey: symmetricKey)
+
+        let payload = Publishers.Zip(publicPart, privateParts)
+            .map { (publicPart, privateParts) -> OfferRequestPayload in
+                OfferRequestPayload(
+                    offerType: offerType.rawValue,
+                    expiration: Int(expiration),
+                    payloadPublic: publicPart,
+                    offerPrivateList: privateParts
+                )
             }
             .eraseToAnyPublisher()
+
+        return payload
+    }
+
+    func generateOfferPayloadPrivateParts(envelope: PKsEnvelope, symmetricKey: String) -> AnyPublisher<[OfferPayloadPrivateWrapper], Never> {
+        let allPublicKeys = envelope.allPublicKeys
+        let privateParts = envelope.generatePrivateParts(symmetricKey: symmetricKey)
+        let commonFriends = contactsService
+            .getCommonFriends(publicKeys: allPublicKeys)
+            .catch { _ in Just([:]) }
+            .map { commonFriendsMap in
+                privateParts.map { part in
+                    var part = part
+                    part.payloadPrivate.commonFriends = commonFriendsMap[part.userPublicKey] ?? []
+                    return part
+                }
+            }
+            .eraseToAnyPublisher()
+        return commonFriends
+    }
+
+    func encryptOfferPayloadPrivateParts(privateParts: [OfferPayloadPrivateWrapper]) -> AnyPublisher<[OfferPayloadPrivateWrapperEncrypted], Error> {
+        encryptionService.encryptOfferPayload(privateParts: privateParts)
+    }
+
+    func encryptOfferPayloadPublic(offer: ManagedOffer, symmetricKey: String) -> AnyPublisher<String, Error> {
+        encryptionService.encryptOfferPayloadPublic(offer: offer, symmetricKey: symmetricKey)
     }
 }

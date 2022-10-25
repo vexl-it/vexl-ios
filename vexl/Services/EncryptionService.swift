@@ -13,10 +13,13 @@ typealias OfferEncprytionInput = (receiverPublicKey: String, commonFriends: [Str
 
 protocol EncryptionServiceType {
     func hashContacts(contacts: [ContactInformation]) -> AnyPublisher<[(ContactInformation, String)], Error>
-    func encryptOffer(withContactKey publicKeys: [OfferEncprytionInput], offer: ManagedOffer) -> AnyPublisher<[OfferPayload], Error>
+    func encryptOfferPayload(privateParts: [OfferPayloadPrivateWrapper]) -> AnyPublisher<[OfferPayloadPrivateWrapperEncrypted], Error>
+    func encryptOfferPayload(privatePart: OfferPayloadPrivateWrapper) -> AnyPublisher<OfferPayloadPrivateWrapperEncrypted, Error>
+    func encryptOfferPayloadPublic(offer: ManagedOffer, symmetricKey: String) -> AnyPublisher<String, Error>
 }
 
 final class EncryptionService: EncryptionServiceType {
+
     @Inject var cryptoService: CryptoServiceType
     @KeychainStore(key: .userCountryCode)
     private var userCountryCode: String?
@@ -63,35 +66,73 @@ final class EncryptionService: EncryptionServiceType {
         .eraseToAnyPublisher()
     }
 
-    func encryptOffer(withContactKey publicKeys: [OfferEncprytionInput], offer: ManagedOffer) -> AnyPublisher<[OfferPayload], Error> {
-        publicKeys
+    func encryptOfferPayload(privateParts: [OfferPayloadPrivateWrapper]) -> AnyPublisher<[OfferPayloadPrivateWrapperEncrypted], Error> {
+        privateParts
             .publisher
-            .flatMap { [weak self] receiverPublicKey, commonFriends -> AnyPublisher<OfferPayload, Error> in
-                guard let owner = self else {
-                    return Fail(error: EncryptionError.dataEncryption)
-                        .eraseToAnyPublisher()
+            .flatMap { privatePart in
+                Future { [weak self] promise in
+                    guard let owner = self else {
+                        promise(.failure(EncryptionError.dataEncryption))
+                        return
+                    }
+                    owner.encryptionQueue.addOperation {
+                        do {
+                            let encryptedPart = OfferPayloadPrivateWrapperEncrypted(
+                                userPublicKey: privatePart.userPublicKey,
+                                payloadPrivate: try privatePart.payloadPrivate
+                                    .asJsonString()
+                                    .ecc.encrypt(publicKey: privatePart.userPublicKey)
+                                    .encodeEncryptionVersion(version: OfferPayloadPrivateVersion.v1)
+                            )
+                            promise(.success(encryptedPart))
+                        } catch {
+                            promise(.failure(error))
+                        }
+                    }
                 }
-                return owner.encrypt(offer: offer, publicKey: receiverPublicKey, commonFriends: commonFriends)
             }
             .collect()
+            .receive(on: RunLoop.main)
             .eraseToAnyPublisher()
     }
 
-    private func encrypt(offer: ManagedOffer, publicKey contactPublicKey: String, commonFriends: [String]) -> AnyPublisher<OfferPayload, Error> {
-        Future { [weak self] promise in
-            guard let owner = self else {
-                promise(.failure(EncryptionError.dataEncryption))
-                return
-            }
-            owner.encryptionQueue.addOperation {
-                do {
-                    promise(.success(try OfferPayload(offer: offer, encryptionPublicKey: contactPublicKey, commonFriends: commonFriends)))
-                } catch {
-                    promise(.failure(error))
-                }
+    func encryptOfferPayload(privatePart: OfferPayloadPrivateWrapper) -> AnyPublisher<OfferPayloadPrivateWrapperEncrypted, Error> {
+        Future { promise in
+            do {
+                let encryptedPart = OfferPayloadPrivateWrapperEncrypted(
+                    userPublicKey: privatePart.userPublicKey,
+                    payloadPrivate: try privatePart.payloadPrivate
+                        .asJsonString()
+                        .ecc.encrypt(publicKey: privatePart.userPublicKey)
+                        .encodeEncryptionVersion(version: OfferPayloadPrivateVersion.v1)
+                )
+                promise(.success(encryptedPart))
+            } catch {
+                promise(.failure(error))
             }
         }
-        .receive(on: RunLoop.main)
         .eraseToAnyPublisher()
+    }
+
+    func encryptOfferPayloadPublic(offer: ManagedOffer, symmetricKey: String) -> AnyPublisher<String, Error> {
+            Future { [weak self] promise in
+                guard let owner = self else {
+                    promise(.failure(EncryptionError.dataEncryption))
+                    return
+                }
+                owner.encryptionQueue.addOperation {
+                    do {
+                        let encryptedPart = try OfferPayloadPublic(offer: offer)
+                            .asJsonString()
+                            .aes.encrypt(password: symmetricKey)
+                            .encodeEncryptionVersion(version: OfferPayloadPublicVersion.v1)
+                        promise(.success(encryptedPart))
+                    } catch {
+                        promise(.failure(error))
+                    }
+                }
+            }
+            .receive(on: RunLoop.main)
+            .eraseToAnyPublisher()
     }
 }
