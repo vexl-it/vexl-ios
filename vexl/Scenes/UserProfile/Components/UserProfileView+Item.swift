@@ -8,9 +8,14 @@
 import SwiftUI
 
 extension UserProfileView {
+    enum TitleType {
+        case normal(String)
+        case attributed(NSAttributedString)
+    }
+
     struct Item: View {
 
-        let title: String
+        let titleType: TitleType
         let subtitle: String?
         let icon: String
         let type: UserProfileView.OptionType
@@ -20,6 +25,7 @@ extension UserProfileView {
 
                 Image(icon)
                     .resizable()
+                    .scaledToFit()
                     .frame(size: Appearance.GridGuide.iconSize)
 
                 VStack(alignment: .leading) {
@@ -39,9 +45,15 @@ extension UserProfileView {
             .padding(.vertical, 0)
         }
 
+        @ViewBuilder
         private var titleView: some View {
-            Text(title)
-                .textStyle(.paragraph)
+            switch titleType {
+            case .normal(let title):
+                Text(title)
+                    .textStyle(.paragraph)
+            case .attributed(let attributedTitle):
+                AttributedText(attributedText: attributedTitle, color: UIColor(type.color))
+            }
         }
     }
 }

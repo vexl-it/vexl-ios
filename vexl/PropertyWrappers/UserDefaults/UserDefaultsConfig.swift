@@ -11,6 +11,7 @@ import Foundation
 enum UserDefaultKey: String {
     case hasSeenOnboarding
     case storedUser
+    case inappLoggingEnabled
     case storedSecurity
     case storedOfferKeys
     case selectedCurrency
@@ -21,6 +22,12 @@ enum UserDefaultKey: String {
 
 struct UserDefaultsConfig {
     @UserDefault(UserDefaultKey.hasSeenOnboarding.rawValue, defaultValue: false) static var hasSeenOnboarding: Bool
+    static var selectedCurrency: Currency {
+        get { Currency(rawValue: selectedCurrencyRawValue) ?? .czk }
+        set { selectedCurrencyRawValue = newValue.rawValue }
+    }
+
+    @UserDefault(UserDefaultKey.selectedCurrency.rawValue, defaultValue: Currency.czk.rawValue) private static var selectedCurrencyRawValue: String
 
     static func removeAll() {
         UserDefaults.standard.dictionaryRepresentation().keys.forEach { UserDefaults.standard.removeObject(forKey: $0) }

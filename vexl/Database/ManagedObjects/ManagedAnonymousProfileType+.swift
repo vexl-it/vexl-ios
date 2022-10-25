@@ -8,9 +8,9 @@
 import Foundation
 
 enum AnonymousProfileType: String {
-    case firstDegree
-    case secondDegree
-    case group
+    case firstDegree = "FIRST_DEGREE"
+    case secondDegree = "SECOND_DEGREE"
+    case group = "GROUP"
 
     var asOfferFriendDegree: OfferFriendDegree? {
         switch self {
@@ -21,6 +21,19 @@ enum AnonymousProfileType: String {
         case .group:
             return nil
         }
+    }
+}
+
+extension Array where Element == AnonymousProfileType {
+    var priorityProfileType: AnonymousProfileType? {
+        if self.contains(.firstDegree) {
+            return .firstDegree
+        } else if self.contains(.secondDegree) {
+            return .secondDegree
+        } else if self.contains(.group) {
+            return .group
+        }
+        return nil
     }
 }
 

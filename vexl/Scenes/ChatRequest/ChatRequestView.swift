@@ -10,6 +10,18 @@ import SwiftUI
 struct ChatRequestView: View {
 
     @ObservedObject var viewModel: ChatRequestViewModel
+    @State private var currentIndex: Int = 0
+
+    private var pageControlBottomPadding: CGFloat {
+        Appearance.GridGuide.largeButtonHeight + Appearance.GridGuide.padding
+    }
+
+    private var numberOfPages: Binding<Int> {
+        Binding(
+            get: { self.viewModel.offerRequests.count },
+            set: { _ in }
+        )
+    }
 
     var body: some View {
         VStack {
@@ -23,19 +35,29 @@ struct ChatRequestView: View {
             if viewModel.offerRequests.isEmpty {
                 Spacer()
             } else {
-                TabView {
-                    ForEach(viewModel.offerRequests) { request in
-                        ChatRequestOfferView(data: request,
-                                             accept: { chat in
-                            viewModel.action.send(.acceptTap(chat: chat))
-                        },
-                                             decline: { chat in
-                            viewModel.action.send(.rejectTap(chat: chat))
-                        })
-                        .padding(.horizontal, Appearance.GridGuide.padding)
+                ZStack(alignment: .bottom) {
+                    ContinuousPageControl(
+                        numberOfPages: numberOfPages,
+                        currentIndex: $currentIndex
+                    )
+                    .padding(.bottom, pageControlBottomPadding)
+
+                    TabView(selection: $currentIndex) {
+                        ForEach(viewModel.offerRequests.indices, id: \.self) { index in
+                            ChatRequestOfferView(data: viewModel.offerRequests[index],
+                                                 accept: { chat in
+                                viewModel.action.send(.acceptTap(chat: chat))
+                            },
+                                                 decline: { chat in
+                                viewModel.action.send(.rejectTap(chat: chat))
+                            })
+                            .padding(.horizontal, Appearance.GridGuide.padding)
+                            .tag(index)
+                        }
                     }
+                    .animation(.easeInOut, value: viewModel.offerRequests)
+                    .tabViewStyle(.page(indexDisplayMode: .never))
                 }
-                .tabViewStyle(.page(indexDisplayMode: .never))
             }
         }
         .background(Color.black.ignoresSafeArea())

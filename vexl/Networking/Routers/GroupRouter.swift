@@ -49,6 +49,8 @@ enum GroupRouter: ApiRouter {
         }
     }
 
+    var version: Constants.API.Version? { .v1 }
+
     var parameters: Parameters {
         switch self {
         case .leaveGroup(let uuid):

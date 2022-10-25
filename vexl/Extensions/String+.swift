@@ -86,4 +86,16 @@ extension NSMutableAttributedString {
             value: NSUnderlineStyle.single.rawValue,
             range: nsrange)
     }
+
+    func bold(text: String, font: UIFont) {
+        guard let underlineRange = string.range(of: text) else {
+            return
+        }
+        let startPosition = string.distance(from: text.startIndex, to: underlineRange.lowerBound)
+        let nsrange = NSRange(location: startPosition, length: text.count)
+        addAttribute(
+            NSAttributedString.Key.font,
+            value: font,
+            range: nsrange)
+    }
 }

@@ -31,6 +31,7 @@ protocol ApiRouter: URLRequestConvertible {
     var rootKey: String { get }
     var additionalHeaders: [Header] { get }
     var url: String { get }
+    var version: Constants.API.Version? { get }
     var useURLEncoding: Bool { get }
 }
 
@@ -52,7 +53,11 @@ extension ApiRouter {
     var useURLEncoding: Bool { false }
 
     public func asURL() throws -> URL {
-        let urlPath = "\(url)\(path)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
+        var version = ""
+        if let versionString = self.version?.rawValue {
+            version = versionString + "/"
+        }
+        let urlPath = "\(url)\(version)\(path)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
         return try urlPath.asURL()
     }
 

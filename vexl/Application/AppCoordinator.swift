@@ -13,6 +13,7 @@ import Cleevio
 final class AppCoordinator: BaseCoordinator<Void> {
     @Inject var initialScreenManager: InitialScreenManager
     @Inject var syncQueue: SyncQueueManagerType
+    @Inject var logManager: LogManagerType
     @Inject var notificationManager: NotificationManagerType
     @Inject var deeplinkManager: DeeplinkManagerType
     @Inject var remoteConfigManager: RemoteConfigManagerType

@@ -22,7 +22,7 @@ enum ChatRouter: ApiRouter {
     case sendMessage(senderPublicKey: String, receiverPublicKey: String,
                      message: String, messageType: MessageType, signedChallenge: SignedChallenge)
     case deleteChatMessages(publicKey: String, signedChallenge: SignedChallenge)
-
+    
     var method: HTTPMethod {
         switch self {
         case .createInbox, .request, .requestChallenge, .requestConfirmation, .sendMessage:
@@ -33,11 +33,11 @@ enum ChatRouter: ApiRouter {
             return .delete
         }
     }
-
+    
     var additionalHeaders: [Header] {
         securityHeader
     }
-
+    
     var path: String {
         switch self {
         case .createInbox, .updateInbox:
@@ -60,6 +60,8 @@ enum ChatRouter: ApiRouter {
             return "inboxes/messages"
         }
     }
+    
+    var version: Constants.API.Version? { .v1 }
 
     var parameters: Parameters {
         switch self {

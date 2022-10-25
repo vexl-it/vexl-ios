@@ -25,6 +25,8 @@ enum MapyRouter: ApiRouter {
         }
     }
 
+    var version: Constants.API.Version? { nil }
+
     var parameters: Parameters {
         switch self {
         case .suggestions(let text):

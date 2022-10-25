@@ -10,6 +10,7 @@ import Cleevio
 
 struct FilterView: View {
     @ObservedObject var viewModel: FilterViewModel
+    @State private var imageHeight: CGFloat = .zero
 
     private var scrollViewBottomPadding: CGFloat {
         Appearance.GridGuide.baseHeight + Appearance.GridGuide.padding * 2
@@ -178,20 +179,36 @@ struct FilterView: View {
                 options: OfferFriendDegree.allCases,
                 content: { option in
                     if let option = option {
-                        Image(option.imageName)
-                            .resizable()
-                            .scaledToFit()
+                        friendPicker(forLevel: option.imageName)
                             .frame(maxWidth: .infinity)
+                            .frame(height: imageHeight)
                             .overlay(
                                 Image(systemName: "checkmark.circle.fill")
                                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
                                     .offset(x: -10, y: -10)
                                     .opacity(viewModel.isFriendDegreeSelected(for: option) ? 1 : 0)
                             )
+                            .readSize { size in
+                                imageHeight = size.width
+                            }
                     }
                 },
                 action: nil
             )
+        }
+    }
+
+    private func friendPicker(forLevel level: String) -> some View {
+        ZStack(alignment: .top) {
+            Image(level)
+                .padding(.top, Appearance.GridGuide.padding)
+
+            Image(data: viewModel.userAvatar, placeholder: R.image.marketplace.defaultAvatar.name)
+                .resizable()
+                .scaledToFill()
+                .frame(size: Appearance.GridGuide.feedAvatarSize)
+                .clipped()
+                .cornerRadius(Appearance.GridGuide.buttonCorner)
         }
     }
 }

@@ -34,6 +34,7 @@ struct WelcomeView: View {
             })
                 .padding(.horizontal, Appearance.GridGuide.point)
         }
+        .navigationBarBackButtonHidden(true)
         .background(Color.black.edgesIgnoringSafeArea(.all))
     }
 

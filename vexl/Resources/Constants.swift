@@ -18,7 +18,7 @@ struct Constants {
         #if APPSTORE
         private static let userApiHostname = "https://user.vexl.it"
         private static let contactsApiHostname = "https://contact.vexl.it"
-        private static let offersApiHostname = "https://offer.vexl.it"
+        private static let offersApiHostname = "https://offer2.vexl.it"
         private static let chatApiHostname = "https://chat.vexl.it"
         #elseif STAGING
         private static let userApiHostname = "https://user.vexl.staging.cleevio.io"
@@ -28,18 +28,21 @@ struct Constants {
         #else
         private static let userApiHostname = "https://user.vexl.devel.cleevio.io"
         private static let contactsApiHostname = "https://contact.vexl.devel.cleevio.io"
-        private static let offersApiHostname = "https://offer.vexl.devel.cleevio.io"
+        private static let offersApiHostname = "https://offer2.vexl.devel.cleevio.io"
         private static let chatApiHostname = "https://chat.vexl.devel.cleevio.io"
         #endif
 
-        private static let apiVersion = "v1/"
-
         static let baseURLString = ""
-        static let userBaseURLString = "\(userApiHostname)/api/\(apiVersion)"
-        static let contactsBaseURLString = "\(contactsApiHostname)/api/\(apiVersion)"
-        static let offersBaseURLString = "\(offersApiHostname)/api/\(apiVersion)"
-        static let chatBaseURLString = "\(chatApiHostname)/api/\(apiVersion)"
+        static let userBaseURLString = "\(userApiHostname)/api/"
+        static let contactsBaseURLString = "\(contactsApiHostname)/api/"
+        static let offersBaseURLString = "\(offersApiHostname)/api/"
+        static let chatBaseURLString = "\(chatApiHostname)/api/"
         static let mapyBaseURLString = "https://api.mapy.cz/"
+
+        enum Version: String {
+            case v1
+            case v2
+        }
     }
 
     // MARK: - Keychain keys
@@ -79,11 +82,13 @@ struct Constants {
 
     struct OfferInitialData {
         static let minOffer: Int = 0
-        static let maxOffer: Int = 10_000
-        static let maxOfferCZK: Int = 250_000
+        static let maxOffer: Int = 200
+        static let maxOfferCZK: Int = 250
         static let minFee: Double = 1
         static let maxFee: Double = 10
-        static let currency: Currency = .usd
+
+        static let maxOfferStep: Int = 50
+        static let maxOfferCZKStep: Int = 1_000
     }
 
     // MARK: - Decoder
@@ -108,6 +113,8 @@ struct Constants {
     static let currencySymbol = "$"
 
     static let pageMaxLimit = 1_000
+
+    static let maxLogLimit = 100
 
     static let inboxSyncPollInterval: TimeInterval = 10
     // TODO: set bitcoin polling to some more apropriate value when BE solves issue (previously was 30)

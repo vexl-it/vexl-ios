@@ -23,9 +23,19 @@ struct Offer: Equatable {
     var selectedPriceTriggerAmount: String
     var selectedGroup: ManagedGroup?
 
+    var calculatedAmountRange: ClosedRange<Int> {
+        let min = currentAmountRange.lowerBound * currencyStepValue
+        let max = currentAmountRange.upperBound * currencyStepValue
+        return min...max
+    }
+
+    private var currencyStepValue: Int {
+        currency == .czk ? Constants.OfferInitialData.maxOfferCZKStep : Constants.OfferInitialData.maxOfferStep
+    }
+
     init(isActive: Bool = true,
          description: String = "",
-         currency: Currency = Constants.OfferInitialData.currency,
+         currency: Currency = UserDefaultsConfig.selectedCurrency,
          currentAmountRange: ClosedRange<Int> = Constants.OfferInitialData.minOffer...Constants.OfferInitialData.maxOffer,
          selectedFeeOption: OfferFeeOption = .withoutFee,
          feeAmount: Double = Constants.OfferInitialData.minFee,
@@ -55,7 +65,7 @@ struct Offer: Equatable {
         guard let managedOffer = managedOffer else { return nil }
         isActive = managedOffer.active
         description = managedOffer.offerDescription ?? ""
-        currency = managedOffer.currency ?? Constants.OfferInitialData.currency
+        currency = managedOffer.currency ?? UserDefaultsConfig.selectedCurrency
         currentAmountRange = Int(managedOffer.minAmount)...Int(managedOffer.maxAmount)
         selectedFeeOption = managedOffer.feeState ?? .withoutFee
         feeAmount = managedOffer.feeAmount
@@ -70,10 +80,12 @@ struct Offer: Equatable {
     }
 
     mutating func update(with managedOffer: ManagedOffer) {
+        let minAmount = Int(managedOffer.minAmount) / currencyStepValue
+        let maxAmount = Int(managedOffer.maxAmount) / currencyStepValue
         isActive = managedOffer.active
         description = managedOffer.offerDescription ?? ""
         currency = managedOffer.currency ?? .usd
-        currentAmountRange = Int(managedOffer.minAmount)...Int(managedOffer.maxAmount)
+        currentAmountRange = minAmount...maxAmount
         selectedFeeOption = managedOffer.feeState ?? .withoutFee
         feeAmount = managedOffer.feeAmount
         selectedTradeStyleOption = managedOffer.locationState ?? .personal
@@ -84,6 +96,12 @@ struct Offer: Equatable {
         selectedPriceTriggerAmount = "\(Int(managedOffer.activePriceValue))"
         selectedGroup = managedOffer.group
         self.update(newCurrency: currency, resetAmount: false)
+    }
+
+    mutating func setRange(_ range: ClosedRange<Int>) {
+        let min = range.lowerBound / currencyStepValue
+        let max = range.upperBound / currencyStepValue
+        self.currentAmountRange = min...max
     }
 
     mutating func update(newCurrency: Currency?, resetAmount: Bool) {

@@ -1,8 +1,14 @@
-- Requires uninstall: ⚠️ YES ⚠️
+- Requires uninstall: No
 
 ### Improvements
 - VEX-1007: Chat messages are now animated
 - VEX-1007: all chats have now preview
+- VEX-1227: Showing app version in profile
+- VEX-1223: Social media added to profile
+- VEX-1213: Multiple request now are obvious
+- VEX-1129: Encryption optimisation
+- VEX-1216: Initial currency based on user country code
+- VEX-1268: Startup re-encryption
 
 ### Fixes
 - VEX-855: Make bitcoin data cached
@@ -15,5 +21,8 @@
 - VEX-1111: Notifications check on app startup
 - VEX-1107: Notifications at the end of onboarding
 - VEX-1061: Making the loader readable for 3 seconds
+- VEX-1229: Paste long urls is now possible on chat
+- VEX-1220: Emojis not appearing in chat
+- VEX-1219: Initial messag of the request is now available on chat
 
 ### Known Issues

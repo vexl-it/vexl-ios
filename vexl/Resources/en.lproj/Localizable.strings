@@ -111,6 +111,7 @@
 "user.profile.terms.and.privacy" = "Terms of Use and Privacy Policy";
 "user.profile.faq" = "FAQs";
 "user.profile.report.issue" = "Report issue";
+"user.profile.logs" = "In-app logs";
 "user.profile.request.data" = "Request known data";
 "user.profile.logout" = "Delete account";
 "user.profile.currency" = "Currency";
@@ -119,6 +120,7 @@
 "user.profile.refuse.snap.chat" = "Allow in-app screenshots";
 "user.profile.private.settings.title" = "Private settings";
 "user.profile.private.settings.subtitle" = "Unlock to access your private profile.";
+"user.profile.app.version" = "Vexl App Version %@";
 "user.profile.edit.name.title" = "Edit name";
 "user.profile.edit.name.subtitle" = "Remember your name won't be revealed without your permission. ";
 "user.profile.edit.name.action" = "Save";
@@ -421,3 +423,13 @@
 "report.offer.confirmation.modal.subtitle" = "Inappropriate content was anonymously reported.";
 "report.offer.confirmation.modal.button" = "Continue";
 "error.no.offer.id.found" = "Report offer failed. No offer with this ID found.";
+"logs.title" = "Logs";
+"logs.button" = "Copy all to clipboard";
+"logs.text.copied.clipboard" = "Logs copied to clipboard!";
+"profile.twitter" = "Follow us on Twitter";
+"twitter" = "Twitter";
+"profile.medium" = "Read more on Medium";
+"medium" = "Medium";
+"profile.vexl.it" = "Learn more on Vexl.it";
+"vexl.it" = "Vexl.it";
+"error.invalid.url" = "Invalid URL";

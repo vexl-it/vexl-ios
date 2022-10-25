@@ -74,6 +74,11 @@ class ManagerAssembly: Assembly {
         }
         .inObjectScope(.container)
 
+        container.register(LogManagerType.self) { _ in
+            LogManager()
+        }
+        .inObjectScope(.container)
+
         container.register(NotificationManagerType.self) { _ in
             NotificationManager()
         }
