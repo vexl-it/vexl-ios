@@ -86,7 +86,7 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
         }
     )
 
-    let triggerCurrency: Currency
+    var triggerCurrency: Currency
 
     var isOfferNew: Bool { managedOffer == nil }
     var isButtonActive: Bool { isCreateEnabled && (offer != Offer(managedOffer: managedOffer) || areLocationsUpdated) }
@@ -261,13 +261,20 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
             .map { $0.splitIntoChunks(by: 2) }
             .assign(to: &$groupRows)
 
-
         encoder.progressPublisher
             .withUnretained(self)
             .sink { owner, zip in
                 let (currentProgress, maxProgress) = zip
                 owner.encryptionProgress = currentProgress
                 owner.encryptionMaxProgress = maxProgress
+            }
+            .store(in: cancelBag)
+
+        $offer
+            .compactMap(\.currency)
+            .withUnretained(self)
+            .sink { owner, currency in
+                owner.triggerCurrency = currency
             }
             .store(in: cancelBag)
     }
