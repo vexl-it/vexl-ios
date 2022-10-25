@@ -29,9 +29,9 @@ struct ChatRequestView: View {
                 Spacer()
             } else {
                 ZStack(alignment: .bottom) {
-                    CirclePageControl(
+                    ContinuousPageControl(
                         numberOfPages: viewModel.offerRequests.count,
-                        currentIndex: currentIndex
+                        currentIndex: $currentIndex
                     )
                     .padding(.bottom, pageControlBottomPadding)
 

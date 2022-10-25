@@ -46,3 +46,20 @@ struct CirclePageControl: View {
         currentIndex == index ?  Appearance.Colors.gray6 : Appearance.Colors.gray3
     }
 }
+
+struct ContinuousPageControl: UIViewRepresentable {
+    let numberOfPages: Int
+    @Binding var currentIndex: Int
+
+    func makeUIView(context: Context) -> UIPageControl {
+        let pageControl = UIPageControl()
+        pageControl.currentPage = currentIndex
+        pageControl.numberOfPages = numberOfPages
+        pageControl.allowsContinuousInteraction = true
+        return pageControl
+    }
+
+    func updateUIView(_ uiView: UIPageControl, context: Context) {
+        uiView.currentPage = currentIndex
+    }
+}
