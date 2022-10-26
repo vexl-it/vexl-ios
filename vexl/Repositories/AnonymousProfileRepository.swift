@@ -26,7 +26,7 @@ final class AnonymousProfileRepository: AnonymousProfileRepositoryType {
         let secondDegree = getProfileType(context: context, type: .secondDegree)
         return persistenceManager.insert(context: context) { [weak self] context -> [ManagedAnonymousProfile] in
             envelope.hashMap.compactMap { publicKey, friendLevels -> ManagedAnonymousProfile? in
-                let predicate = NSPredicate(format: "publicKey == '\(publicKey)'")
+                let predicate = NSPredicate(format: "publicKey == %@", publicKey)
                 let profile = self?.persistenceManager.loadSyncroniously(
                     type: ManagedAnonymousProfile.self,
                     context: context,
