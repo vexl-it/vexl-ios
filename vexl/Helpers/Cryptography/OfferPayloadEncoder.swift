@@ -49,8 +49,8 @@ class OfferRequestPayloadEncoder {
         encryptedItemsCount = 0
     }
 
-    func encode(offer: ManagedOffer, envelope: PKsEnvelope) -> AnyPublisher<OfferRequestPayload, Error> {
-        guard let symmetricKey = offer.symmetricKey else {
+    func encode(offer: ManagedOffer, envelope: PKsEnvelope, symmetricKey primaryKey: String? = nil) -> AnyPublisher<OfferRequestPayload, Error> {
+        guard let symmetricKey = primaryKey ?? offer.symmetricKey else {
             return Fail(error: AESError.couldNotGeneratePassword)
                 .eraseToAnyPublisher()
         }
@@ -113,14 +113,19 @@ class OfferRequestPayloadEncoder {
         return requestPayload
     }
 
-    func encode(offers: [ManagedOffer], envelope: PKsEnvelope) -> AnyPublisher<[(ManagedOffer, OfferRequestPayload)], Error>{
+    func encode(offers: [ManagedOffer], envelope: PKsEnvelope, symmetricKey: String? = nil) -> AnyPublisher<[(ManagedOffer, OfferRequestPayload, String)], Error>{
         Just(offers)
             .flatMap(\.publisher)
             .withUnretained(self)
-            .flatMap { owner, offer -> AnyPublisher<(ManagedOffer, OfferRequestPayload), Error> in
+            .flatMap { owner, offer -> AnyPublisher<(ManagedOffer, OfferRequestPayload, String), Error> in
+                let generatedKey = try? AES.generateRandomPassword()
+                guard let symmetricKey: String = offer.symmetricKey ?? generatedKey else {
+                    return Fail(error: AESError.couldNotGeneratePassword)
+                        .eraseToAnyPublisher()
+                }
                 let subsetEnvelope = envelope.subset(for: offer)
-                return owner.encode(offer: offer, envelope: subsetEnvelope)
-                    .map { (offer, $0) }
+                return owner.encode(offer: offer, envelope: subsetEnvelope, symmetricKey: symmetricKey)
+                    .map { (offer, $0, symmetricKey) }
                     .eraseToAnyPublisher()
             }
             .collect()

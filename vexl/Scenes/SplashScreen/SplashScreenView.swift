@@ -30,8 +30,8 @@ struct SplashScreenView: View {
                         .transition(.opacity)
                         .ignoresSafeArea()
 
-                    OfferSettingsProgressView(currentValue: viewModel.currentEncryptedItemCount,
-                                              maxValue: viewModel.maxEncryptedItemCount)
+                    OfferSettingsProgressView(currentValue: viewModel.currentProgress,
+                                              maxValue: viewModel.maxProgress)
                         .transition(.move(edge: .bottom).combined(with: .opacity))
                 }
             }
