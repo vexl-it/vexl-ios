@@ -48,9 +48,14 @@ final class SplashScreenViewModel: ViewModelType {
 
     @Published var animationState: AnimationState = .smallLogo
     @Published var showReencryptionProgress: Bool = false
-    @Published var currentEncryptedItemCount: Int = 0
-    @Published var maxEncryptedItemCount: Int = 0
     @Published var primaryActivity: Activity = .init()
+    @Published var currentProgress: Int = 0
+    @Published var maxProgress: Int = 0
+
+    @Published private var currentEncryptedItemCount: Int = 0
+    @Published private var maxEncryptedItemCount: Int = 0
+    @Published private var currentItemSentToBE: Int = 0
+    @Published private var maxItemSentToBE: Int = 0
 
     // MARK: - Coordinator Bindings
 
@@ -101,6 +106,31 @@ final class SplashScreenViewModel: ViewModelType {
                     .track(activity: owner.primaryActivity)
             }
 
+        Publishers.CombineLatest($currentEncryptedItemCount, $currentItemSentToBE)
+            .map { $0 + $1 }
+            .withUnretained(self)
+            .sink(receiveValue: { owner, value in
+                owner.currentProgress = value
+            })
+            .store(in: cancelBag)
+
+        Publishers.CombineLatest($maxEncryptedItemCount, $maxItemSentToBE)
+            .map { $0 + $1 }
+            .withUnretained(self)
+            .sink(receiveValue: { owner, value in
+                owner.maxProgress = value
+            })
+            .store(in: cancelBag)
+
+        offerEncoder.progressPublisher
+            .withUnretained(self)
+            .sink { owner, zip in
+                let (currentProgress, maxProgress) = zip
+                owner.currentEncryptedItemCount = currentProgress
+                owner.maxEncryptedItemCount = maxProgress
+            }
+            .store(in: cancelBag)
+
         Publishers.Merge(userSignedOut, refresh)
             .delay(for: 2, scheduler: RunLoop.main) // wait for lottie animation to complete
             .withUnretained(self)
@@ -137,9 +167,6 @@ final class SplashScreenViewModel: ViewModelType {
                 offers.forEach { offer in
                     offer.generateSymmetricKey()
                 }
-                if !offers.isEmpty {
-                    owner.showReencryptionProgress = true
-                }
             })
             .map(\.1)
 
@@ -167,31 +194,21 @@ final class SplashScreenViewModel: ViewModelType {
         let payloads = contactsUpdate
             .withUnretained(self)
             .flatMap { owner, tupl in
-                owner.offerEncoder.encode(offers: tupl.1, envelope: tupl.0)
+                owner.showReencryptionProgress = true
+                owner.maxItemSentToBE = tupl.1.count
+                return owner.offerEncoder.encode(offers: tupl.1, envelope: tupl.0)
             }
 
-        let switchContext = payloads
-            .withUnretained(self)
-            .handleEvents(receiveOutput: { owner, _ in
-                owner.showReencryptionProgress = false
-            })
-            .delay(for: .milliseconds(500), scheduler: RunLoop.main)
-            .handleEvents(receiveOutput: { owner, payloads in
-                owner.currentEncryptedItemCount = 0
-                owner.maxEncryptedItemCount = payloads.count
-                owner.showReencryptionProgress = true
-            })
-
-        let requests: AnyPublisher<[(ManagedOffer, OfferPayload)], Error> = switchContext
-            .flatMap(\.1.publisher)
-            .flatMap { [offerService] offer, payload in
+        let requests: AnyPublisher<[(ManagedOffer, OfferPayload, String)], Error> = payloads
+            .flatMap(\.publisher)
+            .flatMap { [offerService] offer, payload, symmetricKey in
                 offerService.createOffer(offerPayload: payload)
-                    .map { (offer, $0) }
+                    .map { (offer, $0, symmetricKey) }
             }
             .receive(on: DispatchQueue.main)
             .withUnretained(self)
             .handleEvents(receiveOutput: { owner, _ in
-                owner.currentEncryptedItemCount += 1
+                owner.currentItemSentToBE += 1
             })
             .map(\.1)
             .collect()
@@ -200,10 +217,11 @@ final class SplashScreenViewModel: ViewModelType {
         let update = requests
             .flatMap { [persistenceManager] offerReposnses -> AnyPublisher<Void, Error> in
                 let context = persistenceManager.viewContext
-                return persistenceManager.update(context: context) { context -> Void in
-                    offerReposnses.map { offer, response in
+                return persistenceManager.update(context: context) { _ -> Void in
+                    offerReposnses.map { offer, response, symmetricKey in
                         offer.offerID = response.offerId
                         offer.adminID = response.adminId
+                        offer.symmetricKey = symmetricKey
                     }
                 }
                 .eraseToAnyPublisher()
