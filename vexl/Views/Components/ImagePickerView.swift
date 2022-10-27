@@ -41,7 +41,7 @@ struct ImagePicker: UIViewControllerRepresentable {
         func imagePickerController(_ picker: UIImagePickerController,
                                    didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
             if let image = info[UIImagePickerController.InfoKey.editedImage] as? UIImage,
-               let imageData = image.jpegData(compressionQuality: 0.5) {
+               let imageData = image.resizeWithScaleAspectFitMode(to: Constants.maxImageSize)?.jpegData(compressionQuality: 0.5) {
                 parent.selectedImage = imageData
             }
 
