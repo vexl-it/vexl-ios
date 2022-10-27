@@ -10,12 +10,18 @@ import Combine
 
 extension UIImage {
     var base64EncodedString: String? {
-        jpegData(compressionQuality: 1)?.base64EncodedString()
+        self
+            .resizeWithScaleAspectFitMode(to: Constants.maxImageSize)?
+            .jpegData(compressionQuality: 1)?
+            .base64EncodedString()
     }
 
     var base64Publisher: AnyPublisher<String?, Never> {
         Future { [weak self] promise in
-            let data = self?.jpegData(compressionQuality: 1)?.base64EncodedString()
+            let data = self?
+                .resizeWithScaleAspectFitMode(to: Constants.maxImageSize)?
+                .jpegData(compressionQuality: 1)?
+                .base64EncodedString()
             promise(.success(data))
         }
         .eraseToAnyPublisher()
@@ -52,6 +58,9 @@ extension String {
     }
 
     func dataFromBase64(withCompression compression: CGFloat) -> Data? {
-        imageFromBase64?.jpegData(compressionQuality: compression)
+        self
+            .imageFromBase64?
+            .resizeWithScaleAspectFitMode(to: Constants.maxImageSize)?
+            .jpegData(compressionQuality: compression)
     }
 }

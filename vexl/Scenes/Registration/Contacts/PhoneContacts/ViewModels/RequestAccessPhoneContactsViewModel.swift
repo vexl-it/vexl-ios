@@ -29,7 +29,7 @@ final class RequestAccessPhoneContactsViewModel: RequestAccessContactsViewModel 
     }
 
     override var image: Data? {
-        R.image.onboarding.importPhone()?.jpegData(compressionQuality: 1)
+        R.image.onboarding.importPhone()?.resizeWithScaleAspectFitMode(to: Constants.maxImageSize)?.jpegData(compressionQuality: 1)
     }
 
     // MARK: - phone actions
