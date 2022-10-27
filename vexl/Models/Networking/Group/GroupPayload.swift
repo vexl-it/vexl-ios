@@ -41,7 +41,7 @@ struct GroupPayload: Codable {
 
     init(name: String, logo: UIImage, expiration: Date, closureAt: Date) {
         self.name = name
-        self.logoData = logo.jpegData(compressionQuality: 1)
+        self.logoData = logo.resizeWithScaleAspectFitMode(to: Constants.maxImageSize)?.jpegData(compressionQuality: 1)
         self.logoExtension = logoData == nil ? nil : "jpg"
         self.expirationAt = Int(expiration.timeIntervalSince1970)
         self.closureAt = Int(closureAt.timeIntervalSince1970)
