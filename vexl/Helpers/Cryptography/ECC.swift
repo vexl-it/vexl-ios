@@ -25,7 +25,11 @@ struct ECC {
     }
 
     static func encrypt(publicKey: String, secret: String) throws -> String {
-        let cipherPtr = ecies_encrypt(publicKey.ptr, secret.ptr)
+        let nsSecret = NSString(string: secret)
+        let nsPublicKey = NSString(string: publicKey)
+        let secretPtr = UnsafeMutablePointer<CChar>(mutating: nsSecret.utf8String)
+        let publicKeyPtr = UnsafeMutablePointer<CChar>(mutating: nsPublicKey.utf8String)
+        let cipherPtr = ecies_encrypt(publicKeyPtr, secretPtr)
         guard let cipherPtr = cipherPtr else {
             throw CryptographicError.encryptionError
         }
@@ -38,7 +42,13 @@ struct ECC {
         guard let privateKey = keys.privateKey else {
             throw CryptographicError.missingPrivateKey
         }
-        guard let cSecret = ecies_decrypt(keys.publicKey.ptr, privateKey.ptr, cipher.ptr) else {
+        let nsCipher = NSString(string: cipher)
+        let nsPublicKey = NSString(string: keys.publicKey)
+        let nsPrivateKey = NSString(string: privateKey)
+        let cipherPtr = UnsafeMutablePointer<CChar>(mutating: nsCipher.utf8String)
+        let publicKeyPtr = UnsafeMutablePointer<CChar>(mutating: nsPublicKey.utf8String)
+        let privateKeyPtr = UnsafeMutablePointer<CChar>(mutating: nsPrivateKey.utf8String)
+        guard let cSecret = ecies_decrypt(publicKeyPtr, privateKeyPtr, cipherPtr) else {
             throw CryptographicError.decryptionError
         }
         let secret = String(cString: cSecret)
