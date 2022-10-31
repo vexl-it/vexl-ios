@@ -171,7 +171,9 @@ extension OfferPayload {
         let friendLevel = privatePart.friendLevel.compactMap(AnonymousProfileType.init)
 
         offer.offerID = offerId
-        offer.adminID = adminId
+        if let adminId = adminId {
+            offer.adminID = adminId
+        }
         offer.createdAt = createdAt
         offer.modifiedAt = Formatters.dateApiFormatter.string(from: modifiedAt)
         offer.currency = currency
