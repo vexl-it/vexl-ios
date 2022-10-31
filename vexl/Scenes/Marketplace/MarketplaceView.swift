@@ -62,12 +62,14 @@ struct MarketplaceView: View {
         ForEach(viewModel.marketplaceFeedItems) { item in
             MarketplaceFeedView(data: item,
                                 displayFooter: false,
-                                detailAction: { _ in
-                viewModel.action.send(.offerDetailTapped(offer: item.offer))
-            },
                                 requestAction: { _ in
-                viewModel.action.send(.requestOfferTapped(offer: item.offer))
+                viewModel.action.send(.offerTapped(offer: item.offer))
             })
+            .onTapGesture {
+                if !item.isRequested {
+                    viewModel.action.send(.offerTapped(offer: item.offer))
+                }
+            }
             .padding(.horizontal, Appearance.GridGuide.point)
         }
     }
