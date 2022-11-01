@@ -16,7 +16,7 @@ protocol InboxRepositoryType {
     ///   - Parameter inbox: CoreData managed object representing inbox
     ///
     ///   - Returns: Publisher which emits void on succes and error on error
-    func createOrUpdateChats(receivedPayloads: [(Int, MessagePayload)], inbox: ManagedInbox) -> AnyPublisher<Void, Error>
+    func createOrUpdateChats(receivedPayloads: [(publicID: Int, payload: MessagePayload)], inbox: ManagedInbox) -> AnyPublisher<Void, Error>
 
     func deleteChats(recevedPayloads: [MessagePayload], inbox: ManagedInbox) -> AnyPublisher<Bool, Error>
 
@@ -27,8 +27,8 @@ class InboxRepository: InboxRepositoryType {
     @Inject var persistence: PersistenceStoreManagerType
     @Inject var userRepository: UserRepositoryType
 
-    func createOrUpdateChats(receivedPayloads payloads: [(Int, MessagePayload)], inbox unsafeContextInbox: ManagedInbox) -> AnyPublisher<Void, Error> {
-        let payloads = payloads.filter { $0.1.messageType != .deleteChat && $0.1.messageType != .messagingRejection }
+    func createOrUpdateChats(receivedPayloads payloads: [(publicID: Int, payload: MessagePayload)], inbox unsafeContextInbox: ManagedInbox) -> AnyPublisher<Void, Error> {
+        let payloads = payloads.filter { $0.payload.messageType != .deleteChat && $0.payload.messageType != .messagingRejection }
         guard !payloads.isEmpty else {
             return Just(()).setFailureType(to: Error.self).eraseToAnyPublisher()
         }
