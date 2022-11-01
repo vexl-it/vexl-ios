@@ -130,20 +130,25 @@ final class InboxManager: InboxManagerType {
             .filter { !$0.isEmpty }
             .flatMap { messages in
                 messages.publisher
-                    .compactMap { MessagePayload(chatMessage: $0, key: inboxKeys, inboxPublicKey: inboxKeys.publicKey) }
+                    .compactMap { message -> (Int, MessagePayload)? in
+                        guard let payload = MessagePayload(chatMessage: message, key: inboxKeys, inboxPublicKey: inboxKeys.publicKey) else {
+                            return nil
+                        }
+                        return (message.id, payload)
+                    }
                     .collect()
             }
             .eraseToAnyPublisher()
 
         let deleteMessages = messagePayloads
-            .flatMap { [inboxRepository] payloads -> AnyPublisher<[MessagePayload], Error> in
+            .flatMap { [inboxRepository] payloads -> AnyPublisher<[(Int, MessagePayload)], Error> in
                 inboxRepository
-                    .deleteChats(recevedPayloads: payloads, inbox: inbox)
+                    .deleteChats(recevedPayloads: payloads.map(\.1), inbox: inbox)
                     .withUnretained(self)
                     .handleEvents(receiveOutput: { owner, delete in
-                        if delete { owner._didDeleteChat.send(payloads.first?.contactInboxKey) }
+                        if delete { owner._didDeleteChat.send(payloads.first?.1.contactInboxKey) }
                     })
-                    .map { _ -> [MessagePayload] in payloads }
+                    .map { _ -> [(Int, MessagePayload)] in payloads }
                     .eraseToAnyPublisher()
             }
             .eraseToAnyPublisher()
@@ -152,7 +157,7 @@ final class InboxManager: InboxManagerType {
             .flatMap { [inboxRepository] payloads -> AnyPublisher<[MessagePayload], Error> in
                 inboxRepository
                     .createOrUpdateChats(receivedPayloads: payloads, inbox: inbox)
-                    .map { payloads }
+                    .map { payloads.map(\.1) }
                     .eraseToAnyPublisher()
             }
             .eraseToAnyPublisher()

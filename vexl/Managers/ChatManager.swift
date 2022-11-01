@@ -57,8 +57,8 @@ final class ChatManager: ChatManagerType {
             messageType: payload.messageType,
             eccKeys: inboxKeys
         )
-        .flatMap { [inboxRepository] in
-            inboxRepository.createOrUpdateChats(receivedPayloads: [payload], inbox: inbox)
+        .flatMap { [inboxRepository] message in
+            inboxRepository.createOrUpdateChats(receivedPayloads: [(message.id, payload)], inbox: inbox)
         }
         .eraseToAnyPublisher()
     }
@@ -80,7 +80,7 @@ final class ChatManager: ChatManagerType {
                 messageType: payload.messageType,
                 eccKeys: inboxKeys
             )
-            .flatMap { [inboxRepository] in
+            .flatMap { [inboxRepository] _ in
                 inboxRepository.deleteChats(recevedPayloads: [payload], inbox: inbox)
             }
             .asVoid()
@@ -110,8 +110,8 @@ final class ChatManager: ChatManagerType {
                 messageType: payload.messageType,
                 eccKeys: inboxKeys
             )
-            .flatMap { [inboxRepository] in
-                inboxRepository.createOrUpdateChats(receivedPayloads: [payload], inbox: inbox)
+            .flatMap { [inboxRepository] message in
+                inboxRepository.createOrUpdateChats(receivedPayloads: [(message.id, payload)], inbox: inbox)
             }
             .eraseToAnyPublisher()
     }
@@ -134,9 +134,9 @@ final class ChatManager: ChatManagerType {
                                        message: payload,
                                        inboxKeys: inboxKeys,
                                        requesterPublicKey: receiverPublicKey)
-            .flatMap { [inboxRepository] in
+            .flatMap { [inboxRepository] message in
                 confirmation
-                    ? inboxRepository.createOrUpdateChats(receivedPayloads: [payload], inbox: inbox)
+                    ? inboxRepository.createOrUpdateChats(receivedPayloads: [(message.id, payload)], inbox: inbox)
                     : inboxRepository.deleteChats(recevedPayloads: [payload], inbox: inbox)
                         .asVoid()
                         .eraseToAnyPublisher()
@@ -168,8 +168,8 @@ final class ChatManager: ChatManagerType {
                 messageType: payload.messageType,
                 eccKeys: inboxKeys
             )
-            .flatMap { [inboxRepository] in
-                inboxRepository.createOrUpdateChats(receivedPayloads: [payload], inbox: inbox)
+            .flatMap { [inboxRepository] message in
+                inboxRepository.createOrUpdateChats(receivedPayloads: [(message.id, payload)], inbox: inbox)
             }
             .eraseToAnyPublisher()
     }
