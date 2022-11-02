@@ -19,7 +19,10 @@ final class ChatConversationViewModel: ObservableObject {
     @Inject var inboxManager: InboxManagerType
     @Inject var chatService: ChatServiceType
 
-    @Fetched(fetchImmediately: false, sortDescriptors: [ NSSortDescriptor(key: "time", ascending: true) ])
+    @Fetched(fetchImmediately: false, sortDescriptors: [
+        NSSortDescriptor(key: "publicID", ascending: true),
+        NSSortDescriptor(key: "time", ascending: true)
+    ])
     var fetchedMessages: [ManagedMessage]
 
     @Published var messages: [ChatConversationSection] = []

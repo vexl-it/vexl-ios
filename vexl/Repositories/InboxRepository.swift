@@ -11,7 +11,12 @@ import Network
 
 protocol InboxRepositoryType {
 
-    func createOrUpdateChats(receivedPayloads: [MessagePayload], inbox: ManagedInbox) -> AnyPublisher<Void, Error>
+    ///  Creates or updates chats with message payloads in given inbox
+    ///   - Parameter receivedPayloads: Array of message payloads and their publicID from its public part
+    ///   - Parameter inbox: CoreData managed object representing inbox
+    ///
+    ///   - Returns: Publisher which emits void on succes and error on error
+    func createOrUpdateChats(receivedPayloads: [(publicID: Int, payload: MessagePayload)], inbox: ManagedInbox) -> AnyPublisher<Void, Error>
 
     func deleteChats(recevedPayloads: [MessagePayload], inbox: ManagedInbox) -> AnyPublisher<Bool, Error>
 
@@ -22,8 +27,8 @@ class InboxRepository: InboxRepositoryType {
     @Inject var persistence: PersistenceStoreManagerType
     @Inject var userRepository: UserRepositoryType
 
-    func createOrUpdateChats(receivedPayloads payloads: [MessagePayload], inbox unsafeContextInbox: ManagedInbox) -> AnyPublisher<Void, Error> {
-        let payloads = payloads.filter { $0.messageType != .deleteChat && $0.messageType != .messagingRejection }
+    func createOrUpdateChats(receivedPayloads payloads: [(publicID: Int, payload: MessagePayload)], inbox unsafeContextInbox: ManagedInbox) -> AnyPublisher<Void, Error> {
+        let payloads = payloads.filter { $0.payload.messageType != .deleteChat && $0.payload.messageType != .messagingRejection }
         guard !payloads.isEmpty else {
             return Just(()).setFailureType(to: Error.self).eraseToAnyPublisher()
         }
@@ -32,12 +37,12 @@ class InboxRepository: InboxRepositoryType {
             guard let inbox = persistence.loadSyncroniously(type: ManagedInbox.self, context: context, objectID: unsafeContextInbox.objectID) else {
                 return []
             }
-            return payloads.compactMap { payload in
+            return payloads.compactMap { publicID, payload in
                 let predicate = NSPredicate(format: "receiverKeyPair.publicKey == '\(payload.contactInboxKey)'")
                 if let chat = inbox.chats?.filtered(using: predicate).first as? ManagedChat {
                     if chat.messages?.filtered(using: NSPredicate(format: "id == '\(payload.id)'")).first == nil {
                         let message = ManagedMessage(context: context)
-                        self?.populateMessage(message: message, chat: chat, payload: payload)
+                        self?.populateMessage(id: publicID, message: message, chat: chat, payload: payload)
                     }
                     return nil
                 }
@@ -61,7 +66,7 @@ class InboxRepository: InboxRepositoryType {
                     keyPair.userOffer = offer
                 }
 
-                self?.populateMessage(message: message, chat: chat, payload: payload)
+                self?.populateMessage(id: publicID, message: message, chat: chat, payload: payload)
 
                 return chat
             }
@@ -70,7 +75,8 @@ class InboxRepository: InboxRepositoryType {
         .eraseToAnyPublisher()
     }
 
-    private func populateMessage(message: ManagedMessage, chat: ManagedChat, payload: MessagePayload) {
+    private func populateMessage(id: Int, message: ManagedMessage, chat: ManagedChat, payload: MessagePayload) {
+        message.publicID = Int64(id)
         message.chat = chat
         message.text = payload.text
         message.image = payload.image
