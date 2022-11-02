@@ -78,15 +78,14 @@ struct UserProfileView: View {
                 Text(viewModel.username)
                     .textStyle(.h2)
                     .foregroundColor(.white)
-                    .frame(maxWidth: .infinity, alignment: .center)
 
                 if let phoneNumber = viewModel.phoneNumber {
                     Text(phoneNumber)
                         .textStyle(.paragraphSmall)
                         .foregroundColor(Appearance.Colors.gray4)
-                        .frame(maxWidth: .infinity, alignment: .center)
                 }
             }
+            .frame(maxWidth: .infinity)
         }
         .padding(.bottom, Appearance.GridGuide.padding)
     }
