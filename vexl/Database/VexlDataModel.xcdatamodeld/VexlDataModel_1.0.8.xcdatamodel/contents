@@ -68,6 +68,7 @@
         <attribute name="image" optional="YES" attributeType="String"/>
         <attribute name="isContact" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="isRevealed" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="publicID" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="text" optional="YES" attributeType="String"/>
         <attribute name="time" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="typeRawType" optional="YES" attributeType="String"/>

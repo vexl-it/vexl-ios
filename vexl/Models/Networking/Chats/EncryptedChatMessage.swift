@@ -32,6 +32,8 @@ struct EncryptedChatMessageList: Codable {
 /// Message that comes from the backend and that contains the payload encrypted as a string.
 struct EncryptedChatMessage: Codable {
 
+    /// Public ID
+    let id: Int
     /// Public key of the user sending the message
     let senderPublicKey: String
     /// The message payload as a string and encrypted using the inbox public key
