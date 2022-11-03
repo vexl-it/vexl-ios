@@ -70,18 +70,20 @@ final class NotificationViewModel {
     }
 
     private func updateInboxesToken(token: String) {
-        inboxUpdateCancellable?.cancel()
-
-        var streams: [AnyPublisher<Void, Error>] = []
-
+        // This is a hotfix of a data race condition.
+        // TODO: optimise follwing lines of code to make them run ideally in series
         for inbox in userRepository.getInboxes() {
             if let inboxKeys = inbox.keyPair?.keys {
-                streams.append(chatService.updateInbox(eccKeys: inboxKeys, pushToken: token))
+                Just(())
+                    .receive(on: DispatchQueue.main)
+                    .flatMap { [chatService] in
+                        chatService.updateInbox(eccKeys: inboxKeys, pushToken: token)
+                    }
+                    .sink()
+                    .store(in: cancelBag)
+
             }
         }
 
-        inboxUpdateCancellable = Publishers.MergeMany(streams)
-            .collect()
-            .sink()
     }
 }
