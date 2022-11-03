@@ -70,7 +70,8 @@ final class NotificationViewModel {
     }
 
     private func updateInboxesToken(token: String) {
-
+        // This is a hotfix of a data race condition.
+        // TODO: optimise follwing lines of code to make them run ideally in series
         for inbox in userRepository.getInboxes() {
             if let inboxKeys = inbox.keyPair?.keys {
                 Just(())
