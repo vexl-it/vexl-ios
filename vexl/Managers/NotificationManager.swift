@@ -107,7 +107,9 @@ final class NotificationManager: NSObject, NotificationManagerType {
 
         Messaging.messaging().token { [weak self] token, _ in
             if let token = token {
-                self?.fcmTokenValue.send(token)
+                DispatchQueue.main.async {
+                    self?.fcmTokenValue.send(token)
+                }
             }
         }
 
