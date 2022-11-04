@@ -42,7 +42,6 @@ final class TabBarCoordinator: BaseCoordinator<Void> {
         )
 
         viewModel
-            .notificationViewModel
             .route
             .filter { $0 == .showNotifications }
             .withUnretained(self)

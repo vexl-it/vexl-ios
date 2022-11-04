@@ -48,6 +48,7 @@ final class NotificationManager: NSObject, NotificationManagerType {
 
     @Inject var groupManager: GroupManagerType
     @Inject var inboxManager: InboxManagerType
+    @Inject var contactsService: ContactsServiceType
     @Inject var offerManager: OfferManagerType
     @Inject var deeplinkManager: DeeplinkManagerType
     @Inject var logManager: LogManagerType
@@ -56,6 +57,9 @@ final class NotificationManager: NSObject, NotificationManagerType {
     private var authorisationStatus: CurrentValueSubject<UNAuthorizationStatus?, Never> = .init(nil)
     // swiftlint:disable discouraged_optional_boolean
     private var notificationHandled: Bool?
+
+    @UserDefault(.notificationToken, defaultValue: nil)
+    private var cachedToken: String?
 
     var currentStatus: UNAuthorizationStatus {
         authorisationStatus.value ?? .notDetermined
@@ -89,6 +93,36 @@ final class NotificationManager: NSObject, NotificationManagerType {
         super.init()
         Messaging.messaging().delegate = self
         UNUserNotificationCenter.current().delegate = self
+
+        Publishers.CombineLatest(isRegisteredForNotifications, fcmTokenValue)
+            .filter { $0.0 }
+            .map(\.1)
+            .removeDuplicates()
+            .filterNil()
+            .filter { [weak self] token in
+                token != self?.cachedToken
+            }
+            .flatMap { [contactsService] token in
+                contactsService
+                    .updateUser(token: token)
+                    .materialize()
+                    .compactMap(\.value)
+                    .map { _ in token }
+            }
+            .flatMap { [inboxManager] token -> AnyPublisher<String, Never> in
+                inboxManager
+                    .updateNotificationToken(token: token)
+                    .map { token }
+                    .materialize()
+                    .compactMap(\.value)
+                    .eraseToAnyPublisher()
+            }
+            .withUnretained(self)
+            .sink { owner, token in
+                owner.cachedToken = token
+            }
+            .store(in: cancelBag)
+
         refreshStatus()
     }
 
