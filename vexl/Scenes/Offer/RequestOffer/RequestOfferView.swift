@@ -156,9 +156,6 @@ struct RequestOfferView: View {
                 showArrowIndicator: false,
                 showBackground: true
             )
-            .clipShape(
-                MarketplaceItemShape(horizontalStartPoint: Appearance.GridGuide.feedAvatarSize.width)
-            )
 
             ContactAvatarInfo(
                 isAvatarWithOpacity: false,

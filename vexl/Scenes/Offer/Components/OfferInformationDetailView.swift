@@ -88,6 +88,9 @@ struct OfferInformationDetailView: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
                 .offset(x: -Appearance.GridGuide.padding, y: Appearance.GridGuide.point)
         )
+        .clipShape(
+            MarketplaceItemShape(horizontalStartPoint: Appearance.GridGuide.feedAvatarSize.width)
+        )
     }
 
     @ViewBuilder
