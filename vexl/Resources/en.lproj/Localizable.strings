@@ -42,7 +42,7 @@
 "register.phone.number.input.subtitle" = "It will never be shared with anyone (not even us).";
 "register.phone.number.not.valid" = "Phone number is invalid";
 "register.phone.code.input.title" = "We've just sent you a verification code.";
-"register.phone.code.input.subtitle" = "Enter it bellow to verify %@";
+"register.phone.code.input.subtitle" = "Enter it below to verify %@";
 "verify.phone.code.hint" = "Activation code";
 "register.phone.code.input.retry" = "Didn’t receive a code? Resend in %@ s";
 "register.phone.code.input.send.code" = "Didn’t receive a code? Click here to try again.";
@@ -190,6 +190,7 @@
 "marketplace.detail.up.to" = "Up to";
 "marketplace.detail.fee" = "Includes %1$@ %% transaction fee";
 "marketplace.sign.for.thousand" = "K";
+"offer.empty.message" = "%@ sent you a request";
 "offer.request" = "Request";
 "offer.requested" = "Requested";
 "offer.your.offer" = "Your offer";
@@ -425,7 +426,7 @@
 "error.no.offer.id.found" = "Report offer failed. No offer with this ID found.";
 "logs.title" = "Logs";
 "logs.button" = "Copy all to clipboard";
-"logs.text.copied.clipboard" = "Logs copied to clipboard!";
+"logs.text.copied.clipboard" = "Logs copied to clipboard";
 "profile.twitter" = "Follow us on Twitter";
 "twitter" = "Twitter";
 "profile.medium" = "Read more on Medium";
@@ -433,3 +434,5 @@
 "profile.vexl.it" = "Learn more on Vexl.it";
 "vexl.it" = "Vexl.it";
 "error.invalid.url" = "Invalid URL";
+"maintenance.title" = "Marketplace maintenance";
+"maintenance.subtitle" = "Vexl app is in maintenance.\nCome back later, please.";
