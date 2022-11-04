@@ -114,6 +114,8 @@ extension ChatRequestOfferView {
             let message = messages?.first(where: { $0.type == .messagingRequest })?.text
             if message?.isEmpty == false {
                 requestText = message
+            } else {
+                requestText = nil
             }
 
             self.offer = .init(offer: offer)
