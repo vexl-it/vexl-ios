@@ -42,6 +42,17 @@ struct OfferInformationDetailView: View {
     }
 
     var body: some View {
+        if showArrowIndicator {
+            content
+                .clipShape(
+                    MarketplaceItemShape(horizontalStartPoint: Appearance.GridGuide.feedAvatarSize.width)
+                )
+        } else {
+            content
+        }
+    }
+
+    private var content: some View {
         VStack(spacing: Appearance.GridGuide.smallPadding) {
             VStack(alignment: .leading, spacing: Appearance.GridGuide.smallPadding) {
 
@@ -87,9 +98,6 @@ struct OfferInformationDetailView: View {
             groupLogo
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
                 .offset(x: -Appearance.GridGuide.padding, y: Appearance.GridGuide.point)
-        )
-        .clipShape(
-            MarketplaceItemShape(horizontalStartPoint: Appearance.GridGuide.feedAvatarSize.width)
         )
     }
 
