@@ -31,9 +31,6 @@ struct OfferItemView: View {
             showArrowIndicator: true,
             showBackground: true
         )
-        .clipShape(
-            MarketplaceItemShape(horizontalStartPoint: Appearance.GridGuide.feedAvatarSize.width)
-        )
     }
 
     private var footer: some View {
