@@ -15,7 +15,7 @@ typealias OfferDetailViewData = OfferInformationDetailView.ViewData
 struct OfferInformationDetailView: View {
     @ObservedObject var data: ViewData
     let useInnerPadding: Bool
-    var showArrowIndicator: Bool
+    let showArrowIndicator: Bool
     let showBackground: Bool
     @State private var lineSize: CGSize = .zero
 
