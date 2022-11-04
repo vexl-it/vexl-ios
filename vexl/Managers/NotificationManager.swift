@@ -129,8 +129,11 @@ final class NotificationManager: NSObject, NotificationManagerType {
     func requestToken() {
         let center = UNUserNotificationCenter.current()
         center.requestAuthorization(options: [.alert, .sound, .badge]) { [weak self] _, _ in
+            guard let owner = self else {
+                return
+            }
             DispatchQueue.main.async {
-                self?.refreshStatus()
+                owner.refreshStatus()
             }
         }
         UIApplication.shared.registerForRemoteNotifications()
