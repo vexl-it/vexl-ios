@@ -15,7 +15,7 @@ typealias OfferDetailViewData = OfferInformationDetailView.ViewData
 struct OfferInformationDetailView: View {
     @ObservedObject var data: ViewData
     let useInnerPadding: Bool
-    var showArrowIndicator: Bool = false
+    let showArrowIndicator: Bool
     let showBackground: Bool
     @State private var lineSize: CGSize = .zero
 
@@ -42,6 +42,17 @@ struct OfferInformationDetailView: View {
     }
 
     var body: some View {
+        if showArrowIndicator {
+            content
+                .clipShape(
+                    MarketplaceItemShape(horizontalStartPoint: Appearance.GridGuide.feedAvatarSize.width)
+                )
+        } else {
+            content
+        }
+    }
+
+    private var content: some View {
         VStack(spacing: Appearance.GridGuide.smallPadding) {
             VStack(alignment: .leading, spacing: Appearance.GridGuide.smallPadding) {
 
@@ -329,6 +340,7 @@ struct MarketplaceFeedDetailViewPreview: PreviewProvider {
             OfferInformationDetailView(
                 data: .stub,
                 useInnerPadding: false,
+                showArrowIndicator: true,
                 showBackground: true
             )
             .frame(height: 250)

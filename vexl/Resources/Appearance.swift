@@ -222,7 +222,7 @@ struct Appearance {
             case .paragraphMedium:
                 return R.font.ttSatoshiMedium(size: 18) ?? UIFont.systemFont(ofSize: 18, weight: .medium)
             case .paragraphSmall:
-                return R.font.ttSatoshiRegular(size: 16) ?? UIFont.systemFont(ofSize: 16, weight: .medium)
+                return R.font.ttSatoshiRegular(size: 16) ?? UIFont.systemFont(ofSize: 16, weight: .regular)
             case .paragraphSmallSemiBold:
                 return R.font.ttSatoshiDemiBold(size: 16) ?? UIFont.systemFont(ofSize: 16, weight: .semibold)
             case .paragraphSmallMedium:

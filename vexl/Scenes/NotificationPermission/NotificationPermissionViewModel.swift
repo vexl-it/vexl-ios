@@ -85,6 +85,7 @@ final class NotificationPermissionViewModel: ViewModelType {
 
     private func setupBindings() {
         NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)
+            .receive(on: DispatchQueue.main)
             .withUnretained(self)
             .sink(receiveValue: { owner, _ in
                 owner.notificationManager.refreshStatus()

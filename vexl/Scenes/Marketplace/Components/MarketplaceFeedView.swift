@@ -11,7 +11,6 @@ struct MarketplaceFeedView: View {
 
     @ObservedObject var data: OfferDetailViewData
     let displayFooter: Bool
-    let detailAction: (String) -> Void
     let requestAction: (String) -> Void
 
     var body: some View {
@@ -22,13 +21,7 @@ struct MarketplaceFeedView: View {
                 showArrowIndicator: true,
                 showBackground: true
             )
-            .clipShape(
-                MarketplaceItemShape(horizontalStartPoint: Appearance.GridGuide.feedAvatarSize.width)
-            )
             .padding(.bottom, displayFooter ? 0 : Appearance.GridGuide.point)
-            .onTapGesture {
-                detailAction(data.id)
-            }
 
             MarketplaceFeedFooterView(attributedTitle: data.attributedOfferTitle,
                                       isRequested: data.isRequested,
@@ -56,7 +49,6 @@ struct MarketplaceFeedViewViewPreview: PreviewProvider {
             VStack {
                 MarketplaceFeedView(data: data,
                                     displayFooter: false,
-                                    detailAction: { _ in },
                                     requestAction: { _ in })
                     .frame(maxWidth: .infinity)
                     .frame(height: 300)
@@ -64,7 +56,6 @@ struct MarketplaceFeedViewViewPreview: PreviewProvider {
 
                 MarketplaceFeedView(data: data2,
                                     displayFooter: true,
-                                    detailAction: { _ in },
                                     requestAction: { _ in })
                     .frame(maxWidth: .infinity)
                     .frame(height: 300)

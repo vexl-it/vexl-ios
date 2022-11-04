@@ -153,6 +153,7 @@ struct RequestOfferView: View {
             OfferInformationDetailView(
                 data: viewModel.offerViewData,
                 useInnerPadding: true,
+                showArrowIndicator: false,
                 showBackground: true
             )
 

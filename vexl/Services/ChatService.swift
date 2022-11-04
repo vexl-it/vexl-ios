@@ -59,7 +59,7 @@ final class ChatService: BaseService, ChatServiceType {
     func updateInbox(eccKeys: ECCKeys, pushToken: String) -> AnyPublisher<Void, Error> {
         getSignedChallenge(eccKeys: eccKeys)
             .withUnretained(self)
-            .flatMapLatest { owner, signedChallenge in
+            .flatMap { owner, signedChallenge in
                 owner.request(
                     endpoint: ChatRouter.updateInbox(
                         publicKey: eccKeys.publicKey,
@@ -194,7 +194,7 @@ final class ChatService: BaseService, ChatServiceType {
     private func getSignedChallenge(eccKeys: ECCKeys) -> AnyPublisher<SignedChallenge, Error> {
         requestChallenge(publicKey: eccKeys.publicKey)
             .withUnretained(self)
-            .flatMapLatest { owner, challenge in
+            .flatMap { owner, challenge in
                 owner.cryptoService
                     .signECDSA(
                         keys: eccKeys,
