@@ -34,7 +34,7 @@ struct ChatRequestOfferView: View {
 
     private var card: some View {
         VStack(alignment: .leading, spacing: .zero) {
-            Text(data.requestText)
+            Text(data.requestText ?? L.offerEmptyMessage(data.contactName))
                 .padding([.horizontal, .top], Appearance.GridGuide.mediumPadding1)
                 .textStyle(.titleSmallMedium)
 
@@ -98,7 +98,7 @@ extension ChatRequestOfferView {
         let id: String
         let contactName: String
         let contactFriendLevel: String
-        let requestText: String
+        let requestText: String?
         let offer: OfferDetailViewData
 
         private let cancelBag: CancelBag = .init()
@@ -111,7 +111,7 @@ extension ChatRequestOfferView {
             id = chat.id ?? UUID().uuidString
             contactName = chat.receiverKeyPair?.profile?.name ?? L.generalAnonymous()
             let messages: Set<ManagedMessage>? = chat.messages as? Set<ManagedMessage>
-            requestText = messages?.first(where: { $0.type == .messagingRequest })?.text ?? ""
+            requestText = messages?.first(where: { $0.type == .messagingRequest })?.text
             self.offer = .init(offer: offer)
 
             @Inject var profileManager: AnonymousProfileManagerType

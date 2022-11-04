@@ -18,6 +18,7 @@ enum UserDefaultKey: String {
     case lastOfferSyncDate
     case onboardingState
     case cachedCoinData
+    case notificationToken
 }
 
 struct UserDefaultsConfig {

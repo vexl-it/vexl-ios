@@ -17,6 +17,7 @@ protocol InboxManagerType {
     func userRequestedSync()
 
     func syncInbox(with publicKey: String, completionHandler: ((Error?) -> Void)?)
+    func updateNotificationToken(token: String) -> AnyPublisher<Void, Error>
 }
 
 extension InboxManagerType {
@@ -176,6 +177,22 @@ final class InboxManager: InboxManagerType {
                     .setFailureType(to: Error.self)
                     .eraseToAnyPublisher()
             }
+            .eraseToAnyPublisher()
+    }
+
+    func updateNotificationToken(token: String) -> AnyPublisher<Void, Error> {
+        userRepository
+            .getInboxes()
+            .compactMap { inbox -> (keys: ECCKeys, token: String)? in
+                guard let inboxKeys = inbox.keyPair?.keys else {
+                    return nil
+                }
+                return (keys: inboxKeys, token: token)
+            }
+            .publisher
+            .flatMap(maxPublishers: .max(1), chatService.updateInbox)
+            .collect()
+            .asVoid()
             .eraseToAnyPublisher()
     }
 }

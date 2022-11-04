@@ -74,11 +74,18 @@ struct UserProfileView: View {
     private var profile: some View {
         VStack(alignment: .center, spacing: Appearance.GridGuide.padding) {
             avatarImage
+            VStack(alignment: .center, spacing: Appearance.GridGuide.tinyPadding) {
+                Text(viewModel.username)
+                    .textStyle(.h2)
+                    .foregroundColor(.white)
 
-            Text(viewModel.username)
-                .textStyle(.h2)
-                .foregroundColor(.white)
-                .frame(maxWidth: .infinity, alignment: .center)
+                if let phoneNumber = viewModel.phoneNumber {
+                    Text(phoneNumber)
+                        .textStyle(.paragraphSmall)
+                        .foregroundColor(Appearance.Colors.gray4)
+                }
+            }
+            .frame(maxWidth: .infinity)
         }
         .padding(.bottom, Appearance.GridGuide.padding)
     }

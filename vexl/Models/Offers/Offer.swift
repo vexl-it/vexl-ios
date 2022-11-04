@@ -43,7 +43,7 @@ struct Offer: Equatable {
          selectedPaymentMethodOptions: [OfferPaymentMethodOption] = [],
 
          selectedBTCOption: [OfferAdvancedBTCOption] = [],
-         selectedFriendDegreeOption: OfferFriendDegree = .firstDegree,
+         selectedFriendDegreeOption: OfferFriendDegree = .secondDegree,
          selectedPriceTrigger: OfferTrigger = .none,
          selectedPriceTriggerAmount: String = "") {
         self.isActive = isActive
