@@ -26,7 +26,6 @@
 		4F82A0A028E19D0A00352A3F /* NotificationPermissionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F82A09F28E19D0A00352A3F /* NotificationPermissionViewModel.swift */; };
 		4F82A0A228E19D1400352A3F /* NotificationPermissionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F82A0A128E19D1400352A3F /* NotificationPermissionView.swift */; };
 		4F82A0A428E1AFFC00352A3F /* PermissionActionSheetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F82A0A328E1AFFC00352A3F /* PermissionActionSheetViewModel.swift */; };
-		4F82A0A728E2F5F200352A3F /* NotificationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F82A0A628E2F5F200352A3F /* NotificationViewModel.swift */; };
 		4F9ECFF728AE93350074EA47 /* KeyboardReadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F9ECFF628AE93350074EA47 /* KeyboardReadable.swift */; };
 		4FA3BF6A28AEE8F3000BE679 /* DeeplinkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA3BF6928AEE8F3000BE679 /* DeeplinkManager.swift */; };
 		4FA3BF6C28AFDB7A000BE679 /* UIWindow+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA3BF6B28AFDB7A000BE679 /* UIWindow+.swift */; };
@@ -490,7 +489,6 @@
 		4F82A09F28E19D0A00352A3F /* NotificationPermissionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationPermissionViewModel.swift; sourceTree = "<group>"; };
 		4F82A0A128E19D1400352A3F /* NotificationPermissionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationPermissionView.swift; sourceTree = "<group>"; };
 		4F82A0A328E1AFFC00352A3F /* PermissionActionSheetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionActionSheetViewModel.swift; sourceTree = "<group>"; };
-		4F82A0A628E2F5F200352A3F /* NotificationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationViewModel.swift; sourceTree = "<group>"; };
 		4F9ECFF628AE93350074EA47 /* KeyboardReadable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardReadable.swift; sourceTree = "<group>"; };
 		4FA3BF6928AEE8F3000BE679 /* DeeplinkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeeplinkManager.swift; sourceTree = "<group>"; };
 		4FA3BF6B28AFDB7A000BE679 /* UIWindow+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIWindow+.swift"; sourceTree = "<group>"; };
@@ -1035,14 +1033,6 @@
 				4F82A0A328E1AFFC00352A3F /* PermissionActionSheetViewModel.swift */,
 			);
 			path = NotificationPermission;
-			sourceTree = "<group>";
-		};
-		4F82A0A528E2F5E800352A3F /* Notifications */ = {
-			isa = PBXGroup;
-			children = (
-				4F82A0A628E2F5F200352A3F /* NotificationViewModel.swift */,
-			);
-			path = Notifications;
 			sourceTree = "<group>";
 		};
 		4FA3BF6828AEE8E7000BE679 /* Deeplink */ = {
@@ -2466,7 +2456,6 @@
 		F1D200A428251C4E006DF4AB /* Tabbar */ = {
 			isa = PBXGroup;
 			children = (
-				4F82A0A528E2F5E800352A3F /* Notifications */,
 				F1D2011B28296099006DF4AB /* Components */,
 				F1D2011928292868006DF4AB /* TabBarCoordinator.swift */,
 				F1D200A528252C44006DF4AB /* TabBarController.swift */,
@@ -3087,7 +3076,6 @@
 				F1156AE2289F25E500B9A5B9 /* TermsAndConditionsCoordinator.swift in Sources */,
 				4F26F45928A93D3A005558E8 /* ManagedOfferLocation+.swift in Sources */,
 				F175AB9927F0D2D8000DAB15 /* ContactsService.swift in Sources */,
-				4F82A0A728E2F5F200352A3F /* NotificationViewModel.swift in Sources */,
 				B007A76328730BDF00CFA5C9 /* Fetched.swift in Sources */,
 				B0FF5F6B289EFAF30026E4C4 /* GroupPayload.swift in Sources */,
 				F11441C9284681EC00307D39 /* CardModifier.swift in Sources */,

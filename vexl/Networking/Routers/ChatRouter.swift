@@ -33,11 +33,11 @@ enum ChatRouter: ApiRouter {
             return .delete
         }
     }
-    
+
     var additionalHeaders: [Header] {
         securityHeader
     }
-    
+
     var path: String {
         switch self {
         case .createInbox, .updateInbox:
@@ -60,7 +60,7 @@ enum ChatRouter: ApiRouter {
             return "inboxes/messages"
         }
     }
-    
+
     var version: Constants.API.Version? { .v1 }
 
     var parameters: Parameters {
