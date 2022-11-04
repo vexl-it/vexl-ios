@@ -15,6 +15,7 @@ final class ChatActionViewModel: ObservableObject {
 
     @Published var showIdentityRequest = true
     @Published var isChatBlocked = false
+    @Published var isOfferDeleted = false
 
     var action: ActionSubject<ChatActionView.ChatActionOption> = .init()
     var route: CoordinatingSubject<ChatViewModel.Route> = .init()
@@ -42,6 +43,10 @@ final class ChatActionViewModel: ObservableObject {
 
         self.offer = chat.receiverKeyPair?.offer
         self.isChatBlocked = chat.isBlocked
+
+        self.offer?
+            .publisher(for: \.isRemoved)
+            .assign(to: &$isOfferDeleted)
         setupActionBindings()
     }
 
