@@ -132,6 +132,7 @@ struct BottomSheet_Previews: PreviewProvider {
                 OfferInformationDetailView(
                     data: .stub,
                     useInnerPadding: true,
+                    showArrowIndicator: false,
                     showBackground: false
                 )
             })

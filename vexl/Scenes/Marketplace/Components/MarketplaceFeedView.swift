@@ -21,9 +21,6 @@ struct MarketplaceFeedView: View {
                 showArrowIndicator: true,
                 showBackground: true
             )
-            .clipShape(
-                MarketplaceItemShape(horizontalStartPoint: Appearance.GridGuide.feedAvatarSize.width)
-            )
             .padding(.bottom, displayFooter ? 0 : Appearance.GridGuide.point)
 
             MarketplaceFeedFooterView(attributedTitle: data.attributedOfferTitle,

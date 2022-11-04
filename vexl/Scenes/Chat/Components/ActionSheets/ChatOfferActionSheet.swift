@@ -39,6 +39,7 @@ struct ChatOfferActionSheetContent: View {
     var body: some View {
         OfferInformationDetailView(data: data,
                                    useInnerPadding: true,
+                                   showArrowIndicator: true,
                                    showBackground: false)
             .background(Appearance.Colors.gray6)
             .cornerRadius(Appearance.GridGuide.buttonCorner)

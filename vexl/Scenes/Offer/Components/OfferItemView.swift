@@ -28,7 +28,11 @@ struct OfferItemView: View {
         OfferInformationDetailView(
             data: data,
             useInnerPadding: true,
+            showArrowIndicator: true,
             showBackground: true
+        )
+        .clipShape(
+            MarketplaceItemShape(horizontalStartPoint: Appearance.GridGuide.feedAvatarSize.width)
         )
     }
 
