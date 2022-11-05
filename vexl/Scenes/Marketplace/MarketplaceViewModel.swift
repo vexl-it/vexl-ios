@@ -184,16 +184,6 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
                 owner.reloadFilters()
             }
             .store(in: cancelBag)
-
-        $userBuyOffers
-            .load(
-                predicate: .init(format: "offerTypeRawType == '\(OfferType.buy.rawValue)' AND user != nil")
-            )
-
-        $userSellOffers
-            .load(
-                predicate: .init(format: "offerTypeRawType == '\(OfferType.sell.rawValue)' AND user != nil")
-            )
     }
 
     private func setupActionBindings() {
