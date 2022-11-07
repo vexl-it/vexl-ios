@@ -377,6 +377,7 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
             .filter { $0 == .createOffer }
             .asVoid()
             .withUnretained(self)
+            .filter { $0.state != .loading }
             .flatMap { owner -> AnyPublisher<Void, Never> in
                 Future<Void, Error> { promise in
                     let hasValidSuggestion = owner.locationViewModels.allSatisfy { $0.location?.isMapySuggestion == true }
