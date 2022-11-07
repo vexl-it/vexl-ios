@@ -111,7 +111,13 @@ extension ChatRequestOfferView {
             id = chat.id ?? UUID().uuidString
             contactName = chat.receiverKeyPair?.profile?.name ?? L.generalAnonymous()
             let messages: Set<ManagedMessage>? = chat.messages as? Set<ManagedMessage>
-            requestText = messages?.first(where: { $0.type == .messagingRequest })?.text
+            let message = messages?.first(where: { $0.type == .messagingRequest })?.text
+            if message?.isEmpty == false {
+                requestText = message
+            } else {
+                requestText = nil
+            }
+
             self.offer = .init(offer: offer)
 
             @Inject var profileManager: AnonymousProfileManagerType
