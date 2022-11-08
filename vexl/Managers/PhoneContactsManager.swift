@@ -36,10 +36,6 @@ final class PhoneContactsManager: PhoneContactsManagerType {
     private(set) var availableFacebookContacts: [ContactInformation] = []
     private(set) var privateQueue = DispatchQueue(label: "PhoneContactsQueue")
 
-//    init() {
-//
-//    }
-
     func fetchPhoneContacts() -> AnyPublisher<[ContactInformation], Never> {
         userRepository.userPublisher
             .compactMap { $0?.profile?.phoneNumber?.removeWhitespaces() }
