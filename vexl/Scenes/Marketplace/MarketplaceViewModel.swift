@@ -50,8 +50,7 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
         case showSellFilters
         case showSellOffer
         case showBuyOffer
-        case offerDetailTapped(offer: ManagedOffer)
-        case requestOfferTapped(offer: ManagedOffer)
+        case offerTapped(offer: ManagedOffer)
         case fetchNewOffers
         case graphExpanded(isExpanded: Bool)
     }
@@ -185,16 +184,6 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
                 owner.reloadFilters()
             }
             .store(in: cancelBag)
-
-        $userBuyOffers
-            .load(
-                predicate: .init(format: "offerTypeRawType == '\(OfferType.buy.rawValue)' AND user != nil")
-            )
-
-        $userSellOffers
-            .load(
-                predicate: .init(format: "offerTypeRawType == '\(OfferType.sell.rawValue)' AND user != nil")
-            )
     }
 
     private func setupActionBindings() {
@@ -243,7 +232,7 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
 
         userAction
             .compactMap { action -> ManagedOffer? in
-                guard case let .requestOfferTapped(offer) = action else {
+                guard case let .offerTapped(offer) = action else {
                     return nil
                 }
                 return offer

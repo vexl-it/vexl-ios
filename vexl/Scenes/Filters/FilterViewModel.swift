@@ -182,7 +182,7 @@ final class FilterViewModel: ViewModelType, ObservableObject {
             .filter { $0 == .applyFilter }
             .withUnretained(self)
             .sink { owner, _ in
-                owner.offerFilter.currentAmountRange = owner.currentAmountRange
+                owner.offerFilter.currentAmountRange = owner.currency.flatMap { _ in owner.currentAmountRange }
                 owner.offerFilter.selectedFeeOptions = owner.selectedFeeOptions
                 owner.offerFilter.feeAmount = owner.feeAmount
                 owner.offerFilter.locations = owner.locationViewModels.compactMap(\.location)

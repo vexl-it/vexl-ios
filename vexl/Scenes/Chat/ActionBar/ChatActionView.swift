@@ -24,6 +24,10 @@ struct ChatActionView: View {
             actions = actions.filter { $0 != .blockUser }
         }
 
+        if viewModel.isOfferDeleted {
+            actions = actions.filter { $0 != .showOffer && $0 != .commonFriends  }
+        }
+
         return actions
     }
 

@@ -40,6 +40,7 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
     @Published var primaryActivity: Activity = .init()
     @Published var isLoading = false
     @Published var error: Error?
+    @Published var phoneNumber: String?
 
     @Published var username: String = ""
     @Published var avatar: Data?
@@ -132,6 +133,10 @@ final class UserProfileViewModel: ViewModelType, ObservableObject {
             .publisher(for: \.avatarData)
             .compactMap { _ in profile?.avatar }
             .assign(to: &$avatar)
+
+        profile?
+            .publisher(for: \.phoneNumber)
+            .assign(to: &$phoneNumber)
 
         $contacts
             .publisher

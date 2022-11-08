@@ -14,7 +14,7 @@ final class TabBarViewModel: ViewModelType {
     @Inject private var syncInboxManager: SyncInboxManagerType
     @Inject private var deeplinkManager: DeeplinkManagerType
     @Inject private var reencryptionManager: ReencryptionManagerType
-    let notificationViewModel = NotificationViewModel()
+    @Inject private var notificationManager: NotificationManagerType
 
     // MARK: - Actions Bindings
 
@@ -31,12 +31,14 @@ final class TabBarViewModel: ViewModelType {
     // MARK: - Coordinator Bindings
 
     enum Route: Equatable {
+        case showNotifications
     }
 
     var route: CoordinatingSubject<Route> = .init()
 
     // MARK: - Variables
 
+    private var notificationsChecked = false
     private let cancelBag: CancelBag = .init()
 
     init() {
@@ -55,7 +57,14 @@ final class TabBarViewModel: ViewModelType {
     }
 
     func checkIfNotificationsAreEnabled() {
-        notificationViewModel.checkIfNotificationsAreEnabled()
+        guard !notificationsChecked else { return }
+        notificationsChecked = true
+        switch notificationManager.currentStatus {
+        case .denied, .notDetermined:
+            route.send(.showNotifications)
+        default:
+            break
+        }
     }
 
     private func setupBindings() {

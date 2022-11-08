@@ -21,6 +21,7 @@ struct ChatRequestOfferInformationView: View {
 
             OfferInformationDetailView(data: data,
                                        useInnerPadding: false,
+                                       showArrowIndicator: false,
                                        showBackground: false)
                 .padding(Appearance.GridGuide.padding)
         }

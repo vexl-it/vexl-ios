@@ -103,6 +103,7 @@ struct OfferSettingsView: View {
                                      isEnabled: .constant(viewModel.isButtonActive),
                                      action: { viewModel.action.send(.createOffer) })
                         .padding(.vertical, Appearance.GridGuide.largePadding1)
+                        .disabled(viewModel.state == .loading)
                 }
             }
         }
