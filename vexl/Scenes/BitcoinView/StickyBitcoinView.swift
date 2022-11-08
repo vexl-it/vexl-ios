@@ -35,7 +35,7 @@ struct StickyBitcoinView<Content: View, Header: View>: View {
             Rectangle()
                 .foregroundColor(.black)
                 .frame(maxWidth: .infinity)
-                .frame(height: 48)
+                .frame(height: UIScreen.topInset)
                 .opacity(safeAreaCoverOpacity)
                 .edgesIgnoringSafeArea(.top)
 

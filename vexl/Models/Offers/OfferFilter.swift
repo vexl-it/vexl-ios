@@ -126,7 +126,7 @@ struct OfferFilter: Equatable {
         if selectedFeeOptions.contains(.withFee) {
             feeStatePredicates.append(NSPredicate(format: "feeAmount <= \(feeAmount)"))
         }
-        return NSCompoundPredicate(andPredicateWithSubpredicates:feeStatePredicates)
+        return NSCompoundPredicate(andPredicateWithSubpredicates: feeStatePredicates)
     }
 
     private func generatePredicatesForFriendDegree() -> NSPredicate {
@@ -138,10 +138,22 @@ struct OfferFilter: Equatable {
 
     private func generatePredicatesForAmmountRange(currentAmountRange: ClosedRange<Int>) -> NSPredicate {
         NSCompoundPredicate(orPredicateWithSubpredicates: [
-            NSPredicate(format: "maxAmount >= %d AND maxAmount <= %d", currentAmountRange.lowerBound, currentAmountRange.upperBound),
-            NSPredicate(format: "minAmount >= %d AND minAmount <= %d", currentAmountRange.lowerBound, currentAmountRange.upperBound),
-            NSPredicate(format: "%d >= minAmount AND %d <= maxAmount", currentAmountRange.lowerBound, currentAmountRange.lowerBound),
-            NSPredicate(format: "%d >= minAmount AND %d <= maxAmount", currentAmountRange.upperBound, currentAmountRange.upperBound)
+            NSPredicate(
+                format: "maxAmount >= %d AND maxAmount <= %d",
+                currentAmountRange.lowerBound * 1_000, currentAmountRange.upperBound * 1_000
+            ),
+            NSPredicate(
+                format: "minAmount >= %d AND minAmount <= %d",
+                currentAmountRange.lowerBound * 1_000, currentAmountRange.upperBound * 1_000
+            ),
+            NSPredicate(
+                format: "%d >= minAmount AND %d <= maxAmount",
+                currentAmountRange.lowerBound * 1_000, currentAmountRange.lowerBound * 1_000
+            ),
+            NSPredicate(
+                format: "%d >= minAmount AND %d <= maxAmount",
+                currentAmountRange.upperBound * 1_000, currentAmountRange.upperBound * 1_000
+            )
         ])
     }
 
