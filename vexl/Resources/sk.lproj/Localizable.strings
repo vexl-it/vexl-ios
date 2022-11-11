@@ -262,6 +262,7 @@
 "offer.create.buy.action.title" = "Vytvoriť ponuku nákupu";
 "offer.update.buy.action.title" = "Aktualizovať ponuku nákupu";
 "offer.location.placeholder" = "Mesto";
+"offer.widget.location.warning" = "";
 "offer.currency.usd.title" = "USD";
 "offer.currency.eur.title" = "EUR";
 "offer.currency.czk.title" = "CZK";
