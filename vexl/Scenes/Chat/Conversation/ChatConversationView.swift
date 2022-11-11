@@ -27,7 +27,7 @@ struct ChatConversationView: View {
                 }
             }
             .padding(.top, Appearance.GridGuide.padding)
-            .onChange(of: viewModel.lastMessageID, perform: { newMessageID in
+            .onReceive(viewModel.$lastMessageID, perform: { newMessageID in
                 withAnimation {
                     proxy.scrollTo(newMessageID)
                 }

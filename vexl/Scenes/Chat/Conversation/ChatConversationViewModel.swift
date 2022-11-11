@@ -83,6 +83,17 @@ final class ChatConversationViewModel: ObservableObject {
         $messages
             .map(\.last?.messages.last?.id)
             .assign(to: &$lastMessageID)
+
+        NotificationCenter
+            .default
+            .publisher(for: UIWindow.keyboardDidShowNotification)
+            .asVoid()
+            .print("[DEBUG] keybaord shown: ")
+            .withUnretained(self)
+            .sink { owner in
+                owner.lastMessageID = owner.lastMessageID
+            }
+            .store(in: cancelBag)
     }
 
     private func setupActionBindings() {
