@@ -89,7 +89,6 @@ final class ChatConversationViewModel: ObservableObject {
             .default
             .publisher(for: UIWindow.keyboardDidShowNotification)
             .asVoid()
-            .print("[DEBUG] keybaord shown: ")
             .withUnretained(self)
             .sink { owner in
                 owner.lastMessageID = owner.lastMessageID
