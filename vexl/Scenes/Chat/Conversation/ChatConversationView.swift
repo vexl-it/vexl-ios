@@ -10,7 +10,6 @@ import SwiftUI
 struct ChatConversationView: View {
 
     @ObservedObject var viewModel: ChatConversationViewModel
-    @State private var firstScrollFinished = false
 
     var body: some View {
         ScrollViewReader { proxy in
@@ -18,7 +17,6 @@ struct ChatConversationView: View {
                 LazyVStack {
                     ForEach(viewModel.messages) { section in
                         // TODO: - add date display when its clear how it will be grouped
-
                         ForEach(section.messages) { message in
                             cell(for: message)
                                 .id(message.id)

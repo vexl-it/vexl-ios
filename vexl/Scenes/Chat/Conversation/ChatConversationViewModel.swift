@@ -82,6 +82,7 @@ final class ChatConversationViewModel: ObservableObject {
 
         $messages
             .map(\.last?.messages.last?.id)
+            .delay(for: 0.25, scheduler: RunLoop.main)
             .assign(to: &$lastMessageID)
 
         NotificationCenter
