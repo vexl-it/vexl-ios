@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="21279" systemVersion="21G115" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="21512" systemVersion="22A380" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="ManagedAnonymousProfile" representedClassName="ManagedAnonymousProfile" syncable="YES" codeGenerationType="class">
         <attribute name="publicKey" optional="YES" attributeType="String"/>
         <relationship name="groups" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ManagedGroup" inverseName="members" inverseEntity="ManagedGroup"/>
@@ -8,20 +8,6 @@
     <entity name="ManagedAnonymousProfileType" representedClassName="ManagedAnonymousProfileType" syncable="YES" codeGenerationType="class">
         <attribute name="rawType" optional="YES" attributeType="String"/>
         <relationship name="anonymousProfiles" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ManagedAnonymousProfile" inverseName="types" inverseEntity="ManagedAnonymousProfile"/>
-    </entity>
-    <entity name="ManagedChat" representedClassName="ManagedChat" syncable="YES" codeGenerationType="class">
-        <attribute name="gotRevealedResponse" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
-        <attribute name="id" optional="YES" attributeType="String"/>
-        <attribute name="isApproved" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
-        <attribute name="isBlocked" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
-        <attribute name="isRequesting" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
-        <attribute name="isRevealed" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
-        <attribute name="lastMessageDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
-        <attribute name="shouldDisplayRevealBanner" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
-        <attribute name="showIdentityRequest" optional="YES" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES"/>
-        <relationship name="inbox" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ManagedInbox" inverseName="chats" inverseEntity="ManagedInbox"/>
-        <relationship name="messages" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ManagedMessage" inverseName="chat" inverseEntity="ManagedMessage"/>
-        <relationship name="receiverKeyPair" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ManagedKeyPair" inverseName="chat" inverseEntity="ManagedKeyPair"/>
     </entity>
     <entity name="ManagedContact" representedClassName="ManagedContact" syncable="YES" codeGenerationType="class">
         <attribute name="avatar" optional="YES" attributeType="Binary"/>
@@ -45,6 +31,20 @@
         <relationship name="members" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ManagedAnonymousProfile" inverseName="groups" inverseEntity="ManagedAnonymousProfile"/>
         <relationship name="offers" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ManagedOffer" inverseName="group" inverseEntity="ManagedOffer"/>
         <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ManagedUser" inverseName="groups" inverseEntity="ManagedUser"/>
+    </entity>
+    <entity name="ManagedChat" representedClassName="ManagedChat" syncable="YES" codeGenerationType="class">
+        <attribute name="gotRevealedResponse" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="id" optional="YES" attributeType="String"/>
+        <attribute name="isApproved" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="isBlocked" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="isRequesting" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="isRevealed" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="lastMessageDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="shouldDisplayRevealBanner" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="showIdentityRequest" optional="YES" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES"/>
+        <relationship name="inbox" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ManagedInbox" inverseName="chats" inverseEntity="ManagedInbox"/>
+        <relationship name="messages" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ManagedMessage" inverseName="chat" inverseEntity="ManagedMessage"/>
+        <relationship name="receiverKeyPair" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ManagedKeyPair" inverseName="chat" inverseEntity="ManagedKeyPair"/>
     </entity>
     <entity name="ManagedInbox" representedClassName="ManagedInbox" syncable="YES" codeGenerationType="class">
         <attribute name="typeRawValue" optional="YES" attributeType="String"/>
@@ -96,6 +96,7 @@
         <attribute name="feeStateRawType" optional="YES" attributeType="String"/>
         <attribute name="friendDegreeRawType" optional="YES" attributeType="String"/>
         <attribute name="friendDegreeRawTypes" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromDataTransformer" customClassName="[String]"/>
+        <attribute name="isFlagged" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="isRemoved" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="isRequested" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="locationStateRawType" optional="YES" attributeType="String"/>
