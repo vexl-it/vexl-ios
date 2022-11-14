@@ -222,7 +222,7 @@ class OfferRepository: OfferRepositoryType {
     func flag(offer unsafeOffer: ManagedOffer) -> AnyPublisher<Void, Error> {
         persistence.update(context: persistence.viewContext) { context in
             let offer = context.object(with: unsafeOffer.objectID) as? ManagedOffer
-            offer?.isRemoved = true
+            offer?.isFlagged = true
         }
     }
 
