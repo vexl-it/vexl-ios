@@ -20,10 +20,17 @@ struct OfferFeePickerView: View {
 
     var body: some View {
         VStack(alignment: .leading) {
-            SegmentedPickerView(selectedOption: $selectedOption,
-                                options: options) { option in
-                Text(option.title)
-            }
+            SingleOptionPickerView(
+                selectedOption: $selectedOption,
+                options: options,
+                content: { option in
+                    Text(option.title)
+                        .frame(maxWidth: .infinity, alignment: .center)
+                },
+                action: nil
+            )
+            .padding(Appearance.GridGuide.tinyPadding)
+            .background(Appearance.Colors.gray1)
 
             if selectedOption == .withFee {
                 HLine(color: Appearance.Colors.gray2,

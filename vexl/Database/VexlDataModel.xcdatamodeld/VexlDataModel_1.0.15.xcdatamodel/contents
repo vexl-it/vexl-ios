@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="21512" systemVersion="22A380" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="ManagedAnonymousProfile" representedClassName="ManagedAnonymousProfile" syncable="YES" codeGenerationType="class">
+        <attribute name="publicKey" optional="YES" attributeType="String"/>
+        <relationship name="groups" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ManagedGroup" inverseName="members" inverseEntity="ManagedGroup"/>
+        <relationship name="types" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ManagedAnonymousProfileType" inverseName="anonymousProfiles" inverseEntity="ManagedAnonymousProfileType"/>
+    </entity>
+    <entity name="ManagedAnonymousProfileType" representedClassName="ManagedAnonymousProfileType" syncable="YES" codeGenerationType="class">
+        <attribute name="rawType" optional="YES" attributeType="String"/>
+        <relationship name="anonymousProfiles" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ManagedAnonymousProfile" inverseName="types" inverseEntity="ManagedAnonymousProfile"/>
+    </entity>
+    <entity name="ManagedContact" representedClassName="ManagedContact" syncable="YES" codeGenerationType="class">
+        <attribute name="avatar" optional="YES" attributeType="Binary"/>
+        <attribute name="avatarURL" optional="YES" attributeType="String"/>
+        <attribute name="hmacHash" optional="YES" attributeType="String"/>
+        <attribute name="id" optional="YES" attributeType="String"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="phoneNumber" optional="YES" attributeType="String"/>
+        <attribute name="sourceRawType" optional="YES" attributeType="String"/>
+    </entity>
+    <entity name="ManagedGroup" representedClassName="ManagedGroup" syncable="YES" codeGenerationType="class">
+        <attribute name="closureAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="code" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="createdAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="expiration" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="hexColor" optional="YES" attributeType="String"/>
+        <attribute name="logo" optional="YES" attributeType="Binary"/>
+        <attribute name="logoURL" optional="YES" attributeType="URI"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="uuid" optional="YES" attributeType="String"/>
+        <relationship name="members" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ManagedAnonymousProfile" inverseName="groups" inverseEntity="ManagedAnonymousProfile"/>
+        <relationship name="offers" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ManagedOffer" inverseName="group" inverseEntity="ManagedOffer"/>
+        <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ManagedUser" inverseName="groups" inverseEntity="ManagedUser"/>
+    </entity>
+    <entity name="ManagedChat" representedClassName="ManagedChat" syncable="YES" codeGenerationType="class">
+        <attribute name="gotRevealedResponse" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="id" optional="YES" attributeType="String"/>
+        <attribute name="isApproved" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="isBlocked" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="isRequesting" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="isRevealed" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="lastMessageDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="shouldDisplayRevealBanner" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="showIdentityRequest" optional="YES" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES"/>
+        <relationship name="inbox" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ManagedInbox" inverseName="chats" inverseEntity="ManagedInbox"/>
+        <relationship name="messages" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ManagedMessage" inverseName="chat" inverseEntity="ManagedMessage"/>
+        <relationship name="receiverKeyPair" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ManagedKeyPair" inverseName="chat" inverseEntity="ManagedKeyPair"/>
+    </entity>
+    <entity name="ManagedInbox" representedClassName="ManagedInbox" syncable="YES" codeGenerationType="class">
+        <attribute name="typeRawValue" optional="YES" attributeType="String"/>
+        <relationship name="chats" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ManagedChat" inverseName="inbox" inverseEntity="ManagedChat"/>
+        <relationship name="keyPair" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ManagedKeyPair" inverseName="inbox" inverseEntity="ManagedKeyPair"/>
+        <relationship name="offers" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ManagedOffer" inverseName="inbox" inverseEntity="ManagedOffer"/>
+        <relationship name="syncItem" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ManagedSyncItem" inverseName="inbox" inverseEntity="ManagedSyncItem"/>
+    </entity>
+    <entity name="ManagedKeyPair" representedClassName="ManagedKeyPair" syncable="YES" codeGenerationType="class">
+        <attribute name="encryptedPrivateKey" optional="YES" attributeType="String"/>
+        <attribute name="publicKey" optional="YES" attributeType="String"/>
+        <relationship name="chat" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ManagedChat" inverseName="receiverKeyPair" inverseEntity="ManagedChat"/>
+        <relationship name="inbox" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ManagedInbox" inverseName="keyPair" inverseEntity="ManagedInbox"/>
+        <relationship name="profile" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ManagedProfile" inverseName="keyPair" inverseEntity="ManagedProfile"/>
+        <relationship name="receiversOffer" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ManagedOffer" inverseName="receiversPublicKey" inverseEntity="ManagedOffer"/>
+        <relationship name="userOffer" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ManagedOffer" inverseName="requesterPublicKeys" inverseEntity="ManagedOffer"/>
+    </entity>
+    <entity name="ManagedMessage" representedClassName="ManagedMessage" syncable="YES" codeGenerationType="class">
+        <attribute name="hasRevealResponse" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="id" optional="YES" attributeType="String"/>
+        <attribute name="image" optional="YES" attributeType="String"/>
+        <attribute name="isContact" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="isRevealed" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="publicID" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="text" optional="YES" attributeType="String"/>
+        <attribute name="time" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="typeRawType" optional="YES" attributeType="String"/>
+        <attribute name="userAvatar" optional="YES" attributeType="String"/>
+        <attribute name="username" optional="YES" attributeType="String"/>
+        <relationship name="chat" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ManagedChat" inverseName="messages" inverseEntity="ManagedChat"/>
+    </entity>
+    <entity name="ManagedOffer" representedClassName="ManagedOffer" syncable="YES" codeGenerationType="class">
+        <attribute name="acceptsBankTransfer" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="acceptsCash" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="acceptsOnChain" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="acceptsOnLighting" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="acceptsRevolut" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="active" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="activePriceCurrencyRawType" optional="YES" attributeType="String"/>
+        <attribute name="activePriceStateRawType" optional="YES" attributeType="String"/>
+        <attribute name="activePriceValue" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="adminID" optional="YES" attributeType="String"/>
+        <attribute name="commonFriends" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromDataTransformer" customClassName="[String]"/>
+        <attribute name="createdAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="currencyRawType" optional="YES" attributeType="String"/>
+        <attribute name="encryptedSymmetricKey" optional="YES" attributeType="String"/>
+        <attribute name="expirationDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="feeAmount" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="feeStateRawType" optional="YES" attributeType="String"/>
+        <attribute name="friendDegreeRawType" optional="YES" attributeType="String"/>
+        <attribute name="friendDegreeRawTypes" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromDataTransformer" customClassName="[String]"/>
+        <attribute name="isFlagged" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="isRemoved" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="isRequested" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="locationStateRawType" optional="YES" attributeType="String"/>
+        <attribute name="maxAmount" optional="YES" attributeType="Double" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="minAmount" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="modifiedAt" optional="YES" attributeType="String"/>
+        <attribute name="offerDescription" optional="YES" attributeType="String"/>
+        <attribute name="offerID" optional="YES" attributeType="String"/>
+        <attribute name="offerTypeRawType" optional="YES" attributeType="String"/>
+        <relationship name="group" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ManagedGroup" inverseName="offers" inverseEntity="ManagedGroup"/>
+        <relationship name="inbox" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ManagedInbox" inverseName="offers" inverseEntity="ManagedInbox"/>
+        <relationship name="locations" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ManagedOfferLocation" inverseName="offer" inverseEntity="ManagedOfferLocation"/>
+        <relationship name="receiversPublicKey" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ManagedKeyPair" inverseName="receiversOffer" inverseEntity="ManagedKeyPair"/>
+        <relationship name="requesterPublicKeys" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ManagedKeyPair" inverseName="userOffer" inverseEntity="ManagedKeyPair"/>
+        <relationship name="syncItems" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ManagedSyncItem" inverseName="offer" inverseEntity="ManagedSyncItem"/>
+        <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ManagedUser" inverseName="offers" inverseEntity="ManagedUser"/>
+    </entity>
+    <entity name="ManagedOfferLocation" representedClassName="ManagedOfferLocation" syncable="YES" codeGenerationType="class">
+        <attribute name="city" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="lat" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="lon" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <relationship name="offer" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ManagedOffer" inverseName="locations" inverseEntity="ManagedOffer"/>
+    </entity>
+    <entity name="ManagedProfile" representedClassName="ManagedProfile" syncable="YES" codeGenerationType="class">
+        <attribute name="anonymizedUsername" optional="YES" attributeType="String"/>
+        <attribute name="avatarData" optional="YES" attributeType="Binary"/>
+        <attribute name="avatarURL" optional="YES" attributeType="String"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="phoneNumber" optional="YES" attributeType="String"/>
+        <attribute name="phoneNumberHmac" optional="YES" attributeType="String"/>
+        <attribute name="realAvatarBeforeReveal" optional="YES" attributeType="Binary"/>
+        <attribute name="realAvatarURLBeforeReveal" optional="YES" attributeType="String"/>
+        <attribute name="realNameBeforeReveal" optional="YES" attributeType="String"/>
+        <relationship name="currentUser" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ManagedUser" inverseName="profile" inverseEntity="ManagedUser"/>
+        <relationship name="keyPair" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ManagedKeyPair" inverseName="profile" inverseEntity="ManagedKeyPair"/>
+    </entity>
+    <entity name="ManagedSyncItem" representedClassName="ManagedSyncItem" syncable="YES" codeGenerationType="class">
+        <attribute name="publicKeys" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromDataTransformer" customClassName="[String]"/>
+        <attribute name="typeRawType" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <relationship name="inbox" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ManagedInbox" inverseName="syncItem" inverseEntity="ManagedInbox"/>
+        <relationship name="offer" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ManagedOffer" inverseName="syncItems" inverseEntity="ManagedOffer"/>
+    </entity>
+    <entity name="ManagedUser" representedClassName="ManagedUser" syncable="YES" codeGenerationType="class">
+        <attribute name="encryptedSignature" optional="YES" attributeType="String"/>
+        <attribute name="userHash" optional="YES" attributeType="String"/>
+        <attribute name="userId" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <relationship name="groups" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ManagedGroup" inverseName="user" inverseEntity="ManagedGroup"/>
+        <relationship name="offers" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ManagedOffer" inverseName="user" inverseEntity="ManagedOffer"/>
+        <relationship name="profile" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ManagedProfile" inverseName="currentUser" inverseEntity="ManagedProfile"/>
+    </entity>
+</model>

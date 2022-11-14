@@ -34,51 +34,63 @@ final class PhoneContactsManager: PhoneContactsManagerType {
 
     private var userFacebookContacts: [ContactInformation] = []
     private(set) var availableFacebookContacts: [ContactInformation] = []
+    private(set) var privateQueue = DispatchQueue(label: "PhoneContactsQueue")
 
     func fetchPhoneContacts() -> AnyPublisher<[ContactInformation], Never> {
         userRepository.userPublisher
             .compactMap { $0?.profile?.phoneNumber?.removeWhitespaces() }
             .first()
             .withUnretained(self)
-            .map { owner, userPhone in
+            .flatMap { owner, userPhone in
                 owner.fetchContactsButFilter(userPhone: userPhone)
             }
             .eraseToAnyPublisher()
     }
 
-    private func fetchContactsButFilter(userPhone: String) -> [ContactInformation] {
-        var contacts: [ContactInformation] = []
-        let keys = [
-            CNContactPhoneNumbersKey,
-            CNContactGivenNameKey,
-            CNContactFamilyNameKey,
-            CNContactImageDataKey,
-            CNContactIdentifierKey
-        ] as [CNKeyDescriptor]
-        let request = CNContactFetchRequest(keysToFetch: keys)
-
-        let contactStore = CNContactStore()
-
-        do {
-            try contactStore.enumerateContacts(with: request) { contact, _ in
-                guard let phone = contact.phoneNumbers.first?.value.stringValue, !userPhone.contains(phone.removeWhitespaces()) else {
-                    return
-                }
-
-                let avatar = contact.imageData
-                let userContact = ContactInformation(id: contact.identifier,
-                                                     name: "\(contact.givenName) \(contact.familyName)",
-                                                     phone: phone,
-                                                     avatar: avatar,
-                                                     source: .phone)
-                contacts.append(userContact)
+    private func fetchContactsButFilter(userPhone: String) -> AnyPublisher<[ContactInformation], Never> {
+        Future { [weak self] promise in
+            guard let owner = self else {
+                promise(.success([]))
+                return
             }
-            self.userPhoneContacts = contacts
-            return contacts
-        } catch {
-            self.userPhoneContacts = []
-            return []
+            owner.privateQueue.async {
+                var contacts: [ContactInformation] = []
+                let keys = [
+                    CNContactPhoneNumbersKey,
+                    CNContactGivenNameKey,
+                    CNContactFamilyNameKey,
+                    CNContactImageDataKey,
+                    CNContactIdentifierKey
+                ] as [CNKeyDescriptor]
+                let request = CNContactFetchRequest(keysToFetch: keys)
+
+                let contactStore = CNContactStore()
+
+                do {
+                    try contactStore.enumerateContacts(with: request) { contact, _ in
+                        for phone in contact.phoneNumbers.map(\.value.stringValue) {
+                            guard !userPhone.contains(phone.removeWhitespaces()) else {
+                                return
+                            }
+
+                            let avatar = contact.imageData
+                            let userContact = ContactInformation(id: UUID().uuidString,
+                                                                 name: "\(contact.givenName) \(contact.familyName)",
+                                                                 phone: phone,
+                                                                 avatar: avatar,
+                                                                 source: .phone)
+                            contacts.append(userContact)
+                        }
+                    }
+                    owner.userPhoneContacts = contacts
+                    promise(.success(contacts))
+                } catch {
+                    owner.userPhoneContacts = []
+                    promise(.success([]))
+                }
+            }
         }
+        .eraseToAnyPublisher()
     }
 
     func fetchFacebookContacts(id: String, accessToken: String) -> AnyPublisher<[ContactInformation], Error> {
