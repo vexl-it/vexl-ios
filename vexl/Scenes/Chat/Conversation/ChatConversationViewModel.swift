@@ -82,7 +82,18 @@ final class ChatConversationViewModel: ObservableObject {
 
         $messages
             .map(\.last?.messages.last?.id)
+            .delay(for: 0.25, scheduler: RunLoop.main)
             .assign(to: &$lastMessageID)
+
+        NotificationCenter
+            .default
+            .publisher(for: UIWindow.keyboardDidShowNotification)
+            .asVoid()
+            .withUnretained(self)
+            .sink { owner in
+                owner.lastMessageID = owner.lastMessageID
+            }
+            .store(in: cancelBag)
     }
 
     private func setupActionBindings() {
