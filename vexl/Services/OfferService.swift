@@ -39,7 +39,6 @@ protocol OfferServiceType {
 
 final class OfferService: BaseService, OfferServiceType {
 
-
     @Inject private var contactsService: ContactsServiceType
     @Inject private var encryptionService: EncryptionServiceType
     @Inject private var authenticationManager: AuthenticationManagerType
@@ -178,7 +177,7 @@ final class OfferService: BaseService, OfferServiceType {
             .encryptOfferPayloadPublic(offer: offer, symmetricKey: symmetricKey)
 
         let payload = Publishers.Zip(publicPart, privateParts)
-            .map { (publicPart, privateParts) -> OfferRequestPayload in
+            .map { publicPart, privateParts -> OfferRequestPayload in
                 OfferRequestPayload(
                     offerType: offerType.rawValue,
                     expiration: Int(expiration),

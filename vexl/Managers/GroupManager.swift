@@ -64,7 +64,7 @@ final class GroupManager: GroupManagerType {
     }
 
     func getAllGroupMembers(groups: [ManagedGroup]) -> AnyPublisher<[GroupPKsEnvelope], Error> {
-        guard groups.isEmpty else {
+        guard !groups.isEmpty else {
             return Just([])
                 .setFailureType(to: Error.self)
                 .eraseToAnyPublisher()
