@@ -17,25 +17,22 @@ class OfferRequestPayloadEncoder {
     @Published private var maxEncryptedItemsCount: Int
 
     var progressPublisher: AnyPublisher<(Int, Int), Never> {
-        Publishers.CombineLatest(
-            $encryptedItemsCount.receive(on: DispatchQueue.main),
-            $maxEncryptedItemsCount.receive(on: DispatchQueue.main)
-        )
-        .eraseToAnyPublisher()
+        Publishers.CombineLatest($encryptedItemsCount, $maxEncryptedItemsCount)
+            .receive(on: DispatchQueue.main)
+            .eraseToAnyPublisher()
     }
 
     private var progressInput: PassthroughSubject<Void, Never> = .init()
 
-    private let encryptionQueue: OperationQueue = .init()
-    private let progressQueue: OperationQueue = .init()
+    private let privateQueue: OperationQueue = .init()
     private let cancelBag: CancelBag = .init()
 
     init(encryptedItemsCount: Int = 0, maxEncryptedItemsCount: Int = 0) {
         self.encryptedItemsCount = encryptedItemsCount
         self.maxEncryptedItemsCount = maxEncryptedItemsCount
-        progressQueue.maxConcurrentOperationCount = 1
+        privateQueue.maxConcurrentOperationCount = 1
+        privateQueue.qualityOfService = .userInitiated
         progressInput
-            .receive(on: progressQueue)
             .withUnretained(self)
             .sink { owner in
                 owner.encryptedItemsCount += 1
@@ -61,7 +58,7 @@ class OfferRequestPayloadEncoder {
 
         let envelopeCount = envelope.allPublicKeys.count
 
-        progressQueue.addOperation { [weak self] in
+        privateQueue.addOperation { [weak self] in
             self?.maxEncryptedItemsCount += envelopeCount
         }
 
@@ -72,6 +69,9 @@ class OfferRequestPayloadEncoder {
             .withUnretained(self)
             .flatMap { [encryptionService] owner, payloads in
                 payloads.publisher
+                    .receive(on: owner.privateQueue)
+                    .materializeIgnoreCompleted()
+                    .compactMap(\.value)
                     .flatMap { [encryptionService] privatePart in
                         encryptionService.encryptOfferPayload(privatePart: privatePart)
                     }
@@ -80,8 +80,9 @@ class OfferRequestPayloadEncoder {
                         owner.progressInput.send(())
                     })
                     .map { $0.1 }
-                    .collect()
+                    .collect(envelopeCount)
             }
+            .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()
 
         let publicPartEncryption = privatePartEncryption
