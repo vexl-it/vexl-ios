@@ -74,7 +74,7 @@ final class PhoneContactsManager: PhoneContactsManagerType {
                             }
 
                             let avatar = contact.imageData
-                            let userContact = ContactInformation(id: contact.identifier,
+                            let userContact = ContactInformation(id: UUID().uuidString,
                                                                  name: "\(contact.givenName) \(contact.familyName)",
                                                                  phone: phone,
                                                                  avatar: avatar,
