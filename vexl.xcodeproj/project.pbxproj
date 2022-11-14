@@ -577,6 +577,7 @@
 		B0501B9F2884B45E00A44E18 /* OfferManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfferManager.swift; sourceTree = "<group>"; };
 		B0501BA52887389000A44E18 /* CommonFriends.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonFriends.swift; sourceTree = "<group>"; };
 		B0501BA92887419F00A44E18 /* Array+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+.swift"; sourceTree = "<group>"; };
+		B0548D99291E627100F4E296 /* VexlDataModel_1.0.15.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = VexlDataModel_1.0.15.xcdatamodel; sourceTree = "<group>"; };
 		B05A22122812BF2700BF8D58 /* Publisher+Crypto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Publisher+Crypto.swift"; sourceTree = "<group>"; };
 		B06A3B4E287C967F00911795 /* Encryptable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Encryptable.swift; sourceTree = "<group>"; };
 		B06A3B50287C976300911795 /* Number+Encryptable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Number+Encryptable.swift"; sourceTree = "<group>"; };
@@ -3391,7 +3392,7 @@
 				CODE_SIGN_ENTITLEMENTS = vexl/vexl.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 344;
+				CURRENT_PROJECT_VERSION = 347;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = KQNTW88PVA;
 				ENABLE_BITCODE = NO;
@@ -3403,7 +3404,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.15;
+				MARKETING_VERSION = 1.0.16;
 				PRODUCT_BUNDLE_IDENTIFIER = it.vexl.staging;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match AdHoc it.vexl.staging";
@@ -3424,7 +3425,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 344;
+				CURRENT_PROJECT_VERSION = 347;
 				DEVELOPMENT_TEAM = SHD6TUKSPH;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
@@ -3509,7 +3510,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = vexl/vexlDebug.entitlements;
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 344;
+				CURRENT_PROJECT_VERSION = 347;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = KQNTW88PVA;
 				ENABLE_BITCODE = NO;
@@ -3521,7 +3522,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.15;
+				MARKETING_VERSION = 1.0.16;
 				PRODUCT_BUNDLE_IDENTIFIER = it.vexl.debug;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match Development it.vexl.debug";
@@ -3542,7 +3543,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 344;
+				CURRENT_PROJECT_VERSION = 347;
 				DEVELOPMENT_TEAM = SHD6TUKSPH;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
@@ -3687,7 +3688,7 @@
 				CODE_SIGN_ENTITLEMENTS = vexl/vexl.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 344;
+				CURRENT_PROJECT_VERSION = 347;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = KQNTW88PVA;
 				ENABLE_BITCODE = NO;
@@ -3699,7 +3700,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.15;
+				MARKETING_VERSION = 1.0.16;
 				PRODUCT_BUNDLE_IDENTIFIER = it.vexl.devel;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match AdHoc it.vexl.devel";
@@ -3723,7 +3724,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 344;
+				CURRENT_PROJECT_VERSION = 347;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = KQNTW88PVA;
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = KQNTW88PVA;
@@ -3736,7 +3737,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.15;
+				MARKETING_VERSION = 1.0.16;
 				PRODUCT_BUNDLE_IDENTIFIER = it.vexl.appstore;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore it.vexl.appstore";
@@ -3758,7 +3759,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 344;
+				CURRENT_PROJECT_VERSION = 347;
 				DEVELOPMENT_TEAM = SHD6TUKSPH;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
@@ -3777,7 +3778,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 344;
+				CURRENT_PROJECT_VERSION = 347;
 				DEVELOPMENT_TEAM = SHD6TUKSPH;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
@@ -3831,11 +3832,12 @@
 		F1B93ED8286D6671008DAA90 /* VexlDataModel.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				B0548D99291E627100F4E296 /* VexlDataModel_1.0.15.xcdatamodel */,
 				B020E21D28F431AD00FFA426 /* VexlDataModel_1.0.8.xcdatamodel */,
 				B0DF087628C61BAB004E77DB /* VexlDataModel_1.0.1.xcdatamodel */,
 				F1B93ED9286D6671008DAA90 /* VexlDataModel.xcdatamodel */,
 			);
-			currentVersion = B020E21D28F431AD00FFA426 /* VexlDataModel_1.0.8.xcdatamodel */;
+			currentVersion = B0548D99291E627100F4E296 /* VexlDataModel_1.0.15.xcdatamodel */;
 			path = VexlDataModel.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

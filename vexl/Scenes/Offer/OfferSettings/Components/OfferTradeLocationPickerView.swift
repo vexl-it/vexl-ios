@@ -15,13 +15,34 @@ struct OfferTradeLocationPickerView: View {
     private let options = [Option.online, .personal]
 
     var body: some View {
-        SegmentedPickerView(selectedOption: $selectedOption,
-                            options: options) { option in
-            Text(option.title)
-                .foregroundColor(Appearance.Colors.whiteText)
+        VStack(spacing: Appearance.GridGuide.padding) {
+            SingleOptionPickerView(
+                selectedOption: $selectedOption,
+                options: options,
+                content: { option in
+                    Text(option.title)
+                        .foregroundColor(Appearance.Colors.whiteText)
+                        .frame(maxWidth: .infinity, alignment: .center)
+                },
+                action: nil
+            )
+            .padding(Appearance.GridGuide.tinyPadding)
+            .background(Appearance.Colors.gray1)
+            .cornerRadius(Appearance.GridGuide.buttonCorner)
+
+            if selectedOption == .online {
+                HStack(alignment: .top) {
+                    Image(R.image.offer.infoPurple.name)
+                        .padding(.top, Appearance.GridGuide.tinyPadding)
+                    Text(L.offerWidgetLocationWarning())
+                        .foregroundColor(Appearance.Colors.pink100)
+                }
+                .frame(maxWidth: .infinity, alignment: .center)
+                .padding(Appearance.GridGuide.padding)
+                .background(Appearance.Colors.pink20)
+                .cornerRadius(Appearance.GridGuide.containerCorner)
+            }
         }
-        .background(Appearance.Colors.gray1)
-        .cornerRadius(Appearance.GridGuide.buttonCorner)
     }
 }
 
