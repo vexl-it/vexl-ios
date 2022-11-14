@@ -262,7 +262,7 @@
 "offer.create.buy.action.title" = "Create buy offer";
 "offer.update.buy.action.title" = "Update buy offer";
 "offer.location.placeholder" = "City";
-"offer.widget.location.warning" = "Meeting in person is safer than online. Better double–check the counterparty. Watch out for scammers.";
+"offer.widget.location.warning" = "Online payments are risky. Double–check the counterparty and beware of scammers!";
 "offer.currency.usd.title" = "USD";
 "offer.currency.eur.title" = "EUR";
 "offer.currency.czk.title" = "CZK";
