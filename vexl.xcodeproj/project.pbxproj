@@ -20,7 +20,6 @@
 		4F481E78284768840051D3B9 /* ChatService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F481E77284768840051D3B9 /* ChatService.swift */; };
 		4F700CBA2844B08B0085139F /* BitcoinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F700CB92844B08B0085139F /* BitcoinView.swift */; };
 		4F700CBC2844C3260085139F /* TabBarNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F700CBB2844C3260085139F /* TabBarNavigationController.swift */; };
-		4F700CBE2844C4C20085139F /* StickyBitcoinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F700CBD2844C4C20085139F /* StickyBitcoinView.swift */; };
 		4F700CC02844C54E0085139F /* BitcoinViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F700CBF2844C54E0085139F /* BitcoinViewModel.swift */; };
 		4F82A09E28E19D0100352A3F /* NotificationPermissionCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F82A09D28E19D0100352A3F /* NotificationPermissionCoordinator.swift */; };
 		4F82A0A028E19D0A00352A3F /* NotificationPermissionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F82A09F28E19D0A00352A3F /* NotificationPermissionViewModel.swift */; };
@@ -482,7 +481,6 @@
 		4F700CAF2840E4650085139F /* LoadingDotsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingDotsView.swift; sourceTree = "<group>"; };
 		4F700CB92844B08B0085139F /* BitcoinView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BitcoinView.swift; sourceTree = "<group>"; };
 		4F700CBB2844C3260085139F /* TabBarNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarNavigationController.swift; sourceTree = "<group>"; };
-		4F700CBD2844C4C20085139F /* StickyBitcoinView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickyBitcoinView.swift; sourceTree = "<group>"; };
 		4F700CBF2844C54E0085139F /* BitcoinViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BitcoinViewModel.swift; sourceTree = "<group>"; };
 		4F700CC22844DA250085139F /* OffsetScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OffsetScrollView.swift; sourceTree = "<group>"; };
 		4F82A09D28E19D0100352A3F /* NotificationPermissionCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationPermissionCoordinator.swift; sourceTree = "<group>"; };
@@ -1017,7 +1015,6 @@
 		4F700CB82844B0750085139F /* BitcoinView */ = {
 			isa = PBXGroup;
 			children = (
-				4F700CBD2844C4C20085139F /* StickyBitcoinView.swift */,
 				4F700CB92844B08B0085139F /* BitcoinView.swift */,
 				4F700CBF2844C54E0085139F /* BitcoinViewModel.swift */,
 				4F481E7128466B320051D3B9 /* TimelineOption.swift */,
@@ -2988,7 +2985,6 @@
 				B0F206F127AE94C400A44E72 /* InitialScreenManager.swift in Sources */,
 				4F481E76284767480051D3B9 /* ChatRouter.swift in Sources */,
 				F1B3010F287A53C900C86F83 /* ChatConversationViewModel.swift in Sources */,
-				4F700CBE2844C4C20085139F /* StickyBitcoinView.swift in Sources */,
 				F1DF4A53289D6BE4008E5C87 /* FAQContent.swift in Sources */,
 				F188626128129ED600659786 /* OfferTriggersView.swift in Sources */,
 				B03910672889E6D80034358C /* ChatManager.swift in Sources */,

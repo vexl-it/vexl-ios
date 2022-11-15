@@ -154,6 +154,7 @@ struct Constants {
     static let registrationSteps = 3
     static let maxOfferDescriptionCount = 140
     static let maxNumberOfLocations = 5
-    static let maxImageSize: CGFloat = 1024
+    static let maxImageSize: CGFloat = 1_024
     static let numberOfOffersForLockedScreen = "98 734"
+    static let pullToRefreshActivationOffset: CGFloat = 70
 }
