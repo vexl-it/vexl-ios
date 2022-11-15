@@ -11,7 +11,7 @@ import CoreData
 import Cleevio
 
 protocol OfferManagerType {
-    var didFinishSyncing: AnyPublisher<Void, Never> { get }
+    var syncInProgressPublisher: AnyPublisher<Bool, Never> { get }
 
     func sync()
     func resetSyncDate()
@@ -38,11 +38,11 @@ final class OfferManager: OfferManagerType {
 
     @UserDefault(UserDefaultKey.lastOfferSyncDate.rawValue, defaultValue: Date(timeIntervalSince1970: 0)) private var lastSyncDate: Date
 
-    var didFinishSyncing: AnyPublisher<Void, Never> {
-        _didFinishSyncing.eraseToAnyPublisher()
+    var syncInProgressPublisher: AnyPublisher<Bool, Never> {
+        $isSyncing.eraseToAnyPublisher()
     }
 
-    private var _didFinishSyncing: PassthroughSubject<Void, Never> = .init()
+    @Published private var isSyncing: Bool = false
 
     func resetSyncDate() {
         lastSyncDate = Date(timeIntervalSince1970: 0)
@@ -58,6 +58,7 @@ final class OfferManager: OfferManagerType {
             .map(\.offers)
             .flatMap { [offerRepository] payloads -> AnyPublisher<[ManagedOffer], Error> in
                 offerRepository.createOrUpdateOffer(offerPayloads: payloads)
+                    .eraseToAnyPublisher()
             }
             .asVoid()
             .flatMap { [offerRepository] in
@@ -72,9 +73,10 @@ final class OfferManager: OfferManagerType {
             .catch { _ in Just(()) }
             .sink(receiveValue: { [weak self] in
                 self?.lastSyncDate = startDate
-                self?._didFinishSyncing.send(())
                 self?.cancellable = nil
+                self?.isSyncing = false
             })
+        isSyncing = true
     }
 
     func reencryptUserOffers(

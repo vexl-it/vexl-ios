@@ -37,6 +37,9 @@ struct MarketplaceView: View {
         } else {
             OffsetScrollView(
                 offsetChanged: { offset in
+                    if offset.y > Constants.pullToRefreshActivationOffset {
+                        viewModel.send(action: .fetchNewOffers)
+                    }
                 },
                 content: {
                     LazyVStack(spacing: 0) {
@@ -68,6 +71,10 @@ struct MarketplaceView: View {
             if !viewModel.isMarketplaceLocked {
                 ZStack {
                     filter
+                    if viewModel.isRefreshing {
+                        ProgressView()
+                            .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                    }
                 }
             }
         }

@@ -36,6 +36,9 @@ struct InboxView: View {
         } else {
             OffsetScrollView(
                 offsetChanged: { offset in
+                    if offset.y > Constants.pullToRefreshActivationOffset {
+                        viewModel.isRefreshing = true
+                    }
                 },
                 content: {
                     LazyVStack(spacing: 0) {
@@ -60,6 +63,9 @@ struct InboxView: View {
         VStack(alignment: .leading) {
             ZStack {
                 title
+                if viewModel.isRefreshing {
+                    ProgressView()
+                        .progressViewStyle(CircularProgressViewStyle(tint: .white))
                 }
             }
 

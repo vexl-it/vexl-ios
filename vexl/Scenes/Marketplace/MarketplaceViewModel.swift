@@ -127,7 +127,6 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
         setupDataBindings()
         setupActionBindings()
         setupInbox()
-        setupRefreshBindings()
     }
 
     func applyFilter(_ filter: OfferFilter) {
@@ -184,6 +183,10 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
                 owner.reloadFilters()
             }
             .store(in: cancelBag)
+
+        offerManager
+            .syncInProgressPublisher
+            .assign(to: &$isRefreshing)
     }
 
     private func setupActionBindings() {
@@ -242,7 +245,7 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
             .store(in: cancelBag)
 
         userAction
-            .compactMap { action -> Bool? in
+            .compactMap { action -> Bool? in // swiftlint:disable:this discouraged_optional_boolean
                 guard case let .graphExpanded(isExpanded) = action else {
                     return nil
                 }
@@ -253,19 +256,5 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
                 owner.isGraphExpanded = isExpanded
             }
             .store(in: cancelBag)
-    }
-
-    private func setupRefreshBindings() {
-        $isRefreshing
-            .filter { $0 }
-            .withUnretained(self)
-            .sink { owner, _ in
-                owner.offerManager.sync()
-            }
-            .store(in: cancelBag)
-
-        offerManager.didFinishSyncing
-            .map { false }
-            .assign(to: &$isRefreshing)
     }
 }
