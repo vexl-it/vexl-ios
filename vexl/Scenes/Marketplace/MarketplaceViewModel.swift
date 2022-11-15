@@ -26,10 +26,14 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
     @Fetched(fetchImmediately: false)
     var fetchedSellOffers: [ManagedOffer]
 
-    @Fetched(fetchImmediately: false)
+    @Fetched(predicate: .init(
+        format: "user != nil AND isRemoved == FALSE AND offerTypeRawType == %@", OfferType.buy.rawValue
+    ))
     var userBuyOffers: [ManagedOffer]
 
-    @Fetched(fetchImmediately: false)
+    @Fetched(predicate: .init(
+        format: "user != nil AND isRemoved == FALSE AND offerTypeRawType == %@", OfferType.sell.rawValue
+    ))
     var userSellOffers: [ManagedOffer]
 
     // MARK: - View Bindings
