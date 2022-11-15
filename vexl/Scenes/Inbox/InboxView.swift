@@ -47,6 +47,7 @@ struct InboxView: View {
                         ForEach(viewModel.inboxItems) { chatItem in
                             InboxItemView(data: chatItem)
                                 .padding(.bottom, Appearance.GridGuide.mediumPadding1)
+                                .contentShape(Rectangle())
                                 .onTapGesture {
                                     viewModel.action.send(.selectMessage(chat: chatItem.chat))
                                 }

@@ -49,6 +49,7 @@ struct MarketplaceView: View {
                                                 requestAction: { _ in
                                 viewModel.action.send(.offerTapped(offer: item.offer))
                             })
+                            .contentShape(Rectangle())
                             .onTapGesture {
                                 if !item.isRequested {
                                     viewModel.action.send(.offerTapped(offer: item.offer))
