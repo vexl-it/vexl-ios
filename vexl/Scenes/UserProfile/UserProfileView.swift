@@ -42,6 +42,7 @@ struct UserProfileView: View {
         }
         .background(Color.black.edgesIgnoringSafeArea(.all))
         .navigationBarHidden(true)
+        .edgesIgnoringSafeArea(.bottom)
     }
 
     private var content: some View {
@@ -139,7 +140,7 @@ struct UserProfileView: View {
 
                 appVersion
             }
-            .padding(.bottom, Appearance.GridGuide.scrollContentInset.bottom)
+            .padding(.bottom, Appearance.GridGuide.scrollContentInset.bottom + UIScreen.insets.bottom)
         }
     }
 
