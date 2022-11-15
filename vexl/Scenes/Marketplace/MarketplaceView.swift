@@ -92,6 +92,7 @@ struct MarketplaceView: View {
                     viewModel.action.send(.showBuyOffer)
                 }
             )
+            .id("MarketplaceSellFilter")
             .animation(.easeInOut, value: viewModel.userSelectedFilters)
         case .sell:
             MarketplaceFilterView(
@@ -102,6 +103,7 @@ struct MarketplaceView: View {
                     viewModel.action.send(.showSellOffer)
                 }
             )
+            .id("MarketplaceBuyFilter")
             .animation(.easeInOut, value: viewModel.userSelectedFilters)
         }
     }
