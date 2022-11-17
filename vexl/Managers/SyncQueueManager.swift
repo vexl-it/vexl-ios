@@ -265,7 +265,14 @@ final class SyncQueueManager: SyncQueueManagerType {
 
         let encryptedOffer = pks
             .flatMap { [offerService] envelope in
-                offerService.createNewPrivateParts(for: offer, envelope: envelope)
+                guard !envelope.isEmpty else {
+                    return Just(())
+                        .setFailureType(to: Error.self)
+                        .eraseToAnyPublisher()
+                }
+                return offerService
+                    .createNewPrivateParts(for: offer, envelope: envelope)
+                    .eraseToAnyPublisher()
             }
             .flatMap { [persistence] _ -> AnyPublisher<Void, Error> in
                 persistence.delete(context: context, object: item)
