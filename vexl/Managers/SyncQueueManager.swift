@@ -227,6 +227,7 @@ final class SyncQueueManager: SyncQueueManagerType {
 
     private func encryptOfferForPublicKeys(offer: ManagedOffer, item: ManagedSyncItem) -> AnyPublisher<Void, Error> {
         guard let friendLevel = offer.friendLevel,
+              let receiverPublicKeys = item.publicKeys,
               let userPublicKey = userRepository.user?.profile?.keyPair?.publicKey
         else {
             return Fail(error: PersistenceError.insufficientData).eraseToAnyPublisher()
@@ -234,11 +235,33 @@ final class SyncQueueManager: SyncQueueManagerType {
 
         let context = $queue.context
 
-        let pks = offerService.getReceiverPublicKeys(
-            friendLevel: friendLevel.convertToContactFriendLevel,
-            groups: [offer.group].compactMap { $0 },
-            includeUserPublicKey: userPublicKey
-        )
+        let pks = offerService
+            .getReceiverPublicKeys(
+                friendLevel: friendLevel.convertToContactFriendLevel,
+                groups: [offer.group].compactMap { $0 },
+                includeUserPublicKey: userPublicKey
+            )
+            .map { truestedEnvelope in
+                let receiverPKSet = Set(receiverPublicKeys)
+                switch friendLevel {
+                case .firstDegree:
+                    let firstDegreeSet = Set(truestedEnvelope.contacts.firstDegree)
+                    return Array(firstDegreeSet.intersection(receiverPKSet))
+                case .secondDegree:
+                    let secondDegreeSet = Set(truestedEnvelope.contacts.secondDegree)
+                    return Array(secondDegreeSet.intersection(receiverPKSet))
+                }
+            }
+            .map { pks in
+                PKsEnvelope(
+                    contacts: ContactPKsEnvelope(
+                        firstDegree: friendLevel == .firstDegree ? pks : [],
+                        secondDegree: friendLevel == .secondDegree ? pks : []
+                    ),
+                    groups: [],
+                    userPublicKey: userPublicKey
+                )
+            }
 
         let encryptedOffer = pks
             .flatMap { [offerService] envelope in
