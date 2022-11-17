@@ -23,7 +23,6 @@ struct MarketplaceView: View {
 
             marketPlaceContent
         }
-        .padding(.horizontal, Appearance.GridGuide.tinyPadding)
         .coordinateSpace(name: RefreshControlView.coordinateSpace)
         .animation(.easeInOut, value: viewModel.selectedOption)
         .background(Color.black.edgesIgnoringSafeArea(.all))
