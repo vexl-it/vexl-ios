@@ -24,19 +24,19 @@ struct OfferStatusView: View {
                 Text(isActive ? L.offerCreateStatusActive() : L.offerCreateStatusInactive())
                     .textStyle(.paragraph)
                     .foregroundColor(isActive ? Appearance.Colors.green100 : Appearance.Colors.yellow100)
+                    .minimumScaleFactor(0.5)
             }
 
             Spacer()
 
-            HStack(spacing: Appearance.GridGuide.padding) {
+            HStack(spacing: Appearance.GridGuide.smallPadding) {
                 OfferButton(title: isActive ? L.offerCreateStatusPause() : L.offerCreateStatusActivate(),
                             iconName: isActive ? "pause" : "play") {
                     pauseAction()
                 }
 
                 if showDeleteButton {
-                    OfferButton(title: L.offerCreateStatusDelete(),
-                                iconName: "trash.fill") {
+                    OfferButton(title: L.offerCreateStatusDelete(), iconName: "trash.fill") {
                         deleteAction()
                     }
                 }
@@ -57,6 +57,7 @@ struct OfferStatusView: View {
                     Image(systemName: iconName)
 
                     Text(title)
+                        .minimumScaleFactor(0.5)
                 }
                 .foregroundColor(Appearance.Colors.gray4)
             }
