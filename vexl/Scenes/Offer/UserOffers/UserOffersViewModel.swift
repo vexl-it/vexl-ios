@@ -21,6 +21,9 @@ final class UserOffersViewModel: ViewModelType, ObservableObject {
     )
     var fetchedOffers: [ManagedOffer]
 
+    @Fetched(fetchImmediately: false)
+    var activeOffers: [ManagedOffer]
+
     // MARK: - Action Binding
 
     enum UserAction: Equatable {
@@ -35,6 +38,7 @@ final class UserOffersViewModel: ViewModelType, ObservableObject {
 
     @Published var userOffers: [ManagedOffer] = []
     @Published var offerSortingOption: OfferSortOption = .newest
+    @Published var activeOfferCount: Int = 0
 
     @Published var primaryActivity: Activity = .init()
     @Published var isLoading = false
@@ -108,9 +112,19 @@ final class UserOffersViewModel: ViewModelType, ObservableObject {
                 predicate: .init(format: "offerTypeRawType == '\(offerType.rawValue)' AND user != nil AND isRemoved != YES")
             )
 
+        $activeOffers
+            .load(
+                predicate: .init(format: "offerTypeRawType == '\(offerType.rawValue)' AND user != nil AND isRemoved != YES AND active == YES")
+            )
+
         $fetchedOffers.publisher
             .map(\.objects)
             .assign(to: &$userOffers)
+
+        $activeOffers.publisher
+            .map(\.objects.count)
+            .print("[DEBUG] count")
+            .assign(to: &$activeOfferCount)
     }
 
     private func setupActionBindings() {
