@@ -95,7 +95,7 @@ enum OffersRouter: ApiRouter {
         case let .createNewPrivateParts(adminId, offers):
             return [
                 "adminId": adminId,
-                "privateParts": offers.map(\.asJson)
+                "offerPrivateList": offers.map(\.asJson)
             ]
         case let .deleteOfferPrivateParts(adminIds, publicKeys):
             return [

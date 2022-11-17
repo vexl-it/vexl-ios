@@ -22,6 +22,12 @@ class PKsEnvelope {
         self.userPublicKey = userPublicKey
     }
 
+    var isEmpty: Bool {
+        contacts.firstDegree.isEmpty
+        && contacts.secondDegree.isEmpty
+        && groups.reduce(true) { $0 && $1.publicKeys.isEmpty }
+    }
+
     func generatePrivateParts(symmetricKey: String) -> [OfferPayloadPrivateWrapper] {
         var hashMap = allPublicKeys.reduce(into: [String: OfferPayloadPrivate]()) { partialResult, publicKey in
             partialResult[publicKey] = OfferPayloadPrivate(commonFriends: [], friendLevel: [], symmetricKey: symmetricKey)

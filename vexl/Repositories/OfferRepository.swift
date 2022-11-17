@@ -204,7 +204,7 @@ class OfferRepository: OfferRepositoryType {
     }
 
     func sync(offers unsafeOffers: [ManagedOffer], withPublicKeys publicKeys: [String]) -> AnyPublisher<Void, Error> {
-        persistence.update(context: persistence.newEditContext()) { context in
+        persistence.update(context: persistence.viewContext) { context in
             let offers = unsafeOffers
                 .map(\.objectID)
                 .map(context.object(with: ))
