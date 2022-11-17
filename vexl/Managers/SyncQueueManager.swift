@@ -90,7 +90,7 @@ final class SyncQueueManager: SyncQueueManagerType {
                 queue
                     .publisher
                     .withUnretained(owner)
-                    .flatMap { owner, item in
+                    .flatMap(maxPublishers: .max(4)) { owner, item in
                         owner
                             .dispatch(item: item)
                             .materialize()
@@ -244,7 +244,7 @@ final class SyncQueueManager: SyncQueueManagerType {
             .flatMap { [offerService] envelope in
                 offerService.createNewPrivateParts(for: offer, envelope: envelope)
             }
-            .flatMapLatest { [persistence] _ -> AnyPublisher<Void, Error> in
+            .flatMap { [persistence] _ -> AnyPublisher<Void, Error> in
                 persistence.delete(context: context, object: item)
             }
             .eraseToAnyPublisher()
