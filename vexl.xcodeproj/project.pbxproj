@@ -576,6 +576,7 @@
 		B0501BA52887389000A44E18 /* CommonFriends.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonFriends.swift; sourceTree = "<group>"; };
 		B0501BA92887419F00A44E18 /* Array+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+.swift"; sourceTree = "<group>"; };
 		B0548D99291E627100F4E296 /* VexlDataModel_1.0.15.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = VexlDataModel_1.0.15.xcdatamodel; sourceTree = "<group>"; };
+		B058A2902926760400FCC75E /* VexlDataModel_1.0.16.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = VexlDataModel_1.0.16.xcdatamodel; sourceTree = "<group>"; };
 		B05A22122812BF2700BF8D58 /* Publisher+Crypto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Publisher+Crypto.swift"; sourceTree = "<group>"; };
 		B06A3B4E287C967F00911795 /* Encryptable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Encryptable.swift; sourceTree = "<group>"; };
 		B06A3B50287C976300911795 /* Number+Encryptable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Number+Encryptable.swift"; sourceTree = "<group>"; };
@@ -3400,7 +3401,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.16;
+				MARKETING_VERSION = 1.0.17;
 				PRODUCT_BUNDLE_IDENTIFIER = it.vexl.staging;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match AdHoc it.vexl.staging";
@@ -3518,7 +3519,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.16;
+				MARKETING_VERSION = 1.0.17;
 				PRODUCT_BUNDLE_IDENTIFIER = it.vexl.debug;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match Development it.vexl.debug";
@@ -3696,7 +3697,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.16;
+				MARKETING_VERSION = 1.0.17;
 				PRODUCT_BUNDLE_IDENTIFIER = it.vexl.devel;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match AdHoc it.vexl.devel";
@@ -3733,7 +3734,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.16;
+				MARKETING_VERSION = 1.0.17;
 				PRODUCT_BUNDLE_IDENTIFIER = it.vexl.appstore;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore it.vexl.appstore";
@@ -3828,12 +3829,13 @@
 		F1B93ED8286D6671008DAA90 /* VexlDataModel.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				B058A2902926760400FCC75E /* VexlDataModel_1.0.16.xcdatamodel */,
 				B0548D99291E627100F4E296 /* VexlDataModel_1.0.15.xcdatamodel */,
 				B020E21D28F431AD00FFA426 /* VexlDataModel_1.0.8.xcdatamodel */,
 				B0DF087628C61BAB004E77DB /* VexlDataModel_1.0.1.xcdatamodel */,
 				F1B93ED9286D6671008DAA90 /* VexlDataModel.xcdatamodel */,
 			);
-			currentVersion = B0548D99291E627100F4E296 /* VexlDataModel_1.0.15.xcdatamodel */;
+			currentVersion = B058A2902926760400FCC75E /* VexlDataModel_1.0.16.xcdatamodel */;
 			path = VexlDataModel.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
