@@ -165,7 +165,7 @@ final class OfferService: BaseService, OfferServiceType {
     }
 
     func encryptOffer(offer: ManagedOffer, envelope: PKsEnvelope) -> AnyPublisher<OfferRequestPayload, Error> {
-        guard let symmetricKey = offer.symmetricKey, let offerType = offer.type, let expiration = offer.expirationDate?.timeIntervalSince1970 else {
+        guard let symmetricKey = offer.symmetricKey, let offerType = offer.type else {
             return Fail(error: PersistenceError.insufficientData)
                 .eraseToAnyPublisher()
         }
@@ -180,7 +180,6 @@ final class OfferService: BaseService, OfferServiceType {
             .map { publicPart, privateParts -> OfferRequestPayload in
                 OfferRequestPayload(
                     offerType: offerType.rawValue,
-                    expiration: Int(expiration),
                     payloadPublic: publicPart,
                     offerPrivateList: privateParts
                 )
