@@ -51,7 +51,7 @@ class OfferRequestPayloadEncoder {
             return Fail(error: AESError.couldNotGeneratePassword)
                 .eraseToAnyPublisher()
         }
-        guard let expiration = offer.expirationDate?.timeIntervalSince1970, let offerType = offer.type else {
+        guard let offerType = offer.type else {
             return Fail(error: PersistenceError.insufficientData)
                 .eraseToAnyPublisher()
         }
@@ -104,7 +104,6 @@ class OfferRequestPayloadEncoder {
                 let (publicPart, privateParts) = tupl
                 return OfferRequestPayload(
                     offerType: offerType.rawValue,
-                    expiration: Int(expiration),
                     payloadPublic: publicPart,
                     offerPrivateList: privateParts
                 )

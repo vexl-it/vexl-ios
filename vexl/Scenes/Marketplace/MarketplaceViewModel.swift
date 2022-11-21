@@ -20,10 +20,26 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
 
     // MARK: - Fetched Bindings
 
-    @Fetched(fetchImmediately: false)
+    @Fetched(
+        fetchImmediately: false,
+        sortDescriptors: [
+            NSSortDescriptor(key: "isRequested", ascending: true),
+            NSSortDescriptor(key: "modifiedAtDate", ascending: false),
+            NSSortDescriptor(key: "createdAt", ascending: false),
+            NSSortDescriptor(key: "id", ascending: false)
+        ]
+    )
     var fetchedBuyOffers: [ManagedOffer]
 
-    @Fetched(fetchImmediately: false)
+    @Fetched(
+        fetchImmediately: false,
+        sortDescriptors: [
+            NSSortDescriptor(key: "isRequested", ascending: true),
+            NSSortDescriptor(key: "modifiedAtDate", ascending: false),
+            NSSortDescriptor(key: "createdAt", ascending: false),
+            NSSortDescriptor(key: "id", ascending: false)
+        ]
+    )
     var fetchedSellOffers: [ManagedOffer]
 
     @Fetched(predicate: .init(
@@ -137,16 +153,10 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
         switch filter.type {
         case .buy:
             buyOfferFilter = filter
-            $fetchedBuyOffers.load(
-                sortDescriptors: [ NSSortDescriptor(key: "isRequested", ascending: true), NSSortDescriptor(key: "createdAt", ascending: false) ],
-                predicate: filter.predicate
-            )
+            $fetchedBuyOffers.load(predicate: filter.predicate)
         case .sell:
             sellOfferFilter = filter
-            $fetchedSellOffers.load(
-                sortDescriptors: [ NSSortDescriptor(key: "isRequested", ascending: true), NSSortDescriptor(key: "createdAt", ascending: false) ],
-                predicate: filter.predicate
-            )
+            $fetchedSellOffers.load(predicate: filter.predicate)
         }
     }
 

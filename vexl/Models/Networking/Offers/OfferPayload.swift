@@ -117,14 +117,12 @@ struct OfferPayloadPublic: Codable {
 
 struct OfferRequestPayload: Codable {
     let offerType: String
-    let expiration: Int
     let payloadPublic: String
     let offerPrivateList: [OfferPayloadPrivateWrapperEncrypted]
 
     var asJson: [String: Any] {
         [
             "offerType": offerType,
-            "expiration": expiration,
             "payloadPublic": payloadPublic,
             "offerPrivateList": offerPrivateList.map(\.asJson)
         ]
@@ -132,11 +130,12 @@ struct OfferRequestPayload: Codable {
 }
 
 struct OfferPayload: Codable {
+    let id: Int
     let offerId: String
     let adminId: String?
     let publicPayload: String
     let privatePayload: String
-    let expiration: Int
+    let expiration: Int?
     let createdAt: Date
     let modifiedAt: Date
 }
@@ -170,12 +169,13 @@ extension OfferPayload {
         }
         let friendLevel = privatePart.friendLevel.compactMap(AnonymousProfileType.init)
 
+        offer.id = Int64(id)
         offer.offerID = offerId
         if let adminId = adminId {
             offer.adminID = adminId
         }
         offer.createdAt = createdAt
-        offer.modifiedAt = Formatters.dateApiFormatter.string(from: modifiedAt)
+        offer.modifiedAtDate = modifiedAt
         offer.currency = currency
         offer.minAmount = minAmount
         offer.maxAmount = maxAmount
