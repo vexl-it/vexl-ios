@@ -200,7 +200,7 @@ class OfferRepository: OfferRepositoryType {
     }
 
     func getKnownOffers() -> AnyPublisher<[ManagedOffer], Error> {
-        persistence.load(type: ManagedOffer.self, context: persistence.viewContext, predicate: NSPredicate(format: "user == nil AND offerID != nil"))
+        persistence.load(type: ManagedOffer.self, context: persistence.viewContext, predicate: NSPredicate(format: "offerID != nil"))
     }
 
     func sync(offers unsafeOffers: [ManagedOffer], withPublicKeys publicKeys: [String]) -> AnyPublisher<Void, Error> {
