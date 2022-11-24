@@ -13,6 +13,7 @@ protocol RefreshManagerType {
 }
 
 final class RefreshManager: RefreshManagerType {
+    @Inject var contactsService: ContactsServiceType
     @Inject var offerService: OfferServiceType
     @Inject var userRepository: UserRepositoryType
 
@@ -30,6 +31,9 @@ final class RefreshManager: RefreshManagerType {
         return Just(())
             .flatMap { [offerService] in
                 offerService.refresh(adminIDs: adminIds)
+            }
+            .flatMap { [contactsService] in
+                contactsService.refresh(hasOffers: userOffers.isEmpty.not)
             }
             .handleEvents(receiveOutput: { [weak self] in
                 self?.lastRefresh = Date()

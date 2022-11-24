@@ -20,12 +20,13 @@ enum ContactsRouter: ApiRouter {
     case getContacts(useFacebookHeader: Bool, friendLevel: ContactFriendLevel, pageLimit: Int?)
     case countPhoneContacts
     case getCommonFriends(publicKeys: [String])
+    case refresh(hasOffers: Bool)
 
     var method: HTTPMethod {
         switch self {
         case .getFacebookContacts, .getAvailableFacebookContacts, .getContacts, .countPhoneContacts:
             return .get
-        case .createUser, .importContacts, .getAvailableContacts, .getCommonFriends:
+        case .createUser, .importContacts, .getAvailableContacts, .getCommonFriends, .refresh:
             return .post
         case .deleteUser, .removeContacts:
             return .delete
@@ -36,9 +37,7 @@ enum ContactsRouter: ApiRouter {
 
     var additionalHeaders: [Header] {
         switch self {
-        case .getFacebookContacts, .getAvailableFacebookContacts:
-            return facebookSecurityHeader
-        case .importContacts, .getAvailableContacts, .deleteUser, .countPhoneContacts, .getCommonFriends:
+        case .importContacts, .getAvailableContacts, .deleteUser, .countPhoneContacts, .getCommonFriends, .refresh, .updateUser:
             return securityHeader
         case let .createUser(_, useFacebookHeader):
             return useFacebookHeader ? facebookSecurityHeader : securityHeader
@@ -46,8 +45,8 @@ enum ContactsRouter: ApiRouter {
             return useFacebookHeader ? facebookSecurityHeader : securityHeader
         case let .removeContacts(_, fromFacebook):
             return fromFacebook ? facebookSecurityHeader : securityHeader
-        case .updateUser:
-            return securityHeader
+        case .getFacebookContacts, .getAvailableFacebookContacts:
+            return facebookSecurityHeader
         }
     }
 
@@ -69,6 +68,8 @@ enum ContactsRouter: ApiRouter {
             return "facebook/\(id)/token/\(accessToken)/not-imported"
         case .getContacts:
             return "contacts/me"
+        case .refresh:
+            return "contacts/refresh"
         case .deleteUser:
             return "users/me"
         case .countPhoneContacts:
@@ -113,6 +114,8 @@ enum ContactsRouter: ApiRouter {
             return params
         case let .getCommonFriends(publicKeys):
             return ["publicKeys": publicKeys]
+        case let .refresh(hasOffers):
+            return ["offerAlive": hasOffers]
         }
     }
 
