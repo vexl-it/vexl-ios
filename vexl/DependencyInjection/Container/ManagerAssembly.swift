@@ -108,5 +108,10 @@ class ManagerAssembly: Assembly {
             ReencryptionManager()
         }
         .inObjectScope(.container)
+
+        container.register(RefreshManagerType.self) { _ in
+            RefreshManager()
+        }
+        .inObjectScope(.container)
     }
 }

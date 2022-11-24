@@ -102,6 +102,7 @@
 		B0501BA62887389000A44E18 /* CommonFriends.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0501BA52887389000A44E18 /* CommonFriends.swift */; };
 		B0501BAA2887419F00A44E18 /* Array+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0501BA92887419F00A44E18 /* Array+.swift */; };
 		B05A22132812BF2700BF8D58 /* Publisher+Crypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = B05A22122812BF2700BF8D58 /* Publisher+Crypto.swift */; };
+		B065FE01292F7553005ABE15 /* RefreshManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B065FE00292F7553005ABE15 /* RefreshManager.swift */; };
 		B06A3B4F287C967F00911795 /* Encryptable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B06A3B4E287C967F00911795 /* Encryptable.swift */; };
 		B06A3B51287C976300911795 /* Number+Encryptable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B06A3B50287C976300911795 /* Number+Encryptable.swift */; };
 		B08D2AB5289FF31500A1C901 /* GroupRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = B08D2AB4289FF31500A1C901 /* GroupRepository.swift */; };
@@ -578,6 +579,7 @@
 		B0548D99291E627100F4E296 /* VexlDataModel_1.0.15.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = VexlDataModel_1.0.15.xcdatamodel; sourceTree = "<group>"; };
 		B058A2902926760400FCC75E /* VexlDataModel_1.0.16.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = VexlDataModel_1.0.16.xcdatamodel; sourceTree = "<group>"; };
 		B05A22122812BF2700BF8D58 /* Publisher+Crypto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Publisher+Crypto.swift"; sourceTree = "<group>"; };
+		B065FE00292F7553005ABE15 /* RefreshManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefreshManager.swift; sourceTree = "<group>"; };
 		B06A3B4E287C967F00911795 /* Encryptable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Encryptable.swift; sourceTree = "<group>"; };
 		B06A3B50287C976300911795 /* Number+Encryptable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Number+Encryptable.swift"; sourceTree = "<group>"; };
 		B08D2AB4289FF31500A1C901 /* GroupRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupRepository.swift; sourceTree = "<group>"; };
@@ -1299,7 +1301,6 @@
 				F175AB8827E4F493000DAB15 /* Materialize.swift */,
 				F1886210280EC49B00659786 /* Image+Base64.swift */,
 				4FBF624B2840D31B00DDBE71 /* ToggleKeyboardHostingController.swift */,
-				F13721EE287F29830013BB7B /* TimeInterval+.swift */,
 				6FF08EB228B6846000B2CF65 /* DiffableState.swift */,
 				6FE2BE9B28BCD790004331F1 /* MacroFormatting.swift */,
 				B0EF7E0F28D7B621002DC7D6 /* SingleAxisGeometryReader.swift */,
@@ -1333,6 +1334,7 @@
 				4FA3BF6B28AFDB7A000BE679 /* UIWindow+.swift */,
 				F1071D4628B698ED002BE9EF /* URL+.swift */,
 				B0BACE7128CF2A8500ED0979 /* Clampable.swift */,
+				F13721EE287F29830013BB7B /* TimeInterval+.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1391,6 +1393,7 @@
 				B03BC700287B500F00E355D3 /* SyncQueueManager.swift */,
 				B03BC704287B56CC00E355D3 /* NetworkManager.swift */,
 				B0501B9F2884B45E00A44E18 /* OfferManager.swift */,
+				B065FE00292F7553005ABE15 /* RefreshManager.swift */,
 				B03910662889E6D80034358C /* ChatManager.swift */,
 				B0B0A058288EDDAE00E81776 /* NotificationManager.swift */,
 				B08D2AB6289FFDD100A1C901 /* GroupManager.swift */,
@@ -3147,6 +3150,7 @@
 				B0501BA62887389000A44E18 /* CommonFriends.swift in Sources */,
 				F1F5F194283E9FC500968366 /* OfferPaymentIconView.swift in Sources */,
 				F11441DA284681EC00307D39 /* MultipleOptionPickerView.swift in Sources */,
+				B065FE01292F7553005ABE15 /* RefreshManager.swift in Sources */,
 				B0FE523F280E822400A77EC3 /* CryptoService.swift in Sources */,
 				F14F890328BD247000DC7C4F /* CameraPreviewLayerView.swift in Sources */,
 				4F82A0A428E1AFFC00352A3F /* PermissionActionSheetViewModel.swift in Sources */,
