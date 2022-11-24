@@ -47,6 +47,7 @@ final class ChatActionViewModel: ObservableObject {
         self.offer?
             .publisher(for: \.isRemoved)
             .assign(to: &$isOfferDeleted)
+
         setupActionBindings()
     }
 

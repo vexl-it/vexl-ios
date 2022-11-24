@@ -15,6 +15,7 @@ final class TabBarViewModel: ViewModelType {
     @Inject private var deeplinkManager: DeeplinkManagerType
     @Inject private var reencryptionManager: ReencryptionManagerType
     @Inject private var notificationManager: NotificationManagerType
+    @Inject private var refreshManager: RefreshManagerType
 
     // MARK: - Actions Bindings
 
@@ -75,8 +76,13 @@ final class TabBarViewModel: ViewModelType {
 
     private func setupActions() {
         action
-            .filter { $0 == .didLoad}
+            .filter { $0 == .didLoad }
             .asVoid()
+            .flatMap { [refreshManager] in
+                refreshManager
+                    .refresh()
+                    .catch { _ in Just(()) }
+            }
             .sink { [reencryptionManager] in
                 reencryptionManager.synchronizeContacts()
                 reencryptionManager.synchronizeGroups()
@@ -84,7 +90,7 @@ final class TabBarViewModel: ViewModelType {
             .store(in: cancelBag)
 
         action
-            .filter { $0 == .didAppear}
+            .filter { $0 == .didAppear }
             .withUnretained(self)
             .sink { owner, _ in
                 owner.checkSelectedTab()

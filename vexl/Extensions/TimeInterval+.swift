@@ -8,6 +8,8 @@
 import Foundation
 
 extension TimeInterval {
+    static let day: TimeInterval = 60 * 60 * 24
+    
     var seconds: Int {
         return Int(self.rounded())
     }

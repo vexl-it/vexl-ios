@@ -31,7 +31,8 @@ final class OfferManager: OfferManagerType {
 
     private let cancelBag: CancelBag = .init()
 
-    @UserDefault(UserDefaultKey.lastOfferSyncDate.rawValue, defaultValue: Date(timeIntervalSince1970: 0)) private var lastSyncDate: Date
+    @UserDefault(UserDefaultKey.lastOfferSyncDate.rawValue, defaultValue: Date(timeIntervalSince1970: 0))
+    private var lastSyncDate: Date
 
     var syncInProgressPublisher: AnyPublisher<Bool, Never> {
         $isSyncing.eraseToAnyPublisher()
