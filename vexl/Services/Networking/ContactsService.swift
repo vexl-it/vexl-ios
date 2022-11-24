@@ -24,6 +24,7 @@ protocol ContactsServiceType {
     func countPhoneContacts() -> AnyPublisher<Int, Error>
 
     func getCommonFriends(publicKeys: [String]) -> AnyPublisher<[String: [String]], Error>
+    func refresh(hasOffers: Bool) -> AnyPublisher<Void, Error>
 }
 
 final class ContactsService: BaseService, ContactsServiceType {
@@ -115,5 +116,9 @@ final class ContactsService: BaseService, ContactsServiceType {
         request(type: CommonFriends.self, endpoint: ContactsRouter.getCommonFriends(publicKeys: publicKeys))
             .map(\.asDictionary)
             .eraseToAnyPublisher()
+    }
+
+    func refresh(hasOffers: Bool) -> AnyPublisher<Void, Error> {
+        request(endpoint: ContactsRouter.refresh(hasOffers: hasOffers))
     }
 }
