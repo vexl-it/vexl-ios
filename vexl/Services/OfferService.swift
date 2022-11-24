@@ -28,6 +28,7 @@ protocol OfferServiceType {
     func updateOffers(adminID: String, offerPayload: OfferRequestPayload) -> AnyPublisher<OfferPayload, Error>
     func deleteOffers(adminIDs: [String]) -> AnyPublisher<Void, Error>
     func deleteOfferPrivateParts(adminIDs: [String], publicKeys: [String]) -> AnyPublisher<Void, Error>
+    func refresh(adminIDs: [String]) -> AnyPublisher<Void, Error>
 
     // MARK: Helper functions
 
@@ -132,6 +133,15 @@ final class OfferService: BaseService, OfferServiceType {
         } else {
             return Just(()).setFailureType(to: Error.self)
             .eraseToAnyPublisher()
+        }
+    }
+
+    func refresh(adminIDs: [String]) -> AnyPublisher<Void, Error> {
+        if !adminIDs.isEmpty {
+            return request(endpoint: OffersRouter.refresh(adminIDs: adminIDs))
+        } else {
+            return Just(()).setFailureType(to: Error.self)
+                .eraseToAnyPublisher()
         }
     }
 
