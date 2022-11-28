@@ -21,23 +21,27 @@ final class RefreshManager: RefreshManagerType {
     var lastRefresh: Date
 
     func refresh() -> AnyPublisher<Void, Error> {
-        guard lastRefresh.addingTimeInterval(.day).compare(Date()) == .orderedAscending else {
-            return Just(())
-                .setFailureType(to: Error.self)
-                .eraseToAnyPublisher()
-        }
-        let userOffers = userRepository.getOffers()
-        let adminIds = userOffers.compactMap(\.adminID)
+        // TODO: Enable refresh when production BE is ready
         return Just(())
-            .flatMap { [offerService] in
-                offerService.refresh(adminIDs: adminIds)
-            }
-            .flatMap { [contactsService] in
-                contactsService.refresh(hasOffers: userOffers.isEmpty.not)
-            }
-            .handleEvents(receiveOutput: { [weak self] in
-                self?.lastRefresh = Date()
-            })
+            .setFailureType(to: Error.self)
             .eraseToAnyPublisher()
+//        guard lastRefresh.addingTimeInterval(.day).compare(Date()) == .orderedAscending else {
+//            return Just(())
+//                .setFailureType(to: Error.self)
+//                .eraseToAnyPublisher()
+//        }
+//        let userOffers = userRepository.getOffers()
+//        let adminIds = userOffers.compactMap(\.adminID)
+//        return Just(())
+//            .flatMap { [offerService] in
+//                offerService.refresh(adminIDs: adminIds)
+//            }
+//            .flatMap { [contactsService] in
+//                contactsService.refresh(hasOffers: userOffers.isEmpty.not)
+//            }
+//            .handleEvents(receiveOutput: { [weak self] in
+//                self?.lastRefresh = Date()
+//            })
+//            .eraseToAnyPublisher()
     }
 }
