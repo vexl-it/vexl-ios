@@ -11,20 +11,15 @@ import CoreData
 import Cleevio
 
 protocol OfferManagerType {
-    var didFinishSyncing: AnyPublisher<Void, Never> { get }
+    var syncInProgressPublisher: AnyPublisher<Bool, Never> { get }
 
     func sync()
     func resetSyncDate()
-    func reencryptUserOffers(withPublicKeys publicKeys: [String], friendLevel: OfferFriendDegree, completionHandler: ((Error?) -> Void)?) -> AnyPublisher<Void, Error>
+    func reencryptUserOffers(withPublicKeys publicKeys: [String], friendLevel: OfferFriendDegree, completionHandler: ((Error?) -> Void)?)
+    func reencryptUserOffers(withPublicKeys publicKeys: [String], friendLevel: OfferFriendDegree) -> AnyPublisher<Void, Error>
     func reencrypt(offers: [ManagedOffer], withPublicKeys: [String]) -> AnyPublisher<Void, Error>
 
     func flag(offer: ManagedOffer) -> AnyPublisher<Void, Error>
-}
-
-extension OfferManagerType {
-    func reencryptUserOffers(withPublicKeys: [String], friendLevel: OfferFriendDegree) -> AnyPublisher<Void, Error> {
-        reencryptUserOffers(withPublicKeys: withPublicKeys, friendLevel: friendLevel, completionHandler: nil)
-    }
 }
 
 final class OfferManager: OfferManagerType {
@@ -36,13 +31,14 @@ final class OfferManager: OfferManagerType {
 
     private let cancelBag: CancelBag = .init()
 
-    @UserDefault(UserDefaultKey.lastOfferSyncDate.rawValue, defaultValue: Date(timeIntervalSince1970: 0)) private var lastSyncDate: Date
+    @UserDefault(UserDefaultKey.lastOfferSyncDate.rawValue, defaultValue: Date(timeIntervalSince1970: 0))
+    private var lastSyncDate: Date
 
-    var didFinishSyncing: AnyPublisher<Void, Never> {
-        _didFinishSyncing.eraseToAnyPublisher()
+    var syncInProgressPublisher: AnyPublisher<Bool, Never> {
+        $isSyncing.eraseToAnyPublisher()
     }
 
-    private var _didFinishSyncing: PassthroughSubject<Void, Never> = .init()
+    @Published private var isSyncing: Bool = false
 
     func resetSyncDate() {
         lastSyncDate = Date(timeIntervalSince1970: 0)
@@ -58,6 +54,7 @@ final class OfferManager: OfferManagerType {
             .map(\.offers)
             .flatMap { [offerRepository] payloads -> AnyPublisher<[ManagedOffer], Error> in
                 offerRepository.createOrUpdateOffer(offerPayloads: payloads)
+                    .eraseToAnyPublisher()
             }
             .asVoid()
             .flatMap { [offerRepository] in
@@ -72,15 +69,15 @@ final class OfferManager: OfferManagerType {
             .catch { _ in Just(()) }
             .sink(receiveValue: { [weak self] in
                 self?.lastSyncDate = startDate
-                self?._didFinishSyncing.send(())
                 self?.cancellable = nil
+                self?.isSyncing = false
             })
+        isSyncing = true
     }
 
     func reencryptUserOffers(
         withPublicKeys publicKeys: [String],
-        friendLevel: OfferFriendDegree,
-        completionHandler: ((Error?) -> Void)?
+        friendLevel: OfferFriendDegree
     ) -> AnyPublisher<Void, Error> {
         let offers: [ManagedOffer] = {
             let allOfferSet = userRepository.user?.offers ?? NSSet()
@@ -95,20 +92,32 @@ final class OfferManager: OfferManagerType {
         }()
 
         return reencrypt(offers: offers, withPublicKeys: publicKeys)
-            .handleEvents(
-                receiveOutput: {
-                    completionHandler?(nil)
-                },
-                receiveCompletion: { completion in
-                    switch completion {
-                    case let .failure(error):
-                        completionHandler?(error)
-                    case .finished:
-                        break
-                    }
-                }
-            )
             .eraseToAnyPublisher()
+    }
+
+    func reencryptUserOffers(
+        withPublicKeys publicKeys: [String],
+        friendLevel: OfferFriendDegree,
+        completionHandler: ((Error?) -> Void)?
+    ) {
+        reencryptUserOffers(
+            withPublicKeys: publicKeys,
+            friendLevel: friendLevel
+        )
+        .sink(
+            receiveCompletion: { completion in
+                switch completion {
+                case let .failure(error):
+                    completionHandler?(error)
+                case .finished:
+                    break
+                }
+            },
+            receiveValue: {
+                completionHandler?(nil)
+            }
+        )
+        .store(in: cancelBag)
     }
 
     func reencrypt(offers unsafeOffers: [ManagedOffer], withPublicKeys publicKeys: [String]) -> AnyPublisher<Void, Error> {

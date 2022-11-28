@@ -19,6 +19,7 @@ protocol UserRepositoryType {
     func getUser(for context: NSManagedObjectContext) -> ManagedUser?
     func update(username: String?, avatar: Data?, avatarURL: String?, anonymizedUsername: String?) -> AnyPublisher<ManagedUser, Error>
     func getInboxes() -> [ManagedInbox]
+    func getOffers() -> [ManagedOffer]
 }
 
 extension UserRepositoryType {
@@ -114,5 +115,9 @@ final class UserRepository: UserRepositoryType {
         let offerInboxes = offers.compactMap(\.inbox)
         let userInbox = user?.profile?.keyPair?.inbox
         return offerInboxes + [userInbox].compactMap { $0 }
+    }
+
+    func getOffers() -> [ManagedOffer] {
+        user?.offers?.allObjects as? [ManagedOffer] ?? []
     }
 }

@@ -163,10 +163,11 @@ final class SplashScreenViewModel: ViewModelType {
         let offers = oldOffers
             .filter(\.isEmpty.not)
             .withUnretained(self)
-            .handleEvents(receiveOutput: { owner, offers in
+            .handleEvents(receiveOutput: { [offerManager] owner, offers in
                 offers.forEach { offer in
                     offer.generateSymmetricKey()
                 }
+                offerManager.resetSyncDate()
             })
             .map(\.1)
 
@@ -229,9 +230,6 @@ final class SplashScreenViewModel: ViewModelType {
 
         return Publishers.Merge(update, noOffers)
             .justOnError()
-            .handleEvents(receiveOutput: { [offerManager] in
-                offerManager.resetSyncDate()
-            })
             .eraseToAnyPublisher()
     }
 }

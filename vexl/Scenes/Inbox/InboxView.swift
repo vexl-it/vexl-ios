@@ -15,23 +15,16 @@ struct InboxView: View {
     @ObservedObject var viewModel: InboxViewModel
 
     var body: some View {
-        StickyBitcoinView(
-            bitcoinViewModel: viewModel.bitcoinViewModel,
-            isMarketplaceLocked: viewModel.isMarketplaceLocked,
-            content: { inboxContent },
-            stickyHeader: {
-                inboxHeader.padding(.bottom, Appearance.GridGuide.point)
-            },
-            expandedBitcoinGraph: { isExpanded in
-                viewModel.isGraphExpanded = isExpanded
-            },
-            lockedSellAction: {
-                viewModel.action.send(.sellTap)
-            },
-            lockedBuyAction: {
-                viewModel.action.send(.buyTap)
-            }
-        )
+
+        VStack(spacing: 0) {
+            BitcoinView(viewModel: viewModel.bitcoinViewModel)
+            inboxHeader
+                .background(Color.black)
+                .cornerRadius(Appearance.GridGuide.buttonCorner, corners: [.topLeft, .topRight])
+                .padding(.bottom, Appearance.GridGuide.smallPadding)
+
+            inboxContent
+        }
         .coordinateSpace(name: RefreshControlView.coordinateSpace)
         .background(Color.black.edgesIgnoringSafeArea(.all))
         .navigationBarHidden(true)
@@ -41,57 +34,41 @@ struct InboxView: View {
         if viewModel.isMarketplaceLocked {
             inboxHeader
         } else {
-            RefreshContainer(topPadding: Appearance.GridGuide.refreshContainerPadding,
-                             hideRefresh: viewModel.isGraphExpanded,
-                             isRefreshing: $viewModel.isRefreshing) {
-                VStack(alignment: .leading) {
-                    inboxHeader
-                    inboxList
-                }
-                .background(Color.black)
-                .cornerRadius(Appearance.GridGuide.buttonCorner)
-            }
-        }
-    }
-
-    private var inboxList: some View {
-        ScrollView {
-            Group {
-                ForEach(viewModel.inboxItems) { chatItem in
-                    InboxItemView(data: chatItem)
-                        .padding(.bottom, Appearance.GridGuide.mediumPadding1)
-                        .onTapGesture {
-                            viewModel.action.send(.selectMessage(chat: chatItem.chat))
+            OffsetScrollView(
+                offsetChanged: { offset in
+                    if offset.y > Constants.pullToRefreshActivationOffset {
+                        viewModel.isRefreshing = true
+                    }
+                },
+                content: {
+                    LazyVStack(spacing: 0) {
+                        Rectangle()
+                            .frame(height: Appearance.GridGuide.smallPadding)
+                        ForEach(viewModel.inboxItems) { chatItem in
+                            InboxItemView(data: chatItem)
+                                .padding(.bottom, Appearance.GridGuide.mediumPadding1)
+                                .contentShape(Rectangle())
+                                .onTapGesture {
+                                    viewModel.action.send(.selectMessage(chat: chatItem.chat))
+                                }
                         }
+                        Rectangle()
+                            .frame(height: Appearance.GridGuide.homeTabBarHeight)
+                    }
                 }
-            }
-            .padding(.top, Appearance.GridGuide.mediumPadding1)
-            .padding(.bottom, Appearance.GridGuide.homeTabBarHeight)
+            )
         }
     }
 
     private var inboxHeader: some View {
         VStack(alignment: .leading) {
-            HStack(alignment: .center) {
-                Text(L.chatMainTitle())
-                    .textStyle(.h2)
-                    .foregroundColor(.white)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-
-                if !viewModel.isMarketplaceLocked {
-                    Button {
-                        viewModel.action.send(.requestTap)
-                    } label: {
-                        Image(viewModel.requestImageName)
-                            .frame(size: Appearance.GridGuide.iconSize)
-                    }
-                    .padding(Appearance.GridGuide.point)
-                    .background(Appearance.Colors.gray1)
-                    .cornerRadius(Appearance.GridGuide.buttonCorner)
+            ZStack {
+                title
+                if viewModel.isRefreshing {
+                    ProgressView()
+                        .progressViewStyle(CircularProgressViewStyle(tint: .white))
                 }
             }
-            .padding(.top, Appearance.GridGuide.mediumPadding2)
-            .padding(.horizontal, Appearance.GridGuide.padding)
 
             if !viewModel.isMarketplaceLocked {
                 InboxFilterView(selectedOption: $viewModel.filter,
@@ -100,6 +77,29 @@ struct InboxView: View {
                 })
             }
         }
+    }
+
+    private var title: some View {
+        HStack(alignment: .center) {
+            Text(L.chatMainTitle())
+                .textStyle(.h2)
+                .foregroundColor(.white)
+                .frame(maxWidth: .infinity, alignment: .leading)
+
+            if !viewModel.isMarketplaceLocked {
+                Button {
+                    viewModel.action.send(.requestTap)
+                } label: {
+                    Image(viewModel.requestImageName)
+                        .frame(size: Appearance.GridGuide.iconSize)
+                }
+                .padding(Appearance.GridGuide.point)
+                .background(Appearance.Colors.gray1)
+                .cornerRadius(Appearance.GridGuide.buttonCorner)
+            }
+        }
+        .padding(.top, Appearance.GridGuide.mediumPadding2)
+        .padding(.horizontal, Appearance.GridGuide.padding)
     }
 }
 

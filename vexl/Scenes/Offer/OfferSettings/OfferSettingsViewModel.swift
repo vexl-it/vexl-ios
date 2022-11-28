@@ -368,7 +368,6 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
             offer.activePriceValue = owner.priceTriggerAmount
             offer.activePriceCurrency = owner.triggerCurrency
             offer.active = owner.offer.isActive
-            offer.expirationDate = Date(timeIntervalSince1970: owner.expiration)
             offer.createdAt = Date()
             offer.generateSymmetricKey()
         }

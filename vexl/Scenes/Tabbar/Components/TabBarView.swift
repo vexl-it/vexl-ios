@@ -30,14 +30,15 @@ final class TabBarView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         addSubview(stackView)
+        let offset: CGFloat = 8
         NSLayoutConstraint.activate([
-            stackView.topAnchor.constraint(equalTo: topAnchor),
-            stackView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            stackView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            stackView.bottomAnchor.constraint(equalTo: bottomAnchor)
+            stackView.topAnchor.constraint(equalTo: topAnchor, constant: offset),
+            stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: offset),
+            stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -offset),
+            stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -offset)
         ])
         backgroundColor = .black
-        layer.cornerRadius = Appearance.GridGuide.tabBarCorner
+        layer.cornerRadius = Appearance.GridGuide.tabBarCorner + offset
     }
 
     required init?(coder: NSCoder) {

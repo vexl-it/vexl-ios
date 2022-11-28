@@ -188,8 +188,6 @@ extension NotificationManager: UNUserNotificationCenterDelegate {
         let typeRawValue: String? = notification.request.content.userInfo[NotificationKey.notificationType.rawValue] as? String
         let type: NotificationType? = typeRawValue.flatMap(NotificationType.init)
 
-        handleNotification(of: type, with: notification.request.content.userInfo)
-
         var presentationOptions: UNNotificationPresentationOptions = []
 
         if #available(iOS 14, *) {
@@ -202,7 +200,9 @@ extension NotificationManager: UNUserNotificationCenterDelegate {
             presentationOptions = []
         }
 
-        completionHandler(presentationOptions)
+        handleNotification(of: type, with: notification.request.content.userInfo) { _ in
+            completionHandler(presentationOptions)
+        }
     }
 
     func handleNotification(of type: NotificationType?, with userInfo: [AnyHashable: Any], completionHandler: ((Error?) -> Void)? = nil) {
@@ -219,9 +219,15 @@ extension NotificationManager: UNUserNotificationCenterDelegate {
             if let publicKey = userInfo[NotificationKey.publicKey.rawValue] as? String,
                let friendDegreeRawValue = userInfo[NotificationKey.connectionLevel.rawValue] as? String,
                let friendDegree = OfferFriendDegree(rawValue: friendDegreeRawValue) {
-                offerManager.reencryptUserOffers(withPublicKeys: [publicKey], friendLevel: friendDegree, completionHandler: completionHandler)
+                offerManager
+                    .reencryptUserOffers(
+                        withPublicKeys: [publicKey],
+                        friendLevel: friendDegree,
+                        completionHandler: completionHandler
+                    )
             }
         case .none:
+            completionHandler?(nil)
             break
         }
     }

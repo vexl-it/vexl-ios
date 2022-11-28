@@ -90,7 +90,7 @@ final class SyncQueueManager: SyncQueueManagerType {
                 queue
                     .publisher
                     .withUnretained(owner)
-                    .flatMap { owner, item in
+                    .flatMap(maxPublishers: .max(4)) { owner, item in
                         owner
                             .dispatch(item: item)
                             .materialize()
@@ -227,6 +227,7 @@ final class SyncQueueManager: SyncQueueManagerType {
 
     private func encryptOfferForPublicKeys(offer: ManagedOffer, item: ManagedSyncItem) -> AnyPublisher<Void, Error> {
         guard let friendLevel = offer.friendLevel,
+              let receiverPublicKeys = item.publicKeys,
               let userPublicKey = userRepository.user?.profile?.keyPair?.publicKey
         else {
             return Fail(error: PersistenceError.insufficientData).eraseToAnyPublisher()
@@ -234,17 +235,46 @@ final class SyncQueueManager: SyncQueueManagerType {
 
         let context = $queue.context
 
-        let pks = offerService.getReceiverPublicKeys(
-            friendLevel: friendLevel.convertToContactFriendLevel,
-            groups: [offer.group].compactMap { $0 },
-            includeUserPublicKey: userPublicKey
-        )
+        let pks = offerService
+            .getReceiverPublicKeys(
+                friendLevel: friendLevel.convertToContactFriendLevel,
+                groups: [offer.group].compactMap { $0 },
+                includeUserPublicKey: userPublicKey
+            )
+            .map { truestedEnvelope in
+                let receiverPKSet = Set(receiverPublicKeys)
+                switch friendLevel {
+                case .firstDegree:
+                    let firstDegreeSet = Set(truestedEnvelope.contacts.firstDegree)
+                    return Array(firstDegreeSet.intersection(receiverPKSet))
+                case .secondDegree:
+                    let secondDegreeSet = Set(truestedEnvelope.contacts.secondDegree)
+                    return Array(secondDegreeSet.intersection(receiverPKSet))
+                }
+            }
+            .map { pks in
+                PKsEnvelope(
+                    contacts: ContactPKsEnvelope(
+                        firstDegree: friendLevel == .firstDegree ? pks : [],
+                        secondDegree: friendLevel == .secondDegree ? pks : []
+                    ),
+                    groups: [],
+                    userPublicKey: userPublicKey
+                )
+            }
 
         let encryptedOffer = pks
             .flatMap { [offerService] envelope in
-                offerService.createNewPrivateParts(for: offer, envelope: envelope)
+                guard !envelope.isEmpty else {
+                    return Just(())
+                        .setFailureType(to: Error.self)
+                        .eraseToAnyPublisher()
+                }
+                return offerService
+                    .createNewPrivateParts(for: offer, envelope: envelope)
+                    .eraseToAnyPublisher()
             }
-            .flatMapLatest { [persistence] _ -> AnyPublisher<Void, Error> in
+            .flatMap { [persistence] _ -> AnyPublisher<Void, Error> in
                 persistence.delete(context: context, object: item)
             }
             .eraseToAnyPublisher()
