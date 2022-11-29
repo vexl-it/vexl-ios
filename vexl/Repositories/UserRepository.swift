@@ -118,6 +118,8 @@ final class UserRepository: UserRepositoryType {
     }
 
     func getOffers() -> [ManagedOffer] {
-        user?.offers?.allObjects as? [ManagedOffer] ?? []
+        let offerSet = user?.offers as? Set<ManagedOffer> ?? Set()
+        let activeOffers = offerSet.filter(\.isRemoved.not)
+        return Array(activeOffers)
     }
 }
