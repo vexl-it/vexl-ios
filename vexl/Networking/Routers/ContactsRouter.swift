@@ -69,7 +69,7 @@ enum ContactsRouter: ApiRouter {
         case .getContacts:
             return "contacts/me"
         case .refresh:
-            return "contacts/refresh"
+            return "users/refresh"
         case .deleteUser:
             return "users/me"
         case .countPhoneContacts:
