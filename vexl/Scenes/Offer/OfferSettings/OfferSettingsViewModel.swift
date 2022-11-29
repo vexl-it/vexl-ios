@@ -30,6 +30,7 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
     @Inject var offerService: OfferServiceType
     @Inject var encryptionService: EncryptionServiceType
     @Inject var mapyService: MapyServiceType
+    @Inject var refreshManager: RefreshManagerType
 
     @Fetched(sortDescriptors: [ NSSortDescriptor(key: "name", ascending: true) ])
     var fetchedGroups: [ManagedGroup]
@@ -533,6 +534,16 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
                     .eraseToAnyPublisher()
             }
 
+        let refresh = updateOfferId
+            .withUnretained(self)
+            .flatMap { owner in
+                owner.refreshManager
+                    .refresh()
+                    .track(activity: owner.primaryActivity)
+                    .materialize()
+                    .compactMap(\.value)
+            }
+
         let enableIdleTimer = updateOfferId
             .handleEvents(receiveOutput: { _ in
                 UIApplication.shared.isIdleTimerDisabled = false
@@ -563,6 +574,14 @@ final class OfferSettingsViewModel: ViewModelType, ObservableObject {
             .flatMap { owner, _ in
                 owner.offerRepository
                     .deleteOffers(offerIDs: [offerID])
+                    .materialize()
+                    .compactMap(\.value)
+            }
+            .withUnretained(self)
+            .flatMap { owner in
+                owner.refreshManager
+                    .refresh()
+                    .track(activity: owner.primaryActivity)
                     .materialize()
                     .compactMap(\.value)
             }
