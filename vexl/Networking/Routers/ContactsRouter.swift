@@ -115,7 +115,7 @@ enum ContactsRouter: ApiRouter {
         case let .getCommonFriends(publicKeys):
             return ["publicKeys": publicKeys]
         case let .refresh(hasOffers):
-            return ["offerAlive": hasOffers]
+            return ["offersAlive": hasOffers]
         }
     }
 
