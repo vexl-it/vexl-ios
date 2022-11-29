@@ -17,31 +17,16 @@ final class RefreshManager: RefreshManagerType {
     @Inject var offerService: OfferServiceType
     @Inject var userRepository: UserRepositoryType
 
-    @UserDefault(.refreshDate, defaultValue: Date(timeIntervalSince1970: 0))
-    var lastRefresh: Date
-
     func refresh() -> AnyPublisher<Void, Error> {
-        // TODO: Enable refresh when production BE is ready
+        let userOffers = userRepository.getOffers()
+        let adminIds = userOffers.compactMap(\.adminID)
         return Just(())
-            .setFailureType(to: Error.self)
+            .flatMap { [offerService] in
+                offerService.refresh(adminIDs: adminIds)
+            }
+            .flatMap { [contactsService] in
+                contactsService.refresh(hasOffers: userOffers.isEmpty.not)
+            }
             .eraseToAnyPublisher()
-//        guard lastRefresh.addingTimeInterval(.day).compare(Date()) == .orderedAscending else {
-//            return Just(())
-//                .setFailureType(to: Error.self)
-//                .eraseToAnyPublisher()
-//        }
-//        let userOffers = userRepository.getOffers()
-//        let adminIds = userOffers.compactMap(\.adminID)
-//        return Just(())
-//            .flatMap { [offerService] in
-//                offerService.refresh(adminIDs: adminIds)
-//            }
-//            .flatMap { [contactsService] in
-//                contactsService.refresh(hasOffers: userOffers.isEmpty.not)
-//            }
-//            .handleEvents(receiveOutput: { [weak self] in
-//                self?.lastRefresh = Date()
-//            })
-//            .eraseToAnyPublisher()
     }
 }
