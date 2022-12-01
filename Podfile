@@ -17,7 +17,7 @@ target 'vexl' do
     pod 'ACKLocalization'
 
     # Strong typing
-    pod 'R.swift'
+    pod 'R.swift', '~> 6.1.0'
 
     # Swift syntax control
     pod 'SwiftLint'
