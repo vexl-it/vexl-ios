@@ -21,12 +21,13 @@ enum OffersRouter: ApiRouter {
     case deleteOffers(adminIDs: [String])
     case deleteOfferPrivateParts(adminIDs: [String], publicKeys: [String])
     case updateOffer(offerPayload: OfferRequestPayload, adminID: String)
+    case refresh(adminIDs: [String])
 
     var method: HTTPMethod {
         switch self {
         case .getOffers, .getUserOffers, .getNewOffers:
             return .get
-        case .createOffer, .createNewPrivateParts, .getDeletedOffers, .report:
+        case .createOffer, .createNewPrivateParts, .getDeletedOffers, .report, .refresh:
             return .post
         case .deleteOffers, .deleteOfferPrivateParts:
             return .delete
@@ -53,12 +54,14 @@ enum OffersRouter: ApiRouter {
             return "offers/private-part"
         case .getDeletedOffers:
             return "offers/not-exist"
+        case .refresh:
+            return "offers/refresh"
         }
     }
     
     var version: Constants.API.Version? {
         switch self {
-        case .createOffer, .getOffers, .getUserOffers, .getNewOffers, .createNewPrivateParts, .updateOffer:
+        case .createOffer, .getOffers, .getUserOffers, .getNewOffers, .createNewPrivateParts, .updateOffer, .refresh:
             return .v2
         case .getDeletedOffers, .report, .deleteOffers, .deleteOfferPrivateParts:
             return .v1
@@ -95,7 +98,7 @@ enum OffersRouter: ApiRouter {
         case let .createNewPrivateParts(adminId, offers):
             return [
                 "adminId": adminId,
-                "privateParts": offers.map(\.asJson)
+                "offerPrivateList": offers.map(\.asJson)
             ]
         case let .deleteOfferPrivateParts(adminIds, publicKeys):
             return [
@@ -104,6 +107,8 @@ enum OffersRouter: ApiRouter {
             ]
         case let .getDeletedOffers(knownOfferIds):
             return ["offerIds": knownOfferIds]
+        case let .refresh(adminIDs):
+            return ["adminIds": adminIDs]
         }
     }
 

@@ -20,16 +20,36 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
 
     // MARK: - Fetched Bindings
 
-    @Fetched(fetchImmediately: false)
+    @Fetched(
+        fetchImmediately: false,
+        sortDescriptors: [
+            NSSortDescriptor(key: "isRequested", ascending: true),
+            NSSortDescriptor(key: "modifiedAtDate", ascending: false),
+            NSSortDescriptor(key: "createdAt", ascending: false),
+            NSSortDescriptor(key: "id", ascending: false)
+        ]
+    )
     var fetchedBuyOffers: [ManagedOffer]
 
-    @Fetched(fetchImmediately: false)
+    @Fetched(
+        fetchImmediately: false,
+        sortDescriptors: [
+            NSSortDescriptor(key: "isRequested", ascending: true),
+            NSSortDescriptor(key: "modifiedAtDate", ascending: false),
+            NSSortDescriptor(key: "createdAt", ascending: false),
+            NSSortDescriptor(key: "id", ascending: false)
+        ]
+    )
     var fetchedSellOffers: [ManagedOffer]
 
-    @Fetched(fetchImmediately: false)
+    @Fetched(predicate: .init(
+        format: "user != nil AND isRemoved == FALSE AND offerTypeRawType == %@", OfferType.buy.rawValue
+    ))
     var userBuyOffers: [ManagedOffer]
 
-    @Fetched(fetchImmediately: false)
+    @Fetched(predicate: .init(
+        format: "user != nil AND isRemoved == FALSE AND offerTypeRawType == %@", OfferType.sell.rawValue
+    ))
     var userSellOffers: [ManagedOffer]
 
     // MARK: - View Bindings
@@ -127,23 +147,16 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
         setupDataBindings()
         setupActionBindings()
         setupInbox()
-        setupRefreshBindings()
     }
 
     func applyFilter(_ filter: OfferFilter) {
         switch filter.type {
         case .buy:
             buyOfferFilter = filter
-            $fetchedBuyOffers.load(
-                sortDescriptors: [ NSSortDescriptor(key: "isRequested", ascending: true), NSSortDescriptor(key: "createdAt", ascending: false) ],
-                predicate: filter.predicate
-            )
+            $fetchedBuyOffers.load(predicate: filter.predicate)
         case .sell:
             sellOfferFilter = filter
-            $fetchedSellOffers.load(
-                sortDescriptors: [ NSSortDescriptor(key: "isRequested", ascending: true), NSSortDescriptor(key: "createdAt", ascending: false) ],
-                predicate: filter.predicate
-            )
+            $fetchedSellOffers.load(predicate: filter.predicate)
         }
     }
 
@@ -184,6 +197,10 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
                 owner.reloadFilters()
             }
             .store(in: cancelBag)
+
+        offerManager
+            .syncInProgressPublisher
+            .assign(to: &$isRefreshing)
     }
 
     private func setupActionBindings() {
@@ -242,7 +259,7 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
             .store(in: cancelBag)
 
         userAction
-            .compactMap { action -> Bool? in
+            .compactMap { action -> Bool? in // swiftlint:disable:this discouraged_optional_boolean
                 guard case let .graphExpanded(isExpanded) = action else {
                     return nil
                 }
@@ -253,19 +270,5 @@ final class MarketplaceViewModel: ViewModelType, ObservableObject {
                 owner.isGraphExpanded = isExpanded
             }
             .store(in: cancelBag)
-    }
-
-    private func setupRefreshBindings() {
-        $isRefreshing
-            .filter { $0 }
-            .withUnretained(self)
-            .sink { owner, _ in
-                owner.offerManager.sync()
-            }
-            .store(in: cancelBag)
-
-        offerManager.didFinishSyncing
-            .map { false }
-            .assign(to: &$isRefreshing)
     }
 }

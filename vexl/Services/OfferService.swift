@@ -28,6 +28,7 @@ protocol OfferServiceType {
     func updateOffers(adminID: String, offerPayload: OfferRequestPayload) -> AnyPublisher<OfferPayload, Error>
     func deleteOffers(adminIDs: [String]) -> AnyPublisher<Void, Error>
     func deleteOfferPrivateParts(adminIDs: [String], publicKeys: [String]) -> AnyPublisher<Void, Error>
+    func refresh(adminIDs: [String]) -> AnyPublisher<Void, Error>
 
     // MARK: Helper functions
 
@@ -135,6 +136,15 @@ final class OfferService: BaseService, OfferServiceType {
         }
     }
 
+    func refresh(adminIDs: [String]) -> AnyPublisher<Void, Error> {
+        if !adminIDs.isEmpty {
+            return request(endpoint: OffersRouter.refresh(adminIDs: adminIDs))
+        } else {
+            return Just(()).setFailureType(to: Error.self)
+                .eraseToAnyPublisher()
+        }
+    }
+
     // MARK: Helper functions
 
     func getReceiverPublicKeys(friendLevel: ContactFriendLevel, groups: [ManagedGroup], includeUserPublicKey userPublicKey: String) -> AnyPublisher<PKsEnvelope, Error> {
@@ -165,7 +175,7 @@ final class OfferService: BaseService, OfferServiceType {
     }
 
     func encryptOffer(offer: ManagedOffer, envelope: PKsEnvelope) -> AnyPublisher<OfferRequestPayload, Error> {
-        guard let symmetricKey = offer.symmetricKey, let offerType = offer.type, let expiration = offer.expirationDate?.timeIntervalSince1970 else {
+        guard let symmetricKey = offer.symmetricKey, let offerType = offer.type else {
             return Fail(error: PersistenceError.insufficientData)
                 .eraseToAnyPublisher()
         }
@@ -180,7 +190,6 @@ final class OfferService: BaseService, OfferServiceType {
             .map { publicPart, privateParts -> OfferRequestPayload in
                 OfferRequestPayload(
                     offerType: offerType.rawValue,
-                    expiration: Int(expiration),
                     payloadPublic: publicPart,
                     offerPrivateList: privateParts
                 )

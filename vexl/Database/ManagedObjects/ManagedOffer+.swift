@@ -149,7 +149,7 @@ extension ManagedOffer {
         offer.offerID = UUID().uuidString
         offer.adminID = UUID().uuidString
         offer.createdAt = Date()
-        offer.modifiedAt = ""
+        offer.modifiedAtDate = Date()
         offer.currency = .usd
         offer.minAmount = 0
         offer.maxAmount = 10_000

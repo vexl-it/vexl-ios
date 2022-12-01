@@ -15,25 +15,14 @@ struct MarketplaceView: View {
     @State private var stickHeaderIsVisible = false
 
     var body: some View {
-        StickyBitcoinView(
-            bitcoinViewModel: viewModel.bitcoinViewModel,
-            isMarketplaceLocked: viewModel.isMarketplaceLocked,
-            content: {
-                marketPlaceContent
-            },
-            stickyHeader: {
-                marketPlaceHeader.padding(.bottom, Appearance.GridGuide.point)
-            },
-            expandedBitcoinGraph: { isExpanded in
-                viewModel.action.send(.graphExpanded(isExpanded: isExpanded))
-            },
-            lockedSellAction: {
-                viewModel.action.send(.showSellOffer)
-            },
-            lockedBuyAction: {
-                viewModel.action.send(.showBuyOffer)
-            }
-        )
+        VStack(spacing: 0) {
+            BitcoinView(viewModel: viewModel.bitcoinViewModel)
+            marketPlaceHeader
+                .background(Color.black)
+                .cornerRadius(Appearance.GridGuide.buttonCorner, corners: [.topLeft, .topRight])
+
+            marketPlaceContent
+        }
         .coordinateSpace(name: RefreshControlView.coordinateSpace)
         .animation(.easeInOut, value: viewModel.selectedOption)
         .background(Color.black.edgesIgnoringSafeArea(.all))
@@ -45,42 +34,48 @@ struct MarketplaceView: View {
         if viewModel.isMarketplaceLocked {
             marketPlaceHeader
         } else {
-            RefreshContainer(topPadding: Appearance.GridGuide.refreshContainerPadding,
-                             hideRefresh: viewModel.isGraphExpanded,
-                             isRefreshing: $viewModel.isRefreshing) {
-                VStack(spacing: Appearance.GridGuide.mediumPadding1) {
-                    marketPlaceHeader
-
-                    marketplaceOfferList
+            OffsetScrollView(
+                offsetChanged: { offset in
+                    if offset.y > Constants.pullToRefreshActivationOffset {
+                        viewModel.send(action: .fetchNewOffers)
+                    }
+                },
+                content: {
+                    LazyVStack(spacing: 0) {
+                        ForEach(viewModel.marketplaceFeedItems) { item in
+                            MarketplaceFeedView(data: item,
+                                                displayFooter: false,
+                                                requestAction: { _ in
+                                viewModel.action.send(.offerTapped(offer: item.offer))
+                            })
+                            .contentShape(Rectangle())
+                            .onTapGesture {
+                                if !item.isRequested {
+                                    viewModel.action.send(.offerTapped(offer: item.offer))
+                                }
+                            }
+                        }
+                        Rectangle()
+                            .frame(height: Appearance.GridGuide.homeTabBarHeight)
+                    }
                 }
-                .animation(.easeInOut, value: viewModel.marketplaceFeedItems)
-            }
-        }
-    }
-
-    private var marketplaceOfferList: some View {
-        ForEach(viewModel.marketplaceFeedItems) { item in
-            MarketplaceFeedView(data: item,
-                                displayFooter: false,
-                                requestAction: { _ in
-                viewModel.action.send(.offerTapped(offer: item.offer))
-            })
-            .onTapGesture {
-                if !item.isRequested {
-                    viewModel.action.send(.offerTapped(offer: item.offer))
-                }
-            }
-            .padding(.horizontal, Appearance.GridGuide.point)
+            )
         }
     }
 
     private var marketPlaceHeader: some View {
         VStack(spacing: Appearance.GridGuide.padding) {
             MarketplaceSegmentView(selectedOption: $viewModel.selectedOption)
-                .padding(.top, Appearance.GridGuide.padding)
+                .padding(.top, Appearance.GridGuide.mediumPadding2)
 
             if !viewModel.isMarketplaceLocked {
-                filter
+                ZStack {
+                    filter
+                    if viewModel.isRefreshing {
+                        ProgressView()
+                            .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                    }
+                }
             }
         }
     }
@@ -97,6 +92,7 @@ struct MarketplaceView: View {
                     viewModel.action.send(.showBuyOffer)
                 }
             )
+            .id("MarketplaceSellFilter")
             .animation(.easeInOut, value: viewModel.userSelectedFilters)
         case .sell:
             MarketplaceFilterView(
@@ -107,6 +103,7 @@ struct MarketplaceView: View {
                     viewModel.action.send(.showSellOffer)
                 }
             )
+            .id("MarketplaceBuyFilter")
             .animation(.easeInOut, value: viewModel.userSelectedFilters)
         }
     }

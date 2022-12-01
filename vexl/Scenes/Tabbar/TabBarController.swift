@@ -83,7 +83,7 @@ final class TabBarController: UITabBarController {
         NSLayoutConstraint.activate([
             tabBarView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Appearance.GridGuide.mediumPadding1),
             tabBarView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Appearance.GridGuide.mediumPadding1),
-            tabBarView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            tabBarView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -Appearance.GridGuide.tinyPadding),
             tabBarView.heightAnchor.constraint(equalToConstant: Appearance.GridGuide.homeTabBarHeight)
         ])
     }

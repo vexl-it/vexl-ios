@@ -17,7 +17,7 @@ struct UserOffersView: View {
                 viewModel.action.send(.dismissTap)
             }
 
-            OfferSortView(numberOfOffers: viewModel.offerItems.count,
+            OfferSortView(numberOfOffers: viewModel.activeOfferCount,
                           sortingOption: $viewModel.offerSortingOption)
 
             LabelButton(

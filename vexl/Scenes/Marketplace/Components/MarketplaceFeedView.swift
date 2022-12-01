@@ -30,9 +30,9 @@ struct MarketplaceFeedView: View {
                                       avatar: data.avatar) {
                 requestAction(data.id)
             }
-            .padding(.bottom, Appearance.GridGuide.padding)
         }
         .padding(.horizontal, Appearance.GridGuide.point)
+        .padding(.top, Appearance.GridGuide.padding)
     }
 }
 
