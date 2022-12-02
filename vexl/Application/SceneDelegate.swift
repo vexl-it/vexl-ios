@@ -8,7 +8,6 @@
 
 import UIKit
 import Cleevio
-import FBSDKCoreKit
 import FirebaseDynamicLinks
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
@@ -81,11 +80,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let url = URLContexts.first?.url else {
             return
         }
-
-        ApplicationDelegate.shared.application(UIApplication.shared,
-                                               open: url,
-                                               sourceApplication: nil,
-                                               annotation: [UIApplication.OpenURLOptionsKey.annotation])
 
         @Inject var deeplinkManager: DeeplinkManagerType
         deeplinkManager.handleDeeplink(withURL: url)

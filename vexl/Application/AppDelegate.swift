@@ -8,7 +8,6 @@
 
 import UIKit
 import SwiftyBeaver
-import FBSDKCoreKit
 import Firebase
 import FirebaseMessaging
 import FirebaseDynamicLinks
@@ -22,10 +21,6 @@ let log = SwiftyBeaver.self
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        ApplicationDelegate.shared.application(
-            application,
-            didFinishLaunchingWithOptions: launchOptions
-        )
 
         #if DEBUG || DEVEL
         NetworkActivityLogger.shared.startLogging()
