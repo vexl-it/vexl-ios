@@ -8,7 +8,10 @@
 import Foundation
 import Combine
 import KeychainAccess
-import FBSDKLoginKit
+
+enum FacebookError: Error {
+    case notImplemented
+}
 
 protocol FacebookManagerType {
     var facebookID: String? { get set }
@@ -39,28 +42,32 @@ final class FacebookManager: FacebookManagerType {
     }
 
     func loginWithFacebook(fromViewController viewController: UIViewController? = nil) -> AnyPublisher<String?, Error> {
-        Future { promise in
-            let loginManager = LoginManager()
-            loginManager.logIn(permissions: [.publicProfile, .userFriends], viewController: nil) { result in
-                switch result {
-                case .cancelled:
-                    promise(.success(nil))
-                case let .failed(error):
-                    promise(.failure(error))
-                case let .success(_, _, token):
-                    promise(.success(token))
-                }
-            }
-        }
-        .receive(on: RunLoop.main)
-        .handleEvents(receiveOutput: { [weak self] (facebook: FBSDKLoginKit.AccessToken?) in
-            guard let facebook = facebook, let owner = self else {
-                return
-            }
-            owner.facebookID = facebook.userID
-            owner.facebookToken = facebook.tokenString
-        })
-        .map(\.?.userID)
-        .eraseToAnyPublisher()
+        Fail(error: FacebookError.notImplemented)
+            .eraseToAnyPublisher()
+        // TODO: uncomment this whenever we support FBSDKLoginKit again
+//        Future { promise in
+//            let loginManager = LoginManager()
+//            loginManager.logIn(permissions: [.publicProfile, .userFriends], viewController: nil) { result in
+//                switch result {
+//                case .cancelled:
+//                    promise(.success(nil))
+//                case let .failed(error):
+//                    promise(.failure(error))
+//                case let .success(_, _, token):
+//                    promise(.success(token))
+//                }
+//            }
+//            Fail(error: FacebookError.notImplemented).eraseToAnyPublisher()
+//        }
+//        .receive(on: RunLoop.main)
+//        .handleEvents(receiveOutput: { [weak self] (facebook: FBSDKLoginKit.AccessToken?) in
+//            guard let facebook = facebook, let owner = self else {
+//                return
+//            }
+//            owner.facebookID = facebook.userID
+//            owner.facebookToken = facebook.tokenString
+//        })
+//        .map(\.?.userID)
+//        .eraseToAnyPublisher()
     }
 }

@@ -49,8 +49,8 @@ target 'vexl' do
     pod 'PhoneNumberKit', '~> 3.3'
 
     # Facebook
-    pod 'FBSDKCoreKit', '~> 13.1'
-    pod 'FBSDKLoginKit', '~> 13.1'
+#    pod 'FBSDKCoreKit', '~> 13.1'
+#    pod 'FBSDKLoginKit', '~> 13.1'
 
     # Charts
     pod 'SwiftUICharts', :git => 'https://github.com/willdale/SwiftUICharts.git', :tag => '2.9.9'

@@ -8,8 +8,6 @@
 import Foundation
 import Combine
 import Contacts
-import FBSDKCoreKit
-import FBSDKLoginKit
 
 protocol PhoneContactsManagerType {
     var availableFacebookContacts: [ContactInformation] { get }

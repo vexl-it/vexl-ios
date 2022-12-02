@@ -10,8 +10,6 @@ import Foundation
 import Combine
 import KeychainAccess
 import Cleevio
-import FBSDKLoginKit
-import FBSDKCoreKit
 
 protocol AuthenticationManagerType {
     var isUserLoggedIn: Bool { get }
