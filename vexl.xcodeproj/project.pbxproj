@@ -159,6 +159,8 @@
 		B0B0A059288EDDAE00E81776 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B0A058288EDDAE00E81776 /* NotificationManager.swift */; };
 		B0B0A05B2891AC3E00E81776 /* Bool+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B0A05A2891AC3E00E81776 /* Bool+.swift */; };
 		B0BACE7228CF2A8500ED0979 /* Clampable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0BACE7128CF2A8500ED0979 /* Clampable.swift */; };
+		B0BD7486293A1E430077EACD /* ChatUserLeftBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0BD7485293A1E430077EACD /* ChatUserLeftBannerView.swift */; };
+		B0BD7488293A2EC40077EACD /* ChatUserLeftView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0BD7487293A2EC40077EACD /* ChatUserLeftView.swift */; };
 		B0C838EC28C2285F0086B8F3 /* vexl_delete_chat.json in Resources */ = {isa = PBXBuildFile; fileRef = B0C838E828C2285E0086B8F3 /* vexl_delete_chat.json */; };
 		B0C838ED28C2285F0086B8F3 /* vexl_block_user.json in Resources */ = {isa = PBXBuildFile; fileRef = B0C838E928C2285E0086B8F3 /* vexl_block_user.json */; };
 		B0C838EE28C2285F0086B8F3 /* vexl_get_started.json in Resources */ = {isa = PBXBuildFile; fileRef = B0C838EA28C2285F0086B8F3 /* vexl_get_started.json */; };
@@ -644,6 +646,8 @@
 		B0BB493728ACFAF60068BCB8 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		B0BB493928ACFB0D0068BCB8 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		B0BB493B28ACFB3C0068BCB8 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		B0BD7485293A1E430077EACD /* ChatUserLeftBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatUserLeftBannerView.swift; sourceTree = "<group>"; };
+		B0BD7487293A2EC40077EACD /* ChatUserLeftView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatUserLeftView.swift; sourceTree = "<group>"; };
 		B0C838E828C2285E0086B8F3 /* vexl_delete_chat.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = vexl_delete_chat.json; sourceTree = "<group>"; };
 		B0C838E928C2285E0086B8F3 /* vexl_block_user.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = vexl_block_user.json; sourceTree = "<group>"; };
 		B0C838EA28C2285F0086B8F3 /* vexl_get_started.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = vexl_get_started.json; sourceTree = "<group>"; };
@@ -1587,6 +1591,15 @@
 			path = Onboarding;
 			sourceTree = "<group>";
 		};
+		B0BD7484293A19430077EACD /* Banners */ = {
+			isa = PBXGroup;
+			children = (
+				F1071D4228B439F5002BE9EF /* ChatRevealIdentityBannerView.swift */,
+				B0BD7485293A1E430077EACD /* ChatUserLeftBannerView.swift */,
+			);
+			path = Banners;
+			sourceTree = "<group>";
+		};
 		B0E9BB282815C70C0012BF1D /* Cryptography */ = {
 			isa = PBXGroup;
 			children = (
@@ -1958,6 +1971,7 @@
 			children = (
 				F1483CC5285A4D140054B7A2 /* ChatRevealIdentityView.swift */,
 				F1B93F052877AFF5008DAA90 /* ChatRevealIdentityResponseView.swift */,
+				B0BD7487293A2EC40077EACD /* ChatUserLeftView.swift */,
 				F1485637284FD451003213D7 /* ChatBubbleView.swift */,
 				F1483CC1285A3E6F0054B7A2 /* ChatTextBubbleView.swift */,
 				F1483CC3285A407C0054B7A2 /* ChatImageBubbleView.swift */,
@@ -2006,9 +2020,9 @@
 				F1B93EDB286E353B008DAA90 /* ActionSheets */,
 				F148562E284FD451003213D7 /* Confirmation */,
 				F1485632284FD451003213D7 /* CommonFriends */,
+				B0BD7484293A19430077EACD /* Banners */,
 				F1485636284FD451003213D7 /* ChatHeaderView.swift */,
 				F1485638284FD451003213D7 /* ChatDateView.swift */,
-				F1071D4228B439F5002BE9EF /* ChatRevealIdentityBannerView.swift */,
 				F1485639284FD451003213D7 /* ChatInputView.swift */,
 			);
 			path = Components;
@@ -2874,6 +2888,7 @@
 				B08F396A27AE7112008B344F /* URLRequest+.swift in Sources */,
 				F1A9410028DE4AF8005D08D7 /* LockAppCoordinator.swift in Sources */,
 				F188627728169A3700659786 /* MarketplaceViewModel.swift in Sources */,
+				B0BD7486293A1E430077EACD /* ChatUserLeftBannerView.swift in Sources */,
 				F1156AE6289F260900B9A5B9 /* TermsAndConditionsView.swift in Sources */,
 				B0EF7E1828DB9FE9002DC7D6 /* ManagedAnonymousProfileType+.swift in Sources */,
 				F1B30111287C770D00C86F83 /* OfferTriggerActiveView.swift in Sources */,
@@ -3172,6 +3187,7 @@
 				F11441C7284681EC00307D39 /* RegistrationCardView.swift in Sources */,
 				B08F391327AE7112008B344F /* ManagerAssembly.swift in Sources */,
 				B007A75A287226D000CFA5C9 /* ManagedChat+.swift in Sources */,
+				B0BD7488293A2EC40077EACD /* ChatUserLeftView.swift in Sources */,
 				F13B266928194A060011F2FB /* OffersRouter.swift in Sources */,
 				F188625F2811E53400659786 /* OfferPaymentMethodView.swift in Sources */,
 				4FBF61E0283BD12700DDBE71 /* FilterView.swift in Sources */,

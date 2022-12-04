@@ -35,6 +35,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
         case revealTap
         case hideTap
         case forceScrollToBottom
+        case deleteChatTap
     }
 
     let action: ActionSubject<UserAction> = .init()
@@ -213,6 +214,13 @@ final class ChatViewModel: ViewModelType, ObservableObject {
         profile?.publisher(for: \.avatarData).map { _ in profile?.avatar }.assign(to: &$avatar)
         profile?.publisher(for: \.name).filterNil().assign(to: &$username)
         chat.publisher(for: \.isRevealed).assign(to: &$userIsRevealed)
+        chat.publisher(for: \.hasChatEnded).assign(to: &$showUserLeftChatBanner)
+
+        Publishers.CombineLatest(chat.publisher(for: \.isBlocked), chat.publisher(for: \.hasChatEnded) )
+            .map { isBlocked, hasChatEnded in
+                !isBlocked && !hasChatEnded
+            }
+            .assign(to: &$allowsInput)
 
         $allowsInput
             .map(\.not)
@@ -239,6 +247,12 @@ final class ChatViewModel: ViewModelType, ObservableObject {
         sharedAction
             .filter { $0 == .revealTap }
             .map { _ -> Route in .showRevealIdentityResponseTapped }
+            .subscribe(route)
+            .store(in: cancelBag)
+
+        sharedAction
+            .filter { $0 == .deleteChatTap }
+            .map { _ -> Route in .showDeleteTapped }
             .subscribe(route)
             .store(in: cancelBag)
     }
@@ -326,8 +340,9 @@ final class ChatViewModel: ViewModelType, ObservableObject {
     }
 
     func deleteMessages() {
+
         chatManager
-            .delete(chat: chat)
+            .delete(chat: chat, offline: chat.hasChatEnded)
             .track(activity: primaryActivity)
             .map { _ -> Route in .dismissTapped }
             .subscribe(route)
