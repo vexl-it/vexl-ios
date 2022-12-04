@@ -52,6 +52,9 @@ final class ChatViewModel: ViewModelType, ObservableObject {
     @Published var username: String = L.generalAnonymous()
     @Published var avatar: Data?
     @Published var allowsInput = true
+    @Published var showIdentityRevealBanner: IdentityRevealBannerType = .none
+    @Published var showUserLeftChatBanner = false
+    @Published var userIsRevealed = false
 
     var errorIndicator: ErrorIndicator { primaryActivity.error }
     var activityIndicator: ActivityIndicator { primaryActivity.indicator }
@@ -93,8 +96,6 @@ final class ChatViewModel: ViewModelType, ObservableObject {
         }
     }
 
-    @Published var showIdentityRevealBanner: IdentityRevealBannerType = .none
-
     private let receiverPublicKey: String?
     private let cancelBag: CancelBag = .init()
     private lazy var sharedAction: AnyPublisher<UserAction, Never> = action.share().eraseToAnyPublisher()
@@ -106,13 +107,11 @@ final class ChatViewModel: ViewModelType, ObservableObject {
 
     var chatActionViewModel: ChatActionViewModel
     var chatConversationViewModel: ChatConversationViewModel
-    @Published var userIsRevealed = false
 
     init(chat: ManagedChat) {
         self.chat = chat
         self.chatActionViewModel = ChatActionViewModel(chat: chat)
         self.chatConversationViewModel = ChatConversationViewModel(chat: chat)
-        self.allowsInput = !chat.isBlocked
         self.receiverPublicKey = chat.receiverKeyPair?.publicKey
 
         setupActivityBindings()

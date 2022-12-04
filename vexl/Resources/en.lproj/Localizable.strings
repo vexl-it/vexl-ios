@@ -289,6 +289,9 @@
 "chat.request.identity.receive" = "Identity reveal request received!";
 "chat.request.identity.decline" = "Declined to reveal identity";
 "chat.request.identity.approve" = "Identity revealed!";
+"chat.delete.title" = "%1$@ left the chat";
+"chat.delete.subtitle" = "Leave too?";
+"chat.delete.button" = "Leave the chat";
 "chat.request.main.title" = "%@ Requests";
 "chat.request.accept" = "Accept";
 "chat.request.decline" = "Decline";
@@ -437,3 +440,5 @@
 "error.invalid.url" = "Invalid URL";
 "maintenance.title" = "Marketplace maintenance";
 "maintenance.subtitle" = "Vexl app is in maintenance.\nCome back later, please.";
+"notification.title" = "Your offer will be deactivated soon.";
+"notification.body" = "Long time no see! Open the app, otherwise your offers will be deactivated due to inactivity.\n";

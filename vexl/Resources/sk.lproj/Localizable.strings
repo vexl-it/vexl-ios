@@ -289,6 +289,9 @@
 "chat.request.identity.receive" = "Nová žiadosť o odhalenie identity!";
 "chat.request.identity.decline" = "Žiadosť o odhalenie identity zamietnutá";
 "chat.request.identity.approve" = "Identita odhalená!";
+"chat.delete.title" = "";
+"chat.delete.subtitle" = "";
+"chat.delete.button" = "";
 "chat.request.main.title" = "%@ Žiadostí";
 "chat.request.accept" = "Prijať";
 "chat.request.decline" = "Odmietnuť";
@@ -437,3 +440,5 @@
 "error.invalid.url" = "Neplatné URL";
 "maintenance.title" = "";
 "maintenance.subtitle" = "";
+"notification.title" = "Tvoja ponuka bude čoskoro deaktivovaná.";
+"notification.body" = "Už sme o tebe dlho nepočuli! Otvor appku, inak budú tvoje ponuky zmazané kvôli neaktivite.";
