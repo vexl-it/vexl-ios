@@ -23,7 +23,6 @@ platform :ios do
 	firebase_tester_group_id = "Cleevio"
 	firebase_client_group_id = "SatoshiLabs"
 	firebase_cli_path = "/usr/local/bin/firebase"
-	slackUrl = "https://hooks.slack.com/services/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"
 
 	# ***************************************************** #
 	# ******************** BEFORE ALL ********************* #
@@ -200,22 +199,24 @@ platform :ios do
 			gsp_path: gsp_path_devel
 		)
 
-		slack(
-			username: "Siri",
-			payload: {
-			   "Build Date" => Time.new.to_s,
-			},
-			message: "New iOS Firebase devel version released! :tada:",
-			slack_url: slackUrl,
-			default_payloads: [:test_result],
-			attachment_properties: {
-				  fields: [{
-						title: "Changelog",
-						value: changelog,
-						short: true	
-			   }]
-			}
-		  )
+		unless ENV["SLACK_WEBHOOK_URL"] == nil
+			slack(
+				username: "Siri",
+				payload: {
+				   "Build Date" => Time.new.to_s,
+				},
+				message: "New iOS Firebase devel version released! :tada:",
+				slack_url: ENV["SLACK_WEBHOOK_URL"],
+				default_payloads: [:test_result],
+				attachment_properties: {
+					  fields: [{
+							title: "Changelog",
+							value: changelog,
+							short: true	
+				   }]
+				}
+			)
+		end
 	end
 
 	# ***************************************************** #
@@ -300,22 +301,24 @@ platform :ios do
 			force: true
 		)
 
-		slack(
-			username: "Siri",
-			payload: {
-			   "Build Date" => Time.new.to_s,
-			},
-			message: "New iOS Firebase Staging version released! :tada:",
-			slack_url: slackUrl,
-			default_payloads: [:test_result],
-			attachment_properties: {
-				  fields: [{
-						title: "Changelog",
-						value: changelog,
-						short: true	
-			   }]
-			}
-		  )
+		unless ENV["SLACK_WEBHOOK_URL"] == nil
+			slack(
+				username: "Siri",
+				payload: {
+				   "Build Date" => Time.new.to_s,
+				},
+				message: "New iOS Firebase Staging version released! :tada:",
+				slack_url: ENV["SLACK_WEBHOOK_URL"],
+				default_payloads: [:test_result],
+				attachment_properties: {
+					  fields: [{
+							title: "Changelog",
+							value: changelog,
+							short: true	
+				   }]
+				}
+			)
+		end
 	end
 
 	# ***************************************************** #
@@ -384,22 +387,24 @@ platform :ios do
 			gsp_path: gsp_path_appstore
 		)
 
-		slack(
-			username: "Siri",
-			payload: {
-			   "Build Date" => Time.new.to_s,
-			},
-			message: "New iOS Testflight version released! :tada:",
-			slack_url: slackUrl,
-			default_payloads: [:test_result],
-			attachment_properties: {
-				  fields: [{
-						title: "Changelog",
-						value: changelog,
-						short: true	
-			   }]
-			}
-		  )
+		unless ENV["SLACK_WEBHOOK_URL"] == nil
+			slack(
+				username: "Siri",
+				payload: {
+				   "Build Date" => Time.new.to_s,
+				},
+				message: "New iOS Testflight version released! :tada:",
+				slack_url: ENV["SLACK_WEBHOOK_URL"],
+				default_payloads: [:test_result],
+				attachment_properties: {
+					  fields: [{
+							title: "Changelog",
+							value: changelog,
+							short: true	
+				   }]
+				}
+			)
+		end
 	end
 
 	# ***************************************************** #
