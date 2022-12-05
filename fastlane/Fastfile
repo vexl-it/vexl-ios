@@ -199,14 +199,14 @@ platform :ios do
 			gsp_path: gsp_path_devel
 		)
 
-		unless ENV["SLACK_URL"] == nil
+		unless ENV["SLACK_WEBHOOK_URL"] == nil
 			slack(
 				username: "Siri",
 				payload: {
 				   "Build Date" => Time.new.to_s,
 				},
 				message: "New iOS Firebase devel version released! :tada:",
-				slack_url: ENV["SLACK_URL"],
+				slack_url: ENV["SLACK_WEBHOOK_URL"],
 				default_payloads: [:test_result],
 				attachment_properties: {
 					  fields: [{
@@ -301,14 +301,14 @@ platform :ios do
 			force: true
 		)
 
-		unless ENV["SLACK_URL"] == nil
+		unless ENV["SLACK_WEBHOOK_URL"] == nil
 			slack(
 				username: "Siri",
 				payload: {
 				   "Build Date" => Time.new.to_s,
 				},
 				message: "New iOS Firebase Staging version released! :tada:",
-				slack_url: ENV["SLACK_URL"],
+				slack_url: ENV["SLACK_WEBHOOK_URL"],
 				default_payloads: [:test_result],
 				attachment_properties: {
 					  fields: [{
@@ -387,14 +387,14 @@ platform :ios do
 			gsp_path: gsp_path_appstore
 		)
 
-		unless ENV["SLACK_URL"] == nil
+		unless ENV["SLACK_WEBHOOK_URL"] == nil
 			slack(
 				username: "Siri",
 				payload: {
 				   "Build Date" => Time.new.to_s,
 				},
 				message: "New iOS Testflight version released! :tada:",
-				slack_url: ENV["SLACK_URL"],
+				slack_url: ENV["SLACK_WEBHOOK_URL"],
 				default_payloads: [:test_result],
 				attachment_properties: {
 					  fields: [{
