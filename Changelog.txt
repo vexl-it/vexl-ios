@@ -1,6 +1,7 @@
 - Requires uninstall: No
 
 ### Improvements
+VEX-1417: Groups section is hidden in profile  tab
 
 ### Fixes
 
