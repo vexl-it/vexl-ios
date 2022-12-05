@@ -170,7 +170,8 @@ extension UserProfileViewModel {
                 OptionGroup(id: 1, options: [.editAvatar, .editName]),
                 // TODO: add facebook back to user profile when facebook works again
                 OptionGroup(id: 2, options: [.contacts]), // , .facebook]),
-                OptionGroup(id: 3, options: [.groups]),
+                // TODO: add group back to user profile
+                // OptionGroup(id: 3, options: [.groups]),
                 OptionGroup(id: 4, options: [.currency]),
                 OptionGroup(id: 5, options: [.termsAndPrivacy, .faq, .reportIssue, .logs]),
                 OptionGroup(id: 6, options: [.socialTwitter, .socialMedium, .socialVexl]),
