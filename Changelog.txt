@@ -1,11 +1,7 @@
 - Requires uninstall: No
 
 ### Improvements
-VEX-1346: Fixed poor performance after start
 
 ### Fixes
-VEX-1401: Fixed button not having enough space in offer detail scene
-VEX-1292: Fixed the indicator of number of users active offers
-VEX-1410: Fixed re-encryption not working
 
 ### Known Issues
