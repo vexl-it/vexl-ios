@@ -1,7 +1,9 @@
 - Requires uninstall: No
 
 ### Improvements
-VEX-1417: Groups section is hidden in profile  tab
+VEX-1417: Groups section is hidden in profile tab
+VEX-1440: Better empty common friends handling
+VEX-1423: New delete chat flow
 
 ### Fixes
 
