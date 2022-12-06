@@ -117,8 +117,7 @@ struct Constants {
     static let maxLogLimit = 100
 
     static let inboxSyncPollInterval: TimeInterval = 10
-    // TODO: set bitcoin polling to some more apropriate value when BE solves issue (previously was 30)
-    static let bitcoinPollInterval: TimeInterval = 9_000_000_000
+    static let bitcoinPollInterval: TimeInterval = 5*60
 
     static let notAvailable = "N/A"
 
@@ -133,7 +132,6 @@ struct Constants {
     static let defaultOfferDeleteTime = "30" // days will be selected as default too
 
     #if APPSTORE
-    // TODO: would be better to obfuscate this
     static let contactsHashingPassword = "9cf02ca3b233f17160e71b0db098f95396e73f27ef672dda482a6566d8e29484"
     #else
     static let contactsHashingPassword = "VexlVexl"

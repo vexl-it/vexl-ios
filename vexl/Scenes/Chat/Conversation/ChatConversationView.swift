@@ -16,7 +16,6 @@ struct ChatConversationView: View {
             ScrollView(showsIndicators: false) {
                 LazyVStack {
                     ForEach(viewModel.messages) { section in
-                        // TODO: - add date display when its clear how it will be grouped
                         ForEach(section.messages) { message in
                             cell(for: message)
                                 .id(message.id)

@@ -9,8 +9,6 @@ import Foundation
 import Cleevio
 import Combine
 
-// TODO: - Complete the implementation once the facebook issue (not fetching contacts) is solved.
-
 final class ProfilePhoneContactsViewModel: ViewModelType, ObservableObject {
 
     enum UserAction: Equatable {
