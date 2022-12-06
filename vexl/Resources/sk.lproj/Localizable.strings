@@ -289,9 +289,9 @@
 "chat.request.identity.receive" = "Nová žiadosť o odhalenie identity!";
 "chat.request.identity.decline" = "Žiadosť o odhalenie identity zamietnutá";
 "chat.request.identity.approve" = "Identita odhalená!";
-"chat.delete.title" = "";
-"chat.delete.subtitle" = "";
-"chat.delete.button" = "";
+"chat.delete.title" = "%1$@ odešel z chatu";
+"chat.delete.subtitle" = "Chcete odejít taky?";
+"chat.delete.button" = "Odejít z chatu";
 "chat.request.main.title" = "%@ Žiadostí";
 "chat.request.accept" = "Prijať";
 "chat.request.decline" = "Odmietnuť";

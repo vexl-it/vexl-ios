@@ -279,7 +279,7 @@
 "request.placeholder" = "e.g. Let's vexl my friend...";
 "request.button" = "Send request";
 "request.common.friends" = "%d common friends";
-"request.common.friends.empty.state" = "You don't have common friends";
+"request.common.friends.empty.state" = "You have no common friends";
 "chat.main.title" = "Chat";
 "chat.filter.all" = "All";
 "chat.filter.buy" = "Buyers";
