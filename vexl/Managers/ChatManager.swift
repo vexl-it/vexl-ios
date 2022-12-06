@@ -74,8 +74,7 @@ final class ChatManager: ChatManagerType {
         }
         guard !offline else {
             return inboxRepository
-                .deleteChats(recevedPayloads: [payload], inbox: inbox)
-                .asVoid()
+                .deleteChats(receivedPayloads: [payload], inbox: inbox)
                 .eraseToAnyPublisher()
         }
         return Just(())
@@ -100,9 +99,8 @@ final class ChatManager: ChatManagerType {
                     )
             }
             .flatMap { [inboxRepository] _ in
-                inboxRepository.deleteChats(recevedPayloads: [payload], inbox: inbox)
+                inboxRepository.deleteChats(receivedPayloads: [payload], inbox: inbox)
             }
-            .asVoid()
             .eraseToAnyPublisher()
     }
 
@@ -156,9 +154,7 @@ final class ChatManager: ChatManagerType {
             .flatMap { [inboxRepository] message in
                 confirmation
                     ? inboxRepository.createOrUpdateChats(receivedPayloads: [(message.id, payload)], inbox: inbox)
-                    : inboxRepository.deleteChats(recevedPayloads: [payload], inbox: inbox)
-                        .asVoid()
-                        .eraseToAnyPublisher()
+                    : inboxRepository.deleteChats(receivedPayloads: [payload], inbox: inbox).eraseToAnyPublisher()
             }
             .eraseToAnyPublisher()
     }

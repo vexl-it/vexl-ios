@@ -144,7 +144,7 @@ final class InboxManager: InboxManagerType {
         let deleteMessages = messagePayloads
             .flatMap { [inboxRepository] payloads -> AnyPublisher<[(publicID: Int, payload: MessagePayload)], Error> in
                 inboxRepository
-                    .deleteChats(recevedPayloads: payloads.map(\.payload), inbox: inbox)
+                    .setInboxChatsUserLeft(receivedPayloads: payloads.map(\.payload), inbox: inbox)
                     .withUnretained(self)
                     .handleEvents(receiveOutput: { owner, delete in
                         if delete { owner._didDeleteChat.send(payloads.first?.payload.contactInboxKey) }
