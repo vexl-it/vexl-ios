@@ -86,6 +86,8 @@ extension InboxItemView {
                 return L.chatRequestIdentityDecline()
             case .messagingApproval:
                 return L.chatMessageConversationRequestAccepted()
+            case .deleteChat:
+                return L.chatDeleteTitle(username)
             default:
                 return ""
             }
@@ -99,6 +101,8 @@ extension InboxItemView {
                 return R.image.chat.revealApprovedIcon.name
             case .revealRejected:
                 return R.image.chat.revealDeclineIcon.name
+            case .deleteChat:
+                return R.image.chat.userLeftChat.name
             default:
                 return nil
             }

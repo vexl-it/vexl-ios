@@ -100,7 +100,7 @@ final class UserRepository: UserRepositoryType {
             if let avatarURL {
                 user.profile?.avatarURL = avatarURL
             }
-            if let avatar  {
+            if let avatar {
                 user.profile?.avatar = avatar
             }
             if let anonymizedUsername {

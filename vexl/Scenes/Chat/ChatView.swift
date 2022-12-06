@@ -63,7 +63,19 @@ struct ChatView: View {
                     }
             }
 
-            if viewModel.showIdentityRevealBanner != .none {
+            if viewModel.showUserLeftChatBanner {
+                ChatUserLeftBannerView(
+                    username: viewModel.username,
+                    avatar: viewModel.avatar,
+                    deleteAction: {
+                        viewModel.action.send(.deleteChatTap)
+                    }
+                )
+                .onAppear(perform: {
+                    viewModel.action.send(.forceScrollToBottom)
+                })
+                .padding(.bottom, Appearance.GridGuide.padding)
+            } else if viewModel.showIdentityRevealBanner != .none {
                 ChatRevealIdentityBannerView(isRequest: viewModel.showIdentityRevealBanner == .request,
                                              hideAction: {
                     viewModel.action.send(.hideTap)
@@ -71,10 +83,10 @@ struct ChatView: View {
                                              revealAction: {
                     viewModel.action.send(.revealTap)
                 })
-                    .onAppear(perform: {
-                        viewModel.action.send(.forceScrollToBottom)
-                    })
-                    .padding(.bottom, Appearance.GridGuide.padding)
+                .onAppear(perform: {
+                    viewModel.action.send(.forceScrollToBottom)
+                })
+                .padding(.bottom, Appearance.GridGuide.padding)
             }
 
             if viewModel.allowsInput {

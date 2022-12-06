@@ -10,7 +10,7 @@ import UIKit
 
 typealias L = R.string.localizable
 
-// swiftlint:disable type_property_specifier
+// swiftlint:disable type_property_specifier nesting
 struct Constants {
     // MARK: - API
 

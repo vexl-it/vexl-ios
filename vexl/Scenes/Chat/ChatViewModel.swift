@@ -35,6 +35,7 @@ final class ChatViewModel: ViewModelType, ObservableObject {
         case revealTap
         case hideTap
         case forceScrollToBottom
+        case deleteChatTap
     }
 
     let action: ActionSubject<UserAction> = .init()
@@ -52,6 +53,9 @@ final class ChatViewModel: ViewModelType, ObservableObject {
     @Published var username: String = L.generalAnonymous()
     @Published var avatar: Data?
     @Published var allowsInput = true
+    @Published var showIdentityRevealBanner: IdentityRevealBannerType = .none
+    @Published var showUserLeftChatBanner = false
+    @Published var userIsRevealed = false
 
     var errorIndicator: ErrorIndicator { primaryActivity.error }
     var activityIndicator: ActivityIndicator { primaryActivity.indicator }
@@ -93,8 +97,6 @@ final class ChatViewModel: ViewModelType, ObservableObject {
         }
     }
 
-    @Published var showIdentityRevealBanner: IdentityRevealBannerType = .none
-
     private let receiverPublicKey: String?
     private let cancelBag: CancelBag = .init()
     private lazy var sharedAction: AnyPublisher<UserAction, Never> = action.share().eraseToAnyPublisher()
@@ -106,13 +108,11 @@ final class ChatViewModel: ViewModelType, ObservableObject {
 
     var chatActionViewModel: ChatActionViewModel
     var chatConversationViewModel: ChatConversationViewModel
-    @Published var userIsRevealed = false
 
     init(chat: ManagedChat) {
         self.chat = chat
         self.chatActionViewModel = ChatActionViewModel(chat: chat)
         self.chatConversationViewModel = ChatConversationViewModel(chat: chat)
-        self.allowsInput = !chat.isBlocked
         self.receiverPublicKey = chat.receiverKeyPair?.publicKey
 
         setupActivityBindings()
@@ -214,6 +214,13 @@ final class ChatViewModel: ViewModelType, ObservableObject {
         profile?.publisher(for: \.avatarData).map { _ in profile?.avatar }.assign(to: &$avatar)
         profile?.publisher(for: \.name).filterNil().assign(to: &$username)
         chat.publisher(for: \.isRevealed).assign(to: &$userIsRevealed)
+        chat.publisher(for: \.hasChatEnded).assign(to: &$showUserLeftChatBanner)
+
+        Publishers.CombineLatest(chat.publisher(for: \.isBlocked), chat.publisher(for: \.hasChatEnded) )
+            .map { isBlocked, hasChatEnded in
+                !isBlocked && !hasChatEnded
+            }
+            .assign(to: &$allowsInput)
 
         $allowsInput
             .map(\.not)
@@ -240,6 +247,12 @@ final class ChatViewModel: ViewModelType, ObservableObject {
         sharedAction
             .filter { $0 == .revealTap }
             .map { _ -> Route in .showRevealIdentityResponseTapped }
+            .subscribe(route)
+            .store(in: cancelBag)
+
+        sharedAction
+            .filter { $0 == .deleteChatTap }
+            .map { _ -> Route in .showDeleteTapped }
             .subscribe(route)
             .store(in: cancelBag)
     }
@@ -303,18 +316,6 @@ final class ChatViewModel: ViewModelType, ObservableObject {
             .map { _ -> Route in .dismissTapped }
             .subscribe(route)
             .store(in: cancelBag)
-
-        inboxManager
-            .didDeleteChat
-            .withUnretained(self)
-            .filter { owner, contactPublicKey -> Bool in
-                owner.receiverPublicKey == contactPublicKey
-            }
-            .map { _ -> Route in .dismissTapped }
-            .subscribe(route)
-            .store(in: cancelBag)
-
-        // TODO: dismiss on delete ManagedObject
     }
 
     private func hideRevealBanner() {
@@ -327,8 +328,9 @@ final class ChatViewModel: ViewModelType, ObservableObject {
     }
 
     func deleteMessages() {
+
         chatManager
-            .delete(chat: chat)
+            .delete(chat: chat, offline: chat.hasChatEnded)
             .track(activity: primaryActivity)
             .map { _ -> Route in .dismissTapped }
             .subscribe(route)

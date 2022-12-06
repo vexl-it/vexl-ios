@@ -43,7 +43,9 @@ final class ChatConversationItem: Identifiable, Hashable, ObservableObject {
                 return .approveIdentityReveal
             case .revealRejected:
                 return .rejectIdentityReveal
-            case .invalid, .deleteChat, .messagingRejection, .blockChat:
+            case .deleteChat:
+                return .userLeft
+            case .invalid, .messagingRejection, .blockChat:
                 return .noContent
             // TODO: return image item type when BE adds image message type
 //            case .image:
@@ -103,5 +105,6 @@ extension ChatConversationItem {
         case rejectIdentityReveal
         case start
         case noContent
+        case userLeft
     }
 }

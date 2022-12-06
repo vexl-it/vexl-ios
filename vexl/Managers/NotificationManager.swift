@@ -228,7 +228,6 @@ extension NotificationManager: UNUserNotificationCenterDelegate {
             }
         case .none:
             completionHandler?(nil)
-            break
         }
     }
 

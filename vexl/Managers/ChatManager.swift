@@ -12,7 +12,7 @@ protocol ChatManagerType {
     func requestCommunication(offer: ManagedOffer, receiverPublicKey: String, messagePayload: MessagePayload) -> AnyPublisher<Void, Error>
 
     func send(payload: MessagePayload, chat: ManagedChat) ->AnyPublisher<Void, Error>
-    func delete(chat: ManagedChat) -> AnyPublisher<Void, Error>
+    func delete(chat: ManagedChat, offline: Bool) -> AnyPublisher<Void, Error>
     func requestIdentity(chat: ManagedChat) -> AnyPublisher<Void, Error>
     func identityResponse(allow: Bool, chat: ManagedChat) -> AnyPublisher<Void, Error>
     func communicationResponse(chat: ManagedChat, confirmation: Bool) -> AnyPublisher<Void, Error>
@@ -63,27 +63,44 @@ final class ChatManager: ChatManagerType {
         .eraseToAnyPublisher()
     }
 
-    func delete(chat: ManagedChat) -> AnyPublisher<Void, Error> {
+    func delete(chat: ManagedChat, offline: Bool) -> AnyPublisher<Void, Error> {
         guard let inbox = chat.inbox,
               let inboxKeys = inbox.keyPair?.keys,
               let receiverPublicKey = chat.receiverKeyPair?.publicKey,
               let payload = MessagePayload.createDelete(inboxPublicKey: inboxKeys.publicKey, contactInboxKey: receiverPublicKey),
-              let message = payload.asString else {
+              let payloadJson = payload.asString else {
             return Fail(error: PersistenceError.insufficientData)
                 .eraseToAnyPublisher()
         }
-        return chatService
-            .sendMessage(
-                inboxKeys: inboxKeys,
-                receiverPublicKey: receiverPublicKey,
-                message: message,
-                messageType: payload.messageType,
-                eccKeys: inboxKeys
-            )
-            .flatMap { [inboxRepository] _ in
-                inboxRepository.deleteChats(recevedPayloads: [payload], inbox: inbox)
+        guard !offline else {
+            return inboxRepository
+                .deleteChats(receivedPayloads: [payload], inbox: inbox)
+                .eraseToAnyPublisher()
+        }
+        return Just(())
+            .flatMap { [chatService] _ in
+                chatService
+                    .sendMessage(
+                        inboxKeys: inboxKeys,
+                        receiverPublicKey: receiverPublicKey,
+                        message: payloadJson,
+                        messageType: payload.messageType,
+                        eccKeys: inboxKeys
+                    )
             }
-            .asVoid()
+
+            .flatMap { [chatService] _ in
+                chatService
+                    .setInboxBlock(
+                        inboxPublicKey: inboxKeys.publicKey,
+                        publicKeyToBlock: receiverPublicKey,
+                        eccKeys: inboxKeys,
+                        isBlocked: true
+                    )
+            }
+            .flatMap { [inboxRepository] _ in
+                inboxRepository.deleteChats(receivedPayloads: [payload], inbox: inbox)
+            }
             .eraseToAnyPublisher()
     }
 
@@ -137,9 +154,7 @@ final class ChatManager: ChatManagerType {
             .flatMap { [inboxRepository] message in
                 confirmation
                     ? inboxRepository.createOrUpdateChats(receivedPayloads: [(message.id, payload)], inbox: inbox)
-                    : inboxRepository.deleteChats(recevedPayloads: [payload], inbox: inbox)
-                        .asVoid()
-                        .eraseToAnyPublisher()
+                    : inboxRepository.deleteChats(receivedPayloads: [payload], inbox: inbox).eraseToAnyPublisher()
             }
             .eraseToAnyPublisher()
     }

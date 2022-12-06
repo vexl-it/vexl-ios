@@ -70,6 +70,9 @@ struct ChatConversationView: View {
                                                rejectImage: viewModel.rejectImage,
                                                isAccepted: true,
                                                isRecevinng: !message.isContact)
+            case .userLeft:
+                ChatUserLeftView(username: viewModel.username,
+                                 avatarImage: viewModel.avatarImage)
             case .noContent:
                 EmptyView()
             }
