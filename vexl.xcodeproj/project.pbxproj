@@ -397,7 +397,6 @@
 		F1B93EDA286D6671008DAA90 /* VexlDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = F1B93ED8286D6671008DAA90 /* VexlDataModel.xcdatamodeld */; };
 		F1B93EDE286E372D008DAA90 /* ChatOfferActionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B93EDD286E372D008DAA90 /* ChatOfferActionSheet.swift */; };
 		F1B93EEC28720A41008DAA90 /* ChatDeleteActionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B93EEA28720A40008DAA90 /* ChatDeleteActionSheet.swift */; };
-		F1B93EF92873791E008DAA90 /* StoredChatUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B93EF82873791E008DAA90 /* StoredChatUser.swift */; };
 		F1B93F002877721C008DAA90 /* ChatIdentityRevealCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B93EFF2877721C008DAA90 /* ChatIdentityRevealCoordinator.swift */; };
 		F1B93F0428777230008DAA90 /* ChatIdentityRevealView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B93F0328777230008DAA90 /* ChatIdentityRevealView.swift */; };
 		F1B93F062877AFF5008DAA90 /* ChatRevealIdentityResponseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B93F052877AFF5008DAA90 /* ChatRevealIdentityResponseView.swift */; };
@@ -893,7 +892,6 @@
 		F1B93ED9286D6671008DAA90 /* VexlDataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = VexlDataModel.xcdatamodel; sourceTree = "<group>"; };
 		F1B93EDD286E372D008DAA90 /* ChatOfferActionSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatOfferActionSheet.swift; sourceTree = "<group>"; };
 		F1B93EEA28720A40008DAA90 /* ChatDeleteActionSheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatDeleteActionSheet.swift; sourceTree = "<group>"; };
-		F1B93EF82873791E008DAA90 /* StoredChatUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoredChatUser.swift; sourceTree = "<group>"; };
 		F1B93EFF2877721C008DAA90 /* ChatIdentityRevealCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatIdentityRevealCoordinator.swift; sourceTree = "<group>"; };
 		F1B93F0128777227008DAA90 /* ChatIdentityRevealViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatIdentityRevealViewModel.swift; sourceTree = "<group>"; };
 		F1B93F0328777230008DAA90 /* ChatIdentityRevealView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatIdentityRevealView.swift; sourceTree = "<group>"; };
@@ -1370,7 +1368,6 @@
 			children = (
 				F1D204F02863A282006A5671 /* Chat */,
 				4FBF6239283F8C2E00DDBE71 /* Offers */,
-				F1B93ECE286A20F9008DAA90 /* Storage */,
 				F175AB8227E4CBFE000DAB15 /* Networking */,
 				B01C01E72860B58500A29F85 /* Coin */,
 				B02939A728E5B87300DEB462 /* Common */,
@@ -2369,14 +2366,6 @@
 			path = Phone;
 			sourceTree = "<group>";
 		};
-		F1B93ECE286A20F9008DAA90 /* Storage */ = {
-			isa = PBXGroup;
-			children = (
-				F1B93EF82873791E008DAA90 /* StoredChatUser.swift */,
-			);
-			path = Storage;
-			sourceTree = "<group>";
-		};
 		F1B93EDB286E353B008DAA90 /* ActionSheets */ = {
 			isa = PBXGroup;
 			children = (
@@ -3199,7 +3188,6 @@
 				B007A72C2864FEBA00CFA5C9 /* BottomActionSheet.swift in Sources */,
 				B08F395B27AE7112008B344F /* Appearance.swift in Sources */,
 				B0F206F327AEA4C800A44E72 /* WindowCoordinator.swift in Sources */,
-				F1B93EF92873791E008DAA90 /* StoredChatUser.swift in Sources */,
 				B0E9BB2A2815C7190012BF1D /* AES.swift in Sources */,
 				B0EF7E1A28DBA560002DC7D6 /* AnonymousProfileRepository.swift in Sources */,
 				F1F5F199283FE52D00968366 /* ChatRequestCoordinator.swift in Sources */,
