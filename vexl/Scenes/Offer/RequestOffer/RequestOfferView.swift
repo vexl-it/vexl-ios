@@ -171,14 +171,10 @@ struct RequestOfferView: View {
 
     private var emptyCommonFriendsContainer: some View {
         HStack(alignment: .center, spacing: Appearance.GridGuide.point) {
-            Group {
-                Image(R.image.offer.infoGray.name)
-
-                Text(L.requestCommonFriendsEmptyState())
-                    .textStyle(.descriptionSemiBold)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .foregroundColor(Appearance.Colors.gray3)
-            }
+            Label(L.requestCommonFriendsEmptyState(), image: R.image.offer.infoGray.name)
+                .textStyle(.descriptionSemiBold)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .foregroundColor(Appearance.Colors.gray3)
         }
         .padding()
         .background(Appearance.Colors.gray1)
