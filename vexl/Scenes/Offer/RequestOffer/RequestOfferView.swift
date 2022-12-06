@@ -118,7 +118,9 @@ struct RequestOfferView: View {
                     case .requesting:
                         Spacer()
                     case .normal:
-                        if !viewModel.commonFriends.isEmpty {
+                        if viewModel.commonFriends.isEmpty {
+                            emptyCommonFriendsContainer
+                        } else {
                             commonFriendsContainer
                         }
 
@@ -165,6 +167,22 @@ struct RequestOfferView: View {
             )
         }
         .padding(.top, Appearance.GridGuide.padding)
+    }
+
+    private var emptyCommonFriendsContainer: some View {
+        HStack(alignment: .center, spacing: Appearance.GridGuide.point) {
+            Group {
+                Image(R.image.offer.infoGray.name)
+
+                Text(L.requestCommonFriendsEmptyState())
+                    .textStyle(.descriptionSemiBold)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .foregroundColor(Appearance.Colors.gray3)
+            }
+        }
+        .padding()
+        .background(Appearance.Colors.gray1)
+        .cornerRadius(Appearance.GridGuide.containerCorner)
     }
 
     private var commonFriendsContainer: some View {
