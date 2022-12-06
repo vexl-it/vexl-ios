@@ -141,6 +141,11 @@ struct Constants {
 
     static let supportEmail = "support@vexl.it"
 
+    static let anonymousAvatarNames: [String] = [
+        R.image.avatars.defaultAvatar1.name,
+        R.image.avatars.defaultAvatar2.name,
+        R.image.avatars.defaultAvatar3.name
+    ]
     static let numberOfSyllablesForName = 4
     static let randomNameSyllables = [
         "bo", "da", "ga", "ge", "chi", "ka", "ko", "ku",
