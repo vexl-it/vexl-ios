@@ -38,11 +38,9 @@ struct ChatRequestOfferView: View {
                 .padding([.horizontal, .top], Appearance.GridGuide.mediumPadding1)
                 .textStyle(.titleSmallMedium)
 
-            if !data.friends.isEmpty {
-                ChatRequestFriendsView(data: data.friends)
-                    .padding(.horizontal, Appearance.GridGuide.point)
-                    .padding(.top, Appearance.GridGuide.padding)
-            }
+            ChatRequestFriendsView(data: data.friends)
+                .padding(.horizontal, Appearance.GridGuide.point)
+                .padding(.top, Appearance.GridGuide.padding)
 
             ChatRequestOfferInformationView(data: data.offer)
                 .background(Appearance.Colors.gray6)
