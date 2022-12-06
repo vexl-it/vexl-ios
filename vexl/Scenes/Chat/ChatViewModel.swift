@@ -328,9 +328,8 @@ final class ChatViewModel: ViewModelType, ObservableObject {
     }
 
     func deleteMessages() {
-
         chatManager
-            .delete(chat: chat, offline: chat.hasChatEnded)
+            .delete(chat: chat, onlyLocally: chat.hasChatEnded)
             .track(activity: primaryActivity)
             .map { _ -> Route in .dismissTapped }
             .subscribe(route)
