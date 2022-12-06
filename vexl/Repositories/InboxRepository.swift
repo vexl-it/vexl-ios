@@ -30,7 +30,7 @@ class InboxRepository: InboxRepositoryType {
     @Inject var userRepository: UserRepositoryType
 
     func createOrUpdateChats(receivedPayloads payloads: [(publicID: Int, payload: MessagePayload)], inbox unsafeContextInbox: ManagedInbox) -> AnyPublisher<Void, Error> {
-        let payloads = payloads.filter { $0.payload.messageType != .deleteChat && $0.payload.messageType != .messagingRejection }
+        let payloads = payloads.filter { $0.payload.messageType != .messagingRejection }
         guard !payloads.isEmpty else {
             return Just(()).setFailureType(to: Error.self).eraseToAnyPublisher()
         }
@@ -202,8 +202,8 @@ class InboxRepository: InboxRepositoryType {
             payloads
                 .flatMap { payload -> [ManagedChat] in
                     let predicate = NSPredicate(format: "receiverKeyPair.publicKey == '\(payload.contactInboxKey)'")
-                    let receivedChats = chatSet.allObjects as? [ManagedChat] ?? []
-                    return receivedChats
+                    let receivedChatSet = chatSet.filtered(using: predicate) as? Set<ManagedChat> ?? .init()
+                    return Array(receivedChatSet)
                 }
                 .forEach { chat in
                     chat.hasChatEnded = true

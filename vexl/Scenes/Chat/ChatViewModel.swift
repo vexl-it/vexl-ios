@@ -316,18 +316,6 @@ final class ChatViewModel: ViewModelType, ObservableObject {
             .map { _ -> Route in .dismissTapped }
             .subscribe(route)
             .store(in: cancelBag)
-
-        inboxManager
-            .didDeleteChat
-            .withUnretained(self)
-            .filter { owner, contactPublicKey -> Bool in
-                owner.receiverPublicKey == contactPublicKey
-            }
-            .map { _ -> Route in .dismissTapped }
-            .subscribe(route)
-            .store(in: cancelBag)
-
-        // TODO: dismiss on delete ManagedObject
     }
 
     private func hideRevealBanner() {
