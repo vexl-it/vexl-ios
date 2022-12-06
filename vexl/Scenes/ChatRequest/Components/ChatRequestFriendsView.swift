@@ -15,19 +15,29 @@ struct ChatRequestFriendsView: View {
 
     var body: some View {
         HStack {
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack {
-                    ForEach(data) { friendData in
-                        friendItem(friendData)
-                    }
+            if data.isEmpty {
+                HStack(alignment: .center, spacing: Appearance.GridGuide.point) {
+                    Label(L.requestCommonFriendsEmptyState(), image: R.image.offer.infoGray.name)
+                        .textStyle(.descriptionSemiBold)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .foregroundColor(Appearance.Colors.gray3)
                 }
                 .padding()
-            }
+            } else {
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack {
+                        ForEach(data) { friendData in
+                            friendItem(friendData)
+                        }
+                    }
+                    .padding()
+                }
 
-            Image(systemName: "chevron.right")
-                .foregroundColor(Appearance.Colors.gray3)
-                .padding(.vertical, Appearance.GridGuide.padding)
-                .padding(.horizontal, Appearance.GridGuide.point)
+                Image(systemName: "chevron.right")
+                    .foregroundColor(Appearance.Colors.gray3)
+                    .padding(.vertical, Appearance.GridGuide.padding)
+                    .padding(.horizontal, Appearance.GridGuide.point)
+            }
         }
         .background(Appearance.Colors.gray6)
         .cornerRadius(Appearance.GridGuide.buttonCorner)
