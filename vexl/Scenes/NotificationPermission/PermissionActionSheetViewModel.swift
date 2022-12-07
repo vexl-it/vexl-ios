@@ -28,7 +28,7 @@ final class PermissionActionSheetViewModel: BottomActionSheetViewModelProtocol {
         L.notificationsPermissionRejectTitle()
     }
 
-    var content: PermissionActionSheetContent {
+    var content: PermissionActionSheetContent? {
         PermissionActionSheetContent()
     }
 }

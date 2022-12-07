@@ -18,7 +18,7 @@ final class ChatOfferSheetViewModel: BottomActionSheetViewModelProtocol {
     var actionPublisher: PassthroughSubject<BottomActionSheetActionType, Never> = .init()
     var dismissPublisher: PassthroughSubject<Void, Never> = .init()
     var colorScheme: OfferBottomActionSheet.ColorScheme = .main
-    var content: ChatOfferActionSheetContent {
+    var content: ChatOfferActionSheetContent? {
         ChatOfferActionSheetContent(data: OfferDetailViewData(offer: self.offer),
                                     dismiss: {})
     }

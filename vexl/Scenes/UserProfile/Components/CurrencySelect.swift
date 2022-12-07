@@ -19,7 +19,7 @@ class CurrencySelectViewModel: BottomActionSheetViewModelProtocol {
     var actionPublisher: PassthroughSubject<BottomActionSheetActionType, Never> = .init()
     var dismissPublisher: PassthroughSubject<Void, Never> = .init()
     var colorScheme: CurrencySelectBottomSheet.ColorScheme = .main
-    var content: CurrencySelectContent {
+    var content: CurrencySelectContent? {
         CurrencySelectContent(viewModel: self)
     }
 

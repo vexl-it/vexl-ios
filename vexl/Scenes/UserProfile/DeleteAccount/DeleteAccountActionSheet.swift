@@ -21,7 +21,7 @@ final class DeleteAccountSheetViewModel: BottomActionSheetViewModelProtocol {
         isConfirmation ? L.userProfileDeleteAccountTitleSure() : L.userProfileDeleteAccountTitle()
     }
 
-    var content: DeleteAccountActionSheetContent {
+    var content: DeleteAccountActionSheetContent? {
         DeleteAccountActionSheetContent()
     }
 

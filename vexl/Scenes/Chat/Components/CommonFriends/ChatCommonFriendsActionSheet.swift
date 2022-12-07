@@ -22,8 +22,8 @@ final class ChatCommonFriendsSheetViewModel: BottomActionSheetViewModelProtocol 
     var actionPublisher: PassthroughSubject<BottomActionSheetActionType, Never> = .init()
     var dismissPublisher: PassthroughSubject<Void, Never> = .init()
     var colorScheme: CommonFriendBottomActionSheet.ColorScheme = .main
-    var content: ChatCommonFriendsActionSheetContent {
-        ChatCommonFriendsActionSheetContent(friendsState: commonFriendsState)
+    var content: ChatCommonFriendsActionSheetContent? {
+        return ChatCommonFriendsActionSheetContent(friendsState: commonFriendsState)
     }
 
     @Published var commonFriendsState: ContentState<[ChatCommonFriendViewData]> = .loading

@@ -22,7 +22,7 @@ final class ReportIssueSheetViewModel: BottomActionSheetViewModelProtocol {
         L.userProfileReportIssueTitle()
     }
 
-    var content: ReportIssueActionSheetContent {
+    var content: ReportIssueActionSheetContent? {
         ReportIssueActionSheetContent { [weak self] in
             self?.actionPublisher.send(.contentAction)
         }

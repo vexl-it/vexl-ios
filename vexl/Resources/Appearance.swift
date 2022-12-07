@@ -108,12 +108,8 @@ struct Appearance {
         static let feedMediumIconSize = CGSize(width: 20, height: 20)
         static let feedSmallIconSize = CGSize(width: 16, height: 16)
 
-        // MARK: Other
+        // MARK: Chat
 
-        static let feedItemHeight: CGFloat = 52
-        static let homeTabBarHeight: CGFloat = 72
-
-        static let scrollContentInset = UIEdgeInsets(top: 0, left: 0, bottom: Self.homeTabBarHeight, right: 0)
         static let chatTextFieldHeight: CGFloat = 44
         static let chatImageSize = CGSize(width: 125, height: 125)
         static let chatRequestAvatarSize = CGSize(width: 80, height: 80)
@@ -121,7 +117,14 @@ struct Appearance {
         static let chatInputImageSize = CGSize(width: 75, height: 75)
         static let chatBannerHeight: CGFloat = 72
         static let chatBannerAvatarSize = CGSize(width: 48, height: 48)
+
+        // MARK: Other
+
+        static let feedItemHeight: CGFloat = 52
+        static let homeTabBarHeight: CGFloat = 72
+        static let scrollContentInset = UIEdgeInsets(top: 0, left: 0, bottom: Self.homeTabBarHeight, right: 0)
         static let refreshContainerPadding: CGFloat = 40
+        static let bottomSheetImageDefaultHeight: Double = 220
     }
 
     // MARK: - Global

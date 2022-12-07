@@ -23,7 +23,7 @@ class ChatBlockSheetViewModel: BottomActionSheetViewModelProtocol {
             ? LottieView(animation: .blockUser, playMode: .pause(.end))
             : LottieView(animation: .blockUser, loopMode: .playOnce)
     }
-    var content: ChatBlockActionSheetContent {
+    var content: ChatBlockActionSheetContent? {
         ChatBlockActionSheetContent(description: description)
     }
 
