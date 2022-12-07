@@ -300,6 +300,7 @@
 "chat.message.offer.my" = "My offer";
 "chat.message.offer.theirs" = "Offer";
 "chat.message.common.friend" = "Common friends";
+"chat.message.common.friend.empty.title" = "No common friends, yet.";
 "chat.message.common.friend.empty" = "You don't share any common friends";
 "chat.message.delete.chat" = "Delete chat";
 "chat.message.block.user" = "Block user";

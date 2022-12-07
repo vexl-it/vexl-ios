@@ -300,6 +300,7 @@
 "chat.message.offer.my" = "Moje nabídka";
 "chat.message.offer.theirs" = "Nabídka";
 "chat.message.common.friend" = "Společní přátelé";
+"chat.message.common.friend.empty.title" = "Nemáte žádné společné přátele, zatím.";
 "chat.message.common.friend.empty" = "Nemáte žádné společné přátele";
 "chat.message.delete.chat" = "Vymazat chat";
 "chat.message.block.user" = "Zablokovat uživatele";
