@@ -16,13 +16,28 @@ final class ChatCommonFriendsSheetViewModel: BottomActionSheetViewModelProtocol 
 
     typealias CommonFriendBottomActionSheet = BottomActionSheet<ChatCommonFriendsActionSheetContent, EmptyView>
 
-    var title: String = L.chatMessageCommonFriend()
+    var title: String {
+        guard commonFriendsState.data?.isEmpty != true else {
+            return L.chatMessageCommonFriendEmptyTitle()
+        }
+        return L.chatMessageCommonFriend()
+    }
     var primaryAction: CommonFriendBottomActionSheet.Action = .init(title: L.buttonGotIt(), isDismissAction: true)
     var secondaryAction: CommonFriendBottomActionSheet.Action?
     var actionPublisher: PassthroughSubject<BottomActionSheetActionType, Never> = .init()
     var dismissPublisher: PassthroughSubject<Void, Never> = .init()
     var colorScheme: CommonFriendBottomActionSheet.ColorScheme = .main
+    var imageName: String? {
+        guard commonFriendsState.data?.isEmpty == true else {
+            return nil
+        }
+        return R.image.chat.noCommonFriendsIllustration.name
+    }
+    var imageHeight: Double = 460
     var content: ChatCommonFriendsActionSheetContent? {
+        guard commonFriendsState.data?.isEmpty != true else {
+            return nil
+        }
         return ChatCommonFriendsActionSheetContent(friendsState: commonFriendsState)
     }
 
@@ -97,8 +112,6 @@ struct ChatCommonFriendsActionSheetContent: View {
                         .background(Appearance.Colors.gray6)
                         .cornerRadius(Appearance.GridGuide.buttonCorner)
                         .padding(.bottom, Appearance.GridGuide.point)
-                } else {
-                    Text(L.chatMessageCommonFriendEmpty())
                 }
             case .loading:
                 ProgressView()
