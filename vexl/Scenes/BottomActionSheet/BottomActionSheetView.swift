@@ -30,7 +30,8 @@ struct BottomActionSheetView<ViewModel: BottomActionSheetViewModelProtocol>: Vie
                 secondaryAction: viewModel.secondaryAction(dismiss: dismissAction),
                 colorScheme: viewModel.colorScheme,
                 imageView: { viewModel.imageView },
-                content: { viewModel.content }
+                content: { viewModel.content },
+                imageHeight: viewModel.imageHeight
             )
             .offset(y: isVisible ? dragOffset : UIScreen.main.bounds.height)
             .onAppear { withAnimation(onAppearAnimation) { isVisible = true } }

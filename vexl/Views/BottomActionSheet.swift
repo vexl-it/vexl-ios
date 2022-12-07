@@ -60,9 +60,9 @@ struct BottomActionSheet<ContentView: View, ImageView: View>: View {
     var colorScheme: ColorScheme = .main
 
     var imageView: () -> ImageView?
-    @ViewBuilder var content: () -> ContentView
+    @ViewBuilder var content: () -> ContentView?
 
-    private let imageHeight: Double = 220
+    let imageHeight: Double
 
     var body: some View {
         VStack {
@@ -135,9 +135,11 @@ struct BottomSheet_Previews: PreviewProvider {
                     showArrowIndicator: false,
                     showBackground: false
                 )
-            })
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(Color.blue)
-            .previewDevice("iPhone 11")
+            },
+            imageHeight: Appearance.GridGuide.bottomSheetImageDefaultHeight
+        )
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(Color.blue)
+        .previewDevice("iPhone 11")
     }
 }

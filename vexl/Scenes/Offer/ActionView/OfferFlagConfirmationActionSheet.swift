@@ -25,7 +25,7 @@ final class OfferFlagConfirmationActionSheetViewModel: BottomActionSheetViewMode
         L.reportOfferConfirmationModalTitle()
     }
 
-    var content: OfferFlagConfirmationActionSheetContent {
+    var content: OfferFlagConfirmationActionSheetContent? {
         OfferFlagConfirmationActionSheetContent()
     }
 

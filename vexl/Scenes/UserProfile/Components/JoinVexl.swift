@@ -20,7 +20,7 @@ class JoinVexlViewModel: BottomActionSheetViewModelProtocol {
     var actionPublisher: PassthroughSubject<BottomActionSheetActionType, Never> = .init()
     var dismissPublisher: PassthroughSubject<Void, Never> = .init()
     var colorScheme: JoinVexlBottomSheet.ColorScheme = .main
-    var content: JoinVexlContent {
+    var content: JoinVexlContent? {
         JoinVexlContent(viewModel: self)
     }
 }
@@ -42,7 +42,8 @@ struct JoinVexlViewPreview: PreviewProvider {
             secondaryAction: model.secondaryAction,
             colorScheme: model.colorScheme,
             imageView: { nil },
-            content: { model.content }
+            content: { model.content },
+            imageHeight: Appearance.GridGuide.bottomSheetImageDefaultHeight
         )
         .background(Color.black.ignoresSafeArea())
         .previewDevice("iPhone 11")

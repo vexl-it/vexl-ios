@@ -28,7 +28,7 @@ final class OfferFlagBottomActionSheetViewModel: BottomActionSheetViewModelProto
         L.reportOfferModalTitle()
     }
 
-    var content: OfferFlagBottomActionSheetContent {
+    var content: OfferFlagBottomActionSheetContent? {
         OfferFlagBottomActionSheetContent()
     }
 

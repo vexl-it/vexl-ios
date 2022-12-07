@@ -22,7 +22,7 @@ final class ChatDeleteSheetViewModel: BottomActionSheetViewModelProtocol {
             ? LottieView(animation: .deleteChat, playMode: .pause(.end))
             : LottieView(animation: .deleteChat, loopMode: .playOnce)
     }
-    var content: ChatDeleteActionSheetContent {
+    var content: ChatDeleteActionSheetContent? {
         ChatDeleteActionSheetContent(viewModel: self)
     }
 

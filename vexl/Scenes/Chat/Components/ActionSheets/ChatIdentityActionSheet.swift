@@ -26,7 +26,7 @@ final class ChatIdentitySheetViewModel: BottomActionSheetViewModelProtocol {
         isResponse ? L.chatMessageIdentityConfirmationSubtitle() : L.chatMessageIdentityRequestSubtitle()
     }
 
-    var content: ChatIdentityActionSheetContent {
+    var content: ChatIdentityActionSheetContent? {
         ChatIdentityActionSheetContent(subtitle: subtitle)
     }
 

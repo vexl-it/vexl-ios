@@ -21,7 +21,7 @@ class DonateViewModel: BottomActionSheetViewModelProtocol {
     var imageView: LottieView? {
         LottieView(animation: .donate, loopMode: .loop)
     }
-    var content: DonateContent {
+    var content: DonateContent? {
         DonateContent(viewModel: self)
     }
 }
@@ -45,7 +45,8 @@ struct DonateViewPreview: PreviewProvider {
             secondaryAction: model.secondaryAction,
             colorScheme: model.colorScheme,
             imageView: { nil },
-            content: { model.content }
+            content: { model.content },
+            imageHeight: Appearance.GridGuide.bottomSheetImageDefaultHeight
         )
         .background(Color.black.ignoresSafeArea())
         .previewDevice("iPhone 11")

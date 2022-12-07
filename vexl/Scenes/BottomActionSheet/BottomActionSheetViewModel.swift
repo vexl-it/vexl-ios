@@ -22,13 +22,15 @@ protocol BottomActionSheetViewModelProtocol: ObservableObject {
     var dismissPublisher: PassthroughSubject<Void, Never> { get }
     var colorScheme: BottomActionSheet<ContentView, ImageView>.ColorScheme { get }
     var imageView: ImageView? { get }
-    @ViewBuilder var content: ContentView { get }
+    var imageHeight: Double { get }
+    @ViewBuilder var content: ContentView? { get }
 }
 
 extension BottomActionSheetViewModelProtocol {
     var imageName: String? { nil }
     var titleAlignment: Alignment { .leading }
     var imageView: ImageView? { nil }
+    var imageHeight: Double { Appearance.GridGuide.bottomSheetImageDefaultHeight }
 
     func primaryAction(dismiss: @escaping (BottomActionSheetActionType) -> Void) -> BottomActionSheet<ContentView, ImageView>.Action {
         var action = primaryAction

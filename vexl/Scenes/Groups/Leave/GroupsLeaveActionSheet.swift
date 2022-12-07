@@ -25,7 +25,7 @@ final class GroupsLeaveSheetViewModel: BottomActionSheetViewModelProtocol {
         L.groupsLeaveGroupTitle()
     }
 
-    var content: GroupsLeaveActionSheetContent {
+    var content: GroupsLeaveActionSheetContent? {
         GroupsLeaveActionSheetContent()
     }
 }
