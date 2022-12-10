@@ -17,6 +17,8 @@ protocol InboxManagerType {
 
     func syncInbox(with publicKey: String, completionHandler: ((Error?) -> Void)?)
     func updateNotificationToken(token: String) -> AnyPublisher<Void, Error>
+
+    func unsubscribeUserFromHisInboxes() -> AnyPublisher<Void, Error>
 }
 
 extension InboxManagerType {
@@ -185,5 +187,34 @@ final class InboxManager: InboxManagerType {
             .collect()
             .asVoid()
             .eraseToAnyPublisher()
+    }
+
+    func unsubscribeUserFromHisInboxes() -> AnyPublisher<Void, Error> {
+        let inboxes = userRepository.getInboxes()
+        let envelopes = Just(inboxes)
+            .map { inboxes -> [(ECCKeys, BatchMessageEnvelope)] in
+                inboxes.compactMap { inbox -> (ECCKeys, BatchMessageEnvelope)? in
+                    guard let inboxKeys = inbox.keyPair?.keys,
+                        let envelope = BatchMessageEnvelope(inbox: inbox) else {
+                        return nil
+                    }
+                    return (inboxKeys, envelope)
+                }
+            }
+
+        let sendMessages = envelopes
+            .flatMap { [chatService] envelopes in
+                chatService.sendMessages(envelopes: envelopes)
+            }
+
+        let deleteInboxes = sendMessages
+            .asVoid()
+            .map { inboxes.compactMap(\.keyPair?.keys) }
+            .flatMap { [chatService] eccKeys in
+                chatService.deleteInboxes(eccKeys: eccKeys)
+            }
+            .eraseToAnyPublisher()
+
+        return deleteInboxes
     }
 }

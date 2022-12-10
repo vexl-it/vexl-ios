@@ -103,6 +103,7 @@
 		B0501BAA2887419F00A44E18 /* Array+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0501BA92887419F00A44E18 /* Array+.swift */; };
 		B05A22132812BF2700BF8D58 /* Publisher+Crypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = B05A22122812BF2700BF8D58 /* Publisher+Crypto.swift */; };
 		B065FE01292F7553005ABE15 /* RefreshManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B065FE00292F7553005ABE15 /* RefreshManager.swift */; };
+		B06A00E62944DE5600CAC881 /* MessageEnvelopes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B06A00E52944DE5600CAC881 /* MessageEnvelopes.swift */; };
 		B06A3B4F287C967F00911795 /* Encryptable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B06A3B4E287C967F00911795 /* Encryptable.swift */; };
 		B06A3B51287C976300911795 /* Number+Encryptable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B06A3B50287C976300911795 /* Number+Encryptable.swift */; };
 		B08D2AB5289FF31500A1C901 /* GroupRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = B08D2AB4289FF31500A1C901 /* GroupRepository.swift */; };
@@ -582,6 +583,7 @@
 		B058A2902926760400FCC75E /* VexlDataModel_1.0.16.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = VexlDataModel_1.0.16.xcdatamodel; sourceTree = "<group>"; };
 		B05A22122812BF2700BF8D58 /* Publisher+Crypto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Publisher+Crypto.swift"; sourceTree = "<group>"; };
 		B065FE00292F7553005ABE15 /* RefreshManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefreshManager.swift; sourceTree = "<group>"; };
+		B06A00E52944DE5600CAC881 /* MessageEnvelopes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageEnvelopes.swift; sourceTree = "<group>"; };
 		B06A3B4E287C967F00911795 /* Encryptable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Encryptable.swift; sourceTree = "<group>"; };
 		B06A3B50287C976300911795 /* Number+Encryptable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Number+Encryptable.swift"; sourceTree = "<group>"; };
 		B08D2AB4289FF31500A1C901 /* GroupRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupRepository.swift; sourceTree = "<group>"; };
@@ -2497,6 +2499,7 @@
 				F1C734762852CB6D00B3F327 /* MessagePayload.swift */,
 				4F2416A228490B3C00B4A437 /* ChatInbox.swift */,
 				F1D204F12863A578006A5671 /* ChatInboxMessage.swift */,
+				B06A00E52944DE5600CAC881 /* MessageEnvelopes.swift */,
 			);
 			path = Chat;
 			sourceTree = "<group>";
@@ -3137,6 +3140,7 @@
 				B08F395727AE7112008B344F /* ApiRouter.swift in Sources */,
 				F188627428169A3700659786 /* MarketplaceFeedFooterView.swift in Sources */,
 				F137A21428B93BCE0078A660 /* GroupError.swift in Sources */,
+				B06A00E62944DE5600CAC881 /* MessageEnvelopes.swift in Sources */,
 				4FD8E3E02821B922003B165E /* CoinData.swift in Sources */,
 				F1042BA227BEADB70048C2F0 /* WelcomeAgreementSwitch.swift in Sources */,
 				B08F394D27AE7112008B344F /* AppCoordinator.swift in Sources */,
