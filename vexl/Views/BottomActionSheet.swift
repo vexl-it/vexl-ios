@@ -72,7 +72,7 @@ struct BottomActionSheet<ContentView: View, ImageView: View>: View {
                         Image(imageName)
                             .resizable()
                             .scaledToFit()
-                            .frame(height: imageHeight)
+                            .frame(maxHeight: imageHeight)
                             .frame(alignment: .center)
                     }
                     .frame(maxWidth: .infinity)
@@ -85,6 +85,7 @@ struct BottomActionSheet<ContentView: View, ImageView: View>: View {
                     .textStyle(.h2)
                     .foregroundColor(Appearance.Colors.primaryText)
                     .frame(maxWidth: .infinity, alignment: titleAlignment)
+                    .fixedSize(horizontal: false, vertical: true)
 
                 content()
             }
