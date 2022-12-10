@@ -27,6 +27,25 @@ struct ChatMessageEnvelope {
     let receiverPublicKey: String
     var message: String
     let messageType: MessageType
+
+    init?(chat: ManagedChat) {
+        guard
+            let inboxKeys = chat.inbox?.keyPair?.keys,
+            let receiverPublicKey = chat.receiverKeyPair?.publicKey,
+            let payload = MessagePayload.createDelete(inboxPublicKey: inboxKeys.publicKey, contactInboxKey: receiverPublicKey),
+            let payloadJson = payload.asString else {
+            return nil
+        }
+        self.message = payloadJson
+        self.messageType = payload.messageType
+        self.receiverPublicKey = receiverPublicKey
+    }
+
+    init(receiverPublicKey: String, message: String, messageType: MessageType) {
+        self.receiverPublicKey = receiverPublicKey
+        self.message = message
+        self.messageType = messageType
+    }
 }
 
 struct BatchMessageEnvelope {
@@ -44,6 +63,20 @@ struct BatchMessageEnvelope {
                 ]
             }
         ]
+    }
+
+    init?(inbox: ManagedInbox) {
+        guard let inboxKeys = inbox.keyPair?.keys else {
+            return nil
+        }
+        let chats = inbox.chats?.allObjects as? [ManagedChat] ?? []
+        self.messages = chats.compactMap(ChatMessageEnvelope.init)
+        self.senderPublicKey = inboxKeys.publicKey
+    }
+
+    init(senderPublicKey: String, messages: [ChatMessageEnvelope]) {
+        self.senderPublicKey = senderPublicKey
+        self.messages = messages
     }
 }
 
