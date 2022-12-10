@@ -4,7 +4,11 @@
 VEX-1417: Groups section is hidden in profile tab
 VEX-1440: Better empty common friends handling
 VEX-1423: New delete chat flow
+VEX-1429: Unsibscribe from chats when user logs out
 
 ### Fixes
+VEX-1414: Resolve inconsistent chat rooms
+VEX-1449: No Common Firends BottomSheet title now fits
+VEX-1448: Fix user-left banner texts
 
 ### Known Issues
