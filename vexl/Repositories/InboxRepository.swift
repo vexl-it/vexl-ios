@@ -54,7 +54,7 @@ class InboxRepository: InboxRepositoryType {
                 let profile = ManagedProfile(context: context)
 
                 // creating new chat from receiver request
-                profile.avatar = UIImage(named: R.image.profile.avatar.name)?.pngData() // TODO: generate random avatar
+                profile.generateRandomAvatar()
                 profile.generateRandomName()
 
                 keyPair.profile = profile

@@ -131,7 +131,7 @@ class OfferRepository: OfferRepositoryType {
                         let profile = ManagedProfile(context: context)
 
                         // creating new chat from requesting offer
-                        profile.avatar = UIImage(named: R.image.profile.avatar.name)?.pngData() // TODO: generate random avatar
+                        profile.generateRandomAvatar()
                         profile.generateRandomName()
 
                         offer.receiversPublicKey?.profile = profile

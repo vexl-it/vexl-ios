@@ -12,7 +12,7 @@ protocol ChatManagerType {
     func requestCommunication(offer: ManagedOffer, receiverPublicKey: String, messagePayload: MessagePayload) -> AnyPublisher<Void, Error>
 
     func send(payload: MessagePayload, chat: ManagedChat) ->AnyPublisher<Void, Error>
-    func delete(chat: ManagedChat, offline: Bool) -> AnyPublisher<Void, Error>
+    func delete(chat: ManagedChat, onlyLocally: Bool) -> AnyPublisher<Void, Error>
     func requestIdentity(chat: ManagedChat) -> AnyPublisher<Void, Error>
     func identityResponse(allow: Bool, chat: ManagedChat) -> AnyPublisher<Void, Error>
     func communicationResponse(chat: ManagedChat, confirmation: Bool) -> AnyPublisher<Void, Error>
@@ -63,7 +63,7 @@ final class ChatManager: ChatManagerType {
         .eraseToAnyPublisher()
     }
 
-    func delete(chat: ManagedChat, offline: Bool) -> AnyPublisher<Void, Error> {
+    func delete(chat: ManagedChat, onlyLocally: Bool) -> AnyPublisher<Void, Error> {
         guard let inbox = chat.inbox,
               let inboxKeys = inbox.keyPair?.keys,
               let receiverPublicKey = chat.receiverKeyPair?.publicKey,
@@ -72,7 +72,7 @@ final class ChatManager: ChatManagerType {
             return Fail(error: PersistenceError.insufficientData)
                 .eraseToAnyPublisher()
         }
-        guard !offline else {
+        if onlyLocally {
             return inboxRepository
                 .deleteChats(receivedPayloads: [payload], inbox: inbox)
                 .eraseToAnyPublisher()
