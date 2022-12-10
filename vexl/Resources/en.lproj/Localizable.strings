@@ -290,7 +290,7 @@
 "chat.request.identity.decline" = "Declined to reveal identity";
 "chat.request.identity.approve" = "Identity revealed!";
 "chat.delete.title" = "%1$@ left the chat";
-"chat.delete.subtitle" = "Leave too?";
+"chat.delete.subtitle" = "Left chat";
 "chat.delete.button" = "Leave the chat";
 "chat.request.main.title" = "%@ Requests";
 "chat.request.accept" = "Accept";
