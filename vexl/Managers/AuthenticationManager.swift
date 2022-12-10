@@ -104,13 +104,19 @@ extension AuthenticationManager {
         @Inject var offerService: OfferServiceType
         @Inject var cryptocurrencyValueManager: CryptocurrencyValueManagerType
         @Inject var syncInboxManager: SyncInboxManagerType
+        @Inject var inboxManager: InboxManagerType
         @Inject var persistanceManager: PersistenceStoreManagerType
 
         let serverPublishers: AnyPublisher<Void, Never> = {
                 if !force {
-                    return contactService
-                        .deleteUser()
-                        .justOnError()
+                    let contacts = Just(())
+                        .flatMap { [contactService] in
+                            contactService
+                                .deleteUser()
+                                .justOnError()
+                        }
+
+                    let offers = contacts
                         .flatMap { [persistanceManager] _ -> AnyPublisher<Void, Never> in
                             let offers = persistanceManager.loadSyncroniously(
                                 type: ManagedOffer.self,
@@ -122,6 +128,15 @@ extension AuthenticationManager {
                                 .justOnError()
                                 .eraseToAnyPublisher()
                         }
+
+                    let inboxes = offers
+                        .flatMap { [inboxManager] in
+                            inboxManager
+                                .unsubscribeUserFromHisInboxes()
+                                .justOnError()
+                        }
+
+                    return inboxes
                         .eraseToAnyPublisher()
                 } else {
                     return Just(())
