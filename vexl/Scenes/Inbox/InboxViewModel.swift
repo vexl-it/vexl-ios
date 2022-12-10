@@ -138,7 +138,7 @@ final class InboxViewModel: ViewModelType, ObservableObject {
             }
             .withUnretained(self)
             .sink { owner, filter in
-                var predicate = NSPredicate(format: "isRequesting == false AND isApproved == true")
+                var predicate = NSPredicate(format: "isRequesting == false AND isApproved == true AND receiverKeyPair != nil AND receiverKeyPair.profile != nil")
                 predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate, filter.chatPredicate].compactMap { $0 })
                 owner.$chats.load(predicate: predicate)
             }
