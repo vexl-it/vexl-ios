@@ -12,6 +12,15 @@ struct MessageEnvelope {
     let receiverPublicKey: String
     let message: String
     let messageType: MessageType
+
+    var asJson: [String: Any] {
+        [
+            "senderPublicKey": senderPublicKey,
+            "receiverPublicKey": receiverPublicKey,
+            "messageType": messageType.rawValue,
+            "message": message
+        ]
+    }
 }
 
 struct ChatMessageEnvelope {
@@ -23,6 +32,19 @@ struct ChatMessageEnvelope {
 struct BatchMessageEnvelope {
     let senderPublicKey: String
     let messages: [ChatMessageEnvelope]
+
+    var asJson: [String: Any] {
+        [
+            "senderPublicKey": senderPublicKey,
+            "messages": messages.map { message in
+                [
+                    "receiverPublicKey": message.receiverPublicKey,
+                    "messageType": message.messageType.rawValue,
+                    "message": message.message
+                ]
+            }
+        ]
+    }
 }
 
 struct BatchChallengeEnvelope: Decodable {

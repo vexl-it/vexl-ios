@@ -12,24 +12,31 @@ import Alamofire
 enum ChatRouter: ApiRouter {
     case createInbox(publicKey: String, pushToken: String?, signedChallenge: SignedChallenge)
     case updateInbox(publicKey: String, pushToken: String, signedChallenge: SignedChallenge)
+    case deleteInbox(publicKey: String, signedChallenge: SignedChallenge)
+    case deleteInboxes(pubKeysAndChallenges: [(String, SignedChallenge)])
     case request(inboxPublicKey: String, message: String)
-    case requestConfirmation(confirmed: Bool, message: String, inboxPublicKey: String,
-                             requesterPublicKey: String, signedChallenge: SignedChallenge)
+    case requestConfirmation(
+        confirmed: Bool,
+        message: String,
+        inboxPublicKey: String,
+        requesterPublicKey: String,
+        signedChallenge: SignedChallenge
+    )
     case requestChallenge(publicKey: String)
+    case requestChallenges(publicKeys: [String])
     case pullChat(publicKey: String, signedChallenge: SignedChallenge)
-    case deleteChat(publicKey: String, signedChallenge: SignedChallenge)
     case blockInbox(publicKey: String, publicKeyToBlock: String, signedChallenge: SignedChallenge, isBlocked: Bool)
-    case sendMessage(senderPublicKey: String, receiverPublicKey: String,
-                     message: String, messageType: MessageType, signedChallenge: SignedChallenge)
+    case sendMessage(envelope: MessageEnvelope, signedChallenge: SignedChallenge)
+    case sendMessages(signedEnvelopes: [(BatchMessageEnvelope, SignedChallenge)])
     case deleteChatMessages(publicKey: String, signedChallenge: SignedChallenge)
-    
+
     var method: HTTPMethod {
         switch self {
-        case .createInbox, .request, .requestChallenge, .requestConfirmation, .sendMessage:
+        case .createInbox, .request, .requestChallenge, .requestChallenges, .requestConfirmation, .sendMessage, .sendMessages:
             return .post
         case .pullChat, .blockInbox, .updateInbox:
             return .put
-        case .deleteChat, .deleteChatMessages:
+        case .deleteInbox, .deleteInboxes, .deleteChatMessages:
             return .delete
         }
     }
@@ -46,9 +53,11 @@ enum ChatRouter: ApiRouter {
             return "inboxes/approval/request"
         case .requestChallenge:
             return "challenges"
+        case .requestChallenges:
+            return "challenges/batch"
         case .pullChat:
             return "inboxes/messages"
-        case .deleteChat:
+        case .deleteInbox:
             return "inboxes"
         case .deleteChatMessages:
             return "inboxes/messages"
@@ -58,6 +67,10 @@ enum ChatRouter: ApiRouter {
             return "inboxes/block"
         case .sendMessage:
             return "inboxes/messages"
+        case .sendMessages:
+            return "inboxes/messages/batch"
+        case .deleteInboxes:
+            return "inboxes/batch"
         }
     }
 
@@ -78,6 +91,14 @@ enum ChatRouter: ApiRouter {
                 "publicKey": publicKey,
                 "token": pushToken
             ].addSignedChallenge(signedChallenge: signedChallenge)
+        case let .deleteInboxes(signedEnvelopes):
+            return [
+                "dataForRemoval": signedEnvelopes.map { publicKey, signedChallenge in
+                    [
+                        "publicKey": publicKey,
+                    ].addSignedChallenge(signedChallenge: signedChallenge)
+                }
+            ]
         case let .request(inboxPublicKey, message):
             return [
                 "publicKey": inboxPublicKey,
@@ -86,6 +107,10 @@ enum ChatRouter: ApiRouter {
         case let .requestChallenge(publicKey):
             return [
                 "publicKey": publicKey
+            ]
+        case let .requestChallenges(publicKeys):
+            return [
+                "publicKeys": publicKeys
             ]
         case let .pullChat(publicKey, signedChallenged):
             return [
@@ -98,7 +123,7 @@ enum ChatRouter: ApiRouter {
                 "message": message,
                 "approve": confirmed
             ].addSignedChallenge(signedChallenge: signedChallenge)
-        case let .deleteChat(publicKey, signedChallenge):
+        case let .deleteInbox(publicKey, signedChallenge):
             return ["publicKey": publicKey].addSignedChallenge(signedChallenge: signedChallenge)
         case let .deleteChatMessages(publicKey, signedChallenge):
             return ["publicKey": publicKey].addSignedChallenge(signedChallenge: signedChallenge)
@@ -108,14 +133,12 @@ enum ChatRouter: ApiRouter {
                 "publicKeyToBlock": publicKeyToBlock,
                 "block": isBlocked
             ].addSignedChallenge(signedChallenge: signedChallenge)
-        case let .sendMessage(senderPublicKey, receiverPublicKey, message, messageType, signedChallenge):
+        case let .sendMessage(envelope, challenge):
+            return envelope.asJson.addSignedChallenge(signedChallenge: challenge)
+        case let .sendMessages(envelopes):
             return [
-                "senderPublicKey": senderPublicKey,
-                "receiverPublicKey": receiverPublicKey,
-                "messageType": messageType.rawValue,
-                "message": message
+                "data": envelopes.map { $0.asJson.addSignedChallenge(signedChallenge: $1) }
             ]
-            .addSignedChallenge(signedChallenge: signedChallenge)
         }
     }
 
