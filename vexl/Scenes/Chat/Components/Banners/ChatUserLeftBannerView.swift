@@ -18,14 +18,15 @@ struct ChatUserLeftBannerView: View {
             Image(data: avatar, placeholder: R.image.marketplace.defaultAvatar.name)
                 .resizable()
                 .frame(size: Appearance.GridGuide.chatAvatarSize)
+                .cornerRadius(Appearance.GridGuide.groupLabelCorner)
 
             VStack(alignment: .leading) {
-                Text(L.chatDeleteTitle(username))
-                    .textStyle(.paragraphSmallSemiBold)
-
-                Text(L.chatDeleteSubtitle())
+                Text(username)
                     .textStyle(.description)
                     .foregroundColor(Appearance.Colors.gray3)
+
+                Text(L.chatDeleteSubtitle())
+                    .textStyle(.paragraphSmallSemiBold)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
 
@@ -44,7 +45,8 @@ struct ChatUserLeftBannerView: View {
             Text(L.chatDeleteButton())
                 .textStyle(.descriptionBold)
                 .foregroundColor(Appearance.Colors.primaryText)
-                .padding(Appearance.GridGuide.point)
+                .padding(.vertical, Appearance.GridGuide.padding)
+                .padding(.horizontal, Appearance.GridGuide.mediumPadding1)
                 .background(Appearance.Colors.yellow100)
                 .cornerRadius(Appearance.GridGuide.point)
         }
