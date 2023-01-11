@@ -22,6 +22,7 @@
 #endif
 
 #include "common/Constants.h"
+#include "common/Base64.h"
 
 # ifdef __cplusplus
 extern "C" {

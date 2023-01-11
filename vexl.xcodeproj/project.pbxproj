@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0AA456AF4C162D9C8AF6AB30 /* Pods_vexl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57B3CAA27CF4369A28B748A7 /* Pods_vexl.framework */; };
+		138DCC0A296ED37800EC21B4 /* vexl-crypto.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = B038CC20291A4DD600AD6F86 /* vexl-crypto.xcframework */; };
 		4F2416A328490B3C00B4A437 /* ChatInbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2416A228490B3C00B4A437 /* ChatInbox.swift */; };
 		4F26F44528A51C49005558E8 /* MapyService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F26F44428A51C49005558E8 /* MapyService.swift */; };
 		4F26F44728A51D05005558E8 /* MapyRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F26F44628A51D05005558E8 /* MapyRouter.swift */; };
@@ -955,6 +956,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0AA456AF4C162D9C8AF6AB30 /* Pods_vexl.framework in Frameworks */,
+				138DCC0A296ED37800EC21B4 /* vexl-crypto.xcframework in Frameworks */,
 				B038CC21291A4DD600AD6F86 /* vexl-crypto.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -7,8 +7,10 @@
 
 #include <stdio.h>
 #include <math.h>
+#include <string.h>
 
 #include "../common/Base64.h"
+#include "../common/Constants.h"
 
 # ifdef __cplusplus
 extern "C" {
@@ -21,6 +23,8 @@ typedef struct {
     unsigned int public_key_len;
     char *mac;
     unsigned int mac_len;
+    char *tag;
+    unsigned int tag_len;
 } Cipher;
 
 Cipher *cipher_new();
