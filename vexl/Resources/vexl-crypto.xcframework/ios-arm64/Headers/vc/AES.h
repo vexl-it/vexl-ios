@@ -22,6 +22,7 @@
 
 #include "common/Constants.h"
 #include "common/Base64.h"
+#include "common/Log.h"
 
 # ifdef __cplusplus
 extern "C" {
@@ -31,8 +32,8 @@ char *aes_encrypt(const char *password, const char *message);
 char *aes_decrypt(const char *password, const char *cipher);
 
 #ifdef BUILD_FOR_LIBRARY
-void _aes_encrypt(const char *password, const int password_len, const char *message, const int message_len, char **cipher, int *cipher_len);
-void _aes_decrypt(const char *password, const int password_len, const char *cipher, const int cipher_len, char **message, int *message_len);
+void _aes_encrypt(const char *password, const int password_len, const char *message, const int message_len, char **cipher, int *cipher_len, char ** tag, int *tag_len);
+void _aes_decrypt(const char *password, const int password_len, const char *cipher, const int cipher_len, const char *base64_tag, const int base64_tag_len, char **message, int *message_len);
 #endif
 
 # ifdef  __cplusplus
