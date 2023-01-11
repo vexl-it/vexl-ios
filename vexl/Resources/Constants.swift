@@ -23,13 +23,13 @@ struct Constants {
         #elseif STAGING
         private static let userApiHostname = "https://stage-user.vexl.it"
         private static let contactsApiHostname = "https://stage-contact.vexl.it"
-        private static let offersApiHostname = "https://stage-offer2.vexl.it/"
-        private static let chatApiHostname = "https://stage-chat.vexl.it/"
+        private static let offersApiHostname = "https://stage-offer2.vexl.it"
+        private static let chatApiHostname = "https://stage-chat.vexl.it"
         #else
         private static let userApiHostname = "https://dev-user.vexl.it"
         private static let contactsApiHostname = "https://dev-contact.vexl.it"
-        private static let offersApiHostname = "https://dev-offer2.vexl.it/"
-        private static let chatApiHostname = "https://dev-chat.vexl.it/"
+        private static let offersApiHostname = "https://dev-offer2.vexl.it"
+        private static let chatApiHostname = "https://dev-chat.vexl.it"
         #endif
 
         static let baseURLString = ""
