@@ -25,11 +25,20 @@ struct Constants {
         private static let contactsApiHostname = "https://stage-contact.vexl.it"
         private static let offersApiHostname = "https://stage-offer2.vexl.it"
         private static let chatApiHostname = "https://stage-chat.vexl.it"
+        #elseif DEVEL
+        //private static let userApiHostname = "https://dev-user.vexl.it"
+        //private static let contactsApiHostname = "https://dev-contact.vexl.it"
+        //private static let offersApiHostname = "https://dev-offer2.vexl.it"
+        //private static let chatApiHostname = "https://dev-chat.vexl.it"
+        private static let userApiHostname = "http://localhost:8000"
+        private static let contactsApiHostname = "http://localhost:8003"
+        private static let offersApiHostname = "http://localhost:8002"
+        private static let chatApiHostname = "http://localhost:8001"
         #else
-        private static let userApiHostname = "https://dev-user.vexl.it"
-        private static let contactsApiHostname = "https://dev-contact.vexl.it"
-        private static let offersApiHostname = "https://dev-offer2.vexl.it"
-        private static let chatApiHostname = "https://dev-chat.vexl.it"
+        private static let userApiHostname = "http://localhost:8000"
+        private static let contactsApiHostname = "http://localhost:8003"
+        private static let offersApiHostname = "http://localhost:8002"
+        private static let chatApiHostname = "http://localhost:8001"
         #endif
 
         static let baseURLString = ""

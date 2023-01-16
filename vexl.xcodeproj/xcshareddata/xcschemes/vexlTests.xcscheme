@@ -39,7 +39,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "B08F38BC27AE7110008B344F"
-            BuildableName = "vexl.app"
+            BuildableName = "Vexl.app"
             BlueprintName = "vexl"
             ReferencedContainer = "container:vexl.xcodeproj">
          </BuildableReference>
@@ -55,7 +55,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "B08F38BC27AE7110008B344F"
-            BuildableName = "vexl.app"
+            BuildableName = "Vexl.app"
             BlueprintName = "vexl"
             ReferencedContainer = "container:vexl.xcodeproj">
          </BuildableReference>
