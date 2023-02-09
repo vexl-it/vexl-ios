@@ -20,6 +20,7 @@ protocol OfferRepositoryType {
     func getOffer(with publicKey: String) -> AnyPublisher<ManagedOffer, Error>
     func getOffers(fromType type: OfferType?, fromSource source: OfferSource?) -> AnyPublisher<[ManagedOffer], Error>
     func getKnownOffers() -> AnyPublisher<[ManagedOffer], Error>
+    func getKnownOffersThatAreNotMine() -> AnyPublisher<[ManagedOffer], Error>
     func getUsersOffersWithoutSymetricKey() -> AnyPublisher<[ManagedOffer], Error>
 
     func sync(offers: [ManagedOffer], withPublicKeys: [String]) -> AnyPublisher<Void, Error>
@@ -201,6 +202,11 @@ class OfferRepository: OfferRepositoryType {
 
     func getKnownOffers() -> AnyPublisher<[ManagedOffer], Error> {
         persistence.load(type: ManagedOffer.self, context: persistence.viewContext, predicate: NSPredicate(format: "offerID != nil"))
+    }
+
+    func getKnownOffersThatAreNotMine() -> AnyPublisher<[ManagedOffer], Error> {
+        persistence.load(type: ManagedOffer.self,
+                         context: persistence.viewContext, predicate: NSPredicate(format: "offerID != nil AND adminID == nil"))
     }
 
     func sync(offers unsafeOffers: [ManagedOffer], withPublicKeys publicKeys: [String]) -> AnyPublisher<Void, Error> {
