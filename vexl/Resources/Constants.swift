@@ -37,7 +37,7 @@ struct Constants {
         static let contactsBaseURLString = "\(contactsApiHostname)/api/"
         static let offersBaseURLString = "\(offersApiHostname)/api/"
         static let chatBaseURLString = "\(chatApiHostname)/api/"
-        static let mapyBaseURLString = "https://api.mapy.cz/"
+        static let mapyBaseURLString = "http://localhost:3000/"
 
         enum Version: String {
             case v1
