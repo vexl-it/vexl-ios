@@ -125,10 +125,9 @@ final class PhoneContactsManager: PhoneContactsManagerType {
                 owner.encryptionService.hashContacts(contacts: owner.userPhoneContacts)
                     .map { hashedContacts -> [ContactInformation] in
                         hashedContacts.map { contact in
-                            let isSelected = true
                             var newContact = contact.0
-                            newContact.isSelected = isSelected
-                            newContact.isStored = isSelected
+                            newContact.isSelected = true
+                            newContact.isStored = false
                             return newContact
                         }
                         .sorted(by: { $0.name < $1.name })
