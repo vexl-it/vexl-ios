@@ -119,18 +119,15 @@ final class PhoneContactsManager: PhoneContactsManagerType {
                 .setFailureType(to: Error.self)
                 .eraseToAnyPublisher()
         }
-        return contactsService
-            .getActivePhoneContacts(contacts)
-            .map(\.newContacts)
+        return Just(contacts)
             .withUnretained(self)
             .flatMap { owner, hashedAvailableContacts -> AnyPublisher<[ContactInformation], Error> in
                 owner.encryptionService.hashContacts(contacts: owner.userPhoneContacts)
                     .map { hashedContacts -> [ContactInformation] in
                         hashedContacts.map { contact in
-                            let isSelected = !hashedAvailableContacts.contains(contact.1)
                             var newContact = contact.0
-                            newContact.isSelected = isSelected
-                            newContact.isStored = isSelected
+                            newContact.isSelected = true
+                            newContact.isStored = false
                             return newContact
                         }
                         .sorted(by: { $0.name < $1.name })

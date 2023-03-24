@@ -58,7 +58,7 @@ final class OfferManager: OfferManagerType {
             }
             .asVoid()
             .flatMap { [offerRepository] in
-                offerRepository.getKnownOffers()
+                offerRepository.getKnownOffersThatAreNotMine()
             }
             .flatMap { [offerService] knownOfferIDs in
                 offerService.getDeletedOffers(knownOffers: knownOfferIDs)

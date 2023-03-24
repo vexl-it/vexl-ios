@@ -110,11 +110,7 @@ class ImportContactsViewModel: ObservableObject {
     let cancelBag: CancelBag = .init()
 
     private var newContacts: [ContactInformation] {
-        items.filter { $0.isSelected && !$0.isStored }
-    }
-
-    private var removedContacts: [ContactInformation] {
-        items.filter { !$0.isSelected && $0.isStored }
+        items.filter { $0.isSelected }
     }
 
     // MARK: - Init
@@ -182,18 +178,14 @@ class ImportContactsViewModel: ObservableObject {
                 owner.addNewContacts(contacts)
             }
 
-        let removeContacts = sharedAction
-            .map(\.0.removedContacts)
-            .withUnretained(self)
-            .flatMap { owner, contacts -> AnyPublisher<Bool, Error> in
-                owner.removeContacts(contacts: contacts)
-            }
+        let importCompleted = Just(())
+            .setFailureType(to: Error.self)
 
-        Publishers.Zip(addNewContacts, removeContacts)
+        Publishers.Zip(addNewContacts, importCompleted)
             .withUnretained(self)
             .handleEvents(receiveOutput: { owner, response in
-                let (didImportContacts, didRemoveContacts) = response
-                if didImportContacts && didRemoveContacts {
+                let (didImportContacts, _) = response // we ignore the second element of the tuple
+                if didImportContacts {
                     owner.currentState = .success
                 }
             })
@@ -218,6 +210,7 @@ class ImportContactsViewModel: ObservableObject {
             let importContact = hashContacts
                 .withUnretained(self)
                 .flatMap { owner, contacts -> AnyPublisher<ContactsImported, Never> in
+
                     owner.contactsService
                         .importContacts(contacts.map(\.1))
                         .track(activity: owner.primaryActivity)
@@ -230,45 +223,13 @@ class ImportContactsViewModel: ObservableObject {
             let saveContacts = hashContacts
                 .withUnretained(self)
                 .flatMap { owner, contacts -> AnyPublisher<[ManagedContact], Error> in
-                    owner.contactsRepository.save(contacts: contacts)
+                    owner.contactsRepository.deleteAll()
+                                .flatMap { _ in owner.contactsRepository.save(contacts: contacts) }
+                                .eraseToAnyPublisher()
                 }
 
             return Publishers.Zip(importContact, saveContacts)
                 .map(\.0.imported)
-                .eraseToAnyPublisher()
-        }
-    }
-
-    private func removeContacts(contacts: [ContactInformation]) -> AnyPublisher<Bool, Error> {
-        if contacts.isEmpty {
-            return Just(true).setFailureType(to: Error.self)
-                .eraseToAnyPublisher()
-        } else {
-            let hashContacts = encryptionService
-                .hashContacts(contacts: contacts)
-                .share()
-                .eraseToAnyPublisher()
-
-            let removeContacts = hashContacts
-                .withUnretained(self)
-                .flatMap { owner, contacts -> AnyPublisher<Void, Never> in
-                    owner.contactsService
-                        .removeContacts(contacts.map(\.1), fromFacebook: false)
-                        .track(activity: owner.primaryActivity)
-                        .materialize()
-                        .compactMap { $0.value }
-                        .eraseToAnyPublisher()
-                }
-                .eraseToAnyPublisher()
-
-            let deleteContacts = hashContacts
-                .withUnretained(self)
-                .flatMap { owner, contacts -> AnyPublisher<Void, Error> in
-                    owner.contactsRepository.delete(contacts: contacts)
-                }
-
-            return Publishers.Zip(removeContacts, deleteContacts)
-                .map { _ in true }
                 .eraseToAnyPublisher()
         }
     }

@@ -59,7 +59,7 @@ enum ContactsRouter: ApiRouter {
         case .getAvailableContacts:
             return "contacts/not-imported"
         case .importContacts:
-            return "contacts/import"
+            return "contacts/import/replace"
         case .removeContacts:
             return "contacts"
         case let .getFacebookContacts(id, accessToken):

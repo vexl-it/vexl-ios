@@ -41,6 +41,7 @@ final class ContactsService: BaseService, ContactsServiceType {
 
     func importContacts(_ contacts: [String]) -> AnyPublisher<ContactsImported, Error> {
         request(type: ContactsImported.self, endpoint: ContactsRouter.importContacts(contacts: contacts))
+
             .eraseToAnyPublisher()
     }
 

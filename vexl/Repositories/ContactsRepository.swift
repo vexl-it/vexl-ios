@@ -12,6 +12,7 @@ import CoreData
 protocol ContactsRepositoryType {
     func save(contacts: [(ContactInformation, String)]) -> AnyPublisher<[ManagedContact], Error>
     func delete(contacts: [(ContactInformation, String)]) -> AnyPublisher<Void, Error>
+    func deleteAll() -> AnyPublisher<Void, Error>
     func getContacts(hashes: [String]) -> AnyPublisher<[ManagedContact], Error>
     func getCommonFriends(hashes: [String]) -> AnyPublisher<[ManagedContact], Error>
 }
@@ -43,6 +44,14 @@ final class ContactsRepository: ContactsRepositoryType {
             let storedContacts = persistence.loadSyncroniously(type: ManagedContact.self,
                                                                context: context,
                                                                predicate: NSPredicate(format: "hmacHash in %@", hashes))
+            return storedContacts
+        }
+    }
+
+    func deleteAll() -> AnyPublisher<Void, Error> {
+        persistence.delete(context: context) { [persistence] context -> [ManagedContact] in
+            let storedContacts = persistence.loadSyncroniously(type: ManagedContact.self,
+                                                               context: context)
             return storedContacts
         }
     }
